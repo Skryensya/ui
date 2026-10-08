@@ -278,7 +278,13 @@ body {
   gap: var(--space-inline-md);
   margin-inline-start: auto;
 }
+/* Rows are named, not counted: with no alerts the body would slide into the `auto` row and stop
+ * filling the screen, and the inspector would lose its own scroll. */
+.studio-actionbar {
+  grid-row: 1;
+}
 .studio-workbench__alerts {
+  grid-row: 2;
   display: grid;
   gap: var(--space-stack-sm);
   padding: var(--space-inset-sm) var(--space-inset-lg) 0;
@@ -291,6 +297,7 @@ body {
  * the capture. Fit gives the canvas everything but a fixed inspector.
  */
 .studio-workbench__body {
+  grid-row: 3;
   --studio-canvas-gutter: var(--space-inset-lg);
   display: grid;
   grid-template-columns:
@@ -306,6 +313,25 @@ body {
 }
 .studio-workbench[data-zoom="fit"] .studio-workbench__body {
   grid-template-columns: minmax(0, 1fr) minmax(360px, 440px);
+}
+
+/*
+ * A width the reviewer set with the splitter wins over both sizings above, in either zoom. The CSS
+ * clamp is what keeps it inside the window: never narrower than a usable inspector, never so wide
+ * that the capture column disappears, and still right after the window is resized.
+ */
+.studio-workbench[data-zoom] .studio-workbench__body[data-split] {
+  grid-template-columns:
+    minmax(0, 1fr)
+    clamp(320px, var(--studio-inspector-width), calc(100% - 280px));
+}
+.studio-workbench__body[data-resizing] {
+  cursor: col-resize;
+  user-select: none;
+}
+.studio-workbench__body[data-resizing] iframe,
+.studio-workbench__body[data-resizing] img {
+  pointer-events: none;
 }
 
 .studio-canvas {
@@ -357,12 +383,39 @@ body {
 }
 
 .studio-inspector {
+  position: relative;
   display: grid;
   min-width: 0;
   min-block-size: 0;
   border-inline-start: 1px solid var(--color-border-subtle);
   background: var(--color-bg-surface);
 }
+/* The kit's bar sits on the inspector's near edge, over its border, not past the capture's scrollbar. */
+.studio-inspector > .sk-splitter {
+  inset-inline: 0 auto;
+  z-index: 1;
+}
+.studio-inspector > .sk-splitter::before {
+  inset-inline: 0 auto;
+}
+
+/* Evidence: one view at a time, filling the panel instead of stacking behind folds. */
+.studio-evidence {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-stack-md);
+  block-size: 100%;
+  min-block-size: 0;
+}
+.studio-evidence > .sk-segmented {
+  align-self: flex-start;
+}
+.studio-code--fill {
+  flex: 1 1 auto;
+  min-block-size: 12rem;
+  max-block-size: none;
+}
+
 /* The tab strip stays put; only the open panel scrolls. */
 .studio-inspector > .sk-tabs {
   --sk-tabs-gap: 0;
@@ -559,6 +612,9 @@ textarea.studio-mono {
   }
   .studio-canvas__scroll {
     max-block-size: 70dvh;
+  }
+  .studio-inspector > .sk-splitter {
+    display: none;
   }
   .studio-inspector {
     border-inline-start: 0;

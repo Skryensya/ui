@@ -2,11 +2,6 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Button } from "@skryensya/react/button";
 import { Badge } from "@skryensya/react/badge";
 import { Callout } from "@skryensya/react/callout";
-import {
-  Details,
-  DetailsContent,
-  DetailsSummary,
-} from "@skryensya/react/details";
 import { FormField } from "@skryensya/react/form-field";
 import { Textarea } from "@skryensya/react/input";
 import { NativeSelect } from "@skryensya/react/select-native";
@@ -31,11 +26,14 @@ import {
 import type { ReferenceClient } from "./client";
 import { Screenshot, type NaturalSize } from "./Screenshot";
 import { Publication } from "./Publication";
+import { PaneSplitter } from "./PaneSplitter";
 import { toneOf } from "./status";
 import { comboboxCopy, intentItems } from "./intents";
 const tabs = ["Review", "Evidence", "Similar", "Publication"] as const;
 type Tab = (typeof tabs)[number];
 type Zoom = "actual" | "fit";
+const evidenceViews = ["Text", "Structure", "DOM", "Source"] as const;
+type EvidenceView = (typeof evidenceViews)[number];
 function textOf(node: RawCapture["root"]): string {
   return [node.text, ...node.children.map(textOf)].filter(Boolean).join("\n");
 }
@@ -67,6 +65,7 @@ export function Workbench({
   const [ingest, setIngest] = useState<ReferenceIngest>(),
     [raw, setRaw] = useState<RawCapture>(),
     [tab, setTab] = useState<Tab>("Review"),
+    [evidence, setEvidence] = useState<EvidenceView>("Text"),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
     [similar, setSimilar] = useState<ReferenceIngest[]>(),
@@ -82,7 +81,8 @@ export function Workbench({
     [baseRevision, setBaseRevision] = useState<number>(),
     [notes, setNotes] = useState<string>(),
     [rating, setRating] = useState<number>();
-  const automatic = useRef(false);
+  const automatic = useRef(false),
+    layout = useRef<HTMLDivElement>(null);
   const dirty =
     !!Object.keys(edits).length || notes !== undefined || rating !== undefined;
   const position = queue.indexOf(id),
@@ -438,64 +438,61 @@ export function Workbench({
             </Text>
           </Stack>
         );
-      case "Evidence":
+      case "Evidence": {
+        const code = (text: string | undefined, empty: string) => (
+          <pre className="studio-code studio-code--fill">
+            {raw ? text || empty : "Loading…"}
+          </pre>
+        );
         return (
-          <div>
-            <Details open>
-              <DetailsSummary>Text</DetailsSummary>
-              <DetailsContent>
-                <pre className="studio-code">
-                  {raw ? textOf(raw.root) || "No text captured." : "Loading…"}
-                </pre>
-              </DetailsContent>
-            </Details>
-            <Details>
-              <DetailsSummary>Structure</DetailsSummary>
-              <DetailsContent>
-                <Stack gap="sm">
-                  <Text size="sm" tone="secondary">
-                    Fingerprint <Code>{current.capture.structureHash}</Code>
-                  </Text>
-                  <pre className="studio-code">
-                    {raw && JSON.stringify(treeOf(raw.root), null, 2)}
-                  </pre>
-                </Stack>
-              </DetailsContent>
-            </Details>
-            <Details>
-              <DetailsSummary>DOM</DetailsSummary>
-              <DetailsContent>
-                <pre className="studio-code">
-                  {JSON.stringify(raw?.root, null, 2)}
-                </pre>
-              </DetailsContent>
-            </Details>
-            <Details>
-              <DetailsSummary>Source</DetailsSummary>
-              <DetailsContent>
-                <Stack gap="sm">
-                  <pre className="studio-code">
-                    {JSON.stringify(
-                      {
-                        source: current.source,
-                        capture: current.capture,
-                        truncated: raw?.truncated,
-                        originalPageTitle: raw?.pageTitle,
-                        classificationRuns: current.classificationRuns,
-                      },
-                      null,
-                      2,
-                    )}
-                  </pre>
-                  <Text size="sm" tone="tertiary">
-                    Raw capture remains in asset storage after publication. No
-                    captured scripts are executed.
-                  </Text>
-                </Stack>
-              </DetailsContent>
-            </Details>
+          <div className="studio-evidence">
+            <SegmentedControl
+              label="Evidence"
+              size="sm"
+              value={evidence}
+              onValueChange={(value) => setEvidence(value as EvidenceView)}
+              options={evidenceViews.map((value) => ({
+                value,
+                label: value,
+              }))}
+            />
+            {evidence === "Text" &&
+              code(raw && textOf(raw.root), "No text captured.")}
+            {evidence === "Structure" && (
+              <>
+                <Text size="sm" tone="secondary">
+                  Fingerprint <Code>{current.capture.structureHash}</Code>
+                </Text>
+                {code(raw && JSON.stringify(treeOf(raw.root), null, 2), "")}
+              </>
+            )}
+            {evidence === "DOM" &&
+              code(raw && JSON.stringify(raw.root, null, 2), "")}
+            {evidence === "Source" && (
+              <>
+                {code(
+                  JSON.stringify(
+                    {
+                      source: current.source,
+                      capture: current.capture,
+                      truncated: raw?.truncated,
+                      originalPageTitle: raw?.pageTitle,
+                      classificationRuns: current.classificationRuns,
+                    },
+                    null,
+                    2,
+                  ),
+                  "",
+                )}
+                <Text size="sm" tone="tertiary">
+                  Raw capture remains in asset storage after publication. No
+                  captured scripts are executed.
+                </Text>
+              </>
+            )}
           </div>
         );
+      }
       case "Similar":
         return (
           <Stack gap="md">
@@ -639,6 +636,7 @@ export function Workbench({
         </div>
       )}
       <div
+        ref={layout}
         className="studio-workbench__body"
         style={
           { "--studio-capture-width": `${cssWidth ?? 0}px` } as CSSProperties
@@ -674,6 +672,7 @@ export function Workbench({
           </div>
         </section>
         <aside className="studio-inspector" aria-label="Reference inspector">
+          <PaneSplitter target={layout} label="Resize inspector" />
           <Tabs
             aria-label="Reference workbench"
             value={tab}

@@ -190,3 +190,39 @@ it("walks the list it was opened from with J and K, and offers only the decision
   fireEvent.keyDown(window, { key: "j" });
   expect(location.hash).toBe(`#/ingests/${next}`);
 });
+it("resizes the inspector with the keyboard through the kit's splitter, and Enter forgets the width", async () => {
+  localStorage.clear();
+  const { container } = render(
+    <Workbench client={client as ReferenceClient} id={ingestFixture().id} />,
+  );
+  const separator = await screen.findByRole("separator", {
+    name: "Resize inspector",
+  });
+  const layout = container.querySelector<HTMLElement>(
+    ".studio-workbench__body",
+  )!;
+  expect(layout.hasAttribute("data-split")).toBe(false);
+  fireEvent.keyDown(separator, { key: "ArrowLeft" });
+  expect(layout.hasAttribute("data-split")).toBe(true);
+  expect(layout.style.getPropertyValue("--studio-inspector-width")).toMatch(
+    /^\d+px$/,
+  );
+  expect(localStorage.getItem("reference-studio:inspector-width")).not.toBe(
+    null,
+  );
+  fireEvent.keyDown(separator, { key: "Enter" });
+  expect(layout.hasAttribute("data-split")).toBe(false);
+  expect(localStorage.getItem("reference-studio:inspector-width")).toBe(null);
+});
+it("shows one evidence view at a time instead of folding them", async () => {
+  const { container } = render(
+    <Workbench client={client as ReferenceClient} id={ingestFixture().id} />,
+  );
+  await screen.findByText("Closed catalogue vocabulary");
+  fireEvent.click(screen.getByRole("tab", { name: "Evidence" }));
+  for (const view of ["Text", "Structure", "DOM", "Source"])
+    expect(await screen.findByRole("radio", { name: view })).toBeTruthy();
+  fireEvent.click(screen.getByRole("radio", { name: "Source" }));
+  await screen.findByText(/No captured scripts are executed/);
+  expect(container.querySelectorAll("details")).toHaveLength(0);
+});
