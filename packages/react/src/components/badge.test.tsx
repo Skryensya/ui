@@ -80,4 +80,15 @@ describe("Badge", () => {
       "sk-badge-holder",
     );
   });
+
+  it("is md by default and takes the compact xs on request", () => {
+    const ui = render(
+      <>
+        <Badge>default</Badge>
+        <Badge size="xs">compact</Badge>
+      </>,
+    );
+    expect(ui.getByText("default").getAttribute("data-size")).toBe("md");
+    expect(ui.getByText("compact").getAttribute("data-size")).toBe("xs");
+  });
 });

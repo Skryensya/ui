@@ -53,6 +53,17 @@
     --sk-badge-line-height: 1.35;
   }
 
+  /*
+   * THE COMPACT BADGE, opt-in. The same type size as `sm` (caption is already the smallest the system sets text at,
+   * and a label under it stops being readable), so the saving is all in the box: no vertical padding, a tighter
+   * line and a hairline of horizontal air. It sits on a line of body text without making that line taller.
+   */
+  .sk-badge[data-size="xs"] {
+    --sk-badge-padding-x: var(--space-inset-xs);
+    --sk-badge-padding-y: 0;
+    --sk-badge-line-height: 1.25;
+  }
+
   .sk-badge[data-tone="accent"] {
     --sk-badge-bg: var(--color-bg-accent-subtle);
     --sk-badge-fg: var(--color-text-accent);

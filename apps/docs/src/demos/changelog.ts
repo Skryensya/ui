@@ -104,9 +104,13 @@ export const changelogTree = (t: Translate): UsageTree => ({
 });
 
 /*
- * ONE dated release and ONE entry: enough to name the rail, the heading and the entry body without
- * stacking five kinds on a diagram whose job is the part names, not the tone legend (that is the
- * live demo below).
+ * ONE dated release and ONE entry, and the entry has a TARGET: the specimen has to carry every part the diagram
+ * names, and an entry without one would leave `sk-changelog__target` drawn nowhere. The five kinds are not here
+ * (that is the legend's job and the live demo's): this diagram's only job is the part names.
+ *
+ * The labels sit on the side where their part is. The release-level parts that live in the left gutter (the date, the
+ * marker, the release) go to the inline start; everything inside the entry goes to the inline end, so no leader has to
+ * cross the specimen to reach its part.
  */
 export const changelogAnatomyTree = (t: Translate): UsageTree => ({
   contract: "annotation",
@@ -128,12 +132,13 @@ export const changelogAnatomyTree = (t: Translate): UsageTree => ({
             {
               contract: "changelog",
               signature: "ChangelogEntry",
-              options: { kind: "feature" },
+              options: { kind: "breaking" },
               slots: {
-                kind: t("demo.changelog.kind.feature"),
-                title: t("demo.changelog.feature.title"),
+                kind: t("demo.changelog.kind.breaking"),
+                title: t("demo.changelog.breaking.title"),
+                target: "valueChange",
               },
-              children: t("demo.changelog.feature.body"),
+              children: t("demo.changelog.breaking.body"),
             },
           ],
         },
@@ -141,17 +146,39 @@ export const changelogAnatomyTree = (t: Translate): UsageTree => ({
     },
     items: [
       namePart(".sk-changelog", "block-start", { mark: "bracket" }),
-      namePart(".sk-changelog__release", "inline-start"),
-      namePart(".sk-changelog__marker", "inline-start"),
-      namePart(".sk-changelog__version", "inline-end", { ringPlacement: "offset", ringDistance: 2 }),
-      namePart(".sk-changelog__date", "inline-end", { ringPlacement: "offset", ringDistance: 2 }),
-      namePart(".sk-changelog__entries", "inline-start", { ringPlacement: "offset", ringDistance: 6 }),
-      namePart(".sk-changelog__entry", "inline-end", { ringPlacement: "offset", ringDistance: 3 }),
+      namePart(".sk-changelog__release", "inline-start", { ringPlacement: "offset", ringDistance: 8 }),
+      namePart(".sk-changelog__marker", "block-start", { ringPlacement: "offset", ringDistance: 2 }),
+      namePart(".sk-changelog__version", "block-start", { ringPlacement: "offset", ringDistance: 2 }),
+      namePart(".sk-changelog__date", "inline-start", { ringPlacement: "offset", ringDistance: 2 }),
+      namePart(".sk-changelog__entries", "block-end", { ringPlacement: "offset", ringDistance: 10 }),
+      namePart(".sk-changelog__entry", "inline-end", { ringPlacement: "offset", ringDistance: 4 }),
+      namePart(".sk-changelog__kind", "inline-end", { ringPlacement: "offset", ringDistance: 2 }),
+      namePart(".sk-changelog__target", "inline-end", { ringPlacement: "offset", ringDistance: 2 }),
       namePart(".sk-changelog__title", "inline-end", { ringPlacement: "offset", ringDistance: 2 }),
       namePart(".sk-changelog__text", "block-end", { ringPlacement: "offset", ringDistance: 2 }),
     ],
   },
 });
+
+/*
+ * THE COMPACT ENTRY. The same two releases as the main demo, with every entry set `layout="inline"` and its badge
+ * `size="xs"`: the kind, the target and the headline share a row and only the prose keeps its own, so each change is
+ * two lines instead of three. It is the main demo's own tree with options added, not a second set of words, which is
+ * what the page means by "the same entries, laid out for scanning".
+ */
+export const changelogCompactTree = (t: Translate): UsageTree => {
+  const base = changelogTree(t);
+  return {
+    ...base,
+    children: (base.children as UsageTree[]).map((release) => ({
+      ...release,
+      children: (release.children as UsageTree[]).map((entry) => ({
+        ...entry,
+        options: { ...entry.options, layout: "inline", size: "xs", gap: "none" },
+      })),
+    })),
+  };
+};
 
 /* Usage guide: one release whose entries say nothing a reader can act on. */
 export const changelogDontVagueTree = (t: Translate): UsageTree => ({

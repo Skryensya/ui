@@ -434,6 +434,27 @@
     text-wrap: pretty;
   }
 
+  /*
+   * INLINE: THE COMPACT ENTRY. The kind, the target and the headline share ONE row and only the prose keeps a row of
+   * its own, so an entry is two lines instead of three. Nothing is reordered: the markup is the same either way, which
+   * is what keeps the reading order a screen reader gets independent of the layout.
+   *
+   * The headline stops claiming the whole width and takes what is left of the row instead (`flex: 1 1 14rem`: it
+   * wraps under the badge only when it cannot keep that much beside it, so a short title shares the line and a long
+   * one still gets a line of its own). The measure cap lifts for it, because on a shared row the badge and the target
+   * are already using some of the line, and the prose below keeps its own cap.
+   */
+  .sk-changelog__entry[data-layout="inline"] .sk-changelog__title {
+    flex: 1 1 14rem;
+    max-inline-size: none;
+  }
+
+  /* Air between the label group and the headline, so a short target never touches the first word of it. */
+  .sk-changelog__entry[data-layout="inline"] .sk-changelog__kind,
+  .sk-changelog__entry[data-layout="inline"] .sk-changelog__target {
+    margin-inline-end: var(--space-inline-sm);
+  }
+
   .sk-changelog__target {
     color: var(--sk-changelog-target-fg);
     font-family: var(--font-family-code);
@@ -577,4 +598,7 @@
   padding: 0;
   border: 0;
   background: none;
+  /* A site that dresses `code` as a chip usually does it with an inset ring rather than a border, so
+     clearing the border alone left a box around the target. It reads as text beside the badge. */
+  box-shadow: none;
 }

@@ -4,7 +4,7 @@ import type { OptionValue } from "@skryensya/core/contract";
 import { type LiHTMLAttributes, type OlHTMLAttributes, type ReactNode } from "react";
 
 /* Derived, never restated: the default lives in the contract. */
-const { kind: kindOption, size: sizeOption, gap: gapOption } = changelogContract.options;
+const { kind: kindOption, size: sizeOption, gap: gapOption, layout: layoutOption } = changelogContract.options;
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
@@ -80,8 +80,13 @@ export function ChangelogRelease({
 
 export type ChangelogEntryProps = Omit<LiHTMLAttributes<HTMLLIElement>, "children"> & {
   kind?: ChangeKind;
-  /** The size of the kind's badge. */
+  /** The size of the kind's badge: `md` by default, `sm`, or the compact `xs`. */
   size?: OptionValue<typeof changelogContract.options.size>;
+  /**
+   * `stacked` (the default) gives the kind and target, the headline and the prose a row each; `inline` puts the
+   * first two and the headline on one row, so an entry is two lines. Use it with `size="xs"` for a compact list.
+   */
+  layout?: OptionValue<typeof changelogContract.options.layout>;
   /** The air between the entry's own lines: the badge row, the headline and the prose. */
   gap?: OptionValue<typeof changelogContract.options.gap>;
   /** The kind as a word, so the kind is never colour alone. */
@@ -103,12 +108,13 @@ export function ChangelogEntry({
   kindLabel,
   size = sizeOption.default,
   gap = gapOption.default,
+  layout = layoutOption.default,
   target,
   title,
   ...props
 }: ChangelogEntryProps) {
   return (
-    <li {...props} className={cx(changelogParts.entry, className)} data-gap={gap} data-kind={kind}>
+    <li {...props} className={cx(changelogParts.entry, className)} data-gap={gap} data-kind={kind} data-layout={layout}>
       {/* `sk-badge` alongside the part class, not instead of it: Badge owns what a status label looks
           like and this component owns where it sits. Same composition as Avatar over ImageFrame. */}
       {/* The tone is READ FROM CORE, never decided here. It is a rendering of `kind` rather than a

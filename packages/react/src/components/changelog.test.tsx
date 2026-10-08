@@ -176,4 +176,40 @@ describe("Changelog", () => {
 
     expect(ui.container.querySelector(".sk-changelog__target")).toBeNull();
   });
+
+  it("stacks the entry's lines and sizes its badge `md` unless asked otherwise", () => {
+    const ui = render(
+      <Changelog>
+        <ChangelogRelease version="0.1.0" date="2026-07-29" dateLabel="29 de julio de 2026">
+          <ChangelogEntry kind="feature" kindLabel="feature" title="Primera publicación">
+            El contrato sale con sus tres firmas.
+          </ChangelogEntry>
+        </ChangelogRelease>
+      </Changelog>,
+    );
+    expect(ui.container.querySelector(".sk-changelog__entry")!.getAttribute("data-layout")).toBe("stacked");
+    expect(ui.getByText("feature").getAttribute("data-size")).toBe("md");
+  });
+
+  it("is compact on request: an inline layout and the xs badge, with the same words in the same order", () => {
+    const ui = render(
+      <Changelog>
+        <ChangelogRelease version="0.1.0" date="2026-07-29" dateLabel="29 de julio de 2026">
+          <ChangelogEntry kind="breaking" kindLabel="breaking" target="valueChange" title="El evento cambió de nombre" layout="inline" size="xs" gap="none">
+            Pasó a llamarse sk:accordionvaluechange.
+          </ChangelogEntry>
+        </ChangelogRelease>
+      </Changelog>,
+    );
+    const entry = ui.container.querySelector(".sk-changelog__entry")!;
+    expect(entry.getAttribute("data-layout")).toBe("inline");
+    expect(ui.getByText("breaking").getAttribute("data-size")).toBe("xs");
+    /* The layout never reorders: kind, target, title, text. */
+    expect(Array.from(entry.children).map((child) => child.className.split(" ")[0])).toEqual([
+      "sk-changelog__kind",
+      "sk-changelog__target",
+      "sk-changelog__title",
+      "sk-changelog__text",
+    ]);
+  });
 });

@@ -3,8 +3,23 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "d9fde7683e0b24d0"
+surface: "4b45e7ef9b7ff638"
 entries:
+  - date: 2026-10-07
+    kind: feature
+    target: size
+    es:
+      title: Badge suma size xs, la versión compacta
+      body: >-
+        <code>size="xs"</code> quita el relleno vertical y aprieta el horizontal, con la misma letra que
+        <code>sm</code>: no hace más alta la línea sobre la que se apoya. No es el defecto, que sigue siendo
+        <code>md</code>; sirve para listas que se leen de un vistazo, como los tipos de un changelog.
+    en:
+      title: Badge adds size xs, the compact one
+      body: >-
+        <code>size="xs"</code> drops the vertical padding and tightens the horizontal, at the same type size as
+        <code>sm</code>: it does not make the line it sits on any taller. It is not the default, which stays
+        <code>md</code>; it is for lists read at a glance, like the kinds in a changelog.
   - date: 2026-09-26
     kind: feature
     target: appearance

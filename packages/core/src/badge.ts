@@ -1,7 +1,7 @@
 import type { ComponentContract } from "./contract.js";
 
 export type BadgeTone = "neutral" | "accent" | "success" | "warning" | "danger";
-export type BadgeSize = "sm" | "md";
+export type BadgeSize = "xs" | "sm" | "md";
 
 export const badgeParts = {
   root: "sk-badge",
@@ -60,7 +60,12 @@ export const badgeContract = {
       default: "neutral",
       attr: "data-tone",
     },
-    size: { type: "enum", values: ["sm", "md"], default: "md", attr: "data-size" },
+    /*
+     * HOW MUCH ROOM IT TAKES, `md` by default. `sm` is the pill with less padding; `xs` is the compact one, for a
+     * list scanned in bulk (a changelog's kinds, a table's statuses) where the pill must not out-weigh the line it
+     * labels. Opt-in on purpose: below `md` the label is a hint beside text, not a status to stand on its own.
+     */
+    size: { type: "enum", values: ["xs", "sm", "md"], default: "md", attr: "data-size" },
     pulse: { type: "boolean", default: false, attr: "data-pulse", trueValue: "" },
     /** What the dot means ("Unread", "Online"). Its only accessible content, see `BadgeDot`'s own doc. */
     label: { type: "string", attr: "aria-label" },

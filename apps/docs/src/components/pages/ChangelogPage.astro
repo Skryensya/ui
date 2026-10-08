@@ -2,6 +2,7 @@
 import "@skryensya/core/components/changelog.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
+import "@skryensya/core/components/badge.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
@@ -9,13 +10,31 @@ import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
-import { changelogAnatomyTree, changelogDoSpecificTree, changelogDontVagueTree, changelogTree } from "../../demos/changelog";
+import { changelogAnatomyTree, changelogCompactTree, changelogDoSpecificTree, changelogDontVagueTree, changelogTree } from "../../demos/changelog";
+import ComparisonTable from "../ComparisonTable.astro";
+import { changeKinds, changeKindTones, changelogParts } from "@skryensya/core/changelog";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
 const install = `pnpm add @skryensya/core`;
+
+/* The five kinds, written ONCE in core and read here: the legend cannot drift from what the component paints. */
+const kindRows = changeKinds.map((kind) => ({
+  label: kind,
+  labelHtml: `<span class="sk-badge" data-size="sm" data-tone="${changeKindTones[kind]}">${t(`changelog.kind.${kind}`)}</span>`,
+  cells: [t(`changelogPage.kind.${kind}.tone`), t(`changelogPage.kind.${kind}.duty`)],
+}));
+const [toneColumn, dutyColumn] = t("changelogPage.kindsColumns").split("|");
+
+/* Every part, in the order the diagram numbers them: the document order of the markup. */
+const partOrder = ["root", "release", "marker", "version", "date", "entries", "entry", "kind", "target", "title", "text"] as const satisfies readonly (keyof typeof changelogParts)[];
+const partRows = partOrder.map((part) => ({
+  label: changelogParts[part],
+  labelHtml: `<code>${changelogParts[part]}</code>`,
+  cells: [t(`changelogPage.part.${part}`)],
+}));
 const styles = `@import "@skryensya/core/components/changelog.css";`;
 ---
 
@@ -37,6 +56,19 @@ const styles = `@import "@skryensya/core/components/changelog.css";`;
       storybookStory="Default"
     />
 
+    <h3>{t("changelogPage.kindsTitle")}</h3>
+    <p set:html={t("changelogPage.kindsBody")} />
+    <ComparisonTable aspectLabel={t("changelogPage.kindsAspect")} columns={[toneColumn!, dutyColumn!]} rows={kindRows} />
+
+    <h3>{t("changelogPage.compactTitle")}</h3>
+    <p set:html={t("changelogPage.compactBody")} />
+    <UsagePreview
+      tree={changelogCompactTree(t)}
+      title={t("changelogPage.compactTitle2")}
+      storybookTitle="Components/Content/Changelog"
+      storybookStory="Compact"
+    />
+
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
       {tList(t, "changelogPage.contract").map((item) => <li set:html={item} />)}
@@ -50,6 +82,11 @@ const styles = `@import "@skryensya/core/components/changelog.css";`;
       label={t("changelogPage.anatomyPreviewLabel")}
       bare
     />
+
+    <h4>{t("changelogPage.partsTitle")}</h4>
+    <div class="cl-parts">
+      <ComparisonTable aspectLabel={t("changelogPage.partsAspect")} columns={[t("changelogPage.partsColumns")]} rows={partRows} />
+    </div>
   </Fragment>
 
   <Fragment slot="guidelines">
@@ -73,3 +110,10 @@ const styles = `@import "@skryensya/core/components/changelog.css";`;
     <A11yNotes intro={t("changelogPage.a11yIntro")} does={tList(t, "changelogPage.a11yDoes")} yours={tList(t, "changelogPage.a11yYours")} />
   </Fragment>
 </ComponentPageShell>
+
+<style>
+  /* A class name is one token: breaking it at the hyphen makes two lines of what is a single word. */
+  .cl-parts :global(th code) {
+    white-space: nowrap;
+  }
+</style>

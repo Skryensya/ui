@@ -12,5 +12,6 @@ export default { title: "Components/Surfaces & Collections/Changelog", tags: ["a
 
 export const Anatomy: StoryObj = treeStory(demos.changelogAnatomyTree);
 export const Default: StoryObj = treeStory(demos.changelogTree);
+export const Compact: StoryObj = treeStory(demos.changelogCompactTree);
 export const DontVague: StoryObj = treeStory(demos.changelogDontVagueTree);
 export const DoSpecific: StoryObj = treeStory(demos.changelogDoSpecificTree);

@@ -184,10 +184,19 @@ export const changelogContract = {
       attr: "data-kind",
     },
     /**
-     * The size of the kind's badge: Badge's own two sizes, `md` by default and `sm` for a list that is scanned in
-     * bulk. It is written on the badge and not on the entry, so what it changes is the pill and nothing around it.
+     * The size of the kind's badge: Badge's own sizes, `md` by default, `sm` for a list that is scanned in bulk and
+     * `xs` for the compact one. It is written on the badge and not on the entry, so what it changes is the pill and
+     * nothing around it.
      */
-    size: { type: "enum", values: ["sm", "md"], default: "md", attr: "data-size" },
+    size: { type: "enum", values: ["xs", "sm", "md"], default: "md", attr: "data-size" },
+    /**
+     * HOW AN ENTRY IS LAID OUT, the one switch between reading and scanning. `stacked` (the default) gives each
+     * line its own row: the kind and its target, then the headline, then the prose. `inline` puts the kind, the
+     * target and the headline on ONE row and leaves only the prose under it, which makes an entry two lines
+     * instead of three. The same words in the same order either way: only where the line breaks moves, so the
+     * reading order a screen reader gets never depends on it. Pair it with `size="xs"` for a compact list.
+     */
+    layout: { type: "enum", values: ["stacked", "inline"], default: "stacked", attr: "data-layout" },
     /**
      * The air between the entry's own lines: the badge and its target, the headline, and the prose. Not the air
      * BETWEEN entries, which the release owns (`--sk-changelog-entry-gap`): a change reads as one thought, and this
@@ -306,7 +315,7 @@ export const changelogContract = {
     ChangelogEntry: {
       intent: ["one-change", "changelog-entry", "release-note"],
       host: { element: "li" },
-      options: ["kind", "size", "gap"],
+      options: ["kind", "size", "gap", "layout"],
       parents: ["ChangelogRelease"],
       slots: {
         /** The kind as a word: "Añadido", "Breaking". Required, so the kind is never colour alone. */
@@ -326,7 +335,7 @@ export const changelogContract = {
         element: "li",
         part: "entry",
         host: true,
-        options: ["kind", "gap"],
+        options: ["kind", "gap", "layout"],
         children: [
           {
             element: "span",

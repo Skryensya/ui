@@ -7,8 +7,23 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "5b0a0183a63969fb"
+surface: "a5b84e79bbf8d964"
 entries:
+  - date: 2026-10-07
+    kind: feature
+    target: layout
+    es:
+      title: Las entradas pueden ser compactas, con layout inline y el badge xs
+      body: >-
+        <code>layout="inline"</code> pone el tipo, el target y el título en una sola fila y deja el texto debajo:
+        una entrada de dos líneas en vez de tres, con las mismas palabras en el mismo orden. <code>size</code>
+        acepta ahora <code>xs</code>, el badge compacto. Ninguno es el defecto: sin ellos la entrada se ve igual.
+    en:
+      title: Entries can be compact, with an inline layout and the xs badge
+      body: >-
+        <code>layout="inline"</code> puts the kind, the target and the headline on one row and leaves the prose
+        under them: a two-line entry instead of three, with the same words in the same order. <code>size</code>
+        now accepts <code>xs</code>, the compact badge. Neither is the default: without them an entry looks the same.
   - date: 2026-10-06
     kind: feature
     target: size
