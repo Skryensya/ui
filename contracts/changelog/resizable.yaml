@@ -1,0 +1,29 @@
+# What changed in resizable, in the words its users read. Only appended to, never rewritten.
+surface: "e3eae53c8d5b65b4"
+entries:
+  - date: 2026-10-07
+    kind: feature
+    es:
+      title: Resizable se publica como componente
+      body: >-
+        Entra al catálogo con <code>Resizable</code>, <code>Resizable.Panel</code> y
+        <code>Resizable.Handle</code>: paneles que comparten una caja, con una barra entre cada par que
+        mueve el límite. Los tamaños son porcentajes del grupo y siempre suman 100; una barra
+        redistribuye sólo el par que separa, así que el resto de los paneles no se mueve.
+        <code>size</code>, <code>minSize</code> y <code>maxSize</code> van en cada panel y
+        <code>direction</code> elige si se apilan o van lado a lado. Cada barra es un
+        <code>separator</code> enfocable (flechas, Mayús para saltar más, Inicio/Fin y Enter para
+        restablecer) y exige <code>label</code>. Hasta ahora este comportamiento sólo vivía dentro de
+        Sidebar, Treegrid y Table.
+    en:
+      title: Resizable ships as a component
+      body: >-
+        It joins the catalogue as <code>Resizable</code>, <code>Resizable.Panel</code> and
+        <code>Resizable.Handle</code>: panels that share one box, with a bar between each pair that
+        moves the boundary. Sizes are percentages of the group and always add up to 100; a bar
+        redistributes only the pair it separates, so every other panel stays put.
+        <code>size</code>, <code>minSize</code> and <code>maxSize</code> go on each panel and
+        <code>direction</code> chooses whether they stack or sit side by side. Every bar is a
+        focusable <code>separator</code> (arrows, Shift to jump further, Home/End and Enter to reset)
+        and requires a <code>label</code>. Until now this behaviour only lived inside Sidebar,
+        Treegrid and Table.

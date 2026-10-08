@@ -1,0 +1,134 @@
+/*
+ * TIER 3, RESIZABLE
+ *
+ * Panels sharing one box, with a bar between each pair. `--sk-resizable-size` is a percentage the
+ * binding writes on every panel; here it is only a flex weight over a zero basis, so the panels
+ * always fill the group exactly and a resize needs no arithmetic in CSS.
+ *
+ * THE HANDLE IS A FLEX ITEM, NOT AN OVERLAY. It takes `--sk-resizable-gap` of the group's extent and
+ * draws a hairline inside a wider hit area (`--sk-resizable-handle-hit`) that overlaps the panels on
+ * both sides, so the strip a pointer has to find is larger than the line a reader sees.
+ *
+ * Every hook resolves to a TIER-2 token, never a palette or raw color; scripts/lint.ts enforces it.
+ */
+@layer components {
+  .sk-resizable {
+    --sk-resizable-gap: 1px;
+    --sk-resizable-handle-line: 2px;
+    --sk-resizable-handle-hit: var(--space-inset-md);
+    --sk-resizable-handle-color: var(--color-border-strong);
+    --sk-resizable-handle-active-color: var(--color-border-accent);
+
+    display: flex;
+    flex-direction: row;
+    inline-size: 100%;
+    block-size: 100%;
+    min-inline-size: 0;
+    min-block-size: 0;
+  }
+
+  /* Horizontal is the default, so it must not wait for the attribute. */
+  .sk-resizable[data-direction="vertical"] {
+    flex-direction: column;
+  }
+
+  .sk-resizable__panel {
+    /* The size the binding wrote; an unsized panel before mount shares equally. */
+    --sk-resizable-size: 1;
+
+    flex: var(--sk-resizable-size) 1 0;
+    min-inline-size: 0;
+    min-block-size: 0;
+    overflow: auto;
+  }
+
+  .sk-resizable__handle {
+    position: relative;
+    flex: 0 0 var(--sk-resizable-gap);
+    background: var(--color-border-default);
+    cursor: col-resize;
+    /* The gesture is ours: without this a drag on a touch screen scrolls the page instead. */
+    touch-action: none;
+    /* Never let the bar shrink to nothing when a panel's content is wide. */
+    min-inline-size: var(--sk-resizable-gap);
+  }
+
+  .sk-resizable[data-direction="vertical"] > .sk-resizable__handle {
+    cursor: row-resize;
+    min-inline-size: 0;
+    min-block-size: var(--sk-resizable-gap);
+  }
+
+  /* The hit area: wider than the line, centred on it, overlapping the panels either side. */
+  .sk-resizable__handle::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline: calc(var(--sk-resizable-handle-hit) / -2);
+  }
+
+  .sk-resizable[data-direction="vertical"] > .sk-resizable__handle::before {
+    inset-block: calc(var(--sk-resizable-handle-hit) / -2);
+    inset-inline: 0;
+  }
+
+  /* The visible line, quiet until the bar is interesting. */
+  .sk-resizable__handle::after {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline: 50%;
+    inline-size: var(--sk-resizable-handle-line);
+    translate: -50% 0;
+    background: transparent;
+    transition: background-color var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  .sk-resizable[data-direction="vertical"] > .sk-resizable__handle::after {
+    inset-block: 50%;
+    inset-inline: 0;
+    inline-size: auto;
+    block-size: var(--sk-resizable-handle-line);
+    translate: 0 -50%;
+  }
+
+  .sk-resizable__handle:hover::after {
+    background: var(--sk-resizable-handle-color);
+  }
+
+  .sk-resizable__handle:focus-visible {
+    outline: none;
+  }
+
+  .sk-resizable__handle:focus-visible::after,
+  .sk-resizable__handle[data-dragging]::after {
+    background: var(--sk-resizable-handle-active-color);
+  }
+
+  .sk-resizable__handle:focus-visible::after {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: 1px;
+  }
+
+  /* A drag in progress keeps the cursor and stops the panels selecting text under the pointer. */
+  .sk-resizable[data-dragging] {
+    user-select: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sk-resizable__handle::after {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .sk-resizable__handle::after {
+      background: ButtonText;
+    }
+
+    .sk-resizable__handle:focus-visible::after,
+    .sk-resizable__handle[data-dragging]::after {
+      background: Highlight;
+    }
+  }
+}

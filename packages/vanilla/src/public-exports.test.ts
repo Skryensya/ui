@@ -32,6 +32,7 @@ import { mountFeed } from "@skryensya/vanilla/feed";
 import { mountFolder } from "@skryensya/vanilla/folder";
 import { mountInput } from "@skryensya/vanilla/input";
 import { mountLoader } from "@skryensya/vanilla/loader";
+import { mountResizable } from "@skryensya/vanilla/resizable";
 import { mountMarquee } from "@skryensya/vanilla/marquee";
 import { mountMegamenu } from "@skryensya/vanilla/megamenu";
 import { mountMenu } from "@skryensya/vanilla/menu";
@@ -124,6 +125,7 @@ const mounts = [
   mountNavListGroup,
   mountNumberField,
   mountOtpInput,
+  mountResizable,
   mountPasswordInput,
   mountRating,
   mountSegmented,
@@ -233,6 +235,7 @@ describe("Vanilla public entry points", () => {
         mountMeter,
         mountNavListGroup,
         mountNumberField,
+        mountResizable,
         mountOtpInput,
         mountPasswordInput,
         mountRating,

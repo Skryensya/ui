@@ -1,0 +1,96 @@
+---
+import "@skryensya/core/components/resizable.css";
+/* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
+import "@skryensya/core/components/annotation.css";
+/* The demos hold real copy, and a frame only copies styles THIS page loaded. */
+import "@skryensya/core/components/typography.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import CodeBlock from "../CodeBlock.astro";
+import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import {
+  resizableAnatomyTree,
+  resizableHorizontalTree,
+  resizableSpecimenTree,
+  resizableThreeTree,
+  resizableVerticalTree,
+} from "../../demos/resizable";
+import { annotationDemoCss } from "../../demos/annotation";
+import { emitReactSource } from "@skryensya/ai-compiler/emit";
+import { getLocale, tList, useTranslations } from "../../i18n";
+
+const t = useTranslations(getLocale(Astro.url));
+
+const install = `pnpm add @skryensya/core @skryensya/vanilla
+# or
+pnpm add @skryensya/core @skryensya/react`;
+const styles = `@import "@skryensya/core/components/resizable.css";`;
+const vanilla = `import "@skryensya/vanilla/auto";`;
+const react = emitReactSource(resizableHorizontalTree(t), { component: "ResizableExample" }).component;
+
+const explain = (option: string, values: readonly string[]) =>
+  Object.fromEntries(values.map((value) => [value, t(`resizablePage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
+---
+
+<ComponentPageShell
+  title="Resizable"
+  description={t("resizablePage.description")}
+  contractId="resizable"
+  testFiles={["packages/react/src/components/resizable.test.tsx", "packages/vanilla/src/components/resizable.test.ts", "packages/core/src/resizable.test.ts"]}
+>
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("resizablePage.lede")} />
+
+    <UsagePreview
+      tree={resizableSpecimenTree(t)}
+      optionName="direction"
+      title={t("resizablePage.prop.direction.title")}
+      description={t("resizablePage.prop.direction.body")}
+      explain={explain("direction", ["horizontal", "vertical"])}
+      stageMinBlockSize="12rem"
+    />
+
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={resizableHorizontalTree(t)} title={t("resizablePage.horizontalTitle")} description={t("resizablePage.horizontalBody")} />
+    <UsagePreview tree={resizableVerticalTree(t)} title={t("resizablePage.verticalTitle")} description={t("resizablePage.verticalBody")} />
+    <UsagePreview tree={resizableThreeTree(t)} title={t("resizablePage.threeTitle")} description={t("resizablePage.threeBody")} />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "resizablePage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("resizablePage.anatomyBody")} />
+    <UsagePreview tree={resizableAnatomyTree(t)} css={annotationDemoCss} label={t("resizablePage.anatomyPreviewLabel")} bare />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("resizablePage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "resizablePage.when")} avoid={tList(t, "resizablePage.whenNot")} />
+    <ContentRules items={tList(t, "resizablePage.content")} />
+  </Fragment>
+
+  <Fragment slot="install">
+    <p set:html={t("resizablePage.installBody")} />
+    <CodeBlock code={install} label="terminal" />
+    <CodeBlock code={styles} label="CSS" lang="css" />
+    <CodeBlock code={vanilla} label="Vanilla" lang="ts" />
+    <CodeBlock code={react} label="React" lang="tsx" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("resizablePage.a11yIntro")}
+      does={tList(t, "resizablePage.a11yDoes")}
+      yours={tList(t, "resizablePage.a11yYours")}
+      keys={[
+        { keys: ["←", "→", "↑", "↓"], action: t("resizablePage.key.arrows") },
+        { keys: ["Home", "End"], action: t("resizablePage.key.ends") },
+        { keys: ["Enter"], action: t("resizablePage.key.reset") },
+      ]}
+    />
+  </Fragment>
+</ComponentPageShell>

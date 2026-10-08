@@ -304,6 +304,10 @@ const componentDescriptions = {
     es: "Muestra los datos de un registro como pares de nombre y valor.",
     en: "Shows one record's details as name-and-value pairs.",
   },
+  "/components/resizable": {
+    es: "Reparte una caja entre paneles y deja arrastrar la barra que hay entre cada par.",
+    en: "Shares one box between panels and lets you drag the bar between each pair.",
+  },
   "/components/separator": {
     es: "Dibuja la regla entre dos cosas, con o sin una palabra al medio.",
     en: "Draws the rule between two things, with or without a word in the middle.",

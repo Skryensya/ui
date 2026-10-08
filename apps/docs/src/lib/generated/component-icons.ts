@@ -88,6 +88,7 @@ export const componentIcons: Readonly<Record<string, IconData | StableIconName>>
   "/components/rating": { viewBox: "0 0 24 24", attrs: ATTRS, body: "<path d=\"M12 18.338a2.1 2.1 0 0 0-.987.244L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.12 2.12 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.12 2.12 0 0 0 1.597-1.16l2.309-4.679A.53.53 0 0 1 12 2\" />" },
   "/components/segmented": { viewBox: "0 0 24 24", attrs: ATTRS, body: "<path d=\"M8 19H5c-1 0-2-1-2-2V7c0-1 1-2 2-2h3\" /><path d=\"M16 5h3c1 0 2 1 2 2v10c0 1-1 2-2 2h-3\" /><line x1=\"12\" x2=\"12\" y1=\"4\" y2=\"20\" />" },
   "/components/select": { viewBox: "0 0 24 24", attrs: ATTRS, body: "<path d=\"m7 15 5 5 5-5\" /><path d=\"m7 9 5-5 5 5\" />" },
+  "/components/resizable": { viewBox: "0 0 24 24", attrs: ATTRS, body: "<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" /><path d=\"M12 3v18\" />" },
   "/components/separator": { viewBox: "0 0 24 24", attrs: ATTRS, body: "<path d=\"M5 12h14\" />" },
   "/components/sidebar": { viewBox: "0 0 24 24", attrs: ATTRS, body: "<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" /><path d=\"M9 3v18\" />" },
   "/components/skip-link": { viewBox: "0 0 24 24", attrs: ATTRS, body: "<path d=\"M21 4v16\" /><path d=\"M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z\" />" },

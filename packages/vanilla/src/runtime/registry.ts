@@ -120,6 +120,10 @@ const registrations: readonly Registration[] = [
   {
     selector: "[data-sk-tags-input]",
     load: async () => (await import("../components/tags-input.js")).mountTagsInput,
+  {
+    selector: "[data-sk-resizable]",
+    load: async () => (await import("../components/resizable.js")).mountResizable,
+  },
   },
   {
     selector: "[data-sk-carousel]",

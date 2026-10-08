@@ -12,6 +12,7 @@ export { mountListbox } from "./components/listbox.js";
 export { connectQrCode, mountQrCode } from "./components/qr-code.js";
 export { mountButton } from "./components/button.js";
 export { connectLoader, mountLoader } from "./components/loader.js";
+export { connectResizable, mountResizable, RESIZABLE_CHANGE_EVENT } from "./components/resizable.js";
 export { connectMarquee, mountMarquee } from "./components/marquee.js";
 export { mountExpandableTile } from "./components/expandable-tile.js";
 export { mountSelect } from "./components/select.js";

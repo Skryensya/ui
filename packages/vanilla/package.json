@@ -153,6 +153,10 @@
       "types": "./src/components/carousel.ts",
       "default": "./src/components/carousel.ts"
     },
+    "./resizable": {
+      "types": "./src/components/resizable.ts",
+      "default": "./src/components/resizable.ts"
+    },
     "./loader": {
       "types": "./src/components/loader.ts",
       "default": "./src/components/loader.ts"

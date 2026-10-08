@@ -107,6 +107,8 @@ export type {
 } from "./components/carousel.js";
 export { AutoplayMarquee, Marquee } from "./components/marquee.js";
 export type { MarqueeProps } from "./components/marquee.js";
+export { Resizable, ResizableHandle, ResizablePanel } from "./components/resizable.js";
+export type { ResizableHandleProps, ResizablePanelProps, ResizableProps } from "./components/resizable.js";
 export { Steps } from "./components/steps.js";
 export type { StepsProps } from "./components/steps.js";
 export { Tag } from "./components/tag.js";

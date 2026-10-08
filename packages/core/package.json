@@ -100,6 +100,10 @@
       "types": "./src/comparison-table.ts",
       "default": "./src/comparison-table.ts"
     },
+    "./resizable": {
+      "types": "./src/resizable.ts",
+      "default": "./src/resizable.ts"
+    },
     "./description-list": {
       "types": "./src/description-list.ts",
       "default": "./src/description-list.ts"

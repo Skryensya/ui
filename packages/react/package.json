@@ -129,6 +129,10 @@
       "types": "./src/components/carousel.tsx",
       "default": "./src/components/carousel.tsx"
     },
+    "./resizable": {
+      "types": "./src/components/resizable.tsx",
+      "default": "./src/components/resizable.tsx"
+    },
     "./marquee": {
       "types": "./src/components/marquee.tsx",
       "default": "./src/components/marquee.tsx"

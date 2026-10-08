@@ -1,0 +1,36 @@
+# The structure lives in packages/core/src/resizable.ts. Here, only why it is chosen.
+
+Resizable:
+  useWhen:
+    - "two or more regions share one box and the person decides how much room each gets: a list beside its detail, an editor over its output"
+    - "the split is a working preference worth keeping, not a fixed layout the page has already decided"
+    - "panels are peers: growing one is exactly shrinking its neighbour, and the box is always full"
+    - "a keyboard has to be able to move the boundary too: every handle is a focusable separator"
+  avoidWhen:
+    - "one edge panel opens, closes or collapses to a rail; that is Sidebar, which clamps one value instead of trading between two"
+    - "the columns belong to a table; Table and Treegrid already carry their own column resizers"
+    - "the regions never change size; a Grid or Inline with fixed measures is simpler and has nothing to drag"
+    - "there is only room for one region at a time (a phone); resizing needs space the screen does not have, and Tabs fits better"
+  alternatives:
+    - Sidebar
+    - Grid
+    - Inline
+    - Tabs
+
+Resizable.Panel:
+  useWhen:
+    - "one region of the split; give it a size when the starting proportion matters and leave it out to share equally"
+    - "a region that must never vanish or swallow the others: set minSize and maxSize"
+  avoidWhen:
+    - "it holds the handle or any layout of its own; the panel is the box, put the content inside it"
+  alternatives:
+    - Box
+
+Resizable.Handle:
+  useWhen:
+    - "between two panels, so a person can drag or arrow the boundary; one handle per pair"
+  avoidWhen:
+    - "a static rule is all that is wanted; that is Separator, which divides and does not move"
+    - "it has no label: a focusable separator with no name is announced as just 'separator'"
+  alternatives:
+    - Separator

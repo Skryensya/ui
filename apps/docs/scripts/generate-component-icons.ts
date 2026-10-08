@@ -113,6 +113,7 @@ const MAP: Record<string, string> = {
   "/components/rating": "StarHalf",
   "/components/segmented": "SquareSplitHorizontal",
   "/components/select": "ChevronsUpDown",
+  "/components/resizable": "Columns2",
   "/components/separator": "Minus",
   "/components/sidebar": "PanelLeft",
   "/components/skip-link": "SkipForward",

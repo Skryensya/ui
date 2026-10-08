@@ -580,6 +580,49 @@ const signatureTrees: readonly Canonical[] = [
       slots: { children: "NORTHSTAR" },
     },
   },
+  /*
+   * RESIZABLE. Three panels and two bars, because the interesting part is what the binding writes:
+   * a `--sk-resizable-size` weight on every panel, and `aria-valuenow`/`min`/`max`, `aria-controls`
+   * and `aria-orientation` on every bar. Both bindings have to arrive at the same numbers from the
+   * same authored sizes, bounds included. Enhanced because none of that exists in the markup alone.
+   */
+  {
+    name: "resizable/three-panels",
+    enhanced: true,
+    tree: {
+      contract: "resizable",
+      signature: "Resizable",
+      children: [
+        {
+          contract: "resizable",
+          signature: "Resizable.Panel",
+          options: { size: 25, minSize: 15, maxSize: 40 },
+          children: "Folders",
+        },
+        { contract: "resizable", signature: "Resizable.Handle", options: { label: "Resize folders" } },
+        { contract: "resizable", signature: "Resizable.Panel", options: { minSize: 30 }, children: "List" },
+        { contract: "resizable", signature: "Resizable.Handle", options: { label: "Resize detail" } },
+        { contract: "resizable", signature: "Resizable.Panel", options: { size: 30 }, children: "Detail" },
+      ],
+    },
+  },
+  {
+    name: "resizable/stacked",
+    enhanced: true,
+    tree: {
+      contract: "resizable",
+      signature: "Resizable",
+      options: { direction: "vertical" },
+      /* A stacked group needs a height of its own: with none the panels share zero pixels, clip their
+         content and axe rightly calls them scroll regions nobody can reach. */
+      attrs: { style: "block-size: 12rem" },
+      children: [
+        { contract: "resizable", signature: "Resizable.Panel", children: "Editor" },
+        { contract: "resizable", signature: "Resizable.Handle", options: { label: "Resize editor" } },
+        { contract: "resizable", signature: "Resizable.Panel", children: "Output" },
+      ],
+    },
+  },
   {
     /* The one contract whose payload is COMPUTED into an attribute rather than authored: G2 compares
        the two bindings' `<path d>` here, which is the only check that both call the same encoder. */
