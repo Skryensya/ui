@@ -1,6 +1,29 @@
 # What changed in resizable, in the words its users read. Only appended to, never rewritten.
-surface: "378530750d9e3d36"
+surface: "5c1f177c0dab61d5"
 entries:
+  - date: 2026-10-07
+    kind: feature
+    target: collapsible
+    es:
+      title: Un panel puede cerrarse del todo, con la barra a la vista para reabrirlo
+      body: >-
+        <code>collapsible</code> deja que un panel baje de su <code>minSize</code> hasta cerrarse: pasada la
+        mitad salta a cerrado, y al sacarlo de vuelta se abre hasta su piso. <code>collapsedSize</code> deja un
+        riel en vez de cero. La barra se queda, más marcada, y Home y End junto a un panel colapsable lo cierran.
+        Se reabre arrastrando, con doble clic o Enter (que reinician), con Ctrl o Cmd + Enter (que alterna), con
+        <code>apiRef</code> en React o con el evento <code>sk:resizablecommand</code>. Un panel cerrado a cero
+        marca <code>data-collapsed</code> y queda <code>inert</code>. Sin <code>collapsible</code> nada cambia:
+        el piso se mantiene y el panel nunca desaparece.
+    en:
+      title: A panel can close all the way, with its bar in view to reopen it
+      body: >-
+        <code>collapsible</code> lets a panel go below its <code>minSize</code> until it closes: past the halfway
+        point it snaps shut, and dragged back out it opens to its floor. <code>collapsedSize</code> leaves a rail
+        instead of zero. The bar stays, more marked, and Home and End beside a collapsible panel close it. It
+        reopens by dragging, a double click or Enter (which reset), Ctrl or Cmd + Enter (which toggles),
+        <code>apiRef</code> in React or the <code>sk:resizablecommand</code> event. A panel closed to zero sets
+        <code>data-collapsed</code> and becomes <code>inert</code>. Without <code>collapsible</code> nothing
+        changes: the floor holds and the panel never disappears.
   - date: 2026-10-07
     kind: rework
     es:

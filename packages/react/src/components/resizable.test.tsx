@@ -1,6 +1,7 @@
-import { fireEvent, render } from "@testing-library/react";
+import { act, fireEvent, render } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { Resizable } from "./resizable.js";
+import { createRef } from "react";
+import { Resizable, type ResizableApi } from "./resizable.js";
 
 const weight = (el: Element) => Number.parseFloat((el as HTMLElement).style.getPropertyValue("--sk-resizable-size"));
 const panelsOf = (container: HTMLElement) => Array.from(container.querySelectorAll(".sk-resizable__panel"));
@@ -148,5 +149,117 @@ describe("Resizable", () => {
     expect(ref.current).toBe(container.firstElementChild);
     expect(ref.current!.className).toBe("sk-resizable extra");
     expect((panelsOf(container)[0] as HTMLElement).style.background).toBe("red");
+  });
+});
+
+describe("Resizable, collapsible panels", () => {
+  const sidebar = (extra: Record<string, unknown> = {}) => (
+    <Resizable {...extra}>
+      <Resizable.Panel size={30} minSize={20} collapsible>
+        <button>Inside</button>
+      </Resizable.Panel>
+      <Resizable.Handle label="Resize sidebar" />
+      <Resizable.Panel>Main</Resizable.Panel>
+    </Resizable>
+  );
+
+  it("has no way to disappear without `collapsible`: the floor holds on Home", () => {
+    const { container } = render(pair());
+    fireEvent.keyDown(handleOf(container), { key: "Home" });
+    expect(panelsOf(container).map(weight)).toEqual([10, 90]);
+  });
+
+  it("closes on Home, marks itself, leaves the bar reachable and takes its content out of reach", () => {
+    const { container, getByRole } = render(sidebar());
+    const handle = handleOf(container);
+    fireEvent.keyDown(handle, { key: "Home" });
+    expect(panelsOf(container).map(weight)).toEqual([0, 100]);
+    const [first, second] = panelsOf(container);
+    expect(first!.hasAttribute("data-collapsed")).toBe(true);
+    expect(first!.hasAttribute("inert")).toBe(true);
+    expect(second!.hasAttribute("data-collapsed")).toBe(false);
+    expect(handle.hasAttribute("data-collapsed")).toBe(true);
+    expect(handle.getAttribute("aria-valuenow")).toBe("0");
+    expect(handle.getAttribute("aria-valuemin")).toBe("0");
+    expect(handle.tabIndex).toBe(0);
+    /* A browser leaves `inert` content out of the tab order and the reading order; jsdom does not model that. */
+    expect(getByRole("button", { name: "Inside" }).closest("[inert]")).toBe(first);
+  });
+
+  it("opens again with Enter, which resets, and with a double click", () => {
+    const { container } = render(sidebar());
+    const handle = handleOf(container);
+    fireEvent.keyDown(handle, { key: "Home" });
+    fireEvent.keyDown(handle, { key: "Enter" });
+    expect(panelsOf(container).map(weight)).toEqual([30, 70]);
+    fireEvent.keyDown(handle, { key: "Home" });
+    fireEvent.doubleClick(handle);
+    expect(panelsOf(container).map(weight)).toEqual([30, 70]);
+    expect(panelsOf(container)[0]!.hasAttribute("data-collapsed")).toBe(false);
+  });
+
+  it("toggles on Ctrl+Enter and on Cmd+Enter, back to the size it had", () => {
+    const { container } = render(sidebar());
+    const handle = handleOf(container);
+    fireEvent.keyDown(handle, { key: "ArrowRight", shiftKey: true });
+    expect(panelsOf(container).map(weight)).toEqual([40, 60]);
+    fireEvent.keyDown(handle, { key: "Enter", ctrlKey: true });
+    expect(panelsOf(container).map(weight)).toEqual([0, 100]);
+    fireEvent.keyDown(handle, { key: "Enter", metaKey: true });
+    expect(panelsOf(container).map(weight)).toEqual([40, 60]);
+  });
+
+  it("does nothing on Ctrl+Enter when neither side can collapse, and keeps Enter as the reset", () => {
+    const { container } = render(pair());
+    const handle = handleOf(container);
+    fireEvent.keyDown(handle, { key: "ArrowRight", shiftKey: true });
+    fireEvent.keyDown(handle, { key: "Enter", ctrlKey: true });
+    expect(panelsOf(container).map(weight)).toEqual([60, 40]);
+    fireEvent.keyDown(handle, { key: "Enter" });
+    expect(panelsOf(container).map(weight)).toEqual([50, 50]);
+  });
+
+  it("can be driven from outside: collapse, expand, toggle and reset through apiRef", () => {
+    const api = createRef<ResizableApi>();
+    const onSizesChange = vi.fn();
+    const { container } = render(sidebar({ apiRef: api, onSizesChange }));
+    act(() => api.current!.collapse(0));
+    expect(panelsOf(container).map(weight)).toEqual([0, 100]);
+    expect(api.current!.sizes()).toEqual([0, 100]);
+    expect(onSizesChange).toHaveBeenLastCalledWith([0, 100]);
+    act(() => api.current!.expand(0));
+    expect(panelsOf(container).map(weight)).toEqual([30, 70]);
+    act(() => api.current!.toggle(0));
+    act(() => api.current!.reset());
+    expect(panelsOf(container).map(weight)).toEqual([30, 70]);
+  });
+
+  it("answers the same commands as an event on the group, for a trigger with no reference to it", () => {
+    const { container } = render(sidebar());
+    const root = container.firstElementChild!;
+    act(() => {
+      root.dispatchEvent(new CustomEvent("sk:resizablecommand", { detail: { action: "collapse", panel: 0 } }));
+    });
+    expect(panelsOf(container).map(weight)).toEqual([0, 100]);
+    act(() => {
+      root.dispatchEvent(new CustomEvent("sk:resizablecommand", { detail: { action: "reset" } }));
+    });
+    expect(panelsOf(container).map(weight)).toEqual([30, 70]);
+  });
+
+  it("keeps a rail's content when it collapses to a size above zero", () => {
+    const { container } = render(
+      <Resizable>
+        <Resizable.Panel size={30} minSize={20} collapsible collapsedSize={6}>
+          Rail
+        </Resizable.Panel>
+        <Resizable.Handle label="Resize rail" />
+        <Resizable.Panel>Main</Resizable.Panel>
+      </Resizable>,
+    );
+    fireEvent.keyDown(handleOf(container), { key: "Home" });
+    expect(panelsOf(container).map(weight)).toEqual([6, 94]);
+    expect(panelsOf(container)[0]!.hasAttribute("data-collapsed")).toBe(true);
+    expect(panelsOf(container)[0]!.hasAttribute("inert")).toBe(false);
   });
 });

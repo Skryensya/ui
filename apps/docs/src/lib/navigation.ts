@@ -596,12 +596,12 @@ const componentItems = [
     ],
   },
   {
-  {
     href: "/components/resizable",
     label: "Resizable",
     trailing: "Beta",
     aliases: ["redimensionable", "paneles", "panel dividido", "split view", "splitter", "resizable panels", "divisor arrastrable", "master detail"],
   },
+  {
     href: "/components/separator",
     label: "Separator",
     aliases: [
@@ -1186,8 +1186,8 @@ const allComponentNavigation = [
       "/components/hero",
       "/components/inline",
       "/components/layout-grid",
-      "/components/separator",
       "/components/resizable",
+      "/components/separator",
       "/components/stack",
       "/components/wrapper",
     ),

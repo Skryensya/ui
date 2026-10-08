@@ -51,6 +51,19 @@
     block-size: calc(var(--sk-resizable-size) * 1%);
   }
 
+  /*
+   * COLLAPSED. The binding marks a collapsible panel that sits at its collapsed size. A panel's padding and border
+   * are paid out of its share, so a closed one has to drop both: a padded panel can never be narrower than its own
+   * padding, and would stay a visible sliver. `!important` because the padding being beaten is the AUTHOR'S, often
+   * written inline on the panel, and a state that only wins against the stylesheet would leave exactly the demo that
+   * pads its panels with a closed panel 32px wide. What overflows is clipped, never scrolled.
+   */
+  .sk-resizable__panel[data-collapsed] {
+    padding: 0 !important;
+    border-width: 0 !important;
+    overflow: hidden;
+  }
+
   /* Before a binding has written a size (vanilla, until its enhancer mounts) the panels share equally. */
   .sk-resizable__panel:not([style*="--sk-resizable-size"]) {
     flex: 1 1 0;
@@ -105,6 +118,20 @@
 
   .sk-resizable__handle:hover::after {
     background: var(--sk-resizable-handle-color);
+  }
+
+  /*
+   * A BAR NEXT TO A CLOSED PANEL is the only way back to it, so it must not look like the hairline of a seam: it
+   * keeps its line in the stronger colour and a little more of it, which says "something is folded here".
+   */
+  .sk-resizable__handle[data-collapsed]::after {
+    background: var(--sk-resizable-handle-color);
+    inline-size: calc(var(--sk-resizable-handle-line) * 3);
+  }
+
+  .sk-resizable[data-direction="vertical"] > .sk-resizable__handle[data-collapsed]::after {
+    inline-size: auto;
+    block-size: calc(var(--sk-resizable-handle-line) * 3);
   }
 
   .sk-resizable__handle:focus-visible {

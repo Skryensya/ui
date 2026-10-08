@@ -71,7 +71,7 @@ const files = (t: Translate): UsageTree =>
     text(t, "demo.resizable.file3", { tone: "secondary", size: "sm" }),
   );
 
-const panel = (content: UsageTree, options: Record<string, number> = {}): UsageTree => ({
+const panel = (content: UsageTree, options: Record<string, number | boolean> = {}): UsageTree => ({
   contract: "resizable",
   signature: "Resizable.Panel",
   options,
@@ -94,6 +94,21 @@ export const resizableHorizontalTree = (t: Translate): UsageTree => ({
     panel(inbox(t), { size: 38, minSize: 25 }),
     handle(t, "demo.resizable.handle"),
     panel(message(t)),
+  ],
+});
+
+/**
+ * A panel that can close: the file list of a split. Dragged below its floor it snaps shut and its bar stays; the
+ * page's live demo, with its buttons, is where a reader tries that.
+ */
+export const resizableCollapsibleTree = (t: Translate): UsageTree => ({
+  contract: "resizable",
+  signature: "Resizable",
+  attrs: { style: frame("11rem") },
+  children: [
+    panel(files(t), { size: 28, minSize: 18, collapsible: true }),
+    handle(t, "demo.resizable.handleFiles"),
+    panel(code(t), { minSize: 30 }),
   ],
 });
 

@@ -7,7 +7,7 @@ Resizable:
     - "panels are peers: growing one is exactly shrinking its neighbour, and the box is always full"
     - "a keyboard has to be able to move the boundary too: every handle is a focusable separator"
   avoidWhen:
-    - "one edge panel opens, closes or collapses to a rail; that is Sidebar, which clamps one value instead of trading between two"
+    - "it is an application's navigation rail, with its own open and close, rail and remembered width; that is Sidebar, which clamps one value instead of trading between two"
     - "the columns belong to a table; Table and Treegrid already carry their own column resizers"
     - "the regions never change size; a Grid or Inline with fixed measures is simpler and has nothing to drag"
     - "there is only room for one region at a time (a phone); resizing needs space the screen does not have, and Tabs fits better"
@@ -21,8 +21,10 @@ Resizable.Panel:
   useWhen:
     - "one region of the split; give it a size when the starting proportion matters and leave it out to share equally"
     - "a region that must never vanish or swallow the others: set minSize and maxSize"
+    - "a region the person may want out of the way (a file list, an inspector): mark it collapsible, so dragging past its floor closes it and its bar stays to open it again"
   avoidWhen:
     - "it holds the handle or any layout of its own; the panel is the box, put the content inside it"
+    - "it should be able to reach zero by setting minSize to 0; that leaves no clear way back, use collapsible"
   alternatives:
     - Box
 

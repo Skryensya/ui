@@ -173,6 +173,88 @@ describe("connectResizable", () => {
   });
 });
 
+describe("connectResizable, collapsible panels", () => {
+  let cleanup: () => void = () => {};
+  afterEach(() => {
+    cleanup();
+    document.body.innerHTML = "";
+  });
+
+  const collapsibleSidebar = () => {
+    const built = build({ sizes: [30, undefined] });
+    built.panels[0]!.setAttribute("data-min-size", "20");
+    built.panels[0]!.setAttribute("data-collapsible", "");
+    cleanup = connectResizable(built.root);
+    return built;
+  };
+
+  it("closes on Home, marks the panel and the bar, and takes the closed content out of reach", () => {
+    const { panels, handles } = collapsibleSidebar();
+    key(handles[0]!, "Home");
+    expect(panels.map(weight)).toEqual([0, 100]);
+    expect(panels[0]!.hasAttribute("data-collapsed")).toBe(true);
+    expect(panels[0]!.hasAttribute("inert")).toBe(true);
+    expect(handles[0]!.hasAttribute("data-collapsed")).toBe(true);
+    expect(handles[0]!.getAttribute("aria-valuenow")).toBe("0");
+    expect(handles[0]!.getAttribute("aria-valuemin")).toBe("0");
+  });
+
+  it("opens again with Enter, which resets, and with a double click", () => {
+    const { panels, handles } = collapsibleSidebar();
+    key(handles[0]!, "Home");
+    key(handles[0]!, "Enter");
+    expect(panels.map(weight)).toEqual([30, 70]);
+    expect(panels[0]!.hasAttribute("data-collapsed")).toBe(false);
+    expect(panels[0]!.hasAttribute("inert")).toBe(false);
+    key(handles[0]!, "Home");
+    handles[0]!.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
+    expect(panels.map(weight)).toEqual([30, 70]);
+  });
+
+  it("toggles on Ctrl+Enter and Cmd+Enter, back to the size it had", () => {
+    const { panels, handles } = collapsibleSidebar();
+    key(handles[0]!, "ArrowRight", { shiftKey: true });
+    expect(panels.map(weight)).toEqual([40, 60]);
+    key(handles[0]!, "Enter", { ctrlKey: true });
+    expect(panels.map(weight)).toEqual([0, 100]);
+    key(handles[0]!, "Enter", { metaKey: true });
+    expect(panels.map(weight)).toEqual([40, 60]);
+  });
+
+  it("keeps the floor of a panel that is not collapsible, and leaves Ctrl+Enter alone", () => {
+    const { root, panels, handles } = build();
+    cleanup = connectResizable(root);
+    key(handles[0]!, "Home");
+    expect(panels.map(weight)).toEqual([10, 90]);
+    expect(key(handles[0]!, "Enter", { ctrlKey: true })).toBe(true);
+    expect(panels.map(weight)).toEqual([10, 90]);
+  });
+
+  it("answers commands sent as an event on the group", () => {
+    const { root, panels } = collapsibleSidebar();
+    const send = (detail: unknown) => root.dispatchEvent(new CustomEvent("sk:resizablecommand", { detail }));
+    send({ action: "collapse", panel: 0 });
+    expect(panels.map(weight)).toEqual([0, 100]);
+    send({ action: "expand", panel: 0 });
+    expect(panels.map(weight)).toEqual([30, 70]);
+    send({ action: "toggle", panel: 0 });
+    send({ action: "reset" });
+    expect(panels.map(weight)).toEqual([30, 70]);
+  });
+
+  it("keeps a rail's content when it collapses to a size above zero", () => {
+    const { root, panels, handles } = build({ sizes: [30, undefined] });
+    panels[0]!.setAttribute("data-min-size", "20");
+    panels[0]!.setAttribute("data-collapsible", "");
+    panels[0]!.setAttribute("data-collapsed-size", "6");
+    cleanup = connectResizable(root);
+    key(handles[0]!, "Home");
+    expect(panels.map(weight)).toEqual([6, 94]);
+    expect(panels[0]!.hasAttribute("data-collapsed")).toBe(true);
+    expect(panels[0]!.hasAttribute("inert")).toBe(false);
+  });
+});
+
 describe("mountResizable", () => {
   it("mounts authored roots once", () => {
     const { root } = build();

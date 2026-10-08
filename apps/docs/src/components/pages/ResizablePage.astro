@@ -4,6 +4,7 @@ import "@skryensya/core/components/resizable.css";
 import "@skryensya/core/components/annotation.css";
 /* The demos hold real copy, and a frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/typography.css";
+import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/separator.css";
 import "@skryensya/core/patterns/layout.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
@@ -13,8 +14,10 @@ import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
 import DoDont from "../DoDont.astro";
+import { ResizableCollapse } from "../react-demos/resizable-collapse";
 import {
   resizableAnatomyTree,
+  resizableCollapsibleTree,
   resizableDoBoundsTree,
   resizableDoCountTree,
   resizableDontBoundsTree,
@@ -64,6 +67,29 @@ const explain = (option: string, values: readonly string[]) =>
     <UsagePreview tree={resizableVerticalTree(t)} title={t("resizablePage.verticalTitle")} description={t("resizablePage.verticalBody")} />
     <UsagePreview tree={resizableThreeTree(t)} title={t("resizablePage.threeTitle")} description={t("resizablePage.threeBody")} />
 
+    <h3>{t("resizablePage.collapseTitle")}</h3>
+    <p set:html={t("resizablePage.collapseBody")} />
+    <UsagePreview tree={resizableCollapsibleTree(t)} title={t("resizablePage.collapseTitle")} description={t("resizablePage.collapseBody")} />
+    <h4>{t("resizablePage.collapseDemoTitle")}</h4>
+    <p set:html={t("resizablePage.collapseDemoBody")} />
+    <div class="rz-stage">
+      <ResizableCollapse
+        client:visible
+        copy={{
+          collapse: t("resizablePage.collapseButtons.collapse"),
+          expand: t("resizablePage.collapseButtons.expand"),
+          reset: t("resizablePage.collapseButtons.reset"),
+          nav: t("demo.resizable.files"),
+          main: t("demo.resizable.editor"),
+          handle: t("demo.resizable.handleFiles"),
+          file1: t("demo.resizable.file1"),
+          file2: t("demo.resizable.file2"),
+          file3: t("demo.resizable.file3"),
+          state: { open: t("resizablePage.collapseState.open"), closed: t("resizablePage.collapseState.closed") },
+        }}
+      />
+    </div>
+
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
       {tList(t, "resizablePage.contract").map((item) => <li set:html={item} />)}
@@ -107,7 +133,45 @@ const explain = (option: string, values: readonly string[]) =>
         { keys: ["←", "→", "↑", "↓"], action: t("resizablePage.key.arrows") },
         { keys: ["Home", "End"], action: t("resizablePage.key.ends") },
         { keys: ["Enter"], action: t("resizablePage.key.reset") },
+        { keys: ["Ctrl", "Enter"], action: t("resizablePage.key.collapse") },
       ]}
     />
   </Fragment>
 </ComponentPageShell>
+
+<style is:global>
+  /* The collapse demo is a React island: its own markup, outside this page's scope. */
+  .rz-stage {
+    padding: var(--space-inset-lg);
+    margin-block: var(--space-stack-lg);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-surface);
+    background: var(--color-bg-surface);
+  }
+
+  .rz-collapse {
+    display: grid;
+    gap: var(--space-stack-md);
+  }
+
+  .rz-collapse__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-inline-sm);
+  }
+
+  .rz-collapse__state {
+    margin-inline-start: auto;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-body-sm);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .rz-collapse__files {
+    margin: var(--space-stack-xs) 0 0;
+    padding-inline-start: var(--space-inset-lg);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-body-sm);
+  }
+</style>

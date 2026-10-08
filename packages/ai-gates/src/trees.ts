@@ -607,6 +607,29 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    /*
+     * A collapsible panel: `collapsible` and `collapsedSize` are read by the machine and never reach the DOM of the
+     * React binding, so the case is here to hold both bindings to the same sizes, the same bar range (it starts at 0
+     * because that panel can close), and the same panel markup around it.
+     */
+    name: "resizable/collapsible",
+    enhanced: true,
+    tree: {
+      contract: "resizable",
+      signature: "Resizable",
+      children: [
+        {
+          contract: "resizable",
+          signature: "Resizable.Panel",
+          options: { size: 30, minSize: 20, collapsible: true, collapsedSize: 5 },
+          children: "Files",
+        },
+        { contract: "resizable", signature: "Resizable.Handle", options: { label: "Resize files" } },
+        { contract: "resizable", signature: "Resizable.Panel", options: { minSize: 30 }, children: "Editor" },
+      ],
+    },
+  },
+  {
     name: "resizable/stacked",
     enhanced: true,
     tree: {

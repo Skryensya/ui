@@ -2,14 +2,19 @@ import {
   RESIZABLE_COARSE_STEP,
   RESIZABLE_STEP,
   resizableAttrs,
+  resizableCollapseTarget,
   resizableContract,
+  resizableEvents,
   resizableHandleOrientation,
   resizableHandleRange,
+  resizableIsCollapsed,
   resizableParts,
   resizablePercentFromPixels,
   resizableProperties,
   resolveInitialSizes,
   resolvePanelResize,
+  resolveResizableCommand,
+  type ResizableCommand,
   type ResizableDirectionOption,
   type ResizablePanelSpec,
 } from "@skryensya/core/resizable";
@@ -24,6 +29,7 @@ import {
   useContext,
   useEffect,
   useId,
+  useImperativeHandle,
   useMemo,
   useRef,
   useState,
@@ -38,7 +44,13 @@ import {
 } from "react";
 
 /* Derived, never restated: the defaults live in the contract. */
-const { direction: directionOption, minSize: minSizeOption, maxSize: maxSizeOption } = resizableContract.options;
+const {
+  direction: directionOption,
+  minSize: minSizeOption,
+  maxSize: maxSizeOption,
+  collapsible: collapsibleOption,
+  collapsedSize: collapsedSizeOption,
+} = resizableContract.options;
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
@@ -49,6 +61,10 @@ type ResizableContextValue = {
   initial: readonly number[];
   panelIds: readonly string[];
   resize: (index: number, from: readonly number[], delta: number) => void;
+  /** Runs a command (collapse, expand, toggle, reset) against the group's current sizes. */
+  command: (command: ResizableCommand) => void;
+  /** Notes what each open panel measures now, so a panel that closes can be opened back to it. */
+  remember: (from: readonly number[]) => void;
   extent: () => number;
   rtl: () => boolean;
   setDragging: (dragging: boolean) => void;
@@ -56,7 +72,25 @@ type ResizableContextValue = {
 
 const ResizableContext = createContext<ResizableContextValue | null>(null);
 
+/**
+ * What a page can ask of a group from anywhere: a button, a shortcut, a layout that decided to give the room
+ * back. Panels are numbered from 0, in the order they are written.
+ */
+export type ResizableApi = {
+  /** Closes a collapsible panel; its room goes to the neighbour across the nearest bar. */
+  collapse: (panel: number) => void;
+  /** Opens it back to the size it had, or to its initial size. */
+  expand: (panel: number) => void;
+  toggle: (panel: number) => void;
+  /** Back to the sizes the group started with, which also opens anything that was closed. */
+  reset: () => void;
+  /** The current sizes, as percentages in panel order. */
+  sizes: () => readonly number[];
+};
+
 export type ResizableProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
+  /** The handle for collapsing, expanding and resetting from outside. */
+  apiRef?: Ref<ResizableApi>;
   /** The axis the panels run along. `horizontal` is side by side. */
   direction?: ResizableDirectionOption;
   /** Fires after every change of the sizes, with the new percentages in panel order. */
@@ -71,6 +105,13 @@ export type ResizablePanelProps = HTMLAttributes<HTMLDivElement> & {
   minSize?: number;
   /** The most it may grow to, as a percentage. */
   maxSize?: number;
+  /**
+   * Lets it close all the way. Dragged below `minSize` it snaps shut, its bar stays so it can be opened again, and
+   * Home or End on a bar next to it close it. Without this the floor holds and it never disappears.
+   */
+  collapsible?: boolean;
+  /** What it collapses to, as a percentage. 0 (the default) closes it; a small number leaves a rail. */
+  collapsedSize?: number;
 };
 
 export type ResizableHandleProps = Omit<HTMLAttributes<HTMLDivElement>, "children" | "aria-label"> & {
@@ -90,7 +131,7 @@ const isOfType = (node: ReactNode, type: unknown): node is ReactElement<Record<s
   isValidElement(node) && node.type === type;
 
 const ResizableRoot = forwardRef<HTMLDivElement, ResizableProps>(function Resizable(
-  { children, className, direction = directionOption.default, onSizesChange, ...props },
+  { apiRef, children, className, direction = directionOption.default, onSizesChange, ...props },
   forwarded,
 ) {
   const rootRef = useRef<HTMLDivElement | null>(null);
@@ -102,11 +143,17 @@ const ResizableRoot = forwardRef<HTMLDivElement, ResizableProps>(function Resiza
     () =>
       panelNodes.map((node) => {
         const p = (node as ReactElement<ResizablePanelProps>).props;
-        return { size: p.size, minSize: p.minSize ?? minSizeOption.default, maxSize: p.maxSize ?? maxSizeOption.default };
+        return {
+          size: p.size,
+          minSize: p.minSize ?? minSizeOption.default,
+          maxSize: p.maxSize ?? maxSizeOption.default,
+          collapsible: p.collapsible ?? collapsibleOption.default,
+          collapsedSize: p.collapsedSize ?? collapsedSizeOption.default,
+        };
       }),
     // The authored bounds, not the elements: a re-render with the same numbers must not reset a drag.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [JSON.stringify(panelNodes.map((node) => (node as ReactElement<ResizablePanelProps>).props).map((p) => [p.size, p.minSize, p.maxSize]))],
+    [JSON.stringify(panelNodes.map((node) => (node as ReactElement<ResizablePanelProps>).props).map((p) => [p.size, p.minSize, p.maxSize, p.collapsible, p.collapsedSize]))],
   );
   const initial = useMemo(() => resolveInitialSizes(specs), [specs]);
   const [sizes, setSizes] = useState<readonly number[]>(initial);
@@ -124,6 +171,16 @@ const ResizableRoot = forwardRef<HTMLDivElement, ResizableProps>(function Resiza
   const notify = useRef(onSizesChange);
   notify.current = onSizesChange;
 
+  const restore = useRef<(number | undefined)[]>([]);
+  const remember = useCallback(
+    (from: readonly number[]) => {
+      from.forEach((size, i) => {
+        if (!resizableIsCollapsed(size, specs[i])) restore.current[i] = size;
+      });
+    },
+    [specs],
+  );
+
   const resize = useCallback(
     (index: number, from: readonly number[], delta: number) => {
       const next = resolvePanelResize({ sizes: from, panels: specs, index, delta });
@@ -134,6 +191,45 @@ const ResizableRoot = forwardRef<HTMLDivElement, ResizableProps>(function Resiza
     },
     [specs],
   );
+
+  const command = useCallback(
+    (action: ResizableCommand) => {
+      const previous = sizesRef.current;
+      const next = resolveResizableCommand({ sizes: previous, panels: specs, initial, restore: restore.current, command: action });
+      if (next === previous) return;
+      remember(previous);
+      sizesRef.current = next;
+      setSizes(next);
+      notify.current?.(next);
+    },
+    [specs, initial, remember],
+  );
+  const commandRef = useRef(command);
+  commandRef.current = command;
+
+  useImperativeHandle(
+    apiRef,
+    () => ({
+      collapse: (panel) => commandRef.current({ action: "collapse", panel }),
+      expand: (panel) => commandRef.current({ action: "expand", panel }),
+      toggle: (panel) => commandRef.current({ action: "toggle", panel }),
+      reset: () => commandRef.current({ action: "reset" }),
+      sizes: () => sizesRef.current,
+    }),
+    [],
+  );
+
+  /* The same commands for anything with no reference to the component: an event on the group. */
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const onCommand = (event: Event) => {
+      const detail = (event as CustomEvent<ResizableCommand | undefined>).detail;
+      if (detail) commandRef.current(detail);
+    };
+    root.addEventListener(resizableEvents.command, onCommand);
+    return () => root.removeEventListener(resizableEvents.command, onCommand);
+  }, []);
 
   const panelIds = useMemo(() => panelNodes.map((_, i) => `${base}-panel-${i}`), [base, panelNodes.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -155,8 +251,8 @@ const ResizableRoot = forwardRef<HTMLDivElement, ResizableProps>(function Resiza
   }, []);
 
   const context = useMemo<ResizableContextValue>(
-    () => ({ direction, sizes, specs, initial, panelIds, resize, extent, rtl, setDragging }),
-    [direction, sizes, specs, initial, panelIds, resize, extent, rtl, setDragging],
+    () => ({ direction, sizes, specs, initial, panelIds, resize, command, remember, extent, rtl, setDragging }),
+    [direction, sizes, specs, initial, panelIds, resize, command, remember, extent, rtl, setDragging],
   );
 
   let panelIndex = 0;
@@ -186,18 +282,24 @@ const ResizableRoot = forwardRef<HTMLDivElement, ResizableProps>(function Resiza
 });
 
 const ResizablePanel = forwardRef<HTMLDivElement, ResizablePanelProps>(function ResizablePanel(
-  { children, className, maxSize: _max, minSize: _min, size: _size, style, ...props },
+  { children, className, collapsedSize: _collapsedSize, collapsible: _collapsible, maxSize: _max, minSize: _min, size: _size, style, ...props },
   ref,
 ) {
   const context = useContext(ResizableContext);
   const index = (props as InternalPanelProps).__index ?? 0;
   const { __index: _i, ...rest } = props as InternalPanelProps;
+  const spec = context?.specs[index];
+  const collapsed = resizableIsCollapsed(context?.sizes[index] ?? 1, spec);
   return (
     <div
       {...rest}
       ref={ref}
       id={rest.id ?? context?.panelIds[index]}
       className={cx(resizableParts.panel, className)}
+      data-collapsed={collapsed ? "" : undefined}
+      /* Closed to nothing, its content is no longer there to reach: out of the tab order and the reading order.
+         A rail (a collapsed size above zero) keeps its content, which is the point of a rail. */
+      inert={collapsed && (spec?.collapsedSize ?? 0) === 0 ? true : undefined}
       style={{ ...style, [resizableProperties.size]: context?.sizes[index] ?? 1 } as CSSProperties}
     >
       {children}
@@ -215,7 +317,7 @@ const ResizableHandle = forwardRef<HTMLDivElement, ResizableHandleProps>(functio
   const [dragging, setDragging] = useState(false);
 
   if (!context) return null;
-  const { direction, sizes, specs, initial, panelIds, resize, extent, rtl } = context;
+  const { direction, sizes, specs, initial, panelIds, resize, command, remember, extent, rtl } = context;
   const barOrientation = resizableHandleOrientation(direction);
   const range = resizableHandleRange({ sizes, panels: specs, index });
   const sign = () => (direction === "horizontal" ? splitterDirectionSign(rtl() ? "rtl" : "ltr") : 1);
@@ -224,6 +326,7 @@ const ResizableHandle = forwardRef<HTMLDivElement, ResizableHandleProps>(functio
 
   const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (event.button !== 0) return;
+    remember(sizes);
     start.current = { position: position(event), sizes, dragging: false };
     event.currentTarget.setPointerCapture?.(event.pointerId);
   };
@@ -246,6 +349,16 @@ const ResizableHandle = forwardRef<HTMLDivElement, ResizableHandleProps>(functio
     event.currentTarget.releasePointerCapture?.(event.pointerId);
   };
   const onKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
+    /* Ctrl or Cmd + Enter closes or opens the collapsible panel beside the bar. Plain Enter stays the reset. */
+    if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
+      const panel = resizableCollapseTarget({ sizes, panels: specs, index });
+      if (panel !== undefined) {
+        event.preventDefault();
+        command({ action: "toggle", panel });
+      }
+      return;
+    }
+    remember(sizes);
     const action = resolveSplitterKey(event, { step: RESIZABLE_STEP, coarseStep: RESIZABLE_COARSE_STEP, orientation: barOrientation });
     if (action.kind === "none") return;
     event.preventDefault();
@@ -269,6 +382,7 @@ const ResizableHandle = forwardRef<HTMLDivElement, ResizableHandleProps>(functio
       aria-valuemax={range.max}
       className={cx(resizableParts.handle, className)}
       data-dragging={dragging ? "" : undefined}
+      data-collapsed={resizableIsCollapsed(sizes[index] ?? 1, specs[index]) || resizableIsCollapsed(sizes[index + 1] ?? 1, specs[index + 1]) ? "" : undefined}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerEnd}

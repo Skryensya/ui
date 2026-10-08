@@ -28,7 +28,17 @@ export const resizableAttrs = {
   size: "data-size",
   minSize: "data-min-size",
   maxSize: "data-max-size",
+  collapsible: "data-collapsible",
+  collapsedSize: "data-collapsed-size",
+  /** Written by the bindings on a panel (and its handles) while it sits at its collapsed size. */
+  collapsed: "data-collapsed",
   dragging: "data-dragging",
+} as const;
+
+/** What a page can send a group from anywhere, with no reference to the component: see `ResizableCommand`. */
+export const resizableEvents = {
+  /** Detail: a `ResizableCommand`. Collapses, expands or toggles one panel, or resets every size. */
+  command: "sk:resizablecommand",
 } as const;
 
 /** Written by the bindings on each panel; the stylesheet turns it into `flex-grow`. */
@@ -56,6 +66,13 @@ export type ResizablePanelSpec = {
   readonly size?: number;
   readonly minSize: number;
   readonly maxSize: number;
+  /**
+   * May be dragged below its floor, where it snaps to `collapsedSize` instead of stopping at `minSize`. A
+   * collapsible panel is therefore never in between: it is collapsed, or it is at least `minSize`.
+   */
+  readonly collapsible?: boolean;
+  /** The size a collapsible panel collapses to, as a percentage. Default 0: gone, with its bar still there. */
+  readonly collapsedSize?: number;
 };
 
 const clamp = (value: number, low: number, high: number) => Math.min(Math.max(value, low), high);
@@ -100,11 +117,40 @@ function settle(sizes: readonly number[], panels: readonly ResizablePanelSpec[])
   return result;
 }
 
+/** The size a collapsible panel collapses to. */
+const collapsedSizeOf = (panel: ResizablePanelSpec): number => panel.collapsedSize ?? 0;
+
+/** The smallest a panel can be: its floor, or the collapsed size when it is allowed to collapse. */
+const floorOf = (panel: ResizablePanelSpec): number => (panel.collapsible ? Math.min(collapsedSizeOf(panel), panel.minSize) : panel.minSize);
+
+/** Whether a panel sits at its collapsed size. Only a collapsible panel can. */
+export function resizableIsCollapsed(size: number, panel: ResizablePanelSpec | undefined): boolean {
+  return Boolean(panel?.collapsible) && size <= collapsedSizeOf(panel!) + 1e-6;
+}
+
+/** A collapsible panel is collapsed or at least at its floor, never between: what lies between goes to the nearer. */
+function snapCollapsible(size: number, panel: ResizablePanelSpec): number {
+  if (!panel.collapsible || size >= panel.minSize) return size;
+  const collapsed = collapsedSizeOf(panel);
+  return size < (collapsed + panel.minSize) / 2 ? collapsed : panel.minSize;
+}
+
+/** Whether a size is one the panel may rest at: inside its bounds, or exactly collapsed. */
+function restsAt(size: number, panel: ResizablePanelSpec): boolean {
+  return (size >= panel.minSize - 1e-6 && size <= panel.maxSize + 1e-6) || resizableIsCollapsed(size, panel);
+}
+
 /**
  * Redistributes size between panel `index` and `index + 1` by `delta` percent. Neither can leave its
  * own bounds, and the pair's sum is invariant, so growing one is exactly shrinking the other.
  * `+Infinity` / `-Infinity` (what Home and End resolve to) saturate against the bounds with no
- * special case.
+ * special case, and for a collapsible panel the smallest size it can reach IS collapsed, so Home and
+ * End collapse it without a rule of their own.
+ *
+ * A collapsible panel dragged below its floor does not stop there: past the midpoint between the floor
+ * and its collapsed size it snaps shut, and back out past the same midpoint it snaps open to the floor.
+ * If the neighbour cannot take the room a collapse frees (its `maxSize` is in the way) the pair stays
+ * where it was rather than landing on a size neither panel may hold.
  */
 export function resolvePanelResize(params: {
   readonly sizes: readonly number[];
@@ -119,13 +165,65 @@ export function resolvePanelResize(params: {
   const b = panels[index + 1];
   if (before === undefined || after === undefined || !a || !b) return sizes;
   const total = before + after;
-  const low = Math.max(a.minSize, total - b.maxSize);
-  const high = Math.min(a.maxSize, total - b.minSize);
-  const next = low > high ? before : clamp(before + delta, low, high);
+  const low = Math.max(floorOf(a), total - b.maxSize);
+  const high = Math.min(a.maxSize, total - floorOf(b));
+  if (low > high) return sizes.slice();
+  let next = snapCollapsible(clamp(before + delta, low, high), a);
+  next = total - snapCollapsible(total - next, b);
   const result = sizes.slice();
+  if (!restsAt(next, a) || !restsAt(total - next, b)) return result;
   result[index] = next;
   result[index + 1] = total - next;
   return result;
+}
+
+/** What a page can ask of a group, in the units the arithmetic uses: panels are numbered from 0. */
+export type ResizableCommand =
+  | { readonly action: "collapse" | "expand" | "toggle"; readonly panel: number }
+  | { readonly action: "reset" };
+
+/**
+ * The panel a collapse key acts on for the bar between panels `index` and `index + 1`: a collapsed
+ * neighbour first (so the same key that closed it opens it), else the first collapsible one, the one
+ * before the bar preferred. Undefined when neither side can collapse.
+ */
+export function resizableCollapseTarget(params: {
+  readonly sizes: readonly number[];
+  readonly panels: readonly ResizablePanelSpec[];
+  readonly index: number;
+}): number | undefined {
+  const { sizes, panels, index } = params;
+  const candidates = [index, index + 1].filter((i) => panels[i]?.collapsible);
+  return candidates.find((i) => resizableIsCollapsed(sizes[i] ?? 0, panels[i])) ?? candidates[0];
+}
+
+/**
+ * The sizes after a command. Collapsing hands the panel's room to the neighbour across the bar nearest
+ * to it (the one after, except for the last panel), expanding returns it to `restore[panel]` and never
+ * below its floor, and `reset` goes back to the sizes the group started with, which also opens
+ * anything that was closed. A command that changes nothing returns `sizes` itself.
+ */
+export function resolveResizableCommand(params: {
+  readonly sizes: readonly number[];
+  readonly panels: readonly ResizablePanelSpec[];
+  readonly initial: readonly number[];
+  /** The size each panel had before it collapsed, to open it back to. Absent, the panel's initial size. */
+  readonly restore?: readonly (number | undefined)[];
+  readonly command: ResizableCommand;
+}): readonly number[] {
+  const { sizes, panels, initial, restore, command } = params;
+  if (command.action === "reset") return initial.length === sizes.length ? initial : sizes;
+  const panel = command.panel;
+  const spec = panels[panel];
+  if (!spec?.collapsible || panels.length < 2) return sizes;
+  const collapsed = resizableIsCollapsed(sizes[panel] ?? 0, spec);
+  if ((command.action === "collapse" && collapsed) || (command.action === "expand" && !collapsed)) return sizes;
+  const index = panel < panels.length - 1 ? panel : panel - 1;
+  const current = sizes[panel] ?? 0;
+  const target = collapsed ? Math.max(restore?.[panel] ?? initial[panel] ?? spec.minSize, spec.minSize) : collapsedSizeOf(spec);
+  const delta = panel === index ? target - current : current - target;
+  const next = resolvePanelResize({ sizes, panels, index, delta });
+  return next.every((size, i) => Math.abs(size - (sizes[i] ?? 0)) < 1e-9) ? sizes : next;
 }
 
 /** What a handle reports: the size of the panel before it, and the travel that panel has. */
@@ -141,8 +239,8 @@ export function resizableHandleRange(params: {
   const b = panels[index + 1];
   return {
     now: Math.round(before),
-    min: Math.round(Math.max(a?.minSize ?? 0, total - (b?.maxSize ?? 100))),
-    max: Math.round(Math.min(a?.maxSize ?? 100, total - (b?.minSize ?? 0))),
+    min: Math.round(Math.max(a ? floorOf(a) : 0, total - (b?.maxSize ?? 100))),
+    max: Math.round(Math.min(a?.maxSize ?? 100, total - (b ? floorOf(b) : 0))),
   };
 }
 
@@ -187,6 +285,14 @@ export const resizableContract = {
     minSize: { type: "number", default: 10, min: 0, max: 100, attr: "data-min-size", machineInput: true },
     maxSize: { type: "number", default: 100, min: 0, max: 100, attr: "data-max-size", machineInput: true },
     /**
+     * Lets the panel close all the way. Dragged below its `minSize` it snaps shut instead of stopping, its bar stays
+     * where it is so it can be dragged or keyed open again, and Home and End on a bar next to it collapse it. A
+     * panel without it keeps its floor and can never disappear.
+     */
+    collapsible: { type: "boolean", default: false, attr: "data-collapsible", trueValue: "", machineInput: true },
+    /** What a collapsible panel collapses to, as a percentage. 0 closes it; a small number leaves a rail. */
+    collapsedSize: { type: "number", default: 0, min: 0, max: 100, attr: "data-collapsed-size", machineInput: true },
+    /**
      * The handle's accessible name. It is a bare strip between two panels, so nothing about it names
      * itself: a focusable `separator` that says only "separator" is a control nobody can tell apart.
      */
@@ -211,7 +317,7 @@ export const resizableContract = {
       intent: ["resizable-pane", "split-view-side"],
       host: { element: "div" },
       parents: ["Resizable"],
-      options: ["size", "minSize", "maxSize"],
+      options: ["size", "minSize", "maxSize", "collapsible", "collapsedSize"],
       forward: ["id", "aria-*"],
       slots: { children: { accepts: "node" } },
       template: { element: "div", part: "panel", host: true, slot: "children" },

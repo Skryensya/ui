@@ -14,6 +14,7 @@ export default { title: "Components/Layout/Resizable", tags: ["autodocs"] } sati
 
 export const Anatomy: StoryObj = treeStory(demos.resizableAnatomyTree);
 export const Horizontal: StoryObj = treeStory(demos.resizableHorizontalTree);
+export const Collapsible: StoryObj = treeStory(demos.resizableCollapsibleTree);
 export const Vertical: StoryObj = treeStory(demos.resizableVerticalTree);
 export const Three: StoryObj = treeStory(demos.resizableThreeTree);
 export const Specimen: StoryObj = treeStory(demos.resizableSpecimenTree);
