@@ -248,3 +248,4 @@ export function createClassifier(
     },
   };
 }
+export { captureToUsageTree, type CaptureTree } from "./usage-tree.js";
