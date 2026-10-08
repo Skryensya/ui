@@ -162,7 +162,6 @@ export const resizableContract = {
   css: "@skryensya/core/components/resizable.css",
   parts: resizableParts,
   hooks: [
-    "--sk-resizable-gap",
     "--sk-resizable-handle-active-color",
     "--sk-resizable-handle-color",
     "--sk-resizable-handle-hit",

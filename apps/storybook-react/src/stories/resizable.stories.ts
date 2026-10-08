@@ -4,7 +4,9 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/resizable.css";
+import "@skryensya/core/components/separator.css";
 import "@skryensya/core/components/typography.css";
+import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/resizable";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
@@ -15,3 +17,7 @@ export const Horizontal: StoryObj = treeStory(demos.resizableHorizontalTree);
 export const Vertical: StoryObj = treeStory(demos.resizableVerticalTree);
 export const Three: StoryObj = treeStory(demos.resizableThreeTree);
 export const Specimen: StoryObj = treeStory(demos.resizableSpecimenTree);
+export const DoBounds: StoryObj = treeStory(demos.resizableDoBoundsTree);
+export const DontBounds: StoryObj = treeStory(demos.resizableDontBoundsTree);
+export const DoCount: StoryObj = treeStory(demos.resizableDoCountTree);
+export const DontCount: StoryObj = treeStory(demos.resizableDontCountTree);

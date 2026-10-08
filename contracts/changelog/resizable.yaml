@@ -1,6 +1,25 @@
 # What changed in resizable, in the words its users read. Only appended to, never rewritten.
-surface: "e3eae53c8d5b65b4"
+surface: "378530750d9e3d36"
 entries:
+  - date: 2026-10-07
+    kind: rework
+    es:
+      title: Los paneles miden su porcentaje exacto, con o sin padding
+      body: >-
+        El tamaño de un panel pasa a ser un porcentaje del grupo con <code>border-box</code>, en vez de un
+        peso de flex sobre base cero. Antes el padding se descontaba primero y los pesos repartían el
+        resto, así que un panel con padding no ocupaba su porcentaje y el arrastre iba por detrás del
+        puntero. La barra ya no ocupa espacio: se dibuja sobre el límite, y el hook
+        <code>--sk-resizable-gap</code> desaparece. <code>--sk-resizable-handle-line</code> ahora vale
+        <code>1px</code> por defecto.
+    en:
+      title: Panels measure their exact percentage, padded or not
+      body: >-
+        A panel's size is now a percentage of the group under <code>border-box</code>, instead of a flex
+        weight over a zero basis. Before, padding was paid first and the weights split what was left, so
+        a padded panel did not occupy its percentage and a drag trailed the pointer. The bar no longer
+        takes room: it is drawn on the boundary, and the <code>--sk-resizable-gap</code> hook is gone.
+        <code>--sk-resizable-handle-line</code> now defaults to <code>1px</code>.
   - date: 2026-10-07
     kind: feature
     es:

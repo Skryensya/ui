@@ -4,14 +4,21 @@ import "@skryensya/core/components/resizable.css";
 import "@skryensya/core/components/annotation.css";
 /* The demos hold real copy, and a frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/typography.css";
+import "@skryensya/core/components/separator.css";
+import "@skryensya/core/patterns/layout.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
+import DoDont from "../DoDont.astro";
 import {
   resizableAnatomyTree,
+  resizableDoBoundsTree,
+  resizableDoCountTree,
+  resizableDontBoundsTree,
+  resizableDontCountTree,
   resizableHorizontalTree,
   resizableSpecimenTree,
   resizableThreeTree,
@@ -70,6 +77,16 @@ const explain = (option: string, values: readonly string[]) =>
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("resizablePage.guidelinesLede")} />
     <WhenToUse use={tList(t, "resizablePage.when")} avoid={tList(t, "resizablePage.whenNot")} />
+    <DoDont
+      title={t("resizablePage.dd.bounds.title")}
+      do={{ tree: resizableDoBoundsTree(t), caption: t("resizablePage.dd.bounds.do") }}
+      dont={{ tree: resizableDontBoundsTree(t), caption: t("resizablePage.dd.bounds.dont") }}
+    />
+    <DoDont
+      title={t("resizablePage.dd.count.title")}
+      do={{ tree: resizableDoCountTree(t), caption: t("resizablePage.dd.count.do") }}
+      dont={{ tree: resizableDontCountTree(t), caption: t("resizablePage.dd.count.dont") }}
+    />
     <ContentRules items={tList(t, "resizablePage.content")} />
   </Fragment>
 

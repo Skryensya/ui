@@ -2,19 +2,21 @@
  * TIER 3, RESIZABLE
  *
  * Panels sharing one box, with a bar between each pair. `--sk-resizable-size` is a percentage the
- * binding writes on every panel; here it is only a flex weight over a zero basis, so the panels
- * always fill the group exactly and a resize needs no arithmetic in CSS.
+ * binding writes on every panel, and it IS the panel's size: `border-box` and a percentage of the
+ * group, so a panel with padding or a border still occupies exactly its share. A flex weight over a
+ * zero basis would not: the padding is paid first and the weights split what is left, which made a
+ * 90px drag move a padded panel by 79.
  *
- * THE HANDLE IS A FLEX ITEM, NOT AN OVERLAY. It takes `--sk-resizable-gap` of the group's extent and
- * draws a hairline inside a wider hit area (`--sk-resizable-handle-hit`) that overlaps the panels on
- * both sides, so the strip a pointer has to find is larger than the line a reader sees.
+ * THE HANDLE TAKES NO ROOM. It is a zero-width flex item sitting on the boundary, so the percentages
+ * add up to the whole box and nothing has to subtract the bars. It draws its hairline at the centre of
+ * a wider hit area (`--sk-resizable-handle-hit`) that overlaps the panels on both sides, so the strip
+ * a pointer has to find is larger than the line a reader sees.
  *
  * Every hook resolves to a TIER-2 token, never a palette or raw color; scripts/lint.ts enforces it.
  */
 @layer components {
   .sk-resizable {
-    --sk-resizable-gap: 1px;
-    --sk-resizable-handle-line: 2px;
+    --sk-resizable-handle-line: 1px;
     --sk-resizable-handle-hit: var(--space-inset-md);
     --sk-resizable-handle-color: var(--color-border-strong);
     --sk-resizable-handle-active-color: var(--color-border-accent);
@@ -33,30 +35,39 @@
   }
 
   .sk-resizable__panel {
-    /* The size the binding wrote; an unsized panel before mount shares equally. */
-    --sk-resizable-size: 1;
+    /* The binding overwrites this inline with the panel's current share; declared so the hook exists. */
+    --sk-resizable-size: 50;
 
-    flex: var(--sk-resizable-size) 1 0;
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    inline-size: calc(var(--sk-resizable-size) * 1%);
     min-inline-size: 0;
     min-block-size: 0;
     overflow: auto;
   }
 
+  .sk-resizable[data-direction="vertical"] > .sk-resizable__panel {
+    inline-size: auto;
+    block-size: calc(var(--sk-resizable-size) * 1%);
+  }
+
+  /* Before a binding has written a size (vanilla, until its enhancer mounts) the panels share equally. */
+  .sk-resizable__panel:not([style*="--sk-resizable-size"]) {
+    flex: 1 1 0;
+    inline-size: auto;
+    block-size: auto;
+  }
+
   .sk-resizable__handle {
     position: relative;
-    flex: 0 0 var(--sk-resizable-gap);
-    background: var(--color-border-default);
+    flex: 0 0 0;
     cursor: col-resize;
     /* The gesture is ours: without this a drag on a touch screen scrolls the page instead. */
     touch-action: none;
-    /* Never let the bar shrink to nothing when a panel's content is wide. */
-    min-inline-size: var(--sk-resizable-gap);
   }
 
   .sk-resizable[data-direction="vertical"] > .sk-resizable__handle {
     cursor: row-resize;
-    min-inline-size: 0;
-    min-block-size: var(--sk-resizable-gap);
   }
 
   /* The hit area: wider than the line, centred on it, overlapping the panels either side. */
@@ -72,7 +83,7 @@
     inset-inline: 0;
   }
 
-  /* The visible line, quiet until the bar is interesting. */
+  /* The visible line: a hairline at rest, then the colour says the bar is interesting. */
   .sk-resizable__handle::after {
     content: "";
     position: absolute;
@@ -80,7 +91,7 @@
     inset-inline: 50%;
     inline-size: var(--sk-resizable-handle-line);
     translate: -50% 0;
-    background: transparent;
+    background: var(--color-border-default);
     transition: background-color var(--motion-feedback-duration) var(--motion-feedback-easing);
   }
 
