@@ -2653,10 +2653,10 @@ const signatureTrees: readonly Canonical[] = [
     tree: { contract: "shimmer", signature: "Shimmer", children: "Thinking" },
   },
   {
-    /* EXPRESSIVE AVATAR, the one required option: the name that becomes its accessible label. */
+    /* EXPRESSIVE AVATAR, two required options: the name that becomes its accessible label, and its image. */
     name: "expressive-avatar/default",
     enhanced: false,
-    tree: { contract: "expressive-avatar", signature: "ExpressiveAvatar", options: { name: "Robin" } },
+    tree: { contract: "expressive-avatar", signature: "ExpressiveAvatar", options: { name: "Robin", src: "/expressive-avatar/states/base.webp" } },
   },
   {
     /*

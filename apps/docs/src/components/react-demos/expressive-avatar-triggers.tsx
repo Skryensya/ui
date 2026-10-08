@@ -1,22 +1,11 @@
 /*
- * THE EXPRESSIVE AVATAR, TRIGGERED FROM OUTSIDE. Three looks of its own (`asombro`, `duda`, `picaro`) made from
- * tiles the tileset already has, laid out in a new way, and the three ways a page asks for them: through the
- * avatar's handle, through an event on its element, and from a phrase it says. Nothing here is special to the
- * docs: it is what any page does with its own buttons, timers or form errors.
+ * THE EXPRESSIVE AVATAR, TRIGGERED FROM OUTSIDE. Three expressions of its own (`asombro`, `duda`, `picaro`),
+ * each just a name that has an image, and the three ways a page asks for them: through the avatar's handle,
+ * through an event on its element, and from a phrase it says. Nothing here is special to the docs: it is what
+ * any page does with its own buttons, timers or form errors.
  */
 import { useRef } from "react";
-import { ExpressiveAvatar, type ExpressiveAvatarApi } from "@skryensya/react/expressive-avatar";
-import { expressiveAvatarAtlasLayout } from "@skryensya/core/expressive-avatar-atlas";
-import type { ExpressiveAvatarExpressions } from "@skryensya/core/expressive-avatar-behavior";
-
-const expressions: ExpressiveAvatarExpressions = {
-  /* Eyes up and a round mouth. */
-  asombro: { leftEye: "left-eye-top", rightEye: "right-eye-top", mouthLeft: "o-rounded-left", mouthRight: "o-rounded-right" },
-  /* Looking away, thinking: eyes only, so the mouth carries on with whatever it was doing. */
-  duda: { leftEye: "left-eye-top-right", rightEye: "right-eye-top-right" },
-  /* A wink and a smile. */
-  picaro: { leftEye: "left-eye-base", rightEye: "right-eye-wink", mouthLeft: "smile-left", mouthRight: "smile-right" },
-};
+import { ExpressiveAvatar, type ExpressiveAvatarApi, type ExpressiveAvatarProps } from "@skryensya/react/expressive-avatar";
 
 type Copy = {
   asombro: string;
@@ -31,7 +20,7 @@ type Copy = {
   phraseButton: string;
 };
 
-export function ExpressiveAvatarTriggers({ copy }: { copy: Copy }) {
+export function ExpressiveAvatarTriggers({ copy, images }: { copy: Copy; images: NonNullable<ExpressiveAvatarProps["images"]> }) {
   const api = useRef<ExpressiveAvatarApi>(null);
   const root = useRef<HTMLDivElement>(null);
 
@@ -44,15 +33,7 @@ export function ExpressiveAvatarTriggers({ copy }: { copy: Copy }) {
   return (
     <div className="ea-triggers" ref={root}>
       <div className="ea-triggers__face">
-        <ExpressiveAvatar
-          apiRef={api}
-          name="Allison"
-          size="xl"
-          interactive
-          expressions={expressions}
-          tileset={{ columns: expressiveAvatarAtlasLayout.columns, names: expressiveAvatarAtlasLayout.names }}
-          phrases={{}}
-        />
+        <ExpressiveAvatar apiRef={api} name="Allison" size="xl" interactive images={images} phrases={{}} />
       </div>
 
       <div className="ea-triggers__group">

@@ -1,7 +1,7 @@
 ExpressiveAvatar:
   useWhen:
     - "a character, assistant or mascot needs to express a visible state"
-    - "the same identity has pixel-art parts or a complete image for each expression"
+    - "the same identity has a complete image for each expression"
   avoidWhen:
     - "a compact, static identity token is enough; use Avatar"
     - "the image is editorial content rather than an expressive identity; use ImageFrame"

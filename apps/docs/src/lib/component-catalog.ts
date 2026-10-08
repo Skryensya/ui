@@ -29,8 +29,8 @@ const componentDescriptions = {
     en: "Represents a person's identity with a photo or initials.",
   },
   "/components/expressive-avatar": {
-    es: "Avatar reactivo con expresiones: modo pixel SVG y cambio de foto completa por emoción.",
-    en: "Reactive avatar with expressions: SVG pixel mode and full photo swapping per emotion.",
+    es: "Avatar reactivo que mira, parpadea y habla, con una imagen entera por cada expresión.",
+    en: "Reactive avatar that looks, blinks and talks, with one whole image per expression.",
   },
   "/components/badge": {
     es: "Señala estados, conteos o etiquetas breves junto a otro elemento.",

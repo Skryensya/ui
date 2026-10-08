@@ -2,7 +2,6 @@ import type { ComponentContract } from "./contract.js";
 
 export type ExpressiveAvatarSize = "sm" | "md" | "lg" | "xl";
 export type ExpressiveAvatarAppearance = "plain" | "brutalist";
-export type ExpressiveAvatarMode = "pixel" | "image";
 export type ExpressiveAvatarDirection =
   | "base"
   | "top-left"
@@ -14,6 +13,7 @@ export type ExpressiveAvatarDirection =
   | "bottom"
   | "bottom-right";
 
+/** The mouths the face can be in. `default` is the resting one, the others are what speech and the smile ask for. */
 export type ExpressiveAvatarMouth =
   | "default"
   | "neutral"
@@ -25,8 +25,33 @@ export type ExpressiveAvatarMouth =
   | "u"
   | "smile";
 
-export type ExpressiveAvatarHat = "none" | "la-cap" | "batman-mask";
-export type ExpressiveAvatarOutfit = "base" | "sweater-alt" | "batman";
+/**
+ * THE LOOKS A FACE HAS ON ITS OWN, by name: where it looks (`base` is straight ahead and the one every
+ * other falls back to), the blink and the wink, and the mouths. Each is a whole image. An expression you
+ * make up is one more name with one more image, and nothing else.
+ */
+export const expressiveAvatarLooks = [
+  "base",
+  "top-left",
+  "top",
+  "top-right",
+  "left",
+  "right",
+  "bottom-left",
+  "bottom",
+  "bottom-right",
+  "blink",
+  "wink",
+  "neutral",
+  "closed",
+  "a",
+  "e",
+  "i",
+  "o",
+  "u",
+  "smile",
+] as const;
+export type ExpressiveAvatarLook = (typeof expressiveAvatarLooks)[number];
 
 /** The events an expressive avatar listens to on its root, for a trigger with no reference to the component. */
 export const expressiveAvatarEvents = {
@@ -34,104 +59,60 @@ export const expressiveAvatarEvents = {
   express: "sk:expressiveavatarexpress",
 } as const;
 
-export const expressiveAvatarGridSize = 6;
+/**
+ * THE IMAGES OF A FACE, from a folder that names them after the looks: `images("/avatars/ada")` is
+ * `{ base: "/avatars/ada/base.webp", blink: "/avatars/ada/blink.webp", ... }`. Pass `looks` to list only
+ * the ones you drew (every look without an image shows `base`), and add your own names to it for the
+ * expressions you made up.
+ */
+export function expressiveAvatarImages(
+  directory: string,
+  options: { extension?: string; looks?: readonly string[] } = {},
+): Record<string, string> {
+  const { extension = "webp", looks = expressiveAvatarLooks } = options;
+  const folder = directory.replace(/\/+$/, "");
+  const suffix = extension.replace(/^\./, "");
+  return Object.fromEntries(looks.map((look) => [look, `${folder}/${look}.${suffix}`]));
+}
 
-export const expressiveAvatarGrid = [
-  ["base-tile-00", "base-tile-00", "base-tile-01", "base-tile-02", "base-tile-00", "base-tile-00"],
-  ["base-tile-00", "base-tile-03", "base-tile-04", "base-tile-05", "base-tile-06", "base-tile-00"],
-  ["base-tile-00", "base-tile-07", "left-eye-base", "right-eye-base", "base-tile-08", "base-tile-00"],
-  ["base-tile-00", "base-tile-09", "mouth-rest-left", "mouth-rest-right", "base-tile-10", "base-tile-00"],
-  ["base-tile-11", "base-tile-12", "base-tile-13", "base-tile-14", "base-tile-15", "base-tile-16"],
-  ["base-tile-17", "base-tile-18", "base-tile-19", "base-tile-20", "base-tile-21", "base-tile-22"],
-] as const;
-
-export const expressiveAvatarHatIndices = [2, 3, 7, 8, 9, 10, 13, 14, 15, 16, 19, 20, 21, 22] as const;
-export const expressiveAvatarOutfitIndices = [24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35] as const;
-
-export const expressiveAvatarHats: Record<ExpressiveAvatarHat, string[]> = {
-  none: Array(14).fill("hat-empty"),
-  "la-cap": [
-    "la-cap-slot-02", "la-cap-slot-03", "la-cap-slot-07", "la-cap-slot-08", "la-cap-slot-09", "la-cap-slot-10",
-    "la-cap-slot-13", "la-cap-slot-14", "la-cap-slot-15", "la-cap-slot-16", "la-cap-slot-19", "hat-empty",
-    "hat-empty", "la-cap-slot-22",
-  ],
-  "batman-mask": [
-    "batman-mask-slot-02", "batman-mask-slot-03", "batman-mask-slot-07", "batman-mask-slot-08", "batman-mask-slot-09", "batman-mask-slot-10",
-    "batman-mask-slot-13", "batman-mask-slot-14", "batman-mask-slot-15", "batman-mask-slot-16", "batman-mask-slot-19", "batman-mask-slot-20",
-    "batman-mask-slot-21", "batman-mask-slot-22",
-  ],
+export type ExpressiveAvatarImageReport = {
+  /** True when the set can be used as it is: it has `base`, and every image is the same square. */
+  ok: boolean;
+  /** Whether `base`, the fallback and the only one required, is there. */
+  hasBase: boolean;
+  /** The built-in looks the set has an image for, in the order of `expressiveAvatarLooks`. */
+  looks: string[];
+  /** The built-in looks without one: they show `base`. */
+  missing: string[];
+  /** Names that are not built-ins: the expressions you made up. */
+  custom: string[];
+  /** Images that are not square. */
+  notSquare: string[];
+  /** The distinct sizes found, as `width×height`. More than one means the face would jump when it changes. */
+  sizes: string[];
 };
 
-export const expressiveAvatarOutfits: Record<ExpressiveAvatarOutfit, string[]> = {
-  base: [
-    "base-tile-11", "base-tile-12", "base-tile-13", "base-tile-14", "base-tile-15", "base-tile-16",
-    "base-tile-17", "base-tile-18", "base-tile-19", "base-tile-20", "base-tile-21", "base-tile-22",
-  ],
-  "sweater-alt": [
-    "sweater-alt-tile-11", "sweater-alt-tile-12", "sweater-alt-tile-13", "sweater-alt-tile-14", "sweater-alt-tile-15", "base-tile-16",
-    "sweater-alt-tile-17", "sweater-alt-tile-18", "sweater-alt-tile-19", "sweater-alt-tile-20", "sweater-alt-tile-21", "sweater-alt-tile-22",
-  ],
-  batman: [
-    "batman-tile-11", "batman-tile-12", "batman-tile-13", "batman-tile-14", "batman-tile-15", "batman-tile-16",
-    "batman-tile-17", "batman-tile-18", "batman-tile-19", "batman-tile-20", "batman-tile-21", "batman-tile-22",
-  ],
-};
-
-export const expressiveAvatarLeftEyeTiles: Record<ExpressiveAvatarDirection | "blink", string> = {
-  base: "left-eye-base",
-  "top-left": "left-eye-top-left",
-  top: "left-eye-top",
-  "top-right": "left-eye-top-right",
-  left: "left-eye-left",
-  right: "left-eye-right",
-  "bottom-left": "left-eye-bottom-left",
-  bottom: "left-eye-bottom",
-  "bottom-right": "left-eye-bottom-right",
-  blink: "left-eye-blink",
-};
-
-export const expressiveAvatarRightEyeTiles: Record<ExpressiveAvatarDirection | "blink" | "wink", string> = {
-  base: "right-eye-base",
-  "top-left": "right-eye-top-left",
-  top: "right-eye-top",
-  "top-right": "right-eye-top-right",
-  left: "right-eye-left",
-  right: "right-eye-right",
-  "bottom-left": "right-eye-bottom-left",
-  bottom: "right-eye-bottom",
-  "bottom-right": "right-eye-bottom-right",
-  blink: "right-eye-blink",
-  wink: "right-eye-wink",
-};
-
-export const expressiveAvatarMouthLeftTiles: Record<ExpressiveAvatarMouth, string> = {
-  default: "mouth-rest-left",
-  neutral: "neutral-slight-open-left",
-  closed: "closed-m-b-p-left",
-  a: "a-wide-open-left",
-  e: "e-mid-open-left",
-  i: "i-tight-stretched-left",
-  o: "o-rounded-left",
-  u: "u-tight-rounded-left",
-  smile: "smile-left",
-};
-
-export const expressiveAvatarMouthRightTiles: Record<ExpressiveAvatarMouth, string> = {
-  default: "mouth-rest-right",
-  neutral: "neutral-slight-open-right",
-  closed: "closed-m-b-p-right",
-  a: "a-wide-open-right",
-  e: "e-mid-open-right",
-  i: "i-tight-stretched-right",
-  o: "o-rounded-right",
-  u: "u-tight-rounded-right",
-  smile: "smile-right",
-};
+/** Checks a set of images (by name, with their pixel size) against what a face needs. */
+export function checkExpressiveAvatarImages(images: Readonly<Record<string, { width: number; height: number }>>): ExpressiveAvatarImageReport {
+  const names = Object.keys(images);
+  const builtIn = new Set<string>(expressiveAvatarLooks);
+  const looks = expressiveAvatarLooks.filter((look) => look in images);
+  const notSquare = names.filter((name) => images[name]!.width !== images[name]!.height);
+  const sizes = [...new Set(names.map((name) => `${images[name]!.width}×${images[name]!.height}`))];
+  const hasBase = "base" in images;
+  return {
+    ok: hasBase && notSquare.length === 0 && sizes.length === 1,
+    hasBase,
+    looks,
+    missing: expressiveAvatarLooks.filter((look) => !(look in images)),
+    custom: names.filter((name) => !builtIn.has(name)),
+    notSquare,
+    sizes,
+  };
+}
 
 export const expressiveAvatarParts = {
   root: "sk-expressive-avatar",
-  grid: "sk-expressive-avatar__grid",
-  tile: "sk-expressive-avatar__tile",
   image: "sk-expressive-avatar__image",
   host: "sk-expressive-avatar-host",
   bubble: "sk-expressive-avatar__bubble",
@@ -142,107 +123,40 @@ export const expressiveAvatarContract = {
   category: "content",
   css: "@skryensya/core/components/expressive-avatar.css",
   parts: expressiveAvatarParts,
-  hooks: [
-    "--sk-expressive-avatar-size",
-    "--sk-expressive-avatar-scale",
-    "--sk-expressive-avatar-bg",
-  ],
+  hooks: ["--sk-expressive-avatar-size", "--sk-expressive-avatar-bg", "--sk-expressive-avatar-image-rendering"],
   options: {
-    mode: { type: "enum", values: ["pixel", "image"], default: "pixel", attr: "data-mode" },
     name: { type: "string", attr: "aria-label" },
     size: { type: "enum", values: ["sm", "md", "lg", "xl"], default: "md", attr: "data-size" },
     appearance: { type: "enum", values: ["plain", "brutalist"], default: "plain", attr: "data-appearance" },
-    direction: {
-      type: "enum",
-      values: [
-        "base",
-        "top-left",
-        "top",
-        "top-right",
-        "left",
-        "right",
-        "bottom-left",
-        "bottom",
-        "bottom-right",
-      ],
-      default: "base",
-      attr: "data-direction",
-    },
-    mouth: {
-      type: "enum",
-      values: ["default", "neutral", "closed", "a", "e", "i", "o", "u", "smile"],
-      default: "default",
-      attr: "data-mouth",
-    },
-    outfit: { type: "enum", values: ["base", "sweater-alt", "batman"], default: "base", attr: "data-outfit" },
-    hat: { type: "enum", values: ["none", "la-cap", "batman-mask"], default: "none", attr: "data-hat" },
+    /** The look on show, by name: a built-in (`smile`, `top-left`...) or any name that has an image. */
+    expression: { type: "string", default: "base", attr: "data-expression" },
+    /** The image of the face. In React, `images` gives one per expression and this is the one-image shorthand. */
+    src: { type: "string", attr: "src" },
+    loading: { type: "enum", values: ["eager", "lazy"], default: "lazy", attr: "loading" },
+    decoding: { type: "enum", values: ["async", "auto", "sync"], default: "async", attr: "decoding" },
   },
   signatures: {
     ExpressiveAvatar: {
       intent: ["expressive-identity", "reactive-avatar", "character-portrait"],
       host: { element: "span" },
-      options: ["mode", "name", "size", "appearance", "direction", "mouth", "outfit", "hat"],
-      requires: ["name"],
+      options: ["name", "size", "appearance", "expression", "src", "loading", "decoding"],
+      requires: ["name", "src"],
       slots: {},
-      template: { element: "span", part: "root", host: true, attrs: { role: "img" } },
+      template: {
+        element: "span",
+        part: "root",
+        host: true,
+        attrs: { role: "img" },
+        children: [
+          {
+            element: "img",
+            part: "image",
+            attrs: { alt: "", "aria-hidden": "true" },
+            options: ["src", "loading", "decoding"],
+          },
+        ],
+      },
       react: { from: "@skryensya/react/expressive-avatar", name: "ExpressiveAvatar" },
     },
   },
 } as const satisfies ComponentContract;
-
-/**
- * A TILESET: one image, a grid of equal cells, and the names of what is in them. The tile `names[i]` is at
- * column `i % columns`, row `floor(i / columns)`. The bundled one is `expressiveAvatarAtlasLayout`
- * (`@skryensya/core/expressive-avatar-atlas`); one of your own keeps those names in that order for what it
- * replaces and may add more after them, which is how a face gets a look it did not have.
- */
-export type ExpressiveAvatarTileset = {
-  /** The image. Omitted, the stylesheet's `--sk-expressive-avatar-atlas` is used (the bundled tileset). */
-  src?: string;
-  /** Pixels of one cell in the image. Default 25. */
-  tileSize?: number;
-  columns: number;
-  names: readonly string[];
-};
-
-/** Where a tile is in a tileset's grid, or null when the tileset has no tile of that name. */
-export function expressiveAvatarTilePosition(tileset: Pick<ExpressiveAvatarTileset, "columns" | "names">, name: string): { column: number; row: number } | null {
-  const index = tileset.names.indexOf(name);
-  return index < 0 ? null : { column: index % tileset.columns, row: Math.floor(index / tileset.columns) };
-}
-
-/**
- * Every tile a face needs to be drawn at all: the head and body of the grid, and the left and right
- * halves of each look of the eyes and each shape of the mouth. A sheet that has these can show every
- * expression; outfits and hats are extras on top.
- */
-export const expressiveAvatarRequiredTiles: readonly string[] = [
-  ...new Set([
-    ...expressiveAvatarGrid.flat(),
-    ...Object.values(expressiveAvatarLeftEyeTiles),
-    ...Object.values(expressiveAvatarRightEyeTiles),
-    ...Object.values(expressiveAvatarMouthLeftTiles),
-    ...Object.values(expressiveAvatarMouthRightTiles),
-  ]),
-];
-
-export type ExpressiveAvatarTilesetReport = {
-  /** True when nothing a face needs is missing. */
-  ok: boolean;
-  /** Required tiles the sheet does not have. */
-  missing: string[];
-  /** Outfits the sheet draws completely (`base` is the body in the required tiles). */
-  outfits: string[];
-  /** Hats the sheet draws completely. */
-  hats: string[];
-};
-
-/** Checks the names a tileset provides against what a face needs. */
-export function checkExpressiveAvatarTileset(ids: Iterable<string>): ExpressiveAvatarTilesetReport {
-  const have = new Set(ids);
-  const missing = expressiveAvatarRequiredTiles.filter((name) => !have.has(name));
-  const complete = (tiles: readonly string[]) => tiles.every((name) => have.has(name));
-  const outfits = (Object.keys(expressiveAvatarOutfits) as ExpressiveAvatarOutfit[]).filter((name) => name === "base" || complete(expressiveAvatarOutfits[name]));
-  const hats = (Object.keys(expressiveAvatarHats) as ExpressiveAvatarHat[]).filter((name) => name === "none" || complete(expressiveAvatarHats[name]));
-  return { ok: missing.length === 0, missing, outfits, hats };
-}

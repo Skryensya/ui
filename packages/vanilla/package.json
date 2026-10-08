@@ -85,10 +85,6 @@
       "types": "./src/components/back-to-top.ts",
       "default": "./src/components/back-to-top.ts"
     },
-    "./expressive-avatar": {
-      "types": "./src/components/expressive-avatar.ts",
-      "default": "./src/components/expressive-avatar.ts"
-    },
     "./button": {
       "types": "./src/components/button.ts",
       "default": "./src/components/button.ts"
@@ -153,13 +149,13 @@
       "types": "./src/components/carousel.ts",
       "default": "./src/components/carousel.ts"
     },
-    "./resizable": {
-      "types": "./src/components/resizable.ts",
-      "default": "./src/components/resizable.ts"
-    },
     "./loader": {
       "types": "./src/components/loader.ts",
       "default": "./src/components/loader.ts"
+    },
+    "./resizable": {
+      "types": "./src/components/resizable.ts",
+      "default": "./src/components/resizable.ts"
     },
     "./marquee": {
       "types": "./src/components/marquee.ts",

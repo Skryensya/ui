@@ -76,10 +76,6 @@
       "types": "./src/expressive-avatar-behavior.ts",
       "default": "./src/expressive-avatar-behavior.ts"
     },
-    "./expressive-avatar-atlas": {
-      "types": "./src/expressive-avatar-atlas.ts",
-      "default": "./src/expressive-avatar-atlas.ts"
-    },
     "./avatar": {
       "types": "./src/avatar.ts",
       "default": "./src/avatar.ts"
@@ -100,13 +96,13 @@
       "types": "./src/comparison-table.ts",
       "default": "./src/comparison-table.ts"
     },
-    "./resizable": {
-      "types": "./src/resizable.ts",
-      "default": "./src/resizable.ts"
-    },
     "./description-list": {
       "types": "./src/description-list.ts",
       "default": "./src/description-list.ts"
+    },
+    "./resizable": {
+      "types": "./src/resizable.ts",
+      "default": "./src/resizable.ts"
     },
     "./separator": {
       "types": "./src/separator.ts",

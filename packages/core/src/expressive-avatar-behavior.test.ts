@@ -168,83 +168,59 @@ describe("createExpressiveAvatarSpeaker", () => {
   });
 });
 
-import { checkExpressiveAvatarTileset, expressiveAvatarRequiredTiles, expressiveAvatarTilePosition } from "./expressive-avatar.js";
-import { expressiveAvatarAtlasLayout } from "./expressive-avatar-atlas.js";
+import { checkExpressiveAvatarImages, expressiveAvatarImages, expressiveAvatarLooks } from "./expressive-avatar.js";
+import { createExpressiveAvatarController } from "./expressive-avatar-behavior.js";
 
-describe("checkExpressiveAvatarTileset", () => {
-  it("accepts the bundled sheet for everything a face needs, and finds the outfits it did not draw", () => {
-    const report = checkExpressiveAvatarTileset(expressiveAvatarAtlasLayout.names);
-    expect(report.ok).toBe(true);
-    expect(report.outfits).toEqual(["base"]);
-    expect(report.hats).toEqual(["none"]);
+describe("expressiveAvatarImages", () => {
+  it("names one image per look after the look, in a folder", () => {
+    const images = expressiveAvatarImages("/avatars/ada");
+    expect(Object.keys(images)).toEqual([...expressiveAvatarLooks]);
+    expect(images.base).toBe("/avatars/ada/base.webp");
+    expect(images["top-left"]).toBe("/avatars/ada/top-left.webp");
+    expect(images.smile).toBe("/avatars/ada/smile.webp");
   });
 
-  it("names what is missing", () => {
-    const ids = expressiveAvatarRequiredTiles.filter((name) => name !== "right-eye-wink" && name !== "a-wide-open-left");
-    const report = checkExpressiveAvatarTileset(ids);
-    expect(report.ok).toBe(false);
-    expect(report.missing).toEqual(["right-eye-wink", "a-wide-open-left"].sort((a, b) => expressiveAvatarRequiredTiles.indexOf(a) - expressiveAvatarRequiredTiles.indexOf(b)));
-  });
-});
-
-import { expressiveAvatarExpressionFor } from "./expressive-avatar-behavior.js";
-
-describe("expressiveAvatarExpressionFor", () => {
-  it("reads the mouth first, then the blink and the wink, then the gaze", () => {
-    expect(expressiveAvatarExpressionFor({ leftEye: "base", rightEye: "base", mouth: "a", expression: null })).toBe("a");
-    expect(expressiveAvatarExpressionFor({ leftEye: "blink", rightEye: "blink", mouth: "smile", expression: null })).toBe("smile");
-    expect(expressiveAvatarExpressionFor({ leftEye: "base", rightEye: "wink", mouth: "default", expression: null })).toBe("wink");
-    expect(expressiveAvatarExpressionFor({ leftEye: "blink", rightEye: "blink", mouth: "default", expression: null })).toBe("blink");
-    expect(expressiveAvatarExpressionFor({ leftEye: "top-left", rightEye: "top-left", mouth: "default", expression: null })).toBe("top-left");
-  });
-});
-
-describe("the bundled tileset", () => {
-  it("has every tile a face needs, in a grid it fills", () => {
-    const { names, columns, rows } = expressiveAvatarAtlasLayout;
-    expect(checkExpressiveAvatarTileset(names).ok).toBe(true);
-    expect(names.length).toBeLessThanOrEqual(columns * rows);
-    expect(new Set(names).size).toBe(names.length);
-  });
-
-  it("finds a tile by its place in the grid", () => {
-    const { names, columns } = expressiveAvatarAtlasLayout;
-    expect(expressiveAvatarTilePosition({ names, columns }, names[0]!)).toEqual({ column: 0, row: 0 });
-    expect(expressiveAvatarTilePosition({ names, columns }, names[columns + 2]!)).toEqual({ column: 2, row: 1 });
-    expect(expressiveAvatarTilePosition({ names, columns }, "nope")).toBeNull();
-  });
-});
-
-import { createExpressiveAvatarController, expressiveAvatarTilesFor } from "./expressive-avatar-behavior.js";
-
-describe("expressions", () => {
-  const rest = { leftEye: "base", rightEye: "base", mouth: "default", expression: null } as const;
-
-  it("draws the face's own parts when nothing is asked for", () => {
-    expect(expressiveAvatarTilesFor(rest)).toEqual({
-      leftEye: "left-eye-base",
-      rightEye: "right-eye-base",
-      mouthLeft: "mouth-rest-left",
-      mouthRight: "mouth-rest-right",
+  it("takes the extension, ignores a trailing slash, and lists only the looks you drew", () => {
+    expect(expressiveAvatarImages("/ada/", { extension: ".png", looks: ["base", "astonished"] })).toEqual({
+      base: "/ada/base.png",
+      astonished: "/ada/astonished.png",
     });
   });
 
-  it("lays a built-in over only the parts it names", () => {
-    const tiles = expressiveAvatarTilesFor({ ...rest, expression: "smile" });
-    expect(tiles.mouthLeft).toBe("smile-left");
-    expect(tiles.leftEye).toBe("left-eye-base");
-    expect(expressiveAvatarTilesFor({ ...rest, expression: "wink" }).rightEye).toBe("right-eye-wink");
+  it("has nineteen looks, each once, and `base` among them", () => {
+    expect(expressiveAvatarLooks).toHaveLength(19);
+    expect(new Set(expressiveAvatarLooks).size).toBe(19);
+    expect(expressiveAvatarLooks).toContain("base");
+  });
+});
+
+describe("checkExpressiveAvatarImages", () => {
+  const size = { width: 250, height: 250 };
+
+  it("accepts a full set of one square size", () => {
+    const report = checkExpressiveAvatarImages(Object.fromEntries(expressiveAvatarLooks.map((look) => [look, size])));
+    expect(report).toMatchObject({ ok: true, hasBase: true, missing: [], custom: [], notSquare: [], sizes: ["250×250"] });
   });
 
-  it("lays one of your own over the face, and it wins over a built-in of the same name", () => {
-    const custom = { surprised: { leftEye: "left-eye-top", rightEye: "right-eye-top", mouthLeft: "o-rounded-left", mouthRight: "o-rounded-right" }, smile: { mouthLeft: "x-left" } };
-    const tiles = expressiveAvatarTilesFor({ ...rest, mouth: "a", expression: "surprised" }, custom);
-    expect(tiles).toEqual({ leftEye: "left-eye-top", rightEye: "right-eye-top", mouthLeft: "o-rounded-left", mouthRight: "o-rounded-right" });
-    expect(expressiveAvatarTilesFor({ ...rest, expression: "smile" }, custom).mouthLeft).toBe("x-left");
+  it("is happy with `base` alone, and says what will fall back to it", () => {
+    const report = checkExpressiveAvatarImages({ base: size });
+    expect(report.ok).toBe(true);
+    expect(report.looks).toEqual(["base"]);
+    expect(report.missing).toHaveLength(18);
   });
 
-  it("ignores a name nobody defined", () => {
-    expect(expressiveAvatarTilesFor({ ...rest, expression: "nope" }).leftEye).toBe("left-eye-base");
+  it("needs `base`, because it is what every other look falls back to", () => {
+    expect(checkExpressiveAvatarImages({ smile: size }).ok).toBe(false);
+    expect(checkExpressiveAvatarImages({ smile: size }).hasBase).toBe(false);
+  });
+
+  it("names the expressions you made up, the images that are not square and mixed sizes", () => {
+    const report = checkExpressiveAvatarImages({ base: size, astonished: size, wide: { width: 300, height: 200 } });
+    expect(report.custom).toEqual(["astonished", "wide"]);
+    expect(report.notSquare).toEqual(["wide"]);
+    expect(report.sizes).toEqual(["250×250", "300×200"]);
+    expect(report.ok).toBe(false);
+    expect(checkExpressiveAvatarImages({ base: size, smile: { width: 320, height: 320 } }).ok).toBe(false);
   });
 });
 
@@ -259,7 +235,7 @@ describe("the controller's express()", () => {
   });
 
   const make = () => {
-    const faces: { expression: string | null }[] = [];
+    const faces: { look: string; expression: string | null }[] = [];
     const controller = createExpressiveAvatarController({
       onChange: (face) => faces.push(face),
       getRect: () => ({ left: 0, top: 0, width: 100, height: 100, right: 100, bottom: 100 }),
@@ -283,6 +259,22 @@ describe("the controller's express()", () => {
     expect(faces.at(-1)!.expression).toBe("smile");
     vi.advanceTimersByTime(2);
     expect(faces.at(-1)!.expression).toBeNull();
+    controller.destroy();
+  });
+
+  it("is in ONE look at a time: the gaze at rest, the mouth when it speaks", () => {
+    const { controller, faces } = make();
+    controller.setMouth("a");
+    expect(faces.at(-1)!.look).toBe("a");
+    controller.setMouth("default");
+    expect(faces.at(-1)!.look).toBe("base");
+    controller.destroy();
+  });
+
+  it("shows the smile of a celebration as its look", () => {
+    const { controller, faces } = make();
+    controller.celebrate();
+    expect(faces.at(-1)!.look).toBe("smile");
     controller.destroy();
   });
 });

@@ -3,43 +3,32 @@
  *
  * Ported as it was in allison.sh's own avatar (`avatar-client.ts`, `speech-bubble.ts`), without the
  * page it lived in: no `querySelector`, no `localStorage`, no analytics. What it takes is a rectangle
- * and some pointer coordinates; what it gives back is WHICH TILE each moving part should show. A
- * binding draws them. That split is what lets one behaviour drive a React tree today and authored HTML
+ * and some pointer coordinates; what it gives back is WHICH LOOK the face is in, by name, and a
+ * binding shows the image that has that name. That split is what lets one behaviour drive a React tree today and authored HTML
  * later, the same way `paginationRange` or a Zag machine does for the families that have one.
  *
  * Timers are the browser's own (`window.setTimeout`): the controller is made and used inside an effect,
  * never during render, so nothing here runs on a server.
  */
 import {
-  expressiveAvatarGrid,
-  expressiveAvatarHatIndices,
-  expressiveAvatarHats,
-  expressiveAvatarLeftEyeTiles,
-  expressiveAvatarMouthLeftTiles,
-  expressiveAvatarMouthRightTiles,
-  expressiveAvatarOutfitIndices,
-  expressiveAvatarOutfits,
-  expressiveAvatarRightEyeTiles,
-  expressiveAvatarTilePosition,
   type ExpressiveAvatarDirection,
-  type ExpressiveAvatarHat,
+  type ExpressiveAvatarLook,
   type ExpressiveAvatarMouth,
-  type ExpressiveAvatarOutfit,
-  type ExpressiveAvatarTileset,
 } from "./expressive-avatar.js";
-
-export type ExpressiveAvatarLeftEye = ExpressiveAvatarDirection | "blink";
-export type ExpressiveAvatarRightEye = ExpressiveAvatarDirection | "blink" | "wink";
 
 /** The speech mouth shapes a phrase can ask for (`default` is the resting mouth, `smile` is the celebration). */
 export const expressiveAvatarSpeechMouths = ["neutral", "closed", "a", "e", "i", "o", "u"] as const;
 export type ExpressiveAvatarSpeechMouth = (typeof expressiveAvatarSpeechMouths)[number];
 
-/** What a binding draws: one tile per moving part. */
+/**
+ * What a binding shows: ONE look, by name. The controller keeps the moving parts apart (a gaze, a blink,
+ * a mouth), but a face with an image per state is in one at a time: it looks straight ahead while it
+ * speaks or smiles, and it blinks or winks in place of its gaze. So the look is the mouth when it is not
+ * at rest (a vowel, a closed lip, the smile), else the wink or the blink, else the gaze. A blink in the
+ * middle of a word is skipped: the mouth is what is read then.
+ */
 export type ExpressiveAvatarFace = {
-  leftEye: ExpressiveAvatarLeftEye;
-  rightEye: ExpressiveAvatarRightEye;
-  mouth: ExpressiveAvatarMouth;
+  look: ExpressiveAvatarLook;
   /** The expression that was asked for by name and is on now, or null when the face is running on its own. */
   expression: string | null;
 };
@@ -100,122 +89,6 @@ export function expressiveAvatarDirectionFor(rect: Rect, x: number, y: number, f
   }
 
   return `${vertical}-${horizontal}` as ExpressiveAvatarDirection;
-}
-
-/**
- * The ONE look a face is in, for a renderer that has an image per state instead of independent parts.
- * The controller keeps the parts apart (a gaze, a blink, a mouth), but they are nearly exclusive in
- * practice: it looks straight ahead while it speaks or smiles, and it blinks or winks in place of its
- * gaze. So a state is the mouth when it is not at rest (a vowel, a closed lip, the smile), else the blink
- * or the wink, else the gaze. (A blink in the middle of a word is skipped: the mouth is what is read then.)
- */
-export function expressiveAvatarExpressionFor(face: ExpressiveAvatarFace): ExpressiveAvatarMouth | ExpressiveAvatarDirection | "blink" | "wink" {
-  if (face.mouth !== "default") return face.mouth;
-  if (face.rightEye === "wink") return "wink";
-  if (face.leftEye === "blink") return "blink";
-  return face.leftEye;
-}
-
-/* ── Expressions: a name for a set of tiles ───────────────────────────────────────────────────── */
-
-/**
- * AN EXPRESSION is a name for some tiles to show. It overrides only the parts it names (an eye, both,
- * a mouth half) and leaves the rest of the face to what it was doing: a "surprised" that sets the eyes
- * and the mouth shape still blinks never (its eyes are pinned) but a "thinking" that sets only the eyes
- * lets the mouth go on speaking. A tile is named as the sheet names it, without the `avatar-sprite-` prefix.
- *
- * Every look the face already has is one of these (`smile`, `wink`, `a`, `top-left`...), so asking for a
- * built-in and asking for one you made are the same thing.
- */
-export type ExpressiveAvatarExpressionDefinition = {
-  leftEye?: string;
-  rightEye?: string;
-  mouthLeft?: string;
-  mouthRight?: string;
-};
-
-export type ExpressiveAvatarExpressions = Readonly<Record<string, ExpressiveAvatarExpressionDefinition>>;
-
-/** The looks the face has from the start, as expressions: nine gazes, blink, wink, eight mouths. */
-export const expressiveAvatarBuiltInExpressions: ExpressiveAvatarExpressions = {
-  ...Object.fromEntries(
-    expressiveAvatarDirections.map((direction) => [
-      direction,
-      { leftEye: expressiveAvatarLeftEyeTiles[direction], rightEye: expressiveAvatarRightEyeTiles[direction] },
-    ]),
-  ),
-  blink: { leftEye: expressiveAvatarLeftEyeTiles.blink, rightEye: expressiveAvatarRightEyeTiles.blink },
-  wink: { leftEye: expressiveAvatarLeftEyeTiles.base, rightEye: expressiveAvatarRightEyeTiles.wink },
-  ...Object.fromEntries(
-    (Object.keys(expressiveAvatarMouthLeftTiles) as ExpressiveAvatarMouth[])
-      .filter((mouth) => mouth !== "default")
-      .map((mouth) => [mouth, { mouthLeft: expressiveAvatarMouthLeftTiles[mouth], mouthRight: expressiveAvatarMouthRightTiles[mouth] }]),
-  ),
-};
-
-export type ExpressiveAvatarTiles = { leftEye: string; rightEye: string; mouthLeft: string; mouthRight: string };
-
-/**
- * The four moving tiles to draw: what the face is doing on its own (its gaze, its blink, the mouth of a
- * speech), then the named expression laid over it, part by part. `custom` adds to the built-ins and wins on
- * a name they share.
- */
-export function expressiveAvatarTilesFor(face: ExpressiveAvatarFace, custom: ExpressiveAvatarExpressions = {}): ExpressiveAvatarTiles {
-  const own: ExpressiveAvatarTiles = {
-    leftEye: expressiveAvatarLeftEyeTiles[face.leftEye],
-    rightEye: expressiveAvatarRightEyeTiles[face.rightEye],
-    mouthLeft: expressiveAvatarMouthLeftTiles[face.mouth],
-    mouthRight: expressiveAvatarMouthRightTiles[face.mouth],
-  };
-  const named = face.expression ? (custom[face.expression] ?? expressiveAvatarBuiltInExpressions[face.expression]) : undefined;
-  return named ? { ...own, ...Object.fromEntries(Object.entries(named).filter(([, tile]) => tile)) } : own;
-}
-
-/** One cell of the face: where the tileset sits behind it, and where the hat layer does. */
-export type ExpressiveAvatarCell = { column: number; row: number; hatColumn: number; hatRow: number };
-
-/**
- * PIXEL MODE, every cell of the face. The face is 36 windows onto one image, and a tile is shown by where
- * the image sits behind its window, so this is the whole drawing: both bindings write these positions and
- * nothing else. An outfit the tileset has not drawn falls back to the base body, tile by tile; a hat it has
- * not drawn shows nothing.
- */
-export function expressiveAvatarCells(
-  face: ExpressiveAvatarFace,
-  options: {
-    outfit: ExpressiveAvatarOutfit;
-    hat: ExpressiveAvatarHat;
-    tileset: Pick<ExpressiveAvatarTileset, "columns" | "names">;
-    expressions?: ExpressiveAvatarExpressions;
-  },
-): ExpressiveAvatarCell[] {
-  const { tileset } = options;
-  const position = (name: string) => expressiveAvatarTilePosition(tileset, name);
-  const has = (name: string) => tileset.names.includes(name);
-  const empty = position("hat-empty") ?? { column: 0, row: 0 };
-  const moving = expressiveAvatarTilesFor(face, options.expressions);
-  const outfitIndices = new Set<number>(expressiveAvatarOutfitIndices as readonly number[]);
-  const hatIndices = new Set<number>(expressiveAvatarHatIndices as readonly number[]);
-  const hatTiles = expressiveAvatarHats[options.hat] ?? expressiveAvatarHats.none;
-  const outfitTiles = expressiveAvatarOutfits[options.outfit] ?? expressiveAvatarOutfits.base;
-  let hatSlot = 0;
-  let outfitSlot = 0;
-
-  return expressiveAvatarGrid.flat().map((baseName, index) => {
-    let tileName: string = baseName;
-    if (baseName === "left-eye-base") tileName = moving.leftEye;
-    else if (baseName === "right-eye-base") tileName = moving.rightEye;
-    else if (baseName === "mouth-rest-left") tileName = moving.mouthLeft;
-    else if (baseName === "mouth-rest-right") tileName = moving.mouthRight;
-    else if (outfitIndices.has(index)) {
-      const wanted = outfitTiles[outfitSlot++] ?? tileName;
-      tileName = has(wanted) ? wanted : tileName;
-    }
-    const hatName = hatIndices.has(index) ? (hatTiles[hatSlot++] ?? "hat-empty") : "hat-empty";
-    const at = position(tileName) ?? empty;
-    const over = has(hatName) ? (position(hatName) ?? empty) : empty;
-    return { column: at.column, row: at.row, hatColumn: over.column, hatRow: over.row };
-  });
 }
 
 /* ── Speech: from text to mouth shapes ─────────────────────────────────────────────────────────── */
@@ -558,15 +431,11 @@ export function createExpressiveAvatarController({ onChange, getRect, supportsFi
     const interactive = !isSpeaking && !isSmiling && hasPointer && (isHovered || performance.now() < forceTrackUntil);
     const gaze = interactive ? direction : speakingDirection;
 
-    let face: ExpressiveAvatarFace;
-    if (isBlinking) face = { leftEye: "blink", rightEye: "blink", mouth, expression: pinned };
-    else if (isWinking) face = { leftEye: "base", rightEye: "wink", mouth, expression: pinned };
-    else {
-      const target = started ? gaze : "base";
-      face = { leftEye: target, rightEye: target, mouth, expression: pinned };
-    }
+    const look: ExpressiveAvatarLook =
+      mouth !== "default" ? mouth : isBlinking ? "blink" : isWinking ? "wink" : started ? gaze : "base";
+    const face: ExpressiveAvatarFace = { look, expression: pinned };
 
-    const key = `${face.leftEye}|${face.rightEye}|${face.mouth}|${face.expression ?? ""}`;
+    const key = `${face.look}|${face.expression ?? ""}`;
     if (key === last) return;
     last = key;
     onChange(face);

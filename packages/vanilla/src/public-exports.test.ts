@@ -1,7 +1,6 @@
 import { mountAccordion } from "@skryensya/vanilla/accordion";
 import { mountAnnotated } from "@skryensya/vanilla/annotation";
 import { mountBackToTop } from "@skryensya/vanilla/back-to-top";
-import { mountExpressiveAvatar } from "@skryensya/vanilla/expressive-avatar";
 import { mountCanvas } from "@skryensya/vanilla/canvas";
 import { mountDialog } from "@skryensya/vanilla/dialog";
 import { mountLightbox } from "@skryensya/vanilla/lightbox";
@@ -32,8 +31,8 @@ import { mountFeed } from "@skryensya/vanilla/feed";
 import { mountFolder } from "@skryensya/vanilla/folder";
 import { mountInput } from "@skryensya/vanilla/input";
 import { mountLoader } from "@skryensya/vanilla/loader";
-import { mountResizable } from "@skryensya/vanilla/resizable";
 import { mountMarquee } from "@skryensya/vanilla/marquee";
+import { mountResizable } from "@skryensya/vanilla/resizable";
 import { mountMegamenu } from "@skryensya/vanilla/megamenu";
 import { mountMenu } from "@skryensya/vanilla/menu";
 import { mountMenubar } from "@skryensya/vanilla/menubar";
@@ -88,7 +87,6 @@ const mounts = [
   mountAnnotated,
   mountAppBar,
   mountBackToTop,
-  mountExpressiveAvatar,
   mountBreadcrumb,
   mountButton,
   mountCalendar,
@@ -125,9 +123,9 @@ const mounts = [
   mountNavListGroup,
   mountNumberField,
   mountOtpInput,
-  mountResizable,
   mountPasswordInput,
   mountRating,
+  mountResizable,
   mountSegmented,
   mountSelect,
   mountUserSelect,
@@ -199,7 +197,6 @@ describe("Vanilla public entry points", () => {
         mountAnnotated,
         mountAppBar,
         mountBackToTop,
-        mountExpressiveAvatar,
         mountBreadcrumb,
         mountButton,
         mountCalendar,
@@ -235,10 +232,10 @@ describe("Vanilla public entry points", () => {
         mountMeter,
         mountNavListGroup,
         mountNumberField,
-        mountResizable,
         mountOtpInput,
         mountPasswordInput,
         mountRating,
+        mountResizable,
         mountSegmented,
         mountSelect,
         mountUserSelect,

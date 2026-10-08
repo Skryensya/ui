@@ -43,11 +43,6 @@ const registrations: readonly Registration[] = [
     load: async () => (await import("../components/input.js")).mountInput,
   },
   {
-    /* A pixel face is drawn, not authored: the root arrives empty and this fills in its cells. */
-    selector: ".sk-expressive-avatar:not([data-mode=\"image\"])",
-    load: async () => (await import("../components/expressive-avatar.js")).mountExpressiveAvatar,
-  },
-  {
     selector: "[data-sk-back-to-top]",
     load: async () => (await import("../components/back-to-top.js")).mountBackToTop,
   },
@@ -120,14 +115,14 @@ const registrations: readonly Registration[] = [
   {
     selector: "[data-sk-tags-input]",
     load: async () => (await import("../components/tags-input.js")).mountTagsInput,
-  {
-    selector: "[data-sk-resizable]",
-    load: async () => (await import("../components/resizable.js")).mountResizable,
-  },
   },
   {
     selector: "[data-sk-carousel]",
     load: async () => (await import("../components/carousel.js")).mountCarousel,
+  },
+  {
+    selector: "[data-sk-resizable]",
+    load: async () => (await import("../components/resizable.js")).mountResizable,
   },
   {
     selector: "[data-sk-marquee]",

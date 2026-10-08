@@ -3,5 +3,27 @@
 # `surface` es la forma del contrato la última vez que alguien la revisó. Si el compilador dice
 # que no coincide, algo de lo que un consumidor depende se movió: escribe la entrada y pega el
 # hash nuevo.
-surface: "605a40dfd792216f"
-entries: []
+surface: "affd63513dff3fe2"
+entries:
+  - date: 2026-10-07
+    kind: breaking
+    es:
+      title: ExpressiveAvatar es una imagen entera por expresión; se va el modo píxel
+      body: >-
+        La cara ya no se arma con baldosas: cada expresión es una imagen completa, y el componente solo elige
+        cuál mostrar. Se eliminan <code>mode</code>, <code>tileset</code>, <code>expressions</code>,
+        <code>outfit</code>, <code>hat</code>, <code>direction</code>, <code>mouth</code>, <code>blink</code> y
+        <code>wink</code>, el tileset incluido y su hoja de estilos, y el enlace de Vanilla. Pasa
+        <code>images</code> (o <code>src</code> para una sola imagen) y pide la mirada, el parpadeo o la boca con
+        <code>expression</code>. <code>expressiveAvatarImages("/carpeta")</code> arma el mapa de una carpeta con
+        una imagen por nombre. Una expresión nueva es un nombre más con su imagen.
+    en:
+      title: ExpressiveAvatar is one whole image per expression; pixel mode is gone
+      body: >-
+        The face is no longer assembled from tiles: each expression is a complete image, and the component only
+        picks which one to show. <code>mode</code>, <code>tileset</code>, <code>expressions</code>,
+        <code>outfit</code>, <code>hat</code>, <code>direction</code>, <code>mouth</code>, <code>blink</code> and
+        <code>wink</code> are removed, along with the bundled tileset and its stylesheet and the Vanilla binding.
+        Pass <code>images</code> (or <code>src</code> for a single image) and ask for the gaze, the blink or the
+        mouth with <code>expression</code>. <code>expressiveAvatarImages("/folder")</code> builds the map from a
+        folder with one image per name. A new expression is one more name with its image.

@@ -2,24 +2,15 @@ import {
   expressiveAvatarEvents,
   expressiveAvatarParts,
   type ExpressiveAvatarAppearance,
-  type ExpressiveAvatarDirection,
-  type ExpressiveAvatarHat,
-  type ExpressiveAvatarMode,
-  type ExpressiveAvatarMouth,
-  type ExpressiveAvatarOutfit,
+  type ExpressiveAvatarLook,
   type ExpressiveAvatarSize,
-  type ExpressiveAvatarTileset,
 } from "@skryensya/core/expressive-avatar";
-import { expressiveAvatarAtlasLayout } from "@skryensya/core/expressive-avatar-atlas";
 import {
   createExpressiveAvatarController,
   createExpressiveAvatarPhraseQueue,
   createExpressiveAvatarSpeaker,
   expressiveAvatarDisplayDuration,
-  expressiveAvatarExpressionFor,
-  expressiveAvatarCells,
   type ExpressiveAvatarController,
-  type ExpressiveAvatarExpressions,
   type ExpressiveAvatarFace,
   type ExpressiveAvatarPhrase,
   type ExpressiveAvatarPhraseCategory,
@@ -32,8 +23,6 @@ import {
   useImperativeHandle,
   useRef,
   useState,
-  type CSSProperties,
-  type ElementType,
   type HTMLAttributes,
   type ImgHTMLAttributes,
   type PointerEvent as ReactPointerEvent,
@@ -48,17 +37,16 @@ export type ExpressiveAvatarImageSource = Pick<
   "src" | "srcSet" | "sizes" | "width" | "height"
 >;
 
-/** A look by name: one of the built-ins, or any name you gave an expression or an image. */
-export type ExpressiveAvatarExpression = ExpressiveAvatarMouth | ExpressiveAvatarDirection | "blink" | "wink" | (string & {});
+/** A look by name: one of the built-ins (`smile`, `top-left`, `blink`...), or any name you gave an image. */
+export type ExpressiveAvatarExpression = ExpressiveAvatarLook | (string & {});
 
 export type ExpressiveAvatarVoices = Partial<Record<ExpressiveAvatarPhraseCategory, readonly string[]>>;
 
 /** What a page can ask an expressive avatar to do, from anywhere: a button, a timer, a form that failed. */
 export type ExpressiveAvatarApi = {
   /**
-   * Shows an expression by name (a built-in, or one in `expressions`, or an image key) until `duration` ms
-   * pass, or until it is asked for again or cleared. The face goes on looking, blinking and speaking in the
-   * parts the expression does not name.
+   * Shows an expression by name (a built-in, or any name that has an image) until `duration` ms pass, or
+   * until it is asked for again or cleared. A name with no image shows nothing new.
    */
   express: (name: string | null, options?: { duration?: number }) => void;
   /** Says something now, typed out with the mouth moving, instead of the next phrase in the queue. */
@@ -66,10 +54,25 @@ export type ExpressiveAvatarApi = {
 };
 
 export type ExpressiveAvatarProps = Omit<HTMLAttributes<HTMLSpanElement>, "children"> & {
+  /** Accessible identity name. */
+  name: string;
+  size?: ExpressiveAvatarSize;
+  appearance?: ExpressiveAvatarAppearance;
+  /**
+   * ONE WHOLE IMAGE PER EXPRESSION, keyed by name: the built-ins (`base`, the eight gazes, `blink`, `wink`,
+   * `a`, `e`, `i`, `o`, `u`, `closed`, `neutral`, `smile`) and any name of your own. `base` is the one it
+   * falls back to, and the only one it needs; a look with no image shows it. `expressiveAvatarImages()`
+   * (`@skryensya/core/expressive-avatar`) builds the map from a folder named after the looks.
+   */
+  images?: Readonly<Record<string, string | ExpressiveAvatarImageSource>>;
+  /** The face as one image: the same as `images={{ base: src }}`. `images` wins on a name they share. */
+  src?: string;
+  /** The look to show, by name. `base`, the default, asks for nothing. */
+  expression?: ExpressiveAvatarExpression;
   /**
    * Makes it alive: the eyes follow the pointer, it blinks on its own, and a click makes it speak the next
-   * of its `phrases`. The root becomes a button. The `direction`, `mouth`, `blink` and `wink` props are the
-   * static face and are ignored while it is alive.
+   * of its `phrases`. The root becomes a button, every image is loaded and stacked so a change of look is a
+   * switch and never a load, and `expression` still pins a look over what the face is doing.
    */
   interactive?: boolean;
   /** What it says, a click at a time: greetings first, then the general bag in a shuffled loop. */
@@ -80,47 +83,10 @@ export type ExpressiveAvatarProps = Omit<HTMLAttributes<HTMLSpanElement>, "child
   onSpeak?: (phrase: ExpressiveAvatarPhrase) => void;
   /** The handle for triggering expressions and speech from outside. */
   apiRef?: Ref<ExpressiveAvatarApi>;
-
-  /** Accessible identity name. */
-  name: string;
-  mode?: ExpressiveAvatarMode;
-  size?: ExpressiveAvatarSize;
-  appearance?: ExpressiveAvatarAppearance;
-  /**
-   * Pixel mode: your own tileset. ONE image, a grid of equal cells, and the names of what is in them, in
-   * order (`names[i]` is at column `i % columns`, row `floor(i / columns)`). Omit it for the bundled tileset
-   * (import `@skryensya/core/components/expressive-avatar-tileset.css` for its image).
-   */
-  tileset?: ExpressiveAvatarTileset;
-  /**
-   * Pixel mode: looks of your own. A name for tiles of your tileset, overriding only the parts it names
-   * (`leftEye`, `rightEye`, `mouthLeft`, `mouthRight`). Show one with `expression` or `apiRef`.
-   */
-  expressions?: ExpressiveAvatarExpressions;
-  direction?: ExpressiveAvatarDirection;
-  mouth?: ExpressiveAvatarMouth;
-  outfit?: ExpressiveAvatarOutfit;
-  hat?: ExpressiveAvatarHat;
-  wink?: boolean;
-  blink?: boolean;
-  /**
-   * The look to show, by name. In pixel mode it is laid over the face (see `expressions`); in image mode it
-   * picks an image. `base`, the default, asks for nothing.
-   */
-  expression?: ExpressiveAvatarExpression;
-  /**
-   * Image mode: one image per look, keyed by name: the built-ins (`base`, the eight gazes, `blink`, `wink`,
-   * `a`, `e`, `i`, `o`, `u`, `closed`, `neutral`, `smile`) and any name of your own. `base` is the one it
-   * falls back to. With `interactive` every image is loaded and stacked, so a change of look is a switch and
-   * never a load.
-   */
-  images?: Readonly<Record<string, string | ExpressiveAvatarImageSource>>;
 } & Pick<
   ImgHTMLAttributes<HTMLImageElement>,
   "crossOrigin" | "decoding" | "fetchPriority" | "loading" | "referrerPolicy"
 >;
-
-const bundledTileset: ExpressiveAvatarTileset = expressiveAvatarAtlasLayout;
 
 /*
  * THE LIVE FACE. One controller for the eyes and mouth, one speaker for the words; this hook owns their
@@ -316,182 +282,107 @@ function resolveImageSource(
 export function ExpressiveAvatar({
   apiRef,
   appearance = "plain",
-  blink = false,
   className,
   crossOrigin,
   decoding = "async",
-  direction = "base",
   expression = "base",
-  expressions,
   fetchPriority,
-  hat = "none",
   images,
   interactive = false,
   loading = "lazy",
-  mode = images ? "image" : "pixel",
-  mouth = "default",
   name,
   onSpeak,
-  outfit = "base",
   phrases,
   referrerPolicy,
   size = "md",
-  tileset = bundledTileset,
+  src,
   voices,
-  wink = false,
   ...props
 }: ExpressiveAvatarProps) {
   const alive = interactive;
   /* `base` asks for nothing. */
   const requested = expression === "base" ? null : expression;
   const behavior = useExpressiveAvatarBehavior({ enabled: alive, phrases, voices, onSpeak, expression: requested, apiRef });
+  const sources: Readonly<Record<string, string | ExpressiveAvatarImageSource>> = { ...(src ? { base: src } : {}), ...images };
+
+  /* The look on show: the one asked for if it has an image, else what the face is doing, else `base`. */
+  const own = behavior.face ?? restFace;
+  const asked = alive ? (own.expression ?? requested) : requested;
+  const shown = asked && sources[asked] ? asked : alive && sources[own.look] ? own.look : "base";
+
+  const imageProps = {
+    alt: "",
+    "aria-hidden": true,
+    className: expressiveAvatarParts.image,
+    crossOrigin,
+    decoding,
+    fetchPriority,
+    referrerPolicy,
+  } as const;
   const rootProps = {
     ...props,
     "aria-label": name,
     className: cx(expressiveAvatarParts.root, className),
     "data-appearance": appearance,
-    "data-mode": mode,
+    "data-expression": shown,
     "data-size": size,
-    role: alive ? undefined : "img",
   } as const;
 
-  /* The words, beside the face and not inside it: the face is clipped to its circle. The typed text is
-     decoration; a hidden copy of the whole phrase is what a screen reader gets, announced once. */
-  const withSpeech = (face: ReactElement) =>
-    !alive || !phrases ? (
-      face
-    ) : (
-      <span className={expressiveAvatarParts.host} data-speaking={behavior.speech ? "" : undefined}>
-        {face}
-        <span className={expressiveAvatarParts.bubble} data-phase={behavior.speech?.phase ?? "hidden"} aria-hidden="true">
-          {behavior.speech?.text}
-        </span>
-        <span className="sk-visually-hidden" role="status">
-          {behavior.speech && behavior.speech.phase !== "typing" ? behavior.speech.text : ""}
-        </span>
+  if (!alive) {
+    const source = resolveImageSource(sources[shown]);
+    return (
+      <span {...rootProps} role="img">
+        {source?.src ? <img {...source} {...imageProps} loading={loading} /> : null}
       </span>
-    );
-
-  if (mode === "image") {
-    if (!alive) {
-      const source = resolveImageSource(images?.[expression] ?? images?.base);
-      return (
-        <span {...rootProps} data-expression={expression}>
-          {source?.src ? (
-            <img
-              {...source}
-              alt=""
-              aria-hidden="true"
-              className={expressiveAvatarParts.image}
-              crossOrigin={crossOrigin}
-              decoding={decoding}
-              fetchPriority={fetchPriority}
-              loading={loading}
-              referrerPolicy={referrerPolicy}
-            />
-          ) : null}
-        </span>
-      );
-    }
-
-    /* Alive: the controller decides the look; every image is mounted and one is shown. A look that was asked
-       for by name wins; otherwise the one the face is in. */
-    const own = behavior.face ?? restFace;
-    const natural = expressiveAvatarExpressionFor(own);
-    const asked = own.expression ?? requested;
-    const shown = asked && images?.[asked] ? asked : images?.[natural] ? natural : "base";
-    const keys = Object.keys(images ?? {});
-    return withSpeech(
-      <button
-        {...(rootProps as HTMLAttributes<HTMLButtonElement>)}
-        {...behavior.handlers}
-        ref={behavior.rootRef}
-        type="button"
-        data-expression={shown}
-        data-interactive=""
-      >
-        {keys.map((key) => {
-          const source = resolveImageSource(images?.[key]);
-          return source?.src ? (
-            <img
-              {...source}
-              alt=""
-              aria-hidden="true"
-              className={expressiveAvatarParts.image}
-              crossOrigin={crossOrigin}
-              data-active={key === shown ? "true" : "false"}
-              data-state={key}
-              decoding={decoding}
-              fetchPriority={fetchPriority}
-              /* Eager on purpose: a look that has not loaded when it is needed is a blank frame. */
-              loading="eager"
-              referrerPolicy={referrerPolicy}
-              key={key}
-            />
-          ) : null;
-        })}
-      </button>,
     );
   }
 
-  /*
-   * PIXEL MODE. The face is 36 cells of one image: each is a window onto the tileset, and a tile is shown by
-   * where the image sits behind the window. Changing an eye is changing a position, so nothing is loaded or
-   * remounted and there is no frame without an eye.
-   */
-  const columns = tileset.columns;
-  const rows = Math.ceil(tileset.names.length / columns);
-
-  const own: ExpressiveAvatarFace = behavior.face ?? {
-    leftEye: blink ? "blink" : direction,
-    rightEye: blink ? "blink" : wink ? "wink" : direction,
-    mouth,
-    expression: requested,
-  };
-  /* Every cell from core, the same call the vanilla enhancer makes, so the two draw one face. */
-  const cells = expressiveAvatarCells(own, { outfit, hat, tileset, expressions });
-
-  const rootStyle = {
-    ...props.style,
-    "--sk-expressive-avatar-columns": columns,
-    "--sk-expressive-avatar-rows": rows,
-    ...(tileset.src ? { "--sk-expressive-avatar-atlas": `url("${tileset.src}")` } : {}),
-  } as CSSProperties;
-
-  const Root: ElementType = alive ? "button" : "span";
+  /* The words, beside the face and not inside it: the face is clipped to its circle. The typed text is
+     decoration; a hidden copy of the whole phrase is what a screen reader gets, announced once. */
   const face = (
-    <Root
-      {...rootProps}
-      {...(alive ? { ...behavior.handlers, ref: behavior.rootRef, type: "button" } : {})}
-      style={rootStyle}
-      data-direction={own.leftEye}
-      data-hat={hat}
-      data-mouth={own.mouth}
-      data-outfit={outfit}
-      data-expression={own.expression ?? undefined}
-      data-interactive={alive ? "" : undefined}
+    <button
+      {...(rootProps as HTMLAttributes<HTMLButtonElement>)}
+      {...behavior.handlers}
+      ref={behavior.rootRef}
+      type="button"
+      data-interactive=""
     >
-      <span className={expressiveAvatarParts.grid} aria-hidden="true">
-        {cells.map((cell, index) => (
-          <span
-            className={expressiveAvatarParts.tile}
-            style={
-              {
-                "--sk-expressive-avatar-column": cell.column,
-                "--sk-expressive-avatar-row": cell.row,
-                "--sk-expressive-avatar-hat-column": cell.hatColumn,
-                "--sk-expressive-avatar-hat-row": cell.hatRow,
-              } as CSSProperties
-            }
-            key={index}
+      {Object.keys(sources).map((key) => {
+        const source = resolveImageSource(sources[key]);
+        return source?.src ? (
+          <img
+            {...source}
+            {...imageProps}
+            data-active={key === shown ? "true" : "false"}
+            data-state={key}
+            /* Eager on purpose: a look that has not loaded when it is needed is a blank frame. */
+            loading="eager"
+            key={key}
           />
-        ))}
-      </span>
-    </Root>
+        ) : null;
+      })}
+    </button>
   );
+  return !phrases ? (
+    face
+  ) : (
+    <SpeechHost face={face} speech={behavior.speech} />
+  );
+}
 
-  return withSpeech(face);
+function SpeechHost({ face, speech }: { face: ReactElement; speech: { text: string; phase: ExpressiveAvatarSpeechPhase } | null }) {
+  return (
+    <span className={expressiveAvatarParts.host} data-speaking={speech ? "" : undefined}>
+      {face}
+      <span className={expressiveAvatarParts.bubble} data-phase={speech?.phase ?? "hidden"} aria-hidden="true">
+        {speech?.text}
+      </span>
+      <span className="sk-visually-hidden" role="status">
+        {speech && speech.phase !== "typing" ? speech.text : ""}
+      </span>
+    </span>
+  );
 }
 
 /* The face at rest, for a render before the controller has said anything. */
-const restFace: ExpressiveAvatarFace = { leftEye: "base", rightEye: "base", mouth: "default", expression: null };
+const restFace: ExpressiveAvatarFace = { look: "base", expression: null };

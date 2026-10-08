@@ -1,22 +1,20 @@
+/*
+ * EXPRESSIVE AVATAR, a face in a circle. Every look is a WHOLE IMAGE, one per expression: the component
+ * only decides which one is on show, and the stylesheet only draws the circle around it.
+ */
 @layer components {
   .sk-expressive-avatar {
     --sk-expressive-avatar-size: 6rem;
     --sk-expressive-avatar-bg: var(--theme-colorful, var(--color-bg-surface-sunken));
+    /* `auto` smooths a photo or an illustration; pixel art wants `pixelated`, and this is where to say so. */
+    --sk-expressive-avatar-image-rendering: auto;
     /*
-     * A PORTRAIT DOES NOT INVERT. The art is dark ink on light paper, and the paper is the circle itself
-     * (the tileset leaves it transparent), so the circle must stay light in a dark theme too: a dark
+     * A PORTRAIT DOES NOT INVERT. A face is usually dark ink on light paper, and the paper is the circle
+     * itself (the images are transparent), so the circle must stay light in a dark theme too: a dark
      * circle under dark ink loses the face. It keeps its light look in every theme, as a photograph on a
-     * dark page would.
+     * dark page would. Set `--sk-expressive-avatar-bg` to a colour of your own for art drawn for a dark ground.
      */
     color-scheme: light;
-    /*
-     * The face is drawn for a 160px circle (a 6x6 grid of 32px tiles, shown through the circle) and scaled
-     * to the size asked for. The scale is a NUMBER (size over 160px), made from two lengths with `atan2`
-     * and `tan`: `calc(length / 160)` is a length, and `scale()` takes a number, so that form silently
-     * drops the whole transform and leaves the face unscaled, off to one side, and clipped out of its
-     * own circle.
-     */
-    --sk-expressive-avatar-scale: tan(atan2(var(--sk-expressive-avatar-size), 160px));
     position: relative;
     display: inline-grid;
     place-items: center;
@@ -26,12 +24,10 @@
     border-radius: var(--radius-pill);
     background: var(--sk-expressive-avatar-bg);
     contain: layout paint style;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
     user-select: none;
   }
 
-  /* A face needs room to read: the smallest is 4rem, and 10rem is the size it was drawn for. */
+  /* A face needs room to read: the smallest is 4rem, and 10rem is the largest. */
   .sk-expressive-avatar[data-size="sm"] {
     --sk-expressive-avatar-size: 4rem;
   }
@@ -45,50 +41,19 @@
     --sk-expressive-avatar-size: 10rem;
   }
 
-  .sk-expressive-avatar__grid {
-    position: absolute;
-    display: grid;
-    grid-template-columns: repeat(6, 32px);
-    grid-template-rows: repeat(6, 32px);
-    gap: 0;
-    inset-block-start: calc(-8px * var(--sk-expressive-avatar-scale));
-    inset-inline-start: 50%;
-    transform: translateX(-50%) scale(var(--sk-expressive-avatar-scale));
-    transform-origin: top center;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
+  .sk-expressive-avatar__image {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    image-rendering: var(--sk-expressive-avatar-image-rendering);
+    pointer-events: none;
   }
 
   /*
-   * A TILE IS A WINDOW ONTO THE TILESET. The tileset is one image, `columns` by `rows` cells; every tile of
-   * the face is a 32px box showing one cell of it, chosen by `--sk-expressive-avatar-column` and `-row`
-   * (and a second cell on top for a hat). The image is sized to the whole grid of cells (`columns` times
-   * the box, `rows` times it), so a cell is `100%` of the box and the position of a cell is its index over
-   * the number of gaps. Moving an eye is moving the image; nothing is loaded or created.
-   *
-   * The first layer is the hat's cell, the second the tile's, because the first layer paints on top.
+   * ALIVE: every look's image is in the DOM, stacked, and one is shown. Switching is flipping visibility,
+   * never a load, so there is no frame without a face when a look changes.
    */
-  .sk-expressive-avatar__tile {
-    display: block;
-    inline-size: 32px;
-    block-size: 32px;
-    pointer-events: none;
-    background-image: var(--sk-expressive-avatar-atlas), var(--sk-expressive-avatar-atlas);
-    background-repeat: no-repeat;
-    background-size: calc(var(--sk-expressive-avatar-columns) * 100%) calc(var(--sk-expressive-avatar-rows) * 100%);
-    background-position:
-      calc(var(--sk-expressive-avatar-hat-column, 0) / (var(--sk-expressive-avatar-columns) - 1) * 100%)
-        calc(var(--sk-expressive-avatar-hat-row, 0) / (var(--sk-expressive-avatar-rows) - 1) * 100%),
-      calc(var(--sk-expressive-avatar-column, 0) / (var(--sk-expressive-avatar-columns) - 1) * 100%)
-        calc(var(--sk-expressive-avatar-row, 0) / (var(--sk-expressive-avatar-rows) - 1) * 100%);
-    image-rendering: pixelated;
-  }
-
-  .sk-expressive-avatar[data-mode="image"] .sk-expressive-avatar__grid {
-    display: none;
-  }
-
-  /* ALIVE, IMAGE MODE: every state's image is in the DOM, stacked, and one is shown (see `__state`). */
   .sk-expressive-avatar[data-interactive] .sk-expressive-avatar__image {
     position: absolute;
     inset: 0;
@@ -97,15 +62,6 @@
 
   .sk-expressive-avatar[data-interactive] .sk-expressive-avatar__image[data-active="true"] {
     visibility: visible;
-  }
-
-  .sk-expressive-avatar__image {
-    /* The root asks for crisp pixels (the tileset); an image the author supplies is not necessarily pixel
-       art, and at a size that is not a whole multiple of its own, crisp edges are jagged. */
-    image-rendering: auto;
-    inline-size: 100%;
-    block-size: 100%;
-    object-fit: cover;
   }
 
   .sk-expressive-avatar[data-appearance="brutalist"] {
