@@ -598,6 +598,7 @@ const componentItems = [
   {
     href: "/components/resizable",
     label: "Resizable",
+    trailing: "Beta",
     aliases: ["redimensionable", "paneles", "panel dividido", "split view", "splitter", "resizable panels", "divisor arrastrable", "master detail"],
   },
     href: "/components/separator",
