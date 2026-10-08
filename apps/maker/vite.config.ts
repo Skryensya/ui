@@ -23,6 +23,12 @@ export default defineConfig(() => {
   return {
   plugins: [react(), makerApi()],
   build: {
+    /*
+     * Browsers with native light-dark(). Below these, the minifier rewrites every light-dark() into
+     * variables keyed to `prefers-color-scheme`, which only the OS can flip: the scheme the chrome
+     * and the stage set as `color-scheme` would be ignored in a production build.
+     */
+    cssTarget: ["chrome123", "edge123", "firefox120", "safari17.5"],
     rollupOptions: {
       input: {
         main: fileURLToPath(new URL("index.html", import.meta.url)),
