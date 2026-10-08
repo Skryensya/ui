@@ -81,14 +81,30 @@ const labels = { page: "Capture full page", selection: "Select on page" } as con
 type Mode = keyof typeof labels;
 const mode = () => ($("#mode").dataset.value ?? "page") as Mode;
 const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
-const preview = chrome.runtime.connect({ name: "preview" });
+/* The preview is a nicety: when the worker is not there to answer (asleep, or just reloaded) the port
+ * drops, and the popup reconnects once instead of leaving the error unchecked. */
+let preview: chrome.runtime.Port | null = null;
+function connectPreview(retry = true) {
+  const port = chrome.runtime.connect({ name: "preview" });
+  port.onDisconnect.addListener(() => {
+    void chrome.runtime.lastError;
+    preview = null;
+    if (retry) setTimeout(() => (connectPreview(false), previewMode()), 250);
+  });
+  preview = port;
+}
+connectPreview();
 function previewMode() {
   $("#capture-button").textContent = labels[mode()];
   if (activeTab?.id !== undefined)
-    preview.postMessage({
-      tabId: activeTab.id,
-      mode: connection && !captureForm.hidden ? mode() : null,
-    });
+    try {
+      preview?.postMessage({
+        tabId: activeTab.id,
+        mode: connection && !captureForm.hidden ? mode() : null,
+      });
+    } catch {
+      /* the port closed between the check and the send */
+    }
 }
 $("#mode").addEventListener("sk:segmentedvaluechange", previewMode);
 previewMode();
