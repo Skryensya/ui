@@ -26,98 +26,46 @@ async function capture(request: z.infer<typeof requestSchema>) {
     void chrome.storage.local.set({
       captureStatus: "Capturing… Keep this tab active.",
     });
-  const { raw, source, scroll } = result.result;
+  const { raw, source } = result.result;
   const dpr = raw.viewport.deviceScaleFactor ?? 1;
-  const b = raw.bounds,
-    width = Math.round(b.width * dpr),
-    height = Math.round(b.height * dpr);
-  const keepViewport =
-    raw.mode !== "page" &&
-    b.x >= scroll.x &&
-    b.y >= scroll.y &&
-    b.x + b.width <= scroll.x + raw.viewport.width &&
-    b.y + b.height <= scroll.y + raw.viewport.height;
-  if (width > 32767 || height > 32767 || width * height > 100_000_000)
+  const b = raw.bounds;
+  if (
+    b.width * dpr > 32767 ||
+    b.height * dpr > 32767 ||
+    b.width * dpr * b.height * dpr > 100_000_000
+  )
     throw new Error(
       "Capture exceeds Chrome canvas limits. Select a smaller region.",
     );
-  const canvas = new OffscreenCanvas(width, height),
-    ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("Screenshot canvas unavailable");
+  const [active] = await chrome.tabs.query({
+    active: true,
+    windowId: request.windowId,
+  });
+  if (active?.id !== request.tabId)
+    throw new Error("Keep the captured tab active until capture finishes");
+  /*
+   * One render of the whole clip instead of scrolled tiles: sticky and fixed elements are drawn once,
+   * where the page puts them, rather than repeating at the top of every tile.
+   */
+  const debuggee = { tabId: request.tabId };
+  let data: string;
+  await chrome.debugger.attach(debuggee, "1.3");
   try {
-    for (let y = b.y; y < b.y + b.height; y += raw.viewport.height)
-      for (let x = b.x; x < b.x + b.width; x += raw.viewport.width) {
-        const [active] = await chrome.tabs.query({
-          active: true,
-          windowId: request.windowId,
-        });
-        if (active?.id !== request.tabId)
-          throw new Error(
-            "Keep the captured tab active until capture finishes",
-          );
-        const [position] = await chrome.scripting.executeScript({
-          target,
-          func: (x: number, y: number) => {
-            window.scrollTo({ left: x, top: y, behavior: "instant" });
-            return {
-              x: scrollX,
-              y: scrollY,
-              width: innerWidth,
-              height: innerHeight,
-            };
-          },
-          args: [keepViewport ? scroll.x : x, keepViewport ? scroll.y : y],
-        });
-        await new Promise((resolve) => setTimeout(resolve, 650));
-        const [stillActive] = await chrome.tabs.query({
-          active: true,
-          windowId: request.windowId,
-        });
-        if (stillActive?.id !== request.tabId)
-          throw new Error("Captured tab changed during screenshot");
-        const data = await chrome.tabs.captureVisibleTab(request.windowId, {
-          format: "png",
-        });
-        const image = await createImageBitmap(await (await fetch(data)).blob());
-        const p = position.result!;
-        const sx = image.width / p.width,
-          sy = image.height / p.height;
-        const tileWidth = Math.min(p.width - (x - p.x), b.x + b.width - x),
-          tileHeight = Math.min(p.height - (y - p.y), b.y + b.height - y);
-        if (tileWidth <= 0 || tileHeight <= 0)
-          throw new Error("Page geometry changed during capture");
-        ctx.drawImage(
-          image,
-          (x - p.x) * sx,
-          (y - p.y) * sy,
-          tileWidth * sx,
-          tileHeight * sy,
-          (x - b.x) * dpr,
-          (y - b.y) * dpr,
-          tileWidth * dpr,
-          tileHeight * dpr,
-        );
-        image.close();
-      }
+    ({ data } = (await chrome.debugger.sendCommand(
+      debuggee,
+      "Page.captureScreenshot",
+      {
+        format: "png",
+        captureBeyondViewport: true,
+        clip: { x: b.x, y: b.y, width: b.width, height: b.height, scale: 1 },
+      },
+    )) as { data: string });
   } finally {
-    await chrome.scripting
-      .executeScript({
-        target,
-        func: (x: number, y: number) =>
-          window.scrollTo({ left: x, top: y, behavior: "instant" }),
-        args: [scroll.x, scroll.y],
-      })
-      .catch(() => {});
+    await chrome.debugger.detach(debuggee).catch(() => {});
   }
-  const bytes = new Uint8Array(
-    await (await canvas.convertToBlob({ type: "image/png" })).arrayBuffer(),
-  );
-  let binary = "";
-  for (let i = 0; i < bytes.length; i += 8192)
-    binary += String.fromCharCode(...bytes.subarray(i, i + 8192));
   await submitCapture(
     request.config,
-    payload(raw, source, `data:image/png;base64,${btoa(binary)}`),
+    payload(raw, source, `data:image/png;base64,${data}`),
   );
 }
 chrome.runtime.onMessage.addListener((message: unknown, sender, respond) => {
