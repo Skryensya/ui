@@ -630,6 +630,23 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    /*
+     * SCROLL STACK, the one shape it has: a back layer and a front layer, both plain content. The motion needs a scroll,
+     * which a static stage does not give, so what the two bindings are held to here is the anatomy (the layers, the
+     * runway and the content wrapper); `scroll-stack.spec.ts` is what scrolls.
+     */
+    name: "scroll-stack/default",
+    enhanced: false,
+    tree: {
+      contract: "scroll-stack",
+      signature: "ScrollStack",
+      slots: {
+        back: { contract: "typography", signature: "Text", children: "The section that stays behind." },
+        front: { contract: "typography", signature: "Text", children: "The section that rises over it." },
+      },
+    },
+  },
+  {
     name: "resizable/stacked",
     enhanced: true,
     tree: {

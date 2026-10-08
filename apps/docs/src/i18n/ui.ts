@@ -118,6 +118,7 @@ import { progressMessages } from "./messages/components/progress";
 import { comparisonTableMessages } from "./messages/components/comparison-table";
 import { descriptionListMessages } from "./messages/components/description-list";
 import { resizableMessages } from "./messages/components/resizable";
+import { scrollStackMessages } from "./messages/components/scroll-stack";
 import { separatorMessages } from "./messages/components/separator";
 import { tagsInputMessages } from "./messages/components/tags-input";
 import { quoteMessages } from "./messages/components/quote";
@@ -273,6 +274,7 @@ export const ui = {
     ...quoteMessages.es,
     ...tagsInputMessages.es,
     ...resizableMessages.es,
+    ...scrollStackMessages.es,
     ...separatorMessages.es,
     ...radioGroupMessages.es,
     ...segmentedMessages.es,
@@ -423,6 +425,7 @@ export const ui = {
     ...quoteMessages.en,
     ...tagsInputMessages.en,
     ...resizableMessages.en,
+    ...scrollStackMessages.en,
     ...separatorMessages.en,
     ...radioGroupMessages.en,
     ...segmentedMessages.en,

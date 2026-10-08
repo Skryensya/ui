@@ -602,6 +602,12 @@ const componentItems = [
     aliases: ["redimensionable", "paneles", "panel dividido", "split view", "splitter", "resizable panels", "divisor arrastrable", "master detail"],
   },
   {
+    href: "/components/scroll-stack",
+    label: "Scroll Stack",
+    trailing: "Beta",
+    aliases: ["scroll stack", "secciones apiladas", "apilar al hacer scroll", "cubrir al scroll", "portada", "sticky sections", "stacked sections", "cover on scroll", "sheet over section", "scroll cover"],
+  },
+  {
     href: "/components/separator",
     label: "Separator",
     aliases: [
@@ -1187,6 +1193,7 @@ const allComponentNavigation = [
       "/components/inline",
       "/components/layout-grid",
       "/components/resizable",
+      "/components/scroll-stack",
       "/components/separator",
       "/components/stack",
       "/components/wrapper",

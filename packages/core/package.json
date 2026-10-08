@@ -104,6 +104,10 @@
       "types": "./src/resizable.ts",
       "default": "./src/resizable.ts"
     },
+    "./scroll-stack": {
+      "types": "./src/scroll-stack.ts",
+      "default": "./src/scroll-stack.ts"
+    },
     "./separator": {
       "types": "./src/separator.ts",
       "default": "./src/separator.ts"

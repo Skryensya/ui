@@ -1,0 +1,16 @@
+# The structure lives in packages/core/src/scroll-stack.ts. Here, only why it is chosen.
+
+ScrollStack:
+  useWhen:
+    - "two sections tell one story as the page scrolls and the second should read as arriving on top of the first: a hero and what follows it, a scene and its detail"
+    - "a quiet, elegant transition between two blocks is wanted; the back recedes a little and the front settles, nothing more"
+    - "the page has to stay a plain document where the effect is unavailable: with no scroll-driven animation, or with reduced motion, the two sections simply follow one another"
+  avoidWhen:
+    - "there are more than two layers, or the sections are a sequence of equal steps; this stacks exactly one over one, and Procedure or Steps fits an ordered series"
+    - "the back section is taller than the scrolling box; it is held in place while covered, so what does not fit would never be seen"
+    - "the motion is the content (a story told by scroll position); this is a cover, built to be ignored, and not a scroll-driven scene"
+    - "each section should scroll on its own inside a fixed frame; that is a set of regions, and Resizable or a Grid with overflow fits it"
+  alternatives:
+    - Hero
+    - Procedure
+    - Resizable

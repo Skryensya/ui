@@ -1,0 +1,23 @@
+# What changed in scroll-stack, in the words its users read. Only appended to, never rewritten.
+#
+# `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
+# does not match, something a consumer depends on has moved: write the entry and paste in the new
+# hash.
+surface: "954d2018c9258e24"
+entries:
+  - date: 2026-10-07
+    kind: feature
+    es:
+      title: Primera publicación del contrato
+      body: >-
+        Dos secciones donde la segunda sube y cubre a la primera al hacer scroll. La de atrás se achica un poco, se
+        oscurece y redondea sus esquinas; la de adelante entra con su contenido ligeramente ampliado y se asienta al
+        acoplarse arriba. Es solo CSS y progresivo: sin soporte de animación por scroll, o con movimiento reducido, las
+        dos secciones quedan una tras otra en el flujo normal. Se ajusta con ganchos de CSS, no con opciones.
+    en:
+      title: First published contract
+      body: >-
+        Two sections where the second one rises over the first as the page scrolls. The back one shrinks a little,
+        dims and rounds its corners; the front one enters with its content slightly zoomed in and settles as it docks
+        at the top. It is CSS only and progressive: without scroll-driven animation, or with reduced motion, the two
+        sections simply follow one another in normal flow. It is tuned with CSS hooks, not options.

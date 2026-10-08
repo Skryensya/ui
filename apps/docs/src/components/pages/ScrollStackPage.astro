@@ -1,0 +1,163 @@
+---
+import "@skryensya/core/components/scroll-stack.css";
+/* The demo holds real copy, drawn with the kit's own pieces. */
+import "@skryensya/core/components/typography.css";
+import "@skryensya/core/patterns/layout.css";
+import "@skryensya/core/patterns/box.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import CodeBlock from "../CodeBlock.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import ComparisonTable from "../ComparisonTable.astro";
+import { emit } from "@skryensya/ai-compiler/emit";
+import { scrollStackParts } from "@skryensya/core/scroll-stack";
+import { scrollStackTree } from "../../demos/scroll-stack";
+import { getLocale, tList, useTranslations } from "../../i18n";
+
+const t = useTranslations(getLocale(Astro.url));
+
+/* The demo is authored markup, the same a page would write: the emitter draws it from the usage tree. */
+const demo = emit(scrollStackTree(t), "vanilla");
+
+const [defaultColumn, doesColumn] = t("scrollStackPage.hooksColumns").split("|");
+const hooks = [
+  ["recede-scale", "0.94", "recedeScale"],
+  ["recede-dim", "0.35", "recedeDim"],
+  ["recede-radius", "var(--radius-surface)", "recedeRadius"],
+  ["zoom", "1.06", "zoom"],
+  ["front-bg", "var(--color-bg-surface)", "frontBg"],
+  ["front-radius", "var(--radius-surface)", "frontRadius"],
+  ["offset", "0px", "offset"],
+] as const;
+const hookRows = hooks.map(([name, value, key]) => ({
+  label: `--sk-scroll-stack-${name}`,
+  labelHtml: `<code>--sk-scroll-stack-${name}</code>`,
+  cells: [`<code>${value}</code>`, t(`scrollStackPage.hook.${key}` as Parameters<typeof t>[0])],
+}));
+
+const partOrder = ["root", "back", "front", "runway", "content"] as const;
+const partRows = partOrder.map((part) => ({
+  label: scrollStackParts[part],
+  labelHtml: `<code>${scrollStackParts[part]}</code>`,
+  cells: [t(`scrollStackPage.part.${part}` as Parameters<typeof t>[0])],
+}));
+
+const install = `pnpm add @skryensya/core
+# and, for React,
+pnpm add @skryensya/react`;
+const styles = `@import "@skryensya/core/components/scroll-stack.css";`;
+const html = `<div class="sk-scroll-stack">
+  <div class="sk-scroll-stack__back">
+    <section><h2>The cover</h2></section>
+  </div>
+  <div class="sk-scroll-stack__front">
+    <span class="sk-scroll-stack__runway" aria-hidden="true"></span>
+    <div class="sk-scroll-stack__content">
+      <section><h2>What comes next</h2></section>
+    </div>
+  </div>
+</div>`;
+const react = `import { ScrollStack } from "@skryensya/react/scroll-stack";
+
+<ScrollStack
+  back={<section><h2>The cover</h2></section>}
+  front={<section><h2>What comes next</h2></section>}
+/>`;
+const box = `/* In a scroll box of your own: a size container, so the component measures it and not the window. */
+.my-scroller {
+  block-size: 28rem;
+  overflow: auto;
+  container-type: size;
+}`;
+const tune = `.sk-scroll-stack {
+  --sk-scroll-stack-recede-scale: 0.9;  /* recede a little more */
+  --sk-scroll-stack-zoom: 1.03;         /* and settle from less */
+  --sk-scroll-stack-offset: 4rem;       /* below a fixed header */
+}`;
+---
+
+<ComponentPageShell
+  title="Scroll Stack"
+  description={t("scrollStackPage.description")}
+  contractId="scroll-stack"
+  badge="Beta"
+  testFiles={["packages/react/src/components/scroll-stack.test.tsx"]}
+>
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("scrollStackPage.lede")} />
+
+    <h3>{t("scrollStackPage.demoTitle")}</h3>
+    <p set:html={t("scrollStackPage.demoBody")} />
+    <div class="ss-scroller" tabindex="0" role="region" aria-label={t("scrollStackPage.demoTitle")} set:html={demo} />
+
+    <h3>{t("scrollStackPage.howTitle")}</h3>
+    <ul>
+      <li set:html={t("scrollStackPage.how.back")} />
+      <li set:html={t("scrollStackPage.how.front")} />
+      <li set:html={t("scrollStackPage.how.fallback")} />
+    </ul>
+
+    <h3>{t("scrollStackPage.boxTitle")}</h3>
+    <p set:html={t("scrollStackPage.boxBody")} />
+    <CodeBlock code={box} label="CSS" lang="css" />
+
+    <h3>{t("scrollStackPage.hooksTitle")}</h3>
+    <p set:html={t("scrollStackPage.hooksBody")} />
+    <div class="ss-parts">
+      <ComparisonTable aspectLabel={t("scrollStackPage.hooksAspect")} columns={[defaultColumn!, doesColumn!]} rows={hookRows} />
+    </div>
+    <CodeBlock code={tune} label="CSS" lang="css" />
+
+    <h3>{t("scrollStackPage.contractTitle")}</h3>
+    <ul>
+      {tList(t, "scrollStackPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+
+    <h3>{t("scrollStackPage.anatomyTitle")}</h3>
+    <div class="ss-parts">
+      <ComparisonTable aspectLabel={t("scrollStackPage.partsAspect")} columns={[t("scrollStackPage.partsColumns")]} rows={partRows} />
+    </div>
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("scrollStackPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "scrollStackPage.when")} avoid={tList(t, "scrollStackPage.whenNot")} />
+    <ContentRules items={tList(t, "scrollStackPage.content")} />
+  </Fragment>
+
+  <Fragment slot="install">
+    <p set:html={t("scrollStackPage.installBody")} />
+    <CodeBlock code={install} label="terminal" />
+    <CodeBlock code={styles} label="CSS" lang="css" />
+    <CodeBlock code={html} label="HTML" lang="html" />
+    <CodeBlock code={react} label="React" lang="tsx" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("scrollStackPage.a11yIntro")} does={tList(t, "scrollStackPage.a11yDoes")} yours={tList(t, "scrollStackPage.a11yYours")} />
+  </Fragment>
+</ComponentPageShell>
+
+<style>
+  /* A box that scrolls on its own and is a size container, so the component measures it: see "Inside a scroll box". */
+  .ss-scroller {
+    block-size: 28rem;
+    overflow: auto;
+    container-type: size;
+    margin-block: var(--space-stack-lg);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-surface);
+    background: var(--color-bg-canvas);
+  }
+
+  .ss-scroller:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  /* A class name is one token: breaking it at the hyphen makes two lines of what is a single word. */
+  .ss-parts :global(th code) {
+    white-space: nowrap;
+  }
+</style>

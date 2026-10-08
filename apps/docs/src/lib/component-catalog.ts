@@ -304,6 +304,10 @@ const componentDescriptions = {
     es: "Muestra los datos de un registro como pares de nombre y valor.",
     en: "Shows one record's details as name-and-value pairs.",
   },
+  "/components/scroll-stack": {
+    es: "Dos secciones donde la segunda sube y cubre a la primera al hacer scroll, con un gesto sutil.",
+    en: "Two sections where the second one rises over the first as you scroll, with a subtle gesture.",
+  },
   "/components/resizable": {
     es: "Reparte una caja entre paneles y deja arrastrar la barra que hay entre cada par.",
     en: "Shares one box between panels and lets you drag the bar between each pair.",

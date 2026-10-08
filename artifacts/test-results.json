@@ -1,15 +1,16 @@
 {
-  "generatedAt": "2026-10-02T21:25:22.103Z",
+  "generatedAt": "2026-10-07T18:43:56.402Z",
   "results": {
     "apps/docs/src/components/pages/CardPage.test.ts": {
       "imports tile.css, which Base.astro never loads globally": "passed",
       "imports checkbox.css, without which every indicator paints both the check and the dash glyph at once": "passed",
-      "keeps the optional chart card a Box composition instead of inventing sk-card": "passed"
+      "uses property-driven UsagePreview cards instead of old source-heavy ComponentPreview cards": "passed",
+      "keeps Card as a composition guide, not a chart showcase": "passed"
     },
     "apps/docs/src/components/pages/ChartsPage.test.ts": {
       "composes the dashboard cards from Box, Stat, Chart and Button": "passed",
       "does not expose TanStack's grammar on the documented path": "passed",
-      "keeps only the React-only chart previews as viewport-triggered islands": "passed"
+      "shows every chart from a usage tree, with no React-only island": "passed"
     },
     "apps/docs/src/examples/card-sources.test.ts": {
       "keeps every example's data array at exactly three cards": "passed",
@@ -101,6 +102,40 @@
       "is a ring where there are no gutters": "passed",
       "gives every match its own bubble, each carrying its entry": "passed",
       "keeps one bubble, with no target, for an entry that matched nothing": "passed"
+    },
+    "packages/core/src/app-bar.test.ts": {
+      "moves between menus with Left/Right and wraps at both ends": "passed",
+      "carries an open dropdown along to the neighbour": "passed",
+      "gives Home/End to the bar only while nothing is open": "passed",
+      "leaves every other key to the dropdown": "passed",
+      "switches only once a menu of the bar is already open, and not to itself": "passed",
+      "names the menubar, not the bar around it": "passed",
+      "gives a status item no control unless it has a menu": "passed",
+      "holds actions only: no kind (checkbox, radio, separator) and no radio group": "passed",
+      "draws a popup that names no kind anywhere: no indicator, no separator, no test for one": "passed"
+    },
+    "packages/core/src/canvas.test.ts": {
+      "scales a wide drawing down to the viewport's width": "passed",
+      "never scales a small drawing UP": "passed",
+      "also fits the height when the viewport is capped": "passed",
+      "answers 1 when there is nothing measured yet": "passed",
+      "centres the scaled content on both axes": "passed",
+      "keeps the content point under the anchor exactly where it was on screen": "passed",
+      "round-trips: zooming in and back out around the same point lands where it started": "passed",
+      "lets a fitted drawing be dragged, so the first thing a reader tries does something": "passed",
+      "never lets less than half of the drawing (or of the window) stay in view": "passed",
+      "zooms IN for a wheel pulled toward the reader (negative delta) and out for the opposite": "passed",
+      "is symmetric, so the same distance in and back out cancels": "passed",
+      "caps one mouse notch, however large its delta, to one comfortable step": "passed",
+      "scales by how far apart the fingers are compared with when they landed": "passed",
+      "keeps the content point between the fingers between them as they spread": "passed",
+      "pans without zooming when both fingers move together": "passed",
+      "stops at the zoom limits": "passed",
+      "zooms with + and -, fits with 0 and shows 100% with 1": "passed",
+      "moves the view the way an arrow points, which moves the content the other way": "passed",
+      "leaves every other key to the page": "passed",
+      "clamps a scale into range and treats nonsense as 100%": "passed",
+      "writes the transform the way both bindings will": "passed"
     },
     "packages/core/src/diagram.test.ts": {
       "gives a rectangle the whole of the edge that faces the asked-for side": "passed",
@@ -221,6 +256,35 @@
       "is the rect's width over the layout box's, which is what a transform scales": "passed",
       "is 1 for an unscaled drawing and for one with no box yet, never a division by zero": "passed"
     },
+    "packages/core/src/expressive-avatar-behavior.test.ts": {
+      "looks straight ahead inside the dead zone": "passed",
+      "looks along one axis when the other is centred": "passed",
+      "looks diagonally only when both axes are clearly past the dead zone": "passed",
+      "stops following beyond 300px unless forced": "passed",
+      "is empty for empty text": "passed",
+      "closes the lips on a labial and opens on the vowels": "passed",
+      "puts a neutral beat between words and collapses repeats": "passed",
+      "never changes faster than every 110ms and spans the duration": "passed",
+      "says greetings, then the day's specials, then the general bag in some order": "passed",
+      "flags the last phrase of a lap of the loop, and starts another lap": "passed",
+      "has nothing to say with no phrases": "passed",
+      "types the text out, rests, then goes": "passed",
+      "moves the mouth while typing and rests it at the end": "passed",
+      "ignores a press while typing and cuts the rest short": "passed",
+      "shows everything at once for reduced motion": "passed",
+      "says nothing more after it is destroyed": "passed",
+      "names one image per look after the look, in a folder": "passed",
+      "takes the extension, ignores a trailing slash, and lists only the looks you drew": "passed",
+      "has nineteen looks, each once, and `base` among them": "passed",
+      "accepts a full set of one square size": "passed",
+      "is happy with `base` alone, and says what will fall back to it": "passed",
+      "needs `base`, because it is what every other look falls back to": "passed",
+      "names the expressions you made up, the images that are not square and mixed sizes": "passed",
+      "holds an expression until it is cleared": "passed",
+      "lets go of it after a duration": "passed",
+      "is in ONE look at a time: the gaze at rest, the mouth when it speaks": "passed",
+      "shows the smile of a celebration as its look": "passed"
+    },
     "packages/core/src/feed.test.ts": {
       "Page Down and Page Up step one article at a time": "passed",
       "does not wrap, and yields the key back at either end instead of clamping": "passed",
@@ -284,6 +348,10 @@
       "clamps the leading sweep to a tab too narrow to hold it, instead of widening the tab": "passed",
       "mirrors the whole silhouette for an RTL folder": "passed",
       "draws nothing at all for a box with no area": "passed",
+      "cuts the silhouette out of a rectangle far larger than any fan": "passed",
+      "clips nothing until there is a shape": "passed",
+      "draws the same path, at the folder's own pixel size, as an SVG mask": "passed",
+      "masks nothing until there is a shape and a box": "passed",
       "measures to the tab's far edge, not merely its width": "passed",
       "measures from the inline-start edge in RTL, which is the right-hand one": "passed",
       "takes the first ancestor that actually paints something": "passed",
@@ -297,6 +365,25 @@
       "pays for the forward lean, which a layout-space measurement cannot see": "passed",
       "reads every knob off custom properties": "passed",
       "falls back per property, so one redeclared hook keeps the rest of the silhouette": "passed"
+    },
+    "packages/core/src/hotkey.test.ts": {
+      "resolves mod per platform and normalises the key": "passed",
+      "reads modifiers first: a key written before them is not a chord": "passed",
+      "accepts the several names people give the same modifier": "passed",
+      "expands the key aliases a spec is likely to use": "passed",
+      "reads `>` as a sequence of steps": "passed",
+      "resolves mod to the platform's own modifier": "passed",
+      "requires the OTHER modifier to be up, so Ctrl+K never fires a ⌘K binding": "passed",
+      "matches the chord exactly, so a superset does not fire it": "passed",
+      "is case-insensitive about the key the event reports": "passed",
+      "takes a literal meta or ctrl for the rare shortcut that means one specifically": "passed",
+      "matches a bare key with no modifiers at all": "passed",
+      "never matches a spec with no key in it": "passed",
+      "treats absent modifier flags as up": "passed",
+      "shows the shortcut the way each OS shows it": "passed",
+      "stacks glyphs in the platform's conventional order": "passed",
+      "uses Zag's glyphs for the named keys": "passed",
+      "upper-cases letters and function keys": "passed"
     },
     "packages/core/src/input-format.test.ts": {
       "accepts a valid RUT however it was punctuated": "passed",
@@ -322,6 +409,54 @@
       "does not ship a validator for phone, which is a whole metadata table": "passed",
       "accepts anything for an unregistered format, and says so once": "passed",
       "uses a registered validator, and its context, once one is installed": "passed"
+    },
+    "packages/core/src/lightbox.test.ts": {
+      "clamps an out-of-range, negative or fractional index into the gallery": "passed",
+      "reads a missing or non-finite index as the first image": "passed",
+      "is -1 for an empty gallery, whatever was asked": "passed",
+      "moves one image either way inside the gallery": "passed",
+      "stops at the ends when the gallery does not loop": "passed",
+      "wraps at the ends when the gallery loops": "passed",
+      "goes nowhere in a gallery of one, even when it loops": "passed",
+      "wraps a two-image gallery onto the other image, not onto itself": "passed",
+      "fetches the next and the previous image only, never the current one": "passed",
+      "fetches one neighbour at an end of a gallery that does not loop": "passed",
+      "fetches across the seam of a looping gallery, and each image once": "passed",
+      "fetches nothing for a single image": "passed",
+      "keeps the reader on the same photo when the list around it changes": "passed",
+      "stays at the same position, clamped, when the current photo was removed": "passed",
+      "has nowhere to be in an empty list": "passed",
+      "fills the template 1-based, in any language": "passed",
+      "replaces a non-number with the default and holds the rest between fit and the ceiling": "passed",
+      "lets a zoomed image slide only until its edge meets the stage's edge": "passed",
+      "keeps centred any axis the zoomed image still does not fill": "passed",
+      "allows no movement at all at fit": "passed",
+      "zooms around the centre when no anchor is given": "passed",
+      "keeps the point under the pointer where it was": "passed",
+      "never goes past the configured maximum or below fit": "passed",
+      "lands centred when it zooms back out to fit, wherever the anchor was": "passed",
+      "follows the distance between the fingers": "passed",
+      "snaps back to fit when the fingers close past it": "passed",
+      "writes nothing at fit, so the stylesheet's own transition state is untouched": "passed",
+      "reads a long drag to the left as next and to the right as previous": "passed",
+      "mirrors the horizontal verdict in a right-to-left page": "passed",
+      "counts a short, fast flick as a swipe": "passed",
+      "ignores a short, slow drag and a diagonal smear": "passed",
+      "closes on a decisive drag downward, never upward": "passed",
+      "closes on Escape, zoomed or not": "passed",
+      "navigates with Left and Right at fit, mirrored in RTL": "passed",
+      "pans with every arrow once zoomed, instead of leaving the photo": "passed",
+      "zooms with + and - and resets with 0, only where zoom is enabled": "passed",
+      "jumps to the first and last image with Home and End": "passed",
+      "leaves browser chords, Tab, Enter and Space alone": "passed",
+      "holds a photo at fit almost 1:1 near the centre, heavier further out, never past its reach": "passed",
+      "untethers back to the pull that draws it there, so a caught photo does not jump": "passed",
+      "lets a zoomed pan past an edge only elastically": "passed",
+      "brings a released photo home with one barely-there overshoot, in about 0.15s": "passed",
+      "glides a flung, zoomed photo to rest without bouncing off its edge": "passed",
+      "survives a long frame instead of exploding": "passed",
+      "coasts a fling in the direction it was thrown": "passed",
+      "matches a resized copy, rounding included, and never a crop": "passed"
     },
     "packages/core/src/menubar.test.ts": {
       "moves one item at a time and wraps at both ends": "passed",
@@ -421,6 +556,37 @@
       "takes whole steps in and fractions out, which is the asymmetry on purpose": "passed",
       "publishes the symbol as a hook, so a heart costs one declaration": "passed"
     },
+    "packages/core/src/resizable.test.ts": {
+      "splits equally when nothing is authored": "passed",
+      "keeps authored sizes and shares the rest among the unsized": "passed",
+      "scales authored sizes that do not add up to 100": "passed",
+      "holds every size inside its bounds and still fills the box": "passed",
+      "is empty for no panels": "passed",
+      "moves the boundary and conserves the pair": "passed",
+      "never touches a panel that is not part of the pair": "passed",
+      "clamps at either panel's bounds": "passed",
+      "saturates for Home and End": "passed",
+      "respects a maxSize": "passed",
+      "returns the sizes untouched for an index with no pair": "passed",
+      "reports the panel before the bar and its travel": "passed",
+      "announces the opposite orientation to the layout axis": "passed",
+      "converts pixels to a percentage and survives an empty group": "passed",
+      "stops at the floor like any panel until it is dragged well past it": "passed",
+      "snaps shut past the midpoint between its floor and its collapsed size": "passed",
+      "is never in between: collapsed or at least its floor": "passed",
+      "snaps back open to the floor once dragged out past the same midpoint": "passed",
+      "works from the other side of the bar, and keeps a rail when collapsedSize is above zero": "passed",
+      "leaves a panel without `collapsible` exactly as it was: the floor holds": "passed",
+      "does not collapse when the neighbour cannot take the room": "passed",
+      "reports the whole travel, collapsed end included": "passed",
+      "says whether a panel is collapsed, and only a collapsible one can be": "passed",
+      "collapses a panel and gives its room to the neighbour across the bar": "passed",
+      "expands to what it had before, or to its initial size, never below its floor": "passed",
+      "toggles, and changes nothing when asked for what is already so": "passed",
+      "ignores a panel that is not collapsible": "passed",
+      "resets every size, which also opens whatever was closed": "passed",
+      "picks the panel a collapse key acts on: a closed neighbour first, else the one before the bar": "passed"
+    },
     "packages/core/src/slider-range.test.ts": {
       "bounds the low thumb's max at the high thumb's current value, and vice versa": "passed",
       "collapses to a single point when both thumbs share a value. Neither can cross it": "passed",
@@ -428,6 +594,35 @@
       "passes through an already-valid range unchanged": "passed",
       "swaps an inverted range so low is never greater than high": "passed",
       "leaves equal values as-is": "passed"
+    },
+    "packages/core/src/tour.test.ts": {
+      "steps forward and back one at a time": "passed",
+      "has nowhere to go past either end": "passed",
+      "skips a step whose target is missing, in both directions": "passed",
+      "starts on the first step that has a target, and on none when no step does": "passed",
+      "never returns the step it started from, so a missing current step can ask what is next": "passed",
+      "counts only the steps that can be shown": "passed",
+      "fills the label in both languages": "passed",
+      "puts the box on the side asked for, centred on the target": "passed",
+      "points the arrow at the target's middle, even when the box is pushed along by an edge": "passed",
+      "keeps the arrow clear of the box's corners": "passed",
+      "puts the arrow on the edge facing the target, on every side": "passed",
+      "flips to the opposite side of the same axis first": "passed",
+      "maps inline sides to physical ones by direction": "passed",
+      "keeps the box inside the viewport when the target hugs an edge": "passed",
+      "never covers the target when some side fits": "passed",
+      "docks to the half of the screen the target is not in when no side fits": "passed",
+      "tries the same axis, then the other, block-end first": "passed",
+      "reads an unknown placement as the default": "passed",
+      "knows a target that is partly on screen from one that is gone": "passed",
+      "scrolls only for a target not already in full view": "passed",
+      "grows the target's radius by the offset, so the ring stays parallel to its edge": "passed",
+      "keeps a percentage as one, so a circle stays a circle": "passed",
+      "reads an elliptical corner by its first radius": "passed",
+      "keeps one slot per tour id": "passed",
+      "accepts only an ending, and never a running tour": "passed",
+      "is a non-modal dialog, never a tooltip, and hides the ring from assistive tech": "passed",
+      "uses manual popovers, so nothing outside the box dismisses it": "passed"
     },
     "packages/core/src/vaul-gesture.test.ts": {
       "dismisses a far-enough slow drag (distance alone)": "passed",
@@ -464,6 +659,7 @@
       "renders the contract's anatomy, and pairs each trigger with its own panel": "passed",
       "wraps each trigger in a heading so it is reachable by heading navigation": "passed",
       "clamps headingLevel to the 1..6 range aria-level means": "passed",
+      "writes appearance on the frame only, plain when omitted": "passed",
       "keeps exactly one item open in single mode": "passed",
       "allows independent open items in multiple mode": "passed",
       "opens every value a multiple defaultValue names": "passed",
@@ -505,17 +701,32 @@
       "picks up a part that only gets its box after the first pass": "passed",
       "stops measuring once unmounted": "passed"
     },
+    "packages/react/src/components/app-bar.test.tsx": {
+      "names the menubar, keeps one tab stop across the menus, and leaves status outside it": "passed",
+      "draws the application's own menu in bold, and a chevron only where something opens": "passed",
+      "nests submenus to a third level inside a dropdown, as Menu does": "passed",
+      "moves between menus with Left/Right, wrapping, without opening anything": "passed",
+      "carries an open dropdown to the neighbour with Right": "passed",
+      "switches menus by pointing once one is open, and never opens on pointing alone": "passed",
+      "fires onSelect for a dropdown command and onActivate for a plain one": "passed",
+      "stamps the mounts the vanilla enhancers key on": "passed",
+      "keeps menus rendered through a wrapper component in document order, one tab stop among them": "passed"
+    },
     "packages/react/src/components/avatar.test.tsx": {
       "derives initials from the name when there is no image": "passed",
       "uses the first two characters of a single-word username": "passed",
       "renders the image inside ImageFrame when src is given": "passed",
+      "accepts optimizer image descriptors and serializes responsive image hints": "passed",
+      "falls back to initials when the image fails": "passed",
       "serializes the xl size onto the same attribute both structures use": "passed",
+      "serializes appearance, plain by default, on the disc in both structures": "passed",
       "caps visible avatars and collapses the rest into a +N counter": "passed",
       "exposes itself as a named group when a label is given": "passed",
       "is still a group without a label": "passed"
     },
     "packages/react/src/components/back-to-top.test.tsx": {
       "renders hidden, and names the control from its children once shown": "passed",
+      "serializes its appearance, plain by default": "passed",
       "reveals once scrolled past the threshold and hides again above it": "passed",
       "returns the window to the top on click, smoothly by default": "passed",
       "jumps instantly when the reader prefers reduced motion": "passed",
@@ -524,10 +735,12 @@
       "still calls a consumer's onClick, and lets it opt out of the scroll": "passed"
     },
     "packages/react/src/components/badge.test.tsx": {
+      "serializes its appearance beside tone and size, plain by default": "passed",
       "renders its accessible label and forwards semantic attributes": "passed",
       "anchors an accessible status dot without adding visible content": "passed",
       "anchors a count pill on a control the same way as a dot": "passed",
-      "anchors a presence dot on a photo avatar": "passed"
+      "anchors a presence dot on a photo avatar": "passed",
+      "is md by default and takes the compact xs on request": "passed"
     },
     "packages/react/src/components/breadcrumb.test.tsx": {
       "renders a plain, uncollapsed trail when it is short enough that nothing is worth collapsing": "passed",
@@ -538,6 +751,16 @@
     "packages/react/src/components/button.test.tsx": {
       "renders a native button that does not submit forms by default": "passed",
       "encodes both default appearance axes and the interaction contract": "passed",
+      "derives appearance from the Core contract and maps it to data-appearance": "passed",
+      "keeps custom host props and classes on tactile action buttons": "passed",
+      "supports tactile appearance across variants and tones without changing the contract axes": "passed",
+      "keeps aria-pressed independent from tactile physical appearance": "passed",
+      "publishes plain, tactile, brutalist and frosted as one appearance axis, plain by default": "passed",
+      "supports brutalist across every variant and tone pairing without compound values": "passed",
+      "supports frosted across every variant and tone pairing, beside pressed and disabled": "passed",
+      "still asks an icon-only frosted button for its accessible name": "passed",
+      "keeps aria-pressed and disabled as states beside brutalist, not as appearance": "passed",
+      "still asks an icon-only brutalist button for its accessible name": "passed",
       "serializes the xs size onto the same attribute as every other size": "passed",
       "exposes disabled state to both native controls and assistive technology": "passed",
       "carries a leading icon in the pre slot alongside its label": "passed",
@@ -549,6 +772,9 @@
       "warns in development when an icon-only button has no accessible name": "passed",
       "accepts a visually hidden name supplied through a slot rather than children": "passed",
       "renders navigation with Button appearance and anchor attributes": "passed",
+      "maps tactile appearance on a navigation host": "passed",
+      "maps brutalist appearance on a navigation host": "passed",
+      "maps frosted appearance on a navigation host": "passed",
       "does not write aria-pressed or disabled on a navigation host": "passed",
       "welds either edge on its own, and both at once for a middle member": "passed",
       "writes nothing for an unwelded edge": "passed",
@@ -558,10 +784,16 @@
       "writes aria-pressed only when pressed is given": "passed"
     },
     "packages/react/src/components/callout.test.tsx": {
+      "serializes its appearance beside its tone, plain by default": "passed",
       "announces danger assertively and everything else politely": "passed",
       "marks the live region atomic, same fix already applied to Toast": "passed",
       "renders no dismiss control, ever": "passed",
       "renders an icon and optional actions through explicit parts": "passed"
+    },
+    "packages/react/src/components/canvas.test.tsx": {
+      "renders the parts the controller needs, named and labelled": "passed",
+      "opens fitted and zooms from its buttons, as the enhancer does": "passed",
+      "puts a canvas around the frame and leaves the legend outside it": "passed"
     },
     "packages/react/src/components/carousel.test.tsx": {
       "renders a section region with a scroll-snap track of slides": "passed",
@@ -581,9 +813,19 @@
       "colours a rework entry warning": "passed",
       "colours a chore entry neutral": "passed",
       "defaults an unmarked entry to the same kind the contract declares": "passed",
-      "omits the target when the entry is about the whole contract": "passed"
+      "omits the target when the entry is about the whole contract": "passed",
+      "stacks the entry's lines and sizes its badge `md` unless asked otherwise": "passed",
+      "is compact on request: an inline layout and the xs badge, with the same words in the same order": "passed"
+    },
+    "packages/react/src/components/clipboard.test.tsx": {
+      "copies its value and reports it, on the prop and the DOM alike": "passed",
+      "writes Button's appearance on the trigger, plain by default, in both signatures": "passed",
+      "reads a target's text at the moment of the click": "passed",
+      "says the write failed instead of claiming it copied": "passed",
+      "names the field with its label and copies what it shows": "passed"
     },
     "packages/react/src/components/combobox.test.tsx": {
+      "writes an appearance on the root only when asked": "passed",
       "keeps the typed search when the field is left without a selection": "passed",
       "writes the chosen label and reopens on the whole list": "passed",
       "spends the query on each chip when multiple": "passed",
@@ -593,6 +835,7 @@
       "dispatches sk:comboboxvaluechange and sk:comboboxinputvaluechange for DOM parity with vanilla": "passed"
     },
     "packages/react/src/components/command-palette.test.tsx": {
+      "serializes its appearance on the dialog, plain by default": "passed",
       "claims nothing at rest: no options and no expanded popup": "passed",
       "filters as the reader types and points at the first hit": "passed",
       "shows the empty sentence only once a query has failed": "passed",
@@ -600,6 +843,7 @@
       "reads the index from a JSON string, the way a usage tree passes it": "passed",
       "walks the listbox from the field, which never gives up focus": "passed",
       "hands the chosen entry to onSelect, on Enter and on a click alike": "passed",
+      "hands a command to onCommand and the DOM event, never to onSelect": "passed",
       "activates nothing when a query matched nothing": "passed",
       "closes through the dialog form and names itself for the reader": "passed",
       "is a sheet by default, with a grab handle as a direct child": "passed",
@@ -618,6 +862,7 @@
       "folds the REPLIES and leaves the comment itself readable": "passed",
       "nests replies as Comments of the same shape, at any depth": "passed",
       "reports the direction clicked and reflects the viewer's own past vote": "passed",
+      "draws thumbs in like style, names them Like/Dislike by default, and still reports up/down": "passed",
       "dispatches sk:commentvote on the vote group, matching Vanilla": "passed",
       "renders only the triggers it was given, and reports each": "passed",
       "dispatches sk:commentdelete when delete is pressed": "passed",
@@ -632,10 +877,11 @@
       "opens a reply box as a sheet, and says so on the trigger": "passed",
       "says a reply trigger opens a dialog, in both presentations": "passed"
     },
-    "packages/react/src/components/component-preview.test.tsx": {
-      "renders the title, stage and code in order": "passed",
-      "renders a note beside the title when given": "passed",
-      "keeps the header when title is present without a note": "passed"
+    "packages/react/src/components/comparison-table.test.tsx": {
+      "is a table whose columns and rows are headers with a scope": "passed",
+      "never leaves the corner cell empty: it holds the aspect label, drawn visually hidden": "passed",
+      "puts a cell under each column, in order, and writes density and caption only when given": "passed",
+      "has no accessibility violations": "passed"
     },
     "packages/react/src/components/data-grid.test.tsx": {
       "sets role=grid/row/gridcell and names the grid": "passed",
@@ -677,6 +923,7 @@
       "keeps a gate's name in the markup, because only the stylesheet hides it": "passed"
     },
     "packages/react/src/components/dialog.test.tsx": {
+      "serializes its appearance on the dialog, plain by default": "passed",
       "closes through the platform's own form rather than a handler": "passed",
       "renders the anatomy the stylesheet contracts against": "passed",
       "omits the footer form when there is nothing to put in it": "passed",
@@ -686,13 +933,28 @@
       "keeps a plain dialog free of the sheet's attributes": "passed",
       "becomes an alert dialog with role, aria-modal and aria-describedby wired to the body": "passed",
       "keeps a plain dialog free of the alert dialog's role and description wiring": "passed",
-      "forwards the platform's own open attribute": "passed"
+      "forwards the platform's own open attribute": "passed",
+      "wraps Tab at the ends once it is open modally": "passed"
     },
     "packages/react/src/components/empty-state.test.tsx": {
       "renders the title as a heading, with no icon, description or actions by default": "passed",
       "renders an icon, hidden from assistive tech, only when given": "passed",
       "renders a description only when given": "passed",
       "renders actions only when given": "passed"
+    },
+    "packages/react/src/components/expressive-avatar.test.tsx": {
+      "shows the whole image of the expression asked for": "passed",
+      "falls back to base for an expression with no image": "passed",
+      "takes a name of its own as an expression, with nothing but an image for it": "passed",
+      "is one image with src, the shorthand for base": "passed",
+      "draws an empty circle, not a broken image, when there is nothing to show": "passed",
+      "is a button, not an image, and its face is not announced": "passed",
+      "types its phrase on a click, announces it once, and puts it away": "passed",
+      "looks where the pointer is once it is on the face": "passed",
+      "mounts every image and shows the one for the look": "passed",
+      "shows the base image for a look that has none": "passed",
+      "is triggered from outside by an api, by an event, and by a phrase": "passed",
+      "speaks on request, whatever is next in the queue": "passed"
     },
     "packages/react/src/components/feed.test.tsx": {
       "sets role=feed, names it, and writes aria-busy true and false": "passed",
@@ -713,7 +975,7 @@
       "ignores a page drop when the scope is the default zone": "passed",
       "shows the overlay only while a file is over the page": "passed",
       "leaves the overlay alone for a drag that carries no files": "passed",
-      "writes the scope onto the root, and writes nothing for the default": "passed",
+      "writes the scope onto the root, the default included, as the emitted markup does": "passed",
       "renders the hint only when there is something to state": "passed",
       "badges a file that cannot show itself with its kind": "passed",
       "shows an image as itself, and lets go of the blob URL when the row does": "passed",
@@ -738,6 +1000,7 @@
     },
     "packages/react/src/components/folder.test.tsx": {
       "renders the tab, the content and a decorative silhouette behind them": "passed",
+      "writes appearance on the root of either host, plain when omitted": "passed",
       "draws the silhouette from the folder's own box and its tab's width": "passed",
       "marks the root ready only once a real path has been written": "passed",
       "re-samples the ground when the colour scheme flips, which resizes nothing": "passed",
@@ -759,6 +1022,11 @@
       "wires a textarea exactly as it wires an input": "passed",
       "passes axe on a field with a hint and an error": "passed"
     },
+    "packages/react/src/components/hotkey.test.tsx": {
+      "runs the handler on a matching chord": "passed",
+      "unbinds on unmount": "passed",
+      "does not re-bind when the handler identity changes each render": "passed"
+    },
     "packages/react/src/components/icon.test.tsx": {
       "resolves a stable name against the bound set": "passed",
       "renders project geometry without any binding": "passed",
@@ -776,11 +1044,13 @@
       "never lets the browser's default black win over the container's color": "passed"
     },
     "packages/react/src/components/image-frame.test.tsx": {
+      "serializes its appearance beside its other options, plain by default": "passed",
       "maps geometry props to data attributes on the authored root": "passed",
       "renders a media img from src/alt when children are omitted": "passed",
       "keeps a caption beside the src media": "passed"
     },
     "packages/react/src/components/input.test.tsx": {
+      "writes an appearance only when asked, on every field shape": "passed",
       "stays a valid control outside a FormField": "passed",
       "gives a textarea the same appearance contract as an input": "passed",
       "writes the control height to data-size, leaving the native size attribute alone": "passed",
@@ -801,31 +1071,103 @@
       "writes the format to the attribute the enhancer reads": "passed"
     },
     "packages/react/src/components/kbd.test.tsx": {
+      "serializes its appearance beside its tone, plain by default": "passed",
       "renders a native <kbd> carrying the part class": "passed",
       "keeps a consumer className alongside the part": "passed",
       "passes through native attributes": "passed",
+      "marks arrow and enter legends for icon drawing": "passed",
       "defaults to the neutral tone and opts into accent": "passed"
     },
     "packages/react/src/components/layout.test.tsx": {
       "keeps semantic ownership with the caller while applying Box defaults": "passed",
+      "serializes Box appearance, plain by default, like its other options": "passed",
+      "serializes Hero's appearance, plain by default": "passed",
+      "serializes Footer's appearance, plain by default": "passed",
       "renders Stack, Inline and Grid as the documented layout contracts": "passed",
-      "omits data-block-start when Inline's space above is the default none": "passed",
+      "writes data-block-start=none for Inline's default, as the emitted markup does": "passed",
       "switches Grid into responsive rows and lets a child request a wider span": "passed",
-      "writes data-fill when Grid asks for an equal resting floor": "passed",
+      "writes the block-axis justify and the one-sided show a Stack declares": "passed",
+      "leaves a Stack with no justify free of data-justify, so it never claims height": "passed",
+      "writes AppShell's scroll and sticky header, and nothing for the defaults": "passed",
       "renders LayoutGrid while leaving width on its semantic children": "passed",
       "renders Main as an empty application landmark": "passed",
+      "renders Main with its part and the block inset it declares": "passed",
       "renders Wrapper as a page column on the size scale": "passed",
       "writes Wrapper's default md size and keeps the caller's class": "passed",
       "renders Footer as a contentinfo landmark with its documented defaults": "passed",
       "lets Footer opt out of the divider, change padding/surface, and drop the landmark via `as`": "passed",
       "renders Hero as a plain div with its documented defaults": "passed",
-      "lets Hero change align/padding/surface and render as a different element via `as`": "passed"
+      "lets Hero change align/padding/surface and render as a different element via `as`": "passed",
+      "writes each declared expanded spacing beside its compact value": "passed",
+      "writes no expanded attribute, and no Wrapper gutter, when none was declared": "passed",
+      "writes Box measure and Grid minColumn only when declared": "passed",
+      "serializes Box radius only when asked, so an absent one keeps the surface radius": "passed",
+      "renders the AppShell as the shell class, with no options, keeping the caller's own props": "passed"
+    },
+    "packages/react/src/components/lightbox.test.tsx": {
+      "opens from a thumbnail click at that thumbnail's position in its gallery": "passed",
+      "leaves a modified click to the link itself, for a new tab": "passed",
+      "opens programmatically on a single image, with no trigger anywhere on the page": "passed",
+      "opens programmatically on a gallery at a given index": "passed",
+      "clamps an out-of-range or negative starting index instead of failing": "passed",
+      "does nothing for an empty gallery": "passed",
+      "replaces what is showing when opened again while open, without a second modal": "passed",
+      "closes from the close button": "passed",
+      "closes on Escape": "passed",
+      "closes on a click on the dark around the image": "passed",
+      "does not close on a click on the image, the caption or a control": "passed",
+      "keeps the backdrop inert to clicks when closeOnBackdropClick is off": "passed",
+      "closes programmatically, and a second close is a no-op": "passed",
+      "releases the image and resets the view on close": "passed",
+      "survives repeated opening and closing with one listener set": "passed",
+      "goes to the next and previous image from the buttons": "passed",
+      "goes to the neighbours with ArrowRight and ArrowLeft": "passed",
+      "navigates programmatically, and ignores an index that does not exist": "passed",
+      "stops at the ends without loop, and says so with aria-disabled while staying focusable": "passed",
+      "wraps at the ends with loop": "passed",
+      "hides the navigation and the counter for a single image, and next/previous do nothing": "passed",
+      "keeps the reader on the same photo when the gallery changes while open, and closes when it empties": "passed",
+      "reports index changes, including the one it opened on": "passed",
+      "zooms from the buttons once the image has loaded, and resets": "passed",
+      "zooms with + and - and resets with 0 from the keyboard": "passed",
+      "never passes maxZoom": "passed",
+      "resets the zoom when the image changes": "passed",
+      "pans a zoomed image with the arrows instead of navigating": "passed",
+      "hides every zoom control when zoom is off": "passed",
+      "marks the stage as loading until the image arrives, with the thumbnail shown meanwhile": "passed",
+      "shows an error in words, keeps every control working, and reports it": "passed",
+      "ignores a load that arrives for an image the reader already left": "passed",
+      "preloads only the neighbours, after the current image has settled": "passed",
+      "fills title, description and credit, and draws no caption for an image without any": "passed",
+      "uses the author's alt verbatim, including an empty one, and never a filename": "passed",
+      "is a modal dialog with a name, and every control has one too": "passed",
+      "takes a localized name for the dialog and each control": "passed",
+      "moves focus to Close on open": "passed",
+      "wraps Tab and Shift+Tab inside the dialog": "passed",
+      "returns focus to the thumbnail that opened it": "passed",
+      "returns focus to the button that opened it programmatically": "passed",
+      "never focuses a trigger that was removed; falls back to the current photo's thumbnail": "passed",
+      "uses fallbackFocus when opened with no trigger and nothing focused": "passed",
+      "announces the position politely once navigation settles, not per keypress": "passed",
+      "works with the keyboard alone: open from a trigger with Enter, navigate, zoom, close": "passed",
+      "opens, navigates and closes from props, and reports the reader's changes back": "passed",
+      "gives every consumer below a provider the same single lightbox": "passed",
+      "keeps an open() issued before the provider's dialog has mounted": "passed",
+      "refuses useLightbox() outside a provider, loudly": "passed",
+      "cleans up on unmount while open, even mid-load, and leaves nothing behind": "passed",
+      "connects once under StrictMode, with one pair of images in the stage": "passed",
+      "renders a closed dialog with no images on the server's first pass": "passed"
     },
     "packages/react/src/components/list.test.tsx": {
       "renders a semantic list with static, link and button rows": "passed",
       "renders an ordered list when order is meaningful": "passed",
       "turns dividers off and densifies rows when asked": "passed",
       "disables ListItemButton with native disabled and aria-disabled": "passed"
+    },
+    "packages/react/src/components/listbox.test.tsx": {
+      "is a listbox named by its label, starting from the items marked selected": "passed",
+      "replaces the choice in single mode and reports it": "passed",
+      "toggles options in multiple mode and skips disabled ones": "passed"
     },
     "packages/react/src/components/loader.test.tsx": {
       "exposes labelled indeterminate work as a polite status": "passed",
@@ -846,6 +1188,10 @@
       "stops autoplay when the live reduced-motion preference turns on": "passed",
       "renders marquee contract trees, including FadeEdge composition": "passed"
     },
+    "packages/react/src/components/media-overlay.test.tsx": {
+      "maps strength and stays decorative": "passed",
+      "MediaOverlay hosts edge and can inject the wash via strength": "passed"
+    },
     "packages/react/src/components/megamenu.test.tsx": {
       "renders one shared panel, sized by a hidden ruler holding every trigger's columns": "passed",
       "clicking a trigger opens its panel with that trigger's own columns": "passed",
@@ -863,6 +1209,7 @@
     },
     "packages/react/src/components/menu.test.tsx": {
       "wires ARIA on mount and stays closed": "passed",
+      "forwards Button's appearance to its trigger": "passed",
       "renders no indicator slot at all when indicator is null": "passed",
       "opens on trigger click and closes on Escape, returning focus to the trigger": "passed",
       "closes on an outside pointer press": "passed",
@@ -885,9 +1232,16 @@
       "moving Right while a dropdown is open closes it and opens the adjacent item's dropdown": "passed",
       "clicking a dropdown command fires onSelect with its value": "passed",
       "clicking a leaf item (no dropdown) activates it directly": "passed",
-      "nav renders the trigger as nav-list's own link, not a Button, with behavior unchanged": "passed",
       "a dropdown entry with an href renders as a real link, not a command div": "passed",
       "stamps menubar/menu mount attrs and dispatches Menu DOM events from the item wrapper": "passed"
+    },
+    "packages/react/src/components/message.test.tsx": {
+      "renders the conversation row and defaults to start alignment": "passed",
+      "serializes end alignment": "passed",
+      "renders header and footer metadata inside content": "passed",
+      "renders action controls": "passed",
+      "groups consecutive messages": "passed",
+      "keeps consumer classes": "passed"
     },
     "packages/react/src/components/meter.test.tsx": {
       "sets role=meter with the three required aria-value attributes": "passed",
@@ -909,9 +1263,13 @@
       "collapsible: stamps contract attrs and enhancer mounts": "passed"
     },
     "packages/react/src/components/navbar.test.tsx": {
+      "serializes its appearance on the bar, plain by default": "passed",
       "uses a header landmark while leaving navigation to its NavList child": "passed"
     },
     "packages/react/src/components/number-field.test.tsx": {
+      "groups thousands and uses the language's marks by default": "passed",
+      "lets a caller choose its own format instead of the default": "passed",
+      "writes an appearance on the root only when asked": "passed",
       "wires the accessible names from decrementLabel/incrementLabel onto the triggers": "passed",
       "increments and decrements by step, calling onValueChange": "passed",
       "disables the increment trigger at max and the decrement trigger at min": "passed",
@@ -924,12 +1282,39 @@
       "wires aria-valuemin/aria-valuemax/aria-valuenow": "passed",
       "ArrowUp/ArrowDown step from the keyboard, Home/End jump to the bounds": "passed"
     },
+    "packages/react/src/components/otp-input.test.tsx": {
+      "shows nothing in an empty box unless a placeholder is given": "passed",
+      "writes the group size on the root, and only when asked": "passed",
+      "renders one segment per count, each with its own accessible name": "passed",
+      "uses six segments when count is not given": "passed",
+      "advances focus as each segment fills, and reports every change": "passed",
+      "fires valueComplete once, exactly when the last segment fills, and writes the hidden input": "passed",
+      "spreads a pasted code across every segment at once": "passed",
+      "clears the focused segment on backspace": "passed",
+      "starts pre-filled from defaultValue": "passed",
+      "masks each segment like a password field": "passed",
+      "sets autocomplete=one-time-code by default, for SMS autofill": "passed",
+      "turns autocomplete off when otp is disabled": "passed",
+      "reports a pasted value that does not match the numeric type": "passed",
+      "has no accessibility violations": "passed"
+    },
     "packages/react/src/components/pagination.test.tsx": {
+      "serializes its appearance on the landmark, plain by default": "passed",
       "marks the current page and disables prev/next at the bounds": "passed",
       "collapses far pages behind an ellipsis and reports clicks clamped to range": "passed",
       "dispatches sk:paginationpagechange on the root for DOM listeners": "passed",
       "announces the visible row range as a polite, atomic live region": "passed",
       "actually pages its rows and builds the nav, instead of rendering only the shell": "passed"
+    },
+    "packages/react/src/components/password-input.test.tsx": {
+      "writes an appearance on the root only when asked": "passed",
+      "starts hidden, names the toggle for what it will do, and asks for a saved password": "passed",
+      "reveals and hides again from a pointer, renaming the toggle each time": "passed",
+      "is a tab stop and toggles from the keyboard": "passed",
+      "does not count a pointer click twice: pointerdown toggles, the click after it does not": "passed",
+      "offers to generate a password for a new one, and can opt out of password managers": "passed",
+      "dispatches sk:passwordinputvisibilitychange on the root for DOM parity with vanilla": "passed",
+      "stamps data-invalid, describes the hint, and will not reveal a disabled field": "passed"
     },
     "packages/react/src/components/placeholder.test.tsx": {
       "clamps a line count to something renderable": "passed",
@@ -943,6 +1328,8 @@
     },
     "packages/react/src/components/popover.test.tsx": {
       "links the trigger to its content via popovertarget/id, with popover=auto": "passed",
+      "serializes the panel's appearance on the root, apart from the trigger's": "passed",
+      "forwards Button's appearance to its trigger": "passed",
       "renders a title and description in the full (non-bare) anatomy": "passed",
       "links the panel to its own title/description via aria-labelledby/aria-describedby": "passed",
       "carries neither aria-labelledby nor aria-describedby without a title/description to point at": "passed",
@@ -992,7 +1379,9 @@
       "shows a three-step window with continuation cues for a longer questionnaire": "passed",
       "dispatches sk:questionnaireitemchange on the form": "passed",
       "stamps the mount attrs the vanilla enhancer scans for": "passed",
-      "dispatches sk:questionnairesubmit before a valid submit proceeds": "passed"
+      "dispatches sk:questionnairesubmit before a valid submit proceeds": "passed",
+      "is a textarea, while text beside choices stays a one-line input": "passed",
+      "keeps typed answers as inputs, and lets a text type or an explicit count override the rule": "passed"
     },
     "packages/react/src/components/quote.test.tsx": {
       "renders a figure whose blockquote holds only the quoted words": "passed",
@@ -1001,7 +1390,10 @@
       "renders the caption when only the work is given": "passed",
       "writes cite as provenance on the blockquote and renders nothing for it": "passed",
       "defaults to the block variant and takes pull": "passed",
-      "keeps the consumer's className beside the part class": "passed"
+      "keeps the consumer's className beside the part class": "passed",
+      "places the person's picture before the name, in a part of its own": "passed",
+      "keeps the name and the work together without a picture": "passed",
+      "does not make a caption out of a picture alone": "passed"
     },
     "packages/react/src/components/rating.test.tsx": {
       "is a radio group with one radio per step, named by its label": "passed",
@@ -1018,7 +1410,35 @@
       "paints the number and the count only when they were written": "passed",
       "the display has no accessibility violations": "passed"
     },
+    "packages/react/src/components/resizable.test.tsx": {
+      "splits equally and describes the bar as a separator": "passed",
+      "announces the opposite orientation when stacked": "passed",
+      "honours authored sizes and bounds": "passed",
+      "moves the boundary with the arrows, further with Shift, and reports it": "passed",
+      "uses Up and Down for stacked panels and ignores the other axis": "passed",
+      "jumps with Home and End, resets with Enter and double click": "passed",
+      "drags by the pointer's travel as a share of the panels' room": "passed",
+      "does not start a drag for a press that barely moves": "passed",
+      "keeps a resized layout across a re-render with the same bounds": "passed",
+      "starts over when the authored sizes change": "passed",
+      "merges className, forwards the ref and keeps a caller's style": "passed",
+      "has no way to disappear without `collapsible`: the floor holds on Home": "passed",
+      "closes on Home, marks itself, leaves the bar reachable and takes its content out of reach": "passed",
+      "opens again with Enter, which resets, and with a double click": "passed",
+      "toggles on Ctrl+Enter and on Cmd+Enter, back to the size it had": "passed",
+      "does nothing on Ctrl+Enter when neither side can collapse, and keeps Enter as the reset": "passed",
+      "can be driven from outside: collapse, expand, toggle and reset through apiRef": "passed",
+      "answers the same commands as an event on the group, for a trigger with no reference to it": "passed",
+      "keeps a rail's content when it collapses to a size above zero": "passed"
+    },
+    "packages/react/src/components/scroll-stack.test.tsx": {
+      "renders the two layers in reading order, the runway and the content wrapper": "passed",
+      "hides the runway from assistive technology: it is a clock, not content": "passed",
+      "gives the layers no role of their own: the semantics are the author's": "passed",
+      "passes id, aria-* and a class to the root": "passed"
+    },
     "packages/react/src/components/select.test.tsx": {
+      "writes an appearance on the root only when asked": "passed",
       "uses the Zag select machine for popup selection and form value": "passed",
       "dispatches sk:selectvaluechange on the root for DOM parity with vanilla": "passed",
       "moves aria-selected onto the highlighted option before Enter commits anything": "passed"
@@ -1034,6 +1454,7 @@
       "gives every instance its own label id": "passed"
     },
     "packages/react/src/components/sidebar.test.tsx": {
+      "serializes its appearance on the rail, plain by default": "passed",
       "collapses uncontrolled and reports the change": "passed",
       "stamps mount attrs the vanilla enhancer scans for": "passed",
       "names the complementary landmark when a consumer supplies one": "passed",
@@ -1063,6 +1484,7 @@
     },
     "packages/react/src/components/split-button.test.tsx": {
       "renders a labelled group holding the action button and the menu's icon-only trigger": "passed",
+      "gives both halves the same appearance from one prop": "passed",
       "clicking the action button fires onClick, independent of the menu": "passed",
       "opens the fallback menu from its trigger and selects an item": "passed",
       "disables both the action button and the menu trigger together": "passed",
@@ -1079,6 +1501,7 @@
     },
     "packages/react/src/components/state-button.test.tsx": {
       "stacks every face as an icon and marks the current one active": "passed",
+      "carries Button's appearance on the host, like its variant": "passed",
       "writes data-current on the button itself": "passed",
       "marks no face active when current is absent": "passed",
       "forwards a click handler, same as any other button": "passed"
@@ -1086,6 +1509,16 @@
     "packages/react/src/components/steps.test.tsx": {
       "derives complete / current / upcoming from the current index": "passed",
       "lets a step override its status explicitly": "passed"
+    },
+    "packages/react/src/components/sticker.test.tsx": {
+      "renders the src path as the contract's anatomy: art, then an aria-hidden flap holding the copy": "passed",
+      "keeps an explicitly empty alt for decoration instead of dropping it": "passed",
+      "takes authored artwork as children and leaves its semantics alone": "passed",
+      "writes the contract defaults, so the first paint is deterministic": "passed",
+      "maps every option to the attribute the contract names": "passed",
+      "moves between states from the outside without remounting the artwork": "passed",
+      "does not change its own state on click: that decision is the consumer's": "passed",
+      "passes ordinary host props through and merges the class": "passed"
     },
     "packages/react/src/components/table.test.tsx": {
       "renders the native table structure with every stable part class": "passed",
@@ -1097,7 +1530,7 @@
       "Home/End jump to the resized pair's min/max extent, total conserved": "passed",
       "Enter (and double-click) fits the column to its own content, not an even split": "passed",
       "fitting a column floors at the minimum when its content measures narrower": "passed",
-      "reports its position as a percentage of the pair's travel, not a raw pixel count": "passed",
+      "reports its position as its share of the pair, bounded by each column's floor": "passed",
       "--sk-splitter-block-size excludes a <caption>'s own height, measured from the header row down": "passed",
       "subtracts the table's own border width from the seeded total, not just the wrapper's raw width": "passed",
       "never produces NaN widths when the environment reports no computed border at all (an empty string, not \"0px\")": "passed"
@@ -1111,6 +1544,7 @@
       "moves roving focus with ArrowRight without changing manual selection": "passed"
     },
     "packages/react/src/components/tag.test.tsx": {
+      "serializes its appearance on both hosts, plain by default": "passed",
       "carries its tone and label": "passed",
       "exposes a named remove control only when removable is set": "passed",
       "dispatches the contract remove event on the host when the control is used": "passed",
@@ -1118,6 +1552,7 @@
       "removes with a real small icon-only button, not a lookalike": "passed"
     },
     "packages/react/src/components/tags-input.test.tsx": {
+      "writes an appearance on the root only when asked": "passed",
       "renders the tags it starts with, as composed Tags": "passed",
       "names the entry, which is the control a reader lands on": "passed",
       "commits what was typed on Enter, whatever it is": "passed",
@@ -1144,6 +1579,7 @@
       "renders every React Tile root with an explicit interactive or disclosure variant": "passed",
       "renders the shared title and description anatomy for selectable tiles": "passed",
       "emits requested Tile padding while leaving the default inset implicit": "passed",
+      "writes appearance on the painted surface, plain when omitted": "passed",
       "supports uncontrolled checkbox changes": "passed",
       "supports radio group value changes": "passed",
       "supports ExpandableTile callbacks": "passed",
@@ -1176,8 +1612,18 @@
     },
     "packages/react/src/components/tooltip.test.tsx": {
       "describes the trigger rather than naming it": "passed",
+      "writes data-arrow on the root only when the arrow is asked for": "passed",
       "stays closed while disabled": "passed",
       "dispatches sk:tooltipopenchange on the root when open state changes": "passed"
+    },
+    "packages/react/src/components/tour.test.tsx": {
+      "serializes its appearance on the root, plain by default": "passed",
+      "renders the steps as the hidden list and starts nothing on mount": "passed",
+      "starts from its trigger, walks with Continue and Previous, and finishes": "passed",
+      "says Repeat tour once the tour has ended, and restarts from step one": "passed",
+      "exposes start, close and restart on its ref": "passed",
+      "skips a step whose target is not rendered": "passed",
+      "closes with Escape and survives StrictMode's double effects": "passed"
     },
     "packages/react/src/components/tree-view.test.tsx": {
       "wires tree semantics onto the rendered nodes": "passed",
@@ -1209,7 +1655,7 @@
       "Left/Right resize by a step, Shift+Left/Right by the coarse step": "passed",
       "Home/End jump to the resized pair's min/max extent, total conserved": "passed",
       "Enter (and double-click) resets the pair to an even split": "passed",
-      "reports its position as a percentage of the pair's travel, not a raw pixel count": "passed"
+      "reports its position as its share of the pair, bounded by each column's floor": "passed"
     },
     "packages/react/src/components/typography.test.tsx": {
       "separates heading hierarchy from its visual size": "passed",
@@ -1221,7 +1667,27 @@
       "ties an Output to the inputs it is calculated from": "passed",
       "renders inline code with its part class": "passed"
     },
+    "packages/react/src/components/user-select.test.tsx": {
+      "opens on trigger click and closes on Escape, returning focus to the trigger": "passed",
+      "selects a user and represents it with an avatar and name in the trigger": "passed",
+      "supports selecting multiple users without closing, then deselecting one": "passed",
+      "filters by name and by email without touching the current selection": "passed",
+      "keeps a selection made under a search filter once the filter is cleared": "passed",
+      "shows Clear all once something is selected and empties the value": "passed",
+      "never selects a disabled user": "passed",
+      "selects the arrow-highlighted user on Enter from the search field": "passed",
+      "types a literal space in the search field instead of toggling the highlighted user": "passed",
+      "says a roster is empty, distinctly from a search with no matches": "passed",
+      "says a search has no matches, distinctly from an empty roster": "passed",
+      "shows the loading pattern instead of the empty state while loading": "passed",
+      "represents a multi-user selection with GroupedAvatar's own overflow": "passed",
+      "relabels every default string from `term` alone": "passed",
+      "localizes through `labels`": "passed",
+      "leads every row with a decorative checkbox, since the selection is multiple": "passed",
+      "opens with the selected users first, and keeps that order while it stays open": "passed"
+    },
     "packages/react/src/components/vaul.test.tsx": {
+      "serializes its appearance on the panel, plain by default": "passed",
       "carries the enhancer's scope markers at rest": "passed",
       "draws the handle hidden from assistive tech, always": "passed",
       "takes a logical edge and the consumer's own className": "passed",
@@ -1235,6 +1701,16 @@
       "closes from a backdrop click and not from a click inside the panel": "passed",
       "names the panel it controls and starts collapsed": "passed",
       "opens the panel modally, and the close button inside shuts it and collapses the trigger": "passed"
+    },
+    "packages/react/src/components/window.test.tsx": {
+      "opens from its trigger as a non-modal dialog named by its title": "passed",
+      "writes its appearance on the content, the element that paints, plain by default": "passed",
+      "forwards Button's appearance to its trigger, apart from the frame's own": "passed",
+      "names its controls with the labels it is given, not Zag's English": "passed",
+      "closes from its close control and reports it on the root": "passed",
+      "maximizes, swaps to a restore control, and reports the stage": "passed",
+      "hides the stage controls when it cannot be resized": "passed",
+      "leaves the layer to the stylesheet and keeps the stack order": "passed"
     },
     "packages/vanilla/src/components/accordion.svelte.test.ts": {
       "renders the contract's anatomy, and pairs each trigger with its own panel": "passed",
@@ -1255,6 +1731,7 @@
       "makes the specimen a specimen: inert, and nothing inside it a tab stop": "passed",
       "leaves the specimen live when inert is refused": "passed",
       "lifts each label level with the part it names": "passed",
+      "draws into its own overlay when the specimen contains another annotated figure": "passed",
       "draws one mark per label, each a leader and a ring, in the labels' own order": "passed",
       "gives the ring the corner of the part it wraps, and lets the frame override it": "passed",
       "brackets an area along its side and reserves the gutter room it takes": "passed",
@@ -1283,6 +1760,13 @@
       "does nothing, rather than throwing, on a frame that lost a part": "passed",
       "mounts once per authored root": "passed"
     },
+    "packages/vanilla/src/components/app-bar.svelte.test.ts": {
+      "gives the menus exactly one tab stop and leaves the status menu its own": "passed",
+      "moves between menus with Left/Right, wrapping, without opening anything": "passed",
+      "carries an open dropdown to the neighbour with Right": "passed",
+      "switches by pointing once a menu is open, across to the status side, and never opens on pointing alone": "passed",
+      "a click on another trigger closes the open menu first": "passed"
+    },
     "packages/vanilla/src/components/back-to-top.test.ts": {
       "reveals at or past the threshold, never before": "passed",
       "shows from the first pixel when the threshold is 0": "passed",
@@ -1310,6 +1794,11 @@
       "enhances authored buttons with a safe type and idempotent mounting": "passed",
       "refuses a root without the required interaction class": "passed",
       "reflects authored disabled state without changing its button semantics": "passed",
+      "accepts tactile authored markup without runtime appearance logic": "passed",
+      "accepts brutalist authored markup without runtime appearance logic": "passed",
+      "still refuses an unnamed icon-only brutalist button": "passed",
+      "accepts frosted authored markup and still refuses an unnamed icon-only one": "passed",
+      "accepts frosted authored navigation markup": "passed",
       "accepts an icon-only button named by aria-label": "passed",
       "refuses a button that renders nothing at all": "passed",
       "accepts a button whose only content is an icon element": "passed",
@@ -1317,6 +1806,8 @@
       "accepts an icon-only button named by visually-hidden text": "passed",
       "accepts a name the author put in a slot rather than beside the icon": "passed",
       "enhances an authored anchor without changing its navigation semantics": "passed",
+      "accepts tactile authored navigation markup": "passed",
+      "accepts brutalist authored navigation markup": "passed",
       "refuses an anchor without href": "passed",
       "refuses a disabled link that could still navigate": "passed",
       "clears an aria-disabled the author left behind on an enabled button": "passed",
@@ -1340,6 +1831,16 @@
       "names every accessible string in Spanish by default, not Zag's own English": "passed",
       "switches every accessible string to English when the locale says so": "passed",
       "names the year-view cancel trigger in the authored locale too": "passed"
+    },
+    "packages/vanilla/src/components/canvas.test.ts": {
+      "opens fitted: scaled until all of it shows, and as tall as that": "passed",
+      "zooms with the buttons, and fit brings it back": "passed",
+      "disables zoom-out at the minimum it read off the markup": "passed",
+      "zooms on Ctrl + wheel and leaves a plain wheel to the page": "passed",
+      "pans on a plain wheel once zoomed, and hands the scroll back to the page at an edge": "passed",
+      "answers + - 0 from the keyboard, and leaves Ctrl-chords to the browser": "passed",
+      "takes two fingers and leaves one to the page, hinting when one drags sideways": "passed",
+      "stops listening once disconnected": "passed"
     },
     "packages/vanilla/src/components/carousel.svelte.test.ts": {
       "names the region and every slide for assistive tech": "passed",
@@ -1369,6 +1870,12 @@
       "keeps each group's aria-controls to its own children, never a nested group's": "passed",
       "re-derives the parent after a form reset, which restores the children silently": "passed"
     },
+    "packages/vanilla/src/components/clipboard.svelte.test.ts": {
+      "copies its value, then shows, says and flags that it did": "passed",
+      "reads a target's text at the moment of the click, not at mount": "passed",
+      "says the write failed instead of claiming it copied": "passed",
+      "wires the field: its label names it, and the button copies what it shows": "passed"
+    },
     "packages/vanilla/src/components/code-preview.test.ts": {
       "switches density, expands, collapses and mounts idempotently": "passed",
       "keeps disclosure available when Condensed itself is long": "passed",
@@ -1379,7 +1886,7 @@
       "refuses markup that is missing a part it must patch": "passed",
       "patches the authored control and renders the popover around a panel": "passed",
       "opens the panel from the trigger and closes it again": "passed",
-      "shows the starting color on the root's own custom property": "passed",
+      "shows the starting color on the root and in the field text": "passed",
       "commits a typed hex value and only shows the selected channel format": "passed",
       "selects a preset swatch and updates the current color": "passed",
       "renders no presets row at all when none were authored": "passed",
@@ -1405,6 +1912,8 @@
       "gives each option the context line the entry asked for": "passed",
       "walks the list with the keyboard and stops at both ends": "passed",
       "goes where Enter and a click point": "passed",
+      "closes before it navigates, so a link to a place on this page does not leave it open": "passed",
+      "runs a command instead of navigating: closes, then fires the event": "passed",
       "dismisses on the backdrop and drops the trigger's claim": "passed",
       "starts each opening from a clean query": "passed",
       "survives an index that is missing or not JSON": "passed",
@@ -1433,34 +1942,6 @@
       "leaves the thread's own composer open in flow above the breakpoint, with no sheet class": "passed",
       "marks a reply box as a sheet, and un-presses its trigger when the platform closes it": "passed",
       "says a reply trigger opens a dialog, in both presentations": "passed"
-    },
-    "packages/vanilla/src/components/component-preview.test.ts": {
-      "switches binding and nested Vanilla source panels idempotently": "passed",
-      "shares Vanilla | React across every preview on the page": "passed",
-      "never hides the only binding a preview has": "passed",
-      "never hides a Vanilla-only preview when the preference is React": "passed",
-      "hands the stage height to the reader on drag and back to the content on double click": "passed",
-      "keeps a reader-set height across a stage reload": "passed",
-      "reloads the srcdoc stage from the authored document": "passed",
-      "leaves the hidden binding's stage unbooted when a preview scrolls into view": "passed",
-      "prewarms the hidden binding's stage once the page goes idle": "passed",
-      "boots the hidden stage immediately when the reader switches binding": "passed",
-      "releases a stage's realm and restores it from the same cached document": "passed",
-      "never releases a stage that currently holds focus": "passed",
-      "restoring an already-live or never-released stage is a no-op": "passed",
-      "selects a preset directly on click, marking the stage and clearing it for free": "passed",
-      "keeps a reader-selected height when switching to tablet": "passed",
-      "keeps a reader-selected height when switching to mobile": "passed",
-      "keeps mobile selected while the reader nudges its height": "passed",
-      "honours a preset authored as the initial value": "passed",
-      "mounts a preview that offers no presets": "passed",
-      "keeps a plain click to its own preview, and lets shift move the whole page": "passed",
-      "records the shared preset on the document element only when shift asks, free as an absence": "passed",
-      "adopts a preset the document already carries, which is what FOUC writes": "passed",
-      "forces mobile on narrow viewports without overwriting the saved desktop preset": "passed",
-      "keeps a card without the zoomed-desktop option on free when the shared pref is xl": "passed",
-      "applies xl only on the card that offers it when the shared pref changes": "passed",
-      "applies the shared preset to a preview that has no toggle of its own": "passed"
     },
     "packages/vanilla/src/components/data-grid.test.ts": {
       "gives exactly one unit a tab stop on mount. The first cell": "passed",
@@ -1572,6 +2053,7 @@
       "re-samples the ground when the colour scheme flips, which resizes nothing": "passed",
       "stops watching the scheme once the folder is destroyed": "passed",
       "publishes the silhouette as a clip for the state layer to follow": "passed",
+      "publishes the fan's clip and the frosted mask from the same outline": "passed",
       "refuses a root missing the nodes it has to draw into": "passed",
       "mounts once per root and leaves an already-enhanced folder alone": "passed"
     },
@@ -1588,6 +2070,44 @@
       "dispatches sk:inputvalidate with the same detail React sends": "passed",
       "hands the field's country to whatever implements the format, re-read every pass": "passed",
       "hands the field back untouched when the enhancer is destroyed": "passed"
+    },
+    "packages/vanilla/src/components/lightbox.test.ts": {
+      "mounts once, and builds the two images inside the stage": "passed",
+      "assembles the gallery from every trigger naming its id, in page order, and no other": "passed",
+      "reads each image's alt, metadata, size and thumbnail off its trigger": "passed",
+      "never uses a cropped thumbnail as the placeholder, and takes an explicit one instead": "passed",
+      "keeps a thumbnail of the photo's own shape as the placeholder": "passed",
+      "includes a thumbnail added to the page after mounting": "passed",
+      "reads loop, zoom, counter and the counter label off the markup": "passed",
+      "opens from script through getLightbox, with the same lifecycle": "passed",
+      "announces opening and navigation as DOM events": "passed",
+      "runs the full close when the platform's own cancel fires": "passed",
+      "runs the full close when someone calls dialog.close() directly": "passed",
+      "swipes to the next and previous image with one finger at fit": "passed",
+      "closes on a decisive swipe down": "passed",
+      "does not close from the click that ends a drag over the backdrop": "passed",
+      "pans a zoomed image instead of swiping, and keeps it inside the frame": "passed",
+      "drags a zoomed image with the mouse, and a mouse drag at fit changes nothing": "passed",
+      "pinches to zoom with two fingers": "passed",
+      "zooms on a double tap on the photo, and back out on the next": "passed",
+      "does not zoom on a mouse double click: with a mouse, the zoom is the buttons'": "passed",
+      "does not zoom with the wheel, and leaves the wheel uncancelled for the page's scroll lock": "passed",
+      "zooms with Ctrl or Cmd + wheel (and a trackpad pinch), and claims only that wheel": "passed",
+      "claims Ctrl + wheel even where zoom is off, so the browser does not zoom the page behind": "passed",
+      "lets a long caption scroll under the wheel": "passed",
+      "zooms nothing until the image has loaded, and nothing when it failed": "passed",
+      "lets go of a mouse drag released outside the window, on its next move with no button down": "passed",
+      "lets go of every drag when the window loses focus or the page is hidden": "passed",
+      "lets go of a drag whose pointer capture is lost": "passed",
+      "forgets a half-finished gesture on close": "passed",
+      "re-enters the dialog when Tab is pressed with focus lost to the body": "passed",
+      "ignores keys that come from outside the dialog": "passed"
+    },
+    "packages/vanilla/src/components/listbox.svelte.test.ts": {
+      "names the listbox with its label and starts from the options marked selected": "passed",
+      "replaces the choice in single mode and reports it": "passed",
+      "toggles each option on its own in multiple mode": "passed",
+      "never selects a disabled option": "passed"
     },
     "packages/vanilla/src/components/marquee.test.ts": {
       "derives constant velocity from duration-scale cadence": "passed",
@@ -1637,8 +2157,7 @@
       "moving Right/Left while a dropdown is open closes it and opens the adjacent item's dropdown": "passed",
       "moving to the leaf item (no dropdown) while one was open just closes it: no dropdown to open": "passed",
       "Left/Right inside an open dropdown's own item list are the bar's business only via handoff, not item navigation": "passed",
-      "wires role=menuitem onto an authored <a> item the same as a <div> command": "passed",
-      "wires up identically when the trigger is nav-list's own link instead of a Button": "passed"
+      "wires role=menuitem onto an authored <a> item the same as a <div> command": "passed"
     },
     "packages/vanilla/src/components/nav-list.test.ts": {
       "generates an id and wires aria-controls to the list, on mount": "passed",
@@ -1648,9 +2167,14 @@
       "Enter/Space toggle it. Native <button> behavior, nothing this enhancer has to wire itself": "passed",
       "Escape closes the open dropdown from anywhere inside it and returns focus to the trigger": "passed",
       "Escape does nothing when the dropdown is already closed": "passed",
-      "wires a NavListLink's own nested group independently of its parent group": "passed"
+      "wires a NavListLink's own nested group independently of its parent group": "passed",
+      "keeps a choice across a fresh mount": "passed",
+      "always opens the group that holds the current page, whatever was stored": "passed",
+      "mirrors a choice to another list that shares the key and the group id": "passed",
+      "remembers nothing without a storage key": "passed"
     },
     "packages/vanilla/src/components/number-field.test.ts": {
+      "groups thousands by the root's language, as the React binding does": "passed",
       "wires the accessible names from the authored aria-label onto the triggers": "passed",
       "increments and decrements by step, emitting sk:numberfieldvaluechange": "passed",
       "disables the increment trigger at max and the decrement trigger at min": "passed",
@@ -1661,6 +2185,43 @@
       "wires role=spinbutton with aria-valuemin/aria-valuemax/aria-valuenow": "passed",
       "ArrowUp/ArrowDown step from the keyboard, Home/End jump to the bounds": "passed",
       "describes the input with an authored hint, the way React does": "passed"
+    },
+    "packages/vanilla/src/components/otp-input.test.ts": {
+      "enhances an authored root, once": "passed",
+      "gives each segment the accessible name its own itemLabel pattern produces": "passed",
+      "advances focus as each segment fills, and reports every change": "passed",
+      "fires valueComplete once, exactly when the last segment fills, and writes the hidden input": "passed",
+      "spreads a pasted code across every segment at once": "passed",
+      "clears the focused segment on backspace": "passed",
+      "starts pre-filled from data-default-value": "passed",
+      "masks each segment like a password field": "passed",
+      "sets autocomplete=one-time-code by default, for SMS autofill": "passed",
+      "turns autocomplete off when data-otp is explicitly false": "passed",
+      "reports a pasted value that does not match the numeric type": "passed",
+      "leaves an incomplete root's attributes untouched, the all-or-nothing rule": "passed"
+    },
+    "packages/vanilla/src/components/password-input.svelte.test.ts": {
+      "wires the label, keeps the authored autocomplete and names the toggle from the markup": "passed",
+      "reveals from a pointer and swaps to the authored hide label": "passed",
+      "is a tab stop and toggles from the keyboard, like React": "passed",
+      "starts shown with data-default-visible, and dispatches the visibility event": "passed"
+    },
+    "packages/vanilla/src/components/qr-code.test.ts": {
+      "draws the value with the same geometry every other binding uses": "passed",
+      "reads shape, mask, quiet zone and the logo ratio the way the contract names them": "passed",
+      "draws again when the value changes, without re-mounting": "passed",
+      "follows a change of level or shape too": "passed",
+      "does not encode a symbol drawn at build time a second time, but redraws it when it changes": "passed",
+      "does nothing on markup with no value to draw": "passed",
+      "empties the drawing and marks the root when the value cannot be encoded, never keeping the old code": "passed",
+      "stops following changes once disconnected": "passed",
+      "does nothing on markup without the frame, rather than inventing it": "passed",
+      "exports the symbol as it is drawn, as a self-contained SVG": "passed",
+      "carries an SVG logo along, sized to the cleared hole": "passed",
+      "reads the standard polarity for a file, and leaves the component's own attribute as it was": "passed",
+      "refuses to export a symbol that has nothing drawn": "passed",
+      "downloads an SVG with the type's own extension": "passed",
+      "says so, rather than failing silently, where no canvas exists for a raster": "passed"
     },
     "packages/vanilla/src/components/questionnaire.test.ts": {
       "turns the long form into one question at a time": "passed",
@@ -1691,6 +2252,28 @@
       "keeps one tab stop, which is what makes it a group and not five controls": "passed",
       "refuses to change while read-only": "passed",
       "leaves a RatingDisplay alone, because it has no machine to run": "passed"
+    },
+    "packages/vanilla/src/components/resizable.test.ts": {
+      "splits equally and describes each bar as a separator": "passed",
+      "announces the opposite orientation when the panels are stacked": "passed",
+      "honours authored sizes": "passed",
+      "moves the boundary with the arrows, further with Shift, and reports it": "passed",
+      "ignores the arrows of the other axis and keys it does not own": "passed",
+      "uses Up and Down for stacked panels": "passed",
+      "jumps to the ends with Home and End, and resets with Enter": "passed",
+      "resets on double click": "passed",
+      "drags the boundary by the pointer's travel as a share of the panels' room": "passed",
+      "does not start a drag for a press that barely moves": "passed",
+      "clamps a drag at the panel's minimum": "passed",
+      "moves only the pair a bar separates": "passed",
+      "stops responding after cleanup": "passed",
+      "closes on Home, marks the panel and the bar, and takes the closed content out of reach": "passed",
+      "opens again with Enter, which resets, and with a double click": "passed",
+      "toggles on Ctrl+Enter and Cmd+Enter, back to the size it had": "passed",
+      "keeps the floor of a panel that is not collapsible, and leaves Ctrl+Enter alone": "passed",
+      "answers commands sent as an event on the group": "passed",
+      "keeps a rail's content when it collapses to a size above zero": "passed",
+      "mounts authored roots once": "passed"
     },
     "packages/vanilla/src/components/segmented.test.ts": {
       "patches the authored parts into one roving radiogroup": "passed",
@@ -1728,6 +2311,14 @@
     },
     "packages/vanilla/src/components/slider.test.ts": {
       "mounts the Zag slider machine over authored markup": "passed"
+    },
+    "packages/vanilla/src/components/table-pager.test.ts": {
+      "pages rows, fills status, and builds the nav from paginationRange": "passed",
+      "moves pages on item click and resets when the size select changes": "passed",
+      "keeps focus on the control the reader just activated, across the render it triggers": "passed",
+      "reuses the same element for a page number across renders instead of rebuilding it": "passed",
+      "pages every body row of a table composed with no marker attributes": "passed",
+      "also hears an enhanced Select's own event from the size part": "passed"
     },
     "packages/vanilla/src/components/tags-input.test.ts": {
       "enhances an authored root, once": "passed",
@@ -1793,79 +2384,6 @@
       "only schedules authored timeouts and clears them during cleanup": "passed",
       "mounts authored toast markup through the registry enhancer": "passed"
     },
-    "packages/vanilla/src/components/tree-view.test.ts": {
-      "patches tree semantics onto authored markup and mounts once": "passed",
-      "expands a branch from its control and says so": "passed",
-      "seeds the open branches from the authored value": "passed",
-      "selects a leaf and reports the value the composition wrote": "passed",
-      "replaces the selection in single mode": "passed",
-      "extends the selection in multiple mode with the platform's own modifier": "passed",
-      "leaves a disabled node out of the selection": "passed",
-      "does nothing without an authored tree to scan": "passed",
-      "stops the machine when the mount is destroyed": "passed"
-    },
-    "packages/vanilla/src/components/treegrid.test.ts": {
-      "mounts once and hides the collapsed branch's descendant on connect": "passed",
-      "gives exactly one row a tab stop on mount. The first visible row": "passed",
-      "Right Arrow on a collapsed branch's row expands it and reveals its child, without moving focus": "passed",
-      "Left Arrow on an expanded branch's row collapses it and hides its child, after its exit animation settles": "passed",
-      "Right Arrow on an already-expanded row enters its first cell; Left Arrow returns to the row": "passed",
-      "Down Arrow skips a hidden (collapsed-away) row entirely": "passed",
-      "Enter toggles a focused branch row and activates a focused leaf row": "passed",
-      "clicking a branch's first cell toggles it and moves focus to the row": "passed",
-      "clicking a non-first cell just moves focus there, without toggling": "passed",
-      "Home/End (row focus) jump to the first/last VISIBLE row": "passed",
-      "never puts `sk-interactive` on the <tr> itself. Its state layer breaks table column alignment": "passed",
-      "inserts a decorative disclosure button into a branch row's first cell, never a leaf's": "passed",
-      "clicking the disclosure button itself toggles the row, same as clicking the cell": "passed",
-      "never inserts a column resizer unless `data-resizable-columns` is authored": "passed",
-      "inserts one resizer per column boundary: never after the last column": "passed",
-      "names each resizer from the shared label plus its OWN column header": "passed",
-      "a press that never travels resizes nothing": "passed",
-      "dragging redistributes width between exactly the resized pair, total conserved": "passed",
-      "marks the resizer `data-dragging` for the length of the gesture only": "passed",
-      "Left/Right resize by a step, Shift+Left/Right by the coarse step": "passed",
-      "Home/End jump to the resized pair's min/max extent": "passed",
-      "Enter (and double-click) resets the pair to an even split": "passed",
-      "reports its position as a percentage of the pair's REACHABLE travel, not a flat 0-100": "passed"
-    },
-    "packages/core/src/tour.test.ts": {
-      "steps forward and back one at a time": "passed",
-      "has nowhere to go past either end": "passed",
-      "skips a step whose target is missing, in both directions": "passed",
-      "starts on the first step that has a target, and on none when no step does": "passed",
-      "never returns the step it started from, so a missing current step can ask what is next": "passed",
-      "counts only the steps that can be shown": "passed",
-      "fills the label in both languages": "passed",
-      "puts the box on the side asked for, centred on the target": "passed",
-      "points the arrow at the target's middle, even when the box is pushed along by an edge": "passed",
-      "keeps the arrow clear of the box's corners": "passed",
-      "puts the arrow on the edge facing the target, on every side": "passed",
-      "flips to the opposite side of the same axis first": "passed",
-      "maps inline sides to physical ones by direction": "passed",
-      "keeps the box inside the viewport when the target hugs an edge": "passed",
-      "never covers the target when some side fits": "passed",
-      "docks to the half of the screen the target is not in when no side fits": "passed",
-      "tries the same axis, then the other, block-end first": "passed",
-      "reads an unknown placement as the default": "passed",
-      "knows a target that is partly on screen from one that is gone": "passed",
-      "scrolls only for a target not already in full view": "passed",
-      "grows the target's radius by the offset, so the ring stays parallel to its edge": "passed",
-      "keeps a percentage as one, so a circle stays a circle": "passed",
-      "reads an elliptical corner by its first radius": "passed",
-      "keeps one slot per tour id": "passed",
-      "accepts only an ending, and never a running tour": "passed",
-      "is a non-modal dialog, never a tooltip, and hides the ring from assistive tech": "passed",
-      "uses manual popovers, so nothing outside the box dismisses it": "passed"
-    },
-    "packages/react/src/components/tour.test.tsx": {
-      "renders the steps as the hidden list and starts nothing on mount": "passed",
-      "starts from its trigger, walks with Continue and Previous, and finishes": "passed",
-      "says Repeat tour once the tour has ended, and restarts from step one": "passed",
-      "exposes start, close and restart on its ref": "passed",
-      "skips a step whose target is not rendered": "passed",
-      "closes with Escape and survives StrictMode's double effects": "passed"
-    },
     "packages/vanilla/src/components/tour.test.ts": {
       "does nothing until the reader asks: nothing is shown on mount, even on a first visit": "passed",
       "starts from a trigger on step one, with Continue focused and the progress in words": "passed",
@@ -1907,93 +2425,82 @@
       "points its arrow at the target from the edge facing it": "passed",
       "stops listening and restores its parts on destroy": "passed"
     },
-    "packages/vanilla/src/components/qr-code.test.ts": {
-      "draws the value with the same geometry every other binding uses": "passed",
-      "reads shape, mask, quiet zone and the logo ratio the way the contract names them": "passed",
-      "draws again when the value changes, without re-mounting": "passed",
-      "follows a change of level or shape too": "passed",
-      "does not encode a symbol drawn at build time a second time, but redraws it when it changes": "passed",
-      "does nothing on markup with no value to draw": "passed",
-      "empties the drawing and marks the root when the value cannot be encoded, never keeping the old code": "passed",
-      "stops following changes once disconnected": "passed",
-      "does nothing on markup without the frame, rather than inventing it": "passed",
-      "exports the symbol as it is drawn, as a self-contained SVG": "passed",
-      "carries an SVG logo along, sized to the cleared hole": "passed",
-      "reads the standard polarity for a file, and leaves the component's own attribute as it was": "passed",
-      "refuses to export a symbol that has nothing drawn": "passed",
-      "downloads an SVG with the type's own extension": "passed",
-      "says so, rather than failing silently, where no canvas exists for a raster": "passed"
+    "packages/vanilla/src/components/tree-view.test.ts": {
+      "patches tree semantics onto authored markup and mounts once": "passed",
+      "expands a branch from its control and says so": "passed",
+      "seeds the open branches from the authored value": "passed",
+      "selects a leaf and reports the value the composition wrote": "passed",
+      "replaces the selection in single mode": "passed",
+      "extends the selection in multiple mode with the platform's own modifier": "passed",
+      "leaves a disabled node out of the selection": "passed",
+      "does nothing without an authored tree to scan": "passed",
+      "stops the machine when the mount is destroyed": "passed"
     },
-    "packages/react/src/components/clipboard.test.tsx": {
-      "copies its value and reports it, on the prop and the DOM alike": "passed",
-      "reads a target's text at the moment of the click": "passed",
-      "says the write failed instead of claiming it copied": "passed",
-      "names the field with its label and copies what it shows": "passed"
+    "packages/vanilla/src/components/treegrid.test.ts": {
+      "mounts once and hides the collapsed branch's descendant on connect": "passed",
+      "gives exactly one row a tab stop on mount. The first visible row": "passed",
+      "Right Arrow on a collapsed branch's row expands it and reveals its child, without moving focus": "passed",
+      "Left Arrow on an expanded branch's row collapses it and hides its child, after its exit animation settles": "passed",
+      "Right Arrow on an already-expanded row enters its first cell; Left Arrow returns to the row": "passed",
+      "Down Arrow skips a hidden (collapsed-away) row entirely": "passed",
+      "Enter toggles a focused branch row and activates a focused leaf row": "passed",
+      "clicking a branch's first cell toggles it and moves focus to the row": "passed",
+      "clicking a non-first cell just moves focus there, without toggling": "passed",
+      "Home/End (row focus) jump to the first/last VISIBLE row": "passed",
+      "never puts `sk-interactive` on the <tr> itself. Its state layer breaks table column alignment": "passed",
+      "inserts a decorative disclosure button into a branch row's first cell, never a leaf's": "passed",
+      "clicking the disclosure button itself toggles the row, same as clicking the cell": "passed",
+      "never inserts a column resizer unless `data-resizable-columns` is authored": "passed",
+      "inserts one resizer per column boundary: never after the last column": "passed",
+      "names each resizer from the shared label plus its OWN column header": "passed",
+      "a press that never travels resizes nothing": "passed",
+      "dragging redistributes width between exactly the resized pair, total conserved": "passed",
+      "marks the resizer `data-dragging` for the length of the gesture only": "passed",
+      "Left/Right resize by a step, Shift+Left/Right by the coarse step": "passed",
+      "Home/End jump to the resized pair's min/max extent": "passed",
+      "Enter (and double-click) resets the pair to an even split": "passed",
+      "reports its position as a percentage of the pair's REACHABLE travel, not a flat 0-100": "passed"
     },
-    "packages/vanilla/src/components/clipboard.svelte.test.ts": {
-      "copies its value, then shows, says and flags that it did": "passed",
-      "reads a target's text at the moment of the click, not at mount": "passed",
-      "says the write failed instead of claiming it copied": "passed",
-      "wires the field: its label names it, and the button copies what it shows": "passed"
+    "packages/vanilla/src/components/user-select.test.ts": {
+      "opens on trigger click, closes on Escape and returns focus to the trigger": "passed",
+      "selects a user and represents it with the authored avatar and name in the trigger": "passed",
+      "supports selecting multiple users without closing, then deselecting one": "passed",
+      "filters by name and by email without touching the current selection": "passed",
+      "keeps a selection made under a search filter once the filter is cleared": "passed",
+      "shows Clear all once something is selected and empties the selection": "passed",
+      "never selects a disabled user": "passed",
+      "selects the arrow-highlighted user on Enter from the search field": "passed",
+      "types a literal space in the search field instead of toggling the highlighted user": "passed",
+      "distinguishes an empty roster from a search with no matches": "passed",
+      "says a search has no matches, distinctly from an empty roster": "passed",
+      "destroying the mount stops the machine": "passed",
+      "reads data-term and data-*-label for every string it writes": "passed",
+      "leads every row with a decorative checkbox, and the authored trailing check stays out of its way": "passed",
+      "opens with the selected rows first, and keeps that order while it stays open": "passed",
+      "keeps a search through the close and spends it on the next open": "passed",
+      "shows a loading row with a Loader and hides the list while the root has data-loading": "passed",
+      "keeps the loading row hidden when the roster has arrived": "passed"
     },
-    "packages/react/src/components/password-input.test.tsx": {
-      "starts hidden, names the toggle for what it will do, and asks for a saved password": "passed",
-      "reveals and hides again from a pointer, renaming the toggle each time": "passed",
-      "is a tab stop and toggles from the keyboard": "passed",
-      "does not count a pointer click twice: pointerdown toggles, the click after it does not": "passed",
-      "offers to generate a password for a new one, and can opt out of password managers": "passed",
-      "dispatches sk:passwordinputvisibilitychange on the root for DOM parity with vanilla": "passed",
-      "stamps data-invalid, describes the hint, and will not reveal a disabled field": "passed"
+    "packages/vanilla/src/components/window.svelte.test.ts": {
+      "mounts on the attribute it scans for, and only once": "passed",
+      "opens from its trigger as a non-modal dialog named by its title": "passed",
+      "keeps the authored appearance on the content through the machine's own props": "passed",
+      "keeps the authored labels over Zag's English": "passed",
+      "closes from its close control and announces it": "passed",
+      "maximizes and swaps its stage controls": "passed",
+      "hides the stage controls and disables the handles when it cannot be resized": "passed",
+      "reads its opening size from the root": "passed"
     },
-    "packages/vanilla/src/components/password-input.svelte.test.ts": {
-      "wires the label, keeps the authored autocomplete and names the toggle from the markup": "passed",
-      "reveals from a pointer and swaps to the authored hide label": "passed",
-      "is a tab stop and toggles from the keyboard, like React": "passed",
-      "starts shown with data-default-visible, and dispatches the visibility event": "passed"
-    },
-    "packages/react/src/components/sticker.test.tsx": {
-      "renders the src path as the contract's anatomy: art, then an aria-hidden flap holding the copy": "passed",
-      "keeps an explicitly empty alt for decoration instead of dropping it": "passed",
-      "takes authored artwork as children and leaves its semantics alone": "passed",
-      "writes the contract defaults, so the first paint is deterministic": "passed",
-      "maps every option to the attribute the contract names": "passed",
-      "moves between states from the outside without remounting the artwork": "passed",
-      "does not change its own state on click: that decision is the consumer's": "passed",
-      "passes ordinary host props through and merges the class": "passed"
-    },
-    "packages/core/src/app-bar.test.ts": {
-      "moves between menus with Left/Right and wraps at both ends": "passed",
-      "carries an open dropdown along to the neighbour": "passed",
-      "gives Home/End to the bar only while nothing is open": "passed",
-      "leaves every other key to the dropdown": "passed",
-      "switches only once a menu of the bar is already open, and not to itself": "passed",
-      "names the menubar, not the bar around it": "passed",
-      "gives a status item no control unless it has a menu": "passed"
-    },
-    "packages/react/src/components/app-bar.test.tsx": {
-      "names the menubar, keeps one tab stop across the menus, and leaves status outside it": "passed",
-      "draws the application's own menu in bold, and a chevron only where something opens": "passed",
-      "nests submenus to a third level inside a dropdown, as Menu does": "passed",
-      "moves between menus with Left/Right, wrapping, without opening anything": "passed",
-      "carries an open dropdown to the neighbour with Right": "passed",
-      "switches menus by pointing once one is open, and never opens on pointing alone": "passed",
-      "fires onSelect for a dropdown command and onActivate for a plain one": "passed",
-      "stamps the mounts the vanilla enhancers key on": "passed"
-    },
-    "packages/vanilla/src/components/app-bar.svelte.test.ts": {
-      "gives the menus exactly one tab stop and leaves the status menu its own": "passed",
-      "moves between menus with Left/Right, wrapping, without opening anything": "passed",
-      "carries an open dropdown to the neighbour with Right": "passed",
-      "switches by pointing once a menu is open, across to the status side, and never opens on pointing alone": "passed",
-      "a click on another trigger closes the open menu first": "passed"
-    },
-    "packages/react/src/components/message.test.tsx": {
-      "renders the conversation row and defaults to start alignment": "passed",
-      "serializes end alignment": "passed",
-      "renders header and footer metadata inside content": "passed",
-      "renders action controls": "passed",
-      "groups consecutive messages": "passed",
-      "keeps consumer classes": "passed"
+    "packages/vanilla/src/hotkey.test.ts": {
+      "parses modifiers and the key, forgiving case and whitespace": "passed",
+      "resolves mod to ⌘ on mac and Ctrl elsewhere": "passed",
+      "demands an exact chord, a superset does not match": "passed",
+      "formats for display per platform": "passed",
+      "fires on a match and prevents the default": "passed",
+      "removes its listener on cleanup": "passed",
+      "suppresses a bare-key shortcut while typing, but not a modifier chord": "passed",
+      "fires a bare key while typing when explicitly enabled": "passed",
+      "fires a sequence once every step has been pressed in order": "passed"
     }
   }
 }

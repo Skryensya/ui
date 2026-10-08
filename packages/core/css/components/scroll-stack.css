@@ -1,0 +1,166 @@
+/*
+ * TIER 3, SCROLL STACK
+ *
+ * Two layers that scroll as one story: the BACK layer stays put and recedes while the FRONT layer rises over it.
+ *
+ * NOTHING HERE RUNS UNLESS THE BROWSER CAN DRIVE AN ANIMATION FROM SCROLL AND THE READER ASKS FOR MOTION. Outside that
+ * the two layers are just two blocks, one after the other, in normal flow: no sticky, no transform, no overlap. That is
+ * also the state the styles below describe at rest, so there is no separate base case to keep in sync.
+ *
+ * HOW THE BACK LAYER KNOWS WHAT THE FRONT IS DOING. The back layer is sticky, so its own position in the scroll never
+ * changes while it is covered and cannot be what it animates against. The front layer's runway (see the contract) names
+ * a view timeline, and `timeline-scope` on the root lifts that name so that its sibling subtree can use it.
+ *
+ * THE RUNWAY IS AS TALL AS THE SCROLLING BOX, measured in `cqh`. In a container query unit the nearest SIZE container
+ * answers, and with none the small viewport does: so on a page the unit is the viewport, which is what scrolls, and
+ * inside a scrolling box of its own (a preview, a panel) giving that box `container-type: size` makes the same CSS
+ * measure that box instead.
+ *
+ * Every hook resolves to a TIER-2 token, never a palette or a raw color; scripts/lint.ts enforces it. Motion is
+ * `opacity`, `scale` and `border-radius`: nothing that changes layout.
+ */
+
+@keyframes sk-scroll-stack-recede {
+  to {
+    scale: var(--sk-scroll-stack-recede-scale);
+    border-radius: var(--sk-scroll-stack-recede-radius);
+  }
+}
+
+@keyframes sk-scroll-stack-veil {
+  to {
+    opacity: var(--sk-scroll-stack-recede-dim);
+  }
+}
+
+/* Once the front layer fully covers it, the back layer is gone for assistive technology and for the keyboard too. */
+@keyframes sk-scroll-stack-cover {
+  to {
+    visibility: hidden;
+  }
+}
+
+@keyframes sk-scroll-stack-rise {
+  to {
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+  }
+}
+
+@keyframes sk-scroll-stack-settle {
+  from {
+    scale: var(--sk-scroll-stack-zoom);
+  }
+  to {
+    scale: 1;
+  }
+}
+
+@layer components {
+  .sk-scroll-stack {
+    --sk-scroll-stack-recede-scale: 0.94;
+    --sk-scroll-stack-recede-dim: 0.35;
+    --sk-scroll-stack-recede-radius: var(--radius-surface);
+    --sk-scroll-stack-zoom: 1.06;
+    --sk-scroll-stack-front-bg: var(--color-bg-surface);
+    --sk-scroll-stack-front-radius: var(--radius-surface);
+    /* Where the back layer is held: below a fixed header the page already has, set this to the header's height. */
+    --sk-scroll-stack-offset: 0px;
+
+    position: relative;
+    /* The layers stack with each other and with nothing outside the component. */
+    isolation: isolate;
+    /* The zoomed content and the shrinking back layer never widen the page. `clip`, not `hidden`: no scroll container. */
+    overflow-x: clip;
+  }
+
+  .sk-scroll-stack__back {
+    position: relative;
+  }
+
+  .sk-scroll-stack__front {
+    position: relative;
+    z-index: 1;
+    background: var(--sk-scroll-stack-front-bg);
+    border-start-start-radius: var(--sk-scroll-stack-front-radius);
+    border-start-end-radius: var(--sk-scroll-stack-front-radius);
+    /* Cast UP onto what it is rising over: the one place this kit lifts something off the surface above it. */
+    box-shadow: 0 calc(var(--space-inset-sm) * -1) var(--space-inset-xl) calc(var(--space-inset-xs) * -1) var(--shadow-md);
+    overflow-x: clip;
+  }
+
+  .sk-scroll-stack__runway {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: 1px;
+    block-size: 100cqh;
+    pointer-events: none;
+  }
+
+  @supports (animation-timeline: view()) and (timeline-scope: --a) {
+    @media (prefers-reduced-motion: no-preference) {
+      .sk-scroll-stack {
+        timeline-scope: --sk-scroll-stack-front;
+      }
+
+      .sk-scroll-stack__runway {
+        view-timeline: --sk-scroll-stack-front block;
+      }
+
+      .sk-scroll-stack__back {
+        position: sticky;
+        inset-block-start: var(--sk-scroll-stack-offset);
+        /* Held while covered, so it has to be a full screen: the scrolling box, less where it is held. */
+        min-block-size: calc(100cqh - var(--sk-scroll-stack-offset));
+        overflow: clip;
+        transform-origin: 50% 0;
+        /*
+         * LONGHANDS, never the `animation` shorthand: a CSS minifier folds a following `animation-timeline` back into
+         * the shorthand, which has no slot for it, so every browser drops the whole declaration and the effect
+         * silently never runs in a production build. Kept apart, each longhand survives intact. Two animations share
+         * the layer: it recedes over the whole of the front layer's rise, and it is hidden only at the very end.
+         */
+        animation-name: sk-scroll-stack-recede, sk-scroll-stack-cover;
+        animation-fill-mode: both, both;
+        animation-timing-function: linear, linear;
+        animation-timeline: --sk-scroll-stack-front, --sk-scroll-stack-front;
+        animation-range: entry 0% entry 100%, entry 0% entry 100%;
+      }
+
+      /* The dimming is a veil over the layer, not a filter on it: cheap to animate, and it follows the rounded corners. */
+      .sk-scroll-stack__back::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--color-bg-well);
+        border-radius: inherit;
+        opacity: 0;
+        pointer-events: none;
+        animation-name: sk-scroll-stack-veil;
+        animation-fill-mode: both;
+        animation-timing-function: linear;
+        animation-timeline: --sk-scroll-stack-front;
+        animation-range: entry 0% entry 100%;
+      }
+
+      /* Rounded while it travels, square once it has docked: no corner is left showing the layer it covered. */
+      .sk-scroll-stack__front {
+        animation-name: sk-scroll-stack-rise;
+        animation-fill-mode: both;
+        animation-timing-function: linear;
+        animation-timeline: --sk-scroll-stack-front;
+        animation-range: entry 0% entry 100%;
+      }
+
+      .sk-scroll-stack__content {
+        transform-origin: 50% 0;
+        animation-name: sk-scroll-stack-settle;
+        animation-fill-mode: both;
+        animation-timing-function: var(--motion-enter-easing);
+        animation-timeline: --sk-scroll-stack-front;
+        animation-range: entry 0% entry 100%;
+      }
+    }
+  }
+}

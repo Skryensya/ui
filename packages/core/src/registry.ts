@@ -13,6 +13,7 @@ import { comparisonTableContract } from "./comparison-table.js";
 import { descriptionListContract } from "./description-list.js";
 import { quoteContract } from "./quote.js";
 import { resizableContract } from "./resizable.js";
+import { scrollStackContract } from "./scroll-stack.js";
 import { separatorContract } from "./separator.js";
 import { tagsInputContract } from "./tags-input.js";
 import { timelineContract } from "./timeline.js";
@@ -183,6 +184,7 @@ export const contracts = fromContracts(
   descriptionListContract,
   quoteContract,
   resizableContract,
+  scrollStackContract,
   separatorContract,
   tagsInputContract,
   timelineContract,

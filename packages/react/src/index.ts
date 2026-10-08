@@ -109,6 +109,8 @@ export { AutoplayMarquee, Marquee } from "./components/marquee.js";
 export type { MarqueeProps } from "./components/marquee.js";
 export { Resizable, ResizableHandle, ResizablePanel } from "./components/resizable.js";
 export type { ResizableApi, ResizableHandleProps, ResizablePanelProps, ResizableProps } from "./components/resizable.js";
+export { ScrollStack } from "./components/scroll-stack.js";
+export type { ScrollStackProps } from "./components/scroll-stack.js";
 export { Steps } from "./components/steps.js";
 export type { StepsProps } from "./components/steps.js";
 export { Tag } from "./components/tag.js";

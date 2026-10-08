@@ -9296,6 +9296,26 @@
         "version": "0.0.2-dev"
       }
     ],
+    "scroll-stack": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-07",
+            "en": {
+              "body": "Two sections where the second one rises over the first as the page scrolls. The back one shrinks a little, dims and rounds its corners; the front one enters with its content slightly zoomed in and settles as it docks at the top. It is CSS only and progressive: without scroll-driven animation, or with reduced motion, the two sections simply follow one another in normal flow. It is tuned with CSS hooks, not options.",
+              "title": "First published contract"
+            },
+            "es": {
+              "body": "Dos secciones donde la segunda sube y cubre a la primera al hacer scroll. La de atrás se achica un poco, se oscurece y redondea sus esquinas; la de adelante entra con su contenido ligeramente ampliado y se asienta al acoplarse arriba. Es solo CSS y progresivo: sin soporte de animación por scroll, o con movimiento reducido, las dos secciones quedan una tras otra en el flujo normal. Se ajusta con ganchos de CSS, no con opciones.",
+              "title": "Primera publicación del contrato"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.2-dev"
+      }
+    ],
     "segmented": [
       {
         "date": "2026-10-01",
@@ -44207,6 +44227,163 @@
         }
       }
     },
+    "scroll-stack": {
+      "bindings": {
+        "ScrollStack": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/scroll-stack#ScrollStack"
+        }
+      },
+      "category": "layout",
+      "css": "@skryensya/core/components/scroll-stack.css",
+      "hookDetails": {
+        "--sk-scroll-stack-front-bg": {
+          "default": "var(--color-bg-surface)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-stack.css"
+        },
+        "--sk-scroll-stack-front-radius": {
+          "default": "var(--radius-surface)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-stack.css"
+        },
+        "--sk-scroll-stack-offset": {
+          "default": "0px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-stack.css"
+        },
+        "--sk-scroll-stack-recede-dim": {
+          "default": "0.35",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-stack.css"
+        },
+        "--sk-scroll-stack-recede-radius": {
+          "default": "var(--radius-surface)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-stack.css"
+        },
+        "--sk-scroll-stack-recede-scale": {
+          "default": "0.94",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-stack.css"
+        },
+        "--sk-scroll-stack-zoom": {
+          "default": "1.06",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-stack.css"
+        }
+      },
+      "hooks": [
+        "--sk-scroll-stack-front-bg",
+        "--sk-scroll-stack-front-radius",
+        "--sk-scroll-stack-offset",
+        "--sk-scroll-stack-recede-dim",
+        "--sk-scroll-stack-recede-radius",
+        "--sk-scroll-stack-recede-scale",
+        "--sk-scroll-stack-zoom"
+      ],
+      "id": "scroll-stack",
+      "options": {},
+      "parts": {
+        "back": "sk-scroll-stack__back",
+        "content": "sk-scroll-stack__content",
+        "front": "sk-scroll-stack__front",
+        "root": "sk-scroll-stack",
+        "runway": "sk-scroll-stack__runway"
+      },
+      "semantics": {
+        "ScrollStack": {
+          "alternatives": [
+            "Hero",
+            "Procedure",
+            "Resizable"
+          ],
+          "avoidWhen": [
+            "there are more than two layers, or the sections are a sequence of equal steps; this stacks exactly one over one, and Procedure or Steps fits an ordered series",
+            "the back section is taller than the scrolling box; it is held in place while covered, so what does not fit would never be seen",
+            "the motion is the content (a story told by scroll position); this is a cover, built to be ignored, and not a scroll-driven scene",
+            "each section should scroll on its own inside a fixed frame; that is a set of regions, and Resizable or a Grid with overflow fits it"
+          ],
+          "useWhen": [
+            "two sections tell one story as the page scrolls and the second should read as arriving on top of the first: a hero and what follows it, a scene and its detail",
+            "a quiet, elegant transition between two blocks is wanted; the back recedes a little and the front settles, nothing more",
+            "the page has to stay a plain document where the effect is unavailable: with no scroll-driven animation, or with reduced motion, the two sections simply follow one another"
+          ]
+        }
+      },
+      "signatures": {
+        "ScrollStack": {
+          "forward": [
+            "id",
+            "aria-*"
+          ],
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "scroll-stack",
+            "stacked-sections",
+            "cover-on-scroll",
+            "sticky-hero-then-content",
+            "scroll-reveal-sheet"
+          ],
+          "options": [],
+          "react": {
+            "from": "@skryensya/react/scroll-stack",
+            "name": "ScrollStack"
+          },
+          "slots": {
+            "back": {
+              "accepts": "node",
+              "required": true
+            },
+            "front": {
+              "accepts": "node",
+              "required": true
+            }
+          },
+          "template": {
+            "children": [
+              {
+                "element": "div",
+                "part": "back",
+                "slot": "back"
+              },
+              {
+                "children": [
+                  {
+                    "attrs": {
+                      "aria-hidden": "true"
+                    },
+                    "element": "span",
+                    "part": "runway"
+                  },
+                  {
+                    "element": "div",
+                    "part": "content",
+                    "slot": "front"
+                  }
+                ],
+                "element": "div",
+                "part": "front"
+              }
+            ],
+            "element": "div",
+            "host": true,
+            "part": "root"
+          }
+        }
+      }
+    },
     "segmented": {
       "bindings": {
         "Segmented": {
@@ -57590,7 +57767,7 @@
     "working": "0.0.2"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "85cdaaa164520b88",
+  "sourceHash": "ed85d4fee69482b5",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

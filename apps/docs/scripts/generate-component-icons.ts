@@ -114,6 +114,7 @@ const MAP: Record<string, string> = {
   "/components/segmented": "SquareSplitHorizontal",
   "/components/select": "ChevronsUpDown",
   "/components/resizable": "Columns2",
+  "/components/scroll-stack": "Layers",
   "/components/separator": "Minus",
   "/components/sidebar": "PanelLeft",
   "/components/skip-link": "SkipForward",
