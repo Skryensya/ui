@@ -7442,6 +7442,26 @@
         "version": "0.0.1"
       }
     ],
+    "morph-stack": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "Three to five plates laid on one another that fan out into an isometric stack: the front ones come toward you, the back ones appear behind and the whole thing tilts. It can turn either way and its perspective is set from outside. The state is yours (rest, expanded) and by default it answers to a fine pointer and to focus, never to a tap; there is also the inverse, which starts open and settles into one piece when the pointer arrives. It is CSS only over the motion tokens; with reduced motion it keeps both states and travels a quarter of the way. It is tuned with CSS hooks, not options.",
+              "title": "First published contract"
+            },
+            "es": {
+              "body": "Tres a cinco placas apiladas que se abren en una pila isométrica: las de adelante se acercan, las de atrás aparecen detrás y todo el conjunto se inclina. Puede girar hacia cualquiera de los dos lados y su perspectiva se ajusta desde fuera. El estado es tuyo (reposo, abierto) y por defecto responde a un puntero fino y al foco, nunca a un toque; también hay la versión inversa, que empieza abierta y se junta al llegar el puntero. Es solo CSS sobre los tokens de movimiento; con movimiento reducido conserva ambos estados y recorre un cuarto del camino. Se ajusta con ganchos de CSS, no con opciones.",
+              "title": "Primera publicación del contrato"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.2-dev"
+      }
+    ],
     "nav-list": [
       {
         "date": null,
@@ -9296,10 +9316,66 @@
         "version": "0.0.2-dev"
       }
     ],
+    "scroll-expand": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "A container that opens from a small window to fill the box as the page scrolls. Anything can go inside: a photo with its caption, a video, a piece of interface. It owns no text: the big words above go in the lead slot (its box fades out as the window opens) and the smaller ones go inside the container. The direction option reverses the move: with contract it starts full and closes. It is CSS only and progressive: without support, or with reduced motion, the parts follow one another.",
+              "title": "First published contract"
+            },
+            "es": {
+              "body": "Un contenedor que se abre desde una ventana pequeña hasta llenar la caja al hacer scroll. Dentro puede ir lo que quieras: una foto con su leyenda, un video, una pieza de interfaz. No lleva texto propio: las palabras grandes de arriba van en el slot lead (la caja se desvanece al abrirse la ventana) y las pequeñas van dentro del contenedor. La opción direction invierte el movimiento: con contract parte lleno y se cierra. Es solo CSS y progresivo: sin soporte, o con movimiento reducido, las partes quedan una tras otra.",
+              "title": "Primera publicación del contrato"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "New reveal slot: what fills the container (children) is the backdrop and is there from the first frame; the reveal sits centred over it and arrives as the window opens, one child after another (they rise, sharpen and appear), with an optional wash. New hooks: reveal-shift, reveal-blur and scrim. With contract it plays backwards.",
+              "title": "A reveal that arrives as the container opens"
+            },
+            "es": {
+              "body": "Nuevo slot reveal: lo que llena el contenedor (children) es el fondo y está desde el primer cuadro; el reveal va centrado encima y aparece mientras la ventana se abre, un hijo tras otro (suben, se enfocan y se hacen visibles), con un velo opcional. Nuevos ganchos: reveal-shift, reveal-blur y scrim. Con contract se reproduce al revés.",
+              "title": "Un reveal que llega mientras el contenedor se abre"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "The lead slot's box fades and lifts a little as the window opens, whatever it holds, with no other piece needed. New lead-shift hook (how far it lifts; zero just fades it). With contract it runs backwards.",
+              "title": "The lead fades by itself"
+            },
+            "es": {
+              "body": "La caja del slot lead se desvanece y sube un poco mientras la ventana se abre, sea lo que sea que lleve, sin necesitar ninguna otra pieza. Nuevo gancho lead-shift (cuánto sube; con cero solo se desvanece). Con contract corre al revés.",
+              "title": "El lead se desvanece solo"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.2-dev"
+      }
+    ],
     "scroll-stack": [
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "The front layer's direct children appear as it rises, one after another: they come up from below and fade in, the heading before the paragraph. A single child arrives as one piece. New hooks: reveal-shift, reveal-opacity, reveal-blur, content-padding and content-gap (the content is now a column).",
+              "title": "What the front layer holds arrives as it rises"
+            },
+            "es": {
+              "body": "Los hijos directos de la capa de adelante aparecen al subir, uno tras otro: suben desde abajo y se hacen visibles, con el encabezado antes que el párrafo. Con un solo hijo llega como una pieza. Nuevos ganchos: reveal-shift, reveal-opacity, reveal-blur, content-padding y content-gap (el contenido ahora es una columna).",
+              "title": "Lo que contiene la de adelante llega mientras sube"
+            },
+            "kind": "feature"
+          },
           {
             "date": "2026-10-07",
             "en": {
@@ -9309,6 +9385,18 @@
             "es": {
               "body": "Dos secciones donde la segunda sube y cubre a la primera al hacer scroll. La de atrás se achica un poco, se oscurece y redondea sus esquinas; la de adelante entra con su contenido ligeramente ampliado y se asienta al acoplarse arriba. Es solo CSS y progresivo: sin soporte de animación por scroll, o con movimiento reducido, las dos secciones quedan una tras otra en el flujo normal. Se ajusta con ganchos de CSS, no con opciones.",
               "title": "Primera publicación del contrato"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-10-07",
+            "en": {
+              "body": "The back layer recedes further (0.9) and the entry starts from more zoom (1.1). New hooks: recede-shift (the back one also sinks a little), front-docked-radius (the front one's corners once docked, for example under a fixed bar), recede-blur, recede-opacity and front-shadow, for a see-through front layer over a back one that blurs and fades.",
+              "title": "More pronounced, with new hooks"
+            },
+            "es": {
+              "body": "La capa de atrás se retira más (0,9) y la entrada parte de más zoom (1,1). Nuevos ganchos: recede-shift (la de atrás también baja un poco), front-docked-radius (esquinas de la de adelante ya acoplada, por ejemplo bajo una barra fija), recede-blur, recede-opacity y front-shadow, para una capa de adelante transparente sobre una de atrás que se desenfoca y se desvanece.",
+              "title": "Más marcado y con nuevos ganchos"
             },
             "kind": "feature"
           }
@@ -37373,6 +37461,234 @@
         }
       }
     },
+    "morph-stack": {
+      "bindings": {
+        "MorphStack": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/morph-stack#MorphStack"
+        }
+      },
+      "category": "content",
+      "css": "@skryensya/core/components/morph-stack.css",
+      "hookDetails": {
+        "--sk-morph-stack-back-opacity": {
+          "default": "1",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/morph-stack.css"
+        },
+        "--sk-morph-stack-gap": {
+          "default": "4.5rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/morph-stack.css"
+        },
+        "--sk-morph-stack-perspective": {
+          "default": "56rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/morph-stack.css"
+        },
+        "--sk-morph-stack-rotate-x": {
+          "default": "58deg",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/morph-stack.css"
+        },
+        "--sk-morph-stack-rotate-z": {
+          "default": "-42deg",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/morph-stack.css"
+        },
+        "--sk-morph-stack-scale": {
+          "default": "1.06",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/morph-stack.css"
+        },
+        "--sk-morph-stack-size": {
+          "default": "24rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/morph-stack.css"
+        },
+        "--sk-morph-stack-slide-x": {
+          "default": "-0.875rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/morph-stack.css"
+        },
+        "--sk-morph-stack-slide-y": {
+          "default": "1.25rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/morph-stack.css"
+        },
+        "--sk-morph-stack-stagger": {
+          "default": "0.15",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/morph-stack.css"
+        }
+      },
+      "hooks": [
+        "--sk-morph-stack-back-opacity",
+        "--sk-morph-stack-gap",
+        "--sk-morph-stack-perspective",
+        "--sk-morph-stack-rotate-x",
+        "--sk-morph-stack-rotate-z",
+        "--sk-morph-stack-scale",
+        "--sk-morph-stack-size",
+        "--sk-morph-stack-slide-x",
+        "--sk-morph-stack-slide-y",
+        "--sk-morph-stack-stagger"
+      ],
+      "id": "morph-stack",
+      "options": {
+        "perspective": {
+          "styleProperty": "--sk-morph-stack-perspective",
+          "type": "string"
+        },
+        "state": {
+          "attr": "data-state",
+          "default": "auto",
+          "type": "enum",
+          "values": [
+            "auto",
+            "auto-inverse",
+            "rest",
+            "expanded"
+          ]
+        },
+        "turn": {
+          "attr": "data-turn",
+          "default": "start",
+          "type": "enum",
+          "values": [
+            "start",
+            "end"
+          ]
+        }
+      },
+      "parts": {
+        "back": "sk-morph-stack__back",
+        "deepest": "sk-morph-stack__deepest",
+        "front": "sk-morph-stack__front",
+        "middle": "sk-morph-stack__middle",
+        "nearest": "sk-morph-stack__nearest",
+        "root": "sk-morph-stack",
+        "stage": "sk-morph-stack__stage"
+      },
+      "semantics": {
+        "MorphStack": {
+          "alternatives": [
+            "Sticker",
+            "ScrollStack",
+            "Carousel"
+          ],
+          "avoidWhen": [
+            "there are fewer than three plates or more than five; two layers is a peel and Sticker fits it, and a longer series is Carousel or Procedure",
+            "the layers carry the information a reader needs (a chart and its legend): it is hidden at rest and absent on touch screens, so it would not be found",
+            "the page should open it on a tap; hover is not trusted on a touch screen, so write state yourself from your own control"
+          ],
+          "useWhen": [
+            "a picture has layers (an interface over its structure over its data) and a gesture should pull them apart so the reader sees how they sit",
+            "a card, a feature tile or a hero wants one image that reveals depth on hover or focus, and stays a plain picture otherwise",
+            "the open state is the product's to decide (a selected plan, a step of a tour): write state and the stack opens and closes itself"
+          ]
+        }
+      },
+      "signatures": {
+        "MorphStack": {
+          "forward": [
+            "id",
+            "aria-*"
+          ],
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "morph-stack",
+            "layer-stack",
+            "isometric-layers",
+            "exploded-view",
+            "hover-to-reveal-layers"
+          ],
+          "options": [
+            "state",
+            "turn",
+            "perspective"
+          ],
+          "react": {
+            "from": "@skryensya/react/morph-stack",
+            "name": "MorphStack"
+          },
+          "slots": {
+            "back": {
+              "accepts": "node",
+              "required": true
+            },
+            "deepest": {
+              "accepts": "node"
+            },
+            "front": {
+              "accepts": "node",
+              "required": true
+            },
+            "middle": {
+              "accepts": "node",
+              "required": true
+            },
+            "nearest": {
+              "accepts": "node"
+            }
+          },
+          "template": {
+            "children": [
+              {
+                "children": [
+                  {
+                    "element": "div",
+                    "part": "deepest",
+                    "slot": "deepest",
+                    "whenGiven": "deepest"
+                  },
+                  {
+                    "element": "div",
+                    "part": "back",
+                    "slot": "back"
+                  },
+                  {
+                    "element": "div",
+                    "part": "middle",
+                    "slot": "middle"
+                  },
+                  {
+                    "element": "div",
+                    "part": "front",
+                    "slot": "front"
+                  },
+                  {
+                    "element": "div",
+                    "part": "nearest",
+                    "slot": "nearest",
+                    "whenGiven": "nearest"
+                  }
+                ],
+                "element": "div",
+                "part": "stage"
+              }
+            ],
+            "element": "div",
+            "host": true,
+            "part": "root"
+          }
+        }
+      }
+    },
     "nav-list": {
       "a11y": [
         {
@@ -44227,6 +44543,224 @@
         }
       }
     },
+    "scroll-expand": {
+      "bindings": {
+        "ScrollExpand": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/scroll-expand#ScrollExpand"
+        }
+      },
+      "category": "layout",
+      "css": "@skryensya/core/components/scroll-expand.css",
+      "hookDetails": {
+        "--sk-scroll-expand-bg": {
+          "default": "var(--color-bg-surface)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-expand.css"
+        },
+        "--sk-scroll-expand-container-bg": {
+          "default": "var(--color-bg-surface-sunken)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-expand.css"
+        },
+        "--sk-scroll-expand-inset-block": {
+          "default": "30%",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-expand.css"
+        },
+        "--sk-scroll-expand-inset-inline": {
+          "default": "32%",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-expand.css"
+        },
+        "--sk-scroll-expand-lead-shift": {
+          "default": "calc(var(--space-inset-lg) * -1)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-expand.css"
+        },
+        "--sk-scroll-expand-radius": {
+          "default": "var(--radius-surface)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-expand.css"
+        },
+        "--sk-scroll-expand-reveal-blur": {
+          "default": "6px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-expand.css"
+        },
+        "--sk-scroll-expand-reveal-shift": {
+          "default": "var(--space-inset-lg)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-expand.css"
+        },
+        "--sk-scroll-expand-scrim": {
+          "default": "transparent",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-expand.css"
+        }
+      },
+      "hooks": [
+        "--sk-scroll-expand-bg",
+        "--sk-scroll-expand-container-bg",
+        "--sk-scroll-expand-inset-block",
+        "--sk-scroll-expand-inset-inline",
+        "--sk-scroll-expand-lead-shift",
+        "--sk-scroll-expand-radius",
+        "--sk-scroll-expand-reveal-blur",
+        "--sk-scroll-expand-reveal-shift",
+        "--sk-scroll-expand-scrim"
+      ],
+      "id": "scroll-expand",
+      "options": {
+        "direction": {
+          "attr": "data-direction",
+          "default": "expand",
+          "type": "enum",
+          "values": [
+            "expand",
+            "contract"
+          ]
+        }
+      },
+      "parts": {
+        "after": "sk-scroll-expand__after",
+        "backdrop": "sk-scroll-expand__backdrop",
+        "clock": "sk-scroll-expand__clock",
+        "container": "sk-scroll-expand__container",
+        "lead": "sk-scroll-expand__lead",
+        "reveal": "sk-scroll-expand__reveal",
+        "root": "sk-scroll-expand",
+        "stage": "sk-scroll-expand__stage",
+        "track": "sk-scroll-expand__track"
+      },
+      "semantics": {
+        "ScrollExpand": {
+          "alternatives": [
+            "ScrollStack",
+            "Hero",
+            "Carousel"
+          ],
+          "avoidWhen": [
+            "two sections tell one story and the second should arrive on top of the first; that is ScrollStack",
+            "what the box holds must be readable from the first frame; the reveal is not on screen while the window is small, and the backdrop's edges are cut off until it opens",
+            "the motion is the content (a story told by scroll position); this is a reveal, built to be passed through, and not a scroll-driven scene",
+            "there are many containers in a row; each would hold the page for a box-height of scroll, and a Carousel or a Grid fits a set"
+          ],
+          "useWhen": [
+            "one box is the point of the section and should open from a small window to fill the whole box as the page scrolls: a photo with its caption, a film, a piece of interface, a map",
+            "what the box holds (the smaller words, a few figures) should not be on screen in the small window but arrive, one piece after another, as it opens: put each piece as a child of the reveal slot",
+            "big words stand above the window before it opens and should make way for it (put them in the lead slot, which fades out as the window opens)",
+            "the page has to stay a plain document where the effect is unavailable: with no scroll-driven animation, or with reduced motion, the lead, the container and what follows simply follow one another"
+          ]
+        }
+      },
+      "signatures": {
+        "ScrollExpand": {
+          "forward": [
+            "id",
+            "aria-*"
+          ],
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "scroll-expand",
+            "expanding-container",
+            "box-grows-on-scroll",
+            "hero-reveal",
+            "scroll-reveal-fullscreen"
+          ],
+          "options": [
+            "direction"
+          ],
+          "react": {
+            "from": "@skryensya/react/scroll-expand",
+            "name": "ScrollExpand"
+          },
+          "slots": {
+            "after": {
+              "accepts": "node"
+            },
+            "children": {
+              "accepts": "node",
+              "required": true
+            },
+            "lead": {
+              "accepts": "node"
+            },
+            "reveal": {
+              "accepts": "node"
+            }
+          },
+          "template": {
+            "children": [
+              {
+                "children": [
+                  {
+                    "attrs": {
+                      "aria-hidden": "true"
+                    },
+                    "element": "span",
+                    "part": "clock"
+                  },
+                  {
+                    "children": [
+                      {
+                        "element": "div",
+                        "part": "lead",
+                        "slot": "lead",
+                        "whenGiven": "lead"
+                      },
+                      {
+                        "children": [
+                          {
+                            "element": "div",
+                            "part": "backdrop",
+                            "slot": "children"
+                          },
+                          {
+                            "element": "div",
+                            "part": "reveal",
+                            "slot": "reveal",
+                            "whenGiven": "reveal"
+                          }
+                        ],
+                        "element": "div",
+                        "part": "container"
+                      }
+                    ],
+                    "element": "div",
+                    "part": "stage"
+                  }
+                ],
+                "element": "div",
+                "part": "track"
+              },
+              {
+                "element": "div",
+                "part": "after",
+                "slot": "after",
+                "whenGiven": "after"
+              }
+            ],
+            "element": "div",
+            "host": true,
+            "part": "root"
+          }
+        }
+      }
+    },
     "scroll-stack": {
       "bindings": {
         "ScrollStack": {
@@ -44239,14 +44773,38 @@
       "category": "layout",
       "css": "@skryensya/core/components/scroll-stack.css",
       "hookDetails": {
+        "--sk-scroll-stack-content-gap": {
+          "default": "0px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-stack.css"
+        },
+        "--sk-scroll-stack-content-padding": {
+          "default": "0px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-stack.css"
+        },
         "--sk-scroll-stack-front-bg": {
           "default": "var(--color-bg-surface)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/scroll-stack.css"
         },
+        "--sk-scroll-stack-front-docked-radius": {
+          "default": "0px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-stack.css"
+        },
         "--sk-scroll-stack-front-radius": {
-          "default": "var(--radius-surface)",
+          "default": "calc(var(--radius-surface) * 2)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-stack.css"
+        },
+        "--sk-scroll-stack-front-shadow": {
+          "default": "0 calc(var(--space-inset-sm) * -1) var(--space-inset-xl) calc(var(--space-inset-xs) * -1) var(--shadow-md)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/scroll-stack.css"
@@ -44257,8 +44815,20 @@
           "part": "root",
           "sheet": "@skryensya/core/components/scroll-stack.css"
         },
+        "--sk-scroll-stack-recede-blur": {
+          "default": "0px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-stack.css"
+        },
         "--sk-scroll-stack-recede-dim": {
-          "default": "0.35",
+          "default": "0.45",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-stack.css"
+        },
+        "--sk-scroll-stack-recede-opacity": {
+          "default": "1",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/scroll-stack.css"
@@ -44270,25 +44840,59 @@
           "sheet": "@skryensya/core/components/scroll-stack.css"
         },
         "--sk-scroll-stack-recede-scale": {
-          "default": "0.94",
+          "default": "0.9",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-stack.css"
+        },
+        "--sk-scroll-stack-recede-shift": {
+          "default": "2rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-stack.css"
+        },
+        "--sk-scroll-stack-reveal-blur": {
+          "default": "0px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-stack.css"
+        },
+        "--sk-scroll-stack-reveal-opacity": {
+          "default": "0",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-stack.css"
+        },
+        "--sk-scroll-stack-reveal-shift": {
+          "default": "var(--space-inset-lg)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/scroll-stack.css"
         },
         "--sk-scroll-stack-zoom": {
-          "default": "1.06",
+          "default": "1.1",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/scroll-stack.css"
         }
       },
       "hooks": [
+        "--sk-scroll-stack-content-gap",
+        "--sk-scroll-stack-content-padding",
         "--sk-scroll-stack-front-bg",
+        "--sk-scroll-stack-front-docked-radius",
         "--sk-scroll-stack-front-radius",
+        "--sk-scroll-stack-front-shadow",
         "--sk-scroll-stack-offset",
+        "--sk-scroll-stack-recede-blur",
         "--sk-scroll-stack-recede-dim",
+        "--sk-scroll-stack-recede-opacity",
         "--sk-scroll-stack-recede-radius",
+        "--sk-scroll-stack-recede-shift",
         "--sk-scroll-stack-recede-scale",
+        "--sk-scroll-stack-reveal-blur",
+        "--sk-scroll-stack-reveal-opacity",
+        "--sk-scroll-stack-reveal-shift",
         "--sk-scroll-stack-zoom"
       ],
       "id": "scroll-stack",
@@ -44316,7 +44920,8 @@
           "useWhen": [
             "two sections tell one story as the page scrolls and the second should read as arriving on top of the first: a hero and what follows it, a scene and its detail",
             "a quiet, elegant transition between two blocks is wanted; the back recedes a little and the front settles, nothing more",
-            "the page has to stay a plain document where the effect is unavailable: with no scroll-driven animation, or with reduced motion, the two sections simply follow one another"
+            "the page has to stay a plain document where the effect is unavailable: with no scroll-driven animation, or with reduced motion, the two sections simply follow one another",
+            "the front section is a heading and what follows it, and each piece should arrive in turn as it rises: give the front slot several children"
           ]
         }
       },
@@ -57767,7 +58372,7 @@
     "working": "0.0.2"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "ed85d4fee69482b5",
+  "sourceHash": "7dbc40b927ddc5f0",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

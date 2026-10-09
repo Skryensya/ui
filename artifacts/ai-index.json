@@ -3050,6 +3050,40 @@
       ]
     },
     {
+      "category": "content",
+      "css": "@skryensya/core/components/morph-stack.css",
+      "id": "morph-stack",
+      "signatures": [
+        {
+          "alternatives": [
+            "Sticker",
+            "ScrollStack",
+            "Carousel"
+          ],
+          "avoidWhen": [
+            "there are fewer than three plates or more than five; two layers is a peel and Sticker fits it, and a longer series is Carousel or Procedure",
+            "the layers carry the information a reader needs (a chart and its legend): it is hidden at rest and absent on touch screens, so it would not be found",
+            "the page should open it on a tap; hover is not trusted on a touch screen, so write state yourself from your own control"
+          ],
+          "host": "div",
+          "id": "MorphStack",
+          "intent": [
+            "morph-stack",
+            "layer-stack",
+            "isometric-layers",
+            "exploded-view",
+            "hover-to-reveal-layers"
+          ],
+          "parents": [],
+          "useWhen": [
+            "a picture has layers (an interface over its structure over its data) and a gesture should pull them apart so the reader sees how they sit",
+            "a card, a feature tile or a hero wants one image that reveals depth on hover or focus, and stays a plain picture otherwise",
+            "the open state is the product's to decide (a selected plan, a step of a tour): write state and the stack opens and closes itself"
+          ]
+        }
+      ]
+    },
+    {
       "category": "navigation",
       "css": "@skryensya/core/patterns/nav-list.css",
       "id": "nav-list",
@@ -3918,6 +3952,42 @@
     },
     {
       "category": "layout",
+      "css": "@skryensya/core/components/scroll-expand.css",
+      "id": "scroll-expand",
+      "signatures": [
+        {
+          "alternatives": [
+            "ScrollStack",
+            "Hero",
+            "Carousel"
+          ],
+          "avoidWhen": [
+            "two sections tell one story and the second should arrive on top of the first; that is ScrollStack",
+            "what the box holds must be readable from the first frame; the reveal is not on screen while the window is small, and the backdrop's edges are cut off until it opens",
+            "the motion is the content (a story told by scroll position); this is a reveal, built to be passed through, and not a scroll-driven scene",
+            "there are many containers in a row; each would hold the page for a box-height of scroll, and a Carousel or a Grid fits a set"
+          ],
+          "host": "div",
+          "id": "ScrollExpand",
+          "intent": [
+            "scroll-expand",
+            "expanding-container",
+            "box-grows-on-scroll",
+            "hero-reveal",
+            "scroll-reveal-fullscreen"
+          ],
+          "parents": [],
+          "useWhen": [
+            "one box is the point of the section and should open from a small window to fill the whole box as the page scrolls: a photo with its caption, a film, a piece of interface, a map",
+            "what the box holds (the smaller words, a few figures) should not be on screen in the small window but arrive, one piece after another, as it opens: put each piece as a child of the reveal slot",
+            "big words stand above the window before it opens and should make way for it (put them in the lead slot, which fades out as the window opens)",
+            "the page has to stay a plain document where the effect is unavailable: with no scroll-driven animation, or with reduced motion, the lead, the container and what follows simply follow one another"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "layout",
       "css": "@skryensya/core/components/scroll-stack.css",
       "id": "scroll-stack",
       "signatures": [
@@ -3946,7 +4016,8 @@
           "useWhen": [
             "two sections tell one story as the page scrolls and the second should read as arriving on top of the first: a hero and what follows it, a scene and its detail",
             "a quiet, elegant transition between two blocks is wanted; the back recedes a little and the front settles, nothing more",
-            "the page has to stay a plain document where the effect is unavailable: with no scroll-driven animation, or with reduced motion, the two sections simply follow one another"
+            "the page has to stay a plain document where the effect is unavailable: with no scroll-driven animation, or with reduced motion, the two sections simply follow one another",
+            "the front section is a heading and what follows it, and each piece should arrive in turn as it rises: give the front slot several children"
           ]
         }
       ]
@@ -5935,5 +6006,5 @@
     }
   ],
   "schemaVersion": "2.3",
-  "sourceHash": "ed85d4fee69482b5"
+  "sourceHash": "7dbc40b927ddc5f0"
 }
