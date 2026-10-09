@@ -50,6 +50,7 @@ export const InlineCardFloor: StoryObj = treeStory(demos.inlineCardFloorTree);
 export const Primitives: StoryObj = treeStory(demos.primitivesTree);
 export const Grid: StoryObj = treeStory(demos.gridTree);
 export const LayoutGrid: StoryObj = treeStory(demos.layoutGridTree);
+export const GridWidth: StoryObj = treeStory(demos.layoutGridWidthTree);
 export const GridToc: StoryObj = treeStory(demos.layoutGridTocTree);
 export const GridRailStart: StoryObj = treeStory(demos.layoutGridRailStartTree);
 export const GridRailsBoth: StoryObj = treeStory(demos.layoutGridRailsBothTree);

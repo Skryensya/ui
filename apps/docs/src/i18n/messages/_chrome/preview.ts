@@ -25,6 +25,7 @@ export const previewMessages = {
     "preview.usageTree": "Contrato",
     "preview.viewContract": "Ver contrato",
     "preview.viewCode": "Ver código",
+    "preview.scaledNote": "Se muestra a {width} px de ancho y reducido al {scale} %, para que quepa en la tarjeta.",
     "preview.hideCode": "Ocultar código",
   },
   en: {
@@ -53,6 +54,7 @@ export const previewMessages = {
     "preview.usageTree": "Contract",
     "preview.viewContract": "View contract",
     "preview.viewCode": "View code",
+    "preview.scaledNote": "Shown at {width} px wide and scaled down to {scale}% to fit the card.",
     "preview.hideCode": "Hide code",
   },
 } as const;

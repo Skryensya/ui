@@ -81,6 +81,7 @@ interface Props {
   measure?: string;
   /** Named span on the page's `.sk-layout-grid`, for an example that needs more room than the text. */
   width?: "narrow" | "content" | "breakout" | "full-width";
+  /** With `variants` and `screen="xl"`: draw each variant in an isolated frame at that screen's width, shrunk to the card, with a line that says so. */
   /** Render in the isolated frame even when nothing else below asks for it. */
   isolate?: boolean;
   /** Reserve room for what paints out of flow: an open listbox (`menu`), a dialog or drawer (`overlay`). Isolates. */
@@ -142,7 +143,7 @@ const tree = anatomy ? { ...authoredTree, options: { ...authoredTree.options, fi
 const screenRoot = screen
   ? {
       "data-sk-component-preview-screen-local": screen,
-      style: screen === "xl" ? "--sk-component-preview-screen-xl: 840px;" : undefined,
+      style: screen === "xl" ? `--sk-component-preview-screen-xl: ${variants ? 1200 : 840}px;` : undefined,
     }
   : {};
 const framedStage = !optionName && !variants && (isolate || bare || flush || scroll || Boolean(script) || Boolean(screen) || viewport !== "auto");
@@ -246,6 +247,12 @@ const scope = css ? `u${[...(css + JSON.stringify(tree))].reduce((h, c) => (h * 
         }
         {
           optionName || variants ? (
+            <div
+              class:list={[variants && screen === "xl" && "sk-component-preview"]}
+              {...(variants && screen === "xl"
+                ? { "data-sk-component-preview": "", "data-sk-component-preview-chrome": "false", "data-sk-component-preview-surface": "none", ...screenRoot }
+                : {})}
+            >
             <PropertyPlayground
               client:visible
               tree={tree}
@@ -261,7 +268,9 @@ const scope = css ? `u${[...(css + JSON.stringify(tree))].reduce((h, c) => (h * 
               controlLabel={variantsLabel ?? title ?? optionName ?? label ?? ""}
               explain={explainByValue}
               remountOnChange={remountOnChange}
+              frame={variants && screen === "xl" ? { screen: "xl", width: 1200, flush, css, note: t("preview.scaledNote") } : undefined}
             />
+            </div>
           ) : framedStage ? (
             <>
               <div class="sk-component-preview" data-sk-component-preview data-sk-component-preview-chrome="false" data-sk-component-preview-surface="none" {...screenRoot}>

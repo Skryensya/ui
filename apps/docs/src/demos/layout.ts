@@ -1,6 +1,7 @@
 import { PLACEHOLDER_HREF } from "../lib/placeholder-hrefs";
 import { frostStage } from "./data/frost-stage";
 import type { UsageTree } from "@skryensya/core/usage-tree";
+import { projectTile } from "./grid-cards";
 import type { Translate } from "../i18n";
 
 /* Layout demos shared by both locales, including the masonry-style multicolumn Grid. */
@@ -1069,32 +1070,13 @@ export const primitivesTree = (t: Translate, href: string = PLACEHOLDER_HREF): U
   ],
 });
 
-/** Three equal columns of project cards. Product names stay written. */
+/** Three equal columns of project cards, each in a tint of its own. Product names stay written. */
 export const gridTree = (t: Translate): UsageTree => ({
   contract: "layout",
   signature: "Grid",
   options: { columns: "3", gap: "md" },
   attrs: { "aria-label": t("demo.grid.label") },
-  children: [
-    {
-      contract: "box",
-      signature: "Box",
-      options: { surface: "surface", border: "subtle", padding: "md" },
-      children: "Atlas",
-    },
-    {
-      contract: "box",
-      signature: "Box",
-      options: { surface: "surface", border: "subtle", padding: "md" },
-      children: "Brisa",
-    },
-    {
-      contract: "box",
-      signature: "Box",
-      options: { surface: "surface", border: "subtle", padding: "md" },
-      children: "Cauce",
-    },
-  ],
+  children: [0, 1, 2].map((index) => projectTile(t, index)),
 });
 
 /**
@@ -1159,6 +1141,51 @@ export const layoutGridTree = (t: Translate): UsageTree => ({
 });
 
 /**
+ * One width at a time, for the page's width card: a neighbour above and below at the default measure, and the box under
+ * test between them at the width the control picks. The same Box and Text as the levels demo, so the control changes only
+ * the one attribute the contract hands a child (`data-width`), and what shifts is what a reader needs to see shift.
+ */
+export type LayoutGridWidth = "narrow" | "content" | "breakout" | "full-width";
+
+const layoutGridWidthBox = (t: Translate, width: LayoutGridWidth): UsageTree => {
+  const copy = {
+    narrow: t("demo.layoutGrid.narrow"),
+    content: t("demo.layoutGrid.content"),
+    breakout: t("demo.layoutGrid.breakout"),
+    "full-width": t("demo.layoutGrid.fullWidth"),
+  } as const;
+  const common = { contract: "box", signature: "Box" } as const;
+  if (width === "full-width") {
+    return { ...common, attrs: { "data-width": width }, options: { surface: "raised" }, children: { contract: "typography", signature: "Text", children: copy[width] } };
+  }
+  return {
+    ...common,
+    ...(width === "content" ? {} : { attrs: { "data-width": width } }),
+    options: { surface: width === "breakout" ? "raised" : "surface", border: "subtle", padding: width === "breakout" ? "lg" : "md" },
+    children: copy[width],
+  };
+};
+
+const layoutGridNeighbour = (t: Translate): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  attrs: { "data-role": "neighbour" },
+  options: { surface: "surface", border: "subtle", padding: "md" },
+  children: t("demo.layoutGrid.neighbour"),
+});
+
+const layoutGridWidths: readonly string[] = ["narrow", "content", "breakout", "full-width"];
+
+/** The width card's tree. An unknown width (the tree gate probes factories with stand-in arguments) falls back to `breakout`. */
+export const layoutGridWidthTree = (t: Translate, width?: unknown): UsageTree => layoutGridWidthPage(t, layoutGridWidths.includes(width as string) ? (width as LayoutGridWidth) : "breakout");
+
+const layoutGridWidthPage = (t: Translate, width: LayoutGridWidth): UsageTree => ({
+  contract: "layout",
+  signature: "LayoutGrid",
+  children: [layoutGridNeighbour(t), layoutGridWidthBox(t, width), layoutGridNeighbour(t)],
+});
+
+/**
  * Rail compositions, kept to the SAME vocabulary as the width-levels demo above: plain Box
  * children, one unlabeled (content measure) and one or two with \`data-width="rail"\` /
  * \`"rail-start"\`. \`sk-layout-grid\`'s own PUBLISHED rail capability
@@ -1213,35 +1240,9 @@ export const gridMulticolTree = (t: Translate): UsageTree => ({
   signature: "Grid",
   options: { columns: "3", gap: "md", multicol: true },
   attrs: { "aria-label": t("demo.grid.label") },
-  children: ["Atlas", "Brisa", "Cauce", "Delta", "Estuario", "Faro", "Greda", "Hiedra"].map(
-    (name, index) => ({
-      contract: "box",
-      signature: "Box",
-      options: {
-        surface: index % 2 === 0 ? "raised" : "surface",
-        border: "subtle",
-        padding: index % 3 === 0 ? "lg" : "md",
-      },
-      children: {
-        contract: "layout",
-        signature: "Stack",
-        options: { gap: "xs" },
-        children: [
-          {
-            contract: "typography",
-            signature: "Text",
-            options: { weight: "label" },
-            children: name,
-          },
-          {
-            contract: "typography",
-            signature: "Text",
-            options: { size: "sm", tone: "secondary" },
-            children: `${index + 1}`,
-          },
-        ],
-      },
-    }),
+  /* Every third card is taller (more air and a line of copy): that is what makes lanes of unequal cells worth a masonry. */
+  children: [0, 1, 2, 3, 4, 5, 6, 7].map((index) =>
+    projectTile(t, index, index % 3 === 0 ? { padding: "lg", extra: t("demo.gridCards.note") } : {}),
   ),
 });
 
@@ -1256,35 +1257,10 @@ export const gridResponsiveTree = (t: Translate): UsageTree => ({
   signature: "Grid",
   options: { columns: "3", gap: "md", responsive: true },
   attrs: { "aria-label": t("demo.grid.label") },
-  children: ["Atlas", "Brisa", "Cauce", "Delta", "Estuario"].map((name, index) => ({
-    contract: "box",
-    signature: "Box",
-    options: {
-      surface: index === 0 ? "raised" : "surface",
-      border: "subtle",
-      padding: index === 0 ? "lg" : "md",
-    },
-    ...(index === 0 ? { attrs: { "data-span": "2" } } : {}),
-    children: {
-      contract: "layout",
-      signature: "Stack",
-      options: { gap: "xs" },
-      children: [
-        {
-          contract: "typography",
-          signature: "Text",
-          options: { weight: "label" },
-          children: name,
-        },
-        {
-          contract: "typography",
-          signature: "Text",
-          options: { size: "sm", tone: "secondary" },
-          children: index === 0 ? t("grid.responsiveFeaturedLabel") : `${index + 1}`,
-        },
-      ],
-    },
-  })),
+  children: [0, 1, 2, 3, 4].map((index) => {
+    const tile = projectTile(t, index, index === 0 ? { featured: true, extra: t("grid.responsiveFeaturedLabel") } : {});
+    return index === 0 ? { ...tile, attrs: { ...tile.attrs, "data-span": "2" } } : tile;
+  }),
 });
 
 /*

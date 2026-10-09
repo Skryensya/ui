@@ -12,6 +12,7 @@ import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import A11yNotes from "../A11yNotes.astro";
 import {
+  gridDoCardsTree,
   gridDoSequenceTree,
   gridDontButtonsTree,
   gridDontDataCardsTree,
@@ -156,7 +157,7 @@ const explain = (option: string, values: readonly string[]) =>
     <DoDont
       canvas
       title={t("grid.dd.cards.title")}
-      do={{ tree: gridTree(t), caption: t("grid.dd.cards.do") }}
+      do={{ tree: gridDoCardsTree(t), caption: t("grid.dd.cards.do") }}
       dont={{ tree: gridDontStackCardsTree(t), caption: t("grid.dd.cards.dont") }}
     />
     <DoDont

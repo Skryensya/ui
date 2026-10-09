@@ -44,6 +44,14 @@
   color: var(--color-text-tertiary);
 }
 
+/* THE LINK'S STRIP IS THE LINK'S. The code link floats over the card's top-right corner, so an example as wide as the stage
+   (a scroll box, a table, anything `inline-size: 100%`) would run under it. Every fixed example in a card that has the link
+   starts below the link's row instead of relying on each one being small or centred; the stage is already centred, so the
+   cost is a little air above. */
+.sk-preview-section:not(.sk-usage-preview--controlled) .sk-preview-card:has(> .sk-preview-card__code-link) .sk-preview-card__stage {
+  padding-block-start: calc(2rem + var(--space-stack-sm));
+}
+
 /* A canvas fills the stage edge to edge, so its zoom bar lands in the very corner the link sits in.
    Only then does the stage give the link its own row. */
 .sk-preview-section:not(.sk-usage-preview--controlled) .sk-preview-card:has(> .sk-preview-card__code-link) .sk-preview-card__stage:has(.sk-canvas) {
@@ -71,4 +79,12 @@
   color: var(--color-text-secondary);
   text-align: center;
   text-wrap: balance;
+}
+
+/* The line under a scaled-down example that says it is scaled down: quiet, and in the same voice as a caption. */
+.sk-property-playground__scale-note {
+  margin: 0;
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-caption);
+  text-align: center;
 }

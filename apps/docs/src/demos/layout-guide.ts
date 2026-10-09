@@ -1,5 +1,6 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
+import { projectTile } from "./grid-cards";
 
 /*
  * USAGE-GUIDE SPECIMENS FOR THE LAYOUT PRIMITIVES (Grid, Stack, Inline, Wrapper), kept apart from
@@ -18,12 +19,6 @@ const inlineText = (children: string, options: Record<string, string> = {}): Usa
 
 const badge = (children: string): UsageTree => ({ contract: "badge", signature: "Badge", children });
 
-const projectCard = (name: string): UsageTree => ({
-  contract: "box",
-  signature: "Box",
-  options: { surface: "surface", border: "subtle", padding: "md" },
-  children: name,
-});
 
 const dataCard = (title: string, lines: readonly string[]): UsageTree => ({
   contract: "box",
@@ -55,13 +50,22 @@ const stepCard = (number: string, title: string): UsageTree => ({
   },
 });
 
+/* The cards where they belong: lanes of equal width. The Do half of its pair. */
+export const gridDoCardsTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Grid",
+  options: { columns: "3", gap: "md" },
+  attrs: { "aria-label": t("demo.grid.label") },
+  children: [0, 1, 2].map((index) => projectTile(t, index, { compact: true })),
+});
+
 /* The same project cards stacked: nothing uses the horizontal space, so comparison is slower. */
 export const gridDontStackCardsTree = (t: Translate): UsageTree => ({
   contract: "layout",
   signature: "Stack",
   options: { gap: "md" },
   attrs: { "aria-label": t("demo.grid.label") },
-  children: [projectCard("Atlas"), projectCard("Brisa"), projectCard("Cauce")],
+  children: [0, 1, 2].map((index) => projectTile(t, index, { compact: true })),
 });
 
 /* Plan data forced into cards: the shared fields are repeated instead of becoming columns. */

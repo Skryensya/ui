@@ -81,11 +81,16 @@ export interface TreeDemoProps {
  * function makes the frame ask for an export the module does not have, and the stage comes up empty
  * with no error, which is exactly what it did.
  */
-export const TreeDemo = framed(function TreeDemo({ tree }: TreeDemoProps) {
+function TreeDemoBody({ tree }: TreeDemoProps) {
   if (!renderTreeModule) {
     // mountReactDemo() always awaits preload() first; this only fires if TreeDemo is rendered
     // some other way, and a loud failure beats a silently empty stage.
     throw new Error("TreeDemo rendered before preload() resolved.");
   }
   return <>{renderTreeModule.renderTree(withLiveSafetyTriangle(tree))}</>;
-});
+}
+
+/* Named outright: a bundle that minifies function names (the one a playground island is in) would otherwise hand the frame an empty export name. */
+TreeDemoBody.displayName = "TreeDemo";
+
+export const TreeDemo = framed(TreeDemoBody);

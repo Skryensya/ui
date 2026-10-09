@@ -69,11 +69,11 @@ export const inlineShowTree = (t: Translate): UsageTree => ({
   },
 });
 
-const cell = (label: string, lines: number, span?: string): UsageTree => ({
+const cell = (label: string, lines: number, tint: string, span?: string): UsageTree => ({
   contract: "box",
   signature: "Box",
-  options: { padding: "md", surface: "surface", border: "subtle" },
-  ...(span ? { attrs: { "data-span": span } } : {}),
+  options: { padding: "md", radius: "surface" },
+  attrs: { style: `background: var(--color-bg-${tint}-subtle);`, ...(span ? { "data-span": span } : {}) },
   children: {
     contract: "layout",
     signature: "Stack",
@@ -90,5 +90,5 @@ export const gridSpanTree = (t: Translate): UsageTree => ({
   options: { columns: "3", gap: "md", align: "start" },
   /* A grid takes its parent's width on a page; the preview stage centres a specimen at its own size, so it is given one. */
   attrs: { "aria-label": t("demo.layoutContainer.spanLabel"), style: "inline-size: min(36rem, 100%)" },
-  children: [cell(t("demo.layoutContainer.spanWide"), 4, "2"), cell(t("demo.layoutContainer.spanNarrow"), 2)],
+  children: [cell(t("demo.layoutContainer.spanWide"), 4, "accent", "2"), cell(t("demo.layoutContainer.spanNarrow"), 2, "info")],
 });

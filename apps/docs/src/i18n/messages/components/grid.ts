@@ -3,6 +3,12 @@ export const gridMessages = {
     "demo.layoutGuide.publish": "Publicar",
     "demo.layoutGuide.saveDraft": "Guardar borrador",
     "demo.layoutGuide.cancel": "Cancelar",
+    "demo.gridCards.kind.design": "Diseño",
+    "demo.gridCards.kind.research": "Investigación",
+    "demo.gridCards.kind.ops": "Operaciones",
+    "demo.gridCards.kind.growth": "Crecimiento",
+    "demo.gridCards.tasks": "{n} tareas abiertas",
+    "demo.gridCards.note": "Revisión el jueves con el equipo.",
     "demo.grid.label": "Proyectos recientes",
 
 
@@ -113,6 +119,12 @@ export const gridMessages = {
     "demo.layoutGuide.publish": "Publish",
     "demo.layoutGuide.saveDraft": "Save draft",
     "demo.layoutGuide.cancel": "Cancel",
+    "demo.gridCards.kind.design": "Design",
+    "demo.gridCards.kind.research": "Research",
+    "demo.gridCards.kind.ops": "Operations",
+    "demo.gridCards.kind.growth": "Growth",
+    "demo.gridCards.tasks": "{n} open tasks",
+    "demo.gridCards.note": "Reviewed on Thursday with the team.",
     "demo.grid.label": "Recent projects",
 
 

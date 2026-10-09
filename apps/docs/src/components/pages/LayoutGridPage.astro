@@ -9,12 +9,28 @@ import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
-import { layoutGridTree, layoutGridRailStartTree, layoutGridRailsBothTree, layoutGridTocTree } from "../../demos/layout";
+import { layoutGridWidthTree, layoutGridRailStartTree, layoutGridRailsBothTree, layoutGridTocTree, type LayoutGridWidth } from "../../demos/layout";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
 const isEs = locale === "es";
+const widths = ["narrow", "content", "breakout", "full-width"] as const satisfies readonly LayoutGridWidth[];
+const widthVariants = widths.map((value) => ({
+  value,
+  label: t(`layoutGridPage.width.${value}` as Parameters<typeof t>[0]),
+  explain: t(`layoutGridPage.width.explain.${value}` as Parameters<typeof t>[0]),
+  tree: layoutGridWidthTree(t, value),
+}));
+const railVariants = [
+  { value: "end", tree: layoutGridTocTree(t) },
+  { value: "start", tree: layoutGridRailStartTree(t) },
+  { value: "both", tree: layoutGridRailsBothTree(t) },
+].map((entry) => ({
+  ...entry,
+  label: t(`layoutGridPage.rail.${entry.value}` as Parameters<typeof t>[0]),
+  explain: t(`layoutGridPage.rail.explain.${entry.value}` as Parameters<typeof t>[0]),
+}));
 const install = `pnpm add @skryensya/core @skryensya/react`;
 
 const configurationCss = `.sk-layout-grid {
@@ -192,17 +208,27 @@ const previewCss = `.sk-layout-grid {
     <p class="lede" set:html={t("layoutGridPage.lede")} />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <h3>{t("layoutGridPage.pageTitle")}</h3>
-    <p set:html={t("layoutGridPage.pageBody")} />
-    <UsagePreview tree={layoutGridTree(t)} css={previewCss} label="Layout Grid" flush />
-    <h3>{t("layoutGridPage.railTitle")}</h3>
-    <p set:html={t("layoutGridPage.railBody")} />
-    <h4>{t("layoutGridPage.railEndTitle")}</h4>
-    <UsagePreview tree={layoutGridTocTree(t)} css={previewCss} label="Layout Grid + Rail" flush />
-    <h4>{t("layoutGridPage.railStartTitle")}</h4>
-    <UsagePreview tree={layoutGridRailStartTree(t)} css={previewCss} label="Layout Grid + Rail start" flush />
-    <h4>{t("layoutGridPage.railBothTitle")}</h4>
-    <UsagePreview tree={layoutGridRailsBothTree(t)} css={previewCss} label="Layout Grid + both rails" flush />
+    <UsagePreview
+      tree={widthVariants[2]!.tree}
+      variants={widthVariants}
+      initialVariant="breakout"
+      variantsLabel={t("layoutGridPage.pageTitle")}
+      title={t("layoutGridPage.pageTitle")}
+      description={t("layoutGridPage.pageBody")}
+      css={previewCss}
+      flush
+      screen="xl"
+    />
+    <UsagePreview
+      tree={railVariants[0]!.tree}
+      variants={railVariants}
+      variantsLabel={t("layoutGridPage.railTitle")}
+      title={t("layoutGridPage.railTitle")}
+      description={t("layoutGridPage.railBody")}
+      css={previewCss}
+      flush
+      screen="xl"
+    />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
