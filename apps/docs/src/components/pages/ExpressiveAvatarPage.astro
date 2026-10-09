@@ -11,9 +11,19 @@ import { ExpressiveAvatar } from "@skryensya/react/expressive-avatar";
 import { ExpressiveAvatarTriggers } from "../react-demos/expressive-avatar-triggers";
 import { ExpressiveAvatarCheck } from "../react-demos/expressive-avatar-check";
 import { expressiveAvatarImages, expressiveAvatarLooks } from "@skryensya/core/expressive-avatar";
-import { getLocale } from "../../i18n";
+import DoDont from "../DoDont.astro";
+import {
+  expressiveAvatarDoCharacterTree,
+  expressiveAvatarDoFrameTree,
+  expressiveAvatarDoStateTree,
+  expressiveAvatarDontCharacterTree,
+  expressiveAvatarDontFrameTree,
+  expressiveAvatarDontStateTree,
+} from "../../demos/expressive-avatar";
+import { getLocale, useTranslations } from "../../i18n";
 
 const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
 const copy = locale === "es"
   ? {
       description: "Avatar reactivo con expresiones: una imagen entera por cada estado. Te mira, parpadea y habla.",
@@ -27,6 +37,14 @@ const copy = locale === "es"
           { text: "Los componentes también pueden tener cara", category: "mid" as const },
           { text: "¿Viste cómo te seguía con la mirada?", category: "mid" as const },
           { text: "Cada gesto mío es una imagen entera", category: "short" as const },
+        ],
+      },
+      blackCatPhrases: {
+        greetings: [{ text: "Miau", category: "short" as const }],
+        general: [
+          { text: "Soy pixel art: cada cuadro cuenta", category: "mid" as const },
+          { text: "Mira cómo giro la cabeza", category: "mid" as const },
+          { text: "Un gato negro, para tu modo oscuro", category: "mid" as const },
         ],
       },
       imagesTitle: "Una imagen por expresión",
@@ -120,6 +138,14 @@ const copy = locale === "es"
           { text: "Every gesture of mine is a whole image", category: "short" as const },
         ],
       },
+      blackCatPhrases: {
+        greetings: [{ text: "Meow", category: "short" as const }],
+        general: [
+          { text: "I'm pixel art: every square counts", category: "mid" as const },
+          { text: "Watch me turn my head", category: "mid" as const },
+          { text: "A black cat, for your dark mode", category: "mid" as const },
+        ],
+      },
       imagesTitle: "One image per expression",
       imagesBody: "You give it a map of names to images. Only <code>base</code> is required: it is the face looking ahead, and what it shows when an expression has no image. If your files are named after the expressions, <code>expressiveAvatarImages</code> builds the map from the folder; with a single image, <code>src</code> is enough.",
       imagesOne: "A face is in one expression at a time: it looks ahead while it talks, and a blink in the middle of a word is skipped. With <code>interactive</code> every image is loaded and stacked, so changing expression is changing which one is visible and never shows a gap.",
@@ -201,6 +227,10 @@ const copy = locale === "es"
 /* The bundled example face: nineteen images, one per expression. */
 const stateImages = expressiveAvatarImages("/expressive-avatar/states");
 
+
+/* A second example face, in pixel art: a black cat on a 50 x 50 grid (five pixels a cell), drawn by `scripts/generate-black-cat-avatar.mjs` in the same nineteen names. Its eyes keep their shape; only the pupils move. */
+const blackCatImages = expressiveAvatarImages("/expressive-avatar/black-cat");
+
 /* Expressions of its own, for the triggers demo: each a name with an image (here, one that already exists). */
 const triggerImages = {
   ...stateImages,
@@ -255,6 +285,7 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
     <p set:html={copy.aliveBody} />
     <div class="ea-stage">
       <ExpressiveAvatar client:visible name="Allison" size="xl" interactive images={stateImages} phrases={copy.phrases} />
+      <ExpressiveAvatar client:visible name="Sombra" size="xl" interactive images={blackCatImages} phrases={copy.blackCatPhrases} style={{ "--sk-expressive-avatar-image-rendering": "pixelated" } as import("react").CSSProperties} />
     </div>
 
     <h3>{copy.imagesTitle}</h3>
@@ -308,6 +339,22 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
   <Fragment slot="guidelines">
     <WhenToUse use={copy.use} avoid={copy.avoid} />
 
+    <DoDont
+      title={t("expressiveAvatarPage.dd.frame.title")}
+      do={{ tree: expressiveAvatarDoFrameTree(t), caption: t("expressiveAvatarPage.dd.frame.do") }}
+      dont={{ tree: expressiveAvatarDontFrameTree(t), caption: t("expressiveAvatarPage.dd.frame.dont") }}
+    />
+    <DoDont
+      title={t("expressiveAvatarPage.dd.state.title")}
+      do={{ tree: expressiveAvatarDoStateTree(t), caption: t("expressiveAvatarPage.dd.state.do") }}
+      dont={{ tree: expressiveAvatarDontStateTree(t), caption: t("expressiveAvatarPage.dd.state.dont") }}
+    />
+    <DoDont
+      title={t("expressiveAvatarPage.dd.character.title")}
+      do={{ tree: expressiveAvatarDoCharacterTree(t), caption: t("expressiveAvatarPage.dd.character.do") }}
+      dont={{ tree: expressiveAvatarDontCharacterTree(t), caption: t("expressiveAvatarPage.dd.character.dont") }}
+    />
+
     <h3>{copy.guideTitle}</h3>
     <p class="lede" set:html={copy.guideLede} />
     <Procedure>
@@ -342,7 +389,9 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
 <style>
   .ea-stage {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
+    gap: var(--space-stack-lg) var(--space-inline-lg);
     padding: 7rem var(--space-inset-lg) var(--space-inset-lg);
     margin-block: var(--space-stack-lg);
     border: 1px solid var(--color-border-subtle);

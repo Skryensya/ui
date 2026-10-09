@@ -43,6 +43,7 @@ import { anatomyMessages } from "./messages/anatomy";
 import { architectureMessages } from "./messages/architecture";
 import { accordionMessages } from "./messages/components/accordion";
 import { avatarMessages } from "./messages/components/avatar";
+import { expressiveAvatarMessages } from "./messages/components/expressive-avatar";
 import { annotationMessages } from "./messages/components/annotation";
 import { canvasMessages } from "./messages/components/canvas";
 import { lightboxMessages } from "./messages/components/lightbox";
@@ -198,6 +199,7 @@ export const ui = {
     ...architectureMessages.es,
     ...accordionMessages.es,
     ...avatarMessages.es,
+    ...expressiveAvatarMessages.es,
     ...annotationMessages.es,
     ...backToTopMessages.es,
     ...badgeMessages.es,
@@ -350,6 +352,7 @@ export const ui = {
     ...architectureMessages.en,
     ...accordionMessages.en,
     ...avatarMessages.en,
+    ...expressiveAvatarMessages.en,
     ...annotationMessages.en,
     ...backToTopMessages.en,
     ...badgeMessages.en,
