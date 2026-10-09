@@ -1,0 +1,263 @@
+/*
+ * TIER 3, SCROLL EXPAND
+ *
+ * A container that opens from a small centred window to fill the box as the page scrolls. The stage is held for one
+ * box-height of scroll, then released so what follows scrolls in. What is inside the container, and what stands above
+ * it as the lead, belongs to the author.
+ *
+ * NOTHING HERE RUNS UNLESS THE BROWSER CAN DRIVE AN ANIMATION FROM SCROLL AND THE READER ASKS FOR MOTION. Outside that the
+ * lead comes first, then the container at full size, then what follows, in normal flow. That is also the state the base
+ * styles describe, so there is no separate fallback to keep in sync.
+ *
+ * THE WINDOW IS A `clip-path`, so layout never changes: the container is always full size and the clip opens over it.
+ *
+ * THE CLOCK. The stage is sticky, so its own position never changes while held and cannot be what animates. The clock is
+ * a box the height of the scrolling box laid at the top of the track; its journey out of the scrollport IS the
+ * timeline (progress 0 as the stage docks, 1 one box-height later). It names a view timeline and `timeline-scope` on the
+ * root lifts the name to everything inside, so the lead, the container and the reveal all listen to the same clock. A box-height is the
+ * `cqh` unit: the nearest SIZE container answers, and with none the small viewport does, so inside a scroll box of your
+ * own give that box `container-type: size`.
+ *
+ * Every hook resolves to a TIER-2 token, never a palette or a raw color; scripts/lint.ts enforces it.
+ */
+
+@keyframes sk-scroll-expand-open {
+  from {
+    clip-path: inset(var(--sk-scroll-expand-inset-block) var(--sk-scroll-expand-inset-inline) round var(--sk-scroll-expand-radius));
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 0);
+  }
+}
+
+/* The big words leave before the window is big enough to cover them: they lift a little and fade. */
+@keyframes sk-scroll-expand-lead {
+  to {
+    translate: 0 var(--sk-scroll-expand-lead-shift);
+    opacity: 0;
+  }
+}
+
+/* What arrives as the window opens: it rises, sharpens and appears. Each child has its own slice of the clock. */
+@keyframes sk-scroll-expand-reveal {
+  from {
+    opacity: 0;
+    translate: 0 var(--sk-scroll-expand-reveal-shift);
+    filter: blur(var(--sk-scroll-expand-reveal-blur));
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    filter: blur(0);
+  }
+}
+
+@keyframes sk-scroll-expand-scrim {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@layer components {
+  .sk-scroll-expand {
+    --sk-scroll-expand-bg: var(--color-bg-surface);
+    /* What shows in the container where the author's content does not cover it. */
+    --sk-scroll-expand-container-bg: var(--color-bg-surface-sunken);
+    /* How far in from each edge the window starts. Percentages of the container, so it is the same shape in any box. */
+    --sk-scroll-expand-inset-block: 30%;
+    --sk-scroll-expand-inset-inline: 32%;
+    --sk-scroll-expand-radius: var(--radius-surface);
+    /* How far the lead lifts as it fades out. Zero fades it in place. */
+    --sk-scroll-expand-lead-shift: calc(var(--space-inset-lg) * -1);
+    /* How far below its place each revealed child starts, and how soft. */
+    --sk-scroll-expand-reveal-shift: var(--space-inset-lg);
+    --sk-scroll-expand-reveal-blur: 6px;
+    /* A wash behind the revealed words so they read over a photo; it fades in with them. Nothing by default. */
+    --sk-scroll-expand-scrim: transparent;
+
+    position: relative;
+    isolation: isolate;
+    /* Whatever travels sideways inside never widens the page. `clip`, not `hidden`: no scroll container. */
+    overflow-x: clip;
+    background: var(--sk-scroll-expand-bg);
+  }
+
+  .sk-scroll-expand__track,
+  .sk-scroll-expand__stage {
+    position: relative;
+  }
+
+  .sk-scroll-expand__clock {
+    display: none;
+  }
+
+  .sk-scroll-expand__lead {
+    padding-block: var(--space-inset-xl);
+    text-align: center;
+  }
+
+  .sk-scroll-expand__container {
+    /* At rest the container is a plain wide block. */
+    aspect-ratio: 16 / 9;
+    overflow: clip;
+    display: grid;
+    background: var(--sk-scroll-expand-container-bg);
+  }
+
+  .sk-scroll-expand__backdrop,
+  .sk-scroll-expand__reveal {
+    grid-area: 1 / 1;
+    min-block-size: 0;
+    min-inline-size: 0;
+  }
+
+  /* The backdrop fills the container, and so does whatever it holds: a gap would show once the container is clipped. */
+  .sk-scroll-expand__backdrop {
+    display: grid;
+    overflow: clip;
+  }
+
+  .sk-scroll-expand__backdrop > * {
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  .sk-scroll-expand__backdrop > :is(img, picture, video, canvas, svg) {
+    object-fit: cover;
+  }
+
+  /* The reveal sits over the backdrop, centred, with its wash behind it. */
+  .sk-scroll-expand__reveal {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    place-content: center;
+    box-sizing: border-box;
+    padding: var(--space-inset-lg);
+    text-align: center;
+  }
+
+  .sk-scroll-expand__reveal::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--sk-scroll-expand-scrim);
+    pointer-events: none;
+  }
+
+  @supports (animation-timeline: view()) and (timeline-scope: --a) {
+    @media (prefers-reduced-motion: no-preference) {
+      .sk-scroll-expand {
+        timeline-scope: --sk-scroll-expand-progress;
+      }
+
+      /* One box for the stage, one of scroll while it is held. */
+      .sk-scroll-expand__track {
+        block-size: 200cqh;
+      }
+
+      .sk-scroll-expand__clock {
+        display: block;
+        position: absolute;
+        inset-block-start: 0;
+        inset-inline-start: 0;
+        inline-size: 1px;
+        block-size: 100cqh;
+        pointer-events: none;
+        view-timeline: --sk-scroll-expand-progress block;
+      }
+
+      .sk-scroll-expand__stage {
+        position: sticky;
+        inset-block-start: 0;
+        block-size: 100cqh;
+        /* The lead and the container share one cell: the lead stands in the band above the window. */
+        display: grid;
+        overflow: clip;
+      }
+
+      .sk-scroll-expand__lead,
+      .sk-scroll-expand__container {
+        grid-area: 1 / 1;
+      }
+
+      /* The band above the window, as tall as the window's own top inset: the big words stand on the stage, not on the container. */
+      .sk-scroll-expand__lead {
+        z-index: 1;
+        align-self: start;
+        block-size: var(--sk-scroll-expand-inset-block);
+        box-sizing: border-box;
+        display: grid;
+        place-content: center;
+        padding-block: 0;
+        pointer-events: none;
+      }
+
+      .sk-scroll-expand__lead {
+        animation-name: sk-scroll-expand-lead;
+        animation-fill-mode: both;
+        animation-timing-function: linear;
+        animation-timeline: --sk-scroll-expand-progress;
+        animation-range: exit 0% exit 40%;
+      }
+
+      .sk-scroll-expand__container {
+        aspect-ratio: auto;
+        block-size: 100%;
+        /*
+         * LONGHANDS, never the `animation` shorthand: a CSS minifier folds a following `animation-timeline` back into
+         * the shorthand, which has no slot for it, so the whole declaration is dropped in a production build.
+         */
+        animation-name: sk-scroll-expand-open;
+        animation-fill-mode: both;
+        animation-timing-function: linear;
+        animation-timeline: --sk-scroll-expand-progress;
+        animation-range: exit 0% exit 85%;
+      }
+
+      /*
+       * THE REVEAL arrives after the window has started to open, and each child a little after the one before: the wash
+       * first, then the children in a cascade. Nothing is on screen in the small window but the backdrop.
+       */
+      .sk-scroll-expand__reveal::before {
+        animation-name: sk-scroll-expand-scrim;
+        animation-fill-mode: both;
+        animation-timing-function: linear;
+        animation-timeline: --sk-scroll-expand-progress;
+        animation-range: exit 25% exit 60%;
+      }
+
+      .sk-scroll-expand__reveal > * {
+        animation-name: sk-scroll-expand-reveal;
+        animation-fill-mode: both;
+        animation-timing-function: var(--motion-enter-easing);
+        animation-timeline: --sk-scroll-expand-progress;
+        animation-range: exit 35% exit 65%;
+      }
+
+      .sk-scroll-expand__reveal > :nth-child(2) {
+        animation-range: exit 43% exit 73%;
+      }
+
+      .sk-scroll-expand__reveal > :nth-child(3) {
+        animation-range: exit 51% exit 81%;
+      }
+
+      .sk-scroll-expand__reveal > :nth-child(n + 4) {
+        animation-range: exit 59% exit 85%;
+      }
+
+      /* CONTRACT is the same move run backwards: full first, then closing to the window, the reveal leaving as it goes. */
+      .sk-scroll-expand[data-direction="contract"] .sk-scroll-expand__container,
+      .sk-scroll-expand[data-direction="contract"] .sk-scroll-expand__lead,
+      .sk-scroll-expand[data-direction="contract"] .sk-scroll-expand__reveal::before,
+      .sk-scroll-expand[data-direction="contract"] .sk-scroll-expand__reveal > * {
+        animation-direction: reverse;
+      }
+    }
+  }
+}

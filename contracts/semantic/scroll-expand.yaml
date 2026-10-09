@@ -1,0 +1,17 @@
+# The structure lives in packages/core/src/scroll-expand.ts. Here, only why it is chosen.
+
+ScrollExpand:
+  useWhen:
+    - "one box is the point of the section and should open from a small window to fill the whole box as the page scrolls: a photo with its caption, a film, a piece of interface, a map"
+    - "what the box holds (the smaller words, a few figures) should not be on screen in the small window but arrive, one piece after another, as it opens: put each piece as a child of the reveal slot"
+    - "big words stand above the window before it opens and should make way for it (put them in the lead slot, which fades out as the window opens)"
+    - "the page has to stay a plain document where the effect is unavailable: with no scroll-driven animation, or with reduced motion, the lead, the container and what follows simply follow one another"
+  avoidWhen:
+    - "two sections tell one story and the second should arrive on top of the first; that is ScrollStack"
+    - "what the box holds must be readable from the first frame; the reveal is not on screen while the window is small, and the backdrop's edges are cut off until it opens"
+    - "the motion is the content (a story told by scroll position); this is a reveal, built to be passed through, and not a scroll-driven scene"
+    - "there are many containers in a row; each would hold the page for a box-height of scroll, and a Carousel or a Grid fits a set"
+  alternatives:
+    - ScrollStack
+    - Hero
+    - Carousel

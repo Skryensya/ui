@@ -608,6 +608,12 @@ const componentItems = [
     aliases: ["redimensionable", "paneles", "panel dividido", "split view", "splitter", "resizable panels", "divisor arrastrable", "master detail"],
   },
   {
+    href: "/components/scroll-expand",
+    label: "Scroll Expand",
+    trailing: "Beta",
+    aliases: ["scroll expand", "expandir al hacer scroll", "contenedor que se expande", "caja que crece", "hero expandible", "expanding container", "box grows on scroll", "scroll zoom", "reveal fullscreen"],
+  },
+  {
     href: "/components/scroll-stack",
     label: "Scroll Stack",
     trailing: "Beta",
@@ -1199,6 +1205,7 @@ const allComponentNavigation = [
       "/components/inline",
       "/components/layout-grid",
       "/components/resizable",
+      "/components/scroll-expand",
       "/components/scroll-stack",
       "/components/separator",
       "/components/stack",
@@ -1218,6 +1225,7 @@ const allComponentNavigation = [
       "/components/lightbox",
       "/components/marquee",
       "/components/media-overlay",
+      "/components/morph-stack",
       "/components/qr-code",
       "/components/sticker",
     ),
@@ -1225,7 +1233,6 @@ const allComponentNavigation = [
   {
     id: "utilities",
     group: "group.componentUtilities",
-      "/components/morph-stack",
     blurb: "group.componentUtilities.blurb",
     items: componentGroupItems(
       "/components/fade-edge",

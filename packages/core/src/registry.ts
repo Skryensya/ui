@@ -14,6 +14,7 @@ import { descriptionListContract } from "./description-list.js";
 import { quoteContract } from "./quote.js";
 import { morphStackContract } from "./morph-stack.js";
 import { resizableContract } from "./resizable.js";
+import { scrollExpandContract } from "./scroll-expand.js";
 import { scrollStackContract } from "./scroll-stack.js";
 import { separatorContract } from "./separator.js";
 import { tagsInputContract } from "./tags-input.js";
@@ -184,8 +185,9 @@ export const contracts = fromContracts(
   comparisonTableContract,
   descriptionListContract,
   quoteContract,
-  resizableContract,
   morphStackContract,
+  resizableContract,
+  scrollExpandContract,
   scrollStackContract,
   separatorContract,
   tagsInputContract,

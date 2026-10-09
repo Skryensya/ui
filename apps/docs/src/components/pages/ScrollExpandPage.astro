@@ -1,0 +1,201 @@
+---
+import "@skryensya/core/components/scroll-expand.css";
+/* The demos' containers hold photos and interface drawn with the kit's own pieces. */
+import "@skryensya/core/patterns/image-frame.css";
+/* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
+import "@skryensya/core/components/annotation.css";
+/* The demo holds real copy, drawn with the kit's own pieces. */
+import "@skryensya/core/components/typography.css";
+import "@skryensya/core/patterns/layout.css";
+import "@skryensya/core/patterns/box.css";
+import "@skryensya/core/patterns/scrollbar.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import CodeBlock from "../CodeBlock.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import ComparisonTable from "../ComparisonTable.astro";
+import DoDont from "../DoDont.astro";
+import UsagePreview from "../UsagePreview.astro";
+import { scrollExpandParts } from "@skryensya/core/scroll-expand";
+import { scrollExpandAnatomyCss, scrollExpandAnatomyTree, scrollExpandContractTree, scrollExpandDoCentreTree, scrollExpandDontCentreTree, scrollExpandInterfaceTree, scrollExpandTree, scrollExpandWideTree } from "../../demos/scroll-expand";
+import { getLocale, tList, useTranslations } from "../../i18n";
+
+const t = useTranslations(getLocale(Astro.url));
+
+const examples = [
+  { key: "fjord", story: "Default", tree: scrollExpandTree },
+  { key: "ui", story: "Interface", tree: scrollExpandInterfaceTree },
+  { key: "coast", story: "Wide", tree: scrollExpandWideTree },
+  { key: "contract", story: "Contract", tree: scrollExpandContractTree },
+] as const;
+
+const [, doesColumn] = t("scrollExpandPage.hooksColumns").split("|");
+const hooks = [
+  ["inset-block", "30%", "insetBlock"],
+  ["inset-inline", "32%", "insetInline"],
+  ["lead-shift", "calc(var(--space-inset-lg) * -1)", "leadShift"],
+  ["radius", "var(--radius-surface)", "radius"],
+  ["container-bg", "var(--color-bg-surface-sunken)", "containerBg"],
+  ["reveal-shift", "var(--space-inset-lg)", "revealShift"],
+  ["reveal-blur", "6px", "revealBlur"],
+  ["scrim", "transparent", "scrim"],
+  ["bg", "var(--color-bg-surface)", "bg"],
+] as const;
+const hookNotes = Object.fromEntries(
+  hooks.map(([name, , key]) => [`--sk-scroll-expand-${name}`, t(`scrollExpandPage.hook.${key}` as Parameters<typeof t>[0])]),
+);
+
+const partOrder = ["root", "track", "clock", "stage", "lead", "container", "backdrop", "reveal", "after"] as const;
+const partRows = partOrder.map((part) => ({
+  label: scrollExpandParts[part],
+  labelHtml: `<code>${scrollExpandParts[part]}</code>`,
+  cells: [t(`scrollExpandPage.part.${part}` as Parameters<typeof t>[0])],
+}));
+
+const install = `pnpm add @skryensya/core
+# and, for React,
+pnpm add @skryensya/react`;
+const styles = `@import "@skryensya/core/components/scroll-expand.css";`;
+const html = `<div class="sk-scroll-expand" data-direction="expand">
+  <div class="sk-scroll-expand__track">
+    <span class="sk-scroll-expand__clock" aria-hidden="true"></span>
+    <div class="sk-scroll-expand__stage">
+      <div class="sk-scroll-expand__lead">
+        <h2>Look farther</h2>
+      </div>
+      <div class="sk-scroll-expand__container">
+        <div class="sk-scroll-expand__backdrop"><img src="fjord.jpg" alt="A blue fjord" /></div>
+        <div class="sk-scroll-expand__reveal">
+          <p>Norway</p>
+          <h3>Preikestolen</h3>
+          <p>604 m above the fjord</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sk-scroll-expand__after"><p>What follows.</p></div>
+</div>`;
+const react = `import { ScrollExpand } from "@skryensya/react/scroll-expand";
+
+<ScrollExpand
+  lead={<h2>Look farther</h2>}
+  reveal={<><p>Norway</p><h3>Preikestolen</h3><p>604 m above the fjord</p></>}
+  after={<p>What follows.</p>}
+>
+  {/* What fills the container (the backdrop). */}
+  <img src="fjord.jpg" alt="A blue fjord" />
+</ScrollExpand>
+
+{/* The other way round: starts full, closes to the window. */}
+<ScrollExpand direction="contract">…</ScrollExpand>`;
+const box = `/* In a scroll box of your own: a size container, so the component measures it and not the window. */
+.my-scroller {
+  block-size: 28rem;
+  overflow: auto;
+  container-type: size;
+}`;
+const tune = `.sk-scroll-expand {
+  --sk-scroll-expand-scrim: rgb(0 0 0 / 0.4); /* a wash behind the revealed words */
+  --sk-scroll-expand-reveal-shift: 0px;      /* fade in without rising */
+  --sk-scroll-expand-inset-block: 24%;  /* start with a wider window */
+  --sk-scroll-expand-inset-inline: 14%;
+  --sk-scroll-expand-radius: 0px;       /* square corners */
+}`;
+---
+
+<ComponentPageShell
+  title="Scroll Expand"
+  description={t("scrollExpandPage.description")}
+  contractId="scroll-expand"
+  badge="Beta"
+  hookNotes={hookNotes}
+  hookNotesLabel={doesColumn}
+  testFiles={["packages/react/src/components/scroll-expand.test.tsx"]}
+>
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("scrollExpandPage.lede")} />
+
+    <h3>{t("scrollExpandPage.examplesTitle")}</h3>
+    <p set:html={t("scrollExpandPage.examplesBody")} />
+    {
+      examples.map(({ key, story, tree }) => (
+        <UsagePreview
+          tree={tree(t)}
+          title={t(`scrollExpandPage.variant.${key}` as Parameters<typeof t>[0])}
+          description={t(`scrollExpandPage.variant.${key}.explain` as Parameters<typeof t>[0])}
+          storybookTitle="Components/Layout/Scroll Expand"
+          storybookStory={story}
+          stageMinBlockSize="27rem"
+        />
+      ))
+    }
+
+    <h3>{t("scrollExpandPage.twoWordsTitle")}</h3>
+    <p set:html={t("scrollExpandPage.twoWordsBody")} />
+
+    <h3>{t("scrollExpandPage.directionTitle")}</h3>
+    <p set:html={t("scrollExpandPage.directionBody")} />
+
+    <h3>{t("scrollExpandPage.howTitle")}</h3>
+    <ul>
+      <li set:html={t("scrollExpandPage.how.stage")} />
+      <li set:html={t("scrollExpandPage.how.container")} />
+      <li set:html={t("scrollExpandPage.how.reveal")} />
+      <li set:html={t("scrollExpandPage.how.lead")} />
+      <li set:html={t("scrollExpandPage.how.fallback")} />
+    </ul>
+
+    <h3>{t("scrollExpandPage.boxTitle")}</h3>
+    <p set:html={t("scrollExpandPage.boxBody")} />
+    <CodeBlock code={box} label="CSS" lang="css" />
+
+    <h3>{t("scrollExpandPage.contractTitle")}</h3>
+    <ul>
+      {tList(t, "scrollExpandPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+  </Fragment>
+
+  <Fragment slot="anatomy">
+    <p set:html={t("scrollExpandPage.anatomyBody")} />
+    <UsagePreview tree={scrollExpandAnatomyTree(t)} css={scrollExpandAnatomyCss} label={t("scrollExpandPage.anatomyPreviewLabel")} bare />
+    <h3>{t("scrollExpandPage.anatomyTitle")}</h3>
+    <div class="se-parts">
+      <ComparisonTable aspectLabel={t("scrollExpandPage.partsAspect")} columns={[t("scrollExpandPage.partsColumns")]} rows={partRows} />
+    </div>
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("scrollExpandPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "scrollExpandPage.when")} avoid={tList(t, "scrollExpandPage.whenNot")} />
+    <DoDont
+      title={t("scrollExpandPage.dd.centre.title")}
+      do={{ tree: scrollExpandDoCentreTree(t), caption: t("scrollExpandPage.dd.centre.do") }}
+      dont={{ tree: scrollExpandDontCentreTree(t), caption: t("scrollExpandPage.dd.centre.dont") }}
+    />
+    <ContentRules items={tList(t, "scrollExpandPage.content")} />
+  </Fragment>
+
+  <Fragment slot="install">
+    <p set:html={t("scrollExpandPage.installBody")} />
+    <CodeBlock code={install} label="terminal" />
+    <CodeBlock code={styles} label="CSS" lang="css" />
+  </Fragment>
+
+  <Fragment slot="style">
+    <h3>{t("scrollExpandPage.hooksTitle")}</h3>
+    <p set:html={t("scrollExpandPage.hooksBody")} />
+    <CodeBlock code={tune} label="CSS" lang="css" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("scrollExpandPage.a11yIntro")} does={tList(t, "scrollExpandPage.a11yDoes")} yours={tList(t, "scrollExpandPage.a11yYours")} />
+  </Fragment>
+</ComponentPageShell>
+
+<style is:global>
+  /* A class name is one token: breaking it at the hyphen makes two lines of what is a single word. */
+  .se-parts th code {
+    white-space: nowrap;
+  }
+</style>

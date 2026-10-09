@@ -121,6 +121,7 @@ import { descriptionListMessages } from "./messages/components/description-list"
 import { dodontPairsMessages } from "./messages/components/dodont-pairs";
 import { morphStackMessages } from "./messages/components/morph-stack";
 import { resizableMessages } from "./messages/components/resizable";
+import { scrollExpandMessages } from "./messages/components/scroll-expand";
 import { scrollStackMessages } from "./messages/components/scroll-stack";
 import { separatorMessages } from "./messages/components/separator";
 import { tagsInputMessages } from "./messages/components/tags-input";
@@ -280,6 +281,7 @@ export const ui = {
     ...dodontPairsMessages.es,
     ...morphStackMessages.es,
     ...resizableMessages.es,
+    ...scrollExpandMessages.es,
     ...scrollStackMessages.es,
     ...separatorMessages.es,
     ...radioGroupMessages.es,
@@ -434,6 +436,7 @@ export const ui = {
     ...dodontPairsMessages.en,
     ...morphStackMessages.en,
     ...resizableMessages.en,
+    ...scrollExpandMessages.en,
     ...scrollStackMessages.en,
     ...separatorMessages.en,
     ...radioGroupMessages.en,

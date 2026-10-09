@@ -630,6 +630,34 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    /* SCROLL EXPAND, every slot filled: the anatomy is what the two bindings are held to; `scroll-expand.spec.ts` is what scrolls. */
+    name: "scroll-expand/default",
+    enhanced: false,
+    tree: {
+      contract: "scroll-expand",
+      signature: "ScrollExpand",
+      slots: {
+        lead: { contract: "typography", signature: "Heading", children: "Open wide" },
+        children: { contract: "typography", signature: "Text", children: "What fills the container." },
+        reveal: { contract: "typography", signature: "Text", children: "What arrives as it opens." },
+        after: { contract: "typography", signature: "Text", children: "What follows." },
+      },
+    },
+  },
+  {
+    name: "scroll-expand/contract",
+    enhanced: false,
+    tree: {
+      contract: "scroll-expand",
+      signature: "ScrollExpand",
+      options: { direction: "contract" },
+      slots: {
+        lead: { contract: "typography", signature: "Heading", children: "Close" },
+        children: { contract: "typography", signature: "Text", children: "What is inside the container." },
+      },
+    },
+  },
+  {
     /*
      * SCROLL STACK, the one shape it has: a back layer and a front layer, both plain content. The motion needs a scroll,
      * which a static stage does not give, so what the two bindings are held to here is the anatomy (the layers, the
@@ -646,34 +674,6 @@ const signatureTrees: readonly Canonical[] = [
       },
     },
   },
-  {
-    name: "resizable/stacked",
-    enhanced: true,
-    tree: {
-      contract: "resizable",
-      signature: "Resizable",
-      options: { direction: "vertical" },
-      /* A stacked group needs a height of its own: with none the panels share zero pixels, clip their
-         content and axe rightly calls them scroll regions nobody can reach. */
-      attrs: { style: "block-size: 12rem" },
-      children: [
-        { contract: "resizable", signature: "Resizable.Panel", children: "Editor" },
-        { contract: "resizable", signature: "Resizable.Handle", options: { label: "Resize editor" } },
-        { contract: "resizable", signature: "Resizable.Panel", children: "Output" },
-      ],
-    },
-  },
-  {
-    /* The one contract whose payload is COMPUTED into an attribute rather than authored: G2 compares
-       the two bindings' `<path d>` here, which is the only check that both call the same encoder. */
-    name: "qr-code/default",
-    /* Enhanced since the Vanilla binding can draw and re-point a symbol at runtime: the emitted root
-       carries `data-sk-qr-code` and its `data-value`, which is what the enhancer mounts on. */
-    enhanced: true,
-    tree: {
-      contract: "qr-code",
-      signature: "QRCode",
-      options: { value: "https://ui.skryensya.dev", label: "Abrir el sitio", level: "Q" },
   {
     /* MORPH STACK with both optional plates: the five-plate stack, so the two end parts are held to the same DOM too. */
     name: "morph-stack/five",
@@ -708,6 +708,34 @@ const signatureTrees: readonly Canonical[] = [
       },
     },
   },
+  {
+    name: "resizable/stacked",
+    enhanced: true,
+    tree: {
+      contract: "resizable",
+      signature: "Resizable",
+      options: { direction: "vertical" },
+      /* A stacked group needs a height of its own: with none the panels share zero pixels, clip their
+         content and axe rightly calls them scroll regions nobody can reach. */
+      attrs: { style: "block-size: 12rem" },
+      children: [
+        { contract: "resizable", signature: "Resizable.Panel", children: "Editor" },
+        { contract: "resizable", signature: "Resizable.Handle", options: { label: "Resize editor" } },
+        { contract: "resizable", signature: "Resizable.Panel", children: "Output" },
+      ],
+    },
+  },
+  {
+    /* The one contract whose payload is COMPUTED into an attribute rather than authored: G2 compares
+       the two bindings' `<path d>` here, which is the only check that both call the same encoder. */
+    name: "qr-code/default",
+    /* Enhanced since the Vanilla binding can draw and re-point a symbol at runtime: the emitted root
+       carries `data-sk-qr-code` and its `data-value`, which is what the enhancer mounts on. */
+    enhanced: true,
+    tree: {
+      contract: "qr-code",
+      signature: "QRCode",
+      options: { value: "https://ui.skryensya.dev", label: "Abrir el sitio", level: "Q" },
     },
   },
   /* The same symbol with a hole knocked through the middle, because the logo path clears modules

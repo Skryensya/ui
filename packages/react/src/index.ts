@@ -111,6 +111,8 @@ export { MorphStack } from "./components/morph-stack.js";
 export type { MorphStackProps } from "./components/morph-stack.js";
 export { Resizable, ResizableHandle, ResizablePanel } from "./components/resizable.js";
 export type { ResizableApi, ResizableHandleProps, ResizablePanelProps, ResizableProps } from "./components/resizable.js";
+export { ScrollExpand } from "./components/scroll-expand.js";
+export type { ScrollExpandProps } from "./components/scroll-expand.js";
 export { ScrollStack } from "./components/scroll-stack.js";
 export type { ScrollStackProps } from "./components/scroll-stack.js";
 export { Steps } from "./components/steps.js";

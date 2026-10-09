@@ -308,6 +308,10 @@ const componentDescriptions = {
     es: "Muestra los datos de un registro como pares de nombre y valor.",
     en: "Shows one record's details as name-and-value pairs.",
   },
+  "/components/scroll-expand": {
+    es: "Un contenedor que se abre desde una ventana pequeña hasta llenar la caja al hacer scroll, o al revés.",
+    en: "A container that opens from a small window to fill the box as you scroll, or the other way round.",
+  },
   "/components/scroll-stack": {
     es: "Dos secciones donde la segunda sube y cubre a la primera al hacer scroll, con un gesto sutil.",
     en: "Two sections where the second one rises over the first as you scroll, with a subtle gesture.",

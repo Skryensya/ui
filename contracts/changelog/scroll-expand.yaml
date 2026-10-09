@@ -1,0 +1,52 @@
+# What changed in scroll-expand, in the words its users read. Only appended to, never rewritten.
+#
+# `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
+# does not match, something a consumer depends on has moved: write the entry and paste in the new
+# hash.
+surface: "fbda2f2b2b00cc23"
+entries:
+  - date: 2026-10-08
+    kind: feature
+    es:
+      title: Primera publicación del contrato
+      body: >-
+        Un contenedor que se abre desde una ventana pequeña hasta llenar la caja al hacer scroll. Dentro puede ir lo que
+        quieras: una foto con su leyenda, un video, una pieza de interfaz. No lleva texto propio: las palabras grandes
+        de arriba van en el slot lead (la caja se desvanece al abrirse la ventana) y las pequeñas van dentro del
+        contenedor. La opción direction invierte el movimiento: con contract parte lleno y se cierra. Es solo CSS y
+        progresivo: sin soporte, o con movimiento reducido, las partes quedan una tras otra.
+    en:
+      title: First published contract
+      body: >-
+        A container that opens from a small window to fill the box as the page scrolls. Anything can go inside: a photo
+        with its caption, a video, a piece of interface. It owns no text: the big words above go in the lead slot (its
+        box fades out as the window opens) and the smaller ones go inside the container. The direction option reverses
+        the move: with contract it starts full and closes. It is CSS only and progressive: without support, or with
+        reduced motion, the parts follow one another.
+  - date: 2026-10-08
+    kind: feature
+    es:
+      title: Un reveal que llega mientras el contenedor se abre
+      body: >-
+        Nuevo slot reveal: lo que llena el contenedor (children) es el fondo y está desde el primer cuadro; el reveal va
+        centrado encima y aparece mientras la ventana se abre, un hijo tras otro (suben, se enfocan y se hacen visibles),
+        con un velo opcional. Nuevos ganchos: reveal-shift, reveal-blur y scrim. Con contract se reproduce al revés.
+    en:
+      title: A reveal that arrives as the container opens
+      body: >-
+        New reveal slot: what fills the container (children) is the backdrop and is there from the first frame; the
+        reveal sits centred over it and arrives as the window opens, one child after another (they rise, sharpen and
+        appear), with an optional wash. New hooks: reveal-shift, reveal-blur and scrim. With contract it plays backwards.
+  - date: 2026-10-08
+    kind: feature
+    es:
+      title: El lead se desvanece solo
+      body: >-
+        La caja del slot lead se desvanece y sube un poco mientras la ventana se abre, sea lo que sea que lleve, sin
+        necesitar ninguna otra pieza. Nuevo gancho lead-shift (cuánto sube; con cero solo se desvanece). Con contract
+        corre al revés.
+    en:
+      title: The lead fades by itself
+      body: >-
+        The lead slot's box fades and lifts a little as the window opens, whatever it holds, with no other piece needed.
+        New lead-shift hook (how far it lifts; zero just fades it). With contract it runs backwards.

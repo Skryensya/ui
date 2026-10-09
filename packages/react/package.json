@@ -133,6 +133,10 @@
       "types": "./src/components/resizable.tsx",
       "default": "./src/components/resizable.tsx"
     },
+    "./scroll-expand": {
+      "types": "./src/components/scroll-expand.tsx",
+      "default": "./src/components/scroll-expand.tsx"
+    },
     "./morph-stack": {
       "types": "./src/components/morph-stack.tsx",
       "default": "./src/components/morph-stack.tsx"

@@ -108,6 +108,10 @@
       "types": "./src/resizable.ts",
       "default": "./src/resizable.ts"
     },
+    "./scroll-expand": {
+      "types": "./src/scroll-expand.ts",
+      "default": "./src/scroll-expand.ts"
+    },
     "./scroll-stack": {
       "types": "./src/scroll-stack.ts",
       "default": "./src/scroll-stack.ts"
