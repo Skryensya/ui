@@ -2,6 +2,7 @@
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
@@ -55,6 +56,7 @@ const vanilla = `document.querySelector(".sk-sticker").setAttribute("data-state"
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`sticker.prop.${option}.${value}` as Parameters<typeof t>[0])]));
+import { stickerDoTree, stickerDontTree, stickerShapeDoTree, stickerShapeDontTree } from "../../demos/dodont-pairs";
 ---
 
 <ComponentPageShell
@@ -102,6 +104,16 @@ const explain = (option: string, values: readonly string[]) =>
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("sticker.guidelinesLede")} />
     <WhenToUse use={tList(t, "sticker.when")} avoid={tList(t, "sticker.whenNot")} />
+    <DoDont
+      title={t("stickerPage.dd.status.title")}
+      do={{ tree: stickerDoTree(t), caption: t("stickerPage.dd.status.do") }}
+      dont={{ tree: stickerDontTree(t), caption: t("stickerPage.dd.status.dont") }}
+    />
+    <DoDont
+      title={t("stickerPage.dd.shape.title")}
+      do={{ tree: stickerShapeDoTree(t), caption: t("stickerPage.dd.shape.do") }}
+      dont={{ tree: stickerShapeDontTree(t), caption: t("stickerPage.dd.shape.dont") }}
+    />
     <ContentRules items={tList(t, "sticker.content")} />
   </Fragment>
 

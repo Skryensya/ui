@@ -43,6 +43,7 @@ const hooks = `.mi-canvas {
     in oklab, var(--color-border-subtle) 35%, transparent
   );
 }`;
+import { canvasDrawingDoTree, canvasDrawingDontTree } from "../../demos/dodont-more";
 ---
 
 <ComponentPageShell
@@ -93,6 +94,11 @@ const hooks = `.mi-canvas {
       title={t("canvas.dd.fit.title")}
       do={{ tree: canvasDiagramTree(t), caption: t("canvas.dd.fit.do") }}
       dont={{ tree: canvasDontFitsTree(t), caption: t("canvas.dd.fit.dont") }}
+    />
+    <DoDont
+      title={t("dd3.canvas.title")}
+      do={{ tree: canvasDrawingDoTree(t), caption: t("dd3.canvas.do") }}
+      dont={{ tree: canvasDrawingDontTree(t), caption: t("dd3.canvas.dont") }}
     />
     <ContentRules items={tList(t, "canvas.content")} />
   </Fragment>

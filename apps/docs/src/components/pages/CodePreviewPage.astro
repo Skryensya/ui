@@ -54,6 +54,7 @@ const example = `const registrations = [
   { selector: "[data-sk-button]", load: () => import("./button.js") },
   { selector: "[data-sk-select]", load: () => import("./select.js") },
 ];`;
+import { codePreviewInlineDoTree, codePreviewInlineDontTree } from "../../demos/dodont-more";
 ---
 
 <ComponentPageShell
@@ -112,6 +113,11 @@ const example = `const registrations = [
       title={t("codePreview.dd.label.title")}
       do={{ tree: codePreviewTree(t), caption: t("codePreview.dd.label.do") }}
       dont={{ tree: codePreviewDontLabelTree(t), caption: t("codePreview.dd.label.dont") }}
+    />
+    <DoDont
+      title={t("dd3.codePreview.title")}
+      do={{ tree: codePreviewInlineDoTree(t), caption: t("dd3.codePreview.do") }}
+      dont={{ tree: codePreviewInlineDontTree(t), caption: t("dd3.codePreview.dont") }}
     />
     <ContentRules items={tList(t, "codePreview.content")} />
   </Fragment>

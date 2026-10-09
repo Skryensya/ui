@@ -1,6 +1,7 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import A11yNotes from "../A11yNotes.astro";
 import {
@@ -62,6 +63,7 @@ const fields = document.getElementById("presence-fields");
 toggle.addEventListener("change", () => show(fields, toggle.checked));
 `;
 
+import { presenceFramesDoTree, presenceFramesDontTree, presenceSpaceDoTree, presenceSpaceDontTree } from "../../demos/dodont-mocks";
 ---
 
 <ComponentPageShell
@@ -135,6 +137,18 @@ toggle.addEventListener("change", () => show(fields, toggle.checked));
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("presence.guidelinesLede")} />
     <WhenToUse use={tList(t, "presence.when")} avoid={tList(t, "presence.whenNot")} />
+    <DoDont
+      canvas
+      title={t("presence.dd.frames.title")}
+      do={{ tree: presenceFramesDoTree(t), caption: t("presence.dd.frames.do") }}
+      dont={{ tree: presenceFramesDontTree(t), caption: t("presence.dd.frames.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("presence.dd.space.title")}
+      do={{ tree: presenceSpaceDoTree(t), caption: t("presence.dd.space.do") }}
+      dont={{ tree: presenceSpaceDontTree(t), caption: t("presence.dd.space.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="a11y">

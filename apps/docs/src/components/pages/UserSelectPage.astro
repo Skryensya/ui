@@ -14,6 +14,7 @@ import "@skryensya/core/components/annotation.css";
 import CodeBlock from "../CodeBlock.astro";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
@@ -56,6 +57,7 @@ const reactSource = `<UserSelect
   }}`
   }
 />`;
+import { userSelectEmailDoTree, userSelectEmailDontTree, userSelectNameDoTree, userSelectNameDontTree } from "../../demos/dodont-mocks";
 ---
 
 <ComponentPageShell
@@ -95,6 +97,18 @@ const reactSource = `<UserSelect
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("userSelectPage.guidelinesLede")} />
     <WhenToUse use={tList(t, "userSelectPage.when")} avoid={tList(t, "userSelectPage.whenNot")} />
+    <DoDont
+      canvas
+      title={t("userSelectPage.dd.email.title")}
+      do={{ tree: userSelectEmailDoTree(t), caption: t("userSelectPage.dd.email.do") }}
+      dont={{ tree: userSelectEmailDontTree(t), caption: t("userSelectPage.dd.email.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("userSelectPage.dd.name.title")}
+      do={{ tree: userSelectNameDoTree(t), caption: t("userSelectPage.dd.name.do") }}
+      dont={{ tree: userSelectNameDontTree(t), caption: t("userSelectPage.dd.name.dont") }}
+    />
     <ContentRules items={tList(t, "userSelectPage.content")} />
   </Fragment>
 

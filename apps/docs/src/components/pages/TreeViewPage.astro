@@ -37,6 +37,7 @@ const indentHook = `.sk-tree-view {
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`treeViewPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
+import { treeViewNamesDoTree, treeViewNamesDontTree } from "../../demos/dodont-more";
 ---
 
 <ComponentPageShell
@@ -90,6 +91,11 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("treeViewPage.dd.nested.title")}
       do={{ tree: treeViewMinimalTree(t), caption: t("treeViewPage.dd.nested.do") }}
       dont={{ tree: treeViewDontFlatTree(t), caption: t("treeViewPage.dd.nested.dont") }}
+    />
+    <DoDont
+      title={t("dd3.treeView.title")}
+      do={{ tree: treeViewNamesDoTree(t), caption: t("dd3.treeView.do") }}
+      dont={{ tree: treeViewNamesDontTree(t), caption: t("dd3.treeView.dont") }}
     />
     <ContentRules items={tList(t, "treeViewPage.content")} />
   </Fragment>

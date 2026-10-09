@@ -25,6 +25,7 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
+import { tableHeadersDoTree, tableHeadersDontTree } from "../../demos/dodont-more";
 ---
 
 <ComponentPageShell
@@ -64,6 +65,11 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
       title={t("tablePage.dd.data.title")}
       do={{ tree: tableTree(t), caption: t("tablePage.dd.data.do") }}
       dont={{ tree: tableDontListTree(t), caption: t("tablePage.dd.data.dont") }}
+    />
+    <DoDont
+      title={t("dd3.table.title")}
+      do={{ tree: tableHeadersDoTree(t), caption: t("dd3.table.do") }}
+      dont={{ tree: tableHeadersDontTree(t), caption: t("dd3.table.dont") }}
     />
     <ContentRules items={tList(t, "tablePage.content")} />
   </Fragment>

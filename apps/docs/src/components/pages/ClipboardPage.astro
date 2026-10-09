@@ -41,6 +41,7 @@ const vanilla = `document.addEventListener("sk:clipboardstatuschange", (event) =
 const storybookTitle = "Components/Actions/Clipboard";
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`clipboard.prop.${option}.${value}` as Parameters<typeof t>[0])]));
+import { dd2 } from "../../demos/dodont-labels";
 ---
 
 <ComponentPageShell
@@ -104,6 +105,11 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("clipboard.dd.see.title")}
       do={{ tree: clipboardFieldTree(t), caption: t("clipboard.dd.see.do") }}
       dont={{ tree: clipboardDontBlindTree(t), caption: t("clipboard.dd.see.dont") }}
+    />
+    <DoDont
+      title={t("dd2.clipboard.title")}
+      do={{ tree: dd2.clipboard.do(t), caption: t("dd2.clipboard.do") }}
+      dont={{ tree: dd2.clipboard.dont(t), caption: t("dd2.clipboard.dont") }}
     />
     <ContentRules items={tList(t, "clipboard.content")} />
   </Fragment>

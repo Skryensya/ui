@@ -21,6 +21,7 @@ const t = useTranslations(getLocale(Astro.url));
 const install = `@import "@skryensya/core/components/data-grid.css";
 @import "@skryensya/core/patterns/state-layer.css";`;
 const storybookTitle = "Components/Unlisted/DataGrid";
+import { dataGridHierarchyDoTree, dataGridHierarchyDontTree } from "../../demos/dodont-more";
 ---
 
 <ComponentPageShell
@@ -62,6 +63,11 @@ const storybookTitle = "Components/Unlisted/DataGrid";
       title={t("dataGridPage.dd.static.title")}
       do={{ tree: dataGridActionsTree(t), caption: t("dataGridPage.dd.static.do") }}
       dont={{ tree: dataGridScoresTree(t), caption: t("dataGridPage.dd.static.dont") }}
+    />
+    <DoDont
+      title={t("dd3.dataGrid.title")}
+      do={{ tree: dataGridHierarchyDoTree(t), caption: t("dd3.dataGrid.do") }}
+      dont={{ tree: dataGridHierarchyDontTree(t), caption: t("dd3.dataGrid.dont") }}
     />
     <ContentRules items={tList(t, "dataGridPage.content")} />
   </Fragment>

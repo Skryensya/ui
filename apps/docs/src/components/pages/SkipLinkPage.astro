@@ -4,6 +4,7 @@
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
@@ -43,6 +44,7 @@ const pair = `<body>
   <nav id="main-nav" tabindex="-1" aria-label="Principal">…</nav>
   <main id="main-content" tabindex="-1">…</main>
 </body>`;
+import { skipLinkDoTree, skipLinkDontTree, skipLinkOrderDoTree, skipLinkOrderDontTree } from "../../demos/dodont-pairs";
 ---
 
 <ComponentPageShell
@@ -81,6 +83,16 @@ const pair = `<body>
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("skipLink.guidelinesLede")} />
     <WhenToUse use={tList(t, "skipLink.when")} avoid={tList(t, "skipLink.whenNot")} />
+    <DoDont
+      title={t("skipLink.dd.label.title")}
+      do={{ tree: skipLinkDoTree(t), caption: t("skipLink.dd.label.do") }}
+      dont={{ tree: skipLinkDontTree(t), caption: t("skipLink.dd.label.dont") }}
+    />
+    <DoDont
+      title={t("skipLink.dd.order.title")}
+      do={{ tree: skipLinkOrderDoTree(t), caption: t("skipLink.dd.order.do") }}
+      dont={{ tree: skipLinkOrderDontTree(t), caption: t("skipLink.dd.order.dont") }}
+    />
     <ContentRules items={tList(t, "skipLink.content")} />
   </Fragment>
 

@@ -92,6 +92,7 @@ const heroQuoteTree = heroTestimonialTree(t);
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`hero.prop.${option}.${value}` as Parameters<typeof t>[0])]));
+import { heroTitleDoTree, heroTitleDontTree } from "../../demos/dodont-more";
 ---
 
 <ComponentPageShell
@@ -175,6 +176,11 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("hero.dd.actions.title")}
       do={{ tree: heroTree(t), caption: t("hero.dd.actions.do") }}
       dont={{ tree: heroDontActionsTree(t), caption: t("hero.dd.actions.dont") }}
+    />
+    <DoDont
+      title={t("dd3.hero.title")}
+      do={{ tree: heroTitleDoTree(t), caption: t("dd3.hero.do") }}
+      dont={{ tree: heroTitleDontTree(t), caption: t("dd3.hero.dont") }}
     />
     <ContentRules items={tList(t, "hero.content")} />
   </Fragment>

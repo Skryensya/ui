@@ -14,7 +14,7 @@ import "@skryensya/core/patterns/splitter.css";
 import * as demos from "@docs/demos/sidebar";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Navigation/Sidebar", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Navigation/Sidebar/Sidebar", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.sidebarAnatomyTree);
 export const Default: StoryObj = treeStory(demos.sidebarTree);

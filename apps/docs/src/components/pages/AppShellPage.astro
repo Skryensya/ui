@@ -11,6 +11,7 @@ import "@skryensya/core/components/button.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import A11yNotes from "../A11yNotes.astro";
 import { appShellApplicationTree, appShellDocumentTree } from "../../demos/app-shell-page";
@@ -27,6 +28,7 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
 /* A frame sizes itself to its content, so a shell that is "a screen tall" would measure itself in a loop.
    The shell's own published hook gives it a screen instead, as a host page would by being the window. */
 const screenTall = `.sk-app-shell { --sk-app-shell-block-size: 26rem; }`;
+import { appShellOneDoTree, appShellOneDontTree, appShellMainDoTree, appShellMainDontTree } from "../../demos/dodont-mocks";
 ---
 
 <ComponentPageShell
@@ -61,6 +63,18 @@ const screenTall = `.sk-app-shell { --sk-app-shell-block-size: 26rem; }`;
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("appShellPage.guidelinesLede")} />
     <WhenToUse use={tList(t, "appShellPage.when")} avoid={tList(t, "appShellPage.whenNot")} />
+    <DoDont
+      canvas
+      title={t("appShellPage.dd.one.title")}
+      do={{ tree: appShellOneDoTree(t), caption: t("appShellPage.dd.one.do") }}
+      dont={{ tree: appShellOneDontTree(t), caption: t("appShellPage.dd.one.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("appShellPage.dd.main.title")}
+      do={{ tree: appShellMainDoTree(t), caption: t("appShellPage.dd.main.do") }}
+      dont={{ tree: appShellMainDontTree(t), caption: t("appShellPage.dd.main.dont") }}
+    />
   </Fragment>
 
   <Fragment slot="install">

@@ -6,6 +6,7 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
@@ -37,6 +38,7 @@ import { lucideIcons } from "@skryensya/icons-lucide";
 mountIcons(document, lucideIcons);
 
 await initComponents();`;
+import { toastDoTree, toastDontTree, toastFailDoTree, toastFailDontTree } from "../../demos/dodont-pairs";
 ---
 
 <ComponentPageShell
@@ -71,6 +73,18 @@ await initComponents();`;
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("toastPage.guidelinesLede")} />
     <WhenToUse use={tList(t, "toastPage.when")} avoid={tList(t, "toastPage.whenNot")} />
+    <DoDont
+      canvas
+      title={t("toastPage.dd.copy.title")}
+      do={{ tree: toastDoTree(t), caption: t("toastPage.dd.copy.do") }}
+      dont={{ tree: toastDontTree(t), caption: t("toastPage.dd.copy.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("toastPage.dd.fail.title")}
+      do={{ tree: toastFailDoTree(t), caption: t("toastPage.dd.fail.do") }}
+      dont={{ tree: toastFailDontTree(t), caption: t("toastPage.dd.fail.dont") }}
+    />
     <ContentRules items={tList(t, "toastPage.content")} />
   </Fragment>
 

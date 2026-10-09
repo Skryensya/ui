@@ -19,6 +19,7 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`stackPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
+import { stackRhythmDoTree, stackRhythmDontTree } from "../../demos/dodont-more";
 ---
 
 <ComponentPageShell
@@ -83,6 +84,11 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("stackPage.dd.axis.title")}
       do={{ tree: inlineButtonsTree(t), caption: t("stackPage.dd.axis.do") }}
       dont={{ tree: stackDontButtonsTree(t), caption: t("stackPage.dd.axis.dont") }}
+    />
+    <DoDont
+      title={t("dd3.stack.title")}
+      do={{ tree: stackRhythmDoTree(t), caption: t("dd3.stack.do") }}
+      dont={{ tree: stackRhythmDontTree(t), caption: t("dd3.stack.dont") }}
     />
   </Fragment>
 

@@ -10,6 +10,7 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
@@ -40,6 +41,7 @@ import { lucideIcons } from "@skryensya/icons-lucide";
 mountIcons(document, lucideIcons);
 
 await initComponents();`;
+import { sidebarDoTree, sidebarDontTree, sidebarNamesDoTree, sidebarNamesDontTree } from "../../demos/dodont-pairs";
 ---
 
 <ComponentPageShell
@@ -86,6 +88,16 @@ await initComponents();`;
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("sidebarPage.guidelinesLede")} />
     <WhenToUse use={tList(t, "sidebarPage.when")} avoid={tList(t, "sidebarPage.whenNot")} />
+    <DoDont
+      title={t("sidebarPage.dd.icons.title")}
+      do={{ tree: sidebarDoTree(t), caption: t("sidebarPage.dd.icons.do") }}
+      dont={{ tree: sidebarDontTree(t), caption: t("sidebarPage.dd.icons.dont") }}
+    />
+    <DoDont
+      title={t("sidebarPage.dd.names.title")}
+      do={{ tree: sidebarNamesDoTree(t), caption: t("sidebarPage.dd.names.do") }}
+      dont={{ tree: sidebarNamesDontTree(t), caption: t("sidebarPage.dd.names.dont") }}
+    />
     <ContentRules items={tList(t, "sidebarPage.content")} />
   </Fragment>
 

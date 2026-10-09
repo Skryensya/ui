@@ -35,6 +35,7 @@ const indentHook = `.sk-treegrid {
   --sk-treegrid-indent: var(--space-inset-xl);
   --sk-treegrid-indicator-size: var(--size-icon-sm);
 }`;
+import { treegridHeadersDoTree, treegridHeadersDontTree } from "../../demos/dodont-more";
 ---
 
 <ComponentPageShell
@@ -78,6 +79,11 @@ const indentHook = `.sk-treegrid {
       title={t("treegridPage.dd.columns.title")}
       do={{ tree: treegridInboxTree(t), caption: t("treegridPage.dd.columns.do") }}
       dont={{ tree: treegridDontOneColumnTree(t), caption: t("treegridPage.dd.columns.dont") }}
+    />
+    <DoDont
+      title={t("dd3.treegrid.title")}
+      do={{ tree: treegridHeadersDoTree(t), caption: t("dd3.treegrid.do") }}
+      dont={{ tree: treegridHeadersDontTree(t), caption: t("dd3.treegrid.dont") }}
     />
     <ContentRules items={tList(t, "treegridPage.content")} />
   </Fragment>

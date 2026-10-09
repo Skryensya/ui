@@ -20,6 +20,7 @@ const install = `pnpm add @skryensya/core @skryensya/vanilla @skryensya/react`;
 const js = `import { initComponents } from "@skryensya/vanilla/auto";
 
 await initComponents();`;
+import { segmentedShapeDoTree, segmentedShapeDontTree } from "../../demos/dodont-labels";
 ---
 
 <ComponentPageShell
@@ -72,6 +73,11 @@ await initComponents();`;
       title={t("segmentedPage.dd.few.title")}
       do={{ tree: segmentedTree(t), caption: t("segmentedPage.dd.few.do") }}
       dont={{ tree: segmentedDontManyTree(t), caption: t("segmentedPage.dd.few.dont") }}
+    />
+    <DoDont
+      title={t("segmentedPage.dd.shape.title")}
+      do={{ tree: segmentedShapeDoTree(t), caption: t("segmentedPage.dd.shape.do") }}
+      dont={{ tree: segmentedShapeDontTree(t), caption: t("segmentedPage.dd.shape.dont") }}
     />
     <ContentRules items={tList(t, "segmentedPage.content")} />
   </Fragment>

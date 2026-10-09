@@ -28,6 +28,7 @@ const explain = (option: string, values: readonly string[]) =>
 const styles = `@import "@skryensya/core/patterns/anchored.css";
 @import "@skryensya/core/components/button.css";
 @import "@skryensya/core/components/date-picker.css";`;
+import { dd2 } from "../../demos/dodont-labels";
 ---
 
 <ComponentPageShell
@@ -80,6 +81,11 @@ const styles = `@import "@skryensya/core/patterns/anchored.css";
       title={t("datePicker.dd.range.title")}
       do={{ tree: datePickerDoRangeTree(t), caption: t("datePicker.dd.range.do") }}
       dont={{ tree: datePickerDontRangeTree(t), caption: t("datePicker.dd.range.dont") }}
+    />
+    <DoDont
+      title={t("dd2.datePicker.title")}
+      do={{ tree: dd2.datePicker.do(t), caption: t("dd2.datePicker.do") }}
+      dont={{ tree: dd2.datePicker.dont(t), caption: t("dd2.datePicker.dont") }}
     />
     <ContentRules items={tList(t, "datePicker.content")} />
   </Fragment>

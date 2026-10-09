@@ -40,6 +40,7 @@ pnpm add @skryensya/core @skryensya/react
 @import "@skryensya/core/components/tile.css";
 @import "@skryensya/core/components/checkbox.css";
 @import "@skryensya/core/patterns/image-frame.css";`;
+import { cardActionDoTree, cardActionDontTree } from "../../demos/dodont-more";
 ---
 
 <ComponentPageShell
@@ -108,6 +109,11 @@ pnpm add @skryensya/core @skryensya/react
       title={t("cardPage.dd.target.title")}
       do={{ tree: cardLinkTree(copy), caption: t("cardPage.dd.target.do") }}
       dont={{ tree: cardDontInnerLinkTree(copy, t("demo.card.cta")), caption: t("cardPage.dd.target.dont") }}
+    />
+    <DoDont
+      title={t("dd3.card.title")}
+      do={{ tree: cardActionDoTree(t), caption: t("dd3.card.do") }}
+      dont={{ tree: cardActionDontTree(t), caption: t("dd3.card.dont") }}
     />
     <ContentRules items={tList(t, "cardPage.content")} />
   </Fragment>

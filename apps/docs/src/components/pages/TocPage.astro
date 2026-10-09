@@ -2,6 +2,7 @@
 import "@skryensya/core/components/toc.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
+import { dd2 } from "../../demos/dodont-labels";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
@@ -88,6 +89,11 @@ const items = headings.map((h) => ({ href: \`#\${h.id}\`, label: h.label, level:
       title={t("tocPage.dd.short.title")}
       do={{ tree: tocPlainTree(t), caption: t("tocPage.dd.short.do") }}
       dont={{ tree: tocDontLongTree(t), caption: t("tocPage.dd.short.dont") }}
+    />
+    <DoDont
+      title={t("dd2.toc.title")}
+      do={{ tree: dd2.toc.do(t), caption: t("dd2.toc.do") }}
+      dont={{ tree: dd2.toc.dont(t), caption: t("dd2.toc.dont") }}
     />
     <ContentRules items={tList(t, "tocPage.content")} />
   </Fragment>

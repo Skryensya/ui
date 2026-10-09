@@ -25,6 +25,7 @@ const t = useTranslations(getLocale(Astro.url));
 const styles = `@import "@skryensya/core/components/table.css";
 @import "@skryensya/core/components/pagination.css";
 @import "@skryensya/core/patterns/table-pager.css";`;
+import { tablePagerRangeDoTree, tablePagerRangeDontTree } from "../../demos/dodont-more";
 ---
 
 <ComponentPageShell
@@ -63,6 +64,11 @@ const styles = `@import "@skryensya/core/components/table.css";
       title={t("tablePager.dd.attached.title")}
       do={{ tree: tablePagerMinimalTree(t), caption: t("tablePager.dd.attached.do") }}
       dont={{ tree: tablePagerDontDetachedTree(t), caption: t("tablePager.dd.attached.dont") }}
+    />
+    <DoDont
+      title={t("dd3.tablePager.title")}
+      do={{ tree: tablePagerRangeDoTree(t), caption: t("dd3.tablePager.do") }}
+      dont={{ tree: tablePagerRangeDontTree(t), caption: t("dd3.tablePager.dont") }}
     />
     <ContentRules items={tList(t, "tablePager.content")} />
   </Fragment>

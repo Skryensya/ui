@@ -71,6 +71,7 @@ const pill = `.mi-back-to-top {
   block-size: auto;
   clip-path: none;
 }`;
+import { backToTopLengthDoTree, backToTopLengthDontTree } from "../../demos/dodont-more";
 ---
 
 <ComponentPageShell
@@ -140,6 +141,11 @@ const pill = `.mi-back-to-top {
       title={t("backToTop.dd.placement.title")}
       do={{ html: backToTopPlacementHtml(t, false), caption: t("backToTop.dd.placement.do") }}
       dont={{ html: backToTopPlacementHtml(t, true), caption: t("backToTop.dd.placement.dont") }}
+    />
+    <DoDont
+      title={t("dd3.backToTop.title")}
+      do={{ tree: backToTopLengthDoTree(t), caption: t("dd3.backToTop.do") }}
+      dont={{ tree: backToTopLengthDontTree(t), caption: t("dd3.backToTop.dont") }}
     />
     <ContentRules items={tList(t, "backToTop.content")} />
   </Fragment>

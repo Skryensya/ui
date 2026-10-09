@@ -31,6 +31,7 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`separatorPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 const styles = `@import "@skryensya/core/components/separator.css";`;
+import { separatorWordDoTree, separatorWordDontTree } from "../../demos/dodont-labels";
 ---
 
 <ComponentPageShell
@@ -93,6 +94,11 @@ const styles = `@import "@skryensya/core/components/separator.css";`;
       title={t("separatorPage.dd.meaning.title")}
       do={{ tree: separatorDoSpaceTree, caption: t("separatorPage.dd.meaning.do") }}
       dont={{ tree: separatorDontEveryRowTree, caption: t("separatorPage.dd.meaning.dont") }}
+    />
+    <DoDont
+      title={t("separatorPage.dd.word.title")}
+      do={{ tree: separatorWordDoTree(t), caption: t("separatorPage.dd.word.do") }}
+      dont={{ tree: separatorWordDontTree(t), caption: t("separatorPage.dd.word.dont") }}
     />
     <ContentRules items={tList(t, "separatorPage.content")} />
   </Fragment>

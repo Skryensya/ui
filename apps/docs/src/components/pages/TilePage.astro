@@ -11,6 +11,7 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
@@ -34,6 +35,7 @@ const t = useTranslations(locale);
 /* Every internal link resolves in the locale being read: a hardcoded `/components/x` sends a
    Spanish reader to the English page, which is the bug this page had thirteen times. */
 const href = (path: string) => localizePath(path, locale);
+import { tileDoTree, tileDontTree, tileDisabledDoTree, tileDisabledDontTree } from "../../demos/dodont-pairs";
 ---
 
 <ComponentPageShell
@@ -98,6 +100,16 @@ const href = (path: string) => localizePath(path, locale);
         </tbody>
       </table>
     </div>
+    <DoDont
+      title={t("tilePage.dd.copy.title")}
+      do={{ tree: tileDoTree(t), caption: t("tilePage.dd.copy.do") }}
+      dont={{ tree: tileDontTree(t), caption: t("tilePage.dd.copy.dont") }}
+    />
+    <DoDont
+      title={t("tilePage.dd.disabled.title")}
+      do={{ tree: tileDisabledDoTree(t), caption: t("tilePage.dd.disabled.do") }}
+      dont={{ tree: tileDisabledDontTree(t), caption: t("tilePage.dd.disabled.dont") }}
+    />
     <ContentRules items={tList(t, "tilePage.content")} />
   </Fragment>
 

@@ -11,7 +11,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/clipboard";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Actions/Clipboard", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Actions/Clipboard/Clipboard", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.clipboardAnatomyTree);
 export const Target: StoryObj = treeStory(demos.clipboardTargetTree);

@@ -16,6 +16,7 @@ import CodeBlock from "../CodeBlock.astro";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
@@ -93,6 +94,7 @@ tour?.close();
 document.getElementById("projects")?.addEventListener(tourEvents.statusChange, (event) => {
   console.log(event.detail.status); // "running", "completed", "skipped", "dismissed"
 });`;
+import { tourTitleDoTree, tourTitleDontTree, tourLengthDoTree, tourLengthDontTree } from "../../demos/dodont-mocks";
 ---
 
 <ComponentPageShell
@@ -134,6 +136,18 @@ document.getElementById("projects")?.addEventListener(tourEvents.statusChange, (
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("tour.guidelinesLede")} />
     <WhenToUse use={tList(t, "tour.when")} avoid={tList(t, "tour.whenNot")} />
+    <DoDont
+      canvas
+      title={t("tour.dd.title.title")}
+      do={{ tree: tourTitleDoTree(t), caption: t("tour.dd.title.do") }}
+      dont={{ tree: tourTitleDontTree(t), caption: t("tour.dd.title.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("tour.dd.length.title")}
+      do={{ tree: tourLengthDoTree(t), caption: t("tour.dd.length.do") }}
+      dont={{ tree: tourLengthDontTree(t), caption: t("tour.dd.length.dont") }}
+    />
     <ContentRules items={tList(t, "tour.content")} />
   </Fragment>
 

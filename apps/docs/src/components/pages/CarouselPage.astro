@@ -73,6 +73,7 @@ carousel.dispatchEvent(new CustomEvent("sk:carouselgoto", { detail: { index: 2 }
 carousel.addEventListener("sk:carouselchange", (event) => {
   console.log(event.detail); // ${t("carousel.apiComment3")}
 });`;
+import { carouselTitlesDoTree, carouselTitlesDontTree } from "../../demos/dodont-more";
 ---
 
 <ComponentPageShell
@@ -135,6 +136,11 @@ carousel.addEventListener("sk:carouselchange", (event) => {
       title={t("carousel.dd.few.title")}
       do={{ tree: carouselCardsTree(t), caption: t("carousel.dd.few.do") }}
       dont={{ tree: carouselDontFewTree(t), caption: t("carousel.dd.few.dont") }}
+    />
+    <DoDont
+      title={t("dd3.carousel.title")}
+      do={{ tree: carouselTitlesDoTree(t), caption: t("dd3.carousel.do") }}
+      dont={{ tree: carouselTitlesDontTree(t), caption: t("dd3.carousel.dont") }}
     />
     <ContentRules items={tList(t, "carousel.content")} />
   </Fragment>

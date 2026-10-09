@@ -58,6 +58,7 @@ const forms = `<div
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`selectPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
+import { dd2 } from "../../demos/dodont-labels";
 ---
 
 <ComponentPageShell
@@ -109,6 +110,11 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("selectPage.dd.two.title")}
       do={{ tree: selectDoTwoTree(t), caption: t("selectPage.dd.two.do") }}
       dont={{ tree: selectDontTwoTree(t), caption: t("selectPage.dd.two.dont") }}
+    />
+    <DoDont
+      title={t("dd2.select.title")}
+      do={{ tree: dd2.select.do(t), caption: t("dd2.select.do") }}
+      dont={{ tree: dd2.select.dont(t), caption: t("dd2.select.dont") }}
     />
     <ContentRules items={tList(t, "selectPage.content")} />
   </Fragment>

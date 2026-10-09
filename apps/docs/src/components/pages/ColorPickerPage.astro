@@ -27,6 +27,7 @@ const storybookTitle = "Components/Forms/ColorPicker";
 const styles = `@import "@skryensya/core/patterns/anchored.css";
 @import "@skryensya/core/components/button.css";
 @import "@skryensya/core/components/color-picker.css";`;
+import { dd2 } from "../../demos/dodont-labels";
 ---
 
 <ComponentPageShell
@@ -64,6 +65,11 @@ const styles = `@import "@skryensya/core/patterns/anchored.css";
       title={t("colorPicker.dd.presets.title")}
       do={{ tree: presetsColorPickerTree(t), caption: t("colorPicker.dd.presets.do") }}
       dont={{ tree: colorPickerTree(t), caption: t("colorPicker.dd.presets.dont") }}
+    />
+    <DoDont
+      title={t("dd2.colorPicker.title")}
+      do={{ tree: dd2.colorPicker.do(t), caption: t("dd2.colorPicker.do") }}
+      dont={{ tree: dd2.colorPicker.dont(t), caption: t("dd2.colorPicker.dont") }}
     />
     <ContentRules items={tList(t, "colorPicker.content")} />
   </Fragment>

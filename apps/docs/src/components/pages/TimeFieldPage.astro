@@ -38,6 +38,7 @@ const t = useTranslations(locale);
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`timeFieldPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
+import { dd2 } from "../../demos/dodont-labels";
 ---
 
 <ComponentPageShell
@@ -90,6 +91,11 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("timeFieldPage.dd.cycle.title")}
       do={{ tree: timeFieldDoCycleTree(t), caption: t("timeFieldPage.dd.cycle.do") }}
       dont={{ tree: timeFieldDontCycleTree(t), caption: t("timeFieldPage.dd.cycle.dont") }}
+    />
+    <DoDont
+      title={t("dd2.timeField.title")}
+      do={{ tree: dd2.timeField.do(t), caption: t("dd2.timeField.do") }}
+      dont={{ tree: dd2.timeField.dont(t), caption: t("dd2.timeField.dont") }}
     />
     <ContentRules items={tList(t, "timeFieldPage.content")} />
   </Fragment>

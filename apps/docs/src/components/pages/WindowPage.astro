@@ -10,6 +10,7 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
@@ -25,6 +26,7 @@ const js = `import { mountIcons } from "@skryensya/vanilla/icon";
 import { lucideIcons } from "@skryensya/icons-lucide";
 
 mountIcons(document, lucideIcons);`;
+import { windowTitleDoTree, windowTitleDontTree, windowBesideDoTree, windowBesideDontTree } from "../../demos/dodont-mocks";
 ---
 
 <ComponentPageShell
@@ -62,6 +64,18 @@ mountIcons(document, lucideIcons);`;
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("windowPage.guidelinesLede")} />
     <WhenToUse use={tList(t, "windowPage.when")} avoid={tList(t, "windowPage.whenNot")} />
+    <DoDont
+      canvas
+      title={t("windowPage.dd.title.title")}
+      do={{ tree: windowTitleDoTree(t), caption: t("windowPage.dd.title.do") }}
+      dont={{ tree: windowTitleDontTree(t), caption: t("windowPage.dd.title.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("windowPage.dd.beside.title")}
+      do={{ tree: windowBesideDoTree(t), caption: t("windowPage.dd.beside.do") }}
+      dont={{ tree: windowBesideDontTree(t), caption: t("windowPage.dd.beside.dont") }}
+    />
     <ContentRules items={tList(t, "windowPage.content")} />
   </Fragment>
 

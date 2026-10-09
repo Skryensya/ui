@@ -6,6 +6,7 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
@@ -22,6 +23,7 @@ import { annotationDemoCss } from "../../demos/annotation";
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const styles = `@import "@skryensya/core/components/state-button.css";`;
+import { stateButtonDoTree, stateButtonDontTree, stateButtonSwitchDoTree, stateButtonSwitchDontTree } from "../../demos/dodont-pairs";
 ---
 
 <ComponentPageShell
@@ -61,6 +63,16 @@ const styles = `@import "@skryensya/core/components/state-button.css";`;
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("stateButtonPage.guidelinesLede")} />
     <WhenToUse use={tList(t, "stateButtonPage.when")} avoid={tList(t, "stateButtonPage.whenNot")} />
+    <DoDont
+      title={t("stateButtonPage.dd.icons.title")}
+      do={{ tree: stateButtonDoTree(t), caption: t("stateButtonPage.dd.icons.do") }}
+      dont={{ tree: stateButtonDontTree(t), caption: t("stateButtonPage.dd.icons.dont") }}
+    />
+    <DoDont
+      title={t("stateButtonPage.dd.switch.title")}
+      do={{ tree: stateButtonSwitchDoTree(t), caption: t("stateButtonPage.dd.switch.do") }}
+      dont={{ tree: stateButtonSwitchDontTree(t), caption: t("stateButtonPage.dd.switch.dont") }}
+    />
     <ContentRules items={tList(t, "stateButtonPage.content")} />
   </Fragment>
 

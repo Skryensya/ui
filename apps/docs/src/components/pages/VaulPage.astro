@@ -10,6 +10,7 @@ import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
+import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
@@ -49,6 +50,7 @@ const noDrag = `<dialog
 >
   <!-- ${t("vaulPage.noDragComment")} -->
 </dialog>`;
+import { vaulActionDoTree, vaulActionDontTree, vaulTitleDoTree, vaulTitleDontTree } from "../../demos/dodont-mocks";
 ---
 
 <ComponentPageShell
@@ -141,6 +143,18 @@ const noDrag = `<dialog
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("vaulPage.guidelinesLede")} />
     <WhenToUse use={tList(t, "vaulPage.when")} avoid={tList(t, "vaulPage.whenNot")} />
+    <DoDont
+      canvas
+      title={t("vaulPage.dd.action.title")}
+      do={{ tree: vaulActionDoTree(t), caption: t("vaulPage.dd.action.do") }}
+      dont={{ tree: vaulActionDontTree(t), caption: t("vaulPage.dd.action.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("vaulPage.dd.title.title")}
+      do={{ tree: vaulTitleDoTree(t), caption: t("vaulPage.dd.title.do") }}
+      dont={{ tree: vaulTitleDontTree(t), caption: t("vaulPage.dd.title.dont") }}
+    />
     <ContentRules items={tList(t, "vaulPage.content")} />
   </Fragment>
 

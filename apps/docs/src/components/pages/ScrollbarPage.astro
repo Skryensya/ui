@@ -132,6 +132,7 @@ const hooks = `.my-panel {
   --sk-scrollbar-size: 0.75rem;
   --sk-scrollbar-thumb-bg: var(--color-accent-default);
 }`;
+import { scrollbarVisibleDoTree, scrollbarVisibleDontTree } from "../../demos/dodont-more";
 ---
 
 <ComponentPageShell
@@ -168,6 +169,12 @@ const hooks = `.my-panel {
       title={copy.ddTitle}
       do={{ tree: scrollbarAlwaysTree(t), caption: copy.ddDo }}
       dont={{ tree: scrollbarDontShortTree(t), caption: copy.ddDont }}
+    />
+    <DoDont
+      canvas
+      title={t("dd3.scrollbar.title")}
+      do={{ tree: scrollbarVisibleDoTree(t), caption: t("dd3.scrollbar.do") }}
+      dont={{ tree: scrollbarVisibleDontTree(t), caption: t("dd3.scrollbar.dont") }}
     />
   </Fragment>
 

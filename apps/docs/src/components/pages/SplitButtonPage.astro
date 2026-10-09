@@ -7,6 +7,7 @@ import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
@@ -35,6 +36,7 @@ import { initComponents } from "@skryensya/vanilla/auto";
 
 mountIcons(document, lucideIcons);
 initComponents();`;
+import { splitButtonDoTree, splitButtonDontTree, splitButtonSingleDoTree, splitButtonSingleDontTree } from "../../demos/dodont-pairs";
 ---
 
 <ComponentPageShell
@@ -81,6 +83,16 @@ initComponents();`;
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("splitButtonPage.guidelinesLede")} />
     <WhenToUse use={tList(t, "splitButtonPage.when")} avoid={tList(t, "splitButtonPage.whenNot")} />
+    <DoDont
+      title={t("splitButtonPage.dd.label.title")}
+      do={{ tree: splitButtonDoTree(t), caption: t("splitButtonPage.dd.label.do") }}
+      dont={{ tree: splitButtonDontTree(t), caption: t("splitButtonPage.dd.label.dont") }}
+    />
+    <DoDont
+      title={t("splitButtonPage.dd.single.title")}
+      do={{ tree: splitButtonSingleDoTree(t), caption: t("splitButtonPage.dd.single.do") }}
+      dont={{ tree: splitButtonSingleDontTree(t), caption: t("splitButtonPage.dd.single.dont") }}
+    />
     <ContentRules items={tList(t, "splitButtonPage.content")} />
   </Fragment>
 

@@ -21,6 +21,7 @@ import "@skryensya/core/patterns/wrapper.css";
 
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
+import { wrapperMeasureDoTree, wrapperMeasureDontTree } from "../../demos/dodont-more";
 ---
 
 <ComponentPageShell
@@ -80,6 +81,12 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
       title={t("wrapperPage.dd.surface.title")}
       do={{ tree: wrapperDoBoxTree(t), caption: t("wrapperPage.dd.surface.do") }}
       dont={{ tree: wrapperDontPaintTree(t), caption: t("wrapperPage.dd.surface.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("dd3.wrapper.title")}
+      do={{ tree: wrapperMeasureDoTree(t), caption: t("dd3.wrapper.do") }}
+      dont={{ tree: wrapperMeasureDontTree(t), caption: t("dd3.wrapper.dont") }}
     />
   </Fragment>
 

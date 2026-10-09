@@ -36,6 +36,7 @@ const partRows = partOrder.map((part) => ({
   cells: [t(`changelogPage.part.${part}`)],
 }));
 const styles = `@import "@skryensya/core/components/changelog.css";`;
+import { changelogBreakingDoTree, changelogBreakingDontTree } from "../../demos/dodont-more";
 ---
 
 <ComponentPageShell
@@ -97,6 +98,11 @@ const styles = `@import "@skryensya/core/components/changelog.css";`;
       title={t("changelogPage.dd.specific.title")}
       do={{ tree: changelogDoSpecificTree(t), caption: t("changelogPage.dd.specific.do") }}
       dont={{ tree: changelogDontVagueTree(t), caption: t("changelogPage.dd.specific.dont") }}
+    />
+    <DoDont
+      title={t("dd3.changelog.title")}
+      do={{ tree: changelogBreakingDoTree(t), caption: t("dd3.changelog.do") }}
+      dont={{ tree: changelogBreakingDontTree(t), caption: t("dd3.changelog.dont") }}
     />
     <ContentRules items={tList(t, "changelogPage.content")} />
   </Fragment>

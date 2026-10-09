@@ -33,6 +33,7 @@ const styles = `@import "@skryensya/core/patterns/anchored.css";
 @import "@skryensya/core/patterns/scrollbar.css";`;
 
 const storybookTitle = "Components/Forms/Combobox";
+import { dd2 } from "../../demos/dodont-labels";
 ---
 
 <ComponentPageShell
@@ -78,6 +79,11 @@ const storybookTitle = "Components/Forms/Combobox";
       title={t("combobox.dd.many.title")}
       do={{ tree: comboboxDoFewTree(t), caption: t("combobox.dd.many.do") }}
       dont={{ html: comboboxDontFewHtml(t), caption: t("combobox.dd.many.dont") }}
+    />
+    <DoDont
+      title={t("dd2.combobox.title")}
+      do={{ tree: dd2.combobox.do(t), caption: t("dd2.combobox.do") }}
+      dont={{ tree: dd2.combobox.dont(t), caption: t("dd2.combobox.dont") }}
     />
     <ContentRules items={tList(t, "combobox.content")} />
   </Fragment>
