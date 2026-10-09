@@ -45,9 +45,17 @@ export type HookGroup = {
 interface Props {
   groups: readonly HookGroup[];
   heading?: string;
+  /**
+   * What a hook is FOR, by hook name (`--sk-x-y`), as HTML. The stylesheet only knows a name and a
+   * value; a page that can say more passes the sentence here and the table grows a third column
+   * rather than the page growing a second table of the same names.
+   */
+  notes?: Readonly<Record<string, string>>;
+  /** The notes column's header. */
+  notesLabel?: string;
 }
 
-const { groups, heading = "Styling hooks" } = Astro.props;
+const { groups, heading = "Styling hooks", notes, notesLabel = "" } = Astro.props;
 const t = useTranslations(getLocale(Astro.url));
 const resolvedGroups = groups.map((group) => ({
   ...group,
@@ -71,6 +79,7 @@ const resolvedGroups = groups.map((group) => ({
               <th class="sk-table__header" scope="col">Hook</th>
               {/* No `build` qualifier any more: there is no second, runtime column to tell it apart from. */}
               <th class="sk-table__header" scope="col">{t("hooks.value")}</th>
+              {notes && <th class="sk-table__header" scope="col">{notesLabel}</th>}
             </tr>
           </thead>
           <tbody class="sk-table__body">
@@ -79,6 +88,7 @@ const resolvedGroups = groups.map((group) => ({
                 <tr class="sk-table__row">
                   <td class="sk-table__cell mono">{hook.name}</td>
                   <td class="sk-table__cell mono">{hook.value}</td>
+                  {notes && <td class="sk-table__cell" set:html={notes[hook.name] ?? ""} />}
                 </tr>
               ))
             }

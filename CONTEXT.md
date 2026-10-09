@@ -389,6 +389,31 @@ on screen for the exit with `allow-discrete`. The React binding keeps the host m
 its children, once the exit has painted. Not a machine: how long to wait is read off computed style.
 _Avoid_: transition (that is the CSS property), mount/unmount (that is what it delays), animate-presence
 
+## Scroll stack
+
+**Scroll stack**:
+A component. Two sections, one behind the other, where the second rises over the first as the page
+scrolls and the first recedes. Exactly two layers; a longer story is a stack inside the front one.
+The effect is progressive: without scroll-driven animation, or with reduced motion, the two layers
+are two plain blocks, one after the other.
+_Avoid_: parallax, sticky sections, scrollytelling
+
+**Back layer** / **Front layer**:
+The two layers of a scroll stack. The back one is held in place and recedes; the front one rises over
+it and docks. Called back and front because the stack is about what covers what.
+_Avoid_: bottom/top section, cover/sheet (as the layers' names)
+
+**Held line**:
+The line, measured from the top of the scrolling box, under which the back layer is held and at which
+the front layer docks. Zero by default; a floating bar moves it to the bar's height.
+_Avoid_: offset (the hook's name, never the concept's), sticky offset
+
+**Floating bar**:
+A fixed bar that stays at the top of the scrolling box while a scroll stack passes under or beside it.
+It owns the band above the held line; the stack never draws there. Not an app bar, which is an
+application's menu line, and not a header.
+_Avoid_: sticky header, top bar, header
+
 ## The top layer
 
 **Top layer**:

@@ -1,40 +1,57 @@
 ---
 import "@skryensya/core/components/scroll-stack.css";
+/* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
+import "@skryensya/core/components/annotation.css";
 /* The demo holds real copy, drawn with the kit's own pieces. */
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/box.css";
+import "@skryensya/core/patterns/scrollbar.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
 import ComparisonTable from "../ComparisonTable.astro";
-import { emit } from "@skryensya/ai-compiler/emit";
+import DoDont from "../DoDont.astro";
+import UsagePreview from "../UsagePreview.astro";
 import { scrollStackParts } from "@skryensya/core/scroll-stack";
-import { scrollStackTree } from "../../demos/scroll-stack";
+import { scrollStackDoFitTree, scrollStackDoOffsetTree, scrollStackDontOffsetTree, scrollStackDoOpaqueTree, scrollStackDontFitTree, scrollStackDontOpaqueTree, scrollStackAnatomyCss, scrollStackAnatomyTree, scrollStackCardsTree, scrollStackFiveTree, scrollStackOffsetTree, scrollStackProductTree, scrollStackTree } from "../../demos/scroll-stack";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
-/* The demo is authored markup, the same a page would write: the emitter draws it from the usage tree. */
-const demo = emit(scrollStackTree(t), "vanilla");
-
-const [defaultColumn, doesColumn] = t("scrollStackPage.hooksColumns").split("|");
-const hooks = [
-  ["recede-scale", "0.94", "recedeScale"],
-  ["recede-dim", "0.35", "recedeDim"],
-  ["recede-radius", "var(--radius-surface)", "recedeRadius"],
-  ["zoom", "1.06", "zoom"],
-  ["front-bg", "var(--color-bg-surface)", "frontBg"],
-  ["front-radius", "var(--radius-surface)", "frontRadius"],
-  ["offset", "0px", "offset"],
+const examples = [
+  { key: "cover", story: "Default", tree: scrollStackTree },
+  { key: "product", story: "Product", tree: scrollStackProductTree },
+  { key: "cards", story: "Cards", tree: scrollStackCardsTree },
+  { key: "five", story: "Five", tree: scrollStackFiveTree },
+  { key: "offset", story: "Offset", tree: scrollStackOffsetTree },
 ] as const;
-const hookRows = hooks.map(([name, value, key]) => ({
-  label: `--sk-scroll-stack-${name}`,
-  labelHtml: `<code>--sk-scroll-stack-${name}</code>`,
-  cells: [`<code>${value}</code>`, t(`scrollStackPage.hook.${key}` as Parameters<typeof t>[0])],
-}));
+
+const [, doesColumn] = t("scrollStackPage.hooksColumns").split("|");
+const hooks = [
+  ["recede-scale", "0.9", "recedeScale"],
+  ["recede-dim", "0.45", "recedeDim"],
+  ["recede-radius", "var(--radius-surface)", "recedeRadius"],
+  ["recede-shift", "2rem", "recedeShift"],
+  ["recede-blur", "0px", "recedeBlur"],
+  ["recede-opacity", "1", "recedeOpacity"],
+  ["zoom", "1.1", "zoom"],
+  ["front-bg", "var(--color-bg-surface)", "frontBg"],
+  ["front-radius", "calc(var(--radius-surface) * 2)", "frontRadius"],
+  ["front-docked-radius", "0px", "frontDockedRadius"],
+  ["front-shadow", "an upward shadow", "frontShadow"],
+  ["offset", "0px", "offset"],
+  ["reveal-shift", "var(--space-inset-lg)", "revealShift"],
+  ["reveal-opacity", "0", "revealOpacity"],
+  ["reveal-blur", "0px", "revealBlur"],
+  ["content-padding", "0px", "contentPadding"],
+  ["content-gap", "0px", "contentGap"],
+] as const;
+const hookNotes = Object.fromEntries(
+  hooks.map(([name, , key]) => [`--sk-scroll-stack-${name}`, t(`scrollStackPage.hook.${key}` as Parameters<typeof t>[0])]),
+);
 
 const partOrder = ["root", "back", "front", "runway", "content"] as const;
 const partRows = partOrder.map((part) => ({
@@ -71,7 +88,8 @@ const box = `/* In a scroll box of your own: a size container, so the component 
   container-type: size;
 }`;
 const tune = `.sk-scroll-stack {
-  --sk-scroll-stack-recede-scale: 0.9;  /* recede a little more */
+  --sk-scroll-stack-recede-scale: 0.84; /* recede even more */
+  --sk-scroll-stack-recede-blur: 8px;   /* going soft as it goes */
   --sk-scroll-stack-zoom: 1.03;         /* and settle from less */
   --sk-scroll-stack-offset: 4rem;       /* below a fixed header */
 }`;
@@ -82,19 +100,33 @@ const tune = `.sk-scroll-stack {
   description={t("scrollStackPage.description")}
   contractId="scroll-stack"
   badge="Beta"
+  hookNotes={hookNotes}
+  hookNotesLabel={doesColumn}
   testFiles={["packages/react/src/components/scroll-stack.test.tsx"]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("scrollStackPage.lede")} />
 
-    <h3>{t("scrollStackPage.demoTitle")}</h3>
-    <p set:html={t("scrollStackPage.demoBody")} />
-    <div class="ss-scroller" tabindex="0" role="region" aria-label={t("scrollStackPage.demoTitle")} set:html={demo} />
+    <h3>{t("scrollStackPage.examplesTitle")}</h3>
+    <p set:html={t("scrollStackPage.examplesBody")} />
+    {
+      examples.map(({ key, story, tree }) => (
+        <UsagePreview
+          tree={tree(t)}
+          title={t(`scrollStackPage.variant.${key}` as Parameters<typeof t>[0])}
+          description={t(`scrollStackPage.variant.${key}.explain` as Parameters<typeof t>[0])}
+          storybookTitle="Components/Layout/Scroll Stack"
+          storybookStory={story}
+          stageMinBlockSize="27rem"
+        />
+      ))
+    }
 
     <h3>{t("scrollStackPage.howTitle")}</h3>
     <ul>
       <li set:html={t("scrollStackPage.how.back")} />
       <li set:html={t("scrollStackPage.how.front")} />
+      <li set:html={t("scrollStackPage.how.reveal")} />
       <li set:html={t("scrollStackPage.how.fallback")} />
     </ul>
 
@@ -102,18 +134,16 @@ const tune = `.sk-scroll-stack {
     <p set:html={t("scrollStackPage.boxBody")} />
     <CodeBlock code={box} label="CSS" lang="css" />
 
-    <h3>{t("scrollStackPage.hooksTitle")}</h3>
-    <p set:html={t("scrollStackPage.hooksBody")} />
-    <div class="ss-parts">
-      <ComparisonTable aspectLabel={t("scrollStackPage.hooksAspect")} columns={[defaultColumn!, doesColumn!]} rows={hookRows} />
-    </div>
-    <CodeBlock code={tune} label="CSS" lang="css" />
-
     <h3>{t("scrollStackPage.contractTitle")}</h3>
     <ul>
       {tList(t, "scrollStackPage.contract").map((item) => <li set:html={item} />)}
     </ul>
 
+  </Fragment>
+
+  <Fragment slot="anatomy">
+    <p set:html={t("scrollStackPage.anatomyBody")} />
+    <UsagePreview tree={scrollStackAnatomyTree(t)} css={scrollStackAnatomyCss} label={t("scrollStackPage.anatomyPreviewLabel")} bare />
     <h3>{t("scrollStackPage.anatomyTitle")}</h3>
     <div class="ss-parts">
       <ComparisonTable aspectLabel={t("scrollStackPage.partsAspect")} columns={[t("scrollStackPage.partsColumns")]} rows={partRows} />
@@ -123,6 +153,21 @@ const tune = `.sk-scroll-stack {
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("scrollStackPage.guidelinesLede")} />
     <WhenToUse use={tList(t, "scrollStackPage.when")} avoid={tList(t, "scrollStackPage.whenNot")} />
+    <DoDont
+      title={t("scrollStackPage.dd.opaque.title")}
+      do={{ tree: scrollStackDoOpaqueTree(t), caption: t("scrollStackPage.dd.opaque.do") }}
+      dont={{ tree: scrollStackDontOpaqueTree(t), caption: t("scrollStackPage.dd.opaque.dont") }}
+    />
+    <DoDont
+      title={t("scrollStackPage.dd.fit.title")}
+      do={{ tree: scrollStackDoFitTree(t), caption: t("scrollStackPage.dd.fit.do") }}
+      dont={{ tree: scrollStackDontFitTree(t), caption: t("scrollStackPage.dd.fit.dont") }}
+    />
+    <DoDont
+      title={t("scrollStackPage.dd.offset.title")}
+      do={{ tree: scrollStackDoOffsetTree(t), caption: t("scrollStackPage.dd.offset.do") }}
+      dont={{ tree: scrollStackDontOffsetTree(t), caption: t("scrollStackPage.dd.offset.dont") }}
+    />
     <ContentRules items={tList(t, "scrollStackPage.content")} />
   </Fragment>
 
@@ -130,8 +175,12 @@ const tune = `.sk-scroll-stack {
     <p set:html={t("scrollStackPage.installBody")} />
     <CodeBlock code={install} label="terminal" />
     <CodeBlock code={styles} label="CSS" lang="css" />
-    <CodeBlock code={html} label="HTML" lang="html" />
-    <CodeBlock code={react} label="React" lang="tsx" />
+  </Fragment>
+
+  <Fragment slot="style">
+    <h3>{t("scrollStackPage.hooksTitle")}</h3>
+    <p set:html={t("scrollStackPage.hooksBody")} />
+    <CodeBlock code={tune} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="a11y">
@@ -139,25 +188,9 @@ const tune = `.sk-scroll-stack {
   </Fragment>
 </ComponentPageShell>
 
-<style>
-  /* A box that scrolls on its own and is a size container, so the component measures it: see "Inside a scroll box". */
-  .ss-scroller {
-    block-size: 28rem;
-    overflow: auto;
-    container-type: size;
-    margin-block: var(--space-stack-lg);
-    border: 1px solid var(--color-border-default);
-    border-radius: var(--radius-surface);
-    background: var(--color-bg-canvas);
-  }
-
-  .ss-scroller:focus-visible {
-    outline: var(--focus-ring-width) solid var(--focus-ring-color);
-    outline-offset: var(--focus-ring-offset);
-  }
-
+<style is:global>
   /* A class name is one token: breaking it at the hyphen makes two lines of what is a single word. */
-  .ss-parts :global(th code) {
+  .ss-parts th code {
     white-space: nowrap;
   }
 </style>

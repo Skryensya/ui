@@ -9,7 +9,10 @@ export type ScrollStackProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> 
    * its corners. It is held in place while covered, so it should fit the scrolling box.
    */
   back: ReactNode;
-  /** The section that rises over it. Any height: it is opaque, so it covers, and its content settles as it docks. */
+  /**
+   * The section that rises over it. Any height: it is opaque, so it covers, and its content settles as it docks. Its
+   * direct children arrive one after another as it rises (pass a fragment of several, not one wrapping box, to see the cascade).
+   */
   front: ReactNode;
 };
 

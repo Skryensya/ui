@@ -15,24 +15,24 @@ import { waitForStage } from "./fixtures.js";
 const PROBE = "scroll-stack-probe";
 const BOX = 400;
 
-async function mount(page: Page): Promise<void> {
+async function mount(page: Page, rootStyle = ""): Promise<void> {
   await page.evaluate(
-    ({ id, box }) => {
+    ({ id, box, rootStyle }) => {
       document.getElementById(id)?.remove();
       const host = document.createElement("div");
       host.id = id;
       host.style.cssText = `position:fixed;inset-block-start:0;inset-inline-start:0;inline-size:600px;block-size:${box}px;overflow:auto;container-type:size;z-index:9;background:#fff`;
       host.innerHTML = `
-        <div class="sk-scroll-stack">
+        <div class="sk-scroll-stack" style="${rootStyle}">
           <div class="sk-scroll-stack__back"><button type="button" id="${id}-back-button">Inside the back layer</button></div>
           <div class="sk-scroll-stack__front">
             <span class="sk-scroll-stack__runway" aria-hidden="true"></span>
-            <div class="sk-scroll-stack__content" style="block-size:1200px">The front layer</div>
+            <div class="sk-scroll-stack__content" style="block-size:1200px"><p>The front layer</p><p>Second</p><p>Third</p></div>
           </div>
         </div>`;
       document.body.append(host);
     },
-    { id: PROBE, box: BOX },
+    { id: PROBE, box: BOX, rootStyle },
   );
 }
 
@@ -48,7 +48,7 @@ async function scrollTo(page: Page, top: number): Promise<void> {
   );
 }
 
-type Read = { position: string; visibility: string; backScale: number; contentScale: number; frontRadius: number; veil: number; animations: number };
+type Read = { reveal: number[]; position: string; visibility: string; backScale: number; contentScale: number; frontRadius: number; veil: number; animations: number };
 
 async function read(page: Page): Promise<Read> {
   return page.evaluate((id) => {
@@ -58,7 +58,9 @@ async function read(page: Page): Promise<Read> {
     const content = q(".sk-scroll-stack__content");
     /* `scale` is "none" when nothing sets it, and "0.97 0.97" or "0.97" when something does: the first number is the factor. */
     const factor = (value: string) => (value === "none" ? 1 : Number.parseFloat(value));
+    const reveal = Array.from(document.querySelectorAll<HTMLElement>(`#${id} .sk-scroll-stack__content > *`)).map((el) => Number.parseFloat(getComputedStyle(el).opacity));
     return {
+      reveal,
       position: getComputedStyle(back).position,
       visibility: getComputedStyle(back).visibility,
       backScale: factor(getComputedStyle(back).scale),
@@ -83,7 +85,7 @@ test.describe("Scroll Stack", () => {
     expect(now.visibility).toBe("visible");
     expect(now.backScale).toBeCloseTo(1, 3);
     expect(now.veil).toBeCloseTo(0, 3);
-    expect(now.contentScale).toBeCloseTo(1.06, 2);
+    expect(now.contentScale).toBeCloseTo(1.1, 2);
     expect(now.frontRadius).toBeGreaterThan(0);
   });
 
@@ -91,19 +93,19 @@ test.describe("Scroll Stack", () => {
     await scrollTo(page, BOX / 2);
     const now = await read(page);
     expect(now.backScale).toBeLessThan(1);
-    expect(now.backScale).toBeGreaterThan(0.94);
+    expect(now.backScale).toBeGreaterThan(0.9);
     expect(now.veil).toBeGreaterThan(0);
-    expect(now.veil).toBeLessThan(0.35);
+    expect(now.veil).toBeLessThan(0.45);
     expect(now.contentScale).toBeGreaterThan(1);
-    expect(now.contentScale).toBeLessThan(1.06);
+    expect(now.contentScale).toBeLessThan(1.1);
     expect(now.visibility).toBe("visible");
   });
 
   test("once the front layer has docked: the back is fully receded, hidden from the keyboard, and the content has settled", async ({ page }) => {
     await scrollTo(page, BOX + 60);
     const now = await read(page);
-    expect(now.backScale).toBeCloseTo(0.94, 3);
-    expect(now.veil).toBeCloseTo(0.35, 3);
+    expect(now.backScale).toBeCloseTo(0.9, 3);
+    expect(now.veil).toBeCloseTo(0.45, 3);
     expect(now.contentScale).toBeCloseTo(1, 3);
     expect(now.frontRadius).toBeCloseTo(0, 3);
     expect(now.visibility).toBe("hidden");
@@ -116,13 +118,69 @@ test.describe("Scroll Stack", () => {
     expect(focused).toBe(false);
   });
 
+  test("the front layer's children arrive as it rises, each after the one before, and are whole once docked", async ({ page }) => {
+    await scrollTo(page, 0);
+    expect((await read(page)).reveal).toEqual([0, 0, 0]);
+    await scrollTo(page, BOX * 0.5);
+    const partway = (await read(page)).reveal;
+    expect(partway[0]!).toBeGreaterThan(0);
+    expect(partway[0]!).toBeGreaterThanOrEqual(partway[1]!);
+    expect(partway[1]!).toBeGreaterThanOrEqual(partway[2]!);
+    expect(partway[2]!).toBeLessThan(1);
+    await scrollTo(page, BOX + 60);
+    expect((await read(page)).reveal).toEqual([1, 1, 1]);
+  });
+
+  test("a stack inside the front layer is there the moment the outer one docks, and its own front layer is already rising", async ({ page }) => {
+    await page.evaluate(
+      ({ id }) => {
+        const content = document.querySelector(`#${id} .sk-scroll-stack__content`)!;
+        content.removeAttribute("style");
+        content.innerHTML = `
+          <div class="sk-scroll-stack" id="${id}-inner">
+            <div class="sk-scroll-stack__back" style="min-block-size:100cqh">Inner back</div>
+            <div class="sk-scroll-stack__front">
+              <span class="sk-scroll-stack__runway" aria-hidden="true"></span>
+              <div class="sk-scroll-stack__content" style="block-size:900px">Inner front</div>
+            </div>
+          </div>`;
+      },
+      { id: PROBE },
+    );
+    await scrollTo(page, BOX);
+    const docked = await page.evaluate((id) => {
+      const inner = document.getElementById(`${id}-inner`)!;
+      const box = document.getElementById(id)!;
+      const back = inner.querySelector(".sk-scroll-stack__back")!;
+      const front = inner.querySelector(":scope > .sk-scroll-stack__front")!;
+      return {
+        opacity: Number.parseFloat(getComputedStyle(inner).opacity),
+        shift: getComputedStyle(inner).translate,
+        backTop: Math.round(back.getBoundingClientRect().top - box.getBoundingClientRect().top),
+        frontTop: Math.round(front.getBoundingClientRect().top - box.getBoundingClientRect().top),
+      };
+    }, PROBE);
+    expect(docked.opacity).toBe(1);
+    expect(docked.shift).toBe("none");
+    expect(docked.backTop).toBe(0);
+    /* Its own front layer is exactly one box below: it starts rising on the very next pixel, with no dead scroll. */
+    expect(docked.frontTop).toBe(BOX);
+    await scrollTo(page, BOX + 100);
+    const rising = await page.evaluate((id) => {
+      const box = document.getElementById(id)!;
+      const front = document.getElementById(`${id}-inner`)!.querySelector(":scope > .sk-scroll-stack__front")!;
+      return Math.round(front.getBoundingClientRect().top - box.getBoundingClientRect().top);
+    }, PROBE);
+    expect(rising).toBe(BOX - 100);
+  });
+
   test("scrolling back up undoes it all", async ({ page }) => {
     await scrollTo(page, BOX + 60);
     await scrollTo(page, 0);
     const now = await read(page);
     expect(now.backScale).toBeCloseTo(1, 3);
     expect(now.visibility).toBe("visible");
-    expect(now.contentScale).toBeCloseTo(1.06, 2);
+    expect(now.contentScale).toBeCloseTo(1.1, 2);
   });
 
   test("with reduced motion the two layers are plain blocks in normal flow", async ({ page }) => {
@@ -136,5 +194,32 @@ test.describe("Scroll Stack", () => {
     expect(now.backScale).toBe(1);
     expect(now.contentScale).toBe(1);
     expect(now.visibility).toBe("visible");
+    expect(now.reveal).toEqual([1, 1, 1]);
+  });
+
+  test("with an offset, the back layer is held under it and the front layer docks right below it", async ({ page }) => {
+    await mount(page, "--sk-scroll-stack-offset: 48px");
+    /* The stack starts at the top of the box and the back layer is a box tall, so the back layer is the box less the held line, so the front layer starts 352px down and docks at 48px after 304px of scroll. */
+    await scrollTo(page, 304 + 20);
+    const docked = await read(page);
+    expect(docked.backScale).toBeCloseTo(0.9, 3);
+    expect(docked.visibility).toBe("hidden");
+    /* Under a held line too: once docked the corners are square, unless a page asks to keep them with `front-docked-radius`. */
+    expect(docked.frontRadius).toBeCloseTo(0, 3);
+    const frontTop = await page.evaluate((id) => {
+      const box = document.getElementById(id)!;
+      const front = box.querySelector(".sk-scroll-stack__front")!;
+      return Math.round(front.getBoundingClientRect().top - box.getBoundingClientRect().top);
+    }, PROBE);
+    expect(frontTop).toBeLessThanOrEqual(48);
+    /* Before it docks, the back layer is still there, held at the offset and not at the top of the box. */
+    await scrollTo(page, 120);
+    const held = await page.evaluate((id) => {
+      const box = document.getElementById(id)!;
+      const back = box.querySelector(".sk-scroll-stack__back")!;
+      return Math.round(back.getBoundingClientRect().top - box.getBoundingClientRect().top);
+    }, PROBE);
+    expect(held).toBeGreaterThanOrEqual(47);
+    expect((await read(page)).visibility).toBe("visible");
   });
 });

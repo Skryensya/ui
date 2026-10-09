@@ -9,6 +9,7 @@ import "@skryensya/core/fonts/hanken-grotesk.css";
 import "@skryensya/core/tokens.scss"; // brings the state layer and the icon pattern with it
 import "@skryensya/core/dimensions/radius.scss";
 import "@skryensya/core/dimensions/press-scale.scss";
+import "@skryensya/core/patterns/scrollbar.css"; // the scroll boxes of the examples use it
 
 const withPage: Decorator = (Story, { globals }) => {
   applyPage(globals);

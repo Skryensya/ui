@@ -46,6 +46,10 @@ interface Props {
    *  Cambios drop out rather than reading a contract that does not describe the page. */
   contractId?: string;
   styleGroups?: readonly HookGroup[];
+  /** What each styling hook is for, by hook name, as HTML: Referencia's hooks table gains a column. */
+  hookNotes?: Readonly<Record<string, string>>;
+  /** The header of that column. */
+  hookNotesLabel?: string;
   /** One-line-per-test summaries, grouped by test file. Omit while a component has none curated yet. */
   tests?: readonly TestGroup[];
   /**
@@ -74,6 +78,8 @@ const {
   description,
   contractId,
   styleGroups = [],
+  hookNotes,
+  hookNotesLabel,
   tests = [],
   testFiles,
   hideVanillaMount = true,
@@ -498,7 +504,7 @@ const markMarkup = findComponentIconMarkup(Astro.url.pathname, { className: "doc
             <ContractReference id={contractId} />
             {hasStyle && (
               <>
-                {derivedStyleGroups.length > 0 && <StylingHooks groups={derivedStyleGroups} />}
+                {derivedStyleGroups.length > 0 && <StylingHooks groups={derivedStyleGroups} notes={hookNotes} notesLabel={hookNotesLabel} />}
                 <slot name="style" />
               </>
             )}
@@ -509,7 +515,7 @@ const markMarkup = findComponentIconMarkup(Astro.url.pathname, { className: "doc
       {
         hasStandaloneStyle && (
           <div class="sk-tabs__content sk-layout-grid" data-sk-tabs-content data-value="style">
-            {derivedStyleGroups.length > 0 && <StylingHooks groups={derivedStyleGroups} />}
+            {derivedStyleGroups.length > 0 && <StylingHooks groups={derivedStyleGroups} notes={hookNotes} notesLabel={hookNotesLabel} />}
             <slot name="style" />
           </div>
         )

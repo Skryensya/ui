@@ -3,7 +3,7 @@ import type { ComponentContract } from "./contract.js";
 /*
  * SCROLL STACK, two sections where the second one slides up OVER the first as the page scrolls.
  *
- * The first (`back`) stays where it is and recedes: it scales down a little, dims, and rounds its corners as the
+ * The first (`back`) stays where it is and recedes: it scales down, sinks a little, dims, and rounds its corners (and can blur and fade) as the
  * second (`front`) rises over it. The second enters from the bottom with its content slightly zoomed in, and settles
  * to its natural size as it docks at the top. That is the whole component, and it is deliberately subtle: a cover that
  * says "the next thing is on top of this one" without asking to be looked at.
@@ -30,13 +30,17 @@ export const scrollStackParts = {
   /** The section that rises over it: opaque, with its top corners rounded while it travels. */
   front: "sk-scroll-stack__front",
   /**
-   * A box the height of the scrolling box, laid at the top of the front layer and otherwise invisible. Its journey
+   * A box the height of the scrolling box (less the held line), laid at the top of the front layer and otherwise invisible. Its journey
    * through the scrollport IS the animation's timeline: progress 0 when the front layer's top edge is at the bottom of
-   * the box, progress 1 when it has reached the top. Measuring the front layer itself would not do, because a tall one
+   * the box, progress 1 when it has docked, right under the held line. Measuring the front layer itself would not do, because a tall one
    * is not fully "in" for a long time after it has finished covering the back.
    */
   runway: "sk-scroll-stack__runway",
-  /** What the front layer holds. It is what zooms: the layer's own edges stay put while the content settles. */
+  /**
+   * What the front layer holds. It is what zooms: the layer's own edges stay put while the content settles. Its direct
+   * children ARRIVE as the layer rises, one after another (rise, appear): give it a heading and the paragraphs under it
+   * as separate children and the cascade shows; a single child arrives as one piece.
+   */
   content: "sk-scroll-stack__content",
 } as const;
 
@@ -49,12 +53,22 @@ export const scrollStackContract = {
   css: "@skryensya/core/components/scroll-stack.css",
   parts: scrollStackParts,
   hooks: [
+    "--sk-scroll-stack-content-gap",
+    "--sk-scroll-stack-content-padding",
     "--sk-scroll-stack-front-bg",
+    "--sk-scroll-stack-front-docked-radius",
     "--sk-scroll-stack-front-radius",
+    "--sk-scroll-stack-front-shadow",
     "--sk-scroll-stack-offset",
+    "--sk-scroll-stack-recede-blur",
     "--sk-scroll-stack-recede-dim",
+    "--sk-scroll-stack-recede-opacity",
     "--sk-scroll-stack-recede-radius",
+    "--sk-scroll-stack-recede-shift",
     "--sk-scroll-stack-recede-scale",
+    "--sk-scroll-stack-reveal-blur",
+    "--sk-scroll-stack-reveal-opacity",
+    "--sk-scroll-stack-reveal-shift",
     "--sk-scroll-stack-zoom",
   ],
 
@@ -69,7 +83,7 @@ export const scrollStackContract = {
       slots: {
         /** The section that stays behind and recedes. Should fit the scrolling box: it is held in place while covered. */
         back: { accepts: "node", required: true },
-        /** The section that rises over it. Any height; opaque, so it can cover. */
+        /** The section that rises over it. Any height; opaque, so it can cover. Several children arrive one after another as it rises. */
         front: { accepts: "node", required: true },
       },
       template: {

@@ -11,7 +11,7 @@
  * changes while it is covered and cannot be what it animates against. The front layer's runway (see the contract) names
  * a view timeline, and `timeline-scope` on the root lifts that name so that its sibling subtree can use it.
  *
- * THE RUNWAY IS AS TALL AS THE SCROLLING BOX, measured in `cqh`. In a container query unit the nearest SIZE container
+ * THE RUNWAY IS AS TALL AS THE SCROLLING BOX LESS THE HELD LINE, measured in `cqh`. In a container query unit the nearest SIZE container
  * answers, and with none the small viewport does: so on a page the unit is the viewport, which is what scrolls, and
  * inside a scrolling box of its own (a preview, a panel) giving that box `container-type: size` makes the same CSS
  * measure that box instead.
@@ -23,7 +23,12 @@
 @keyframes sk-scroll-stack-recede {
   to {
     scale: var(--sk-scroll-stack-recede-scale);
+    /* It also sinks a little, as if pushed down by what is landing on it. */
+    translate: 0 var(--sk-scroll-stack-recede-shift);
     border-radius: var(--sk-scroll-stack-recede-radius);
+    /* Both leave the layer as it was unless a page asks: a blur that grows with the cover, and a fade to see-through. */
+    filter: blur(var(--sk-scroll-stack-recede-blur));
+    opacity: var(--sk-scroll-stack-recede-opacity);
   }
 }
 
@@ -42,8 +47,8 @@
 
 @keyframes sk-scroll-stack-rise {
   to {
-    border-start-start-radius: 0;
-    border-start-end-radius: 0;
+    border-start-start-radius: var(--sk-scroll-stack-front-docked-radius);
+    border-start-end-radius: var(--sk-scroll-stack-front-docked-radius);
   }
 }
 
@@ -56,15 +61,44 @@
   }
 }
 
+/* What the front layer holds arrives as it rises: each direct child comes up from below and appears, one after another. */
+@keyframes sk-scroll-stack-reveal {
+  from {
+    opacity: var(--sk-scroll-stack-reveal-opacity);
+    translate: 0 var(--sk-scroll-stack-reveal-shift);
+    filter: blur(var(--sk-scroll-stack-reveal-blur));
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    filter: blur(0);
+  }
+}
+
 @layer components {
   .sk-scroll-stack {
-    --sk-scroll-stack-recede-scale: 0.94;
-    --sk-scroll-stack-recede-dim: 0.35;
+    --sk-scroll-stack-recede-scale: 0.9;
+    --sk-scroll-stack-recede-dim: 0.45;
     --sk-scroll-stack-recede-radius: var(--radius-surface);
-    --sk-scroll-stack-zoom: 1.06;
+    --sk-scroll-stack-recede-shift: 2rem;
+    --sk-scroll-stack-recede-blur: 0px;
+    --sk-scroll-stack-recede-opacity: 1;
+    --sk-scroll-stack-zoom: 1.1;
+    /* How the front layer's children arrive: how far below their place they start, how faint, how soft. */
+    --sk-scroll-stack-reveal-shift: var(--space-inset-lg);
+    --sk-scroll-stack-reveal-opacity: 0;
+    /* Off by default: a blur over a whole section is costly to paint, and the rise and the fade already read. */
+    --sk-scroll-stack-reveal-blur: 0px;
+    /* Room around, and between, the front layer's children. The content is a column, so several children space themselves. */
+    --sk-scroll-stack-content-padding: 0px;
+    --sk-scroll-stack-content-gap: 0px;
     --sk-scroll-stack-front-bg: var(--color-bg-surface);
-    --sk-scroll-stack-front-radius: var(--radius-surface);
-    /* Where the back layer is held: below a fixed header the page already has, set this to the header's height. */
+    --sk-scroll-stack-front-radius: calc(var(--radius-surface) * 2);
+    /* What the corners settle to once docked. Square by default: nothing is left behind them. Under a floating bar, keep them rounded. */
+    --sk-scroll-stack-front-docked-radius: 0px;
+    /* Cast UP onto what it is rising over. `none` for a front layer that is see-through: a shadow there would outline a box that is not drawn. */
+    --sk-scroll-stack-front-shadow: 0 calc(var(--space-inset-sm) * -1) var(--space-inset-xl) calc(var(--space-inset-xs) * -1) var(--shadow-md);
+    /* The held line: where the back layer is held and the front layer docks. A floating bar's height. */
     --sk-scroll-stack-offset: 0px;
 
     position: relative;
@@ -84,9 +118,18 @@
     background: var(--sk-scroll-stack-front-bg);
     border-start-start-radius: var(--sk-scroll-stack-front-radius);
     border-start-end-radius: var(--sk-scroll-stack-front-radius);
-    /* Cast UP onto what it is rising over: the one place this kit lifts something off the surface above it. */
-    box-shadow: 0 calc(var(--space-inset-sm) * -1) var(--space-inset-xl) calc(var(--space-inset-xs) * -1) var(--shadow-md);
-    overflow-x: clip;
+    box-shadow: var(--sk-scroll-stack-front-shadow);
+    /* Clips what it holds to its own rounded corners, so whatever fills it (a full-bleed section, another stack) is rounded too. */
+    overflow: clip;
+  }
+
+  /* A column, so several children space themselves with the gap and padding hooks; one child simply fills it. */
+  .sk-scroll-stack__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sk-scroll-stack-content-gap);
+    padding: var(--sk-scroll-stack-content-padding);
+    box-sizing: border-box;
   }
 
   .sk-scroll-stack__runway {
@@ -94,7 +137,8 @@
     inset-block-start: 0;
     inset-inline-start: 0;
     inline-size: 1px;
-    block-size: 100cqh;
+    /* The scrolling box less the band above the held line: the front layer docks right under that line, not behind a bar. */
+    block-size: calc(100cqh - var(--sk-scroll-stack-offset));
     pointer-events: none;
   }
 
@@ -111,7 +155,7 @@
       .sk-scroll-stack__back {
         position: sticky;
         inset-block-start: var(--sk-scroll-stack-offset);
-        /* Held while covered, so it has to be a full screen: the scrolling box, less where it is held. */
+        /* Held while covered, so it has to be a full screen: the scrolling box, less the band a floating bar owns above the held line. */
         min-block-size: calc(100cqh - var(--sk-scroll-stack-offset));
         overflow: clip;
         transform-origin: 50% 0;
@@ -144,6 +188,11 @@
         animation-range: entry 0% entry 100%;
       }
 
+      /* At least the box less the held line, so the scroll ends exactly where the layer docks and it never keeps rising under a bar. */
+      .sk-scroll-stack__front {
+        min-block-size: calc(100cqh - var(--sk-scroll-stack-offset));
+      }
+
       /* Rounded while it travels, square once it has docked: no corner is left showing the layer it covered. */
       .sk-scroll-stack__front {
         animation-name: sk-scroll-stack-rise;
@@ -151,6 +200,36 @@
         animation-timing-function: linear;
         animation-timeline: --sk-scroll-stack-front;
         animation-range: entry 0% entry 100%;
+      }
+
+      /*
+       * THE REVEAL: the content's direct children arrive as the front layer rises, the first at 15% of its travel and each
+       * next one a little later, so a heading lands before the paragraph under it. A front layer with one child reveals as
+       * one piece.
+       *
+       * NEVER A STACK INSIDE A STACK. A child that is itself a stack declares its own `timeline-scope` for the same name,
+       * and a name declared on the element itself resolves to ITS runway, not the outer one: it would start invisible and
+       * only arrive when its own front layer had risen, leaving the page blank after the outer one docked. A nested stack
+       * is a section that stands on its own, so it is left alone.
+       */
+      .sk-scroll-stack__content > :not(.sk-scroll-stack) {
+        animation-name: sk-scroll-stack-reveal;
+        animation-fill-mode: both;
+        animation-timing-function: var(--motion-enter-easing);
+        animation-timeline: --sk-scroll-stack-front;
+        animation-range: entry 15% entry 70%;
+      }
+
+      .sk-scroll-stack__content > :not(.sk-scroll-stack):nth-child(2) {
+        animation-range: entry 25% entry 80%;
+      }
+
+      .sk-scroll-stack__content > :not(.sk-scroll-stack):nth-child(3) {
+        animation-range: entry 35% entry 90%;
+      }
+
+      .sk-scroll-stack__content > :not(.sk-scroll-stack):nth-child(n + 4) {
+        animation-range: entry 45% entry 100%;
       }
 
       .sk-scroll-stack__content {

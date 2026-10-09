@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "954d2018c9258e24"
+surface: "4469c9f8c0186207"
 entries:
   - date: 2026-10-07
     kind: feature
@@ -21,3 +21,29 @@ entries:
         dims and rounds its corners; the front one enters with its content slightly zoomed in and settles as it docks
         at the top. It is CSS only and progressive: without scroll-driven animation, or with reduced motion, the two
         sections simply follow one another in normal flow. It is tuned with CSS hooks, not options.
+  - date: 2026-10-07
+    kind: feature
+    es:
+      title: Más marcado y con nuevos ganchos
+      body: >-
+        La capa de atrás se retira más (0,9) y la entrada parte de más zoom (1,1). Nuevos ganchos: recede-shift (la de atrás también baja un poco), front-docked-radius (esquinas de la de adelante ya acoplada, por ejemplo bajo una barra fija), recede-blur, recede-opacity y front-shadow, para una capa
+        de adelante transparente sobre una de atrás que se desenfoca y se desvanece.
+    en:
+      title: More pronounced, with new hooks
+      body: >-
+        The back layer recedes further (0.9) and the entry starts from more zoom (1.1). New hooks: recede-shift (the back one also sinks a little), front-docked-radius (the front one's corners once docked, for example under a fixed bar), recede-blur, recede-opacity and front-shadow, for a
+        see-through front layer over a back one that blurs and fades.
+  - date: 2026-10-08
+    kind: feature
+    es:
+      title: Lo que contiene la de adelante llega mientras sube
+      body: >-
+        Los hijos directos de la capa de adelante aparecen al subir, uno tras otro: suben desde abajo y se hacen
+        visibles, con el encabezado antes que el párrafo. Con un solo hijo llega como una pieza. Nuevos ganchos:
+        reveal-shift, reveal-opacity, reveal-blur, content-padding y content-gap (el contenido ahora es una columna).
+    en:
+      title: What the front layer holds arrives as it rises
+      body: >-
+        The front layer's direct children appear as it rises, one after another: they come up from below and fade in,
+        the heading before the paragraph. A single child arrives as one piece. New hooks: reveal-shift, reveal-opacity,
+        reveal-blur, content-padding and content-gap (the content is now a column).
