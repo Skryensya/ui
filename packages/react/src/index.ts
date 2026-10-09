@@ -107,6 +107,8 @@ export type {
 } from "./components/carousel.js";
 export { AutoplayMarquee, Marquee } from "./components/marquee.js";
 export type { MarqueeProps } from "./components/marquee.js";
+export { MorphStack } from "./components/morph-stack.js";
+export type { MorphStackProps } from "./components/morph-stack.js";
 export { Resizable, ResizableHandle, ResizablePanel } from "./components/resizable.js";
 export type { ResizableApi, ResizableHandleProps, ResizablePanelProps, ResizableProps } from "./components/resizable.js";
 export { ScrollStack } from "./components/scroll-stack.js";

@@ -1,0 +1,15 @@
+# The structure lives in packages/core/src/morph-stack.ts. Here, only why it is chosen.
+
+MorphStack:
+  useWhen:
+    - "a picture has layers (an interface over its structure over its data) and a gesture should pull them apart so the reader sees how they sit"
+    - "a card, a feature tile or a hero wants one image that reveals depth on hover or focus, and stays a plain picture otherwise"
+    - "the open state is the product's to decide (a selected plan, a step of a tour): write state and the stack opens and closes itself"
+  avoidWhen:
+    - "there are fewer than three plates or more than five; two layers is a peel and Sticker fits it, and a longer series is Carousel or Procedure"
+    - "the layers carry the information a reader needs (a chart and its legend): it is hidden at rest and absent on touch screens, so it would not be found"
+    - "the page should open it on a tap; hover is not trusted on a touch screen, so write state yourself from your own control"
+  alternatives:
+    - Sticker
+    - ScrollStack
+    - Carousel

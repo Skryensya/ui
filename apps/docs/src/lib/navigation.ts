@@ -482,6 +482,12 @@ const componentItems = [
     aliases: ["sticker", "calcomanía", "calcomania", "pegatina", "die-cut", "troquelado", "decal", "peel", "despegar"],
   },
   {
+    href: "/components/morph-stack",
+    label: "Morph Stack",
+    trailing: "Beta",
+    aliases: ["morph stack", "pila isométrica", "capas", "vista explosionada", "isometric stack", "exploded view", "layers", "layer stack", "hover layers", "capas al pasar el puntero"],
+  },
+  {
     href: "/components/lightbox",
     label: "Lightbox",
     aliases: [
@@ -1219,6 +1225,7 @@ const allComponentNavigation = [
   {
     id: "utilities",
     group: "group.componentUtilities",
+      "/components/morph-stack",
     blurb: "group.componentUtilities.blurb",
     items: componentGroupItems(
       "/components/fade-edge",

@@ -184,6 +184,10 @@ const componentDescriptions = {
     es: "Recorta y posiciona imágenes con una proporción controlada.",
     en: "Crops and positions images at a controlled aspect ratio.",
   },
+  "/components/morph-stack": {
+    es: "Tres placas apiladas que se abren en una pila isométrica al pasar el puntero o por estado.",
+    en: "Three plates that fan out into an isometric stack under the pointer or by state.",
+  },
   "/components/sticker": {
     es: "Convierte una ilustración en un sticker troquelado que se despega y se pega.",
     en: "Turns artwork into a die-cut sticker that peels and applies.",

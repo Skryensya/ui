@@ -674,6 +674,40 @@ const signatureTrees: readonly Canonical[] = [
       contract: "qr-code",
       signature: "QRCode",
       options: { value: "https://ui.skryensya.dev", label: "Abrir el sitio", level: "Q" },
+  {
+    /* MORPH STACK with both optional plates: the five-plate stack, so the two end parts are held to the same DOM too. */
+    name: "morph-stack/five",
+    enhanced: false,
+    tree: {
+      contract: "morph-stack",
+      signature: "MorphStack",
+      slots: {
+        deepest: { contract: "typography", signature: "Text", children: "The layer deepest down." },
+        back: { contract: "typography", signature: "Text", children: "The layer behind." },
+        middle: { contract: "typography", signature: "Text", children: "The picture at rest." },
+        front: { contract: "typography", signature: "Text", children: "The layer in front." },
+        nearest: { contract: "typography", signature: "Text", children: "The layer nearest the viewer." },
+      },
+    },
+  },
+  {
+    /*
+     * MORPH STACK, the one shape it has: three plates, each plain content. Its motion needs a pointer or a written
+     * state, so what the two bindings are held to is the anatomy (the stage and the plates in depth order) and the
+     * state they write.
+     */
+    name: "morph-stack/default",
+    enhanced: false,
+    tree: {
+      contract: "morph-stack",
+      signature: "MorphStack",
+      slots: {
+        back: { contract: "typography", signature: "Text", children: "The layer behind." },
+        middle: { contract: "typography", signature: "Text", children: "The picture at rest." },
+        front: { contract: "typography", signature: "Text", children: "The layer in front." },
+      },
+    },
+  },
     },
   },
   /* The same symbol with a hole knocked through the middle, because the logo path clears modules

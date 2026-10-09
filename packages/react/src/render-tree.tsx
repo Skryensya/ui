@@ -89,6 +89,7 @@ const loaders: Record<string, () => Promise<Record<string, unknown>>> = {
   "@skryensya/react/carousel": () => import("./components/carousel.js"),
   "@skryensya/react/marquee": () => import("./components/marquee.js"),
   "@skryensya/react/resizable": () => import("./components/resizable.js"),
+  "@skryensya/react/morph-stack": () => import("./components/morph-stack.js"),
   "@skryensya/react/scroll-stack": () => import("./components/scroll-stack.js"),
   "@skryensya/react/file-upload": () => import("./components/file-upload.js"),
   "@skryensya/react/time-field": () => import("./components/time-field.js"),

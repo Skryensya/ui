@@ -1,0 +1,24 @@
+# What changed in morph-stack, in the words its users read. Only appended to, never rewritten.
+#
+# `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
+# does not match, something a consumer depends on has moved: write the entry and paste in the new
+# hash.
+surface: "f88e142467e35b4f"
+entries:
+  - date: 2026-10-08
+    kind: feature
+    es:
+      title: Primera publicación del contrato
+      body: >-
+        Tres a cinco placas apiladas que se abren en una pila isométrica: las de adelante se acercan, las de atrás aparecen detrás
+        y todo el conjunto se inclina. Puede girar hacia cualquiera de los dos lados y su perspectiva se ajusta desde fuera. El estado es tuyo (reposo, abierto) y por defecto responde a un puntero fino y al
+        foco, nunca a un toque; también hay la versión inversa, que empieza abierta y se junta al llegar el puntero. Es solo CSS sobre los tokens de movimiento; con movimiento reducido conserva ambos
+        estados y recorre un cuarto del camino. Se ajusta con ganchos de CSS, no con opciones.
+    en:
+      title: First published contract
+      body: >-
+        Three to five plates laid on one another that fan out into an isometric stack: the front ones come toward you, the
+        back ones appear behind and the whole thing tilts. It can turn either way and its perspective is set from outside. The state is yours (rest, expanded) and by default it answers to a
+        fine pointer and to focus, never to a tap; there is also the inverse, which starts open and settles into one
+        piece when the pointer arrives. It is CSS only over the motion tokens; with reduced motion it keeps
+        both states and travels a quarter of the way. It is tuned with CSS hooks, not options.

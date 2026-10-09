@@ -119,6 +119,7 @@ import { progressMessages } from "./messages/components/progress";
 import { comparisonTableMessages } from "./messages/components/comparison-table";
 import { descriptionListMessages } from "./messages/components/description-list";
 import { dodontPairsMessages } from "./messages/components/dodont-pairs";
+import { morphStackMessages } from "./messages/components/morph-stack";
 import { resizableMessages } from "./messages/components/resizable";
 import { scrollStackMessages } from "./messages/components/scroll-stack";
 import { separatorMessages } from "./messages/components/separator";
@@ -277,6 +278,7 @@ export const ui = {
     ...quoteMessages.es,
     ...tagsInputMessages.es,
     ...dodontPairsMessages.es,
+    ...morphStackMessages.es,
     ...resizableMessages.es,
     ...scrollStackMessages.es,
     ...separatorMessages.es,
@@ -430,6 +432,7 @@ export const ui = {
     ...quoteMessages.en,
     ...tagsInputMessages.en,
     ...dodontPairsMessages.en,
+    ...morphStackMessages.en,
     ...resizableMessages.en,
     ...scrollStackMessages.en,
     ...separatorMessages.en,

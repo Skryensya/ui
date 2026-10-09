@@ -1,0 +1,194 @@
+---
+import "@skryensya/core/components/morph-stack.css";
+/* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
+import "@skryensya/core/components/annotation.css";
+/* The demo draws its plates with the kit's own pieces. */
+import "@skryensya/core/components/typography.css";
+import "@skryensya/core/components/placeholder.css";
+import "@skryensya/core/patterns/layout.css";
+import "@skryensya/core/patterns/box.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import CodeBlock from "../CodeBlock.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import ComparisonTable from "../ComparisonTable.astro";
+import UsagePreview from "../UsagePreview.astro";
+import { morphStackParts } from "@skryensya/core/morph-stack";
+import { morphStackAnatomyCss, morphStackAnatomyTree, morphStackInverseTree, morphStackLayersVariants, morphStackPerspectiveVariants, morphStackTree, morphStackTunedTree, morphStackTurnPlaygroundTree, morphStackTurnTree } from "../../demos/morph-stack";
+import { getLocale, tList, useTranslations } from "../../i18n";
+
+const t = useTranslations(getLocale(Astro.url));
+
+const examples = [
+  { key: "auto", story: "Default", tree: morphStackTree },
+  { key: "turn", story: "Turn", tree: morphStackTurnTree },
+  { key: "tuned", story: "Tuned", tree: morphStackTunedTree },
+  { key: "inverse", story: "Inverse", tree: morphStackInverseTree },
+] as const;
+
+const perspectiveValues = ["close", "default", "far", "flat"] as const;
+const layerValues = ["3", "4", "5"] as const;
+const perspectiveTrees = morphStackPerspectiveVariants(t);
+const layerTrees = morphStackLayersVariants(t);
+
+const [, doesColumn] = t("morphStackPage.hooksColumns").split("|");
+const hooks = [
+  ["size", "24rem", "size"],
+  ["perspective", "56rem", "perspective"],
+  ["rotate-x", "58deg", "rotateX"],
+  ["rotate-z", "-42deg", "rotateZ"],
+  ["scale", "1.06", "scale"],
+  ["gap", "4.5rem", "gap"],
+  ["slide-x", "-0.875rem", "slideX"],
+  ["slide-y", "1.25rem", "slideY"],
+  ["back-opacity", "1", "backOpacity"],
+  ["stagger", "0.15", "stagger"],
+] as const;
+const hookNotes = Object.fromEntries(
+  hooks.map(([name, , key]) => [`--sk-morph-stack-${name}`, t(`morphStackPage.hook.${key}` as Parameters<typeof t>[0])]),
+);
+
+const partOrder = ["root", "stage", "deepest", "back", "middle", "front", "nearest"] as const;
+const partRows = partOrder.map((part) => ({
+  label: morphStackParts[part],
+  labelHtml: `<code>${morphStackParts[part]}</code>`,
+  cells: [t(`morphStackPage.part.${part}` as Parameters<typeof t>[0])],
+}));
+
+const install = `pnpm add @skryensya/core
+# and, for React,
+pnpm add @skryensya/react`;
+const styles = `@import "@skryensya/core/components/morph-stack.css";`;
+const tune = `.sk-morph-stack {
+  --sk-morph-stack-rotate-x: 48deg;  /* lean back less */
+  --sk-morph-stack-front-z: 3rem;    /* and keep the plates closer */
+  --sk-morph-stack-stagger: 0;       /* moving together */
+}`;
+---
+
+<ComponentPageShell
+  title="Morph Stack"
+  description={t("morphStackPage.description")}
+  contractId="morph-stack"
+  badge="Beta"
+  hookNotes={hookNotes}
+  hookNotesLabel={doesColumn}
+  testFiles={["packages/react/src/components/morph-stack.test.tsx"]}
+>
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("morphStackPage.lede")} />
+
+    <h3>{t("morphStackPage.examplesTitle")}</h3>
+    <p set:html={t("morphStackPage.examplesBody")} />
+    {
+      examples.map(({ key, story, tree }) => (
+        <UsagePreview
+          tree={tree(t)}
+          title={t(`morphStackPage.variant.${key}` as Parameters<typeof t>[0])}
+          description={t(`morphStackPage.variant.${key}.explain` as Parameters<typeof t>[0])}
+          storybookTitle="Components/Media & Visuals/Morph Stack"
+          storybookStory={story}
+          stageMinBlockSize="18rem"
+        />
+      ))
+    }
+
+    <h3>{t("morphStackPage.layersTitle")}</h3>
+    <p set:html={t("morphStackPage.layersBody")} />
+    <UsagePreview
+      variants={layerValues.map((value) => ({
+        value,
+        label: t(`morphStackPage.layers.${value}` as Parameters<typeof t>[0]),
+        tree: layerTrees[value],
+        explain: t(`morphStackPage.layers.${value}.explain` as Parameters<typeof t>[0]),
+      }))}
+      initialVariant="5"
+      variantsLabel={t("morphStackPage.layersLabel")}
+      storybookTitle="Components/Media & Visuals/Morph Stack"
+      storybookStory="Layers"
+      remountOnChange={false}
+      stageMinBlockSize="20rem"
+    />
+
+    <h3>{t("morphStackPage.turnTitle")}</h3>
+    <p set:html={t("morphStackPage.turnBody")} />
+    <UsagePreview
+      tree={morphStackTurnPlaygroundTree(t)}
+      optionName="turn"
+      labels={{ start: t("morphStackPage.turn.start"), end: t("morphStackPage.turn.end") }}
+      explain={{ start: t("morphStackPage.turn.start.explain"), end: t("morphStackPage.turn.end.explain") }}
+      remountOnChange={false}
+      stageMinBlockSize="18rem"
+    />
+
+    <h3>{t("morphStackPage.perspectiveTitle")}</h3>
+    <p set:html={t("morphStackPage.perspectiveBody")} />
+    <UsagePreview
+      variants={perspectiveValues.map((value) => ({
+        value,
+        label: t(`morphStackPage.perspective.${value}` as Parameters<typeof t>[0]),
+        tree: perspectiveTrees[value],
+        explain: t(`morphStackPage.perspective.${value}.explain` as Parameters<typeof t>[0]),
+      }))}
+      initialVariant="default"
+      variantsLabel={t("morphStackPage.perspectiveLabel")}
+      remountOnChange={false}
+      stageMinBlockSize="18rem"
+    />
+
+    <h3>{t("morphStackPage.howTitle")}</h3>
+    <ul>
+      <li set:html={t("morphStackPage.how.front")} />
+      <li set:html={t("morphStackPage.how.middle")} />
+      <li set:html={t("morphStackPage.how.back")} />
+      <li set:html={t("morphStackPage.how.reduced")} />
+    </ul>
+
+    <h3>{t("morphStackPage.stateTitle")}</h3>
+    <p set:html={t("morphStackPage.stateBody")} />
+
+    <h3>{t("morphStackPage.contractTitle")}</h3>
+    <ul>
+      {tList(t, "morphStackPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+  </Fragment>
+
+  <Fragment slot="anatomy">
+    <p set:html={t("morphStackPage.anatomyBody")} />
+    <UsagePreview tree={morphStackAnatomyTree(t)} css={morphStackAnatomyCss} label={t("morphStackPage.anatomyPreviewLabel")} bare />
+    <h3>{t("morphStackPage.anatomyTitle")}</h3>
+    <div class="ms-parts">
+      <ComparisonTable aspectLabel={t("morphStackPage.partsAspect")} columns={[t("morphStackPage.partsColumns")]} rows={partRows} />
+    </div>
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("morphStackPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "morphStackPage.when")} avoid={tList(t, "morphStackPage.whenNot")} />
+    <ContentRules items={tList(t, "morphStackPage.content")} />
+  </Fragment>
+
+  <Fragment slot="install">
+    <p set:html={t("morphStackPage.installBody")} />
+    <CodeBlock code={install} label="terminal" />
+    <CodeBlock code={styles} label="CSS" lang="css" />
+  </Fragment>
+
+  <Fragment slot="style">
+    <h3>{t("morphStackPage.hooksTitle")}</h3>
+    <p set:html={t("morphStackPage.hooksBody")} />
+    <CodeBlock code={tune} label="CSS" lang="css" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("morphStackPage.a11yIntro")} does={tList(t, "morphStackPage.a11yDoes")} yours={tList(t, "morphStackPage.a11yYours")} />
+  </Fragment>
+</ComponentPageShell>
+
+<style is:global>
+  /* A class name is one token: breaking it at the hyphen makes two lines of what is a single word. */
+  .ms-parts th code {
+    white-space: nowrap;
+  }
+</style>

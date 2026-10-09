@@ -1,0 +1,242 @@
+/*
+ * TIER 3, MORPH STACK
+ *
+ * Three to five plates in one cell that fan out into an isometric stack. The stack is one number, `--morph-open`, 0 at
+ * rest and 1 expanded; every transform below is a function of it, so the tilt and the plates can never fall out of step.
+ * The number is flipped by `data-state` and, in `auto` (and, the other way round, `auto-inverse`), by a fine pointer over
+ * the stack or focus inside it.
+ *
+ * EVERY PLATE IS A PLACE AROUND THE MIDDLE ONE. `--morph-step` is -2 for the deepest, -1 for the back, 0 for the middle,
+ * +1 for the front and +2 for the nearest, and a plate's depth is its step times `--sk-morph-stack-gap`. That is the
+ * whole layout: a stack without the optional end plates is the same stack with them missing, and no plate moves to fill
+ * the gap. A plate cannot ask its siblings how many there are (`sibling-index()` is not everywhere yet), which is why the
+ * positions are named by the parts and not counted.
+ *
+ * WHAT MOVES IS `rotate`, `translate`, `scale` AND `opacity`, never layout. The stage keeps `preserve-3d` so that the
+ * plates' depth (`translate`'s third value) is real and not flattened into the stage's plane; the root only holds the
+ * perspective, because `perspective` on the element that also tilts would tilt its own vanishing point.
+ *
+ * BEHIND IS HIDDEN AT REST, IN FRONT IS NOT. A plate behind the middle one is there to be discovered, so it is invisible
+ * at rest and fades in as it moves back; a plate in front of it is part of the picture, so it is visible at rest and sits
+ * a hair above, higher the nearer it is, so that the order is already there when the stack opens.
+ *
+ * THE STAGGER IS THE SYSTEM'S TIME, DIVIDED. Plates do not start together: each waits `--morph-wait` shares of a fraction
+ * of the `expand` duration, the near side first and the far side last. Collapsing has no delay, so the stack closes as
+ * one piece. Both directions use the `expand` and `collapse` intents (ADR-4), so a retuned system moves this with it and
+ * `_reduced-motion.scss` already shortens it.
+ *
+ * REDUCED MOTION keeps both states and a quarter of the travel, at once: a stack still shows its layers, it just does
+ * not swing to get there.
+ *
+ * Every hook resolves to a TIER-2 token or a length of its own; scripts/lint.ts enforces the first.
+ */
+
+@layer components {
+  .sk-morph-stack {
+    --sk-morph-stack-size: 24rem;
+    --sk-morph-stack-perspective: 56rem;
+    --sk-morph-stack-rotate-x: 58deg;
+    --sk-morph-stack-rotate-z: -42deg;
+    --sk-morph-stack-scale: 1.06;
+    /* The depth between two neighbouring plates. */
+    --sk-morph-stack-gap: 4.5rem;
+    /* How far each plate in front of the middle one slides, per step, sideways and down the screen. */
+    --sk-morph-stack-slide-x: -0.875rem;
+    --sk-morph-stack-slide-y: 1.25rem;
+    --sk-morph-stack-back-opacity: 1;
+    --sk-morph-stack-stagger: 0.15;
+
+    /* Internal: how open the stack is, how much of the travel is taken, and which way it turns. Not hooks; a consumer who sets one fights the state. */
+    --morph-open: 0;
+    --morph-strength: 1;
+    /* Which way it turns: 1 for `start`, -1 for `end`, and the other way round in a right-to-left page. */
+    --morph-turn: 1;
+
+    position: relative;
+    display: grid;
+    place-items: center;
+    inline-size: var(--sk-morph-stack-size);
+    max-inline-size: 100%;
+    aspect-ratio: 1;
+    perspective: var(--sk-morph-stack-perspective);
+  }
+
+  .sk-morph-stack[data-turn="end"],
+  .sk-morph-stack:dir(rtl) {
+    --morph-turn: -1;
+  }
+
+  .sk-morph-stack[data-turn="end"]:dir(rtl) {
+    --morph-turn: 1;
+  }
+
+  .sk-morph-stack__stage {
+    display: grid;
+    place-items: center;
+    transform-style: preserve-3d;
+    transform-origin: 50% 50%;
+    transform:
+      rotateX(calc(var(--sk-morph-stack-rotate-x) * var(--morph-open) * var(--morph-strength)))
+      rotateZ(calc(var(--sk-morph-stack-rotate-z) * var(--morph-turn) * var(--morph-open) * var(--morph-strength)))
+      scale(calc(1 + (var(--sk-morph-stack-scale) - 1) * var(--morph-open) * var(--morph-strength)));
+    transition: transform var(--motion-collapse-duration) var(--motion-collapse-easing);
+  }
+
+  .sk-morph-stack__deepest,
+  .sk-morph-stack__back,
+  .sk-morph-stack__middle,
+  .sk-morph-stack__front,
+  .sk-morph-stack__nearest {
+    /* One cell, so the plates lie on one another and the tallest decides the size. */
+    grid-area: 1 / 1;
+    transform-style: preserve-3d;
+    /* Where it is around the middle plate, how much of a step it keeps at rest, and how many shares of the stagger it waits. */
+    --morph-step: 0;
+    --morph-rest: 0rem;
+    --morph-wait: 0;
+    /* Depth, then the slide of the plates in front. `max()` keeps the plates behind from sliding: they only recede. */
+    translate:
+      calc(var(--sk-morph-stack-slide-x) * var(--morph-turn) * max(var(--morph-step), 0) * var(--morph-open) * var(--morph-strength))
+      calc(var(--sk-morph-stack-slide-y) * max(var(--morph-step), 0) * var(--morph-open) * var(--morph-strength))
+      calc(var(--morph-step) * (var(--morph-rest) + (var(--sk-morph-stack-gap) - var(--morph-rest)) * var(--morph-open) * var(--morph-strength)));
+    transition:
+      translate var(--motion-collapse-duration) var(--motion-collapse-easing),
+      opacity var(--motion-collapse-duration) var(--motion-collapse-easing);
+  }
+
+  /* Depth is stacking too: the stack is read front to back even before it tilts. */
+  .sk-morph-stack__deepest {
+    z-index: 0;
+    --morph-step: -2;
+    --morph-wait: 3;
+  }
+
+  .sk-morph-stack__back {
+    z-index: 1;
+    --morph-step: -1;
+    --morph-wait: 2;
+  }
+
+  .sk-morph-stack__middle {
+    z-index: 2;
+  }
+
+  .sk-morph-stack__front {
+    z-index: 3;
+    --morph-step: 1;
+    --morph-rest: 0.75rem;
+    --morph-wait: 1;
+  }
+
+  .sk-morph-stack__nearest {
+    z-index: 4;
+    --morph-step: 2;
+    /* Twice the step, so this is 1.5rem above the middle plate at rest: higher than the front plate, by the same hair. */
+    --morph-rest: 0.75rem;
+    --morph-wait: 2;
+  }
+
+  /* Behind the middle plate is invisible until the stack opens. */
+  .sk-morph-stack__deepest,
+  .sk-morph-stack__back {
+    opacity: calc(var(--sk-morph-stack-back-opacity) * var(--morph-open));
+  }
+
+  /* Opening. The delays are on this side only, so closing never waits. */
+  .sk-morph-stack[data-state="expanded"] {
+    --morph-open: 1;
+  }
+
+  .sk-morph-stack[data-state="expanded"] .sk-morph-stack__stage,
+  .sk-morph-stack[data-state="expanded"] :is(.sk-morph-stack__deepest, .sk-morph-stack__back, .sk-morph-stack__front, .sk-morph-stack__nearest) {
+    transition-duration: var(--motion-expand-duration);
+    transition-timing-function: var(--motion-expand-easing);
+  }
+
+  .sk-morph-stack[data-state="expanded"] :is(.sk-morph-stack__deepest, .sk-morph-stack__back, .sk-morph-stack__front, .sk-morph-stack__nearest) {
+    transition-delay: calc(var(--motion-expand-duration) * var(--sk-morph-stack-stagger) * var(--morph-wait));
+  }
+
+  /*
+   * `auto` answers to a hand and not to a finger: hover is only trusted where it exists (a tap on a touch screen would
+   * open the stack and never close it), and focus inside keeps it open for a keyboard reader on any device.
+   */
+  @media (hover: hover) and (pointer: fine) {
+    .sk-morph-stack[data-state="auto"]:hover {
+      --morph-open: 1;
+    }
+
+    .sk-morph-stack[data-state="auto"]:hover .sk-morph-stack__stage,
+    .sk-morph-stack[data-state="auto"]:hover :is(.sk-morph-stack__deepest, .sk-morph-stack__back, .sk-morph-stack__front, .sk-morph-stack__nearest) {
+      transition-duration: var(--motion-expand-duration);
+      transition-timing-function: var(--motion-expand-easing);
+    }
+
+    .sk-morph-stack[data-state="auto"]:hover :is(.sk-morph-stack__deepest, .sk-morph-stack__back, .sk-morph-stack__front, .sk-morph-stack__nearest) {
+      transition-delay: calc(var(--motion-expand-duration) * var(--sk-morph-stack-stagger) * var(--morph-wait));
+    }
+  }
+
+  .sk-morph-stack[data-state="auto"]:focus-within {
+    --morph-open: 1;
+  }
+
+  /*
+   * `auto-inverse` is `auto` turned over: open at rest, closed while a fine pointer is over it or focus is inside. Without
+   * a hover it simply stays open, which is the state the picture was drawn in. It OPENS the way `expanded` does, so a
+   * stack settling back after the pointer leaves takes the staggered timing, and it CLOSES the way every other close does,
+   * with no delay: the hover rules below put the collapse timing back.
+   */
+  .sk-morph-stack[data-state="auto-inverse"] {
+    --morph-open: 1;
+  }
+
+  .sk-morph-stack[data-state="auto-inverse"] .sk-morph-stack__stage,
+  .sk-morph-stack[data-state="auto-inverse"] :is(.sk-morph-stack__deepest, .sk-morph-stack__back, .sk-morph-stack__front, .sk-morph-stack__nearest) {
+    transition-duration: var(--motion-expand-duration);
+    transition-timing-function: var(--motion-expand-easing);
+  }
+
+  .sk-morph-stack[data-state="auto-inverse"] :is(.sk-morph-stack__deepest, .sk-morph-stack__back, .sk-morph-stack__front, .sk-morph-stack__nearest) {
+    transition-delay: calc(var(--motion-expand-duration) * var(--sk-morph-stack-stagger) * var(--morph-wait));
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sk-morph-stack[data-state="auto-inverse"]:hover {
+      --morph-open: 0;
+    }
+
+    .sk-morph-stack[data-state="auto-inverse"]:hover .sk-morph-stack__stage,
+    .sk-morph-stack[data-state="auto-inverse"]:hover :is(.sk-morph-stack__deepest, .sk-morph-stack__back, .sk-morph-stack__front, .sk-morph-stack__nearest) {
+      transition-duration: var(--motion-collapse-duration);
+      transition-timing-function: var(--motion-collapse-easing);
+      transition-delay: 0s;
+    }
+  }
+
+  .sk-morph-stack[data-state="auto-inverse"]:focus-within {
+    --morph-open: 0;
+  }
+
+  .sk-morph-stack[data-state="auto-inverse"]:focus-within .sk-morph-stack__stage,
+  .sk-morph-stack[data-state="auto-inverse"]:focus-within :is(.sk-morph-stack__deepest, .sk-morph-stack__back, .sk-morph-stack__front, .sk-morph-stack__nearest) {
+    transition-duration: var(--motion-collapse-duration);
+    transition-timing-function: var(--motion-collapse-easing);
+    transition-delay: 0s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sk-morph-stack {
+      --morph-strength: 0.25;
+    }
+
+    .sk-morph-stack__stage,
+    .sk-morph-stack__deepest,
+    .sk-morph-stack__back,
+    .sk-morph-stack__middle,
+    .sk-morph-stack__front,
+    .sk-morph-stack__nearest {
+      transition: none;
+    }
+  }
+}
