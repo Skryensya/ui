@@ -111,9 +111,10 @@ export function BackToTop({
       {...props}
       className={
         className
-          ? `${backToTopParts.root} sk-interactive ${className}`
-          : `${backToTopParts.root} sk-interactive`
+          ? `${backToTopParts.root} sk-button sk-interactive ${className}`
+          : `${backToTopParts.root} sk-button sk-interactive`
       }
+      data-variant="soft"
       data-appearance={appearance}
       data-sk-back-to-top=""
       hidden={!visible}

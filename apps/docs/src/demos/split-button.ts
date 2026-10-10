@@ -85,6 +85,31 @@ export const splitButtonTree = (t: Translate): UsageTree => ({
  * The weld itself: root group, action Button, Menu trigger. Menu's open panel is taught on Menu's
  * own page; here the specimen stays closed so the hairline seam is the thing being named.
  */
+/* The pair at a given size, for the page's size switch. CURRIED on purpose: the stories and the tree test call every export with `(t, hrefs)`, so a second parameter would receive the hrefs, while a function that returns a function is not a tree and is left alone. */
+export const splitButtonVerticalBySize = (size: "xs" | "sm" | "md" | "lg") => (t: Translate): UsageTree => ({
+  contract: "split-button",
+  signature: "SplitButtonVertical",
+  options: { label: t("demo.splitButton.zoomLabel") },
+  slots: {
+    first: {
+      contract: "button",
+      signature: "Button.action",
+      options: { variant: "solid", size, iconOnly: true },
+      attrs: { "aria-label": t("demo.splitButton.zoomIn") },
+      slots: { children: size === "xs" ? "+" : { contract: "icon", signature: "Icon", options: { name: "zoom-in" } } },
+    },
+    second: {
+      contract: "button",
+      signature: "Button.action",
+      options: { variant: "solid", size, iconOnly: true },
+      attrs: { "aria-label": t("demo.splitButton.zoomOut") },
+      slots: { children: size === "xs" ? "−" : { contract: "icon", signature: "Icon", options: { name: "zoom-out" } } },
+    },
+  },
+});
+
+export const splitButtonVerticalTree = (t: Translate): UsageTree => splitButtonVerticalBySize("sm")(t);
+
 export const splitButtonAnatomyTree = (t: Translate): UsageTree => ({
   contract: "annotation",
   signature: "Annotated",

@@ -29,7 +29,8 @@ import "../styles/component-preview.css";
 import { PropertyPlayground } from "./react-demos/property-playground";
 import { nodeAt, type TreePath } from "./react-demos/usage-tree-path";
 import { iconMarkup } from "../icons";
-import { storybookDocsUrl, storybookReactUrl } from "../lib/navigation";
+import { storybookDocsUrl, storybookReactUrl, storybookVanillaUrl } from "../lib/navigation";
+import { resolveStorybookStory } from "../lib/storybook-stories";
 import { getLocale, useTranslations } from "../i18n";
 import "@skryensya/core/components/segmented.css";
 import "./preview-card.css";
@@ -207,7 +208,14 @@ if (variants) {
   explainByValue = Object.fromEntries(variants.filter(({ explain }) => explain).map(({ value, explain }) => [value, explain!]));
 }
 
-const codeHref = storybookTitle && storybookStory ? storybookDocsUrl(storybookReactUrl, storybookTitle, storybookStory) : null;
+const codeStory = storybookTitle && storybookStory ? resolveStorybookStory(storybookTitle, storybookStory) : null;
+if (storybookTitle && storybookStory && !codeStory) {
+  throw new Error(`UsagePreview: no published Storybook story for "${storybookTitle}" / "${storybookStory}".`);
+}
+const reactCodeHref = codeStory ? storybookDocsUrl(storybookReactUrl, codeStory.title, codeStory.story) : null;
+const vanillaCodeHref = codeStory ? storybookDocsUrl(storybookVanillaUrl, codeStory.title, codeStory.story) : null;
+const codeHref = reactCodeHref;
+const hasCodeMenu = Boolean((optionName || variants) && (reactCodeHref || vanillaCodeHref));
 const codeIcon = iconMarkup("code", { size: "sm" });
 const id = title ? `usage-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}` : undefined;
 /* A scope per card, stable across builds: the same tree and css always get the same attribute. */
@@ -220,7 +228,7 @@ const scope = css ? `u${[...(css + JSON.stringify(tree))].reduce((h, c) => (h * 
 ---
 
 <section
-  class:list={["sk-preview-section", (optionName || variants) && "sk-usage-preview--controlled"]}
+  class:list={["sk-preview-section", (optionName || variants) && "sk-usage-preview--controlled", framedStage && viewport === "overlay" && "sk-preview-section--overlay-stage"]}
   data-width={width}
   {...(id ? { "aria-labelledby": id } : label ? { "aria-label": label } : {})}
 >
@@ -239,11 +247,29 @@ const scope = css ? `u${[...(css + JSON.stringify(tree))].reduce((h, c) => (h * 
         style={stageMinBlockSize ? `--sk-preview-card-stage-min-block-size: ${stageMinBlockSize};` : undefined}
       >
         {
-          codeHref && (
+          hasCodeMenu ? (
+            <details class="sk-preview-card__code-menu">
+              <summary class="sk-preview-card__code-link sk-interactive" aria-label={`${t("preview.viewCode")} (${title ?? label ?? optionName})`}>
+                <Fragment set:html={codeIcon} />
+              </summary>
+              <div class="sk-preview-card__code-menu-panel">
+                {vanillaCodeHref && (
+                  <a href={vanillaCodeHref} rel="noreferrer" target="_blank">
+                    {t("preview.storybookVanillaAction")}
+                  </a>
+                )}
+                {reactCodeHref && (
+                  <a href={reactCodeHref} rel="noreferrer" target="_blank">
+                    {t("preview.storybookReactAction")}
+                  </a>
+                )}
+              </div>
+            </details>
+          ) : codeHref ? (
             <a class="sk-preview-card__code-link" href={codeHref} rel="noreferrer" target="_blank" aria-label={`${t("preview.viewCode")} (${title ?? label ?? optionName})`}>
               <Fragment set:html={codeIcon} />
             </a>
-          )
+          ) : null
         }
         {
           optionName || variants ? (
@@ -268,7 +294,12 @@ const scope = css ? `u${[...(css + JSON.stringify(tree))].reduce((h, c) => (h * 
               controlLabel={variantsLabel ?? title ?? optionName ?? label ?? ""}
               explain={explainByValue}
               remountOnChange={remountOnChange}
-              frame={variants && screen === "xl" ? { screen: "xl", width: 1200, flush, css, note: t("preview.scaledNote") } : undefined}
+              frame={variants && screen === "xl"
+                ? { screen: "xl", width: 1200, flush, css, note: t("preview.scaledNote") }
+                : isolate || viewport !== "auto"
+                  ? { flush, css, viewport, minHeight: stageMinBlockSize }
+                  : undefined}
+              isolatedFrame={screen !== "xl" && (isolate || viewport !== "auto" || Boolean(script)) ? { flush, scroll, viewport, minHeight: stageMinBlockSize, css, screen, script: script ? compileDemoScript(script) : undefined } : undefined}
             />
             </div>
           ) : framedStage ? (

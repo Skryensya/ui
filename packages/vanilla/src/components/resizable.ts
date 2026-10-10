@@ -128,14 +128,14 @@ export function connectResizable(root: HTMLElement): Cleanup {
     const resize = (from: readonly number[], delta: number): void =>
       commit(resolvePanelResize({ sizes: from, panels: specs, index, delta }));
 
-    let start: { position: number; sizes: readonly number[] } | null = null;
+    let start: { position: number; sizes: readonly number[]; extent: number; sign: number } | null = null;
     let dragging = false;
     const position = (event: PointerEvent): number => (direction === "horizontal" ? event.clientX : event.clientY);
 
     const onDown = (event: PointerEvent): void => {
       if (event.button !== 0) return;
       remember(sizes);
-      start = { position: position(event), sizes };
+      start = { position: position(event), sizes, extent: 0, sign: 1 };
       handle.setPointerCapture?.(event.pointerId);
     };
     const onMove = (event: PointerEvent): void => {
@@ -143,11 +143,14 @@ export function connectResizable(root: HTMLElement): Cleanup {
       if (!dragging) {
         if (!hasCrossedDragThreshold(start.position, position(event))) return;
         dragging = true;
+        /* The room being shared and the reading direction do not change during a drag, and asking for either is a layout read (every panel's box) or a style one, so they are taken once, when the drag starts, and not on every move. */
+        start.extent = extent();
+        start.sign = sign();
         handle.setAttribute(resizableAttrs.dragging, "");
         root.setAttribute(resizableAttrs.dragging, "");
       }
-      const pixels = (position(event) - start.position) * sign();
-      resize(start.sizes, resizablePercentFromPixels(pixels, extent()));
+      const pixels = (position(event) - start.position) * start.sign;
+      resize(start.sizes, resizablePercentFromPixels(pixels, start.extent));
     };
     const onEnd = (event: PointerEvent): void => {
       if (!start) return;

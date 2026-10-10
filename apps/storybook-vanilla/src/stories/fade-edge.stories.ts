@@ -18,7 +18,9 @@ export default { title: "Components/Utilities/FadeEdge", tags: ["autodocs"] } sa
 
 export const Anatomy: StoryObj = treeStory(demos.fadeEdgeAnatomyTree);
 export const FadeHorizontalAgenda: StoryObj = treeStory(demos.fadeHorizontalAgendaTree);
+export const FadeDirection: StoryObj = treeStory(demos.fadeDirectionTree);
 export const FadeBottom: StoryObj = treeStory(() => demos.fadeBottomTree);
+export const FadeMode: StoryObj = treeStory(demos.fadeModeTree);
 export const FadeTop: StoryObj = treeStory(() => demos.fadeTopTree);
 export const FadeRight: StoryObj = treeStory(() => demos.fadeRightTree);
 export const FadeLeft: StoryObj = treeStory(() => demos.fadeLeftTree);

@@ -1,0 +1,259 @@
+---
+import "@skryensya/core/components/image-cropper.css";
+/* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
+import "@skryensya/core/components/annotation.css";
+/* The flow example joins a file picker, the cropper and a frame for the result. */
+import "@skryensya/core/components/file-upload.css";
+import "@skryensya/core/components/typography.css";
+import "@skryensya/core/patterns/layout.css";
+import "@skryensya/core/patterns/box.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import CodeBlock from "../CodeBlock.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import ComparisonTable from "../ComparisonTable.astro";
+import UsagePreview from "../UsagePreview.astro";
+import { imageCropperParts } from "@skryensya/core/image-cropper";
+import {
+  imageCropperAnatomyCss,
+  imageCropperAnatomyTree,
+  imageCropperAvatarTree,
+  imageCropperBannerTree,
+  imageCropperBareTree,
+  imageCropperCustomTree,
+  imageCropperDisabledTree,
+  imageCropperErrorTree,
+  imageCropperFlowTree,
+  imageCropperFreeTree,
+  imageCropperReadOnlyTree,
+  imageCropperTree,
+  imageCropperValueTree,
+} from "../../demos/image-cropper";
+import { getLocale, tList, useTranslations } from "../../i18n";
+
+const t = useTranslations(getLocale(Astro.url));
+
+const examples = [
+  { key: "default", story: "Default", tree: imageCropperTree },
+  { key: "avatar", story: "Avatar", tree: imageCropperAvatarTree },
+  { key: "banner", story: "Banner", tree: imageCropperBannerTree },
+  { key: "free", story: "Free", tree: imageCropperFreeTree },
+  { key: "custom", story: "Custom", tree: imageCropperCustomTree },
+  { key: "value", story: "Value", tree: imageCropperValueTree, css: `.ic-value-cropper { --sk-image-cropper-stage-min-block-size: 20rem; }` },
+  { key: "bare", story: "Bare", tree: imageCropperBareTree },
+  { key: "readOnly", story: "ReadOnly", tree: imageCropperReadOnlyTree, css: `.ic-readonly-cropper { --sk-image-cropper-stage-min-block-size: 20rem; }` },
+  { key: "disabled", story: "Disabled", tree: imageCropperDisabledTree },
+  { key: "error", story: "Error", tree: imageCropperErrorTree },
+] as const;
+
+const [, doesColumn] = t("imageCropperPage.hooksColumns").split("|");
+const hooks = [
+  ["bg", "var(--color-bg-well)", "bg"],
+  ["radius", "var(--radius-surface)", "radius"],
+  ["gap", "var(--space-stack-md)", "gap"],
+  ["stage-min-block-size", "16rem", "stageMin"],
+  ["stage-aspect-ratio", "4 / 3", "stageAspect"],
+  ["overlay", "var(--color-bg-canvas)", "overlay"],
+  ["overlay-opacity", "0.72", "overlayOpacity"],
+  ["frame-color", "var(--color-border-accent)", "frameColor"],
+  ["frame-width", "2px", "frameWidth"],
+  ["grid-color", "an alpha of --color-text-on-media", "gridColor"],
+  ["handle-size", "0.875rem", "handleSize"],
+  ["handle-color", "var(--color-border-accent)", "handleColor"],
+  ["focus-ring", "var(--focus-ring-color)", "focusRing"],
+  ["panel-bg", "var(--color-bg-surface)", "panelBg"],
+  ["preview-size", "10rem", "previewSize"],
+  ["side-size", "16rem", "sideSize"],
+] as const;
+const hookNotes = Object.fromEntries(
+  hooks.map(([name, , key]) => [`--sk-image-cropper-${name}`, t(`imageCropperPage.hook.${key}` as Parameters<typeof t>[0])]),
+);
+
+const partOrder = ["root", "workspace", "side", "stage", "surface", "message", "help", "preview", "previewCanvas", "controls", "group", "groupLabel", "control", "range", "output", "ratioInput", "actions", "live"] as const;
+const partRows = partOrder.map((part) => ({
+  label: imageCropperParts[part],
+  labelHtml: `<code>${imageCropperParts[part]}</code>`,
+  cells: [t(`imageCropperPage.part.${part}` as Parameters<typeof t>[0])],
+}));
+
+const keys = ["move", "moveFar", "zoom", "rotate", "rotateFine", "quarter", "reset"] as const;
+const keyRows = keys.map((key) => ({
+  label: t(`imageCropperPage.key.${key}.keys` as Parameters<typeof t>[0]),
+  labelHtml: t(`imageCropperPage.key.${key}.keys` as Parameters<typeof t>[0]),
+  cells: [t(`imageCropperPage.key.${key}.does` as Parameters<typeof t>[0])],
+}));
+
+const errorCodes = ["load", "cors", "notReady", "export"] as const;
+const errorRows = errorCodes.map((code) => ({
+  label: t(`imageCropperPage.error.${code}.code` as Parameters<typeof t>[0]),
+  labelHtml: t(`imageCropperPage.error.${code}.code` as Parameters<typeof t>[0]),
+  cells: [t(`imageCropperPage.error.${code}.when` as Parameters<typeof t>[0])],
+}));
+
+const install = `pnpm add @skryensya/core
+# and, for React,
+pnpm add @skryensya/react`;
+const styles = `@import "@skryensya/core/components/image-cropper.css";`;
+
+/*
+ * The join between the three components, and the whole of it. It lives on the page, not in any of them: the file's URL becomes the
+ * cropper's src, and the applied crop's file becomes the frame's. Written once, it drives the Vanilla stage and the React one.
+ */
+const flowCss = `.ic-flow__cropper {
+  --sk-image-cropper-stage-min-block-size: 20rem;
+}
+
+.ic-flow__result {
+  align-self: start;
+}
+
+.ic-flow__result .sk-image-frame {
+  margin-inline: auto;
+}
+`;
+
+const flowScript = `
+import { getImageCropper } from "@skryensya/vanilla/image-cropper";
+
+const upload = document.getElementById("flow-upload");
+const cropper = document.getElementById("flow-cropper");
+const result = document.getElementById("flow-result");
+const empty = document.getElementById("flow-empty");
+const reset = document.getElementById("flow-reset");
+const apply = document.getElementById("flow-apply");
+let sourceUrl = "";
+let resultUrl = "";
+
+upload.addEventListener("sk:fileuploadchange", (event) => {
+  const [file] = event.detail.acceptedFiles;
+  if (!file) return;
+  if (sourceUrl) URL.revokeObjectURL(sourceUrl);
+  sourceUrl = URL.createObjectURL(file);
+  cropper.setAttribute("data-src", sourceUrl);
+});
+
+reset.addEventListener("click", () => getImageCropper(cropper)?.reset());
+apply.addEventListener("click", () => getImageCropper(cropper)?.confirm());
+
+cropper.addEventListener("sk:imagecropperconfirm", async (event) => {
+  try {
+    const blob = await event.detail.exportBlob();
+    if (resultUrl) URL.revokeObjectURL(resultUrl);
+    resultUrl = URL.createObjectURL(blob);
+    result.querySelector("img").src = resultUrl;
+    result.hidden = false;
+    empty.hidden = true;
+  } catch (error) {
+    empty.textContent = error.message;
+  }
+});
+`;
+---
+
+<ComponentPageShell
+  title="Image Cropper"
+  description={t("imageCropperPage.description")}
+  contractId="image-cropper"
+  badge="Beta"
+  hookNotes={hookNotes}
+  hookNotesLabel={doesColumn}
+  testFiles={[
+    "packages/core/src/image-cropper-model.test.ts",
+    "packages/react/src/components/image-cropper.test.tsx",
+    "packages/vanilla/src/components/image-cropper.test.ts",
+  ]}
+>
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("imageCropperPage.lede")} />
+
+    <h3>{t("imageCropperPage.examplesTitle")}</h3>
+    <p set:html={t("imageCropperPage.examplesBody")} />
+    {
+      examples.map((example) => (
+        <UsagePreview
+          tree={example.tree(t)}
+          css={"css" in example ? example.css : undefined}
+          title={t(`imageCropperPage.variant.${example.key}` as Parameters<typeof t>[0])}
+          description={t(`imageCropperPage.variant.${example.key}.explain` as Parameters<typeof t>[0])}
+          storybookTitle="Components/Media & Visuals/Image Cropper"
+          storybookStory={example.story}
+          stageMinBlockSize={example.key === "value" ? "28rem" : "34rem"}
+        />
+      ))
+    }
+
+    <h3>{t("imageCropperPage.flowTitle")}</h3>
+    <p set:html={t("imageCropperPage.flowBody")} />
+    <UsagePreview tree={imageCropperFlowTree(t)} css={flowCss} script={flowScript} label={t("imageCropperPage.flowLabel")} stageMinBlockSize="34rem" />
+
+    <h3>{t("imageCropperPage.valueTitle")}</h3>
+    <p set:html={t("imageCropperPage.valueBody")} />
+    <ul>
+      {tList(t, "imageCropperPage.value").map((item) => <li set:html={item} />)}
+    </ul>
+
+    <h3>{t("imageCropperPage.exportTitle")}</h3>
+    <p set:html={t("imageCropperPage.exportBody")} />
+    <ul>
+      {tList(t, "imageCropperPage.export").map((item) => <li set:html={item} />)}
+    </ul>
+    <div class="ic-errors">
+      <ComparisonTable aspectLabel={t("imageCropperPage.errorsAspect")} columns={[t("imageCropperPage.errorsColumns")]} rows={errorRows} />
+    </div>
+
+    <h3>{t("imageCropperPage.inputTitle")}</h3>
+    <p set:html={t("imageCropperPage.inputBody")} />
+    <div class="ic-keys">
+      <ComparisonTable aspectLabel={t("imageCropperPage.keysAspect")} columns={[t("imageCropperPage.keysColumns")]} rows={keyRows} />
+    </div>
+
+    <h3>{t("imageCropperPage.contractTitle")}</h3>
+    <ul>
+      {tList(t, "imageCropperPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+  </Fragment>
+
+  <Fragment slot="anatomy">
+    <p set:html={t("imageCropperPage.anatomyBody")} />
+    <UsagePreview tree={imageCropperAnatomyTree(t)} css={imageCropperAnatomyCss} label={t("imageCropperPage.anatomyPreviewLabel")} bare />
+    <h3>{t("imageCropperPage.anatomyTitle")}</h3>
+    <div class="ic-parts">
+      <ComparisonTable aspectLabel={t("imageCropperPage.partsAspect")} columns={[t("imageCropperPage.partsColumns")]} rows={partRows} />
+    </div>
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("imageCropperPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "imageCropperPage.when")} avoid={tList(t, "imageCropperPage.whenNot")} />
+    <ContentRules items={tList(t, "imageCropperPage.content")} />
+  </Fragment>
+
+  <Fragment slot="install">
+    <p set:html={t("imageCropperPage.installBody")} />
+    <CodeBlock code={install} label="terminal" />
+    <CodeBlock code={styles} label="CSS" lang="css" />
+    <p set:html={t("imageCropperPage.engineBody")} />
+  </Fragment>
+
+  <Fragment slot="style">
+    <h3>{t("imageCropperPage.hooksTitle")}</h3>
+    <p set:html={t("imageCropperPage.hooksBody")} />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("imageCropperPage.a11yIntro")} does={tList(t, "imageCropperPage.a11yDoes")} yours={tList(t, "imageCropperPage.a11yYours")} />
+  </Fragment>
+</ComponentPageShell>
+
+<style is:global>
+  /* A class name is one token: breaking it at the hyphen or the underscore makes two lines of a single word. */
+  .ic-parts th code {
+    white-space: nowrap;
+  }
+
+  .ic-keys td:first-child,
+  .ic-errors th code {
+    white-space: nowrap;
+  }
+</style>

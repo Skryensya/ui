@@ -33,6 +33,7 @@ type Read = {
   translate: { x: number; y: number };
   scale: string;
   bg: string;
+  bgAlpha: number;
   fg: string;
   radius: string;
   borderWidth: string;
@@ -67,6 +68,13 @@ async function read(page: Page, selector: string): Promise<Read> {
       translate: cs.translate,
       scale: cs.scale,
       bg: cs.backgroundColor,
+      bgAlpha: (() => {
+        const ctx = document.createElement("canvas").getContext("2d")!;
+        ctx.clearRect(0, 0, 1, 1);
+        ctx.fillStyle = cs.backgroundColor;
+        ctx.fillRect(0, 0, 1, 1);
+        return ctx.getImageData(0, 0, 1, 1).data[3]! / 255;
+      })(),
       fg: cs.color,
       radius: cs.borderTopLeftRadius,
       borderWidth: cs.borderTopWidth,
@@ -199,9 +207,10 @@ test("every variant and tone keeps its meaning, and the quieter emphases spend l
       expect(brutalist.shadow, cell).not.toBeNull();
       expect(brutalist.shadow!.blur, cell).toBe(0);
       expect(brutalist.shadow!.x, cell).toBe(brutalist.shadow!.y);
-      // The face is the variant's own: ghost stays see-through, soft keeps its see-through wash,
-      // solid keeps the fill tone gave it.
-      expect(brutalist.bg, cell).toBe(plain.bg);
+      // The face keeps the variant's meaning: ghost stays see-through, solid keeps the fill tone
+      // gave it, and soft becomes an opaque paper/tinted face so the black construction stays clean.
+      if (variant === "soft") expect(brutalist.bgAlpha, cell).toBe(1);
+      else expect(brutalist.bg, cell).toBe(plain.bg);
       expect(brutalist.fg, cell).toBe(plain.fg);
       // Every cell has a visible edge, even the variants whose plain border is transparent.
       expect(brutalist.borderStartColor, cell).not.toMatch(/rgba\(0, 0, 0, 0\)|transparent/);

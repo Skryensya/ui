@@ -1,0 +1,47 @@
+# What changed in image-cropper, in the words its users read. Only appended to, never rewritten.
+#
+# `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
+# does not match, something a consumer depends on has moved: write the entry and paste in the new
+# hash.
+surface: "cf90777bf1fc3a97"
+entries:
+  - date: 2026-10-08
+    kind: feature
+    es:
+      title: Primera publicación del contrato
+      body: >-
+        Una ventana de recorte sobre una imagen, con su barra de herramientas: proporción libre, original, fija o
+        numérica, forma rectangular o circular, zoom, rotación en cuartos de vuelta y fina, vista previa y exportación a
+        archivo. El motor es Cropper.js v2, aislado detrás de un valor serializable (posición, zoom y rotación como
+        proporciones) y de un modelo que garantiza que el recorte nunca contiene una esquina vacía. El círculo exporta un
+        PNG transparente ya recortado. Se maneja con ratón, tacto, lápiz y teclado, y funciona igual en React y Vanilla.
+    en:
+      title: First published contract
+      body: >-
+        A crop window over an image, with its toolbar: free, original, fixed or numeric aspect ratio, rectangle or circle,
+        zoom, quarter-turn and fine rotation, a live preview and export to a file. The engine is Cropper.js v2, kept
+        behind a serializable value (position, zoom and rotation as ratios) and a model that guarantees a crop never
+        contains an empty corner. A circle exports a transparent PNG already cut. It works with mouse, touch, pen and
+        keyboard, and behaves the same in React and Vanilla.
+  - date: 2026-10-08
+    kind: bugfix
+    es:
+      title: Publica el gancho de tamaño lateral
+      body: Registra --sk-image-cropper-side-size en el contrato para que el catálogo coincida con los estilos existentes y el compilador pueda publicar los componentes.
+    en:
+      title: Publish the side-size styling hook
+      body: Register --sk-image-cropper-side-size in the contract so the catalogue matches the existing stylesheet and the compiler can publish the components.
+  - date: 2026-10-10
+    kind: breaking
+    es:
+      title: Se quitan showPreview y cancelable, y outputQuality tiene tope
+      body: >-
+        <code>showPreview</code> (ya obsoleta) y <code>cancelable</code> prometían una vista previa y un botón
+        Cancelar que el componente no dibuja: ambos los pone la página. Se quitan. <code>outputQuality</code> vale de 0
+        a 1: antes no tenía tope y un valor mayor llegaba tal cual al navegador.
+    en:
+      title: showPreview and cancelable are removed, and outputQuality is capped
+      body: >-
+        <code>showPreview</code> (already deprecated) and <code>cancelable</code> promised a preview and a Cancel
+        button the component does not draw: the page supplies both. They are removed. <code>outputQuality</code> runs
+        from 0 to 1: before it had no ceiling and a larger value reached the browser as it was.

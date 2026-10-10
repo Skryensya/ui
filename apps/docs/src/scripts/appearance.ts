@@ -1,12 +1,15 @@
 import { updateComponentPreviewStageDocument } from "../preview/component-preview-enhancer";
-import { getPreference, setPreference, subscribePreference } from "@skryensya/vanilla/storage";
-import { appearancePreference } from "../lib/preferences";
 
 type Appearance = "plain" | "tactile" | "brutalist" | "frosted";
 
 const APPEARANCES: readonly Appearance[] = ["plain", "tactile", "brutalist", "frosted"];
 
+/* The scope is ONE PREVIEW CARD: the page declares the menu and its target (the shell's template), and
+   `placeAppearanceMenus` gives every card its own copy. Nothing is stored; a card starts plain. */
 const scopeSelector = "[data-docs-appearance-scope]";
+const pageSelector = "[data-docs-appearance-page]";
+const templateSelector = "template[data-docs-appearance-template]";
+const cardSelector = ".sk-preview-card";
 const setSelector = "[data-docs-appearance-set]";
 const toggleSelector = "[data-docs-appearance-toggle]";
 const labelSelector = "[data-docs-appearance-label]";
@@ -28,8 +31,7 @@ function allowedIn(scope: HTMLElement): readonly Appearance[] {
   return values?.length ? values : APPEARANCES;
 }
 
-/* The preference is site-wide, the values are per page: tactile chosen on Button reads as plain on
-   Box, which has no tactile, and comes back when the reader returns to Button. */
+/* The values are per page: a card's choice is always one its component publishes. */
 function effectiveIn(scope: HTMLElement, value: Appearance): Appearance {
   return allowedIn(scope).includes(value) ? value : "plain";
 }
@@ -45,7 +47,7 @@ function labelFor(value: Appearance): string {
 
 function current(scope: HTMLElement): Appearance {
   const value = scope.getAttribute("data-docs-appearance");
-  return effectiveIn(scope, isAppearance(value) ? value : getPreference(appearancePreference));
+  return effectiveIn(scope, isAppearance(value) ? value : "plain");
 }
 
 function targetSelector(scope: HTMLElement): string {
@@ -104,17 +106,33 @@ function apply(scope: HTMLElement, preferred: Appearance): void {
   });
 }
 
-function applyAll(value: Appearance): void {
-  document.querySelectorAll<HTMLElement>(scopeSelector).forEach((scope) => apply(scope, value));
+/**
+ * Give every preview card of a page that declares an appearance menu its own copy of it. Runs BEFORE
+ * the components mount, so the cloned Menu is enhanced like any other. Cards that compare appearances
+ * (`data-docs-appearance-fixed`) get none.
+ */
+export function placeAppearanceMenus(root: ParentNode = document): void {
+  root.querySelectorAll<HTMLElement>(pageSelector).forEach((page) => {
+    const template = page.querySelector<HTMLTemplateElement>(templateSelector);
+    if (!template) return;
+    const target = page.getAttribute("data-docs-appearance-target");
+    page.querySelectorAll<HTMLElement>(cardSelector).forEach((card) => {
+      if (card.hasAttribute("data-docs-appearance-scope") || card.closest(fixedSelector)) return;
+      const control = document.createElement("div");
+      control.className = "docs-card-appearance";
+      control.append(template.content.cloneNode(true));
+      card.append(control);
+      card.setAttribute("data-docs-appearance-scope", "");
+      if (target) card.setAttribute("data-docs-appearance-target", target);
+    });
+  });
 }
 
 export function initAppearance(): void {
-  applyAll(getPreference(appearancePreference));
+  document.querySelectorAll<HTMLElement>(scopeSelector).forEach((scope) => apply(scope, "plain"));
 
   if (bound) return;
   bound = true;
-
-  subscribePreference(appearancePreference, applyAll);
 
   document.addEventListener("click", (event) => {
     const target = event.target as Element | null;
@@ -126,7 +144,6 @@ export function initAppearance(): void {
       const value = set.getAttribute("data-docs-appearance-set");
       if (scope && isAppearance(value)) {
         apply(scope, value);
-        setPreference(appearancePreference, value);
         document.dispatchEvent(new CustomEvent("sk:dimensions-changed"));
       }
       return;
@@ -138,7 +155,6 @@ export function initAppearance(): void {
       if (scope) {
         const value = nextAppearance(scope, current(scope));
         apply(scope, value);
-        setPreference(appearancePreference, value);
         document.dispatchEvent(new CustomEvent("sk:dimensions-changed"));
       }
     }

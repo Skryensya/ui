@@ -1,0 +1,110 @@
+---
+import "@skryensya/core/components/dock.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import CodeBlock from "../CodeBlock.astro";
+import UsagePreview from "../UsagePreview.astro";
+import { dockSizeTree, dockSurfaceTree, dockTree } from "../../demos/dock";
+import { getLocale, useTranslations } from "../../i18n";
+const t = useTranslations(getLocale(Astro.url));
+const tree = dockTree(t);
+const sizeVariants = ["compact", "regular", "roomy"] as const;
+const surfaceVariants = ["glass", "solid", "pill"] as const;
+const sizePlayground = {
+  tree: dockSizeTree(t, "regular"),
+  variants: sizeVariants.map((value) => ({
+    value,
+    label: t(`dockPage.size.${value}` as Parameters<typeof t>[0]),
+    tree: dockSizeTree(t, value),
+    explain: t(`dockPage.size.${value}.explain` as Parameters<typeof t>[0]),
+  })),
+};
+const surfacePlayground = {
+  tree: dockSurfaceTree(t, "glass"),
+  variants: surfaceVariants.map((value) => ({
+    value,
+    label: t(`dockPage.surface.${value}` as Parameters<typeof t>[0]),
+    tree: dockSurfaceTree(t, value),
+    explain: t(`dockPage.surface.${value}.explain` as Parameters<typeof t>[0]),
+  })),
+};
+const floatingCss = `.sk-dock {
+  --sk-dock-bg: color-mix(in oklab, var(--color-bg-surface) 76%, transparent);
+  --sk-dock-border-color: color-mix(in oklab, currentColor 10%, transparent);
+  --sk-dock-radius: var(--radius-pill);
+  --sk-dock-item-radius: var(--radius-pill);
+  --sk-dock-shadow: var(--elevation-modal);
+}`;
+const react = `import { Dock } from "@skryensya/react/dock";
+import { Icon } from "@skryensya/react/icon";
+import "@skryensya/core/components/dock.css";
+
+const items = [
+  { id: "search", label: "Search", Icon: () => <Icon name="search" />, onClick: openSearch },
+  { id: "notes", label: "Notes", Icon: () => <Icon name="edit" />, onClick: openNotes },
+  { id: "create", label: "Create", Icon: () => <Icon name="add" />, onClick: createNote },
+];
+
+<Dock label="Quick actions" items={items} />
+
+{/* Size and appearance are styling hooks, not behavioral props. */}
+<Dock
+  label="Quick actions"
+  items={items}
+  style={{
+    "--sk-dock-size": "3.5rem",
+    "--sk-dock-gap": "0.75rem",
+    "--sk-dock-magnification": "1.22",
+    "--sk-dock-lift": "1rem",
+  } as React.CSSProperties}
+/>`;
+const html = `<div class="sk-dock" data-sk-dock role="group" aria-label="Quick actions">
+  <button class="sk-dock__item sk-interactive" type="button" aria-label="Search">
+    <span class="sk-dock__icon" aria-hidden="true">
+      <span data-sk-icon="search" data-sk-icon-size="md"></span>
+    </span>
+  </button>
+</div>
+
+<!-- Vanilla springs are opt-in: mountDock(document), or use initComponents(). -->`;
+---
+<ComponentPageShell title="Dock" description={t("dockPage.description")} contractId="dock" badge="Beta" testFiles={["packages/react/src/components/dock.test.tsx", "packages/vanilla/src/components/dock.test.ts"]}>
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("dockPage.usage")} />
+    <h3>{t("dockPage.examplesTitle")}</h3>
+    <UsagePreview tree={tree} title={t("dockPage.defaultTitle")} description={t("dockPage.defaultBody")} />
+    <UsagePreview
+      tree={sizePlayground.tree}
+      variants={sizePlayground.variants}
+      variantsLabel={t("dockPage.sizeControl")}
+      title={t("dockPage.sizePlaygroundTitle")}
+      description={t("dockPage.sizePlaygroundBody")}
+    />
+    <UsagePreview
+      tree={surfacePlayground.tree}
+      variants={surfacePlayground.variants}
+      variantsLabel={t("dockPage.surfaceControl")}
+      title={t("dockPage.surfacePlaygroundTitle")}
+      description={t("dockPage.surfacePlaygroundBody")}
+    />
+    <h3>{t("dockPage.propertiesTitle")}</h3>
+    <p set:html={t("dockPage.propertiesBody")} />
+    <ul>
+      <li set:html={t("dockPage.sizeProp")} />
+      <li set:html={t("dockPage.spacingProp")} />
+      <li set:html={t("dockPage.motionProp")} />
+      <li set:html={t("dockPage.surfaceProp")} />
+      <li set:html={t("dockPage.borderProp")} />
+      <li set:html={t("dockPage.radiusProp")} />
+      <li set:html={t("dockPage.shadowProp")} />
+    </ul>
+  </Fragment>
+  <Fragment slot="a11y">
+    <p>{t("dockPage.behavior")}</p>
+    <p>{t("dockPage.motion")}</p>
+  </Fragment>
+  <Fragment slot="api">
+    <CodeBlock code={react} lang="tsx" />
+    <CodeBlock code={html} lang="html" />
+    <CodeBlock code={floatingCss} lang="css" label={t("dockPage.customCssLabel")} />
+  </Fragment>
+</ComponentPageShell>

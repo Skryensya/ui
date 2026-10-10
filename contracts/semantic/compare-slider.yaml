@@ -1,0 +1,16 @@
+# The structure lives in packages/core/src/compare-slider.ts. Here, only why it is chosen.
+
+CompareSlider:
+  useWhen:
+    - "two versions of the same thing should be judged against each other at the same place: a photo before and after an edit, an interface old and new, a chart with and without a series"
+    - "the reader should decide how much of each to see, by dragging a divider across the box, rather than being shown them one after the other"
+    - "the two layers are the same size and the same subject, so that what is on one side of the divider lines up with what is on the other"
+  avoidWhen:
+    - "the two things are different subjects or sizes; the divider only works if the layers are registered, so they would not line up; use side-by-side Grid columns"
+    - "the user is resizing panels of a layout rather than revealing a layer; that is Resizable, which conserves a total between neighbours"
+    - "what is inside the layers is interactive; a press anywhere on the box moves the divider, so a link or a button inside would be unreachable"
+    - "there are more than two things to compare; a divider has two sides, and Tabs or a Segmented control fits a set"
+  alternatives:
+    - Resizable
+    - Tabs
+    - Segmented

@@ -152,26 +152,80 @@ export const morphStackTurnTree = (t: Translate): UsageTree =>
 
 /* ---- 3. A screen over its structure, tuned ---------------------------------------------------------------------- */
 
-const DASHED = "background: transparent; border: 1px dashed var(--color-border-accent); border-radius: 0.375rem;";
+/*
+ * THE ORDER SCREEN, as four layers that each say a different thing about the SAME order. Every layer lays its rows on
+ * one grid (the same padding, the same row height), so the rows line up from the data at the bottom to the screen on
+ * top: you can follow "Camiseta, 24 €" down through the frame that holds it to the record it came from.
+ *
+ *   data       what is stored: three records, in the font of code
+ *   structure  where each thing goes: a dashed frame per row
+ *   screen     what the person reads: the order, in words and prices
+ *   action     what they can do: the button
+ *   notice     what the page tells them back: a toast
+ */
+const ROW = "1.25rem";
 
+/** One row of the grid. Every layer's rows are this tall, which is what makes them line up. */
+const row = (left: UsageTree, right?: UsageTree): UsageTree => ({
+  contract: "layout",
+  signature: "Inline",
+  options: { gap: "xs" },
+  attrs: { "aria-hidden": "true", style: `justify-content: space-between; align-items: center; flex-wrap: nowrap; block-size: ${ROW};` },
+  children: right ? [left, right] : [left],
+});
+
+const mono = (children: string, tone?: string): UsageTree => ({
+  contract: "typography",
+  signature: "Text",
+  options: { size: "sm", ...(tone ? { tone } : {}) },
+  attrs: { style: "font-family: var(--font-family-code);" },
+  children,
+});
+
+const frame = (width: string, accent = false): UsageTree =>
+  shape(`${DASHED(accent)} margin-block: 0;`, { width, height: ROW });
+
+const DASHED = (accent: boolean): string =>
+  `background: transparent; border: 1px dashed ${accent ? "var(--color-border-accent)" : "var(--color-border-default)"}; border-radius: 0.375rem;`;
+
+/** The records, under everything: the plate nobody sees until the stack opens. */
+const dataPlate = (t: Translate): UsageTree =>
+  plate(
+    { surface: "sunken", border: "default", radius: "surface", padding: "sm" },
+    "display: grid; align-content: space-between;",
+    [
+      stack("xs", row(mono("order", "secondary"), mono("#1042", "secondary")), row(mono("shirt"), mono("24")), row(mono("hat"), mono("12")), row(mono("total"), mono("36"))),
+      text(t("demo.morphStack.layers.data"), { textRole: "eyebrow" }),
+    ],
+  );
+
+/** Where each row goes: a frame per row, the same four rows as the screen, the last one picked out. */
 const screenBack = (t: Translate): UsageTree =>
   plate(
     { surface: "sunken", radius: "surface", padding: "sm" },
     "border: 1px dashed var(--color-border-default); display: grid; align-content: space-between;",
     [
-      stack("xs", shape(DASHED, { height: "1.5rem" }), shape(DASHED, { height: "3.5rem" }), shape(DASHED, { height: "1.5rem" })),
+      stack("xs", frame("65%"), frame("100%"), frame("100%"), frame("100%", true)),
       text(t("demo.morphStack.screen.back"), { textRole: "eyebrow" }),
     ],
   );
 
+/** What the person reads: the order, with each row where the frame behind it is. */
 const screenMiddle = (t: Translate): UsageTree =>
   plate(
     { surface: "raised", border: "default", radius: "surface", padding: "sm" },
     `display: grid; align-content: start; ${LIFT}`,
-    stack("xs", text(t("demo.morphStack.screen.title"), { weight: "emphasis", size: "sm" }), bar("100%"), bar("85%"), bar("60%"), shape("border-radius: 0.5rem; background: var(--color-bg-accent-subtle);", { height: "2.25rem" })),
+    stack(
+      "xs",
+      row(text(t("demo.morphStack.screen.title"), { weight: "emphasis", size: "sm" })),
+      row(text(t("demo.morphStack.screen.item1"), { size: "sm" }), text(t("demo.morphStack.screen.price1"), { size: "sm" })),
+      row(text(t("demo.morphStack.screen.item2"), { size: "sm" }), text(t("demo.morphStack.screen.price2"), { size: "sm" })),
+      row(text(t("demo.morphStack.screen.total"), { size: "sm", weight: "emphasis" }), text(t("demo.morphStack.screen.price3"), { size: "sm", weight: "emphasis" })),
+    ),
     false,
   );
 
+/** What they can do: one button, at the corner where the eye ends. */
 const screenFront = (t: Translate): UsageTree =>
   layer("end end", chip("background: var(--color-border-accent); color: var(--color-text-on-accent);", text(t("demo.morphStack.screen.front"), { weight: "label", size: "sm" })));
 
@@ -207,10 +261,10 @@ export const morphStackPerspectiveVariants = (t: Translate): Record<"close" | "d
   flat: screenStack(t, { perspective: "none" }),
 });
 
-/** The two plates that go beyond three: a data plate under everything and a notice over everything. */
-const deepestPlate = (t: Translate): UsageTree => metricsBack(t);
+/** The two plates that go beyond three: the records under everything and a notice over everything. */
+const deepestPlate = (t: Translate): UsageTree => dataPlate(t);
 const nearestPlate = (t: Translate): UsageTree =>
-  layer("start start", chip("background: var(--color-bg-success-subtle); border: 1px solid var(--color-border-success);", text(t("demo.morphStack.layers.toast"), { weight: "label", size: "sm" })));
+  layer("end start", chip("background: var(--color-bg-success-subtle); border: 1px solid var(--color-border-success);", text(t("demo.morphStack.layers.toast"), { weight: "label", size: "sm" })));
 
 /** A stack of three, four or five plates: the screen, its structure and the pay button, and then one or both extra ends. */
 export const morphStackLayersTree = (t: Translate, count: 3 | 4 | 5 = 5, state = "auto"): UsageTree => {

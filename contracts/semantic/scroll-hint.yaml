@@ -1,0 +1,11 @@
+ScrollHint:
+  useWhen:
+    - "a scrollable region needs a one-time directional invitation before the person discovers scrolling"
+    - "an animated visual cue should disappear after actual scrolling in the indicated axis"
+  avoidWhen:
+    - "the content fits without scrolling"
+    - "a persistent scroll-position indicator or navigation button is needed"
+    - "the hint would cover content or replace the region's accessible name and keyboard support"
+  alternatives:
+    - FadeEdge
+    - BackToTop

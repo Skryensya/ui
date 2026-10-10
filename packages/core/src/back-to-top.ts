@@ -185,14 +185,14 @@ export const backToTopContract = {
       template: {
         element: "button",
         part: "root",
-        also: ["sk-interactive"],
+        also: ["sk-button", "sk-interactive"],
         host: true,
         /*
          * `hidden` from the start: the control is an enhancement, so with no script it stays out of
          * the way rather than sitting there doing nothing. The enhancer (and React's state)
          * remove it once the reader is past the threshold.
          */
-        attrs: { type: "button", hidden: "" },
+        attrs: { type: "button", hidden: "", "data-variant": "soft" },
         children: [
           /*
            * `chevron-up`, BAKED IN rather than composed, the same call `Details` makes for its

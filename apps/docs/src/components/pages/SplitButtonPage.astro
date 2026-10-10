@@ -14,6 +14,7 @@ import A11yNotes from "../A11yNotes.astro";
 import {
   splitButtonAnatomyTree,
   splitButtonTree,
+  splitButtonVerticalBySize,
   splitButtonSmallTree,
   splitButtonSubtleTree,
   splitButtonOverMediaTree,
@@ -21,21 +22,15 @@ import {
   splitButtonDangerTree,
 } from "../../demos/split-button";
 import { annotationDemoCss } from "../../demos/annotation";
+
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
-
 const styles = `@import "@skryensya/core/patterns/anchored.css";
 @import "@skryensya/core/components/split-button.css";
 @import "@skryensya/core/components/menu.css";
 @import "@skryensya/core/components/button.css";
 @import "@skryensya/core/patterns/layout.css";`;
-const js = `import { mountIcons } from "@skryensya/vanilla/icon";
-import { lucideIcons } from "@skryensya/icons-lucide";
-import { initComponents } from "@skryensya/vanilla/auto";
-
-mountIcons(document, lucideIcons);
-initComponents();`;
 import { splitButtonDoTree, splitButtonDontTree, splitButtonSingleDoTree, splitButtonSingleDontTree } from "../../demos/dodont-pairs";
 ---
 
@@ -58,13 +53,31 @@ import { splitButtonDoTree, splitButtonDontTree, splitButtonSingleDoTree, splitB
     <p class="lede" set:html={t("splitButtonPage.lede")} />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={splitButtonTree(t)} title={t("splitButtonPage.mainTitle")} description={t("splitButtonPage.mainBody")} viewport="menu" />
-    <UsagePreview tree={splitButtonSmallTree(t)} title={t("splitButtonPage.smallTitle")} description={t("splitButtonPage.smallBody")} viewport="menu" />
-    <UsagePreview tree={splitButtonSubtleTree(t)} title={t("splitButtonPage.subtleTitle")} description={t("splitButtonPage.subtleBody")} viewport="menu" />
-    <UsagePreview tree={splitButtonOverMediaTree(t)} title={t("splitButtonPage.overMediaTitle")} description={t("splitButtonPage.overMediaBody")} viewport="menu" />
-    <UsagePreview tree={splitButtonGhostTree(t)} title={t("splitButtonPage.ghostTitle")} description={t("splitButtonPage.ghostBody")} viewport="menu" />
-    <UsagePreview tree={splitButtonDangerTree(t)} title={t("splitButtonPage.dangerTitle")} description={t("splitButtonPage.dangerBody")} viewport="menu" />
-
+    <h4>{t("splitButtonPage.mainTitle")}</h4>
+    <UsagePreview tree={splitButtonTree(t)} description={t("splitButtonPage.mainBody")} label={t("splitButtonPage.mainTitle")} viewport="menu" />
+    <h4>{t("splitButtonPage.verticalTitle")}</h4>
+    <UsagePreview
+      variants={[
+        { value: "xs", label: "xs", tree: splitButtonVerticalBySize("xs")(t) },
+        { value: "sm", label: "sm", tree: splitButtonVerticalBySize("sm")(t) },
+        { value: "md", label: "md", tree: splitButtonVerticalBySize("md")(t) },
+        { value: "lg", label: "lg", tree: splitButtonVerticalBySize("lg")(t) },
+      ]}
+      initialVariant="sm"
+      variantsLabel={t("splitButtonPage.verticalTitle")}
+      description={t("splitButtonPage.verticalBody")}
+      label={t("splitButtonPage.verticalTitle")}
+    />
+    <h4>{t("splitButtonPage.smallTitle")}</h4>
+    <UsagePreview tree={splitButtonSmallTree(t)} description={t("splitButtonPage.smallBody")} label={t("splitButtonPage.smallTitle")} viewport="menu" />
+    <h4>{t("splitButtonPage.subtleTitle")}</h4>
+    <UsagePreview tree={splitButtonSubtleTree(t)} description={t("splitButtonPage.subtleBody")} label={t("splitButtonPage.subtleTitle")} viewport="menu" />
+    <h4>{t("splitButtonPage.overMediaTitle")}</h4>
+    <UsagePreview tree={splitButtonOverMediaTree(t)} description={t("splitButtonPage.overMediaBody")} label={t("splitButtonPage.overMediaTitle")} viewport="menu" />
+    <h4>{t("splitButtonPage.ghostTitle")}</h4>
+    <UsagePreview tree={splitButtonGhostTree(t)} description={t("splitButtonPage.ghostBody")} label={t("splitButtonPage.ghostTitle")} viewport="menu" />
+    <h4>{t("splitButtonPage.dangerTitle")}</h4>
+    <UsagePreview tree={splitButtonDangerTree(t)} description={t("splitButtonPage.dangerBody")} label={t("splitButtonPage.dangerTitle")} viewport="menu" />
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
       {tList(t, "splitButtonPage.contract").map((item) => <li set:html={item} />)}

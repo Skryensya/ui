@@ -1,4 +1,7 @@
 ---
-import FileUploadPage from "@/components/pages/FileUploadPage.astro";
+/*
+ * The page was renamed Drop zone (`components/drop-zone`). Old links keep working as a 301 onto it, the same treatment as
+ * `components/popup.astro`; the contract and its stylesheet are still `file-upload`, only the page changed its name.
+ */
+return Astro.redirect("/components/drop-zone", 301);
 ---
-<FileUploadPage />

@@ -31,12 +31,14 @@ const catalogue = hrefs("component-catalog.ts", /"(\/components\/[a-z0-9-]+)":/g
  * point: a future reader sees that the absence was decided, not forgotten.
  *   - `details` is a 301 redirect to Accordion's native-details section, not a page.
  *   - `primitives` documents tier-1 tokens, which is a foundation and not a component.
+ *   - `file-upload` is a 301 onto `drop-zone`: the page was renamed, and the old link has to keep working.
  *   - `popup` is a 301 into Popover's `#popup` section: it documented `Popover.bare` under a second
  *     name, so it was one family with two pages rather than two components.
  */
 const NOT_COMPONENTS = new Set([
   "/components/details",
   "/components/primitives",
+  "/components/file-upload",
   "/components/popup",
 ]);
 

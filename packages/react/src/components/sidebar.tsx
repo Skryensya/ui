@@ -414,7 +414,10 @@ export const SidebarResizeHandle = forwardRef<HTMLDivElement, SidebarResizeHandl
         ref={forwardedRef}
         role="separator"
         tabIndex={0}
-      />
+      >
+        {/* The thumb is paint (`patterns/grip.css`): the bar itself takes the pointer and the keys. */}
+        <span aria-hidden="true" className={`${sidebarParts.resizeGrip} sk-grip`} />
+      </div>
     );
   },
 );

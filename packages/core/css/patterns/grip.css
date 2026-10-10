@@ -1,0 +1,87 @@
+/*
+ * PATTERN, GRIP. The small thumb that sits in the middle of a drag bar and says "this moves": a rounded little
+ * container holding six dots, two across and three down. DRAWN, never typed: the dots are one gradient tile repeated
+ * in a box sized to exactly two by three cells, not the braille character that looks like it, so they stay the same
+ * size, colour and spacing in every font and every platform.
+ *
+ * This file draws the THUMB only: its box, its dots, and how it comes and goes. It does not know what it is the thumb
+ * of, and it does not decide when it shows. The bar that owns it does, by writing `--sk-grip-opacity` and
+ * `--sk-grip-scale` on itself (they inherit): Resizable and Sidebar write them on hover, focus and drag, so the
+ * thumb is found by the pointer and not left on screen all the time; Compare writes them once, so it never leaves.
+ * Compose it onto an `aria-hidden` element INSIDE the bar, which is what takes the pointer and the keys:
+ *
+ *   <div class="sk-resizable__handle" role="separator" ...><span class="sk-resizable__grip sk-grip" aria-hidden="true"></span></div>
+ *
+ * IT IS CENTRED ON THE BAR by default (`inset: 50%` and a half-size translate), and the bar's own stylesheet moves it
+ * where its geometry needs (Sidebar's rides flush inside the panel edge, because the root clips). A bar that runs
+ * the other way sets `--sk-grip-rotate: 90deg`: the same thumb turned a quarter, three across and two down.
+ *
+ * Every hook resolves to a TIER-2 token, never a palette or a raw colour; scripts/lint.ts enforces it.
+ */
+@layer components {
+  .sk-grip {
+    --sk-grip-width: 1rem;
+    --sk-grip-height: 1.5rem;
+    --sk-grip-radius: var(--radius-control);
+    --sk-grip-bg: var(--color-bg-surface-raised);
+    --sk-grip-border-color: var(--color-border-strong);
+    --sk-grip-dot-color: var(--color-text-tertiary);
+    /* One dot and the room it owns: the six together are 2 cells wide and 3 tall. */
+    --sk-grip-dot: 2px;
+    --sk-grip-cell: 5px;
+
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    z-index: 1;
+    box-sizing: border-box;
+    display: grid;
+    place-content: center;
+    inline-size: var(--sk-grip-width);
+    block-size: var(--sk-grip-height);
+    border: 1px solid var(--sk-grip-border-color);
+    border-radius: var(--sk-grip-radius);
+    background: var(--sk-grip-bg);
+    /* The bar takes the pointer and the keys: the thumb is only what it looks like. */
+    pointer-events: none;
+    /* Read with a fallback and NEVER declared here: the bar writes them on itself and they inherit, and a declaration on this element would beat the inherited value. Hidden until the bar says otherwise. */
+    opacity: var(--sk-grip-opacity, 0);
+    /* Individual transforms, so the centring, the quarter turn and the pop compose without fighting each other. */
+    translate: -50% -50%;
+    rotate: var(--sk-grip-rotate, 0deg);
+    scale: var(--sk-grip-scale, 0.85);
+    transition:
+      opacity var(--motion-feedback-duration) var(--motion-feedback-easing),
+      scale var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  .sk-grip::before {
+    content: "";
+    display: block;
+    inline-size: calc(var(--sk-grip-cell) * 2);
+    block-size: calc(var(--sk-grip-cell) * 3);
+    background-image: radial-gradient(
+      circle,
+      var(--sk-grip-dot-color) calc(var(--sk-grip-dot) / 2),
+      transparent calc(var(--sk-grip-dot) / 2 + 0.5px)
+    );
+    background-size: var(--sk-grip-cell) var(--sk-grip-cell);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sk-grip {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .sk-grip {
+      border-color: ButtonText;
+      background: ButtonFace;
+    }
+
+    .sk-grip::before {
+      background-image: radial-gradient(circle, ButtonText calc(var(--sk-grip-dot) / 2), transparent calc(var(--sk-grip-dot) / 2 + 0.5px));
+    }
+  }
+}

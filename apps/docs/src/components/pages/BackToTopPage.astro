@@ -27,7 +27,7 @@ const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const styles = `@import "@skryensya/core/components/back-to-top.css";`;
 
-const html = `<button class="sk-back-to-top sk-interactive" type="button" data-sk-back-to-top hidden>
+const html = `<button class="sk-back-to-top sk-button sk-interactive" data-variant="soft" type="button" data-sk-back-to-top hidden>
   <span class="sk-back-to-top__icon" aria-hidden="true">
     <span data-sk-icon="chevron-up" data-sk-icon-size="sm"></span>
   </span>
@@ -37,7 +37,8 @@ const html = `<button class="sk-back-to-top sk-interactive" type="button" data-s
 /* The `target` half, which is the one nobody remembers: it moves FOCUS after the scroll so the next
    Tab starts from the top. The destination has to be focusable itself. */
 const htmlTarget = `<button
-  class="sk-back-to-top sk-interactive"
+  class="sk-back-to-top sk-button sk-interactive"
+  data-variant="soft"
   type="button"
   data-sk-back-to-top
   data-threshold="600"

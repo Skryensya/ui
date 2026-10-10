@@ -30,6 +30,8 @@ export const componentMessages = {
     "component.tabA11y": "Accesibilidad",
     "component.tabTests": "Tests",
     "component.tabsAriaLabel": "Referencia de {name}",
+    "component.relatedTitle": "Componentes relacionados",
+    "component.relatedUseCase": "{useCase}",
     /* The "the code is in the preview's React tab" note: identical boilerplate on every page whose
        only React-specific content is that tab, so it is one key rather than N copies. */
     "component.reactNote": "El código está en la pestaña <strong>React</strong> del preview.",
@@ -73,6 +75,8 @@ export const componentMessages = {
     "component.tabA11y": "Accessibility",
     "component.tabTests": "Tests",
     "component.tabsAriaLabel": "{name} reference",
+    "component.relatedTitle": "Related components",
+    "component.relatedUseCase": "{useCase}",
     "component.reactNote": "The code is in the preview's <strong>React</strong> tab.",
     "component.contractNotesTitle": "Contract",
     "component.statesTitle": "States",

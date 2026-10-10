@@ -1,0 +1,26 @@
+WEBVTT
+
+NOTE
+Demo captions. They are not the film's dialogue: they show where captions
+appear and which keys the player answers to.
+
+00:00:01.000 --> 00:00:06.000
+Captions appear here, over the picture.
+
+00:00:07.000 --> 00:00:12.000
+Press C to turn them off and on.
+
+00:00:14.000 --> 00:00:19.000
+J and L jump back and forward ten seconds.
+
+00:00:21.000 --> 00:00:26.000
+The digits 0 to 9 jump to a tenth of the video.
+
+00:00:28.000 --> 00:00:33.000
+While paused, comma and period step one frame.
+
+00:00:35.000 --> 00:00:40.000
+Less than and greater than change the speed.
+
+00:00:42.000 --> 00:00:48.000
+F opens full screen. Escape closes it.

@@ -15,7 +15,8 @@ import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
 import "@skryensya/core/components/annotation.css";
-import { windowAnatomyCss, windowAnatomyTree, windowFixedTree, windowTree } from "../../demos/window";
+import { windowAnatomyCss, windowAnatomyTree, windowTree } from "../../demos/window";
+import windowAnatomyScript from "../../demos/scripts/window-anatomy.ts?raw";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
@@ -29,6 +30,69 @@ mountIcons(document, lucideIcons);`;
 import { windowTitleDoTree, windowTitleDontTree, windowBesideDoTree, windowBesideDontTree } from "../../demos/dodont-mocks";
 ---
 
+<style is:global>
+  .sk-do-dont .dd-window {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-stack-xs);
+  }
+
+  .sk-do-dont .dd-window__trigger,
+  .sk-do-dont .dd-window .sk-window__trigger {
+    --sk-button-height: var(--size-control-sm);
+  }
+
+  .sk-do-dont .dd-window .sk-window__positioner {
+    position: static !important;
+    inset: auto !important;
+    translate: none !important;
+    transform: none !important;
+  }
+
+  .sk-do-dont .dd-window .sk-window__content {
+    position: relative;
+    min-inline-size: 0;
+    min-block-size: 0;
+  }
+
+  .sk-do-dont .dd-window .sk-window__body {
+    min-block-size: 0;
+    padding: var(--space-inset-sm);
+  }
+
+  .sk-do-dont .dd-window .sk-window__header {
+    min-block-size: 2rem;
+  }
+
+  .sk-do-dont .dd-window--floating,
+  .sk-do-dont .dd-window--dialogish {
+    position: absolute;
+    z-index: 2;
+  }
+
+  .sk-do-dont .dd-window--floating .sk-window__content,
+  .sk-do-dont .dd-window--dialogish .sk-window__content {
+    inline-size: 14rem !important;
+    block-size: 9rem !important;
+  }
+
+  .sk-do-dont .dd-window--floating {
+    inset-block-start: 2rem;
+    inset-inline-end: 1.5rem;
+  }
+
+  .sk-do-dont .dd-window--floating .sk-window__trigger,
+  .sk-do-dont .dd-window--dialogish .sk-window__trigger {
+    display: none;
+  }
+
+  .sk-do-dont .dd-window--dialogish {
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    transform: translate(-50%, -50%);
+  }
+</style>
+
 <ComponentPageShell
   title="Window"
   description={t("windowPage.description")}
@@ -41,15 +105,41 @@ import { windowTitleDoTree, windowTitleDontTree, windowBesideDoTree, windowBesid
   ]}
 >
   <Fragment slot="appearance">
-    <AppearanceMenu label={t("prefs.appearance")} />
+    <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} />
   </Fragment>
 
   <Fragment slot="usage">
     <p class="lede" set:html={t("windowPage.lede")} />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={windowTree(t)} title={t("windowPage.freeTitle")} description={t("windowPage.freeBody")} viewport="overlay" />
-    <UsagePreview tree={windowFixedTree(t)} title={t("windowPage.fixedTitle")} description={t("windowPage.fixedBody")} viewport="overlay" />
+    <UsagePreview
+      tree={windowTree(t)}
+      optionName="resizable"
+      title={t("windowPage.resizeTitle")}
+      description={t("windowPage.resizeBody")}
+      labels={{ true: t("windowPage.enabled"), false: t("windowPage.disabled") }}
+      explain={{ true: t("windowPage.freeBody"), false: t("windowPage.fixedBody") }}
+      viewport="overlay"
+      stageMinBlockSize="24rem"
+    />
+    <UsagePreview
+      tree={windowTree(t)}
+      optionName="draggable"
+      title={t("windowPage.dragTitle")}
+      description={t("windowPage.dragBody")}
+      labels={{ true: t("windowPage.enabled"), false: t("windowPage.disabled") }}
+      explain={{ true: t("windowPage.dragOn"), false: t("windowPage.dragOff") }}
+      viewport="overlay"
+      stageMinBlockSize="24rem"
+    />
+    <UsagePreview
+      tree={windowTree(t)}
+      optionName="appearance"
+      title={t("windowPage.appearanceTitle")}
+      description={t("windowPage.appearanceBody")}
+      viewport="overlay"
+      stageMinBlockSize="24rem"
+    />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
@@ -58,7 +148,7 @@ import { windowTitleDoTree, windowTitleDontTree, windowBesideDoTree, windowBesid
 
     <h3>{t("component.anatomy")}</h3>
     <p set:html={t("windowPage.anatomyBody")} />
-    <UsagePreview tree={windowAnatomyTree(t)} css={windowAnatomyCss} label={t("windowPage.anatomyPreviewLabel")} bare />
+    <UsagePreview tree={windowAnatomyTree(t)} css={windowAnatomyCss} script={windowAnatomyScript} label={t("windowPage.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
@@ -72,6 +162,8 @@ import { windowTitleDoTree, windowTitleDontTree, windowBesideDoTree, windowBesid
     />
     <DoDont
       canvas
+      stacked
+      compact
       title={t("windowPage.dd.beside.title")}
       do={{ tree: windowBesideDoTree(t), caption: t("windowPage.dd.beside.do") }}
       dont={{ tree: windowBesideDontTree(t), caption: t("windowPage.dd.beside.dont") }}

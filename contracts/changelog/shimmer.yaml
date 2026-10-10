@@ -3,5 +3,16 @@
 # `surface` es la forma del contrato la última vez que alguien la revisó. Si el compilador dice
 # que no coincide, algo de lo que un consumidor depende se movió: escribe la entrada y pega el
 # hash nuevo.
-surface: "f1eb67b4b33c6731"
-entries: []
+surface: "c0d95baaaf3c1589"
+entries:
+  - date: 2026-10-10
+    kind: breaking
+    es:
+      title: El brillo recorre el texto sin recalcular estilos en cada fotograma
+      body: >-
+        El barrido animaba una propiedad personalizada registrada de la que dependían las cuatro paradas del gradiente, y el navegador recalculaba estilo y reconstruía el gradiente en cada fotograma: con 20 brillos en una página, unos 110 ms de estilo por segundo. Ahora el gradiente es fijo y lo que se anima es su posición de fondo (unos 11 ms por segundo). Se ve igual: una banda que cruza el texto de izquierda a derecha y reposa a un lado entre barridos. Desaparece el gancho <code>--sk-shimmer-position</code>, que era de salida y nadie debía escribir.
+    en:
+      title: The highlight crosses the text without recalculating styles every frame
+      body: >-
+        The sweep animated a registered custom property that the gradient's four stops were computed from, so the browser recalculated style and rebuilt the gradient on every frame: with 20 shimmers on a page, about 110 ms of style work per second. The gradient is now fixed and what animates is its background position (about 11 ms per second). It looks the same: a band that crosses the text from left to right and rests off to the side between sweeps. The hook <code>--sk-shimmer-position</code> is gone; it was an output nobody was meant to write.
+

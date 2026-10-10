@@ -44,6 +44,12 @@ afterEach(() => {
 });
 
 describe("Window Vanilla contracts", () => {
+  it("clamps the initial size to its minimum", async () => {
+    markup('data-default-open data-default-width="20" data-default-height="20"');
+    await waitFor(() => expect(part("content").getAttribute("data-state")).toBe("open"));
+    expect(part("positioner").style.getPropertyValue("--width")).toBe("240px");
+    expect(part("positioner").style.getPropertyValue("--height")).toBe("120px");
+  });
   it("mounts on the attribute it scans for, and only once", () => {
     markup();
     expect(document.querySelector("[data-sk-window-ready]")).toBeTruthy();

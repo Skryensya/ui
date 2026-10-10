@@ -9,7 +9,7 @@ import { icons, noStates, stage } from "./shared.js";
 export const windowRealization: Realization = {
   contract: "window",
   signature: "Window",
-  // One set per appearance, like Dialog and Popover: with nothing on its grid, four appearances in
+  // One set per appearance, like Dialog and Popover: with nothing on its grid, three appearances in
   // one set would have no place to go.
   splitBy: "appearance",
   nested: true,

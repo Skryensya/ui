@@ -36,7 +36,7 @@ const t = useTranslations(getLocale(Astro.url));
   <div
     class="docs-component-shell"
     data-toc-transparent
-    data-docs-appearance-scope={hasAppearanceControl ? "" : undefined}
+    data-docs-appearance-page={hasAppearanceControl ? "" : undefined}
     data-docs-appearance-target={hasAppearanceControl ? appearanceTarget : undefined}
   >
     <div class="docs-component-head">
@@ -47,16 +47,10 @@ const t = useTranslations(getLocale(Astro.url));
         <div class="docs-component-hero__title-row">
           <h1>{heading}</h1>
         </div>
-        {
-          hasAppearanceControl && (
-            <div class="docs-component-hero__controls">
-              <slot name="appearance" />
-            </div>
-          )
-        }
       </header>
     </div>
 
+    {hasAppearanceControl && <template data-docs-appearance-template><slot name="appearance" /></template>}
     <div class="docs-component-body sk-layout-grid" data-toc-transparent>
       <slot />
     </div>

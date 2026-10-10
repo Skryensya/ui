@@ -1,0 +1,97 @@
+---
+import "@skryensya/core/components/dialog-stack.css";
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/input.css";
+import "@skryensya/core/components/form-field.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import UsagePreview from "../UsagePreview.astro";
+import CodeBlock from "../CodeBlock.astro";
+import { dialogStackTree } from "../../demos/dialog-stack";
+import { dialogStackScenarios, dialogStackScenarioCss } from "../../demos/dialog-stack-scenarios";
+import { getLocale, useTranslations } from "../../i18n";
+
+const t = useTranslations(getLocale(Astro.url));
+const react = `"use client";
+import {
+  DialogStack, DialogStackTrigger, DialogStackOverlay, DialogStackBody,
+  DialogStackContent, DialogStackHeader, DialogStackTitle,
+  DialogStackDescription, DialogStackFooter, DialogStackNext,
+  DialogStackPrevious, DialogStackClose,
+} from "@skryensya/react/dialog-stack";
+import { Button } from "@skryensya/react/button";
+
+<DialogStack>
+  <DialogStackTrigger asChild><Button>Set up workspace</Button></DialogStackTrigger>
+  <DialogStackOverlay />
+  <DialogStackBody>
+    <DialogStackContent>
+      <DialogStackHeader>
+        <DialogStackTitle>Name your workspace</DialogStackTitle>
+        <DialogStackDescription>Choose a recognizable name.</DialogStackDescription>
+      </DialogStackHeader>
+      <DialogStackFooter>
+        <DialogStackClose>Cancel</DialogStackClose>
+        <DialogStackNext asChild><Button>Next</Button></DialogStackNext>
+      </DialogStackFooter>
+    </DialogStackContent>
+    <DialogStackContent>
+      <DialogStackHeader>
+        <DialogStackTitle>Invite your team</DialogStackTitle>
+        <DialogStackDescription>Invitations can be sent after setup too.</DialogStackDescription>
+      </DialogStackHeader>
+      <DialogStackFooter>
+        <DialogStackPrevious asChild><Button>Back</Button></DialogStackPrevious>
+        <DialogStackClose>Cancel</DialogStackClose>
+        <DialogStackNext asChild><Button>Next</Button></DialogStackNext>
+      </DialogStackFooter>
+    </DialogStackContent>
+    <DialogStackContent>
+      <DialogStackHeader>
+        <DialogStackTitle>Ready to start</DialogStackTitle>
+        <DialogStackDescription>Your workspace is ready.</DialogStackDescription>
+      </DialogStackHeader>
+      <DialogStackFooter>
+        <DialogStackPrevious asChild><Button>Back</Button></DialogStackPrevious>
+        <DialogStackClose asChild><Button>Create workspace</Button></DialogStackClose>
+      </DialogStackFooter>
+    </DialogStackContent>
+  </DialogStackBody>
+</DialogStack>`;
+const css = `@import "@skryensya/core/components/dialog-stack.css";
+@import "@skryensya/core/components/button.css";`;
+const vanilla = `import { initComponents } from "@skryensya/vanilla/auto";
+await initComponents();`;
+---
+
+<ComponentPageShell title="Dialog Stack" description={t("dialogStackPage.description")} contractId="dialog-stack" badge="Beta" testFiles={["packages/react/src/components/dialog-stack.test.tsx", "packages/vanilla/src/components/dialog-stack.test.ts"]}>
+  <Fragment slot="usage">
+    <p class="lede">{t("dialogStackPage.lede")}</p>
+    <UsagePreview tree={dialogStackTree(t)} title={t("dialogStackPage.example")} viewport="overlay" css=".sk-dialog-stack { inline-size: 100%; min-block-size: calc(100dvh - 2 * var(--sk-component-preview-stage-padding)); display: grid; place-items: center; }" storybookStory="Default" storybookTitle="Components/Overlays/Dialog Stack" />
+    <UsagePreview
+      variants={dialogStackScenarios(getLocale(Astro.url) === "es")}
+      title={getLocale(Astro.url) === "es" ? "Tareas cortas, pasos concretos" : "Short tasks, concrete steps"}
+      variantsLabel={getLocale(Astro.url) === "es" ? "Caso de uso" : "Use case"}
+      viewport="overlay"
+      stageMinBlockSize="28rem"
+      css={dialogStackScenarioCss}
+      storybookStory="Default"
+      storybookTitle="Components/Overlays/Dialog Stack"
+    />
+    <p>{t("dialogStackPage.motion")}</p>
+    <p>{t("dialogStackPage.overlay")}</p>
+  </Fragment>
+  <Fragment slot="guidelines">
+    <p>{t("dialogStackPage.guidelines")}</p>
+    <p>{t("dialogStackPage.content")}</p>
+  </Fragment>
+  <Fragment slot="accessibility">
+    <p>{t("dialogStackPage.a11y")}</p>
+    <p>{t("dialogStackPage.author")}</p>
+  </Fragment>
+  <Fragment slot="code">
+    <p>{t("dialogStackPage.install")}</p>
+    <CodeBlock code={css} lang="css" />
+    <CodeBlock code={react} lang="tsx" />
+    <CodeBlock code={vanilla} lang="ts" />
+  </Fragment>
+</ComponentPageShell>

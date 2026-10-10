@@ -87,6 +87,7 @@ export function Popover({
   const descriptionId = useId();
   const hasTitle = Boolean(title) && !bare;
   const hasDescription = Boolean(description) && !bare;
+  const triggerAccessibleName = triggerLabel ?? (triggerIconOnly && hasTitle ? title : undefined);
 
   return (
     <div
@@ -97,7 +98,7 @@ export function Popover({
       data-bare={bare ? "" : undefined}
     >
       <button
-        aria-label={triggerLabel}
+        aria-label={triggerAccessibleName}
         className={cx("sk-button", "sk-interactive", popoverParts.trigger, anchoredParts.anchor, triggerClassName)}
         popoverTarget={contentId}
         type="button"

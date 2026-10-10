@@ -122,6 +122,8 @@ export const sidebarParts = {
   trigger: "sk-sidebar__trigger",
   /** The drag edge. Authoring it is what makes a sidebar resizable; there is no second switch. */
   resizeHandle: "sk-sidebar__resize-handle",
+  /** The thumb on the edge of the rail: a small container with six dots, shown on hover, focus and drag. `aria-hidden`. */
+  resizeGrip: "sk-sidebar__resize-grip",
 } as const;
 
 export type SidebarPart = keyof typeof sidebarParts;
@@ -411,6 +413,8 @@ export const sidebarContract = {
           "aria-valuenow": "50",
           tabindex: "0",
         },
+        // The thumb is paint (`patterns/grip.css`): the bar itself takes the pointer and the keys.
+        children: [{ element: "span", part: "resizeGrip", also: ["sk-grip"], attrs: { "aria-hidden": "true" } }],
       },
       react: { from: "@skryensya/react/sidebar", name: "SidebarResizeHandle" },
     },

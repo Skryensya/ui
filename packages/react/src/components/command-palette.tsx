@@ -107,6 +107,7 @@ export function CommandPalette({
   /* Controlled, so a palette that is reopened starts empty the way the enhancer's `open()` does:
    * clearing an uncontrolled field would mean writing to the DOM node behind React's back. */
   const [query, setQuery] = useState("");
+  const listboxId = `${id}-listbox`;
   const optionId = (i: number) => `${id}-option-${i}`;
 
   const runQuery = (value: string) => {
@@ -230,7 +231,7 @@ export function CommandPalette({
         <input
           aria-activedescendant={active >= 0 ? optionId(active) : undefined}
           aria-autocomplete="list"
-          aria-controls="sk-command-palette-listbox"
+          aria-controls={listboxId}
           aria-expanded={results.length > 0}
           autoComplete="off"
           className={commandPaletteParts.input}
@@ -283,7 +284,7 @@ export function CommandPalette({
       <ul
         aria-label="Resultados"
         className={`${commandPaletteParts.list} sk-scrollbar`}
-        id="sk-command-palette-listbox"
+        id={listboxId}
         ref={list}
         role="listbox"
       >

@@ -86,10 +86,18 @@
     closeOnEscape: onUnlessFalse(options.closeOnEscape.attr),
     persistRect: root.hasAttribute(options.persistRect.attr),
     defaultSize: {
-      width: numberAttr(options.defaultWidth.attr) ?? windowDefaultSize.width,
-      height: numberAttr(options.defaultHeight.attr) ?? windowDefaultSize.height,
+      width: Math.max(options.minWidth.default, minWidth ?? 0, numberAttr(options.defaultWidth.attr) ?? windowDefaultSize.width),
+      height: Math.max(options.minHeight.default, minHeight ?? 0, numberAttr(options.defaultHeight.attr) ?? windowDefaultSize.height),
     },
-    minSize: minWidth || minHeight ? { width: minWidth ?? 0, height: minHeight ?? 0 } : undefined,
+    allowOverflow: false,
+    getBoundaryEl: () => {
+      const selector = root.getAttribute(options.boundary.attr);
+      return selector ? root.ownerDocument.querySelector<HTMLElement>(selector) : null;
+    },
+    minSize: {
+      width: Math.max(options.minWidth.default, minWidth ?? 0),
+      height: Math.max(options.minHeight.default, minHeight ?? 0),
+    },
     translations,
     onOpenChange(details: { open: boolean }) {
       root.dispatchEvent(

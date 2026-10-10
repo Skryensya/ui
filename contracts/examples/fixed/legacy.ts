@@ -16,6 +16,8 @@ import { heroWithPricingToggleSnippet } from "./hero-with-pricing-toggle.js";
 import { heroWithSocialProofSnippet } from "./hero-with-social-proof.js";
 import { heroWithTestimonialSnippet } from "./hero-with-testimonial.js";
 import { heroWithVideoDemoSnippet } from "./hero-with-video-demo.js";
+import { imageCropperAvatarSnippet } from "./image-cropper-avatar.js";
+import { imageCropperCoverSnippet } from "./image-cropper-cover.js";
 import { iconButtonToolbarWithTooltipsSnippet } from "./icon-button-toolbar-with-tooltips.js";
 import { iconOnlyButtonTooltipSnippet } from "./icon-only-button-tooltip.js";
 import { paginationStandaloneSnippet } from "./pagination-standalone.js";
@@ -50,6 +52,8 @@ export const legacySnippets: readonly Snippet[] = [
   heroCenteredMinimalSnippet,
   heroWithEyebrowSnippet,
   footerCreditLineSnippet,
+  imageCropperAvatarSnippet,
+  imageCropperCoverSnippet,
   paginationStandaloneSnippet,
   questionnaireBranchingSurveySnippet,
   settingsRowWithSwitchSnippet,

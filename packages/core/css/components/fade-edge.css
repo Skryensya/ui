@@ -48,6 +48,8 @@
   .sk-fade-edge {
     --sk-fade-edge-size: 4rem;
     --sk-fade-edge-color: var(--color-bg-canvas);
+    --fade-edge-scroll-x: 0px;
+    --fade-edge-scroll-y: 0px;
 
     /*
      * The ramp, in the MASK's coordinates: the element's whole length, with the curve in the last
@@ -291,6 +293,12 @@
    */
   .sk-fade-edge[data-fade="color"] {
     mask-image: none;
+  }
+
+  /* Compensate the scroller's offset: absolute pseudo-elements otherwise leave its visible edge. */
+  .sk-fade-edge[data-fade="color"]::after,
+  .sk-fade-edge[data-fade="color"]::before {
+    translate: var(--fade-edge-scroll-x) var(--fade-edge-scroll-y);
   }
 
   .sk-fade-edge[data-fade="color"]::after {

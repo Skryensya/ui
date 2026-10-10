@@ -701,6 +701,62 @@
         "version": "0.0.1"
       }
     ],
+    "audio-player": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-10",
+            "en": {
+              "body": "While playing, the player spent about 300 ms of every second recalculating styles; it now spends about 20. The output hooks <code>--sk-audio-player-played</code>, <code>-buffered</code>, <code>-volume</code> and <code>-hover</code> are gone: what moves is written straight on its element, and only when what you can see changes. Audio the contract renders starts at <code>preload=\"none\"</code> and rises to <code>metadata</code> when the player is near the viewport. Off screen it draws nothing.",
+              "title": "Far less work while it plays"
+            },
+            "es": {
+              "body": "Reproduciendo, el reproductor gastaba unos 300 ms de cada segundo recalculando estilos; ahora gasta unos 20. Los ganchos de salida <code>--sk-audio-player-played</code>, <code>-buffered</code>, <code>-volume</code> y <code>-hover</code> desaparecen: lo que se mueve se escribe directamente en su elemento, y solo cuando cambia lo que se ve. El audio que dibuja el contrato empieza con <code>preload=\"none\"</code> y sube a <code>metadata</code> cuando el reproductor está cerca del viewport. Fuera de pantalla no dibuja nada.",
+              "title": "Mucho menos trabajo mientras suena"
+            },
+            "kind": "breaking"
+          },
+          {
+            "date": "2026-10-09",
+            "en": {
+              "body": "An audio player with the system's controls over a real audio element. The sound comes in through <code>src</code> or as your own audio with several sources, and it can carry a title, an artist and a cover, as a strip or as a card. With <code>tracks</code> it loads a list: it shows which one is playing, moves on by itself and offers previous and next. Give it the file's peaks and the seek bar is drawn as a waveform. It runs entirely from the keyboard (k, j, l, m, 0 to 9, arrows, Shift+P and Shift+N) only while focus is inside.",
+              "title": "First published contract"
+            },
+            "es": {
+              "body": "Un reproductor de audio con los controles del sistema sobre un audio real. El sonido llega por <code>src</code> o como un audio tuyo con varias fuentes, y puede llevar título, artista y portada, en una barra o en una tarjeta. Con <code>tracks</code> carga una lista: muestra cuál suena, pasa a la siguiente sola y ofrece pista anterior y siguiente. Si le das los picos del archivo, la barra de progreso se dibuja como forma de onda. Se maneja entera con el teclado (k, j, l, m, 0 al 9, flechas, Shift+P y Shift+N) solo mientras el foco está dentro.",
+              "title": "Primera publicación del contrato"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-10-09",
+            "en": {
+              "body": "The back and forward buttons and their words (<code>backLabel</code>, <code>forwardLabel</code>) are gone: <code>J</code> and <code>L</code> still move <code>skip</code> seconds. The list of tracks is composed from List's rows (square corners, dividers, the loaded track marked with a bar at its start and its number). New signature <code>AudioPlayerMinimal</code>: a play button, the seek bar and the time, and nothing else.",
+              "title": "No ±10 buttons, the list is a List, and AudioPlayerMinimal is born"
+            },
+            "es": {
+              "body": "Se quitan los botones de retroceder y adelantar y sus palabras (<code>backLabel</code>, <code>forwardLabel</code>): <code>J</code> y <code>L</code> siguen moviendo <code>skip</code> segundos. La lista de pistas se compone con las filas de List (esquinas rectas, divisores, la pista cargada marcada con una barra al inicio y su número). Nueva firma <code>AudioPlayerMinimal</code>: un botón de reproducir, la barra de avance y el tiempo, sin nada más.",
+              "title": "Sin botones de ±10, la lista es una List y nace AudioPlayerMinimal"
+            },
+            "kind": "breaking"
+          },
+          {
+            "date": "2026-10-09",
+            "en": {
+              "body": "Volume no longer opens by pushing the bar along: it is a popup above the button that only fades in, moving no control. New hook <code>--sk-audio-player-volume-pad</code>. Play, previous and next are always round. <code>AudioPlayerMinimal</code> takes <code>title</code>, the name of what is playing, above the bar.",
+              "title": "Volume is a popup, and the minimal one can say what is playing"
+            },
+            "es": {
+              "body": "El volumen ya no se abre empujando la barra: es un popup encima del botón que solo aparece, sin mover ningún control. Nuevo gancho <code>--sk-audio-player-volume-pad</code>. Reproducir, anterior y siguiente son siempre redondos. <code>AudioPlayerMinimal</code> acepta <code>title</code>, el nombre de lo que suena, encima de la barra.",
+              "title": "El volumen es un popup, y la versión mínima puede decir qué suena"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.2-dev"
+      }
+    ],
     "avatar": [
       {
         "date": null,
@@ -840,6 +896,24 @@
       }
     ],
     "back-to-top": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "BackToTop shares Button's soft style while retaining its circular shape and reveal animation.",
+              "title": "Soft button for returning to the top"
+            },
+            "es": {
+              "body": "BackToTop comparte el estilo soft de Button, conservando su forma circular y su animación de aparición.",
+              "title": "Botón soft para volver arriba"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -2578,6 +2652,36 @@
     ],
     "clipboard": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "Copy buttons no longer scale or translate on press. Those transforms changed the bubble's containing block, making it jump when the release animation ended. Icon and state-layer feedback remain intact.",
+              "title": "Copy feedback is positioned correctly from its first frame"
+            },
+            "es": {
+              "body": "El botón de copia ya no se escala ni se desplaza al pulsarlo. Esas transformaciones cambiaban el contenedor de la burbuja y hacían que saltara al terminar la animación. El icono y la capa de estado conservan su feedback.",
+              "title": "Copiado se coloca bien desde el primer frame"
+            },
+            "kind": "bugfix"
+          },
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "The Copied message appears above the button instead of over the adjacent field or command. The confirmation icon and accessible announcement remain unchanged.",
+              "title": "Copy confirmation no longer covers the copied value"
+            },
+            "es": {
+              "body": "El mensaje Copiado se coloca encima del botón, en vez de sobre el campo o el comando adyacente. Conserva el icono de confirmación y el anuncio accesible.",
+              "title": "La confirmación no tapa el valor copiado"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -3454,6 +3558,50 @@
         "version": "0.0.1"
       }
     ],
+    "compare-slider": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-10",
+            "en": {
+              "body": "<code>--sk-compare-slider-position</code> is no longer in <code>outputHooks</code>: it is a hook like the others, which the binding writes on the root while dragging. The page now lists it among the hooks, with that note. The markup and the behaviour do not change.",
+              "title": "The position hook is no longer declared as an output"
+            },
+            "es": {
+              "body": "<code>--sk-compare-slider-position</code> ya no figura en <code>outputHooks</code>: es un gancho como los demás, que el binding escribe en la raíz mientras se arrastra. La página lo lista ahora entre los ganchos, con esa nota. No cambia el marcado ni el comportamiento.",
+              "title": "El gancho de posición deja de declararse como de salida"
+            },
+            "kind": "chore"
+          },
+          {
+            "date": "2026-10-10",
+            "en": {
+              "body": "While dragging, the divider caused about 57 layouts a second and restyled both layers and everything inside them: every move read the root's box and direction, wrote a custom property on the root and moved the divider with <code>inset</code>. The clip is now written straight on the after layer, the divider moves with <code>translate</code> from a size kept up to date, and the box and direction are read once when a drag begins: about 76 ms of task time per second instead of 157, and no layout. <code>--sk-compare-slider-position</code> is still the <em>initial</em> position (what a server renders), but it no longer moves: read it from the divider's <code>aria-valuenow</code> or the <code>sk:comparesliderchange</code> event. In React the position is no longer state: there is no render per move.",
+              "title": "Dragging no longer lays the page out or restyles both layers"
+            },
+            "es": {
+              "body": "Al arrastrar, el divisor hacía unos 57 layouts por segundo y restilaba las dos capas y todo lo que llevan: cada movimiento leía la caja de la raíz y su dirección, escribía una variable en la raíz y movía el divisor con <code>inset</code>. Ahora el recorte se escribe directo en la capa de después, el divisor se mueve con <code>translate</code> desde un tamaño que se mantiene al día, y la caja y la dirección se leen una vez al empezar a arrastrar: unos 76 ms de tarea por segundo en lugar de 157, y ningún layout. <code>--sk-compare-slider-position</code> sigue siendo la posición <em>inicial</em> (lo que pinta un servidor), pero ya no se mueve: léela del <code>aria-valuenow</code> del divisor o del evento <code>sk:comparesliderchange</code>. En React, la posición dejó de ser estado: no hay un render por movimiento.",
+              "title": "Arrastrar ya no relaya la página ni restila las dos capas"
+            },
+            "kind": "breaking"
+          },
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "Two layers of the same size and a divider you drag to reveal one over the other: before and after, old and new. The divider is the same bar Resizable uses (its keys, its right-to-left sign, its six-dot thumb), carrying one value: how much of the box the before layer shows. The thumb is always on screen. A layer is a box, not an image: anything can go in it. The divider is a named <code>slider</code> with a value and an axis; a press anywhere on the box moves it there. <code>direction</code> chooses side by side or stacked and <code>position</code> where it starts.",
+              "title": "First published contract"
+            },
+            "es": {
+              "body": "Dos capas del mismo tamaño y un divisor que se arrastra para revelar una sobre la otra: antes y después, viejo y nuevo. El divisor es la misma barra de Resizable (sus teclas, su signo en páginas de derecha a izquierda, su thumb de seis puntos), con un solo valor: cuánto de la caja muestra la capa de antes. El thumb está siempre a la vista. Una capa es una caja, no una imagen: puede ir cualquier cosa. El divisor es un <code>slider</code> con nombre, valor y eje; una pulsación en cualquier parte de la caja lo mueve ahí. <code>direction</code> elige si las capas van lado a lado o apiladas y <code>position</code> dónde empieza.",
+              "title": "Primera publicación del contrato"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.2-dev"
+      }
+    ],
     "comparison-table": [
       {
         "date": null,
@@ -4119,6 +4267,178 @@
         "version": "0.0.1"
       }
     ],
+    "dialog-stack": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "One native dialog contains the steps and keeps previous surfaces behind the active step. Includes controls to open, advance, go back and close. Inactive steps leave the focus order and accessibility tree. Escape closes the dialog and reopening starts at the first step.",
+              "title": "Multi-step dialog with stacked surfaces"
+            },
+            "es": {
+              "body": "Un diálogo nativo contiene los pasos y conserva las superficies anteriores detrás del paso activo. Incluye controles para abrir, avanzar, retroceder y cerrar. Los pasos inactivos quedan fuera del foco y del árbol de accesibilidad. Escape cierra el diálogo y al volver a abrir empieza en el primer paso.",
+              "title": "Diálogo por pasos con superficies apiladas"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "Returning to a step restores its last focused control and preserves entered values. Dragging from content onto the backdrop no longer dismisses the dialog accidentally. Opening and closing use system motion tokens; keyboard actions do not wait for animation. Long content scrolls inside the panel without chaining scroll to the page.",
+              "title": "Navigation and dismissal preserve context"
+            },
+            "es": {
+              "body": "Volver a un paso restaura su último control enfocado y conserva los valores escritos. Arrastrar desde el contenido hacia el fondo ya no cierra el diálogo por accidente. La apertura y el cierre usan los tokens de movimiento del sistema; el teclado no espera animaciones. El contenido largo se desplaza dentro del panel sin encadenar el desplazamiento a la página.",
+              "title": "Navegación y cierre sin perder el contexto"
+            },
+            "kind": "bugfix"
+          },
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "The next step enters from below as the previous card recedes and fades its content. Going back reverses that path. The dialog compensates for position changes between steps of different heights without stretching text. Interrupted transitions retarget from their painted position; focus changes immediately and reduced motion keeps only fades.",
+              "title": "Cards change steps without jumps"
+            },
+            "es": {
+              "body": "El siguiente paso entra desde abajo mientras la tarjeta anterior retrocede y desvanece su contenido. Volver invierte ese recorrido. El diálogo compensa el cambio de posición cuando los pasos tienen alturas distintas sin estirar el texto. Las transiciones parten de su posición actual si se interrumpen; el foco cambia de inmediato y el movimiento reducido conserva solo los fundidos.",
+              "title": "Las tarjetas cambian de paso sin saltos"
+            },
+            "kind": "rework"
+          },
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "Cards and text no longer crossfade. Previous content hides immediately and surfaces move a shorter distance, using the 120 ms reveal token instead of navigate. Recentering shares that cadence; the backdrop keeps its dimming and reduced motion does not move the cards.",
+              "title": "Opaque cards and snappier motion"
+            },
+            "es": {
+              "body": "Las tarjetas y sus textos ya no se funden entre sí. El contenido anterior se oculta de inmediato y las superficies se mueven con un recorrido más corto, usando el token reveal de 120 ms en vez de navigate. El recentrado comparte ese ritmo; el fondo conserva su oscurecimiento y el movimiento reducido no desplaza las tarjetas.",
+              "title": "Tarjetas opacas y movimiento más rápido"
+            },
+            "kind": "rework"
+          }
+        ],
+        "version": "0.0.2-dev"
+      }
+    ],
+    "dock": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "The --sk-dock-item-radius hook controls each button's corners. The pill demo uses circular buttons.",
+              "title": "Circular apps in the pill"
+            },
+            "es": {
+              "body": "El gancho --sk-dock-item-radius permite redondear cada botón. La demo pill usa botones circulares.",
+              "title": "Apps circulares en la cápsula"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "A compact group of icon buttons with accessible names. Icon magnification keeps hit areas stable and is omitted on touch and with reduced motion. Vanilla uses HTML and CSS without an enhancer.",
+              "title": "Action dock"
+            },
+            "es": {
+              "body": "Grupo compacto de botones con iconos y nombres accesibles. La ampliación del icono no cambia el área de clic y se omite en táctil y con movimiento reducido. Vanilla usa HTML y CSS sin enhancer.",
+              "title": "Dock de acciones"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "The hovered icon rises and its neighbors follow at half intensity. Smooth transitions retarget on direction changes and press without jumping. The new --sk-dock-lift hook adjusts elevation. Hit areas stay stable and motion is omitted on touch and with reduced motion.",
+              "title": "CSS lift and neighboring wave"
+            },
+            "es": {
+              "body": "El icono bajo el puntero sube y sus vecinos lo acompañan a media intensidad. Las transiciones suaves permiten cambiar de dirección y pulsar sin saltos. El nuevo gancho --sk-dock-lift ajusta la elevación. Las áreas de clic permanecen estables y el movimiento se omite en táctil y con movimiento reducido.",
+              "title": "Elevación y onda entre vecinos con CSS"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "The background, state layer and icon lift together without moving the hit area. Size increases by 16% under the pointer and just 4% for neighbors; pressing reduces it by 2%. The --sk-dock-item-bg hook customizes each piece's background.",
+              "title": "Lift the whole piece with its background"
+            },
+            "es": {
+              "body": "El fondo, la capa de estado y el icono se elevan juntos sin desplazar el área de clic. El tamaño aumenta un 16 % bajo el puntero y solo un 4 % en los vecinos; al pulsar se reduce un 2 %. El gancho --sk-dock-item-bg permite ajustar el fondo de cada pieza.",
+              "title": "Se eleva la pieza completa con su fondo"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "React and Vanilla share lift, magnification and press feedback through Motion springs. Motion carries velocity when retargeted. Vanilla adds mountDock and data-sk-dock; without enhancement it retains the CSS fallback. Reduced motion removes springs while retaining color feedback.",
+              "title": "Motion spring elevation"
+            },
+            "es": {
+              "body": "React y Vanilla comparten elevación, ampliación y respuesta al pulsar mediante springs de Motion. El movimiento conserva velocidad al cambiar de dirección. Vanilla añade mountDock y el atributo data-sk-dock; sin enhancer mantiene la alternativa CSS. Movimiento reducido elimina las springs y conserva el feedback de color.",
+              "title": "Elevación con springs de Motion"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "Default lift increases to 1.5 times the medium distance and magnification to 22%. Neighbors grow by just 5.5%. Springs gain a gentle bounce (0.2) with a nominal 0.5-second duration, retaining velocity when retargeted and respecting reduced motion.",
+              "title": "More expressive elevation"
+            },
+            "es": {
+              "body": "La elevación predeterminada aumenta a 1,5 veces la distancia media y la ampliación al 22 %. Los vecinos crecen solo un 5,5 %. Las springs incorporan un rebote suave (bounce 0,2) y una duración nominal de 0,5 segundos, conservando la velocidad al cambiar de dirección y respetando movimiento reducido.",
+              "title": "Elevación más expresiva"
+            },
+            "kind": "rework"
+          },
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "The hovered piece occupies the upper layer while a returning piece retains an intermediate layer until settled. Lift uses the large distance, magnification increases to 30% and bounce to 0.3. Neighbors grow by just 6% with a restrained lift.",
+              "title": "The active piece rises above its neighbors"
+            },
+            "es": {
+              "body": "La pieza bajo el puntero ocupa la capa superior y la que vuelve a reposo conserva una capa intermedia hasta asentarse. La elevación utiliza la distancia grande, la ampliación aumenta al 30 % y el rebote a 0,3. Los vecinos crecen solo un 6 % y mantienen una elevación discreta.",
+              "title": "La pieza activa se eleva por encima de sus vecinas"
+            },
+            "kind": "rework"
+          },
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "Transform the entire native button, including its background, icon, focus ring and hit area. The raised portion accepts clicks and the vacated region no longer belongs to the button. Motion retargets hover on physical pointer movement to avoid oscillation when a piece moves beneath a stationary pointer.",
+              "title": "The hit area follows the raised piece"
+            },
+            "es": {
+              "body": "Se transforma el botón nativo completo, incluido su fondo, icono, foco y área clicable. La parte elevada responde a los clics y la zona abandonada deja de pertenecer al botón. Motion retargetea el hover con movimientos físicos del puntero para evitar oscilaciones cuando la pieza se desplaza bajo un puntero quieto.",
+              "title": "El área clicable acompaña a la pieza elevada"
+            },
+            "kind": "bugfix"
+          },
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "The container uses a translucent surface with a fine border and progressive blur. Buttons rest without a fill and reveal a raised surface on hover, avoiding the look of a row of separate cards.",
+              "title": "A lighter, unified Dock"
+            },
+            "es": {
+              "body": "El contenedor adopta una superficie translúcida con borde fino y desenfoque progresivo. Los botones descansan sin fondo y revelan una superficie elevada al pasar el puntero, reduciendo el aspecto de una fila de tarjetas.",
+              "title": "Dock más ligero y unificado"
+            },
+            "kind": "rework"
+          }
+        ],
+        "version": "0.0.2-dev"
+      }
+    ],
     "editor": [
       {
         "date": "2026-10-01",
@@ -4300,6 +4620,24 @@
       }
     ],
     "fade-edge": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "Color bands compensate for the container's scroll offset instead of moving with its content. With scrollAware they disappear at the corresponding edge, including paired-axis modes.",
+              "title": "Color fades follow the visible edge"
+            },
+            "es": {
+              "body": "La banda de color compensa el desplazamiento del contenedor para no moverse con el contenido. Con scrollAware desaparece al llegar al extremo, también en los modos de ambos lados.",
+              "title": "El fundido de color sigue el borde visible"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -5295,6 +5633,32 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-10-09",
+            "en": {
+              "body": "New roles <code>play</code>, <code>pause</code>, <code>replay</code>, <code>volume</code>, <code>volume-muted</code>, <code>captions</code>, <code>fullscreen</code> and <code>fullscreen-exit</code>. They name what the control does, not the drawing, and <code>fullscreen</code> is not <code>maximize</code>: that one is a window inside the page. All three sets draw them.",
+              "title": "Eight icon roles for a player's controls"
+            },
+            "es": {
+              "body": "Nuevos roles <code>play</code>, <code>pause</code>, <code>replay</code>, <code>volume</code>, <code>volume-muted</code>, <code>captions</code>, <code>fullscreen</code> y <code>fullscreen-exit</code>. Nombran lo que hace el control, no el dibujo, y <code>fullscreen</code> no es <code>maximize</code>: ese es el de una ventana dentro de la página. Los tres sets los dibujan.",
+              "title": "Ocho roles de icono para los controles de un reproductor"
+            },
+            "kind": "feature",
+            "target": "name"
+          },
+          {
+            "date": "2026-10-09",
+            "en": {
+              "body": "New roles <code>track-previous</code> and <code>track-next</code>: the track before and after the current one in a player. They are not <code>chevron-left</code> or <code>chevron-right</code>, which name a direction on a page. All three sets draw them.",
+              "title": "Two icon roles for moving along a list of tracks"
+            },
+            "es": {
+              "body": "Nuevos roles <code>track-previous</code> y <code>track-next</code>: la pista anterior y la siguiente de un reproductor. No son <code>chevron-left</code> ni <code>chevron-right</code>, que nombran una dirección en la página. Los tres sets los dibujan.",
+              "title": "Dos roles de icono para moverse por una lista de pistas"
+            },
+            "kind": "feature",
+            "target": "name"
+          },
+          {
             "date": "2026-10-02",
             "en": {
               "body": "<code>mask</code> is the symbol that stands in for a hidden character: <code>OtpInput</code> draws it over each filled box when the code is masked. It names the role, not the drawing: Lucide and Phosphor draw an asterisk, Material its own. All three sets draw it.",
@@ -5468,6 +5832,50 @@
           }
         ],
         "version": "0.0.1"
+      }
+    ],
+    "image-cropper": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-10",
+            "en": {
+              "body": "<code>showPreview</code> (already deprecated) and <code>cancelable</code> promised a preview and a Cancel button the component does not draw: the page supplies both. They are removed. <code>outputQuality</code> runs from 0 to 1: before it had no ceiling and a larger value reached the browser as it was.",
+              "title": "showPreview and cancelable are removed, and outputQuality is capped"
+            },
+            "es": {
+              "body": "<code>showPreview</code> (ya obsoleta) y <code>cancelable</code> prometían una vista previa y un botón Cancelar que el componente no dibuja: ambos los pone la página. Se quitan. <code>outputQuality</code> vale de 0 a 1: antes no tenía tope y un valor mayor llegaba tal cual al navegador.",
+              "title": "Se quitan showPreview y cancelable, y outputQuality tiene tope"
+            },
+            "kind": "breaking"
+          },
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "A crop window over an image, with its toolbar: free, original, fixed or numeric aspect ratio, rectangle or circle, zoom, quarter-turn and fine rotation, a live preview and export to a file. The engine is Cropper.js v2, kept behind a serializable value (position, zoom and rotation as ratios) and a model that guarantees a crop never contains an empty corner. A circle exports a transparent PNG already cut. It works with mouse, touch, pen and keyboard, and behaves the same in React and Vanilla.",
+              "title": "First published contract"
+            },
+            "es": {
+              "body": "Una ventana de recorte sobre una imagen, con su barra de herramientas: proporción libre, original, fija o numérica, forma rectangular o circular, zoom, rotación en cuartos de vuelta y fina, vista previa y exportación a archivo. El motor es Cropper.js v2, aislado detrás de un valor serializable (posición, zoom y rotación como proporciones) y de un modelo que garantiza que el recorte nunca contiene una esquina vacía. El círculo exporta un PNG transparente ya recortado. Se maneja con ratón, tacto, lápiz y teclado, y funciona igual en React y Vanilla.",
+              "title": "Primera publicación del contrato"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "Register --sk-image-cropper-side-size in the contract so the catalogue matches the existing stylesheet and the compiler can publish the components.",
+              "title": "Publish the side-size styling hook"
+            },
+            "es": {
+              "body": "Registra --sk-image-cropper-side-size en el contrato para que el catálogo coincida con los estilos existentes y el compilador pueda publicar los componentes.",
+              "title": "Publica el gancho de tamaño lateral"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.2-dev"
       }
     ],
     "image-frame": [
@@ -9276,6 +9684,18 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-10-08",
+            "en": {
+              "body": "Every bar now carries a small container with six dots in its middle, drawn in CSS, that says “this moves”. It is not on screen at rest: it comes up with the pointer, the keyboard focus and the drag, and stays on a bar beside a closed panel. On a horizontal bar it is turned a quarter. It is an <code>aria-hidden</code> <code>span</code> inside the bar: the bar still takes the pointer and the keys.",
+              "title": "A six-dot thumb in the middle of every bar"
+            },
+            "es": {
+              "body": "Cada barra lleva en el centro un pequeño contenedor con seis puntos, dibujado con CSS, que dice «esto se mueve». No está en pantalla en reposo: sube con el puntero, el foco del teclado y el arrastre, y se queda en la barra junto a un panel cerrado. En una barra horizontal se gira un cuarto. Es un <code>span</code> con <code>aria-hidden</code> dentro de la barra: la barra sigue tomando el puntero y las teclas.",
+              "title": "Un thumb con seis puntos en el centro de cada barra"
+            },
+            "kind": "feature"
+          },
+          {
             "date": "2026-10-07",
             "en": {
               "body": "<code>collapsible</code> lets a panel go below its <code>minSize</code> until it closes: past the halfway point it snaps shut, and dragged back out it opens to its floor. <code>collapsedSize</code> leaves a rail instead of zero. The bar stays, more marked, and Home and End beside a collapsible panel close it. It reopens by dragging, a double click or Enter (which reset), Ctrl or Cmd + Enter (which toggles), <code>apiRef</code> in React or the <code>sk:resizablecommand</code> event. A panel closed to zero sets <code>data-collapsed</code> and becomes <code>inert</code>. Without <code>collapsible</code> nothing changes: the floor holds and the panel never disappears.",
@@ -9353,6 +9773,26 @@
             "es": {
               "body": "La caja del slot lead se desvanece y sube un poco mientras la ventana se abre, sea lo que sea que lleve, sin necesitar ninguna otra pieza. Nuevo gancho lead-shift (cuánto sube; con cero solo se desvanece). Con contract corre al revés.",
               "title": "El lead se desvanece solo"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.2-dev"
+      }
+    ],
+    "scroll-hint": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "ScrollHint signals horizontal or vertical scrolling with three subtle arrow nudges. It only appears for overflowing content and disappears after the first actual scroll in that axis. Reduced motion keeps a static cue.",
+              "title": "A scroll hint that disappears once used"
+            },
+            "es": {
+              "body": "ScrollHint indica scroll horizontal o vertical con tres movimientos sutiles de una flecha. Solo aparece si el contenido desborda y desaparece tras el primer desplazamiento real en ese eje. Respeta movimiento reducido.",
+              "title": "Pista de scroll que desaparece al usarla"
             },
             "kind": "feature"
           }
@@ -9865,11 +10305,42 @@
         "version": "0.0.1"
       }
     ],
-    "shimmer": [],
+    "shimmer": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-10",
+            "en": {
+              "body": "The sweep animated a registered custom property that the gradient's four stops were computed from, so the browser recalculated style and rebuilt the gradient on every frame: with 20 shimmers on a page, about 110 ms of style work per second. The gradient is now fixed and what animates is its background position (about 11 ms per second). It looks the same: a band that crosses the text from left to right and rests off to the side between sweeps. The hook <code>--sk-shimmer-position</code> is gone; it was an output nobody was meant to write.",
+              "title": "The highlight crosses the text without recalculating styles every frame"
+            },
+            "es": {
+              "body": "El barrido animaba una propiedad personalizada registrada de la que dependían las cuatro paradas del gradiente, y el navegador recalculaba estilo y reconstruía el gradiente en cada fotograma: con 20 brillos en una página, unos 110 ms de estilo por segundo. Ahora el gradiente es fijo y lo que se anima es su posición de fondo (unos 11 ms por segundo). Se ve igual: una banda que cruza el texto de izquierda a derecha y reposa a un lado entre barridos. Desaparece el gancho <code>--sk-shimmer-position</code>, que era de salida y nadie debía escribir.",
+              "title": "El brillo recorre el texto sin recalcular estilos en cada fotograma"
+            },
+            "kind": "breaking"
+          }
+        ],
+        "version": "0.0.2-dev"
+      }
+    ],
     "sidebar": [
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "The resizable edge now carries a small container with six dots, drawn in CSS, flush inside the edge. It appears with the pointer, the focus and the drag, the same moments the line itself escalates. It is an <code>aria-hidden</code> <code>span</code> inside the <code>SidebarResizeHandle</code>.",
+              "title": "A six-dot thumb on the resize edge"
+            },
+            "es": {
+              "body": "El borde redimensionable lleva ahora un pequeño contenedor con seis puntos, dibujado con CSS, pegado por dentro al borde. Aparece con el puntero, el foco y el arrastre, igual que la línea. Es un <code>span</code> con <code>aria-hidden</code> dentro del <code>SidebarResizeHandle</code>.",
+              "title": "Un thumb con seis puntos en el borde de la barra de redimensionar"
+            },
+            "kind": "feature"
+          },
           {
             "date": "2026-10-06",
             "en": {
@@ -10316,6 +10787,24 @@
     ],
     "split-button": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-09",
+            "en": {
+              "body": "New signature <code>SplitButtonVertical</code>: two icon buttons welded one above the other, with no menu, for a pair like zoom in and out. The two halves still share variant, tone and size.",
+              "title": "A vertical variant for two actions that are a pair"
+            },
+            "es": {
+              "body": "Nueva firma <code>SplitButtonVertical</code>: dos botones de icono soldados uno sobre otro, sin menú, para un par como acercar y alejar. Las dos mitades siguen compartiendo variante, tono y tamaño.",
+              "title": "Una variante vertical para dos acciones que son un par"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -10609,6 +11098,30 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-10-09",
+            "en": {
+              "body": "The list of icon roles <code>StateButton</code> accepts grows with <code>play</code>, <code>pause</code>, <code>replay</code>, <code>volume</code>, <code>volume-muted</code>, <code>captions</code>, <code>fullscreen</code> and <code>fullscreen-exit</code>. Nothing about its behavior changes.",
+              "title": "Icon names include the player roles"
+            },
+            "es": {
+              "body": "La lista de roles de icono que acepta <code>StateButton</code> crece con <code>play</code>, <code>pause</code>, <code>replay</code>, <code>volume</code>, <code>volume-muted</code>, <code>captions</code>, <code>fullscreen</code> y <code>fullscreen-exit</code>. No cambia su comportamiento.",
+              "title": "Los nombres de icono incluyen los roles de reproductor"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-10-09",
+            "en": {
+              "body": "The list of icon roles <code>StateButton</code> accepts grows with <code>track-previous</code> and <code>track-next</code>. Nothing about its behavior changes.",
+              "title": "Icon names include the previous and next track"
+            },
+            "es": {
+              "body": "La lista de roles de icono que acepta <code>StateButton</code> crece con <code>track-previous</code> y <code>track-next</code>. No cambia su comportamiento.",
+              "title": "Los nombres de icono incluyen la pista anterior y la siguiente"
+            },
+            "kind": "feature"
+          },
           {
             "date": "2026-10-02",
             "en": {
@@ -13429,7 +13942,118 @@
         "version": "0.0.1"
       }
     ],
+    "video-player": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-10",
+            "en": {
+              "body": "While playing, the player spent about 220 ms of every second on style recalculation and a layout every frame. The output hooks <code>--sk-video-player-played</code>, <code>-buffered</code>, <code>-volume</code> and <code>-hover</code> are gone: what moves is written straight on its element, and only when what you can see changes. Video the contract renders starts at <code>preload=\"none\"</code> (the poster still loads) and rises to <code>metadata</code> when the player is near the viewport. Off screen it draws nothing, and the controls no longer create a timer on every pointer move.",
+              "title": "Far less work while it plays"
+            },
+            "es": {
+              "body": "Reproduciendo, el reproductor gastaba unos 220 ms de cada segundo recalculando estilos y relayout en cada fotograma. Los ganchos de salida <code>--sk-video-player-played</code>, <code>-buffered</code>, <code>-volume</code> y <code>-hover</code> desaparecen: lo que se mueve se escribe directamente en su elemento, y solo cuando cambia lo que se ve. El video que dibuja el contrato empieza con <code>preload=\"none\"</code> (el póster carga igual) y sube a <code>metadata</code> cuando el reproductor está cerca del viewport. Fuera de pantalla no dibuja nada, y los controles dejan de crear un temporizador por cada movimiento del puntero.",
+              "title": "Mucho menos trabajo mientras se reproduce"
+            },
+            "kind": "breaking"
+          },
+          {
+            "date": "2026-10-10",
+            "en": {
+              "body": "<code>media</code>, <code>track</code>, <code>volumeSlider</code> and <code>spacer</code> join the <code>systemOwned</code> list: the player draws them and nobody writes them in a tree. The markup and the behaviour do not change.",
+              "title": "The inner pieces are declared as the system's"
+            },
+            "es": {
+              "body": "<code>media</code>, <code>track</code>, <code>volumeSlider</code> y <code>spacer</code> pasan a la lista <code>systemOwned</code>: el reproductor las dibuja y nadie las escribe en un árbol. No cambia el marcado ni el comportamiento.",
+              "title": "Las piezas internas se declaran como del sistema"
+            },
+            "kind": "chore"
+          },
+          {
+            "date": "2026-10-09",
+            "en": {
+              "body": "A video player with the system's controls over a real video. The video comes in through <code>src</code>, <code>poster</code> and <code>captionsSrc</code>, or as your own video with several sources, and the player draws the bar: play and pause, a seek bar with what is played and what is buffered, time, volume, speed, captions and full screen. It runs entirely from the keyboard (k, j, l, m, f, c, 0 to 9, arrows) only while focus is inside, and the controls hide by themselves while it plays.",
+              "title": "First published contract"
+            },
+            "es": {
+              "body": "Un reproductor de video con los controles del sistema sobre un video real. El video llega por <code>src</code>, <code>poster</code> y <code>captionsSrc</code>, o como un video tuyo con varias fuentes, y el reproductor dibuja la barra: reproducir y pausar, barra de progreso con lo reproducido y lo cargado, tiempo, volumen, velocidad, subtítulos y pantalla completa. Se maneja entera con el teclado (k, j, l, m, f, c, 0 al 9, flechas) solo mientras el foco está dentro, y los controles se esconden solos mientras reproduce.",
+              "title": "Primera publicación del contrato"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-10-09",
+            "en": {
+              "body": "New <code>captions</code> part: the browser painted each caption at the bottom edge of the video, right under the bar and unstyled. Now the tracks go to hidden mode and the active text is drawn above the bar, on a plate, and drops to the edge when the bar leaves. New hooks: <code>captions-bg</code> and <code>captions-offset</code>.",
+              "title": "The player draws the captions"
+            },
+            "es": {
+              "body": "Nueva parte <code>captions</code>: el navegador pintaba cada subtítulo en el borde inferior del video, justo debajo de la barra y sin estilo. Ahora las pistas pasan a modo oculto y el texto activo se dibuja sobre la barra, con una placa, y baja al borde cuando la barra se va. Nuevos ganchos: <code>captions-bg</code> y <code>captions-offset</code>.",
+              "title": "Los subtítulos los dibuja el reproductor"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-10-09",
+            "en": {
+              "body": "The bar's clock is now a button: a press shows the time left (<code>-1:55 / 3:00</code>) and the next one the time played. Its name says what the next press will do. New options: <code>remainingLabel</code> and <code>elapsedLabel</code>.",
+              "title": "The clock swaps between elapsed and remaining"
+            },
+            "es": {
+              "body": "El reloj de la barra es ahora un botón: al pulsarlo muestra el tiempo que falta (<code>-1:55 / 3:00</code>) y al volver a pulsarlo el transcurrido. Su nombre dice lo que hará la próxima pulsación. Nuevas opciones: <code>remainingLabel</code> y <code>elapsedLabel</code>.",
+              "title": "El reloj cambia entre lo transcurrido y lo que falta"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-10-09",
+            "en": {
+              "body": "Volume no longer opens by pushing the bar along: it is a popup above the button that only fades in, moving no control. New hook <code>--sk-video-player-volume-pad</code>. Play is always round.",
+              "title": "Volume is a popup"
+            },
+            "es": {
+              "body": "El volumen ya no se abre empujando la barra: es un popup encima del botón que solo aparece, sin mover ningún control. Nuevo gancho <code>--sk-video-player-volume-pad</code>. Reproducir es siempre redondo.",
+              "title": "El volumen es un popup"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-10-09",
+            "en": {
+              "body": "<kbd>,</kbd> and <kbd>.</kbd> step one frame back and forward. The frame's size is measured from the frames the browser presents (24 a second for a film) and falls back to 30 a second where it cannot be measured. With the video running they pause it first, instead of doing nothing.",
+              "title": "The frame keys measure the real frame and work while playing"
+            },
+            "es": {
+              "body": "<kbd>,</kbd> y <kbd>.</kbd> retroceden y avanzan un cuadro. El tamaño del cuadro se mide con los cuadros que el navegador presenta (24 por segundo en un video de cine) y vuelve a 30 por segundo donde no se puede medir. Con el video en marcha lo pausan antes de moverse, en vez de no hacer nada.",
+              "title": "Los atajos de cuadro miden el cuadro real y funcionan reproduciendo"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.2-dev"
+      }
+    ],
     "window": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-08",
+            "en": {
+              "body": "The frame accepts <code>plain</code>, <code>brutalist</code> and <code>frosted</code>. <code>tactile</code> and <code>--sk-window-depth</code> are removed: use <code>plain</code> for a solid surface. The trigger keeps Button's appearance axis. Frosted uses one glass sheet, a lightly tinted title bar and an illuminated inner edge. Reduced transparency or high contrast restores an opaque surface.",
+              "title": "Window drops tactile and refines its glass"
+            },
+            "es": {
+              "body": "El marco acepta <code>plain</code>, <code>brutalist</code> y <code>frosted</code>. Se retiran <code>tactile</code> y <code>--sk-window-depth</code>: usa <code>plain</code> para una superficie sólida. El disparador conserva la appearance de Button. Frosted usa una sola lámina de vidrio, una barra de título apenas tintada y un borde interior iluminado. Con transparencia reducida o contraste alto vuelve a una superficie opaca.",
+              "title": "Window deja de ofrecer tactile y refina el vidrio"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          }
+        ],
+        "version": "0.0.2-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -13444,6 +14068,19 @@
               "title": "Frosted deja de publicar hooks de material"
             },
             "kind": "breaking"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "Windows have a 240 × 120 px minimum, increased with <code>minWidth</code> and <code>minHeight</code>. Dragging stays within the viewport or the container selected by <code>boundary</code>. In React, the portal <code>container</code> also bounds dragging.",
+              "title": "Minimum size and contained dragging"
+            },
+            "es": {
+              "body": "La ventana tiene un mínimo de 240 × 120 px, ampliable con <code>minWidth</code> y <code>minHeight</code>. El arrastre no sale del viewport o del contenedor indicado por <code>boundary</code>. En React, el portal <code>container</code> también limita el arrastre.",
+              "title": "Tamaño mínimo y arrastre contenido"
+            },
+            "kind": "feature",
+            "target": "Window"
           },
           {
             "date": "2026-09-26",
@@ -15988,6 +16625,1126 @@
         }
       }
     },
+    "audio-player": {
+      "bindings": {
+        "AudioPlayer": {
+          "enhancer": "data-sk-audio-player",
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/audio-player#AudioPlayer"
+        },
+        "AudioPlayerMinimal": {
+          "enhancer": "data-sk-audio-player",
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/audio-player#AudioPlayerMinimal"
+        }
+      },
+      "category": "content",
+      "css": "@skryensya/core/components/audio-player.css",
+      "hookDetails": {
+        "--sk-audio-player-bar-gap": {
+          "default": "2px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/audio-player.css"
+        },
+        "--sk-audio-player-bar-width": {
+          "default": "0.375rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/audio-player.css"
+        },
+        "--sk-audio-player-bg": {
+          "default": "var(--color-bg-surface)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/audio-player.css"
+        },
+        "--sk-audio-player-buffered-color": {
+          "default": "color-mix(in oklch, var(--sk-audio-player-fg) 28%, transparent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/audio-player.css"
+        },
+        "--sk-audio-player-cover-size": {
+          "default": "4.5rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/audio-player.css"
+        },
+        "--sk-audio-player-fg": {
+          "default": "var(--color-text-primary)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/audio-player.css"
+        },
+        "--sk-audio-player-item-accent": {
+          "default": "var(--sk-audio-player-played-color)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/audio-player.css"
+        },
+        "--sk-audio-player-padding": {
+          "default": "var(--space-inset-md)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/audio-player.css"
+        },
+        "--sk-audio-player-played-color": {
+          "default": "var(--color-action-accent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/audio-player.css"
+        },
+        "--sk-audio-player-radius": {
+          "default": "var(--radius-surface)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/audio-player.css"
+        },
+        "--sk-audio-player-thumb-size": {
+          "default": "0.875rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/audio-player.css"
+        },
+        "--sk-audio-player-track-color": {
+          "default": "color-mix(in oklch, var(--sk-audio-player-fg) 16%, transparent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/audio-player.css"
+        },
+        "--sk-audio-player-track-size": {
+          "default": "0.25rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/audio-player.css"
+        },
+        "--sk-audio-player-volume-pad": {
+          "default": "var(--space-inset-sm)",
+          "output": false,
+          "part": "volume",
+          "sheet": "@skryensya/core/components/audio-player.css"
+        },
+        "--sk-audio-player-volume-width": {
+          "default": "6rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/audio-player.css"
+        },
+        "--sk-audio-player-wave-height": {
+          "default": "2.5rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/audio-player.css"
+        }
+      },
+      "hooks": [
+        "--sk-audio-player-bg",
+        "--sk-audio-player-bar-gap",
+        "--sk-audio-player-bar-width",
+        "--sk-audio-player-buffered-color",
+        "--sk-audio-player-cover-size",
+        "--sk-audio-player-fg",
+        "--sk-audio-player-item-accent",
+        "--sk-audio-player-padding",
+        "--sk-audio-player-played-color",
+        "--sk-audio-player-radius",
+        "--sk-audio-player-thumb-size",
+        "--sk-audio-player-track-color",
+        "--sk-audio-player-track-size",
+        "--sk-audio-player-volume-pad",
+        "--sk-audio-player-volume-width",
+        "--sk-audio-player-wave-height"
+      ],
+      "hookSheets": [
+        "@skryensya/core/patterns/visually-hidden.css"
+      ],
+      "id": "audio-player",
+      "options": {
+        "artist": {
+          "type": "string"
+        },
+        "autoAdvance": {
+          "attr": "data-auto-advance",
+          "default": true,
+          "falseValue": "false",
+          "machineInput": true,
+          "type": "boolean"
+        },
+        "cover": {
+          "attr": "src",
+          "type": "string"
+        },
+        "label": {
+          "attr": "aria-label",
+          "default": "Audio player",
+          "type": "string"
+        },
+        "muteLabel": {
+          "attr": "aria-label",
+          "default": "Mute",
+          "type": "string"
+        },
+        "nextLabel": {
+          "attr": "aria-label",
+          "default": "Next track",
+          "type": "string"
+        },
+        "pauseLabel": {
+          "attr": "data-label-pause",
+          "default": "Pause",
+          "type": "string"
+        },
+        "peaks": {
+          "attr": "data-peaks",
+          "type": "string"
+        },
+        "playLabel": {
+          "attr": "aria-label",
+          "default": "Play",
+          "type": "string"
+        },
+        "previousLabel": {
+          "attr": "aria-label",
+          "default": "Previous track",
+          "type": "string"
+        },
+        "replayLabel": {
+          "attr": "data-label-replay",
+          "default": "Replay",
+          "type": "string"
+        },
+        "seekLabel": {
+          "attr": "aria-label",
+          "default": "Seek",
+          "type": "string"
+        },
+        "skip": {
+          "attr": "data-skip",
+          "default": 10,
+          "machineInput": true,
+          "max": 120,
+          "min": 1,
+          "type": "number"
+        },
+        "speedLabel": {
+          "attr": "aria-label",
+          "default": "Playback speed",
+          "type": "string"
+        },
+        "speeds": {
+          "attr": "data-speeds",
+          "default": "0.5 1 1.25 1.5 2",
+          "machineInput": true,
+          "type": "string"
+        },
+        "src": {
+          "attr": "src",
+          "type": "string"
+        },
+        "timeLabel": {
+          "attr": "data-time-label",
+          "default": "{current} of {duration}",
+          "machineInput": true,
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "tracksLabel": {
+          "attr": "aria-label",
+          "default": "Tracks",
+          "type": "string"
+        },
+        "unmuteLabel": {
+          "attr": "data-label-unmute",
+          "default": "Unmute",
+          "type": "string"
+        },
+        "variant": {
+          "attr": "data-variant",
+          "default": "bar",
+          "type": "enum",
+          "values": [
+            "bar",
+            "card"
+          ]
+        },
+        "volumeLabel": {
+          "attr": "aria-label",
+          "default": "Volume",
+          "type": "string"
+        }
+      },
+      "parts": {
+        "artist": "sk-audio-player__artist",
+        "bar": "sk-audio-player__bar",
+        "buffered": "sk-audio-player__buffered",
+        "control": "sk-audio-player__control",
+        "controls": "sk-audio-player__controls",
+        "cover": "sk-audio-player__cover",
+        "current": "sk-audio-player__current",
+        "duration": "sk-audio-player__duration",
+        "item": "sk-audio-player__item",
+        "itemArtist": "sk-audio-player__item-artist",
+        "itemButton": "sk-audio-player__item-button",
+        "itemDuration": "sk-audio-player__item-duration",
+        "itemLeading": "sk-audio-player__item-leading",
+        "itemText": "sk-audio-player__item-text",
+        "itemTitle": "sk-audio-player__item-title",
+        "list": "sk-audio-player__list",
+        "media": "sk-audio-player__media",
+        "meta": "sk-audio-player__meta",
+        "played": "sk-audio-player__played",
+        "root": "sk-audio-player",
+        "seek": "sk-audio-player__seek",
+        "spacer": "sk-audio-player__spacer",
+        "speed": "sk-audio-player__speed",
+        "thumb": "sk-audio-player__thumb",
+        "time": "sk-audio-player__time",
+        "tip": "sk-audio-player__tip",
+        "title": "sk-audio-player__title",
+        "track": "sk-audio-player__track",
+        "volume": "sk-audio-player__volume",
+        "volumeFill": "sk-audio-player__volume-fill",
+        "volumeSlider": "sk-audio-player__volume-slider",
+        "wave": "sk-audio-player__wave",
+        "waveBars": "sk-audio-player__wave-bars",
+        "waveFill": "sk-audio-player__wave-fill"
+      },
+      "semantics": {
+        "AudioPlayer": {
+          "alternatives": [
+            "VideoPlayer",
+            "Slider"
+          ],
+          "avoidWhen": [
+            "the sound lives on someone else's player (Spotify, SoundCloud, a podcast host): that is an iframe with its own controls, and drawing a second bar over it controls nothing",
+            "it is a short effect or a click on an interface action; a sound that answers a press needs no controls",
+            "there is a picture to watch; that is VideoPlayer, which has a stage, a poster and fullscreen",
+            "the app needs shuffle, repeat, a queue the reader reorders or lyrics; those are the app's policy, and this player moves along a list and nothing more"
+          ],
+          "useWhen": [
+            "a sound has to be played inside the page and its controls should look like the rest of the interface instead of the browser's own bar: a podcast episode, a song, a voice note, a recording",
+            "the reader should be able to run it from the keyboard alone: play, seek, volume, speed and the previous and next track all have a key, scoped to the player and never to the page",
+            "there is a list of tracks (an album, a set of episodes) and the player should load one, move on when it ends, and show which one is playing",
+            "the sound has a title, an artist or a cover that should sit with the controls, as a strip or as a card",
+            "you have the peaks of the file and want the seek bar to show its shape"
+          ]
+        },
+        "AudioPlayerMinimal": {
+          "alternatives": [
+            "AudioPlayer"
+          ],
+          "avoidWhen": [
+            "there is a list of tracks, a cover, a title or an artist to show; that is AudioPlayer",
+            "the listener will want volume or speed, as with a long episode or a lecture; AudioPlayer has both",
+            "the sound is an effect that answers a press; that needs no controls at all"
+          ],
+          "useWhen": [
+            "a short sound sits inside the page and needs only to be played: a voice note, a clip, a pronunciation, a sample",
+            "the sound is part of a line of content or a table row, where a cover, a title and a transport would be heavier than what they play",
+            "you want the least that is still keyboard-operable: a play button, a seek bar and the time"
+          ]
+        }
+      },
+      "signatures": {
+        "AudioPlayer": {
+          "compose": [
+            {
+              "of": "button",
+              "sheets": [
+                "@skryensya/core/components/button.css"
+              ],
+              "systemOwned": true
+            },
+            {
+              "of": "list",
+              "sheets": [
+                "@skryensya/core/components/list.css"
+              ],
+              "systemOwned": true
+            },
+            {
+              "of": "icon",
+              "systemOwned": true
+            }
+          ],
+          "exactlyOneOf": [
+            [
+              "src",
+              "tracks",
+              "children"
+            ]
+          ],
+          "forward": [
+            "id",
+            "aria-*"
+          ],
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "audio-player",
+            "play-audio",
+            "music-player",
+            "podcast-player",
+            "playlist",
+            "play-a-sound"
+          ],
+          "mount": "data-sk-audio-player",
+          "options": [
+            "src",
+            "label",
+            "playLabel",
+            "pauseLabel",
+            "replayLabel",
+            "seekLabel",
+            "timeLabel",
+            "title",
+            "artist",
+            "cover",
+            "peaks",
+            "variant",
+            "muteLabel",
+            "unmuteLabel",
+            "volumeLabel",
+            "speedLabel",
+            "previousLabel",
+            "nextLabel",
+            "tracksLabel",
+            "autoAdvance",
+            "skip",
+            "speeds"
+          ],
+          "react": {
+            "from": "@skryensya/react/audio-player",
+            "name": "AudioPlayer"
+          },
+          "slots": {
+            "children": {
+              "accepts": "node"
+            },
+            "tracks": {
+              "accepts": "items",
+              "item": {
+                "options": {
+                  "cover": {
+                    "attr": "data-cover",
+                    "type": "string"
+                  },
+                  "duration": {
+                    "attr": "data-duration",
+                    "min": 0,
+                    "type": "number"
+                  },
+                  "peaks": {
+                    "attr": "data-peaks",
+                    "type": "string"
+                  },
+                  "src": {
+                    "attr": "data-src",
+                    "type": "string"
+                  }
+                },
+                "requires": [
+                  "src"
+                ],
+                "slots": {
+                  "artist": {
+                    "accepts": "text"
+                  },
+                  "title": {
+                    "accepts": "text",
+                    "required": true
+                  }
+                }
+              }
+            }
+          },
+          "template": {
+            "attrs": {
+              "role": "group",
+              "tabindex": "-1"
+            },
+            "children": [
+              {
+                "attrs": {
+                  "data-defer-load": "",
+                  "preload": "none"
+                },
+                "element": "audio",
+                "options": [
+                  "src"
+                ],
+                "part": "media",
+                "whenGiven": [
+                  "src",
+                  "tracks"
+                ]
+              },
+              {
+                "slot": "children"
+              },
+              {
+                "attrs": {
+                  "alt": "",
+                  "aria-hidden": "true"
+                },
+                "element": "img",
+                "options": [
+                  "cover"
+                ],
+                "part": "cover",
+                "whenGiven": [
+                  "cover",
+                  "tracks"
+                ]
+              },
+              {
+                "children": [
+                  {
+                    "element": "span",
+                    "part": "title",
+                    "textFromOption": "title",
+                    "whenGiven": [
+                      "title",
+                      "tracks"
+                    ]
+                  },
+                  {
+                    "element": "span",
+                    "part": "artist",
+                    "textFromOption": "artist",
+                    "whenGiven": [
+                      "artist",
+                      "tracks"
+                    ]
+                  }
+                ],
+                "element": "div",
+                "part": "meta",
+                "whenGiven": [
+                  "title",
+                  "artist",
+                  "tracks"
+                ]
+              },
+              {
+                "children": [
+                  {
+                    "attrs": {
+                      "aria-valuemax": "100",
+                      "aria-valuemin": "0",
+                      "aria-valuenow": "0",
+                      "role": "slider",
+                      "tabindex": "0"
+                    },
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "element": "div",
+                            "part": "buffered"
+                          },
+                          {
+                            "element": "div",
+                            "part": "played"
+                          }
+                        ],
+                        "element": "div",
+                        "part": "track"
+                      },
+                      {
+                        "attrs": {
+                          "aria-hidden": "true"
+                        },
+                        "children": [
+                          {
+                            "element": "div",
+                            "part": "waveBars"
+                          },
+                          {
+                            "element": "div",
+                            "part": "waveFill"
+                          }
+                        ],
+                        "element": "div",
+                        "part": "wave",
+                        "whenGiven": [
+                          "peaks",
+                          "tracks"
+                        ]
+                      },
+                      {
+                        "element": "div",
+                        "part": "thumb"
+                      },
+                      {
+                        "attrs": {
+                          "aria-hidden": "true"
+                        },
+                        "element": "span",
+                        "part": "tip"
+                      }
+                    ],
+                    "element": "div",
+                    "options": [
+                      "seekLabel",
+                      "timeLabel"
+                    ],
+                    "part": "seek"
+                  },
+                  {
+                    "children": [
+                      {
+                        "also": [
+                          "sk-button",
+                          "sk-interactive",
+                          "sk-icon-toggle"
+                        ],
+                        "attrs": {
+                          "aria-keyshortcuts": "Shift+P",
+                          "data-audio-action": "previous",
+                          "data-icon-only": "",
+                          "data-size": "md",
+                          "data-variant": "ghost",
+                          "hidden": "",
+                          "type": "button"
+                        },
+                        "children": [
+                          {
+                            "attrs": {
+                              "data-face": "previous",
+                              "data-sk-icon": "track-previous",
+                              "data-sk-icon-size": "md"
+                            },
+                            "element": "span"
+                          }
+                        ],
+                        "element": "button",
+                        "options": [
+                          "previousLabel"
+                        ],
+                        "part": "control"
+                      },
+                      {
+                        "also": [
+                          "sk-button",
+                          "sk-interactive",
+                          "sk-icon-toggle"
+                        ],
+                        "attrs": {
+                          "aria-keyshortcuts": "k",
+                          "data-audio-action": "play",
+                          "data-icon-only": "",
+                          "data-size": "md",
+                          "data-variant": "solid",
+                          "type": "button"
+                        },
+                        "children": [
+                          {
+                            "attrs": {
+                              "data-face": "play",
+                              "data-sk-icon": "play",
+                              "data-sk-icon-size": "md"
+                            },
+                            "element": "span"
+                          },
+                          {
+                            "attrs": {
+                              "data-face": "pause",
+                              "data-sk-icon": "pause",
+                              "data-sk-icon-size": "md"
+                            },
+                            "element": "span"
+                          },
+                          {
+                            "attrs": {
+                              "data-face": "replay",
+                              "data-sk-icon": "replay",
+                              "data-sk-icon-size": "md"
+                            },
+                            "element": "span"
+                          }
+                        ],
+                        "element": "button",
+                        "options": [
+                          "playLabel",
+                          "pauseLabel",
+                          "replayLabel"
+                        ],
+                        "part": "control"
+                      },
+                      {
+                        "also": [
+                          "sk-button",
+                          "sk-interactive",
+                          "sk-icon-toggle"
+                        ],
+                        "attrs": {
+                          "aria-keyshortcuts": "Shift+N",
+                          "data-audio-action": "next",
+                          "data-icon-only": "",
+                          "data-size": "md",
+                          "data-variant": "ghost",
+                          "hidden": "",
+                          "type": "button"
+                        },
+                        "children": [
+                          {
+                            "attrs": {
+                              "data-face": "next",
+                              "data-sk-icon": "track-next",
+                              "data-sk-icon-size": "md"
+                            },
+                            "element": "span"
+                          }
+                        ],
+                        "element": "button",
+                        "options": [
+                          "nextLabel"
+                        ],
+                        "part": "control"
+                      },
+                      {
+                        "attrs": {
+                          "aria-hidden": "true"
+                        },
+                        "children": [
+                          {
+                            "element": "span",
+                            "part": "current"
+                          },
+                          {
+                            "element": "span",
+                            "part": "duration"
+                          }
+                        ],
+                        "element": "span",
+                        "part": "time"
+                      },
+                      {
+                        "attrs": {
+                          "aria-hidden": "true"
+                        },
+                        "element": "span",
+                        "part": "spacer"
+                      },
+                      {
+                        "also": [
+                          "sk-button",
+                          "sk-interactive"
+                        ],
+                        "attrs": {
+                          "aria-keyshortcuts": "Shift+, Shift+.",
+                          "data-audio-action": "speed",
+                          "data-size": "sm",
+                          "data-variant": "ghost",
+                          "type": "button"
+                        },
+                        "children": [
+                          {
+                            "element": "span",
+                            "part": "speed"
+                          }
+                        ],
+                        "element": "button",
+                        "options": [
+                          "speedLabel"
+                        ],
+                        "part": "control"
+                      },
+                      {
+                        "children": [
+                          {
+                            "also": [
+                              "sk-button",
+                              "sk-interactive",
+                              "sk-icon-toggle"
+                            ],
+                            "attrs": {
+                              "aria-keyshortcuts": "m",
+                              "data-audio-action": "mute",
+                              "data-icon-only": "",
+                              "data-size": "sm",
+                              "data-variant": "ghost",
+                              "type": "button"
+                            },
+                            "children": [
+                              {
+                                "attrs": {
+                                  "data-face": "volume",
+                                  "data-sk-icon": "volume",
+                                  "data-sk-icon-size": "md"
+                                },
+                                "element": "span"
+                              },
+                              {
+                                "attrs": {
+                                  "data-face": "muted",
+                                  "data-sk-icon": "volume-muted",
+                                  "data-sk-icon-size": "md"
+                                },
+                                "element": "span"
+                              }
+                            ],
+                            "element": "button",
+                            "options": [
+                              "muteLabel",
+                              "unmuteLabel"
+                            ],
+                            "part": "control"
+                          },
+                          {
+                            "attrs": {
+                              "aria-orientation": "vertical",
+                              "aria-valuemax": "100",
+                              "aria-valuemin": "0",
+                              "aria-valuenow": "0",
+                              "role": "slider",
+                              "tabindex": "0"
+                            },
+                            "children": [
+                              {
+                                "element": "div",
+                                "part": "volumeFill"
+                              }
+                            ],
+                            "element": "div",
+                            "options": [
+                              "volumeLabel"
+                            ],
+                            "part": "volumeSlider"
+                          }
+                        ],
+                        "element": "div",
+                        "part": "volume"
+                      }
+                    ],
+                    "element": "div",
+                    "part": "bar"
+                  }
+                ],
+                "element": "div",
+                "part": "controls"
+              },
+              {
+                "also": [
+                  "sk-list"
+                ],
+                "attrs": {
+                  "role": "list"
+                },
+                "children": [
+                  {
+                    "also": [
+                      "sk-list__item"
+                    ],
+                    "children": [
+                      {
+                        "also": [
+                          "sk-list__action",
+                          "sk-interactive"
+                        ],
+                        "attrs": {
+                          "type": "button"
+                        },
+                        "children": [
+                          {
+                            "also": [
+                              "sk-list__leading"
+                            ],
+                            "attrs": {
+                              "aria-hidden": "true"
+                            },
+                            "element": "span",
+                            "part": "itemLeading"
+                          },
+                          {
+                            "also": [
+                              "sk-list__content"
+                            ],
+                            "children": [
+                              {
+                                "also": [
+                                  "sk-list__title"
+                                ],
+                                "element": "span",
+                                "itemSlot": "title",
+                                "part": "itemTitle"
+                              },
+                              {
+                                "also": [
+                                  "sk-list__description"
+                                ],
+                                "element": "span",
+                                "itemSlot": "artist",
+                                "part": "itemArtist",
+                                "whenItemSlotGiven": "artist"
+                              }
+                            ],
+                            "element": "span",
+                            "part": "itemText"
+                          },
+                          {
+                            "also": [
+                              "sk-list__trailing"
+                            ],
+                            "attrs": {
+                              "aria-hidden": "true"
+                            },
+                            "element": "span",
+                            "part": "itemDuration"
+                          }
+                        ],
+                        "element": "button",
+                        "itemOptions": [
+                          "src",
+                          "cover",
+                          "duration",
+                          "peaks"
+                        ],
+                        "part": "itemButton"
+                      }
+                    ],
+                    "element": "li",
+                    "part": "item",
+                    "repeat": "tracks"
+                  }
+                ],
+                "element": "ol",
+                "options": [
+                  "tracksLabel"
+                ],
+                "part": "list",
+                "whenGiven": "tracks"
+              }
+            ],
+            "element": "div",
+            "host": true,
+            "part": "root"
+          }
+        },
+        "AudioPlayerMinimal": {
+          "compose": [
+            {
+              "of": "button",
+              "sheets": [
+                "@skryensya/core/components/button.css"
+              ],
+              "systemOwned": true
+            },
+            {
+              "of": "icon",
+              "systemOwned": true
+            }
+          ],
+          "exactlyOneOf": [
+            [
+              "src",
+              "children"
+            ]
+          ],
+          "forward": [
+            "id",
+            "aria-*"
+          ],
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "simple-audio",
+            "minimal-audio-player",
+            "voice-note",
+            "audio-clip",
+            "inline-audio"
+          ],
+          "mount": "data-sk-audio-player",
+          "options": [
+            "src",
+            "label",
+            "playLabel",
+            "pauseLabel",
+            "replayLabel",
+            "seekLabel",
+            "timeLabel",
+            "title",
+            "skip"
+          ],
+          "react": {
+            "from": "@skryensya/react/audio-player",
+            "name": "AudioPlayerMinimal"
+          },
+          "slots": {
+            "children": {
+              "accepts": "node"
+            }
+          },
+          "template": {
+            "attrs": {
+              "data-variant": "minimal",
+              "role": "group",
+              "tabindex": "-1"
+            },
+            "children": [
+              {
+                "attrs": {
+                  "data-defer-load": "",
+                  "preload": "none"
+                },
+                "element": "audio",
+                "options": [
+                  "src"
+                ],
+                "part": "media",
+                "whenGiven": "src"
+              },
+              {
+                "slot": "children"
+              },
+              {
+                "also": [
+                  "sk-button",
+                  "sk-interactive",
+                  "sk-icon-toggle"
+                ],
+                "attrs": {
+                  "aria-keyshortcuts": "k",
+                  "data-audio-action": "play",
+                  "data-icon-only": "",
+                  "data-size": "sm",
+                  "data-variant": "solid",
+                  "type": "button"
+                },
+                "children": [
+                  {
+                    "attrs": {
+                      "data-face": "play",
+                      "data-sk-icon": "play",
+                      "data-sk-icon-size": "md"
+                    },
+                    "element": "span"
+                  },
+                  {
+                    "attrs": {
+                      "data-face": "pause",
+                      "data-sk-icon": "pause",
+                      "data-sk-icon-size": "md"
+                    },
+                    "element": "span"
+                  },
+                  {
+                    "attrs": {
+                      "data-face": "replay",
+                      "data-sk-icon": "replay",
+                      "data-sk-icon-size": "md"
+                    },
+                    "element": "span"
+                  }
+                ],
+                "element": "button",
+                "options": [
+                  "playLabel",
+                  "pauseLabel",
+                  "replayLabel"
+                ],
+                "part": "control"
+              },
+              {
+                "element": "span",
+                "part": "title",
+                "textFromOption": "title",
+                "whenGiven": "title"
+              },
+              {
+                "attrs": {
+                  "aria-valuemax": "100",
+                  "aria-valuemin": "0",
+                  "aria-valuenow": "0",
+                  "role": "slider",
+                  "tabindex": "0"
+                },
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "element": "div",
+                        "part": "buffered"
+                      },
+                      {
+                        "element": "div",
+                        "part": "played"
+                      }
+                    ],
+                    "element": "div",
+                    "part": "track"
+                  },
+                  {
+                    "element": "div",
+                    "part": "thumb"
+                  },
+                  {
+                    "attrs": {
+                      "aria-hidden": "true"
+                    },
+                    "element": "span",
+                    "part": "tip"
+                  }
+                ],
+                "element": "div",
+                "options": [
+                  "seekLabel",
+                  "timeLabel"
+                ],
+                "part": "seek"
+              },
+              {
+                "attrs": {
+                  "aria-hidden": "true"
+                },
+                "children": [
+                  {
+                    "element": "span",
+                    "part": "current"
+                  },
+                  {
+                    "element": "span",
+                    "part": "duration"
+                  }
+                ],
+                "element": "span",
+                "part": "time"
+              }
+            ],
+            "element": "div",
+            "host": true,
+            "part": "root"
+          }
+        }
+      },
+      "systemOwned": [
+        "buffered",
+        "played",
+        "wave",
+        "waveBars",
+        "waveFill",
+        "thumb",
+        "tip",
+        "volumeFill",
+        "current",
+        "duration",
+        "speed",
+        "itemButton",
+        "itemLeading",
+        "itemText",
+        "itemTitle",
+        "itemArtist",
+        "itemDuration"
+      ]
+    },
     "avatar": {
       "bindings": {
         "Avatar.image": {
@@ -16384,19 +18141,19 @@
       "css": "@skryensya/core/components/back-to-top.css",
       "hookDetails": {
         "--sk-back-to-top-bg": {
-          "default": "var(--color-bg-surface-overlay)",
+          "default": "var(--sk-button-bg, light-dark(\n      color-mix(in oklab, var(--color-bg-surface-sunken) 60%, transparent),\n      color-mix(in oklab, var(--color-action-neutral) 42%, transparent)\n    ))",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/back-to-top.css"
         },
         "--sk-back-to-top-border-color": {
-          "default": "var(--color-border-default)",
+          "default": "var(--sk-button-border-color, var(--color-border-subtle))",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/back-to-top.css"
         },
         "--sk-back-to-top-border-color-hover": {
-          "default": "var(--color-border-strong)",
+          "default": "var(--sk-back-to-top-border-color)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/back-to-top.css"
@@ -16420,7 +18177,7 @@
           "sheet": "@skryensya/core/components/back-to-top.css"
         },
         "--sk-back-to-top-fg": {
-          "default": "var(--color-text-primary)",
+          "default": "var(--sk-button-fg, var(--color-text-primary))",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/back-to-top.css"
@@ -16432,7 +18189,7 @@
           "sheet": "@skryensya/core/components/back-to-top.css"
         },
         "--sk-back-to-top-shadow": {
-          "default": "var(--elevation-overlay)",
+          "default": "var(--sk-button-shadow, var(--elevation-raised))",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/back-to-top.css"
@@ -16450,7 +18207,7 @@
           "sheet": "@skryensya/core/components/back-to-top.css"
         },
         "--sk-back-to-top-wash": {
-          "default": "var(--elevation-wash-overlay)",
+          "default": "var(--sk-button-wash, var(--elevation-wash-raised))",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/back-to-top.css"
@@ -16568,9 +18325,11 @@
           },
           "template": {
             "also": [
+              "sk-button",
               "sk-interactive"
             ],
             "attrs": {
+              "data-variant": "soft",
               "hidden": "",
               "type": "button"
             },
@@ -21083,7 +22842,7 @@
                         ],
                         "attrs": {
                           "aria-hidden": "true",
-                          "data-sk-placement": "inline-start"
+                          "data-sk-placement": "block-start"
                         },
                         "children": [
                           {
@@ -21239,7 +22998,7 @@
                 ],
                 "attrs": {
                   "aria-hidden": "true",
-                  "data-sk-placement": "inline-start"
+                  "data-sk-placement": "block-start"
                 },
                 "children": [
                   {
@@ -24842,6 +26601,215 @@
         }
       }
     },
+    "compare-slider": {
+      "bindings": {
+        "CompareSlider": {
+          "enhancer": "data-sk-compare-slider",
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/compare-slider#CompareSlider"
+        }
+      },
+      "category": "content",
+      "css": "@skryensya/core/components/compare-slider.css",
+      "hookDetails": {
+        "--sk-compare-slider-bg": {
+          "default": "var(--color-bg-surface-sunken)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/compare-slider.css"
+        },
+        "--sk-compare-slider-handle-active-color": {
+          "default": "var(--color-border-accent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/compare-slider.css"
+        },
+        "--sk-compare-slider-handle-color": {
+          "default": "var(--color-bg-surface)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/compare-slider.css"
+        },
+        "--sk-compare-slider-handle-hit": {
+          "default": "var(--space-inset-lg)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/compare-slider.css"
+        },
+        "--sk-compare-slider-handle-line": {
+          "default": "2px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/compare-slider.css"
+        },
+        "--sk-compare-slider-position": {
+          "default": "50",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/compare-slider.css"
+        },
+        "--sk-compare-slider-radius": {
+          "default": "var(--radius-surface)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/compare-slider.css"
+        }
+      },
+      "hooks": [
+        "--sk-compare-slider-bg",
+        "--sk-compare-slider-handle-active-color",
+        "--sk-compare-slider-handle-color",
+        "--sk-compare-slider-handle-hit",
+        "--sk-compare-slider-handle-line",
+        "--sk-compare-slider-position",
+        "--sk-compare-slider-radius"
+      ],
+      "id": "compare-slider",
+      "options": {
+        "direction": {
+          "attr": "data-direction",
+          "default": "horizontal",
+          "type": "enum",
+          "values": [
+            "horizontal",
+            "vertical"
+          ]
+        },
+        "label": {
+          "attr": "aria-label",
+          "type": "string"
+        },
+        "position": {
+          "attr": "data-position",
+          "default": 50,
+          "machineInput": true,
+          "max": 100,
+          "min": 0,
+          "type": "number"
+        }
+      },
+      "parts": {
+        "after": "sk-compare-slider__after",
+        "before": "sk-compare-slider__before",
+        "grip": "sk-compare-slider__grip",
+        "handle": "sk-compare-slider__handle",
+        "root": "sk-compare-slider"
+      },
+      "semantics": {
+        "CompareSlider": {
+          "alternatives": [
+            "Resizable",
+            "Tabs",
+            "Segmented"
+          ],
+          "avoidWhen": [
+            "the two things are different subjects or sizes; the divider only works if the layers are registered, so they would not line up; use side-by-side Grid columns",
+            "the user is resizing panels of a layout rather than revealing a layer; that is Resizable, which conserves a total between neighbours",
+            "what is inside the layers is interactive; a press anywhere on the box moves the divider, so a link or a button inside would be unreachable",
+            "there are more than two things to compare; a divider has two sides, and Tabs or a Segmented control fits a set"
+          ],
+          "useWhen": [
+            "two versions of the same thing should be judged against each other at the same place: a photo before and after an edit, an interface old and new, a chart with and without a series",
+            "the reader should decide how much of each to see, by dragging a divider across the box, rather than being shown them one after the other",
+            "the two layers are the same size and the same subject, so that what is on one side of the divider lines up with what is on the other"
+          ]
+        }
+      },
+      "signatures": {
+        "CompareSlider": {
+          "forward": [
+            "id",
+            "aria-*"
+          ],
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "before-after",
+            "compare-two-layers",
+            "image-comparison",
+            "reveal-slider",
+            "draggable-divider-reveal"
+          ],
+          "mount": "data-sk-compare-slider",
+          "options": [
+            "direction",
+            "position",
+            "label"
+          ],
+          "react": {
+            "from": "@skryensya/react/compare-slider",
+            "name": "CompareSlider"
+          },
+          "requires": [
+            "label"
+          ],
+          "slots": {
+            "after": {
+              "accepts": "node",
+              "required": true
+            },
+            "before": {
+              "accepts": "node",
+              "required": true
+            }
+          },
+          "template": {
+            "children": [
+              {
+                "element": "div",
+                "part": "before",
+                "slot": "before"
+              },
+              {
+                "element": "div",
+                "part": "after",
+                "slot": "after"
+              },
+              {
+                "attrs": {
+                  "aria-valuemax": "100",
+                  "aria-valuemin": "0",
+                  "aria-valuenow": "50",
+                  "role": "slider",
+                  "tabindex": "0"
+                },
+                "attrsWhen": [
+                  {
+                    "attrs": {
+                      "aria-orientation": "vertical"
+                    },
+                    "equals": "vertical",
+                    "option": "direction"
+                  }
+                ],
+                "children": [
+                  {
+                    "also": [
+                      "sk-grip"
+                    ],
+                    "attrs": {
+                      "aria-hidden": "true"
+                    },
+                    "element": "span",
+                    "part": "grip"
+                  }
+                ],
+                "element": "div",
+                "options": [
+                  "label"
+                ],
+                "part": "handle"
+              }
+            ],
+            "element": "div",
+            "host": true,
+            "part": "root"
+          }
+        }
+      }
+    },
     "comparison-table": {
       "bindings": {
         "ComparisonCell": {
@@ -27891,6 +29859,973 @@
               "whenGiven": "alert"
             }
           ]
+        }
+      }
+    },
+    "dialog-stack": {
+      "bindings": {
+        "DialogStack": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/dialog-stack#DialogStack"
+        },
+        "DialogStackBody": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/dialog-stack#DialogStackBody"
+        },
+        "DialogStackClose": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/dialog-stack#DialogStackClose"
+        },
+        "DialogStackContent": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/dialog-stack#DialogStackContent"
+        },
+        "DialogStackDescription": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/dialog-stack#DialogStackDescription"
+        },
+        "DialogStackFooter": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/dialog-stack#DialogStackFooter"
+        },
+        "DialogStackHeader": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/dialog-stack#DialogStackHeader"
+        },
+        "DialogStackNext": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/dialog-stack#DialogStackNext"
+        },
+        "DialogStackOverlay": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/dialog-stack#DialogStackOverlay"
+        },
+        "DialogStackPrevious": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/dialog-stack#DialogStackPrevious"
+        },
+        "DialogStackTitle": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/dialog-stack#DialogStackTitle"
+        },
+        "DialogStackTrigger": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/dialog-stack#DialogStackTrigger"
+        }
+      },
+      "category": "overlays",
+      "css": "@skryensya/core/components/dialog-stack.css",
+      "hookDetails": {
+        "--sk-dialog-stack-backdrop-bg": {
+          "default": "color-mix(in oklch, var(--color-text-primary) 40%, transparent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dialog-stack.css"
+        },
+        "--sk-dialog-stack-bg": {
+          "default": "var(--color-bg-surface-overlay)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dialog-stack.css"
+        },
+        "--sk-dialog-stack-border-color": {
+          "default": "var(--color-border-subtle)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dialog-stack.css"
+        },
+        "--sk-dialog-stack-elevation": {
+          "default": "var(--elevation-modal)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dialog-stack.css"
+        },
+        "--sk-dialog-stack-gap": {
+          "default": "var(--space-stack-xs)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dialog-stack.css"
+        },
+        "--sk-dialog-stack-inline-size": {
+          "default": "min(32rem, calc(100vi - var(--space-inset-lg) * 2))",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dialog-stack.css"
+        },
+        "--sk-dialog-stack-padding": {
+          "default": "var(--space-inset-lg)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dialog-stack.css"
+        },
+        "--sk-dialog-stack-radius": {
+          "default": "var(--radius-surface)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dialog-stack.css"
+        }
+      },
+      "hooks": [
+        "--sk-dialog-stack-gap",
+        "--sk-dialog-stack-inline-size",
+        "--sk-dialog-stack-bg",
+        "--sk-dialog-stack-border-color",
+        "--sk-dialog-stack-radius",
+        "--sk-dialog-stack-padding",
+        "--sk-dialog-stack-elevation",
+        "--sk-dialog-stack-backdrop-bg"
+      ],
+      "id": "dialog-stack",
+      "options": {
+        "defaultOpen": {
+          "attr": "data-default-open",
+          "default": false,
+          "machineInput": true,
+          "trueValue": "",
+          "type": "boolean"
+        }
+      },
+      "parts": {
+        "body": "sk-dialog-stack__body",
+        "close": "sk-dialog-stack__close",
+        "content": "sk-dialog-stack__content",
+        "description": "sk-dialog-stack__description",
+        "footer": "sk-dialog-stack__footer",
+        "header": "sk-dialog-stack__header",
+        "next": "sk-dialog-stack__next",
+        "overlay": "sk-dialog-stack__overlay",
+        "previous": "sk-dialog-stack__previous",
+        "root": "sk-dialog-stack",
+        "title": "sk-dialog-stack__title",
+        "trigger": "sk-dialog-stack__trigger"
+      },
+      "semantics": {
+        "DialogStack": {
+          "alternatives": [
+            "Dialog",
+            "Popover",
+            "Steps"
+          ],
+          "avoidWhen": [
+            "a single confirmation needs an answer: use Dialog",
+            "the flow is long or needs URLs, reload recovery or branching: use separate pages",
+            "the content explains a control without blocking: use Popover"
+          ],
+          "useWhen": [
+            "a short blocking task has ordered steps and needs backward navigation",
+            "earlier steps should remain visible as stacked surfaces without exposing their controls"
+          ]
+        },
+        "DialogStackBody": {
+          "alternatives": [
+            "Dialog"
+          ],
+          "avoidWhen": [
+            "there is only one confirmation: use Dialog"
+          ],
+          "useWhen": [
+            "the stack needs its one native modal host around its steps"
+          ]
+        },
+        "DialogStackClose": {
+          "alternatives": [
+            "DialogStackNext",
+            "DialogStackPrevious"
+          ],
+          "avoidWhen": [
+            "the action only changes steps: use DialogStackNext or DialogStackPrevious"
+          ],
+          "useWhen": [
+            "a visible action cancels or completes the flow and closes the dialog"
+          ]
+        },
+        "DialogStackContent": {
+          "alternatives": [
+            "Dialog"
+          ],
+          "avoidWhen": [
+            "the content needs a standalone URL: use a page"
+          ],
+          "useWhen": [
+            "one step has a title, content and navigation controls"
+          ]
+        },
+        "DialogStackDescription": {
+          "alternatives": [
+            "DialogStackTitle"
+          ],
+          "avoidWhen": [
+            "the text is a heading: use DialogStackTitle"
+          ],
+          "useWhen": [
+            "a short sentence explains what the step asks for"
+          ]
+        },
+        "DialogStackFooter": {
+          "alternatives": [
+            "DialogStackHeader"
+          ],
+          "avoidWhen": [
+            "the group contains the step title: use DialogStackHeader"
+          ],
+          "useWhen": [
+            "navigation and completion controls need an action row"
+          ]
+        },
+        "DialogStackHeader": {
+          "alternatives": [
+            "DialogStackFooter"
+          ],
+          "avoidWhen": [
+            "the content is a set of actions: use DialogStackFooter"
+          ],
+          "useWhen": [
+            "a step groups its title and optional description"
+          ]
+        },
+        "DialogStackNext": {
+          "alternatives": [
+            "DialogStackClose"
+          ],
+          "avoidWhen": [
+            "the last action completes the task: use DialogStackClose"
+          ],
+          "useWhen": [
+            "a control advances to the next step"
+          ]
+        },
+        "DialogStackOverlay": {
+          "alternatives": [
+            "Window"
+          ],
+          "avoidWhen": [
+            "the background is part of a non-modal panel: use Window"
+          ],
+          "useWhen": [
+            "the compound composition needs an explicit backdrop marker; the native ::backdrop paints it"
+          ]
+        },
+        "DialogStackPrevious": {
+          "alternatives": [
+            "DialogStackClose"
+          ],
+          "avoidWhen": [
+            "the control abandons the flow: use DialogStackClose"
+          ],
+          "useWhen": [
+            "a control returns to the previous step while keeping its authored content mounted"
+          ]
+        },
+        "DialogStackTitle": {
+          "alternatives": [
+            "DialogStackDescription"
+          ],
+          "avoidWhen": [
+            "the text explains rather than names the step: use DialogStackDescription"
+          ],
+          "useWhen": [
+            "a heading names the active step and its dialog"
+          ]
+        },
+        "DialogStackTrigger": {
+          "alternatives": [
+            "DialogStackNext"
+          ],
+          "avoidWhen": [
+            "the action advances inside the stack: use DialogStackNext"
+          ],
+          "useWhen": [
+            "a button opens the stack from the page"
+          ]
+        }
+      },
+      "signatures": {
+        "DialogStack": {
+          "descendants": [
+            {
+              "because": "One native dialog owns modality for the stack.",
+              "min": 1,
+              "of": [
+                "DialogStackBody"
+              ]
+            }
+          ],
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "dialog-stack",
+            "multi-step-dialog",
+            "onboarding-dialog"
+          ],
+          "notInside": [
+            "DialogStack"
+          ],
+          "options": [
+            "defaultOpen"
+          ],
+          "react": {
+            "from": "@skryensya/react/dialog-stack",
+            "name": "DialogStack"
+          },
+          "slots": {
+            "children": {
+              "accepts": "signature",
+              "of": [
+                "DialogStackTrigger",
+                "DialogStackOverlay",
+                "DialogStackBody"
+              ],
+              "required": true
+            }
+          },
+          "template": {
+            "attrs": {
+              "data-sk-dialog-stack": ""
+            },
+            "element": "div",
+            "host": true,
+            "part": "root",
+            "slot": "children"
+          }
+        },
+        "DialogStackBody": {
+          "descendants": [
+            {
+              "because": "A stack needs at least one step to open.",
+              "min": 1,
+              "of": [
+                "DialogStackContent"
+              ]
+            }
+          ],
+          "host": {
+            "element": "dialog"
+          },
+          "intent": [
+            "dialog-stack-panels"
+          ],
+          "options": [],
+          "parents": [
+            "DialogStack"
+          ],
+          "react": {
+            "from": "@skryensya/react/dialog-stack",
+            "name": "DialogStackBody"
+          },
+          "slots": {
+            "children": {
+              "accepts": "signature",
+              "of": [
+                "DialogStackContent"
+              ],
+              "required": true
+            }
+          },
+          "template": {
+            "element": "dialog",
+            "host": true,
+            "part": "body",
+            "slot": "children"
+          }
+        },
+        "DialogStackClose": {
+          "compose": [
+            {
+              "of": "button",
+              "sheets": [
+                "@skryensya/core/components/button.css"
+              ],
+              "systemOwned": true
+            }
+          ],
+          "host": {
+            "element": "button"
+          },
+          "intent": [
+            "close-dialog-stack"
+          ],
+          "options": [],
+          "react": {
+            "from": "@skryensya/react/dialog-stack",
+            "name": "DialogStackClose"
+          },
+          "slots": {
+            "children": {
+              "accepts": "node",
+              "required": true
+            }
+          },
+          "template": {
+            "also": [
+              "sk-button",
+              "sk-interactive"
+            ],
+            "attrs": {
+              "type": "button"
+            },
+            "element": "button",
+            "host": true,
+            "part": "close",
+            "slot": "children"
+          }
+        },
+        "DialogStackContent": {
+          "descendants": [
+            {
+              "because": "The active step supplies the dialog's accessible name.",
+              "min": 1,
+              "of": [
+                "DialogStackTitle"
+              ]
+            }
+          ],
+          "host": {
+            "element": "section"
+          },
+          "intent": [
+            "dialog-stack-step"
+          ],
+          "options": [],
+          "parents": [
+            "DialogStackBody"
+          ],
+          "react": {
+            "from": "@skryensya/react/dialog-stack",
+            "name": "DialogStackContent"
+          },
+          "slots": {
+            "children": {
+              "accepts": "node",
+              "required": true
+            }
+          },
+          "template": {
+            "attrs": {
+              "tabindex": "-1"
+            },
+            "element": "section",
+            "host": true,
+            "part": "content",
+            "slot": "children"
+          }
+        },
+        "DialogStackDescription": {
+          "host": {
+            "element": "p"
+          },
+          "intent": [
+            "dialog-stack-step-description"
+          ],
+          "options": [],
+          "react": {
+            "from": "@skryensya/react/dialog-stack",
+            "name": "DialogStackDescription"
+          },
+          "slots": {
+            "children": {
+              "accepts": "text",
+              "required": true
+            }
+          },
+          "template": {
+            "element": "p",
+            "host": true,
+            "part": "description",
+            "slot": "children"
+          }
+        },
+        "DialogStackFooter": {
+          "host": {
+            "element": "footer"
+          },
+          "intent": [
+            "dialog-stack-actions"
+          ],
+          "options": [],
+          "react": {
+            "from": "@skryensya/react/dialog-stack",
+            "name": "DialogStackFooter"
+          },
+          "slots": {
+            "children": {
+              "accepts": "node",
+              "required": true
+            }
+          },
+          "template": {
+            "element": "footer",
+            "host": true,
+            "part": "footer",
+            "slot": "children"
+          }
+        },
+        "DialogStackHeader": {
+          "host": {
+            "element": "header"
+          },
+          "intent": [
+            "dialog-stack-heading-group"
+          ],
+          "options": [],
+          "react": {
+            "from": "@skryensya/react/dialog-stack",
+            "name": "DialogStackHeader"
+          },
+          "slots": {
+            "children": {
+              "accepts": "node",
+              "required": true
+            }
+          },
+          "template": {
+            "element": "header",
+            "host": true,
+            "part": "header",
+            "slot": "children"
+          }
+        },
+        "DialogStackNext": {
+          "compose": [
+            {
+              "of": "button",
+              "sheets": [
+                "@skryensya/core/components/button.css"
+              ],
+              "systemOwned": true
+            }
+          ],
+          "host": {
+            "element": "button"
+          },
+          "intent": [
+            "dialog-stack-next-step"
+          ],
+          "options": [],
+          "react": {
+            "from": "@skryensya/react/dialog-stack",
+            "name": "DialogStackNext"
+          },
+          "slots": {
+            "children": {
+              "accepts": "node",
+              "required": true
+            }
+          },
+          "template": {
+            "also": [
+              "sk-button",
+              "sk-interactive"
+            ],
+            "attrs": {
+              "type": "button"
+            },
+            "element": "button",
+            "host": true,
+            "part": "next",
+            "slot": "children"
+          }
+        },
+        "DialogStackOverlay": {
+          "host": {
+            "element": "span"
+          },
+          "intent": [
+            "dialog-stack-backdrop"
+          ],
+          "options": [],
+          "react": {
+            "from": "@skryensya/react/dialog-stack",
+            "name": "DialogStackOverlay"
+          },
+          "slots": {},
+          "template": {
+            "attrs": {
+              "aria-hidden": "true",
+              "hidden": ""
+            },
+            "element": "span",
+            "host": true,
+            "part": "overlay"
+          }
+        },
+        "DialogStackPrevious": {
+          "compose": [
+            {
+              "of": "button",
+              "sheets": [
+                "@skryensya/core/components/button.css"
+              ],
+              "systemOwned": true
+            }
+          ],
+          "host": {
+            "element": "button"
+          },
+          "intent": [
+            "dialog-stack-previous-step"
+          ],
+          "options": [],
+          "react": {
+            "from": "@skryensya/react/dialog-stack",
+            "name": "DialogStackPrevious"
+          },
+          "slots": {
+            "children": {
+              "accepts": "node",
+              "required": true
+            }
+          },
+          "template": {
+            "also": [
+              "sk-button",
+              "sk-interactive"
+            ],
+            "attrs": {
+              "type": "button"
+            },
+            "element": "button",
+            "host": true,
+            "part": "previous",
+            "slot": "children"
+          }
+        },
+        "DialogStackTitle": {
+          "host": {
+            "element": "h2"
+          },
+          "intent": [
+            "dialog-stack-step-title"
+          ],
+          "options": [],
+          "react": {
+            "from": "@skryensya/react/dialog-stack",
+            "name": "DialogStackTitle"
+          },
+          "slots": {
+            "children": {
+              "accepts": "text",
+              "required": true
+            }
+          },
+          "template": {
+            "element": "h2",
+            "host": true,
+            "part": "title",
+            "slot": "children"
+          }
+        },
+        "DialogStackTrigger": {
+          "compose": [
+            {
+              "of": "button",
+              "sheets": [
+                "@skryensya/core/components/button.css"
+              ],
+              "systemOwned": true
+            }
+          ],
+          "host": {
+            "element": "button"
+          },
+          "intent": [
+            "open-dialog-stack"
+          ],
+          "options": [],
+          "react": {
+            "from": "@skryensya/react/dialog-stack",
+            "name": "DialogStackTrigger"
+          },
+          "slots": {
+            "children": {
+              "accepts": "node",
+              "required": true
+            }
+          },
+          "template": {
+            "also": [
+              "sk-button",
+              "sk-interactive"
+            ],
+            "attrs": {
+              "type": "button"
+            },
+            "element": "button",
+            "host": true,
+            "part": "trigger",
+            "slot": "children"
+          }
+        }
+      }
+    },
+    "dock": {
+      "bindings": {
+        "Dock": {
+          "enhancer": "data-sk-dock",
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/dock#Dock"
+        },
+        "DockItem": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/dock#DockItem"
+        }
+      },
+      "category": "actions",
+      "css": "@skryensya/core/components/dock.css",
+      "hookDetails": {
+        "--sk-dock-bg": {
+          "default": "color-mix(in oklab, var(--color-bg-surface) 84%, transparent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dock.css"
+        },
+        "--sk-dock-border-color": {
+          "default": "color-mix(in oklab, currentColor 12%, transparent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dock.css"
+        },
+        "--sk-dock-fg": {
+          "default": "var(--color-text-primary)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dock.css"
+        },
+        "--sk-dock-gap": {
+          "default": "var(--space-inline-xs)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dock.css"
+        },
+        "--sk-dock-item-bg": {
+          "default": "var(--color-bg-surface)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dock.css"
+        },
+        "--sk-dock-item-radius": {
+          "default": "var(--radius-control)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dock.css"
+        },
+        "--sk-dock-lift": {
+          "default": "var(--motion-distance-lg)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dock.css"
+        },
+        "--sk-dock-magnification": {
+          "default": "1.3",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dock.css"
+        },
+        "--sk-dock-padding": {
+          "default": "var(--space-inset-xs)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dock.css"
+        },
+        "--sk-dock-radius": {
+          "default": "var(--radius-surface)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dock.css"
+        },
+        "--sk-dock-shadow": {
+          "default": "var(--elevation-overlay)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dock.css"
+        },
+        "--sk-dock-size": {
+          "default": "max(var(--size-control-lg), var(--size-touch-target))",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dock.css"
+        }
+      },
+      "hooks": [
+        "--sk-dock-bg",
+        "--sk-dock-border-color",
+        "--sk-dock-fg",
+        "--sk-dock-gap",
+        "--sk-dock-item-radius",
+        "--sk-dock-padding",
+        "--sk-dock-radius",
+        "--sk-dock-shadow",
+        "--sk-dock-size",
+        "--sk-dock-magnification",
+        "--sk-dock-lift",
+        "--sk-dock-item-bg"
+      ],
+      "id": "dock",
+      "options": {
+        "disabled": {
+          "attr": "disabled",
+          "default": false,
+          "trueValue": "",
+          "type": "boolean"
+        },
+        "label": {
+          "attr": "aria-label",
+          "type": "string"
+        }
+      },
+      "parts": {
+        "icon": "sk-dock__icon",
+        "item": "sk-dock__item",
+        "root": "sk-dock"
+      },
+      "semantics": {
+        "Dock": {
+          "alternatives": [
+            "Toolbar",
+            "NavList"
+          ],
+          "avoidWhen": [
+            "The controls form a dense editor toolbar that needs roving keyboard focus.",
+            "The items are site destinations rather than actions."
+          ],
+          "useWhen": [
+            "A small set of frequent application actions needs an icon-based launcher.",
+            "The actions are the application's own, always one press away, and a name on hover or focus is enough to tell the icons apart."
+          ]
+        },
+        "DockItem": {
+          "alternatives": [
+            "Button.action",
+            "Button.navigation"
+          ],
+          "avoidWhen": [
+            "The control navigates to a page or represents a persistent toggle."
+          ],
+          "useWhen": [
+            "A named icon button runs one action in a Dock."
+          ]
+        }
+      },
+      "signatures": {
+        "Dock": {
+          "forward": [
+            "id",
+            "aria-*"
+          ],
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "dock",
+            "compact-action-launcher",
+            "icon-action-group"
+          ],
+          "mount": "data-sk-dock",
+          "options": [
+            "label"
+          ],
+          "react": {
+            "from": "@skryensya/react/dock",
+            "name": "Dock"
+          },
+          "requires": [
+            "label"
+          ],
+          "slots": {
+            "children": {
+              "accepts": "node",
+              "required": true
+            }
+          },
+          "template": {
+            "attrs": {
+              "role": "group"
+            },
+            "element": "div",
+            "host": true,
+            "part": "root",
+            "slot": "children"
+          }
+        },
+        "DockItem": {
+          "forward": [
+            "id",
+            "aria-*"
+          ],
+          "host": {
+            "element": "button"
+          },
+          "intent": [
+            "dock-action"
+          ],
+          "options": [
+            "label",
+            "disabled"
+          ],
+          "parents": [
+            "Dock"
+          ],
+          "react": {
+            "from": "@skryensya/react/dock",
+            "name": "DockItem"
+          },
+          "requires": [
+            "label"
+          ],
+          "slots": {
+            "children": {
+              "accepts": "node",
+              "required": true
+            }
+          },
+          "template": {
+            "also": [
+              "sk-interactive"
+            ],
+            "attrs": {
+              "type": "button"
+            },
+            "children": [
+              {
+                "attrs": {
+                  "aria-hidden": "true"
+                },
+                "element": "span",
+                "part": "icon",
+                "slot": "children"
+              }
+            ],
+            "element": "button",
+            "host": true,
+            "part": "item"
+          }
         }
       }
     },
@@ -30999,6 +33934,16 @@
             "warning",
             "danger",
             "placeholder",
+            "play",
+            "pause",
+            "volume",
+            "volume-muted",
+            "captions",
+            "fullscreen",
+            "fullscreen-exit",
+            "replay",
+            "track-previous",
+            "track-next",
             "calendar",
             "clock",
             "upload",
@@ -31079,6 +34024,659 @@
           "template": {
             "element": "span",
             "host": true
+          }
+        }
+      }
+    },
+    "image-cropper": {
+      "a11y": [
+        {
+          "because": "The stage is described by what the picture shows, so it needs an alt, empty only when the picture is decoration. The component never invents one.",
+          "requiresOneOf": [
+            "alt"
+          ],
+          "when": {
+            "src": "present"
+          }
+        }
+      ],
+      "bindings": {
+        "ImageCropper": {
+          "enhancer": "data-sk-image-cropper",
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/image-cropper#ImageCropper"
+        }
+      },
+      "category": "content",
+      "css": "@skryensya/core/components/image-cropper.css",
+      "eventDetails": {
+        "aspectChange": {
+          "detail": {
+            "aspect": "ImageCropperAspect"
+          },
+          "reactDetail": "ImageCropperAspect",
+          "reactProp": "onAspectChange",
+          "source": "root",
+          "trigger": "control"
+        },
+        "cancel": {
+          "detail": {},
+          "reactDetail": "void",
+          "reactProp": "onCancel",
+          "source": "root",
+          "trigger": "control"
+        },
+        "confirm": {
+          "detail": {
+            "aspect": "number | null",
+            "crop": "ImageCropperCrop",
+            "exportBlob": "(options?: ImageCropperExportOptions) => Promise<Blob>",
+            "exportCanvas": "(options?: ImageCropperExportOptions) => Promise<HTMLCanvasElement>",
+            "shape": "ImageCropperShapeOption",
+            "value": "ImageCropperValue"
+          },
+          "reactDetail": "ImageCropperConfirmDetails",
+          "reactProp": "onCropConfirm",
+          "source": "root",
+          "trigger": "control"
+        },
+        "error": {
+          "detail": {
+            "error": "ImageCropperError"
+          },
+          "reactDetail": "ImageCropperError",
+          "reactProp": "onError",
+          "source": "root"
+        },
+        "ready": {
+          "detail": {
+            "crop": "ImageCropperCrop",
+            "value": "ImageCropperValue"
+          },
+          "reactDetail": "ImageCropperChangeDetails",
+          "reactProp": "onReady",
+          "source": "root"
+        },
+        "shapeChange": {
+          "detail": {
+            "shape": "ImageCropperShapeOption"
+          },
+          "reactDetail": "ImageCropperShapeOption",
+          "reactProp": "onShapeChange",
+          "source": "root",
+          "trigger": "control"
+        },
+        "valueChange": {
+          "detail": {
+            "crop": "ImageCropperCrop",
+            "value": "ImageCropperValue"
+          },
+          "reactDetail": "ImageCropperChangeDetails",
+          "reactProp": "onValueChange",
+          "source": "root"
+        },
+        "valueChangeEnd": {
+          "detail": {
+            "crop": "ImageCropperCrop",
+            "value": "ImageCropperValue"
+          },
+          "reactDetail": "ImageCropperChangeDetails",
+          "reactProp": "onValueChangeEnd",
+          "source": "root"
+        }
+      },
+      "events": {
+        "aspectChange": "sk:imagecropperaspectchange",
+        "cancel": "sk:imagecroppercancel",
+        "confirm": "sk:imagecropperconfirm",
+        "error": "sk:imagecroppererror",
+        "ready": "sk:imagecropperready",
+        "shapeChange": "sk:imagecroppershapechange",
+        "valueChange": "sk:imagecroppervaluechange",
+        "valueChangeEnd": "sk:imagecroppervaluechangeend"
+      },
+      "hookDetails": {
+        "--sk-image-cropper-bg": {
+          "default": "var(--color-bg-well)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/image-cropper.css"
+        },
+        "--sk-image-cropper-focus-ring": {
+          "default": "var(--focus-ring-color)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/image-cropper.css"
+        },
+        "--sk-image-cropper-frame-color": {
+          "default": "var(--color-border-accent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/image-cropper.css"
+        },
+        "--sk-image-cropper-frame-width": {
+          "default": "2px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/image-cropper.css"
+        },
+        "--sk-image-cropper-gap": {
+          "default": "var(--space-stack-md)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/image-cropper.css"
+        },
+        "--sk-image-cropper-grid-color": {
+          "default": "color-mix(in oklab, var(--color-text-on-media) 55%, transparent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/image-cropper.css"
+        },
+        "--sk-image-cropper-handle-color": {
+          "default": "var(--color-border-accent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/image-cropper.css"
+        },
+        "--sk-image-cropper-handle-size": {
+          "default": "0.875rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/image-cropper.css"
+        },
+        "--sk-image-cropper-overlay": {
+          "default": "var(--color-bg-canvas)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/image-cropper.css"
+        },
+        "--sk-image-cropper-overlay-opacity": {
+          "default": "0.72",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/image-cropper.css"
+        },
+        "--sk-image-cropper-panel-bg": {
+          "default": "var(--color-bg-surface)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/image-cropper.css"
+        },
+        "--sk-image-cropper-preview-size": {
+          "default": "7rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/image-cropper.css"
+        },
+        "--sk-image-cropper-radius": {
+          "default": "var(--radius-surface)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/image-cropper.css"
+        },
+        "--sk-image-cropper-side-size": {
+          "default": "16rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/image-cropper.css"
+        },
+        "--sk-image-cropper-stage-aspect-ratio": {
+          "default": "4 / 3",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/image-cropper.css"
+        },
+        "--sk-image-cropper-stage-min-block-size": {
+          "default": "16rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/image-cropper.css"
+        }
+      },
+      "hooks": [
+        "--sk-image-cropper-bg",
+        "--sk-image-cropper-radius",
+        "--sk-image-cropper-gap",
+        "--sk-image-cropper-stage-min-block-size",
+        "--sk-image-cropper-stage-aspect-ratio",
+        "--sk-image-cropper-overlay",
+        "--sk-image-cropper-overlay-opacity",
+        "--sk-image-cropper-frame-color",
+        "--sk-image-cropper-frame-width",
+        "--sk-image-cropper-grid-color",
+        "--sk-image-cropper-handle-size",
+        "--sk-image-cropper-handle-color",
+        "--sk-image-cropper-focus-ring",
+        "--sk-image-cropper-panel-bg",
+        "--sk-image-cropper-preview-size",
+        "--sk-image-cropper-side-size"
+      ],
+      "id": "image-cropper",
+      "options": {
+        "alt": {
+          "attr": "data-alt",
+          "machineInput": true,
+          "type": "string"
+        },
+        "aspect": {
+          "attr": "data-aspect",
+          "default": "free",
+          "machineInput": true,
+          "type": "string"
+        },
+        "crossOrigin": {
+          "attr": "data-cross-origin",
+          "machineInput": true,
+          "type": "enum",
+          "values": [
+            "anonymous",
+            "use-credentials"
+          ]
+        },
+        "disabled": {
+          "attr": "data-disabled",
+          "default": false,
+          "machineInput": true,
+          "trueValue": "",
+          "type": "boolean"
+        },
+        "label": {
+          "attr": "aria-label",
+          "type": "string"
+        },
+        "labels": {
+          "attr": "data-labels",
+          "machineInput": true,
+          "type": "string"
+        },
+        "maxZoom": {
+          "attr": "data-max-zoom",
+          "default": 4,
+          "machineInput": true,
+          "min": 1,
+          "type": "number"
+        },
+        "minZoom": {
+          "attr": "data-min-zoom",
+          "default": 1,
+          "machineInput": true,
+          "min": 0.1,
+          "type": "number"
+        },
+        "outputHeight": {
+          "attr": "data-output-height",
+          "machineInput": true,
+          "min": 1,
+          "type": "number"
+        },
+        "outputQuality": {
+          "attr": "data-output-quality",
+          "default": 0.92,
+          "machineInput": true,
+          "max": 1,
+          "min": 0,
+          "type": "number"
+        },
+        "outputType": {
+          "attr": "data-output-type",
+          "default": "image/png",
+          "machineInput": true,
+          "type": "enum",
+          "values": [
+            "image/png",
+            "image/jpeg",
+            "image/webp"
+          ]
+        },
+        "outputWidth": {
+          "attr": "data-output-width",
+          "machineInput": true,
+          "min": 1,
+          "type": "number"
+        },
+        "readOnly": {
+          "attr": "data-read-only",
+          "default": false,
+          "machineInput": true,
+          "trueValue": "",
+          "type": "boolean"
+        },
+        "shape": {
+          "attr": "data-shape",
+          "default": "rectangle",
+          "machineInput": true,
+          "type": "enum",
+          "values": [
+            "rectangle",
+            "circle"
+          ]
+        },
+        "showControls": {
+          "attr": "data-controls",
+          "default": true,
+          "falseValue": "false",
+          "type": "boolean"
+        },
+        "showGrid": {
+          "attr": "data-grid",
+          "default": true,
+          "falseValue": "false",
+          "machineInput": true,
+          "type": "boolean"
+        },
+        "src": {
+          "attr": "data-src",
+          "machineInput": true,
+          "type": "string"
+        },
+        "value": {
+          "attr": "data-value",
+          "machineInput": true,
+          "type": "string"
+        },
+        "wheelZoom": {
+          "attr": "data-wheel-zoom",
+          "default": false,
+          "machineInput": true,
+          "trueValue": "",
+          "type": "boolean"
+        }
+      },
+      "parts": {
+        "actions": "sk-image-cropper__actions",
+        "control": "sk-image-cropper__control",
+        "controls": "sk-image-cropper__controls",
+        "group": "sk-image-cropper__group",
+        "groupLabel": "sk-image-cropper__group-label",
+        "help": "sk-image-cropper__help",
+        "live": "sk-image-cropper__live",
+        "message": "sk-image-cropper__message",
+        "output": "sk-image-cropper__output",
+        "preview": "sk-image-cropper__preview",
+        "previewCanvas": "sk-image-cropper__preview-canvas",
+        "range": "sk-image-cropper__range",
+        "ratioInput": "sk-image-cropper__ratio-input",
+        "root": "sk-image-cropper",
+        "side": "sk-image-cropper__side",
+        "stage": "sk-image-cropper__stage",
+        "surface": "sk-image-cropper__surface",
+        "workspace": "sk-image-cropper__workspace"
+      },
+      "semantics": {
+        "ImageCropper": {
+          "alternatives": [
+            "ImageFrame",
+            "FileUpload",
+            "Canvas"
+          ],
+          "avoidWhen": [
+            "the picture is only displayed in a frame and the browser can crop it for free; ImageFrame fits it with object-fit",
+            "the file has to be chosen or uploaded; FileUpload does that, and the two are joined by the consumer's src, not by this component",
+            "drawing, annotating or filtering is needed; this crops, zooms and rotates and does nothing else to the pixels",
+            "the crop is applied on the server from coordinates and no one needs to see or adjust it; send the crop numbers from a form instead"
+          ],
+          "useWhen": [
+            "a person has to choose which part of a picture is used: a profile photo, a cover, a thumbnail, a product shot cut to a fixed ratio",
+            "the crop must be exact and reproducible: the result is a file at the picture's own resolution, or numbers that describe it, and the same value draws the same crop at any size",
+            "the picture may need turning or straightening before it is cut: zoom, quarter turns and a fine angle are part of the tool",
+            "an avatar is wanted: a circle crop exports a transparent PNG with the circle already cut, not a square to be masked afterwards"
+          ]
+        }
+      },
+      "signatures": {
+        "ImageCropper": {
+          "compose": [
+            {
+              "of": "icon",
+              "systemOwned": true
+            },
+            {
+              "of": "button",
+              "systemOwned": true
+            }
+          ],
+          "forward": [
+            "id",
+            "aria-*"
+          ],
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "image-cropper",
+            "crop-image",
+            "avatar-crop",
+            "profile-picture-crop",
+            "cover-image-crop",
+            "rotate-and-zoom-image",
+            "crop-to-aspect-ratio"
+          ],
+          "mount": "data-sk-image-cropper",
+          "options": [
+            "src",
+            "alt",
+            "label",
+            "shape",
+            "aspect",
+            "minZoom",
+            "maxZoom",
+            "value",
+            "disabled",
+            "readOnly",
+            "showGrid",
+            "showControls",
+            "wheelZoom",
+            "outputType",
+            "outputQuality",
+            "outputWidth",
+            "outputHeight",
+            "crossOrigin",
+            "labels"
+          ],
+          "react": {
+            "from": "@skryensya/react/image-cropper",
+            "name": "ImageCropper"
+          },
+          "slots": {},
+          "template": {
+            "attrsWhen": [
+              {
+                "attrs": {
+                  "role": "group"
+                },
+                "given": true,
+                "option": "label"
+              }
+            ],
+            "children": [
+              {
+                "children": [
+                  {
+                    "attrs": {
+                      "aria-label": "Crop area",
+                      "data-sk-image-cropper-label": "stage",
+                      "data-sk-image-cropper-stage": "",
+                      "role": "group",
+                      "tabindex": "0"
+                    },
+                    "children": [
+                      {
+                        "attrs": {
+                          "aria-hidden": "true",
+                          "data-sk-image-cropper-surface": ""
+                        },
+                        "element": "div",
+                        "part": "surface"
+                      },
+                      {
+                        "attrs": {
+                          "data-sk-image-cropper-message": "",
+                          "hidden": ""
+                        },
+                        "element": "p",
+                        "part": "message"
+                      },
+                      {
+                        "children": [
+                          {
+                            "attrs": {
+                              "aria-label": "Zoom",
+                              "data-sk-image-cropper-label": "zoomGroup",
+                              "role": "group"
+                            },
+                            "children": [
+                              {
+                                "attrs": {
+                                  "aria-hidden": "true",
+                                  "data-sk-image-cropper-text": "zoomGroup"
+                                },
+                                "element": "span",
+                                "part": "groupLabel",
+                                "text": "Zoom"
+                              },
+                              {
+                                "also": [
+                                  "sk-button",
+                                  "sk-interactive"
+                                ],
+                                "attrs": {
+                                  "aria-label": "Zoom out",
+                                  "data-icon-only": "",
+                                  "data-size": "sm",
+                                  "data-sk-image-cropper-action": "zoom-out",
+                                  "data-sk-image-cropper-label": "zoomOut",
+                                  "data-variant": "ghost",
+                                  "type": "button"
+                                },
+                                "children": [
+                                  {
+                                    "attrs": {
+                                      "data-sk-icon": "zoom-out",
+                                      "data-sk-icon-size": "sm"
+                                    },
+                                    "element": "span"
+                                  }
+                                ],
+                                "element": "button",
+                                "part": "control"
+                              },
+                              {
+                                "also": [
+                                  "sk-button",
+                                  "sk-interactive"
+                                ],
+                                "attrs": {
+                                  "aria-label": "Zoom in",
+                                  "data-icon-only": "",
+                                  "data-size": "sm",
+                                  "data-sk-image-cropper-action": "zoom-in",
+                                  "data-sk-image-cropper-label": "zoomIn",
+                                  "data-variant": "ghost",
+                                  "type": "button"
+                                },
+                                "children": [
+                                  {
+                                    "attrs": {
+                                      "data-sk-icon": "zoom-in",
+                                      "data-sk-icon-size": "sm"
+                                    },
+                                    "element": "span"
+                                  }
+                                ],
+                                "element": "button",
+                                "part": "control"
+                              }
+                            ],
+                            "element": "div",
+                            "part": "group"
+                          },
+                          {
+                            "attrs": {
+                              "aria-label": "Rotation",
+                              "data-sk-image-cropper-label": "rotationGroup",
+                              "role": "group"
+                            },
+                            "children": [
+                              {
+                                "attrs": {
+                                  "aria-hidden": "true",
+                                  "data-sk-image-cropper-text": "rotationGroup"
+                                },
+                                "element": "span",
+                                "part": "groupLabel",
+                                "text": "Rotation"
+                              },
+                              {
+                                "also": [
+                                  "sk-button",
+                                  "sk-interactive"
+                                ],
+                                "attrs": {
+                                  "aria-label": "Rotate 90 degrees",
+                                  "data-icon-only": "",
+                                  "data-size": "sm",
+                                  "data-sk-image-cropper-action": "rotate-right",
+                                  "data-sk-image-cropper-label": "rotateRight",
+                                  "data-variant": "ghost",
+                                  "type": "button"
+                                },
+                                "children": [
+                                  {
+                                    "attrs": {
+                                      "data-sk-icon": "refresh",
+                                      "data-sk-icon-size": "sm"
+                                    },
+                                    "element": "span"
+                                  }
+                                ],
+                                "element": "button",
+                                "part": "control"
+                              }
+                            ],
+                            "element": "div",
+                            "part": "group"
+                          }
+                        ],
+                        "element": "div",
+                        "part": "controls"
+                      }
+                    ],
+                    "element": "div",
+                    "part": "stage"
+                  },
+                  {
+                    "attrs": {
+                      "data-sk-image-cropper-help": "",
+                      "data-sk-image-cropper-text": "stageHelp"
+                    },
+                    "element": "p",
+                    "part": "help",
+                    "text": "Arrow keys move the image, Shift for larger steps. Plus and minus zoom. Square brackets rotate one degree, R rotates a quarter turn. Zero resets."
+                  }
+                ],
+                "element": "div",
+                "part": "workspace"
+              },
+              {
+                "children": [],
+                "element": "div",
+                "part": "side"
+              },
+              {
+                "attrs": {
+                  "aria-atomic": "true",
+                  "aria-live": "polite",
+                  "data-sk-image-cropper-live": "",
+                  "role": "status"
+                },
+                "element": "div",
+                "part": "live"
+              }
+            ],
+            "element": "div",
+            "host": true,
+            "part": "root"
           }
         }
       }
@@ -44375,6 +47973,7 @@
         "--sk-resizable-size"
       ],
       "parts": {
+        "grip": "sk-resizable__grip",
         "handle": "sk-resizable__handle",
         "panel": "sk-resizable__panel",
         "root": "sk-resizable"
@@ -44498,6 +48097,18 @@
               "role": "separator",
               "tabindex": "0"
             },
+            "children": [
+              {
+                "also": [
+                  "sk-grip"
+                ],
+                "attrs": {
+                  "aria-hidden": "true"
+                },
+                "element": "span",
+                "part": "grip"
+              }
+            ],
             "element": "div",
             "host": true,
             "part": "handle"
@@ -44752,6 +48363,149 @@
                 "part": "after",
                 "slot": "after",
                 "whenGiven": "after"
+              }
+            ],
+            "element": "div",
+            "host": true,
+            "part": "root"
+          }
+        }
+      }
+    },
+    "scroll-hint": {
+      "bindings": {
+        "ScrollHint": {
+          "enhancer": "data-sk-scroll-hint",
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/scroll-hint#ScrollHint"
+        }
+      },
+      "category": "layout",
+      "css": "@skryensya/core/components/scroll-hint.css",
+      "hookDetails": {
+        "--sk-scroll-hint-fg": {
+          "default": "var(--color-text-secondary)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-hint.css"
+        },
+        "--sk-scroll-hint-gap": {
+          "default": "var(--space-inline-sm)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-hint.css"
+        },
+        "--sk-scroll-hint-size": {
+          "default": "1.75rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-hint.css"
+        },
+        "--sk-scroll-hint-travel": {
+          "default": "var(--motion-distance-sm)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/scroll-hint.css"
+        }
+      },
+      "hooks": [
+        "--sk-scroll-hint-fg",
+        "--sk-scroll-hint-gap",
+        "--sk-scroll-hint-size",
+        "--sk-scroll-hint-travel"
+      ],
+      "id": "scroll-hint",
+      "options": {
+        "axis": {
+          "attr": "data-axis",
+          "default": "vertical",
+          "type": "enum",
+          "values": [
+            "horizontal",
+            "vertical"
+          ]
+        },
+        "scroller": {
+          "attr": "data-scroller",
+          "machineInput": true,
+          "type": "string"
+        }
+      },
+      "parts": {
+        "indicator": "sk-scroll-hint__indicator",
+        "label": "sk-scroll-hint__label",
+        "mark": "sk-scroll-hint__mark",
+        "root": "sk-scroll-hint"
+      },
+      "semantics": {
+        "ScrollHint": {
+          "alternatives": [
+            "FadeEdge",
+            "BackToTop"
+          ],
+          "avoidWhen": [
+            "the content fits without scrolling",
+            "a persistent scroll-position indicator or navigation button is needed",
+            "the hint would cover content or replace the region's accessible name and keyboard support"
+          ],
+          "useWhen": [
+            "a scrollable region needs a one-time directional invitation before the person discovers scrolling",
+            "an animated visual cue should disappear after actual scrolling in the indicated axis"
+          ]
+        }
+      },
+      "signatures": {
+        "ScrollHint": {
+          "forward": [
+            "id",
+            "aria-*"
+          ],
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "scroll-hint",
+            "scroll-affordance",
+            "swipe-hint"
+          ],
+          "mount": "data-sk-scroll-hint",
+          "options": [
+            "axis",
+            "scroller"
+          ],
+          "react": {
+            "from": "@skryensya/react/scroll-hint",
+            "name": "ScrollHint"
+          },
+          "slots": {
+            "children": {
+              "accepts": "text",
+              "required": true
+            }
+          },
+          "template": {
+            "attrs": {
+              "hidden": ""
+            },
+            "children": [
+              {
+                "attrs": {
+                  "aria-hidden": "true"
+                },
+                "children": [
+                  {
+                    "element": "span",
+                    "part": "mark"
+                  }
+                ],
+                "element": "span",
+                "part": "indicator"
+              },
+              {
+                "element": "span",
+                "part": "label",
+                "slot": "children"
               }
             ],
             "element": "div",
@@ -46251,12 +50005,6 @@
           "part": "root",
           "sheet": "@skryensya/core/components/shimmer.css"
         },
-        "--sk-shimmer-position": {
-          "default": "200%",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/components/shimmer.css"
-        },
         "--sk-shimmer-spread": {
           "default": "2.5em",
           "output": false,
@@ -46274,7 +50022,6 @@
         "--sk-shimmer-angle",
         "--sk-shimmer-color",
         "--sk-shimmer-duration",
-        "--sk-shimmer-position",
         "--sk-shimmer-spread",
         "--sk-shimmer-text-fill"
       ],
@@ -46768,6 +50515,7 @@
         "content": "sk-sidebar__content",
         "footer": "sk-sidebar__footer",
         "header": "sk-sidebar__header",
+        "resizeGrip": "sk-sidebar__resize-grip",
         "resizeHandle": "sk-sidebar__resize-handle",
         "root": "sk-sidebar",
         "separator": "sk-sidebar__separator",
@@ -47028,6 +50776,18 @@
               "role": "separator",
               "tabindex": "0"
             },
+            "children": [
+              {
+                "also": [
+                  "sk-grip"
+                ],
+                "attrs": {
+                  "aria-hidden": "true"
+                },
+                "element": "span",
+                "part": "resizeGrip"
+              }
+            ],
             "element": "div",
             "host": true,
             "part": "resizeHandle"
@@ -47695,6 +51455,12 @@
           "markup": true,
           "portals": false,
           "react": "@skryensya/react/split-button#SplitButton"
+        },
+        "SplitButtonVertical": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/split-button#SplitButtonVertical"
         }
       },
       "category": "actions",
@@ -47707,13 +51473,13 @@
           "sheet": "@skryensya/core/components/split-button.css"
         },
         "--sk-split-button-shadow": {
-          "default": "var(--elevation-raised)",
+          "default": "none",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/split-button.css"
         },
         "--sk-split-button-wash": {
-          "default": "var(--elevation-wash-raised)",
+          "default": "none",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/split-button.css"
@@ -47748,6 +51514,21 @@
             "there is one action almost everyone wants and a few variants of the same action",
             "the main one should be one click away and the others should take no room",
             "the action carries weldEnd and the menu trigger triggerWeldStart, with the same variant and size on both halves"
+          ]
+        },
+        "SplitButtonVertical": {
+          "alternatives": [
+            "SplitButton",
+            "Button.action"
+          ],
+          "avoidWhen": [
+            "there is one main action with variants of it behind a menu; that is SplitButton, which is horizontal and carries the menu",
+            "the two actions are unrelated, or one is clearly the primary one; two separate Buttons say that better",
+            "the buttons need labels; the halves are icon-only and a labelled pair is two Buttons in an Inline"
+          ],
+          "useWhen": [
+            "two icon-only actions are a pair, one above the other, and should read as one control: zoom in and out, previous and next, raise and lower",
+            "there is no menu and nothing to choose: both halves are plain actions of the same weight"
           ]
         }
       },
@@ -47846,6 +51627,91 @@
               },
               {
                 "slot": "menu"
+              }
+            ],
+            "element": "div",
+            "host": true,
+            "part": "root"
+          }
+        },
+        "SplitButtonVertical": {
+          "forward": [
+            "id",
+            "aria-*"
+          ],
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "paired-vertical-actions",
+            "zoom-in-and-out"
+          ],
+          "options": [
+            "label"
+          ],
+          "pairs": [
+            {
+              "a": {
+                "option": "variant",
+                "slot": "first"
+              },
+              "b": {
+                "option": "variant",
+                "slot": "second"
+              }
+            },
+            {
+              "a": {
+                "option": "tone",
+                "slot": "first"
+              },
+              "b": {
+                "option": "tone",
+                "slot": "second"
+              }
+            },
+            {
+              "a": {
+                "option": "size",
+                "slot": "first"
+              },
+              "b": {
+                "option": "size",
+                "slot": "second"
+              }
+            }
+          ],
+          "react": {
+            "from": "@skryensya/react/split-button",
+            "name": "SplitButtonVertical"
+          },
+          "slots": {
+            "first": {
+              "accepts": "signature",
+              "of": [
+                "Button.action"
+              ],
+              "required": true
+            },
+            "second": {
+              "accepts": "signature",
+              "of": [
+                "Button.action"
+              ],
+              "required": true
+            }
+          },
+          "template": {
+            "attrs": {
+              "data-orientation": "vertical",
+              "role": "group"
+            },
+            "children": [
+              {
+                "slot": "first"
+              },
+              {
+                "slot": "second"
               }
             ],
             "element": "div",
@@ -48201,6 +52067,16 @@
                       "warning",
                       "danger",
                       "placeholder",
+                      "play",
+                      "pause",
+                      "volume",
+                      "volume-muted",
+                      "captions",
+                      "fullscreen",
+                      "fullscreen-exit",
+                      "replay",
+                      "track-previous",
+                      "track-next",
                       "calendar",
                       "clock",
                       "upload",
@@ -49315,6 +53191,11 @@
       },
       "semantics": {
         "Table": {
+          "alternatives": [
+            "DataGrid",
+            "List",
+            "DescriptionList"
+          ],
           "avoidWhen": [
             "it is a list of things with no columns; that is a List",
             "it is used for layout; a table announces relationships the layout does not have"
@@ -56144,6 +60025,11 @@
           ]
         },
         "Text": {
+          "alternatives": [
+            "Heading",
+            "Quote",
+            "Kbd"
+          ],
           "avoidWhen": [
             "it titles a section; that is a Heading, even if it looks small",
             "it goes inside another line of text, a button or a label as a <p>: there it is textElement span"
@@ -57562,6 +61448,819 @@
         }
       }
     },
+    "video-player": {
+      "bindings": {
+        "VideoPlayer": {
+          "enhancer": "data-sk-video-player",
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/video-player#VideoPlayer"
+        }
+      },
+      "category": "content",
+      "css": "@skryensya/core/components/video-player.css",
+      "hookDetails": {
+        "--sk-video-player-aspect": {
+          "default": "16 / 9",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/video-player.css"
+        },
+        "--sk-video-player-bg": {
+          "default": "var(--color-bg-canvas)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/video-player.css"
+        },
+        "--sk-video-player-buffered-color": {
+          "default": "color-mix(in oklch, var(--sk-video-player-fg) 42%, transparent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/video-player.css"
+        },
+        "--sk-video-player-captions-bg": {
+          "default": "color-mix(in oklch, var(--color-bg-canvas) 72%, transparent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/video-player.css"
+        },
+        "--sk-video-player-captions-offset": {
+          "default": "5rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/video-player.css"
+        },
+        "--sk-video-player-captions-underline-offset": {
+          "default": "var(--space-inset-xs)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/video-player.css"
+        },
+        "--sk-video-player-captions-underline-size": {
+          "default": "var(--size-icon-md)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/video-player.css"
+        },
+        "--sk-video-player-captions-underline-thickness": {
+          "default": "0.1875rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/video-player.css"
+        },
+        "--sk-video-player-fade-duration": {
+          "default": "var(--motion-state-change-duration)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/video-player.css"
+        },
+        "--sk-video-player-fg": {
+          "default": "var(--color-text-on-media)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/video-player.css"
+        },
+        "--sk-video-player-gutter": {
+          "default": "var(--space-inset-sm)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/video-player.css"
+        },
+        "--sk-video-player-played-color": {
+          "default": "var(--color-action-accent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/video-player.css"
+        },
+        "--sk-video-player-radius": {
+          "default": "var(--radius-surface)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/video-player.css"
+        },
+        "--sk-video-player-scrim": {
+          "default": "color-mix(in oklch, var(--color-bg-canvas) 82%, transparent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/video-player.css"
+        },
+        "--sk-video-player-thumb-size": {
+          "default": "0.875rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/video-player.css"
+        },
+        "--sk-video-player-track-color": {
+          "default": "color-mix(in oklch, var(--sk-video-player-fg) 28%, transparent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/video-player.css"
+        },
+        "--sk-video-player-track-size": {
+          "default": "0.1875rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/video-player.css"
+        },
+        "--sk-video-player-volume-pad": {
+          "default": "var(--space-inset-sm)",
+          "output": false,
+          "part": "volume",
+          "sheet": "@skryensya/core/components/video-player.css"
+        },
+        "--sk-video-player-volume-width": {
+          "default": "6rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/video-player.css"
+        }
+      },
+      "hooks": [
+        "--sk-video-player-aspect",
+        "--sk-video-player-bg",
+        "--sk-video-player-buffered-color",
+        "--sk-video-player-captions-bg",
+        "--sk-video-player-captions-offset",
+        "--sk-video-player-captions-underline-offset",
+        "--sk-video-player-captions-underline-size",
+        "--sk-video-player-captions-underline-thickness",
+        "--sk-video-player-fade-duration",
+        "--sk-video-player-fg",
+        "--sk-video-player-gutter",
+        "--sk-video-player-played-color",
+        "--sk-video-player-radius",
+        "--sk-video-player-scrim",
+        "--sk-video-player-thumb-size",
+        "--sk-video-player-track-color",
+        "--sk-video-player-track-size",
+        "--sk-video-player-volume-pad",
+        "--sk-video-player-volume-width"
+      ],
+      "hookSheets": [
+        "@skryensya/core/patterns/visually-hidden.css"
+      ],
+      "id": "video-player",
+      "options": {
+        "autoHide": {
+          "attr": "data-auto-hide",
+          "default": true,
+          "falseValue": "false",
+          "machineInput": true,
+          "type": "boolean"
+        },
+        "captionsLabel": {
+          "attr": "aria-label",
+          "default": "Captions",
+          "type": "string"
+        },
+        "captionsLang": {
+          "attr": "srclang",
+          "type": "string"
+        },
+        "captionsSrc": {
+          "attr": "src",
+          "type": "string"
+        },
+        "captionsTitle": {
+          "attr": "label",
+          "type": "string"
+        },
+        "elapsedLabel": {
+          "attr": "data-label-elapsed",
+          "default": "Show elapsed time",
+          "type": "string"
+        },
+        "exitFullscreenLabel": {
+          "attr": "data-label-exit-fullscreen",
+          "default": "Exit full screen",
+          "type": "string"
+        },
+        "fullscreenLabel": {
+          "attr": "aria-label",
+          "default": "Full screen",
+          "type": "string"
+        },
+        "label": {
+          "attr": "aria-label",
+          "default": "Video player",
+          "type": "string"
+        },
+        "muteLabel": {
+          "attr": "aria-label",
+          "default": "Mute",
+          "type": "string"
+        },
+        "pauseLabel": {
+          "attr": "data-label-pause",
+          "default": "Pause",
+          "type": "string"
+        },
+        "playLabel": {
+          "attr": "aria-label",
+          "default": "Play",
+          "type": "string"
+        },
+        "poster": {
+          "attr": "poster",
+          "type": "string"
+        },
+        "remainingLabel": {
+          "attr": "aria-label",
+          "default": "Show remaining time",
+          "type": "string"
+        },
+        "replayLabel": {
+          "attr": "data-label-replay",
+          "default": "Replay",
+          "type": "string"
+        },
+        "seekLabel": {
+          "attr": "aria-label",
+          "default": "Seek",
+          "type": "string"
+        },
+        "skip": {
+          "attr": "data-skip",
+          "default": 10,
+          "machineInput": true,
+          "max": 120,
+          "min": 1,
+          "type": "number"
+        },
+        "speedLabel": {
+          "attr": "aria-label",
+          "default": "Playback speed",
+          "type": "string"
+        },
+        "speeds": {
+          "attr": "data-speeds",
+          "default": "0.5 1 1.25 1.5 2",
+          "machineInput": true,
+          "type": "string"
+        },
+        "src": {
+          "attr": "src",
+          "type": "string"
+        },
+        "timeLabel": {
+          "attr": "data-time-label",
+          "default": "{current} of {duration}",
+          "machineInput": true,
+          "type": "string"
+        },
+        "unmuteLabel": {
+          "attr": "data-label-unmute",
+          "default": "Unmute",
+          "type": "string"
+        },
+        "volumeLabel": {
+          "attr": "aria-label",
+          "default": "Volume",
+          "type": "string"
+        }
+      },
+      "parts": {
+        "bar": "sk-video-player__bar",
+        "big": "sk-video-player__big",
+        "buffered": "sk-video-player__buffered",
+        "captions": "sk-video-player__captions",
+        "control": "sk-video-player__control",
+        "controls": "sk-video-player__controls",
+        "current": "sk-video-player__current",
+        "duration": "sk-video-player__duration",
+        "loader": "sk-video-player__loader",
+        "media": "sk-video-player__media",
+        "played": "sk-video-player__played",
+        "root": "sk-video-player",
+        "seek": "sk-video-player__seek",
+        "spacer": "sk-video-player__spacer",
+        "speed": "sk-video-player__speed",
+        "stage": "sk-video-player__stage",
+        "thumb": "sk-video-player__thumb",
+        "time": "sk-video-player__time",
+        "tip": "sk-video-player__tip",
+        "track": "sk-video-player__track",
+        "volume": "sk-video-player__volume",
+        "volumeFill": "sk-video-player__volume-fill",
+        "volumeSlider": "sk-video-player__volume-slider"
+      },
+      "semantics": {
+        "VideoPlayer": {
+          "alternatives": [
+            "Lightbox",
+            "ImageFrame",
+            "Carousel"
+          ],
+          "avoidWhen": [
+            "the video lives on someone else's player (YouTube, Vimeo): that is an iframe with its own controls, and drawing a second bar over it controls nothing; embed it in an ImageFrame-sized box instead",
+            "the media is a short looping clip with no sound, a decoration; a bare video with autoplay, muted and loop needs no controls at all",
+            "it is audio only; the seek bar, the volume and the keys fit, but the stage, the poster and fullscreen do not, and a lighter control strip is the right shape",
+            "a photo or a document is being viewed; that is Lightbox"
+          ],
+          "useWhen": [
+            "a video has to be played inside the page and its controls should look like the rest of the interface (same buttons, same focus ring, same dark chrome) instead of the browser's own bar",
+            "the reader should be able to run it from the keyboard alone: play, seek, volume, speed, captions and fullscreen all have a key, scoped to the player and never to the page",
+            "the video is a file you host or link (an mp4 or webm with an optional poster and caption tracks); the player draws over a real video element and leaves the sources and tracks to you"
+          ]
+        }
+      },
+      "signatures": {
+        "VideoPlayer": {
+          "compose": [
+            {
+              "of": "button",
+              "sheets": [
+                "@skryensya/core/components/button.css"
+              ],
+              "systemOwned": true
+            },
+            {
+              "of": "loader",
+              "sheets": [
+                "@skryensya/core/components/loader.css"
+              ],
+              "systemOwned": true
+            },
+            {
+              "of": "icon",
+              "systemOwned": true
+            }
+          ],
+          "exactlyOneOf": [
+            [
+              "src",
+              "children"
+            ]
+          ],
+          "forward": [
+            "id",
+            "aria-*"
+          ],
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "video-player",
+            "play-a-video",
+            "media-player",
+            "custom-video-controls",
+            "embed-video"
+          ],
+          "mount": "data-sk-video-player",
+          "options": [
+            "src",
+            "poster",
+            "captionsSrc",
+            "captionsLang",
+            "captionsTitle",
+            "label",
+            "playLabel",
+            "pauseLabel",
+            "replayLabel",
+            "muteLabel",
+            "unmuteLabel",
+            "seekLabel",
+            "volumeLabel",
+            "speedLabel",
+            "captionsLabel",
+            "fullscreenLabel",
+            "exitFullscreenLabel",
+            "remainingLabel",
+            "elapsedLabel",
+            "timeLabel",
+            "autoHide",
+            "skip",
+            "speeds"
+          ],
+          "react": {
+            "from": "@skryensya/react/video-player",
+            "name": "VideoPlayer"
+          },
+          "slots": {
+            "children": {
+              "accepts": "node"
+            }
+          },
+          "template": {
+            "attrs": {
+              "role": "group",
+              "tabindex": "-1"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attrs": {
+                      "data-defer-load": "",
+                      "playsinline": "",
+                      "preload": "none"
+                    },
+                    "children": [
+                      {
+                        "attrs": {
+                          "kind": "captions"
+                        },
+                        "element": "track",
+                        "options": [
+                          "captionsSrc",
+                          "captionsLang",
+                          "captionsTitle"
+                        ],
+                        "whenGiven": "captionsSrc"
+                      }
+                    ],
+                    "element": "video",
+                    "options": [
+                      "src",
+                      "poster"
+                    ],
+                    "part": "media",
+                    "whenGiven": "src"
+                  },
+                  {
+                    "slot": "children"
+                  }
+                ],
+                "element": "div",
+                "part": "stage"
+              },
+              {
+                "attrs": {
+                  "aria-hidden": "true"
+                },
+                "element": "div",
+                "part": "captions"
+              },
+              {
+                "also": [
+                  "sk-loader"
+                ],
+                "attrs": {
+                  "aria-hidden": "true",
+                  "data-size": "lg"
+                },
+                "element": "span",
+                "part": "loader"
+              },
+              {
+                "also": [
+                  "sk-button",
+                  "sk-interactive",
+                  "sk-icon-toggle"
+                ],
+                "attrs": {
+                  "data-icon-only": "",
+                  "data-size": "lg",
+                  "data-variant": "solid",
+                  "data-video-action": "play",
+                  "type": "button"
+                },
+                "children": [
+                  {
+                    "attrs": {
+                      "data-face": "play",
+                      "data-sk-icon": "play",
+                      "data-sk-icon-size": "md"
+                    },
+                    "element": "span"
+                  },
+                  {
+                    "attrs": {
+                      "data-face": "replay",
+                      "data-sk-icon": "replay",
+                      "data-sk-icon-size": "md"
+                    },
+                    "element": "span"
+                  }
+                ],
+                "element": "button",
+                "options": [
+                  "playLabel",
+                  "replayLabel"
+                ],
+                "part": "big"
+              },
+              {
+                "children": [
+                  {
+                    "attrs": {
+                      "aria-valuemax": "100",
+                      "aria-valuemin": "0",
+                      "aria-valuenow": "0",
+                      "role": "slider",
+                      "tabindex": "0"
+                    },
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "element": "div",
+                            "part": "buffered"
+                          },
+                          {
+                            "element": "div",
+                            "part": "played"
+                          }
+                        ],
+                        "element": "div",
+                        "part": "track"
+                      },
+                      {
+                        "element": "div",
+                        "part": "thumb"
+                      },
+                      {
+                        "attrs": {
+                          "aria-hidden": "true"
+                        },
+                        "element": "span",
+                        "part": "tip"
+                      }
+                    ],
+                    "element": "div",
+                    "options": [
+                      "seekLabel",
+                      "timeLabel"
+                    ],
+                    "part": "seek"
+                  },
+                  {
+                    "children": [
+                      {
+                        "also": [
+                          "sk-button",
+                          "sk-interactive",
+                          "sk-icon-toggle"
+                        ],
+                        "attrs": {
+                          "aria-keyshortcuts": "k",
+                          "data-icon-only": "",
+                          "data-size": "sm",
+                          "data-variant": "ghost",
+                          "data-video-action": "play",
+                          "type": "button"
+                        },
+                        "children": [
+                          {
+                            "attrs": {
+                              "data-face": "play",
+                              "data-sk-icon": "play",
+                              "data-sk-icon-size": "md"
+                            },
+                            "element": "span"
+                          },
+                          {
+                            "attrs": {
+                              "data-face": "pause",
+                              "data-sk-icon": "pause",
+                              "data-sk-icon-size": "md"
+                            },
+                            "element": "span"
+                          },
+                          {
+                            "attrs": {
+                              "data-face": "replay",
+                              "data-sk-icon": "replay",
+                              "data-sk-icon-size": "md"
+                            },
+                            "element": "span"
+                          }
+                        ],
+                        "element": "button",
+                        "options": [
+                          "playLabel",
+                          "pauseLabel",
+                          "replayLabel"
+                        ],
+                        "part": "control"
+                      },
+                      {
+                        "children": [
+                          {
+                            "also": [
+                              "sk-button",
+                              "sk-interactive",
+                              "sk-icon-toggle"
+                            ],
+                            "attrs": {
+                              "aria-keyshortcuts": "m",
+                              "data-icon-only": "",
+                              "data-size": "sm",
+                              "data-variant": "ghost",
+                              "data-video-action": "mute",
+                              "type": "button"
+                            },
+                            "children": [
+                              {
+                                "attrs": {
+                                  "data-face": "volume",
+                                  "data-sk-icon": "volume",
+                                  "data-sk-icon-size": "md"
+                                },
+                                "element": "span"
+                              },
+                              {
+                                "attrs": {
+                                  "data-face": "muted",
+                                  "data-sk-icon": "volume-muted",
+                                  "data-sk-icon-size": "md"
+                                },
+                                "element": "span"
+                              }
+                            ],
+                            "element": "button",
+                            "options": [
+                              "muteLabel",
+                              "unmuteLabel"
+                            ],
+                            "part": "control"
+                          },
+                          {
+                            "attrs": {
+                              "aria-orientation": "vertical",
+                              "aria-valuemax": "100",
+                              "aria-valuemin": "0",
+                              "aria-valuenow": "0",
+                              "role": "slider",
+                              "tabindex": "0"
+                            },
+                            "children": [
+                              {
+                                "element": "div",
+                                "part": "volumeFill"
+                              }
+                            ],
+                            "element": "div",
+                            "options": [
+                              "volumeLabel"
+                            ],
+                            "part": "volumeSlider"
+                          }
+                        ],
+                        "element": "div",
+                        "part": "volume"
+                      },
+                      {
+                        "also": [
+                          "sk-button",
+                          "sk-interactive"
+                        ],
+                        "attrs": {
+                          "data-size": "sm",
+                          "data-variant": "ghost",
+                          "data-video-action": "time",
+                          "type": "button"
+                        },
+                        "children": [
+                          {
+                            "element": "span",
+                            "part": "current"
+                          },
+                          {
+                            "element": "span",
+                            "part": "duration"
+                          }
+                        ],
+                        "element": "button",
+                        "options": [
+                          "remainingLabel",
+                          "elapsedLabel"
+                        ],
+                        "part": "time"
+                      },
+                      {
+                        "attrs": {
+                          "aria-hidden": "true"
+                        },
+                        "element": "span",
+                        "part": "spacer"
+                      },
+                      {
+                        "also": [
+                          "sk-button",
+                          "sk-interactive"
+                        ],
+                        "attrs": {
+                          "aria-keyshortcuts": "Shift+, Shift+.",
+                          "data-size": "sm",
+                          "data-variant": "ghost",
+                          "data-video-action": "speed",
+                          "type": "button"
+                        },
+                        "children": [
+                          {
+                            "element": "span",
+                            "part": "speed"
+                          }
+                        ],
+                        "element": "button",
+                        "options": [
+                          "speedLabel"
+                        ],
+                        "part": "control"
+                      },
+                      {
+                        "also": [
+                          "sk-button",
+                          "sk-interactive",
+                          "sk-icon-toggle"
+                        ],
+                        "attrs": {
+                          "aria-keyshortcuts": "c",
+                          "data-icon-only": "",
+                          "data-size": "sm",
+                          "data-variant": "ghost",
+                          "data-video-action": "captions",
+                          "hidden": "",
+                          "type": "button"
+                        },
+                        "children": [
+                          {
+                            "attrs": {
+                              "data-face": "captions",
+                              "data-sk-icon": "captions",
+                              "data-sk-icon-size": "md"
+                            },
+                            "element": "span"
+                          }
+                        ],
+                        "element": "button",
+                        "options": [
+                          "captionsLabel"
+                        ],
+                        "part": "control"
+                      },
+                      {
+                        "also": [
+                          "sk-button",
+                          "sk-interactive",
+                          "sk-icon-toggle"
+                        ],
+                        "attrs": {
+                          "aria-keyshortcuts": "f",
+                          "data-icon-only": "",
+                          "data-size": "sm",
+                          "data-variant": "ghost",
+                          "data-video-action": "fullscreen",
+                          "type": "button"
+                        },
+                        "children": [
+                          {
+                            "attrs": {
+                              "data-face": "enter",
+                              "data-sk-icon": "fullscreen",
+                              "data-sk-icon-size": "md"
+                            },
+                            "element": "span"
+                          },
+                          {
+                            "attrs": {
+                              "data-face": "exit",
+                              "data-sk-icon": "fullscreen-exit",
+                              "data-sk-icon-size": "md"
+                            },
+                            "element": "span"
+                          }
+                        ],
+                        "element": "button",
+                        "options": [
+                          "fullscreenLabel",
+                          "exitFullscreenLabel"
+                        ],
+                        "part": "control"
+                      }
+                    ],
+                    "element": "div",
+                    "part": "bar"
+                  }
+                ],
+                "element": "div",
+                "part": "controls"
+              }
+            ],
+            "element": "div",
+            "host": true,
+            "part": "root"
+          }
+        }
+      },
+      "systemOwned": [
+        "media",
+        "track",
+        "volumeSlider",
+        "spacer",
+        "loader",
+        "captions",
+        "buffered",
+        "played",
+        "thumb",
+        "tip",
+        "volumeFill",
+        "current",
+        "duration",
+        "speed"
+      ]
+    },
     "window": {
       "a11y": [
         {
@@ -57643,12 +62342,6 @@
           "part": "content",
           "sheet": "@skryensya/core/components/window.css"
         },
-        "--sk-window-depth": {
-          "default": "6px",
-          "output": false,
-          "part": "content",
-          "sheet": "@skryensya/core/components/window.css"
-        },
         "--sk-window-fg": {
           "default": "var(--color-text-primary)",
           "output": false,
@@ -57711,7 +62404,6 @@
         "--sk-window-brutalist-offset-block",
         "--sk-window-brutalist-offset-inline",
         "--sk-window-brutalist-shadow",
-        "--sk-window-depth",
         "--sk-window-fg",
         "--sk-window-handle-size",
         "--sk-window-header-bg",
@@ -57730,10 +62422,14 @@
           "type": "enum",
           "values": [
             "plain",
-            "tactile",
             "brutalist",
             "frosted"
           ]
+        },
+        "boundary": {
+          "attr": "data-boundary",
+          "machineInput": true,
+          "type": "string"
         },
         "closeLabel": {
           "attr": "aria-label",
@@ -57780,8 +62476,9 @@
         },
         "minHeight": {
           "attr": "data-min-height",
+          "default": 120,
           "machineInput": true,
-          "min": 1,
+          "min": 120,
           "type": "number"
         },
         "minimizeLabel": {
@@ -57791,8 +62488,9 @@
         },
         "minWidth": {
           "attr": "data-min-width",
+          "default": 240,
           "machineInput": true,
-          "min": 1,
+          "min": 240,
           "type": "number"
         },
         "persistRect": {
@@ -57931,6 +62629,7 @@
             "defaultHeight",
             "minWidth",
             "minHeight",
+            "boundary",
             "closeLabel",
             "minimizeLabel",
             "maximizeLabel",
@@ -58372,7 +63071,7 @@
     "working": "0.0.2"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "7dbc40b927ddc5f0",
+  "sourceHash": "2bc8f09a4375494f",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

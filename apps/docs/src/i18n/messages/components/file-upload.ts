@@ -2,7 +2,7 @@ export const fileUploadMessages = {
   es: {
 
     "demo.fileUpload.label": "Adjuntos",
-    "demo.fileUpload.dropzone": "Arrastra archivos aquí",
+    "demo.fileUpload.dropzone": "Suelta tus archivos aquí",
     "demo.fileUpload.vagueDropzone": "Subir",
     "demo.fileUpload.vagueTrigger": "Continuar",
     "demo.fileUpload.trigger": "Elegir archivos",
@@ -62,10 +62,10 @@ export const fileUploadMessages = {
 
     "fileUploadPage.basicTitle": "Con límites: tipos, tamaño y cantidad",
 
-    "fileUploadPage.lede": "FileUpload adjunta archivos (un currículum, una factura, fotos) con un botón o soltándolos sobre la caja, y dice antes de elegir qué tipos y tamaños acepta. Lo elegido aparece en una lista debajo, y lo que no cumple se rechaza con su motivo.",
+    "fileUploadPage.lede": "Drop zone recibe archivos (un currículum, una factura, fotos) soltándolos sobre la caja o con el selector del sistema, y dice antes qué tipos y tamaños acepta. Lo elegido aparece en una lista debajo, y lo que no cumple se rechaza con su motivo.",
     "fileUploadPage.anatomyBody": "La caja (con su glifo, su instrucción y su ayuda), el conteo y la lista de archivos elegidos.",
-    "fileUploadPage.anatomyLabel": "Anatomía de FileUpload",
-    "fileUploadPage.anatomyPreviewLabel": "FileUpload, parte por parte",
+    "fileUploadPage.anatomyLabel": "Anatomía de Drop zone",
+    "fileUploadPage.anatomyPreviewLabel": "Drop zone, parte por parte",
     "fileUploadPage.pageDropLabel": "Soltar en cualquier parte del documento",
 
     "fileUploadPage.testVanilla1":
@@ -99,7 +99,7 @@ export const fileUploadMessages = {
   en: {
 
     "demo.fileUpload.label": "Attachments",
-    "demo.fileUpload.dropzone": "Drag files here",
+    "demo.fileUpload.dropzone": "Drop your files here",
     "demo.fileUpload.vagueDropzone": "Upload",
     "demo.fileUpload.vagueTrigger": "Continue",
     "demo.fileUpload.trigger": "Choose files",
@@ -159,10 +159,10 @@ export const fileUploadMessages = {
 
     "fileUploadPage.basicTitle": "With limits: types, size and count",
 
-    "fileUploadPage.lede": "FileUpload attaches files (a resume, an invoice, photos) with a button or by dropping them on the box, and says before choosing which types and sizes it accepts. The chosen files appear in a list below, and anything that does not qualify is rejected with its reason.",
+    "fileUploadPage.lede": "Drop zone receives files (a resume, an invoice, photos) by dropping them on the box or through the system picker, and says up front which types and sizes it accepts. The chosen files appear in a list below, and anything that does not qualify is rejected with its reason.",
     "fileUploadPage.anatomyBody": "The box (with its glyph, instruction and hint), the count and the list of chosen files.",
-    "fileUploadPage.anatomyLabel": "FileUpload anatomy",
-    "fileUploadPage.anatomyPreviewLabel": "FileUpload, part by part",
+    "fileUploadPage.anatomyLabel": "Drop zone anatomy",
+    "fileUploadPage.anatomyPreviewLabel": "Drop zone, part by part",
     "fileUploadPage.pageDropLabel": "Dropping anywhere in the document",
 
     "fileUploadPage.testVanilla1":

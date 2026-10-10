@@ -93,9 +93,13 @@ describe("connectCanvas", () => {
     expect(content.style.transform).toBe("translate(0px, 0px) scale(0.5)");
     expect(level.textContent).toBe("50%");
     expect(root.style.getPropertyValue("--sk-canvas-fit-block-size")).toBe("200px");
-    // The view, for the dotted ground to follow.
-    expect(root.style.getPropertyValue("--sk-canvas-scale")).toBe("0.5");
-    expect(root.style.getPropertyValue("--sk-canvas-x")).toBe("0px");
+    // The view, for the dotted ground to follow: written on the viewport's own background, never as custom properties on the root
+    // (those restyled the whole drawing on every pan).
+    const { viewport } = partsOf(root);
+    expect(viewport.style.backgroundPosition).toBe("0px 0px");
+    expect(viewport.style.backgroundSize).toContain("0.5");
+    expect(root.style.getPropertyValue("--sk-canvas-scale")).toBe("");
+    expect(root.style.getPropertyValue("--sk-canvas-x")).toBe("");
     expect(root.hasAttribute(canvasAttrs.zoomed)).toBe(false);
   });
 

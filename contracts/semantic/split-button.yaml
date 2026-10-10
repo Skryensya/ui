@@ -11,3 +11,15 @@ SplitButton:
   alternatives:
     - Menu
     - Button.action
+
+SplitButtonVertical:
+  useWhen:
+    - "two icon-only actions are a pair, one above the other, and should read as one control: zoom in and out, previous and next, raise and lower"
+    - "there is no menu and nothing to choose: both halves are plain actions of the same weight"
+  avoidWhen:
+    - "there is one main action with variants of it behind a menu; that is SplitButton, which is horizontal and carries the menu"
+    - "the two actions are unrelated, or one is clearly the primary one; two separate Buttons say that better"
+    - "the buttons need labels; the halves are icon-only and a labelled pair is two Buttons in an Inline"
+  alternatives:
+    - SplitButton
+    - Button.action

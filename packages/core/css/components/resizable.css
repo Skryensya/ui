@@ -12,8 +12,15 @@
  * a wider hit area (`--sk-resizable-handle-hit`) that overlaps the panels on both sides, so the strip
  * a pointer has to find is larger than the line a reader sees.
  *
+ * THE THUMB (`patterns/grip.css`) sits in the middle of every handle: a small container with six dots, which says "this
+ * moves" to someone who has not found the line yet. It is not on screen at rest, so a layout of several panels does not
+ * wear a row of thumbs; it comes up with the pointer, the keyboard focus and the drag, and it stays on a handle beside a
+ * closed panel, the one way back to it. On a bar that runs the other way it is turned a quarter.
+ *
  * Every hook resolves to a TIER-2 token, never a palette or raw color; scripts/lint.ts enforces it.
  */
+@import url("../patterns/grip.css");
+
 @layer components {
   .sk-resizable {
     --sk-resizable-handle-line: 1px;
@@ -73,6 +80,8 @@
 
   .sk-resizable__handle {
     position: relative;
+    /* Above the panels it overlaps, so the thumb and the hit area are never under their content. */
+    z-index: 1;
     flex: 0 0 0;
     cursor: col-resize;
     /* The gesture is ours: without this a drag on a touch screen scrolls the page instead. */
@@ -132,6 +141,17 @@
   .sk-resizable[data-direction="vertical"] > .sk-resizable__handle[data-collapsed]::after {
     inline-size: auto;
     block-size: calc(var(--sk-resizable-handle-line) * 3);
+  }
+
+  /* The thumb: found with the pointer, the keys and the drag, and kept beside a closed panel. */
+  .sk-resizable__handle:is(:hover, :focus-visible, [data-dragging], [data-collapsed]) {
+    --sk-grip-opacity: 1;
+    --sk-grip-scale: 1;
+  }
+
+  /* A bar that runs the other way: the same thumb, a quarter turn. */
+  .sk-resizable[data-direction="vertical"] > .sk-resizable__handle {
+    --sk-grip-rotate: 90deg;
   }
 
   .sk-resizable__handle:focus-visible {

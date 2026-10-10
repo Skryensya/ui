@@ -282,7 +282,7 @@ export type LightboxTriggerProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>,
    * A small copy of the full image at its own proportions, shown blurred while it loads. Give one
    * whenever the thumbnail is a crop: a crop is never used as the placeholder.
    */
-  thumbnail?: string;
+  thumbnailSrc?: string;
   /** The thumbnail. Its `alt` names the link. */
   children: ReactNode;
 };
@@ -301,7 +301,7 @@ function LightboxTrigger({
   credit,
   width,
   height,
-  thumbnail,
+  thumbnailSrc,
   children,
   className,
   ...props
@@ -320,7 +320,7 @@ function LightboxTrigger({
         [lightboxAttrs.credit]: credit,
         [lightboxAttrs.width]: width,
         [lightboxAttrs.height]: height,
-        [lightboxAttrs.thumbnail]: thumbnail,
+        [lightboxAttrs.thumbnail]: thumbnailSrc,
       }}
     >
       {children}

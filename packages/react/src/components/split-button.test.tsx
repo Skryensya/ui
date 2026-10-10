@@ -1,11 +1,29 @@
 import { fireEvent, render, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { SplitButton } from "./split-button.js";
+import { SplitButton, SplitButtonVertical } from "./split-button.js";
+import { Button } from "./button.js";
 
 const items = [
   { value: "export-csv", label: "Exportar CSV" },
   { value: "export-pdf", label: "Exportar PDF" },
 ];
+
+describe("SplitButtonVertical (React)", () => {
+  it("groups two independent actions vertically without a menu", () => {
+    const zoomIn = vi.fn();
+    const zoomOut = vi.fn();
+    const ui = render(<SplitButtonVertical label="Zoom"
+      first={<Button iconOnly aria-label="Zoom in" onClick={zoomIn}>+</Button>}
+      second={<Button iconOnly aria-label="Zoom out" onClick={zoomOut}>−</Button>}
+    />);
+    expect(ui.getByRole("group", { name: "Zoom" }).getAttribute("data-orientation")).toBe("vertical");
+    fireEvent.click(ui.getByRole("button", { name: "Zoom in" }));
+    fireEvent.click(ui.getByRole("button", { name: "Zoom out" }));
+    expect(zoomIn).toHaveBeenCalledTimes(1);
+    expect(zoomOut).toHaveBeenCalledTimes(1);
+    expect(ui.queryByRole("menu")).toBeNull();
+  });
+});
 
 describe("SplitButton (React)", () => {
   it("renders a labelled group holding the action button and the menu's icon-only trigger", () => {
@@ -13,7 +31,8 @@ describe("SplitButton (React)", () => {
     const group = ui.getByRole("group", { name: "Guardar opciones" });
 
     expect(ui.getByRole("button", { name: "Guardar" })).toBeTruthy();
-    // The menu trigger is icon-only (no visible `children`), named only via `menuLabel`/`aria-label`.
+    expect(ui.getByRole("button", { name: "More options" })).toBeTruthy();
+    // The menu trigger is icon-only (no visible `children`) but never unnamed.
     const buttons = group.querySelectorAll("button");
     expect(buttons).toHaveLength(2);
   });

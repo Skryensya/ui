@@ -3,6 +3,17 @@ import { describe, expect, it, vi } from "vitest";
 import { Window } from "./window.js";
 
 describe("Window", () => {
+  it("clamps the initial size to its minimum", async () => {
+    const ui = render(
+      <Window defaultOpen defaultWidth={20} defaultHeight={20} title="Minimum" trigger="Open">
+        Body
+      </Window>,
+    );
+    const dialog = await ui.findByRole("dialog", { name: "Minimum" });
+    const positioner = dialog.closest<HTMLElement>(".sk-window__positioner")!;
+    expect(positioner.style.getPropertyValue("--width")).toBe("240px");
+    expect(positioner.style.getPropertyValue("--height")).toBe("120px");
+  });
   it("opens from its trigger as a non-modal dialog named by its title", async () => {
     const ui = render(
       <Window title="Inspector" trigger="Open inspector">
@@ -35,6 +46,15 @@ describe("Window", () => {
     const brutalist = await ui.findByRole("dialog", { name: "Brutalist" });
     expect(brutalist.getAttribute("data-appearance")).toBe("brutalist");
     expect(brutalist.classList.contains("sk-window__content")).toBe(true);
+  });
+
+  it("names an icon-only trigger from the window title when no triggerLabel is given", () => {
+    const ui = render(
+      <Window title="Inspector" trigger={<svg aria-hidden="true" />} triggerIconOnly>
+        <p>Body</p>
+      </Window>,
+    );
+    expect(ui.getByRole("button", { name: "Inspector" })).toBeTruthy();
   });
 
   it("forwards Button's appearance to its trigger, apart from the frame's own", () => {

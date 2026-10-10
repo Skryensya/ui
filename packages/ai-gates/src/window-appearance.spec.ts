@@ -37,13 +37,20 @@ async function read(page: Page, selector: string) {
     const cs = getComputedStyle(el);
     const header = getComputedStyle(el.querySelector(".sk-window__header")!);
     const ctx = document.createElement("canvas").getContext("2d")!;
-    ctx.fillStyle = cs.backgroundColor;
-    ctx.fillRect(0, 0, 1, 1);
+    const alpha = (color: string) => {
+      ctx.clearRect(0, 0, 1, 1);
+      ctx.fillStyle = color;
+      ctx.fillRect(0, 0, 1, 1);
+      return ctx.getImageData(0, 0, 1, 1).data[3]! / 255;
+    };
     return {
       shadow: cs.boxShadow,
       backdrop: cs.backdropFilter,
       bg: cs.backgroundColor,
-      bgAlpha: ctx.getImageData(0, 0, 1, 1).data[3]! / 255,
+      bgAlpha: alpha(cs.backgroundColor),
+      sheen: cs.backgroundImage,
+      headerBgAlpha: alpha(header.backgroundColor),
+      headerBackdrop: header.backdropFilter,
       border: cs.borderTopColor,
       radius: cs.borderTopLeftRadius,
       headerBorder: header.borderBottomColor,
@@ -60,10 +67,9 @@ test("plain is untouched: omitting appearance equals plain", async ({ page }) =>
   expect(await read(page, "#explicit")).toEqual(await read(page, "#implicit"));
 });
 
-test("tactile: a ledge under the frame, above the modal shadow, smaller when behind", async ({ page }) => {
-  await mount(page, frame("front", 'data-appearance="tactile"') + frame("behind", 'data-appearance="tactile" data-behind'));
-  expect((await read(page, "#front")).shadow).toMatch(/0px 6px 0px 0px/);
-  expect((await read(page, "#behind")).shadow).toMatch(/0px 3\.6px 0px 0px/);
+test("legacy tactile markup has no slab: it renders the plain frame", async ({ page }) => {
+  await mount(page, frame("plain") + frame("legacy", 'data-appearance="tactile"'));
+  expect(await read(page, "#legacy")).toEqual(await read(page, "#plain"));
 });
 
 test("brutalist: black edge and header rule, hard offset halved behind, gone when maximized, mirrored in RTL", async ({ page }) => {
@@ -91,13 +97,21 @@ test("frosted: a see-through frame over a blurred backdrop, opaque under reduced
   expect(frosted.bgAlpha).toBeLessThan(1);
   expect(frosted.bgAlpha).toBeGreaterThan(0.6);
   expect(frosted.shadow).toContain("inset");
+  expect(frosted.sheen).toContain("linear-gradient");
+  expect(frosted.headerBgAlpha).toBeLessThan(0.1);
+  expect(frosted.headerBackdrop).toBe("none");
 
   const cdp = await page.context().newCDPSession(page);
   await cdp.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-transparency", value: "reduce" }] });
   await page.waitForTimeout(300);
   const reduced = await read(page, "#frosted");
   expect(reduced.backdrop).toBe("none");
-  expect(reduced.bg).toBe((await read(page, "#plain")).bg);
+  const plain = await read(page, "#plain");
+  expect(reduced.bg).toBe(plain.bg);
+  expect(reduced.sheen).toBe("none");
+  expect(reduced.border).toBe(plain.border);
+  expect(reduced.headerBgAlpha).toBe(1);
+  expect(reduced.headerBorder).toBe(plain.headerBorder);
   await cdp.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-transparency", value: "" }] });
 
   await mount(page, frame("hc", 'data-appearance="frosted"'), BUSY, { "data-contrast": "high" });
@@ -105,16 +119,39 @@ test("frosted: a see-through frame over a blurred backdrop, opaque under reduced
   expect((await read(page, "#hc")).bgAlpha).toBe(1);
 });
 
+test("frosted keeps depth behind another window and removes the header divider when minimized", async ({ page }) => {
+  await mount(page, frame("front", 'data-appearance="frosted"') +
+    frame("behind", 'data-appearance="frosted" data-behind') +
+    frame("min", 'data-appearance="frosted" data-minimized'), BUSY);
+  const front = await read(page, "#front");
+  const behind = await read(page, "#behind");
+  expect(behind.shadow).not.toBe(front.shadow);
+  expect(behind.shadow).toContain("inset");
+  expect(behind.bg).toBe(front.bg);
+  expect((await read(page, "#min")).headerBorder).toBe("rgba(0, 0, 0, 0)");
+});
+
+test("frosted uses a denser glass tint in dark mode", async ({ page }) => {
+  await mount(page, frame("glass", 'data-appearance="frosted"'), BUSY);
+  await page.locator("#window-host").evaluate(el => { el.style.colorScheme = "light"; });
+  const light = await read(page, "#glass");
+  await page.locator("#window-host").evaluate(el => { el.style.colorScheme = "dark"; });
+  const dark = await read(page, "#glass");
+  expect(light.bgAlpha).toBeCloseTo(0.68, 2);
+  expect(dark.bgAlpha).toBeCloseTo(0.76, 2);
+  expect(dark.headerBgAlpha).toBeLessThan(0.1);
+});
+
 test("radius stays the window's own in every appearance", async ({ page }) => {
-  await mount(page, ["plain", "tactile", "brutalist", "frosted"].map((a) => frame(a, `data-appearance="${a}"`)).join(""));
+  await mount(page, ["plain", "brutalist", "frosted"].map((a) => frame(a, `data-appearance="${a}"`)).join(""));
   const plain = await read(page, "#plain");
-  for (const id of ["#tactile", "#brutalist", "#frosted"]) expect((await read(page, id)).radius, id).toBe(plain.radius);
+  for (const id of ["#brutalist", "#frosted"]) expect((await read(page, id)).radius, id).toBe(plain.radius);
 });
 
 test("forced colors: every appearance falls back to the system frame", async ({ page }) => {
   await page.emulateMedia({ forcedColors: "active" });
-  await mount(page, ["tactile", "brutalist", "frosted"].map((a) => frame(a, `data-appearance="${a}"`)).join(""), BUSY);
-  for (const id of ["#tactile", "#brutalist", "#frosted"]) {
+  await mount(page, ["plain", "brutalist", "frosted"].map((a) => frame(a, `data-appearance="${a}"`)).join(""), BUSY);
+  for (const id of ["#plain", "#brutalist", "#frosted"]) {
     const r = await read(page, id);
     expect(r.shadow, id).toBe("none");
     expect(r.backdrop, id).toBe("none");

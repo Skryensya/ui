@@ -86,6 +86,8 @@ button.addEventListener("click", runDeployment);`;
     <UsagePreview
       tree={buttonDefaultTree(t)}
       optionName="variant"
+      storybookTitle={storybookTitle}
+      storybookStory="Variant"
       title={t("button.prop.variant.title")}
       description={t("button.prop.variant.body")}
       explain={explain("variant", ["solid", "soft", "ghost"])}
@@ -95,6 +97,8 @@ button.addEventListener("click", runDeployment);`;
     <UsagePreview
       tree={buttonDefaultTree(t)}
       optionName="tone"
+      storybookTitle={storybookTitle}
+      storybookStory="Default"
       title={t("button.prop.tone.title")}
       description={t("button.prop.tone.body")}
       explain={explain("tone", ["neutral", "accent", "danger"])}
@@ -104,6 +108,8 @@ button.addEventListener("click", runDeployment);`;
     <UsagePreview
       tree={buttonDefaultTree(t)}
       optionName="size"
+      storybookTitle={storybookTitle}
+      storybookStory="Sizes"
       title={t("button.prop.size.title")}
       description={t("button.prop.size.body")}
       explain={explain("size", ["xs", "sm", "md", "lg"])}
@@ -153,54 +159,70 @@ button.addEventListener("click", runDeployment);`;
       storybookTitle={storybookTitle}
       storybookStory="AsLink"
     />
-    <UsagePreview tree={tileButtonTree(t)} title={t("button.tileTitle")} description={t("button.tileBody")} />
+    <UsagePreview tree={tileButtonTree(t)} title={t("button.tileTitle")} description={t("button.tileBody")} storybookTitle={storybookTitle} storybookStory="TileButton" />
     <CodeBlock code={tileButtonVanilla} label="JavaScript" />
 
     {/* Comparisons of appearances: the page-wide appearance switch must not repaint them. */}
     <div data-docs-appearance-fixed>
     <UsagePreview
       tree={buttonAppearanceTree(t)}
+      storybookTitle={storybookTitle}
+      storybookStory="Appearance"
       title={t("button.appearanceTitle")}
       description={t("button.appearanceBody")}
     />
     <UsagePreview
       tree={buttonBrutalistMatrixTree(t)}
+      storybookTitle={storybookTitle}
+      storybookStory="BrutalistMatrix"
       title={t("button.brutalistMatrixTitle")}
       description={t("button.brutalistMatrixBody")}
     />
     <UsagePreview
       tree={buttonBrutalistRadiusTree(t)}
+      storybookTitle={storybookTitle}
+      storybookStory="BrutalistRadius"
       title={t("button.brutalistRadiusTitle")}
       description={t("button.brutalistRadiusBody")}
     />
     <UsagePreview
       tree={buttonBrutalistStatesTree(t)}
+      storybookTitle={storybookTitle}
+      storybookStory="BrutalistStates"
       title={t("button.brutalistStatesTitle")}
       description={t("button.brutalistStatesBody")}
       css={buttonBrutalistStatesCss}
     />
     <UsagePreview
       tree={buttonBrutalistShapesTree(t, LINK_HREF)}
+      storybookTitle={storybookTitle}
+      storybookStory="BrutalistShapes"
       title={t("button.brutalistShapesTitle")}
       description={t("button.brutalistShapesBody")}
     />
     <UsagePreview
       tree={buttonFrostedBackdropsTree(t)}
+      storybookTitle={storybookTitle}
+      storybookStory="FrostedBackdrops"
       title={t("button.frostedTitle")}
       description={t("button.frostedBody")}
     />
     <UsagePreview
       tree={buttonFrostedMatrixTree(t)}
+      storybookTitle={storybookTitle}
+      storybookStory="FrostedMatrix"
       title={t("button.frostedMatrixTitle")}
       description={t("button.frostedMatrixBody")}
     />
     <UsagePreview
       tree={buttonFrostedRadiusTree(t)}
+      storybookTitle={storybookTitle}
+      storybookStory="FrostedRadius"
       title={t("button.frostedDetailsTitle")}
       description={t("button.frostedDetailsBody")}
     />
-    <UsagePreview tree={buttonFrostedStatesTree(t)} />
-    <UsagePreview tree={buttonFrostedShapesTree(t, LINK_HREF)} />
+    <UsagePreview tree={buttonFrostedStatesTree(t)} storybookTitle={storybookTitle} storybookStory="FrostedStates" />
+    <UsagePreview tree={buttonFrostedShapesTree(t, LINK_HREF)} storybookTitle={storybookTitle} storybookStory="FrostedShapes" />
     </div>
 
     <h3>{t("component.contractNotesTitle")}</h3>

@@ -44,7 +44,7 @@ async function boot(host: HTMLElement): Promise<void> {
  * Enhancers measure (an annotation's leaders, a canvas's fit), so they run once the markup is in the
  * document, not while Storybook still holds it detached.
  */
-function render(tree: UsageTree): HTMLElement {
+export function render(tree: UsageTree): HTMLElement {
   const host = document.createElement("div");
   host.innerHTML = emitMarkup(tree);
   const whenConnected = () => (host.isConnected ? void boot(host) : requestAnimationFrame(whenConnected));

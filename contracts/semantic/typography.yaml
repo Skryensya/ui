@@ -8,6 +8,10 @@ Text:
   avoidWhen:
     - "it titles a section; that is a Heading, even if it looks small"
     - "it goes inside another line of text, a button or a label as a <p>: there it is textElement span"
+  alternatives:
+    - Heading
+    - Quote
+    - Kbd
 
 Heading:
   useWhen:

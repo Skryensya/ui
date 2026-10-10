@@ -5,7 +5,7 @@ import "@skryensya/core/components/file-upload.css";
 import * as demos from "@docs/demos/file-upload";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Forms/FileUpload", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Forms/Drop zone", tags: ["autodocs"] } satisfies Meta;
 
 export const Default: StoryObj = treeStory(demos.fileUploadTree);
 export const PageDrop: StoryObj = treeStory(demos.fileUploadPageDropTree);

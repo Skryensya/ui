@@ -56,6 +56,9 @@ function clearAtEdge(root: HTMLElement): void {
 
 function sync(root: HTMLElement): void {
   measureGutters(root);
+  // Absolute color bands otherwise scroll away with the content. Keep their paint at the viewport.
+  root.style.setProperty("--fade-edge-scroll-x", `${root.scrollLeft}px`);
+  root.style.setProperty("--fade-edge-scroll-y", `${root.scrollTop}px`);
   if (root.hasAttribute(fadeEdgeAttrs.scrollAware)) syncAtEdge(root);
   else clearAtEdge(root);
 }
@@ -115,5 +118,7 @@ export function watchFadeEdge(root: HTMLElement): () => void {
     root.removeAttribute(fadeEdgeAttrs.measured);
     root.style.removeProperty(fadeEdgeProperties.gutterBlock);
     root.style.removeProperty(fadeEdgeProperties.gutterInline);
+    root.style.removeProperty("--fade-edge-scroll-x");
+    root.style.removeProperty("--fade-edge-scroll-y");
   };
 }

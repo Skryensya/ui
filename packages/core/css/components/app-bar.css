@@ -75,9 +75,9 @@
   /*
    * ONE LINE, WHATEVER THE WIDTH. When the line runs out, the bar gives up words rather than
    * wrapping or letting two regions overprint: status first (it shrinks a thousand times faster),
-   * then the last menus. `hidden`, not `clip`: a menu cut off at the end is still reached by the
-   * keyboard, and focusing it scrolls it into view. The dropdowns are `position: fixed`, so this
-   * clipping never reaches them.
+   * then the last menus. Horizontal scrolling keeps every title reachable on narrow bars;
+   * keyboard focus scrolls its title into view. The focus ring is inset below, so the scroll
+   * viewport never cuts it off. Dropdowns are fixed or portalled outside this region.
    */
   .sk-app-bar__menus,
   .sk-app-bar__status {
@@ -86,7 +86,8 @@
     position: relative;
     flex: 0 1 auto;
     min-inline-size: 0;
-    overflow: hidden;
+    overflow-x: auto;
+    scrollbar-width: none;
   }
 
   /* The status region sits at the end of the line: layout is the bar's, since "state on the
@@ -129,6 +130,12 @@
     color: inherit;
     font: inherit;
     cursor: default;
+  }
+
+  /* Full-height titles have no room for an outward ring. Keep the system's ring colour
+     and thickness, but draw it inside the title, including while its menu is open. */
+  .sk-app-bar .sk-app-bar__trigger:focus-visible {
+    outline-offset: calc(-1 * var(--focus-ring-width));
   }
 
   .sk-app-bar__menu[data-strong] > .sk-app-bar__trigger {

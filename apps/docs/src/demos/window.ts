@@ -42,9 +42,8 @@ export const windowFixedTree = (t: Translate): UsageTree => ({
 
 /*
  * Open, and pulled into flow by `windowAnatomyCss`: a live window is positioned by its machine and
- * would float wherever it last was. The positioner and the drag region are the same boxes as the
- * content and the header, so they are named in the page's text rather than ringed twice; the eight
- * resize edges are a few pixels wide, so one is named for all of them.
+ * would float wherever it last was. The positioner and resize handle are normally unpainted, so the
+ * anatomy sheet gives them a faint drafting outline; otherwise the labels would point at empty air.
  */
 export const windowAnatomyTree = (t: Translate): UsageTree => ({
   contract: "annotation",
@@ -55,7 +54,7 @@ export const windowAnatomyTree = (t: Translate): UsageTree => ({
     subject: {
       contract: "window",
       signature: "Window",
-      options: { ...labels(t), defaultOpen: true, draggable: false, persistRect: false },
+      options: { ...labels(t), defaultOpen: true, draggable: false, persistRect: false, defaultWidth: 408, defaultHeight: 216 },
       slots: {
         trigger: t("demo.window.trigger"),
         title: t("demo.window.title"),
@@ -63,28 +62,44 @@ export const windowAnatomyTree = (t: Translate): UsageTree => ({
       },
     },
     items: [
-      namePart(".sk-window__trigger", "block-start"),
+      namePart(".sk-window__trigger", "block-start", { ringPlacement: "offset", ringDistance: 2 }),
+      namePart(".sk-window__positioner", "inline-start", { mark: "bracket" }),
       namePart(".sk-window__content", "inline-start", { mark: "bracket" }),
-      namePart(".sk-window__header", "inline-start", { mark: "bracket" }),
+      namePart(".sk-window__drag", "block-start", { mark: "bracket" }),
       namePart(".sk-window__title", "block-start", { ringPlacement: "offset", ringDistance: 2 }),
-      namePart(".sk-window__controls", "block-start"),
-      namePart(".sk-window__close", "inline-end"),
-      namePart(".sk-window__body", "inline-end", { ringPlacement: "offset", ringDistance: 2 }),
-      /* The bottom edge, not the first one: the first is the top edge, and a label reading from below
-         would draw its leader straight through the window to reach it. */
+      namePart(".sk-window__controls", "inline-end", { ringPlacement: "offset", ringDistance: 2 }),
+      namePart(".sk-window__body", "inline-end", { mark: "bracket" }),
+      /* The south edge stands in for all eight resize handles; labelling every edge makes the diagram noisy. */
       { options: { for: '.sk-window__resize[data-axis="s"]', side: "block-end" }, slots: { children: "sk-window__resize" } },
     ],
   },
 });
 
-export const windowAnatomyCss = `.sk-annotated-figure {
+export const windowAnatomyCss = `.sk-canvas,
+.sk-canvas__viewport {
+  cursor: default !important;
+}
+
+.sk-annotated-figure {
   --sk-annotation-font-family: var(--font-family-code);
+}
+
+.sk-annotated__subject .sk-window,
+.sk-annotated__subject .sk-window * {
+  pointer-events: none !important;
 }
 
 .sk-annotated__subject > .sk-window {
   display: grid;
-  justify-items: start;
-  gap: var(--space-stack-md);
+  justify-items: center;
+  gap: var(--space-stack-lg);
+  inline-size: 29rem;
+  margin-inline: auto;
+}
+
+.sk-annotated__subject > .sk-window .sk-window__trigger {
+  justify-self: start;
+  margin-inline-start: var(--space-inline-lg);
 }
 
 .sk-annotated__subject > .sk-window .sk-window__positioner {
@@ -92,11 +107,26 @@ export const windowAnatomyCss = `.sk-annotated-figure {
   inset: auto !important;
   translate: none !important;
   transform: none !important;
-  inline-size: 20rem;
+  box-sizing: border-box;
+  inline-size: 27rem !important;
+  padding: var(--space-inset-sm);
+  border: 1px dashed color-mix(in oklab, var(--color-border-default) 62%, transparent);
+  border-radius: calc(var(--radius-surface) + var(--space-inset-sm));
+  background: color-mix(in oklab, var(--color-bg-surface-raised) 38%, transparent);
 }
 
 .sk-annotated__subject > .sk-window .sk-window__content {
   position: relative;
-  inline-size: 20rem;
-  block-size: 11rem;
+  inline-size: 25rem !important;
+  block-size: 13.5rem !important;
+  margin-inline: auto;
+}
+
+.sk-annotated__subject > .sk-window .sk-window__resize[data-axis="s"] {
+  background: color-mix(in oklab, var(--color-border-accent) 18%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in oklab, var(--color-border-accent) 45%, transparent);
+}
+
+.sk-annotated__subject > .sk-window .sk-window__body {
+  min-block-size: 0;
 }`;

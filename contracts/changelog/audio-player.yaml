@@ -1,0 +1,47 @@
+# What changed in audio-player, in the words its users read. Only appended to, never rewritten.
+#
+# `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
+# does not match, something a consumer depends on has moved: write the entry and paste in the new
+# hash.
+surface: "43f2945d37ae94fc"
+entries:
+  - date: 2026-10-09
+    kind: feature
+    es:
+      title: Primera publicación del contrato
+      body: >-
+        Un reproductor de audio con los controles del sistema sobre un audio real. El sonido llega por <code>src</code> o como un audio tuyo con varias fuentes, y puede llevar título, artista y portada, en una barra o en una tarjeta. Con <code>tracks</code> carga una lista: muestra cuál suena, pasa a la siguiente sola y ofrece pista anterior y siguiente. Si le das los picos del archivo, la barra de progreso se dibuja como forma de onda. Se maneja entera con el teclado (k, j, l, m, 0 al 9, flechas, Shift+P y Shift+N) solo mientras el foco está dentro.
+    en:
+      title: First published contract
+      body: >-
+        An audio player with the system's controls over a real audio element. The sound comes in through <code>src</code> or as your own audio with several sources, and it can carry a title, an artist and a cover, as a strip or as a card. With <code>tracks</code> it loads a list: it shows which one is playing, moves on by itself and offers previous and next. Give it the file's peaks and the seek bar is drawn as a waveform. It runs entirely from the keyboard (k, j, l, m, 0 to 9, arrows, Shift+P and Shift+N) only while focus is inside.
+  - date: 2026-10-09
+    kind: breaking
+    es:
+      title: Sin botones de ±10, la lista es una List y nace AudioPlayerMinimal
+      body: >-
+        Se quitan los botones de retroceder y adelantar y sus palabras (<code>backLabel</code>, <code>forwardLabel</code>): <code>J</code> y <code>L</code> siguen moviendo <code>skip</code> segundos. La lista de pistas se compone con las filas de List (esquinas rectas, divisores, la pista cargada marcada con una barra al inicio y su número). Nueva firma <code>AudioPlayerMinimal</code>: un botón de reproducir, la barra de avance y el tiempo, sin nada más.
+    en:
+      title: No ±10 buttons, the list is a List, and AudioPlayerMinimal is born
+      body: >-
+        The back and forward buttons and their words (<code>backLabel</code>, <code>forwardLabel</code>) are gone: <code>J</code> and <code>L</code> still move <code>skip</code> seconds. The list of tracks is composed from List's rows (square corners, dividers, the loaded track marked with a bar at its start and its number). New signature <code>AudioPlayerMinimal</code>: a play button, the seek bar and the time, and nothing else.
+  - date: 2026-10-09
+    kind: feature
+    es:
+      title: El volumen es un popup, y la versión mínima puede decir qué suena
+      body: >-
+        El volumen ya no se abre empujando la barra: es un popup encima del botón que solo aparece, sin mover ningún control. Nuevo gancho <code>--sk-audio-player-volume-pad</code>. Reproducir, anterior y siguiente son siempre redondos. <code>AudioPlayerMinimal</code> acepta <code>title</code>, el nombre de lo que suena, encima de la barra.
+    en:
+      title: Volume is a popup, and the minimal one can say what is playing
+      body: >-
+        Volume no longer opens by pushing the bar along: it is a popup above the button that only fades in, moving no control. New hook <code>--sk-audio-player-volume-pad</code>. Play, previous and next are always round. <code>AudioPlayerMinimal</code> takes <code>title</code>, the name of what is playing, above the bar.
+  - date: 2026-10-10
+    kind: breaking
+    es:
+      title: Mucho menos trabajo mientras suena
+      body: >-
+        Reproduciendo, el reproductor gastaba unos 300 ms de cada segundo recalculando estilos; ahora gasta unos 20. Los ganchos de salida <code>--sk-audio-player-played</code>, <code>-buffered</code>, <code>-volume</code> y <code>-hover</code> desaparecen: lo que se mueve se escribe directamente en su elemento, y solo cuando cambia lo que se ve. El audio que dibuja el contrato empieza con <code>preload="none"</code> y sube a <code>metadata</code> cuando el reproductor está cerca del viewport. Fuera de pantalla no dibuja nada.
+    en:
+      title: Far less work while it plays
+      body: >-
+        While playing, the player spent about 300 ms of every second recalculating styles; it now spends about 20. The output hooks <code>--sk-audio-player-played</code>, <code>-buffered</code>, <code>-volume</code> and <code>-hover</code> are gone: what moves is written straight on its element, and only when what you can see changes. Audio the contract renders starts at <code>preload="none"</code> and rises to <code>metadata</code> when the player is near the viewport. Off screen it draws nothing.

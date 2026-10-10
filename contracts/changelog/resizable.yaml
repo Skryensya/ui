@@ -1,5 +1,5 @@
 # What changed in resizable, in the words its users read. Only appended to, never rewritten.
-surface: "5c1f177c0dab61d5"
+surface: "0bbb2d79cad26062"
 entries:
   - date: 2026-10-07
     kind: feature
@@ -69,3 +69,13 @@ entries:
         focusable <code>separator</code> (arrows, Shift to jump further, Home/End and Enter to reset)
         and requires a <code>label</code>. Until now this behaviour only lived inside Sidebar,
         Treegrid and Table.
+  - date: 2026-10-08
+    kind: feature
+    es:
+      title: Un thumb con seis puntos en el centro de cada barra
+      body: >-
+        Cada barra lleva en el centro un pequeño contenedor con seis puntos, dibujado con CSS, que dice «esto se mueve». No está en pantalla en reposo: sube con el puntero, el foco del teclado y el arrastre, y se queda en la barra junto a un panel cerrado. En una barra horizontal se gira un cuarto. Es un <code>span</code> con <code>aria-hidden</code> dentro de la barra: la barra sigue tomando el puntero y las teclas.
+    en:
+      title: A six-dot thumb in the middle of every bar
+      body: >-
+        Every bar now carries a small container with six dots in its middle, drawn in CSS, that says “this moves”. It is not on screen at rest: it comes up with the pointer, the keyboard focus and the drag, and stays on a bar beside a closed panel. On a horizontal bar it is turned a quarter. It is an <code>aria-hidden</code> <code>span</code> inside the bar: the bar still takes the pointer and the keys.

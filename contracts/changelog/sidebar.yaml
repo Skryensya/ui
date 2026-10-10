@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "96926f9d97697589"
+surface: "3bd7fe0e11cb6586"
 entries:
   - date: 2026-10-06
     kind: feature
@@ -269,3 +269,13 @@ entries:
       body: >-
         <code>sk-collapsed-change</code> → <code>sk:sidebarcollapsedchange</code>, <code>sk-resize-change</code> → <code>sk:sidebarresizechange</code>. No two families dispatch the same name any more: a listener on a root stops receiving
         the events of a different component nested inside it. The contract now declares them in <code>events</code>, so the compiler publishes them.
+  - date: 2026-10-08
+    kind: feature
+    es:
+      title: Un thumb con seis puntos en el borde de la barra de redimensionar
+      body: >-
+        El borde redimensionable lleva ahora un pequeño contenedor con seis puntos, dibujado con CSS, pegado por dentro al borde. Aparece con el puntero, el foco y el arrastre, igual que la línea. Es un <code>span</code> con <code>aria-hidden</code> dentro del <code>SidebarResizeHandle</code>.
+    en:
+      title: A six-dot thumb on the resize edge
+      body: >-
+        The resizable edge now carries a small container with six dots, drawn in CSS, flush inside the edge. It appears with the pointer, the focus and the drag, the same moments the line itself escalates. It is an <code>aria-hidden</code> <code>span</code> inside the <code>SidebarResizeHandle</code>.

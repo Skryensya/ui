@@ -10,6 +10,56 @@
  * that holds the two flush, and the hairline seam between them.
  */
 @layer components {
+  /* Two direct actions joined on the block axis, without a dropdown. */
+  .sk-split-button[data-orientation="vertical"] {
+    --sk-split-button-shadow: none;
+    --sk-split-button-wash: none;
+
+    flex-direction: column;
+    align-self: start;
+  }
+
+  .sk-split-button[data-orientation="vertical"] > .sk-button {
+    margin-inline-start: 0;
+  }
+
+  .sk-split-button[data-orientation="vertical"] > .sk-button:not([data-appearance="tactile"]) {
+    box-shadow: none;
+  }
+
+  .sk-split-button[data-orientation="vertical"] > .sk-button:first-child {
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  .sk-split-button[data-orientation="vertical"] > .sk-button:last-child {
+    margin-block-start: -1px;
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+  }
+
+  .sk-split-button[data-orientation="vertical"] > .sk-button:focus-visible {
+    position: relative;
+    z-index: 1;
+  }
+
+  .sk-split-button[data-orientation="vertical"] > .sk-button[data-appearance="brutalist"] {
+    /* Vertical split buttons have no group shadow: each segment keeps Button's brutalist shadow and
+     * active diagonal travel, so neither half flattens into a plain vertical drop. */
+    box-shadow:
+      calc(var(--brutalist-shadow-inline) * var(--brutalist-direction)) var(--brutalist-shadow-block) 0
+        var(--sk-button-brutalist-shadow);
+  }
+
+  .sk-split-button[data-orientation="vertical"] > .sk-button[data-appearance="brutalist"]:not(:last-child) {
+    /* Add a 1px black seam under upper segments. Without it, pressing the lower segment moves its
+     * face into the shared edge and the upper segment looks like it lost its constructed shadow. */
+    box-shadow:
+      calc(var(--brutalist-shadow-inline) * var(--brutalist-direction)) var(--brutalist-shadow-block) 0
+        var(--sk-button-brutalist-shadow),
+      0 1px 0 var(--sk-button-brutalist-edge);
+  }
+
   .sk-split-button {
     /* The pill's own elevation, ONCE, here, not on either half: `box-shadow` has no per-edge
      * variant the way `border` does (no such thing as "raised on three sides"), so a welded
@@ -58,6 +108,11 @@
   .sk-split-button > :not(:first-child) {
     margin-inline-start: -1px;
   }
+
+  .sk-split-button[data-orientation="vertical"] > :not(:first-child) {
+    margin-block-start: -1px;
+    margin-inline-start: 0;
+  }
   /*
    * Only the START edge of whichever child is NOT first carries the hairline. The seam between
    * the two halves, not a border AROUND either one; `weldStart`/`weldEnd` (button.css) already
@@ -90,6 +145,11 @@
      * reason, so this file needs no `[dir="rtl"]` rule of its own for either concern. */
     --sk-split-button-divider-color: var(--sk-button-border-color);
     border-inline-start-color: var(--sk-split-button-divider-color);
+  }
+
+  .sk-split-button[data-orientation="vertical"] > .sk-button:not(:first-child) {
+    border-block-start-color: var(--sk-split-button-divider-color);
+    border-inline-start-color: var(--sk-button-border-color);
   }
   /*
    * A composed Menu is a `<div class="sk-menu">` wrapping its own trigger `<button>`. The rule
@@ -138,6 +198,20 @@
     --sk-split-button-wash: none;
   }
 
+  .sk-split-button:has(
+    > .sk-button[data-appearance="brutalist"][data-variant="soft"],
+    > .sk-menu > button[data-appearance="brutalist"][data-variant="soft"]
+  ) {
+    --sk-split-button-brutalist-offset: 4px;
+  }
+
+  .sk-split-button:has(
+    > .sk-button[data-appearance="brutalist"][data-variant="ghost"],
+    > .sk-menu > button[data-appearance="brutalist"][data-variant="ghost"]
+  ) {
+    --sk-split-button-brutalist-offset: 2px;
+  }
+
   .sk-split-button:has(> .sk-button[data-appearance="brutalist"], > .sk-menu > button[data-appearance="brutalist"]):dir(rtl) {
     --brutalist-direction: -1;
   }
@@ -145,6 +219,21 @@
   .sk-split-button > .sk-button[data-appearance="brutalist"]:not(:first-child),
   .sk-split-button > .sk-menu:not(:first-child) > button[data-appearance="brutalist"] {
     --sk-split-button-divider-color: var(--sk-button-brutalist-edge);
+  }
+
+  .sk-split-button:has(> .sk-button[data-appearance="brutalist"]:active) > .sk-button[data-appearance="brutalist"]:active:not(:disabled):not([aria-disabled="true"]),
+  .sk-split-button:has(> .sk-menu > button[data-appearance="brutalist"]:active) > .sk-menu > button[data-appearance="brutalist"]:active:not(:disabled):not([aria-disabled="true"]) {
+    /* The group casts the resting slab shadow, but the pressed face still needs its own remaining
+     * hard shadow under it. Without that 1px shadow, the active first segment moves diagonally and
+     * exposes a white slit between its old face and the group shadow, breaking the press illusion. */
+    box-shadow: calc(1px * var(--brutalist-direction)) 1px 0 oklch(from var(--shadow-lg) l c h / 1);
+  }
+
+  .sk-split-button[data-orientation="vertical"] > .sk-button[data-appearance="brutalist"]:hover:not(:disabled):not([aria-disabled="true"]) {
+    /* In a vertical welded stack, growing one segment's hard offset on hover makes only that row
+     * stick out to inline-end. The two faces stop reading as one construction. Keep the hover face
+     * still; the active state below is the feedback that matters. */
+    --brutalist-travel: 0;
   }
 
   @media (forced-colors: active) {

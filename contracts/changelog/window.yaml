@@ -3,8 +3,42 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "3dc3ff3715a6203f"
+surface: "23ddd7374de027d9"
 entries:
+  - date: 2026-10-08
+    kind: breaking
+    target: appearance
+    es:
+      title: Window deja de ofrecer tactile y refina el vidrio
+      body: >-
+        El marco acepta <code>plain</code>, <code>brutalist</code> y <code>frosted</code>.
+        Se retiran <code>tactile</code> y <code>--sk-window-depth</code>: usa <code>plain</code>
+        para una superficie sólida. El disparador conserva la appearance de Button.
+        Frosted usa una sola lámina de vidrio, una barra de título apenas tintada y un borde interior
+        iluminado. Con transparencia reducida o contraste alto vuelve a una superficie opaca.
+    en:
+      title: Window drops tactile and refines its glass
+      body: >-
+        The frame accepts <code>plain</code>, <code>brutalist</code> and <code>frosted</code>.
+        <code>tactile</code> and <code>--sk-window-depth</code> are removed: use <code>plain</code>
+        for a solid surface. The trigger keeps Button's appearance axis.
+        Frosted uses one glass sheet, a lightly tinted title bar and an illuminated inner edge.
+        Reduced transparency or high contrast restores an opaque surface.
+  - date: 2026-09-26
+    kind: feature
+    target: Window
+    es:
+      title: Tamaño mínimo y arrastre contenido
+      body: >-
+        La ventana tiene un mínimo de 240 × 120 px, ampliable con <code>minWidth</code> y
+        <code>minHeight</code>. El arrastre no sale del viewport o del contenedor indicado por
+        <code>boundary</code>. En React, el portal <code>container</code> también limita el arrastre.
+    en:
+      title: Minimum size and contained dragging
+      body: >-
+        Windows have a 240 × 120 px minimum, increased with <code>minWidth</code> and
+        <code>minHeight</code>. Dragging stays within the viewport or the container selected by
+        <code>boundary</code>. In React, the portal <code>container</code> also bounds dragging.
   - date: 2026-09-26
     kind: feature
     target: triggerAppearance

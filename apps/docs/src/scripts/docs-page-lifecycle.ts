@@ -3,7 +3,7 @@ import { mountCodePreview } from "@skryensya/vanilla/code-preview";
 import { mountComponentPreview } from "../preview/component-preview-enhancer";
 import { mountIcons } from "@skryensya/vanilla/icon";
 import { siteIcons } from "../icons";
-import { initAppearance } from "./appearance";
+import { initAppearance, placeAppearanceMenus } from "./appearance";
 import { initDocsTour } from "./docs-tour";
 import { initDocsBinding } from "./docs-binding";
 import { initLanguageMenu } from "./language-menu";
@@ -31,6 +31,7 @@ declare global {
 let bound = false;
 
 async function initRouteDocument(): Promise<void> {
+  placeAppearanceMenus();
   mountIcons(document, siteIcons);
   const mountedCount = await initComponents(document);
   if (import.meta.env.DEV) {

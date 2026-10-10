@@ -5,6 +5,14 @@
 # hash.
 surface: "cd5f2393a2a1087c"
 entries:
+  - date: 2026-10-08
+    kind: feature
+    es:
+      title: Botón soft para volver arriba
+      body: BackToTop comparte el estilo soft de Button, conservando su forma circular y su animación de aparición.
+    en:
+      title: Soft button for returning to the top
+      body: BackToTop shares Button's soft style while retaining its circular shape and reveal animation.
   - date: 2026-09-26
     kind: feature
     target: appearance

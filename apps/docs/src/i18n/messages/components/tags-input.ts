@@ -37,7 +37,7 @@ export const tagsInputMessages = {
 
     "tagsInputPage.content1": "Nombra el campo en plural: «Temas», «Destinatarios».",
 
-    "tagsInputPage.whenNot3": 'Si lo que se agrega son archivos: usa <a href="/es/componentes/file-upload">FileUpload</a>.',
+    "tagsInputPage.whenNot3": 'Si lo que se agrega son archivos: usa <a href="/es/componentes/drop-zone">Drop zone</a>.',
 
     "tagsInputPage.whenNot2": 'Para filtros aplicados o palabras clave que solo se muestran: usa <a href="/es/componentes/tag">Tag</a>.',
 
@@ -114,7 +114,7 @@ export const tagsInputMessages = {
 
     "tagsInputPage.content1": "Name the field in the plural: “Topics”, “Recipients”.",
 
-    "tagsInputPage.whenNot3": 'If what is added is files: use <a href="/components/file-upload">FileUpload</a>.',
+    "tagsInputPage.whenNot3": 'If what is added is files: use <a href="/components/drop-zone">Drop zone</a>.',
 
     "tagsInputPage.whenNot2": 'For applied filters or keywords that are only shown: use <a href="/components/tag">Tag</a>.',
 

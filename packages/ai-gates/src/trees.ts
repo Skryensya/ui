@@ -1,4 +1,5 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
+import { dialogStackTree } from "../../../contracts/examples/fixed/dialog-stack.js";
 
 /*
  * The canonical usage trees: one per signature, plus one per state that is materially different.
@@ -57,6 +58,14 @@ export type Canonical = {
   /** Signatures with no enhancer need no `initComponents`; saying so keeps the harness honest. */
   readonly enhanced: boolean;
 };
+
+/** 800 by 600, four flat quarters: a pixel's colour is the quarter it was cut from. */
+const CROPPER_PICTURE = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">' +
+    '<rect width="400" height="300" fill="#e53935"/><rect x="400" width="400" height="300" fill="#43a047"/>' +
+    '<rect y="300" width="400" height="300" fill="#1e88e5"/><rect x="400" y="300" width="400" height="300" fill="#fdd835"/>' +
+    "</svg>",
+)}`;
 
 const signatureTrees: readonly Canonical[] = [
   {
@@ -627,6 +636,125 @@ const signatureTrees: readonly Canonical[] = [
         { contract: "resizable", signature: "Resizable.Handle", options: { label: "Resize files" } },
         { contract: "resizable", signature: "Resizable.Panel", options: { minSize: 30 }, children: "Editor" },
       ],
+    },
+  },
+  {
+    /* COMPARE, the default shape: two plain layers and the divider. What scrolls or drags is `compare-slider.spec.ts`; the anatomy and the divider's slider markup are what the two bindings are held to here. */
+    name: "compare-slider/default",
+    enhanced: false,
+    tree: {
+      contract: "compare-slider",
+      signature: "CompareSlider",
+      options: { label: "Compare before and after" },
+      slots: {
+        before: { contract: "typography", signature: "Text", children: "Before." },
+        after: { contract: "typography", signature: "Text", children: "After." },
+      },
+    },
+  },
+  {
+    name: "compare-slider/vertical",
+    enhanced: false,
+    tree: {
+      contract: "compare-slider",
+      signature: "CompareSlider",
+      options: { label: "Compare the two versions", direction: "vertical", position: 30 },
+      slots: {
+        before: { contract: "typography", signature: "Text", children: "The old version." },
+        after: { contract: "typography", signature: "Text", children: "The new version." },
+      },
+    },
+  },
+  {
+    /*
+     * VIDEO PLAYER, the convenience source: a file, a poster and one caption track. What plays, seeks and hides is
+     * `video-player.spec.ts`; no codec is needed here, since a gate that decoded video would be a gate on the browser's
+     * build. The anatomy, the two sliders' markup and the names of every control are what the bindings are held to.
+     */
+    name: "video-player/default",
+    enhanced: false,
+    tree: {
+      contract: "video-player",
+      signature: "VideoPlayer",
+      options: {
+        label: "Sintel, the trailer",
+        src: "/video/sintel-trailer-480p.mp4",
+        poster: "/video/sintel-poster.jpg",
+        captionsSrc: "/video/demo-captions.en.vtt",
+        captionsLang: "en",
+        captionsTitle: "English",
+      },
+    },
+  },
+  {
+    /* The same player with its words and settings changed: another language's labels, controls that stay, a longer skip. */
+    name: "video-player/settings",
+    enhanced: false,
+    tree: {
+      contract: "video-player",
+      signature: "VideoPlayer",
+      options: {
+        label: "Tráiler de Sintel",
+        src: "/video/sintel-trailer-480p.mp4",
+        playLabel: "Reproducir",
+        pauseLabel: "Pausar",
+        replayLabel: "Repetir",
+        muteLabel: "Silenciar",
+        unmuteLabel: "Activar sonido",
+        fullscreenLabel: "Pantalla completa",
+        exitFullscreenLabel: "Salir de pantalla completa",
+        autoHide: false,
+        skip: 30,
+        speeds: "1 1.5 2",
+      },
+    },
+  },
+  {
+    /*
+     * AUDIO PLAYER, one sound with everything a single sound can carry: a file, the words, a cover, the waveform's peaks and
+     * the card layout. What plays, seeks and advances is the bindings' suites; what is held here is the anatomy, the two
+     * sliders' markup and the names of every control.
+     */
+    name: "audio-player/default",
+    enhanced: false,
+    tree: {
+      contract: "audio-player",
+      signature: "AudioPlayer",
+      options: {
+        label: "Morning Light",
+        src: "/audio/morning-light.wav",
+        title: "Morning Light",
+        artist: "Skryensya Demo",
+        cover: "/audio/morning-light.svg",
+        peaks: "0.2 0.8 0.5 1 0.3",
+        variant: "card",
+      },
+    },
+  },
+  {
+    /* AUDIO PLAYER, the minimum: a play button, the seek bar and the time. Its own signature, so the markup is only what it uses. */
+    name: "audio-player/minimal",
+    enhanced: false,
+    tree: {
+      contract: "audio-player",
+      signature: "AudioPlayerMinimal",
+      options: { label: "Voice note", src: "/audio/morning-light.wav", title: "Voice note, Monday" },
+    },
+  },
+  {
+    /* The same player given a list: the entries' words and files, the previous and next buttons, and the list's own markup. */
+    name: "audio-player/playlist",
+    enhanced: false,
+    tree: {
+      contract: "audio-player",
+      signature: "AudioPlayer",
+      options: { label: "Three demo pieces", skip: 15, autoAdvance: false },
+      slots: {
+        tracks: [
+          { options: { src: "/audio/morning-light.wav", duration: 20 }, slots: { title: "Morning Light", artist: "Skryensya Demo" } },
+          { options: { src: "/audio/slow-tide.wav", duration: 20 }, slots: { title: "Slow Tide" } },
+        ],
+      },
     },
   },
   {
@@ -1380,6 +1508,25 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    name: "dock/default",
+    enhanced: true,
+    tree: {
+      contract: "dock",
+      signature: "Dock",
+      options: { label: "Quick actions" },
+      children: [
+        {
+          contract: "dock", signature: "DockItem", options: { label: "Search" },
+          children: { contract: "icon", signature: "Icon", options: { name: "search", size: "md" } },
+        },
+        {
+          contract: "dock", signature: "DockItem", options: { label: "Settings", disabled: true },
+          children: { contract: "icon", signature: "Icon", options: { name: "settings", size: "md" } },
+        },
+      ],
+    },
+  },
+  {
     name: "toolbar/brutalist",
     enhanced: true,
     tree: {
@@ -1747,6 +1894,8 @@ const signatureTrees: readonly Canonical[] = [
       ],
     },
   },
+  { name: "dialog-stack/default", enhanced: true, tree: dialogStackTree() },
+  { name: "dialog-stack/open", enhanced: true, tree: dialogStackTree(undefined, true) },
   /* Behaviour the browser owns entirely: no enhancer, no machine, nothing to anchor. */
   {
     name: "dialog/confirm",
@@ -1812,6 +1961,31 @@ const signatureTrees: readonly Canonical[] = [
           },
         },
       },
+    },
+  },
+  /* The stacked pair: two real `Button.action`s sharing one look (the contract's `pairs` insist), joined into one group. */
+  {
+    name: "split-button/vertical",
+    enhanced: false,
+    tree: {
+      contract: "split-button",
+      signature: "SplitButtonVertical",
+      options: { label: "Zoom" },
+      slots: {
+        first: { contract: "button", signature: "Button.action", options: { variant: "soft" }, slots: { children: "Acercar" } },
+        second: { contract: "button", signature: "Button.action", options: { variant: "soft" }, slots: { children: "Alejar" } },
+      },
+    },
+  },
+  /* The invitation to scroll: hidden at rest in both bindings until the enhancer finds a scroller that has more to show. */
+  {
+    name: "scroll-hint/default",
+    enhanced: false,
+    tree: {
+      contract: "scroll-hint",
+      signature: "ScrollHint",
+      options: { axis: "vertical" },
+      slots: { children: "Desliza para ver más" },
     },
   },
   /*
@@ -3955,6 +4129,29 @@ const signatureTrees: readonly Canonical[] = [
    * proves the embedded canvas (the frame on the canvas, the legend outside it) renders the same
    * structure from both bindings as the standalone one.
    */
+  /*
+   * IMAGE CROPPER, twice: the plain rectangle with its toolbar, and the circle with the preview and Cancel. The picture is a data
+   * URI of four flat quadrants (red, green, blue, yellow) so that nothing is fetched and a pixel's colour says where it came from;
+   * `image-cropper.spec.ts` is what drags, zooms, rotates and exports it.
+   */
+  {
+    name: "image-cropper/default",
+    enhanced: true,
+    tree: {
+      contract: "image-cropper",
+      signature: "ImageCropper",
+      options: { src: CROPPER_PICTURE, alt: "Four coloured quarters", aspect: "4:3" },
+    },
+  },
+  {
+    name: "image-cropper/circle",
+    enhanced: true,
+    tree: {
+      contract: "image-cropper",
+      signature: "ImageCropper",
+      options: { src: CROPPER_PICTURE, alt: "Four coloured quarters", shape: "circle", label: "Profile picture" },
+    },
+  },
   {
     name: "canvas/default",
     enhanced: true,

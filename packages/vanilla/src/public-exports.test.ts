@@ -3,6 +3,8 @@ import { mountAnnotated } from "@skryensya/vanilla/annotation";
 import { mountBackToTop } from "@skryensya/vanilla/back-to-top";
 import { mountCanvas } from "@skryensya/vanilla/canvas";
 import { mountDialog } from "@skryensya/vanilla/dialog";
+import { mountDialogStack } from "@skryensya/vanilla/dialog-stack";
+import { mountImageCropper } from "@skryensya/vanilla/image-cropper";
 import { mountLightbox } from "@skryensya/vanilla/lightbox";
 import { mountTour } from "@skryensya/vanilla/tour";
 import { mountClipboard } from "@skryensya/vanilla/clipboard";
@@ -32,6 +34,9 @@ import { mountFolder } from "@skryensya/vanilla/folder";
 import { mountInput } from "@skryensya/vanilla/input";
 import { mountLoader } from "@skryensya/vanilla/loader";
 import { mountMarquee } from "@skryensya/vanilla/marquee";
+import { mountCompareSlider } from "@skryensya/vanilla/compare-slider";
+import { mountVideoPlayer } from "@skryensya/vanilla/video-player";
+import { mountAudioPlayer } from "@skryensya/vanilla/audio-player";
 import { mountResizable } from "@skryensya/vanilla/resizable";
 import { mountMegamenu } from "@skryensya/vanilla/megamenu";
 import { mountMenu } from "@skryensya/vanilla/menu";
@@ -46,6 +51,7 @@ import { mountSelect } from "@skryensya/vanilla/select";
 import { mountSegmented } from "@skryensya/vanilla/segmented";
 import { mountStat } from "@skryensya/vanilla/stat";
 import { mountFadeEdge } from "@skryensya/vanilla/fade-edge";
+import { mountScrollHint } from "@skryensya/vanilla/scroll-hint";
 import { mountPasswordInput } from "@skryensya/vanilla/password-input";
 import { mountSidebar } from "@skryensya/vanilla/sidebar";
 import { mountSlider } from "@skryensya/vanilla/slider";
@@ -62,6 +68,7 @@ import { mountTimeField } from "@skryensya/vanilla/time-field";
 import { mountToast } from "@skryensya/vanilla/toast";
 import { mountToc } from "@skryensya/vanilla/toc";
 import { mountToolbar } from "@skryensya/vanilla/toolbar";
+import { mountDock } from "@skryensya/vanilla/dock";
 import { mountTooltip } from "@skryensya/vanilla/tooltip";
 import { mountTreegrid } from "@skryensya/vanilla/treegrid";
 import { mountTreeView } from "@skryensya/vanilla/tree-view";
@@ -92,6 +99,8 @@ const mounts = [
   mountCalendar,
   mountCanvas,
   mountDialog,
+  mountDialogStack,
+  mountImageCropper,
   mountLightbox,
   mountTour,
   mountClipboard,
@@ -110,6 +119,7 @@ const mounts = [
   mountDiagram,
   mountExpandableTile,
   mountFadeEdge,
+  mountScrollHint,
   mountFeed,
   mountFileUpload,
   mountFolder,
@@ -125,6 +135,9 @@ const mounts = [
   mountOtpInput,
   mountPasswordInput,
   mountRating,
+  mountCompareSlider,
+  mountVideoPlayer,
+  mountAudioPlayer,
   mountResizable,
   mountSegmented,
   mountSelect,
@@ -144,6 +157,7 @@ const mounts = [
   mountToast,
   mountToc,
   mountToolbar,
+  mountDock,
   mountTooltip,
   mountTreegrid,
   mountTreeView,
@@ -154,7 +168,7 @@ const mounts = [
 describe("Vanilla public entry points", () => {
   it("publishes the lazy auto-loader and one mount for every regular enhanced module", () => {
     expect(initComponents).toBeTypeOf("function");
-    expect(mounts).toHaveLength(66);
+    expect(mounts).toHaveLength(73);
     expect(mounts.every((mount) => typeof mount === "function")).toBe(true);
   });
 
@@ -202,6 +216,8 @@ describe("Vanilla public entry points", () => {
         mountCalendar,
         mountCanvas,
         mountDialog,
+        mountDialogStack,
+        mountImageCropper,
         mountLightbox,
         mountTour,
         mountClipboard,
@@ -220,6 +236,7 @@ describe("Vanilla public entry points", () => {
         mountDiagram,
         mountExpandableTile,
         mountFadeEdge,
+        mountScrollHint,
         mountFeed,
         mountFileUpload,
         mountFolder,
@@ -235,6 +252,9 @@ describe("Vanilla public entry points", () => {
         mountOtpInput,
         mountPasswordInput,
         mountRating,
+        mountCompareSlider,
+        mountVideoPlayer,
+        mountAudioPlayer,
         mountResizable,
         mountSegmented,
         mountSelect,
@@ -254,6 +274,7 @@ describe("Vanilla public entry points", () => {
         mountToast,
         mountToc,
         mountToolbar,
+        mountDock,
         mountTooltip,
         mountTreegrid,
         mountTreeView,

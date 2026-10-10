@@ -62,6 +62,16 @@ async function hovered(page: Page, selector: string) {
 
 test.beforeEach(async ({ page }) => {
   await waitForStage(page);
+  // Other stage specimens open modal dialogs; they must not intercept this test's pointer.
+  await page.evaluate(() => document.querySelectorAll<HTMLDialogElement>("dialog[open]").forEach((dialog) => dialog.close()));
+});
+
+test("soft background is painted at rest, including existing authored markup", async ({ page }) => {
+  await page.mouse.move(1, 1);
+  await mount(page, control("legacy", "plain") + '<button id="soft" class="sk-back-to-top sk-button sk-interactive" data-variant="soft">Top</button>');
+  for (const id of ["#legacy", "#soft"]) {
+    expect((await read(page, id)).alpha, id).toBeGreaterThan(0.3);
+  }
 });
 
 test("tactile: a ledge the press sinks into through transform, never the reveal's translate", async ({ page }) => {

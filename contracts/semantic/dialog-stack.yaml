@@ -1,0 +1,53 @@
+DialogStack:
+  useWhen:
+    - "a short blocking task has ordered steps and needs backward navigation"
+    - "earlier steps should remain visible as stacked surfaces without exposing their controls"
+  avoidWhen:
+    - "a single confirmation needs an answer: use Dialog"
+    - "the flow is long or needs URLs, reload recovery or branching: use separate pages"
+    - "the content explains a control without blocking: use Popover"
+  alternatives: [Dialog, Popover, Steps]
+DialogStackTrigger:
+  useWhen: ["a button opens the stack from the page"]
+  avoidWhen: ["the action advances inside the stack: use DialogStackNext"]
+  alternatives: [DialogStackNext]
+DialogStackOverlay:
+  useWhen: ["the compound composition needs an explicit backdrop marker; the native ::backdrop paints it"]
+  avoidWhen: ["the background is part of a non-modal panel: use Window"]
+  alternatives: [Window]
+DialogStackBody:
+  useWhen: ["the stack needs its one native modal host around its steps"]
+  avoidWhen: ["there is only one confirmation: use Dialog"]
+  alternatives: [Dialog]
+DialogStackContent:
+  useWhen: ["one step has a title, content and navigation controls"]
+  avoidWhen: ["the content needs a standalone URL: use a page"]
+  alternatives: [Dialog]
+DialogStackHeader:
+  useWhen: ["a step groups its title and optional description"]
+  avoidWhen: ["the content is a set of actions: use DialogStackFooter"]
+  alternatives: [DialogStackFooter]
+DialogStackTitle:
+  useWhen: ["a heading names the active step and its dialog"]
+  avoidWhen: ["the text explains rather than names the step: use DialogStackDescription"]
+  alternatives: [DialogStackDescription]
+DialogStackDescription:
+  useWhen: ["a short sentence explains what the step asks for"]
+  avoidWhen: ["the text is a heading: use DialogStackTitle"]
+  alternatives: [DialogStackTitle]
+DialogStackFooter:
+  useWhen: ["navigation and completion controls need an action row"]
+  avoidWhen: ["the group contains the step title: use DialogStackHeader"]
+  alternatives: [DialogStackHeader]
+DialogStackNext:
+  useWhen: ["a control advances to the next step"]
+  avoidWhen: ["the last action completes the task: use DialogStackClose"]
+  alternatives: [DialogStackClose]
+DialogStackPrevious:
+  useWhen: ["a control returns to the previous step while keeping its authored content mounted"]
+  avoidWhen: ["the control abandons the flow: use DialogStackClose"]
+  alternatives: [DialogStackClose]
+DialogStackClose:
+  useWhen: ["a visible action cancels or completes the flow and closes the dialog"]
+  avoidWhen: ["the action only changes steps: use DialogStackNext or DialogStackPrevious"]
+  alternatives: [DialogStackNext, DialogStackPrevious]

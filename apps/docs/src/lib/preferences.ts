@@ -27,16 +27,6 @@ export {
   componentPreviewScreenPreference,
 } from "../preview/component-preview";
 
-/** Component documentation examples can opt into alternate appearances, currently Button tactile, brutalist and frosted. */
-export const appearancePreference = definePreference<"plain" | "tactile" | "brutalist" | "frosted">({
-  slot: "appearance",
-  fallback: "plain",
-  parse: (raw) => {
-    if (raw === "default") return "plain";
-    return oneOf(["plain", "tactile", "brutalist", "frosted"])(raw);
-  },
-});
-
 /** High contrast, the third color mode. A dimension, so it is the site's to store, not a component's. */
 export const contrastPreference = definePreference<"normal" | "high">({
   slot: "contrast",

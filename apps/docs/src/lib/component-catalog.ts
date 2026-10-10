@@ -108,6 +108,10 @@ const componentDescriptions = {
     es: "Captura una fecha con un campo y un calendario emergente.",
     en: "Captures a date with a field and a popup calendar.",
   },
+  "/components/dialog-stack": {
+    es: "Guía una tarea corta por pasos dentro de un diálogo con tarjetas apiladas.",
+    en: "Guides a short task through steps inside a dialog with stacked cards.",
+  },
   "/components/dialog": {
     es: "Interrumpe la tarea actual para pedir atención o una decisión.",
     en: "Interrupts the current task to request attention or a decision.",
@@ -148,9 +152,9 @@ const componentDescriptions = {
     es: "Stream de publicaciones independientes, cada una con su posición anunciada.",
     en: "A stream of independent posts, each announced with its own position.",
   },
-  "/components/file-upload": {
-    es: "Selecciona o arrastra archivos y muestra su progreso.",
-    en: "Selects or drops files and reports their progress.",
+  "/components/drop-zone": {
+    es: "Recibe archivos soltándolos o eligiéndolos desde el sistema.",
+    en: "Receives files by drop or through the system picker.",
   },
   "/components/footer": {
     es: "Cierra la página con una banda propia: navegación secundaria, aviso legal o crédito.",
@@ -179,6 +183,10 @@ const componentDescriptions = {
   "/components/lightbox": {
     es: "Muestra una imagen o una galería en grande, con zoom, en un diálogo modal.",
     en: "Shows an image or a gallery large, with zoom, in a modal dialog.",
+  },
+  "/components/image-cropper": {
+    es: "Una ventana de recorte sobre una imagen, con zoom, rotación, proporciones y exportación exacta, incluido el círculo transparente.",
+    en: "A crop window over an image, with zoom, rotation, aspect ratios and an exact export, including the transparent circle.",
   },
   "/components/image-frame": {
     es: "Recorta y posiciona imágenes con una proporción controlada.",
@@ -312,9 +320,25 @@ const componentDescriptions = {
     es: "Un contenedor que se abre desde una ventana pequeña hasta llenar la caja al hacer scroll, o al revés.",
     en: "A container that opens from a small window to fill the box as you scroll, or the other way round.",
   },
+  "/components/dock": {
+    es: "Un grupo compacto de acciones con iconos y nombres accesibles.",
+    en: "A compact group of icon actions with accessible names.",
+  },
   "/components/scroll-stack": {
     es: "Dos secciones donde la segunda sube y cubre a la primera al hacer scroll, con un gesto sutil.",
     en: "Two sections where the second one rises over the first as you scroll, with a subtle gesture.",
+  },
+  "/components/compare-slider": {
+    es: "Dos capas del mismo tamaño y un divisor que se arrastra para revelar una sobre la otra.",
+    en: "Two layers of the same size and a divider you drag to reveal one over the other.",
+  },
+  "/components/video-player": {
+    es: "Un reproductor de video con los controles del sistema sobre un video real, manejable con el teclado.",
+    en: "A video player with the system's controls over a real video, runnable from the keyboard.",
+  },
+  "/components/audio-player": {
+    es: "Un reproductor de audio con los controles del sistema, con portada, forma de onda y una lista de pistas.",
+    en: "An audio player with the system's controls, with a cover, a waveform and a list of tracks.",
   },
   "/components/resizable": {
     es: "Reparte una caja entre paneles y deja arrastrar la barra que hay entre cada par.",

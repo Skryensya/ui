@@ -670,6 +670,11 @@ describe("Procedure", () => {
 });
 
 describe("Window", () => {
+  it("publishes plain, brutalist and frosted sets, without a tactile frame", () => {
+    const sets = manifest.components.filter((c) => c.id.startsWith("window/"));
+    expect(sets.map((c) => c.id)).toEqual(["window/plain", "window/brutalist", "window/frosted"]);
+  });
+
   it("draws its open panel with minimize, maximize and close, restore hidden until maximized", () => {
     const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id.startsWith("window"))!;
     const text = JSON.stringify(manifest.styles.layers[set.cells[0].layers]);

@@ -1,0 +1,229 @@
+---
+import "@skryensya/core/components/audio-player.css";
+/* The keys in the table, and the specimen that names the parts: a preview frame only copies styles THIS page loaded. */
+import "@skryensya/core/components/kbd.css";
+import "@skryensya/core/components/annotation.css";
+import "@skryensya/core/components/canvas.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import CodeBlock from "../CodeBlock.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import ComparisonTable from "../ComparisonTable.astro";
+import DoDont from "../DoDont.astro";
+import UsagePreview from "../UsagePreview.astro";
+import { audioPlayerParts } from "@skryensya/core/audio-player";
+import {
+  audioPlayerAnatomyCss,
+  audioPlayerAnatomyTree,
+  audioPlayerCardTree,
+  audioPlayerMinimalTree,
+  audioPlayerDoNameTree,
+  audioPlayerDontNameTree,
+  audioPlayerDoRoomTree,
+  audioPlayerDontRoomTree,
+  audioPlayerPlaylistTree,
+  audioPlayerTree,
+} from "../../demos/audio-player";
+import { getLocale, tList, useTranslations } from "../../i18n";
+
+const t = useTranslations(getLocale(Astro.url));
+
+const examples = [
+  { key: "minimal", story: "Minimal", tree: audioPlayerMinimalTree, minBlockSize: "7rem" },
+  { key: "default", story: "Default", tree: audioPlayerTree, minBlockSize: "11rem" },
+  { key: "card", story: "Card", tree: audioPlayerCardTree, minBlockSize: "40rem" },
+  { key: "playlist", story: "Playlist", tree: audioPlayerPlaylistTree, minBlockSize: "20rem" },
+] as const;
+
+const [, doesColumn] = t("audioPlayerPage.hooksColumns").split("|");
+const hooks = [
+  ["bg", "var(--color-bg-surface)", "bg"],
+  ["fg", "var(--color-text-primary)", "fg"],
+  ["radius", "var(--radius-surface)", "radius"],
+  ["padding", "var(--space-inset-md)", "padding"],
+  ["cover-size", "4.5rem", "coverSize"],
+  ["track-color", "color-mix(in oklch, var(--sk-audio-player-fg) 16%, transparent)", "trackColor"],
+  ["buffered-color", "color-mix(in oklch, var(--sk-audio-player-fg) 28%, transparent)", "bufferedColor"],
+  ["played-color", "var(--color-action-accent)", "playedColor"],
+  ["item-accent", "var(--sk-audio-player-played-color)", "itemAccent"],
+  ["track-size", "0.25rem", "trackSize"],
+  ["thumb-size", "0.875rem", "thumbSize"],
+  ["volume-width", "6rem", "volumeWidth"],
+  ["wave-height", "2.5rem", "waveHeight"],
+  ["bar-gap", "2px", "barGap"],
+  ["bar-width", "0.375rem", "barWidth"],
+] as const;
+const hookNotes = Object.fromEntries(
+  hooks.map(([name, , key]) => [`--sk-audio-player-${name}`, t(`audioPlayerPage.hook.${key}` as Parameters<typeof t>[0])]),
+);
+
+const partOrder = ["root", "cover", "meta", "controls", "seek", "wave", "bar", "control", "volume", "time", "list", "item"] as const;
+const partRows = partOrder.map((part) => ({
+  label: audioPlayerParts[part],
+  labelHtml: `<code>${audioPlayerParts[part]}</code>`,
+  cells: [t(`audioPlayerPage.part.${part}` as Parameters<typeof t>[0])],
+}));
+
+const kbd = (...keys: string[]) => keys.map((key) => `<kbd class="sk-kbd">${key}</kbd>`).join(" ");
+const keyRows = [
+  { keys: kbd("K"), key: "toggle" },
+  { keys: `${kbd("J")} ${kbd("L")}`, key: "seek" },
+  { keys: kbd("0") + " … " + kbd("9"), key: "digits" },
+  { keys: `${kbd("Home")} ${kbd("End")}`, key: "edges" },
+  { keys: `${kbd("↑")} ${kbd("↓")}`, key: "volume" },
+  { keys: kbd("M"), key: "mute" },
+  { keys: `${kbd("&lt;")} ${kbd("&gt;")}`, key: "speed" },
+  { keys: `${kbd("Shift", "P")} ${kbd("Shift", "N")}`, key: "track" },
+].map(({ keys, key }) => ({
+  label: key,
+  labelHtml: keys,
+  cells: [t(`audioPlayerPage.key.${key}` as Parameters<typeof t>[0])],
+}));
+
+const install = `pnpm add @skryensya/core
+# and, for React,
+pnpm add @skryensya/react`;
+const styles = `@import "@skryensya/core/components/audio-player.css";`;
+const html = `<div class="sk-audio-player" data-sk-audio-player role="group" aria-label="Morning Light">
+  <audio src="morning-light.mp3"></audio>
+  <img class="sk-audio-player__cover" src="morning-light.jpg" alt="" />
+  <div class="sk-audio-player__meta">
+    <span class="sk-audio-player__title">Morning Light</span>
+    <span class="sk-audio-player__artist">Skryensya Demo</span>
+  </div>
+  <!-- the seek bar and the buttons: copy them from the Storybook story -->
+</div>`;
+const react = `import { AudioPlayer, AudioPlayerMinimal } from "@skryensya/react/audio-player";
+
+<AudioPlayer
+  label="Morning Light"
+  src="morning-light.mp3"
+  title="Morning Light"
+  artist="Skryensya Demo"
+  cover="morning-light.jpg"
+  peaks={peaks} // numbers from 0 to 1, computed when you prepare the file
+/>
+
+{/* The least a sound needs: play, a seek bar and the time. */}
+<AudioPlayerMinimal label="Voice note" src="note.mp3" />
+
+{/* A list: it loads the first track, shows which one plays and moves on by itself. */}
+<AudioPlayer
+  label="Season one"
+  tracks={[
+    { src: "ep1.mp3", title: "Pilot", artist: "Ana", duration: 1820 },
+    { src: "ep2.mp3", title: "The second one", artist: "Ana", duration: 1764 },
+  ]}
+/>`;
+const tune = `.sk-audio-player {
+  --sk-audio-player-radius: 999px;                  /* a pill */
+  --sk-audio-player-wave-height: 3.5rem;            /* a taller waveform */
+  --sk-audio-player-played-color: var(--color-action-danger);
+}`;
+---
+
+<ComponentPageShell
+  title="Audio Player"
+  description={t("audioPlayerPage.description")}
+  contractId="audio-player"
+  badge="Beta"
+  hookNotes={hookNotes}
+  hookNotesLabel={doesColumn}
+  testFiles={["packages/core/src/audio-player.test.ts", "packages/react/src/components/audio-player.test.tsx"]}
+>
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("audioPlayerPage.lede")} />
+
+    <h3>{t("audioPlayerPage.examplesTitle")}</h3>
+    <p set:html={t("audioPlayerPage.examplesBody")} />
+    {
+      examples.map(({ key, story, tree, minBlockSize }) => (
+        <UsagePreview
+          tree={tree(t)}
+          title={t(`audioPlayerPage.example.${key}` as Parameters<typeof t>[0])}
+          description={t(`audioPlayerPage.example.${key}.explain` as Parameters<typeof t>[0])}
+          storybookTitle="Components/Media & Visuals/Audio Player"
+          storybookStory={story}
+          stageMinBlockSize={minBlockSize}
+        />
+      ))
+    }
+
+    <h3>{t("audioPlayerPage.keyboardTitle")}</h3>
+    <p set:html={t("audioPlayerPage.keyboardBody")} />
+    <div class="audio-keys">
+      <ComparisonTable aspectLabel={t("audioPlayerPage.keyboardAspect")} columns={[t("audioPlayerPage.keyboardColumns")]} rows={keyRows} />
+    </div>
+
+    <h3>{t("audioPlayerPage.howTitle")}</h3>
+    <ul>
+      <li set:html={t("audioPlayerPage.how.element")} />
+      <li set:html={t("audioPlayerPage.how.sibling")} />
+      <li set:html={t("audioPlayerPage.how.playlist")} />
+      <li set:html={t("audioPlayerPage.how.wave")} />
+      <li set:html={t("audioPlayerPage.how.minimal")} />
+      <li set:html={t("audioPlayerPage.how.names")} />
+    </ul>
+
+    <h3>{t("audioPlayerPage.contractTitle")}</h3>
+    <ul>
+      {tList(t, "audioPlayerPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+  </Fragment>
+
+  <Fragment slot="anatomy">
+    <p set:html={t("audioPlayerPage.anatomyBody")} />
+    <UsagePreview tree={audioPlayerAnatomyTree(t)} css={audioPlayerAnatomyCss} label={t("audioPlayerPage.anatomyPreviewLabel")} bare />
+    <h3>{t("audioPlayerPage.anatomyTitle")}</h3>
+    <div class="cmp-parts">
+      <ComparisonTable aspectLabel={t("audioPlayerPage.partsAspect")} columns={[t("audioPlayerPage.partsColumns")]} rows={partRows} />
+    </div>
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("audioPlayerPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "audioPlayerPage.when")} avoid={tList(t, "audioPlayerPage.whenNot")} />
+    <DoDont
+      title={t("audioPlayerPage.dd.name.title")}
+      do={{ tree: audioPlayerDoNameTree(t), caption: t("audioPlayerPage.dd.name.do") }}
+      dont={{ tree: audioPlayerDontNameTree(t), caption: t("audioPlayerPage.dd.name.dont") }}
+    />
+    <DoDont
+      title={t("audioPlayerPage.dd.room.title")}
+      do={{ tree: audioPlayerDoRoomTree(t), caption: t("audioPlayerPage.dd.room.do") }}
+      dont={{ tree: audioPlayerDontRoomTree(t), caption: t("audioPlayerPage.dd.room.dont") }}
+    />
+    <ContentRules items={tList(t, "audioPlayerPage.content")} />
+  </Fragment>
+
+  <Fragment slot="install">
+    <p set:html={t("audioPlayerPage.installBody")} />
+    <CodeBlock code={install} label="terminal" />
+    <CodeBlock code={styles} label="CSS" lang="css" />
+    <CodeBlock code={html} label="HTML" lang="html" />
+    <CodeBlock code={react} label="React" lang="tsx" />
+  </Fragment>
+
+  <Fragment slot="style">
+    <h3>{t("audioPlayerPage.hooksTitle")}</h3>
+    <p set:html={t("audioPlayerPage.hooksBody")} />
+    <CodeBlock code={tune} label="CSS" lang="css" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("audioPlayerPage.a11yIntro")} does={tList(t, "audioPlayerPage.a11yDoes")} yours={tList(t, "audioPlayerPage.a11yYours")} />
+  </Fragment>
+</ComponentPageShell>
+
+<style is:global>
+  /* A class name is one token: breaking it at the hyphen makes two lines of what is a single word. */
+  .cmp-parts th code {
+    white-space: nowrap;
+  }
+
+  /* A row of keys stays on one line: two keys split across two lines read as two rows. */
+  .audio-keys th {
+    white-space: nowrap;
+  }
+</style>

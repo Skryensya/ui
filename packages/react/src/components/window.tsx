@@ -60,6 +60,8 @@ export type WindowProps = Omit<HTMLAttributes<HTMLDivElement>, "title" | "childr
   defaultHeight?: number;
   minWidth?: number;
   minHeight?: number;
+  /** Selector of the drag boundary. Defaults to the portal container or viewport. */
+  boundary?: string;
   closeLabel?: string;
   minimizeLabel?: string;
   maximizeLabel?: string;
@@ -87,6 +89,7 @@ const stageLabelKey = {
 
 export function Window({
   appearance = appearanceOption.default,
+  boundary,
   children,
   className,
   closeLabel = closeLabelOption.default,
@@ -137,10 +140,17 @@ export function Window({
     closeOnEscape,
     persistRect,
     defaultSize: {
-      width: defaultWidth ?? windowDefaultSize.width,
-      height: defaultHeight ?? windowDefaultSize.height,
+      width: Math.max(windowContract.options.minWidth.default, minWidth ?? 0, defaultWidth ?? windowDefaultSize.width),
+      height: Math.max(windowContract.options.minHeight.default, minHeight ?? 0, defaultHeight ?? windowDefaultSize.height),
     },
-    minSize: minWidth || minHeight ? { width: minWidth ?? 0, height: minHeight ?? 0 } : undefined,
+    allowOverflow: false,
+    getBoundaryEl: () => boundary
+      ? rootRef.current?.ownerDocument.querySelector<HTMLElement>(boundary) ?? null
+      : container?.current ?? null,
+    minSize: {
+      width: Math.max(windowContract.options.minWidth.default, minWidth ?? 0),
+      height: Math.max(windowContract.options.minHeight.default, minHeight ?? 0),
+    },
     translations,
     onOpenChange: (details) => {
       onOpenChangeRef.current?.(details);
@@ -156,6 +166,7 @@ export function Window({
     },
   });
   const api = floatingPanel.connect(service, normalizeProps);
+  const triggerAccessibleName = triggerLabel ?? (triggerIconOnly ? title : undefined);
 
   const stageControl = (stage: WindowStage) => {
     const stageProps = api.getStageTriggerProps({ stage });
@@ -179,7 +190,7 @@ export function Window({
     <div {...props} className={cx(windowParts.root, className)} id={machineId} ref={rootRef}>
       <button
         {...api.getTriggerProps()}
-        aria-label={triggerLabel}
+        aria-label={triggerAccessibleName}
         className={cx(windowParts.trigger, "sk-button", "sk-interactive", triggerClassName)}
         {...{
           [triggerVariantOption.attr]: triggerVariant,

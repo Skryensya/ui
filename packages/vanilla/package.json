@@ -57,9 +57,17 @@
       "types": "./src/components/window.ts",
       "default": "./src/components/window.ts"
     },
+    "./dialog-stack": {
+      "types": "./src/components/dialog-stack.ts",
+      "default": "./src/components/dialog-stack.ts"
+    },
     "./dialog": {
       "types": "./src/components/dialog.ts",
       "default": "./src/components/dialog.ts"
+    },
+    "./image-cropper": {
+      "types": "./src/components/image-cropper.ts",
+      "default": "./src/components/image-cropper.ts"
     },
     "./lightbox": {
       "types": "./src/components/lightbox.ts",
@@ -121,6 +129,10 @@
       "types": "./src/components/password-input.ts",
       "default": "./src/components/password-input.ts"
     },
+    "./scroll-hint": {
+      "types": "./src/components/scroll-hint.ts",
+      "default": "./src/components/scroll-hint.ts"
+    },
     "./fade-edge": {
       "types": "./src/components/fade-edge.ts",
       "default": "./src/components/fade-edge.ts"
@@ -152,6 +164,18 @@
     "./loader": {
       "types": "./src/components/loader.ts",
       "default": "./src/components/loader.ts"
+    },
+    "./video-player": {
+      "types": "./src/components/video-player.ts",
+      "default": "./src/components/video-player.ts"
+    },
+    "./audio-player": {
+      "types": "./src/components/audio-player.ts",
+      "default": "./src/components/audio-player.ts"
+    },
+    "./compare-slider": {
+      "types": "./src/components/compare-slider.ts",
+      "default": "./src/components/compare-slider.ts"
     },
     "./resizable": {
       "types": "./src/components/resizable.ts",
@@ -293,6 +317,10 @@
       "types": "./src/components/feed.ts",
       "default": "./src/components/feed.ts"
     },
+    "./dock": {
+      "types": "./src/components/dock.ts",
+      "default": "./src/components/dock.ts"
+    },
     "./toolbar": {
       "types": "./src/components/toolbar.ts",
       "default": "./src/components/toolbar.ts"
@@ -334,6 +362,7 @@
     "@skryensya/core": "workspace:*",
     "@zag-js/svelte": "^1.43.3",
     "@zag-js/vanilla": "^1.43.3",
+    "motion": "12.23.24",
     "svelte": "^5.56.7"
   },
   "peerDependencies": {

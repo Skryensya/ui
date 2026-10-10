@@ -1,0 +1,62 @@
+surface: "092cd67755ff7147"
+entries:
+  - date: 2026-10-08
+    kind: feature
+    es:
+      title: Diálogo por pasos con superficies apiladas
+      body: >-
+        Un diálogo nativo contiene los pasos y conserva las superficies anteriores detrás del paso activo.
+        Incluye controles para abrir, avanzar, retroceder y cerrar. Los pasos inactivos quedan fuera del foco
+        y del árbol de accesibilidad. Escape cierra el diálogo y al volver a abrir empieza en el primer paso.
+    en:
+      title: Multi-step dialog with stacked surfaces
+      body: >-
+        One native dialog contains the steps and keeps previous surfaces behind the active step.
+        Includes controls to open, advance, go back and close. Inactive steps leave the focus order
+        and accessibility tree. Escape closes the dialog and reopening starts at the first step.
+  - date: 2026-10-08
+    kind: bugfix
+    es:
+      title: Navegación y cierre sin perder el contexto
+      body: >-
+        Volver a un paso restaura su último control enfocado y conserva los valores escritos.
+        Arrastrar desde el contenido hacia el fondo ya no cierra el diálogo por accidente.
+        La apertura y el cierre usan los tokens de movimiento del sistema; el teclado no espera animaciones.
+        El contenido largo se desplaza dentro del panel sin encadenar el desplazamiento a la página.
+    en:
+      title: Navigation and dismissal preserve context
+      body: >-
+        Returning to a step restores its last focused control and preserves entered values.
+        Dragging from content onto the backdrop no longer dismisses the dialog accidentally.
+        Opening and closing use system motion tokens; keyboard actions do not wait for animation.
+        Long content scrolls inside the panel without chaining scroll to the page.
+  - date: 2026-10-08
+    kind: rework
+    es:
+      title: Las tarjetas cambian de paso sin saltos
+      body: >-
+        El siguiente paso entra desde abajo mientras la tarjeta anterior retrocede y desvanece su contenido.
+        Volver invierte ese recorrido. El diálogo compensa el cambio de posición cuando los pasos tienen
+        alturas distintas sin estirar el texto. Las transiciones parten de su posición actual si se interrumpen;
+        el foco cambia de inmediato y el movimiento reducido conserva solo los fundidos.
+    en:
+      title: Cards change steps without jumps
+      body: >-
+        The next step enters from below as the previous card recedes and fades its content.
+        Going back reverses that path. The dialog compensates for position changes between steps of
+        different heights without stretching text. Interrupted transitions retarget from their painted position;
+        focus changes immediately and reduced motion keeps only fades.
+  - date: 2026-10-08
+    kind: rework
+    es:
+      title: Tarjetas opacas y movimiento más rápido
+      body: >-
+        Las tarjetas y sus textos ya no se funden entre sí. El contenido anterior se oculta de inmediato y las
+        superficies se mueven con un recorrido más corto, usando el token reveal de 120 ms en vez de navigate.
+        El recentrado comparte ese ritmo; el fondo conserva su oscurecimiento y el movimiento reducido no desplaza las tarjetas.
+    en:
+      title: Opaque cards and snappier motion
+      body: >-
+        Cards and text no longer crossfade. Previous content hides immediately and surfaces move a shorter
+        distance, using the 120 ms reveal token instead of navigate. Recentering shares that cadence;
+        the backdrop keeps its dimming and reduced motion does not move the cards.

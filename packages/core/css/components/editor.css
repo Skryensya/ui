@@ -236,13 +236,18 @@
   /* Same recipe `.sk-code` (typography.css) already draws for inline code elsewhere on the site,
    * reused here rather than depended on: this file must not assume `.sk-code` is imported. */
   .sk-editor__content code {
-    padding-inline: 0.3em;
-    padding-block: 0.1em;
-    border-radius: var(--radius-control);
-    background: var(--color-bg-surface-sunken);
+    padding-inline: 0.35em;
+    padding-block: 0.12em;
+    border-radius: calc(var(--scale-radius-sm) * var(--radius-multiplier));
+    background: color-mix(in oklab, var(--color-border-default) 16%, transparent);
+    color: var(--color-text-primary);
     font-family: var(--font-family-code);
     font-size: 0.9em;
+    letter-spacing: normal;
+    font-variant-ligatures: none;
     overflow-wrap: anywhere;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
   }
 
   /* A code BLOCK: the block owns the surface and the scroll, so its own nested `<code>` gives up

@@ -1,6 +1,14 @@
 # What changed in fade-edge, in the words its users read. Only appended to, never rewritten.
 surface: "ed88d4a77c2d37c6"
 entries:
+  - date: 2026-10-08
+    kind: bugfix
+    es:
+      title: El fundido de color sigue el borde visible
+      body: La banda de color compensa el desplazamiento del contenedor para no moverse con el contenido. Con scrollAware desaparece al llegar al extremo, también en los modos de ambos lados.
+    en:
+      title: Color fades follow the visible edge
+      body: Color bands compensate for the container's scroll offset instead of moving with its content. With scrollAware they disappear at the corresponding edge, including paired-axis modes.
   - date: 2026-09-07
     kind: feature
     es:

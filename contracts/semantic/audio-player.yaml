@@ -1,0 +1,30 @@
+# The structure lives in packages/core/src/audio-player.ts. Here, only why it is chosen.
+
+AudioPlayer:
+  useWhen:
+    - "a sound has to be played inside the page and its controls should look like the rest of the interface instead of the browser's own bar: a podcast episode, a song, a voice note, a recording"
+    - "the reader should be able to run it from the keyboard alone: play, seek, volume, speed and the previous and next track all have a key, scoped to the player and never to the page"
+    - "there is a list of tracks (an album, a set of episodes) and the player should load one, move on when it ends, and show which one is playing"
+    - "the sound has a title, an artist or a cover that should sit with the controls, as a strip or as a card"
+    - "you have the peaks of the file and want the seek bar to show its shape"
+  avoidWhen:
+    - "the sound lives on someone else's player (Spotify, SoundCloud, a podcast host): that is an iframe with its own controls, and drawing a second bar over it controls nothing"
+    - "it is a short effect or a click on an interface action; a sound that answers a press needs no controls"
+    - "there is a picture to watch; that is VideoPlayer, which has a stage, a poster and fullscreen"
+    - "the app needs shuffle, repeat, a queue the reader reorders or lyrics; those are the app's policy, and this player moves along a list and nothing more"
+  alternatives:
+    - VideoPlayer
+    - Slider
+
+AudioPlayerMinimal:
+  useWhen:
+    - "a short sound sits inside the page and needs only to be played: a voice note, a clip, a pronunciation, a sample"
+    - "the sound is part of a line of content or a table row, where a cover, a title and a transport would be heavier than what they play"
+    - "you want the least that is still keyboard-operable: a play button, a seek bar and the time"
+  avoidWhen:
+    - "there is a list of tracks, a cover, a title or an artist to show; that is AudioPlayer"
+    - "the listener will want volume or speed, as with a long episode or a lecture; AudioPlayer has both"
+    - "the sound is an effect that answers a press; that needs no controls at all"
+  alternatives:
+    - AudioPlayer
+

@@ -107,12 +107,24 @@ export type {
 } from "./components/carousel.js";
 export { AutoplayMarquee, Marquee } from "./components/marquee.js";
 export type { MarqueeProps } from "./components/marquee.js";
+export { ImageCropper } from "./components/image-cropper.js";
+export type { ImageCropperHandle, ImageCropperProps } from "./components/image-cropper.js";
+export { DialogStack, DialogStackBody, DialogStackContent, DialogStackDescription, DialogStackFooter, DialogStackHeader, DialogStackNext, DialogStackOverlay, DialogStackPrevious, DialogStackTitle, DialogStackTrigger, DialogStackClose } from "./components/dialog-stack.js";
+export type { DialogStackProps, DialogStackActionProps } from "./components/dialog-stack.js";
 export { MorphStack } from "./components/morph-stack.js";
 export type { MorphStackProps } from "./components/morph-stack.js";
+export { VideoPlayer } from "./components/video-player.js";
+export type { VideoPlayerProps } from "./components/video-player.js";
+export { AudioPlayer, AudioPlayerMinimal } from "./components/audio-player.js";
+export type { AudioPlayerMinimalProps, AudioPlayerProps, AudioPlayerTrack } from "./components/audio-player.js";
+export { CompareSlider } from "./components/compare-slider.js";
+export type { CompareSliderProps } from "./components/compare-slider.js";
 export { Resizable, ResizableHandle, ResizablePanel } from "./components/resizable.js";
 export type { ResizableApi, ResizableHandleProps, ResizablePanelProps, ResizableProps } from "./components/resizable.js";
 export { ScrollExpand } from "./components/scroll-expand.js";
 export type { ScrollExpandProps } from "./components/scroll-expand.js";
+export { Dock, DockItem } from "./components/dock.js";
+export type { DockProps, DockItemProps, DockAction } from "./components/dock.js";
 export { ScrollStack } from "./components/scroll-stack.js";
 export type { ScrollStackProps } from "./components/scroll-stack.js";
 export { Steps } from "./components/steps.js";
@@ -195,6 +207,8 @@ export type {
   MediaOverlayProps,
   MediaOverlayShadeProps,
 } from "./components/media-overlay.js";
+export { ScrollHint } from "./components/scroll-hint.js";
+export type { ScrollHintProps } from "./components/scroll-hint.js";
 export { FadeEdge } from "./components/fade-edge.js";
 export type { FadeEdgeProps } from "./components/fade-edge.js";
 export { Presence } from "./components/presence.js";
@@ -320,8 +334,8 @@ export { Menu } from "./components/menu.js";
 export type { MenuProps } from "./components/menu.js";
 export { NumberField } from "./components/number-field.js";
 export type { NumberFieldProps } from "./components/number-field.js";
-export { SplitButton } from "./components/split-button.js";
-export type { SplitButtonProps } from "./components/split-button.js";
+export { SplitButton, SplitButtonVertical } from "./components/split-button.js";
+export type { SplitButtonProps, SplitButtonVerticalProps } from "./components/split-button.js";
 export { TimeField } from "./components/time-field.js";
 export type { TimeFieldProps } from "./components/time-field.js";
 export {

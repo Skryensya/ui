@@ -16,6 +16,21 @@ import { Menu } from "./menu.js";
  * `<Button>` out by hand.
  */
 const { label: labelOption } = splitButtonContract.options;
+const fallbackMenuLabel = "More options";
+
+export type SplitButtonVerticalProps = {
+  label: string;
+  first: ReactNode;
+  second: ReactNode;
+};
+
+/** Two direct actions, joined vertically. Pass matching Button sizes and appearances. */
+export function SplitButtonVertical({ label, first, second }: SplitButtonVerticalProps) {
+  return <div className={splitButtonParts.root} role="group" aria-label={label} data-orientation="vertical">
+    {first}
+    {second}
+  </div>;
+}
 
 export type SplitButtonProps = {
   /**
@@ -100,12 +115,14 @@ export function SplitButton({
           indicator={menuIndicator}
           itemIndicator={itemIndicator}
           items={menuItems ?? []}
-          label={menuLabel ?? ""}
+          label={menuLabel ?? fallbackMenuLabel}
           onSelect={onSelect}
           // No `trigger`: this is the real split-button pattern. An icon-only dropdown segment,
           // the chevron `Menu` already paints and nothing else, named for a screen reader by
           // `triggerLabel` instead of by visible text (`menu.ts`'s own option doc has the reasoning).
-          triggerLabel={menuLabel}
+          // `menuLabel` should still be provided for localized products; this fallback keeps the
+          // convenience surface from ever shipping an unnamed icon-only trigger.
+          triggerLabel={menuLabel ?? fallbackMenuLabel}
           // Pairs the trigger with the action `<Button>` above: same emphasis, same tone, same size,
           // icon-only SHAPE any bare icon Button already has (button.css's own `[data-icon-only]`),
           // and the one delta that makes it a split-button trigger instead of a bare icon button -

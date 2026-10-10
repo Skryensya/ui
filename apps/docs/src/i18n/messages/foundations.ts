@@ -1,16 +1,16 @@
 export const foundationsMessages = {
   es: {
     "foundationsPage.title": "Fundamentos",
-    "foundationsPage.description": "Contrato, tokens, adaptación y patterns compartidos del sistema.",
+    "foundationsPage.description": "Las decisiones que comparten todos los componentes: cómo se construyen, cómo se ven y cómo se usan con cualquier entrada.",
     "foundationsPage.lede":
-      "Fundamentos documenta reglas que sobreviven a cualquier componente: qué promete un Contract, cómo viajan los tokens, dónde se puede ajustar estilo y qué garantías se mantienen cuando cambian entrada, viewport o preferencias.",
+      "Los fundamentos son las decisiones que comparten todos los componentes. Explican cómo se construye un componente, de qué está hecho su aspecto (color, tipografía, densidad, radio, apariencia, iconos), dónde puedes ajustarlo y qué garantías se mantienen con teclado o alto contraste. Léelos una vez y cada página de componente se lee más rápido.",
     "foundationsPage.searchLabel": "Buscar fundamentos",
   },
   en: {
     "foundationsPage.title": "Foundations",
-    "foundationsPage.description": "Shared contract, tokens, adaptation, and patterns in the system.",
+    "foundationsPage.description": "The decisions every component shares: how it is built, how it looks, and how it works with any input.",
     "foundationsPage.lede":
-      "Foundations documents rules that survive any one component: what a Contract promises, how tokens travel, where styling can be adjusted, and which guarantees hold when input, viewport, or preferences change.",
+      "Foundations are the decisions every component shares. They explain how a component is built, what its look is made of (color, type, density, radius, appearance, icons), where you can adjust it, and which guarantees hold with a keyboard or high contrast. Read them once and every component page reads faster.",
     "foundationsPage.searchLabel": "Search foundations",
   },
 } as const;

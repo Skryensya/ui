@@ -28,13 +28,35 @@
   background: var(--color-bg-surface);
 }
 
+/* Reserve the code tool's own row: the isolated document never overlaps it. Raising the
+   iframe's z-index cannot extend its native top layer beyond the iframe boundary. */
+.sk-preview-section--overlay-stage .sk-preview-card:has(> :is(.sk-preview-card__code-link, .sk-preview-card__code-menu)) {
+  padding-block-start: calc(var(--space-inset-md) + 2rem + var(--space-stack-sm));
+}
+
+/* The playground control and Storybook link share the first row. Reserve the link's
+   inline space even when a long segmented control needs horizontal scrolling. */
+.sk-usage-preview--controlled .sk-preview-card:has(> :is(.sk-preview-card__code-link, .sk-preview-card__code-menu)) .sk-property-playground__control,
+.sk-usage-preview--controlled .sk-preview-card:has(> :is(.sk-preview-card__code-link, .sk-preview-card__code-menu)) .sk-property-playground__control-slot {
+  max-inline-size: calc(100% - 2rem - var(--space-inline-md));
+  min-inline-size: 0;
+}
+
+.sk-usage-preview--controlled .sk-preview-card > :is(.sk-preview-card__code-link, .sk-preview-card__code-menu) {
+  inset-block-start: calc(var(--space-inset-md) + (var(--size-control-lg) - 2rem) / 2);
+}
+
 /* Two classes: the site's own link colour (a single-class rule on every `a` in content) must not
    paint this icon blue. It is a quiet tool in a corner, not a link in prose. */
-.sk-preview-card .sk-preview-card__code-link {
+.sk-preview-card .sk-preview-card__code-link,
+.sk-preview-card .sk-preview-card__code-menu {
   position: absolute;
   z-index: 1;
   inset-block-start: var(--space-inset-md);
   inset-inline-end: var(--space-inset-md);
+}
+
+.sk-preview-card .sk-preview-card__code-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -44,21 +66,64 @@
   color: var(--color-text-tertiary);
 }
 
+.sk-preview-card .sk-preview-card__code-menu > summary {
+  position: static;
+  list-style: none;
+  cursor: pointer;
+}
+
+.sk-preview-card .sk-preview-card__code-menu > summary::-webkit-details-marker {
+  display: none;
+}
+
+.sk-preview-card .sk-preview-card__code-menu-panel {
+  position: absolute;
+  inset-block-start: calc(100% + var(--space-stack-2xs));
+  inset-inline-end: 0;
+  display: grid;
+  gap: var(--space-stack-2xs);
+  min-inline-size: max-content;
+  padding: var(--space-inset-xs);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-surface);
+  background: var(--color-bg-surface-raised);
+  box-shadow: var(--elevation-overlay);
+}
+
+.sk-preview-card .sk-preview-card__code-menu:not([open]) .sk-preview-card__code-menu-panel {
+  display: none;
+}
+
+.sk-preview-card .sk-preview-card__code-menu-panel > a {
+  padding: var(--space-inset-xs) var(--space-inset-sm);
+  border-radius: var(--radius-control);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-caption);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.sk-preview-card .sk-preview-card__code-menu-panel > a:hover {
+  background: var(--color-bg-surface-sunken);
+  color: var(--color-text-primary);
+}
+
 /* THE LINK'S STRIP IS THE LINK'S. The code link floats over the card's top-right corner, so an example as wide as the stage
    (a scroll box, a table, anything `inline-size: 100%`) would run under it. Every fixed example in a card that has the link
    starts below the link's row instead of relying on each one being small or centred; the stage is already centred, so the
    cost is a little air above. */
-.sk-preview-section:not(.sk-usage-preview--controlled) .sk-preview-card:has(> .sk-preview-card__code-link) .sk-preview-card__stage {
+.sk-preview-section:not(.sk-usage-preview--controlled) .sk-preview-card:has(> :is(.sk-preview-card__code-link, .sk-preview-card__code-menu)) .sk-preview-card__stage {
   padding-block-start: calc(2rem + var(--space-stack-sm));
 }
 
 /* A canvas fills the stage edge to edge, so its zoom bar lands in the very corner the link sits in.
    Only then does the stage give the link its own row. */
-.sk-preview-section:not(.sk-usage-preview--controlled) .sk-preview-card:has(> .sk-preview-card__code-link) .sk-preview-card__stage:has(.sk-canvas) {
+.sk-preview-section:not(.sk-usage-preview--controlled) .sk-preview-card:has(> :is(.sk-preview-card__code-link, .sk-preview-card__code-menu)) .sk-preview-card__stage:has(.sk-canvas) {
   padding-block-start: calc(2rem + var(--space-inset-md));
 }
 
-.sk-preview-card .sk-preview-card__code-link:hover {
+.sk-preview-card .sk-preview-card__code-link:hover,
+.sk-preview-card .sk-preview-card__code-menu[open] > .sk-preview-card__code-link {
   background: var(--color-bg-surface-sunken);
   color: var(--color-text-secondary);
 }
@@ -87,4 +152,36 @@
   color: var(--color-text-tertiary);
   font-size: var(--font-size-caption);
   text-align: center;
+}
+
+/*
+ * THE CARD'S OWN APPEARANCE MENU. Each card of a page whose component publishes appearances gets
+ * one (scripts/appearance.ts) and it retunes that card alone, remembering nothing. It sits in the
+ * corner beside the code link, and the rules above that reserve the link's strip reserve this too.
+ */
+.sk-preview-card > .docs-card-appearance {
+  position: absolute;
+  z-index: 1;
+  inset-block-start: var(--space-inset-md);
+  inset-inline-end: var(--space-inset-md);
+}
+
+.sk-preview-card:has(> :is(.sk-preview-card__code-link, .sk-preview-card__code-menu)) > .docs-card-appearance {
+  inset-inline-end: calc(var(--space-inset-md) + 2rem + var(--space-inline-xs));
+}
+
+.sk-usage-preview--controlled .sk-preview-card > .docs-card-appearance {
+  inset-block-start: calc(var(--space-inset-md) + (var(--size-control-lg) - var(--size-control-sm)) / 2);
+}
+
+.sk-usage-preview--controlled .sk-preview-card:has(> .docs-card-appearance) :is(.sk-property-playground__control, .sk-property-playground__control-slot) {
+  max-inline-size: calc(100% - 4.5rem - var(--space-inline-md));
+}
+
+.sk-preview-section:not(.sk-usage-preview--controlled) .sk-preview-card:has(> .docs-card-appearance) .sk-preview-card__stage {
+  padding-block-start: calc(2rem + var(--space-stack-sm));
+}
+
+.sk-preview-section--overlay-stage .sk-preview-card:has(> .docs-card-appearance) {
+  padding-block-start: calc(var(--space-inset-md) + 2rem + var(--space-stack-sm));
 }

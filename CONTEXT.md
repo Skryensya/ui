@@ -78,6 +78,12 @@ The sidebar, collapsed: narrowed to one control wide, showing icons. It is not a
 nothing is removed, so a rail is never a disclosure.
 _Avoid_: mini sidebar, icon sidebar, collapsed drawer
 
+## Actions
+
+**Dock**:
+A component. A compact launcher of frequent application actions, identified by icons and accessible names. Not a site's list of destinations or an editor toolbar.
+_Avoid_: app menu, navigation dock, taskbar
+
 ## Ordered sequences
 
 **Procedure**:
@@ -111,6 +117,17 @@ A layout pattern. A clipped box that holds authored media (`img`, `video`, `pict
 CSS vocabulary (`16/9`, `cover`, `top`), never by use (`hero`, `thumbnail`). Distinct from Avatar,
 which is a fixed circular identity token, not a general media frame.
 _Avoid_: image component, media box, thumbnail
+
+**Video player**:
+A component. Controls drawn over a real `<video>` with the system's own buttons, a seek bar and a keyboard scoped to
+the player. The element keeps playback, time, buffering, volume, tracks and fullscreen; the player only reads and
+calls it. Not a Lightbox, which views a photo, and not a wrapper for someone else's embedded player.
+_Avoid_: media player, video component, custom controls
+
+**Seek bar**:
+The slider that carries the time of a video: a played fill, a buffered fill, a thumb that appears under the pointer or
+the keys, and the time in words as its value. Not a Slider, which has one fill.
+_Avoid_: scrubber, progress bar (a Progress is a task's completion, never a position in media), timeline
 
 **Sticker**:
 A component. Authored artwork shown as a die-cut sticker: a material **edge** grown from the

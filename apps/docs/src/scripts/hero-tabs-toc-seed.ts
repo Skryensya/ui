@@ -41,7 +41,10 @@ export function buildHeroTabsToc(tocRoot: Element, panel: HTMLElement): void {
   if (!list) return;
   list.replaceChildren();
 
-  const headings = [...panel.querySelectorAll<HTMLElement>(":scope > h3, :scope > h4")];
+  const headings = [
+    ...panel.querySelectorAll<HTMLElement>(":scope > h3, :scope > h4"),
+    ...document.querySelectorAll<HTMLElement>(".docs-related-components > h2"),
+  ];
   if (headings.length < 1) {
     tocRoot.setAttribute("data-empty", "");
     tocRoot.setAttribute("data-ready", "");
@@ -51,7 +54,7 @@ export function buildHeroTabsToc(tocRoot: Element, panel: HTMLElement): void {
 
   for (const heading of headings) {
     const id = ensureId(heading);
-    const level = heading.tagName === "H3" ? FLAT_LEVEL : NESTED_LEVEL;
+    const level = heading.tagName === "H4" ? NESTED_LEVEL : FLAT_LEVEL;
 
     const item = document.createElement("li");
     item.className = "sk-toc__item";

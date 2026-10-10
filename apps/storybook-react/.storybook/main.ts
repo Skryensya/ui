@@ -9,7 +9,7 @@ import { sharedVite, staticDirs } from "@skryensya/storybook-kit/vite";
 const config: StorybookConfig = {
   framework: "@storybook/react-vite",
   addons: ["@storybook/addon-docs"],
-  stories: ["../src/**/*.stories.ts"],
+  stories: ["../src/**/*.stories.@(ts|tsx)"],
   staticDirs,
   core: { disableTelemetry: true },
   viteFinal: async (vite) => sharedVite(vite),

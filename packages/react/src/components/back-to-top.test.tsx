@@ -56,6 +56,8 @@ describe("BackToTop", () => {
     expect(button.getAttribute("type")).toBe("button");
     expect(button.hasAttribute("hidden")).toBe(true);
     expect(button.classList.contains("sk-back-to-top")).toBe(true);
+    expect(button.classList.contains("sk-button")).toBe(true);
+    expect(button.getAttribute("data-variant")).toBe("soft");
     expect(button.classList.contains("sk-interactive")).toBe(true);
     // The label rides in its own part so the stylesheet can clip it to a name-only box.
     expect(button.querySelector(".sk-back-to-top__label")?.textContent).toBe("Volver arriba");

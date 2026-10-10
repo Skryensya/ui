@@ -1,0 +1,52 @@
+# What changed in compare, in the words its users read. Only appended to, never rewritten.
+#
+# `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
+# does not match, something a consumer depends on has moved: write the entry and paste in the new
+# hash.
+surface: "81d981524e4b8573"
+entries:
+  - date: 2026-10-08
+    kind: feature
+    es:
+      title: Primera publicación del contrato
+      body: >-
+        Dos capas del mismo tamaño y un divisor que se arrastra para revelar una sobre la otra: antes y después, viejo y
+        nuevo. El divisor es la misma barra de Resizable (sus teclas, su signo en páginas de derecha a izquierda, su
+        thumb de seis puntos), con un solo valor: cuánto de la caja muestra la capa de antes. El thumb está siempre a la
+        vista. Una capa es una caja, no una imagen: puede ir cualquier cosa. El divisor es un <code>slider</code> con
+        nombre, valor y eje; una pulsación en cualquier parte de la caja lo mueve ahí. <code>direction</code> elige si
+        las capas van lado a lado o apiladas y <code>position</code> dónde empieza.
+    en:
+      title: First published contract
+      body: >-
+        Two layers of the same size and a divider you drag to reveal one over the other: before and after, old and new.
+        The divider is the same bar Resizable uses (its keys, its right-to-left sign, its six-dot thumb), carrying one
+        value: how much of the box the before layer shows. The thumb is always on screen. A layer is a box, not an
+        image: anything can go in it. The divider is a named <code>slider</code> with a value and an axis; a press
+        anywhere on the box moves it there. <code>direction</code> chooses side by side or stacked and
+        <code>position</code> where it starts.
+  - date: 2026-10-10
+    kind: chore
+    es:
+      title: El gancho de posición deja de declararse como de salida
+      body: >-
+        <code>--sk-compare-slider-position</code> ya no figura en <code>outputHooks</code>: es un gancho como los demás,
+        que el binding escribe en la raíz mientras se arrastra. La página lo lista ahora entre los ganchos, con esa
+        nota. No cambia el marcado ni el comportamiento.
+    en:
+      title: The position hook is no longer declared as an output
+      body: >-
+        <code>--sk-compare-slider-position</code> is no longer in <code>outputHooks</code>: it is a hook like the others,
+        which the binding writes on the root while dragging. The page now lists it among the hooks, with that note. The
+        markup and the behaviour do not change.
+  - date: 2026-10-10
+    kind: breaking
+    es:
+      title: Arrastrar ya no relaya la página ni restila las dos capas
+      body: >-
+        Al arrastrar, el divisor hacía unos 57 layouts por segundo y restilaba las dos capas y todo lo que llevan: cada movimiento leía la caja de la raíz y su dirección, escribía una variable en la raíz y movía el divisor con <code>inset</code>. Ahora el recorte se escribe directo en la capa de después, el divisor se mueve con <code>translate</code> desde un tamaño que se mantiene al día, y la caja y la dirección se leen una vez al empezar a arrastrar: unos 76 ms de tarea por segundo en lugar de 157, y ningún layout. <code>--sk-compare-slider-position</code> sigue siendo la posición <em>inicial</em> (lo que pinta un servidor), pero ya no se mueve: léela del <code>aria-valuenow</code> del divisor o del evento <code>sk:comparesliderchange</code>. En React, la posición dejó de ser estado: no hay un render por movimiento.
+    en:
+      title: Dragging no longer lays the page out or restyles both layers
+      body: >-
+        While dragging, the divider caused about 57 layouts a second and restyled both layers and everything inside them: every move read the root's box and direction, wrote a custom property on the root and moved the divider with <code>inset</code>. The clip is now written straight on the after layer, the divider moves with <code>translate</code> from a size kept up to date, and the box and direction are read once when a drag begins: about 76 ms of task time per second instead of 157, and no layout. <code>--sk-compare-slider-position</code> is still the <em>initial</em> position (what a server renders), but it no longer moves: read it from the divider's <code>aria-valuenow</code> or the <code>sk:comparesliderchange</code> event. In React the position is no longer state: there is no render per move.
+

@@ -8,6 +8,10 @@ Table:
   avoidWhen:
     - "it is a list of things with no columns; that is a List"
     - "it is used for layout; a table announces relationships the layout does not have"
+  alternatives:
+    - DataGrid
+    - List
+    - DescriptionList
 
 TableCaption:
   useWhen:

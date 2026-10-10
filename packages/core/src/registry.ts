@@ -9,6 +9,9 @@ import { statContract } from "./stat.js";
 import { calloutContract } from "./callout.js";
 import { procedureContract } from "./procedure.js";
 import { changelogContract } from "./changelog.js";
+import { compareSliderContract } from "./compare-slider.js";
+import { videoPlayerContract } from "./video-player.js";
+import { audioPlayerContract } from "./audio-player.js";
 import { comparisonTableContract } from "./comparison-table.js";
 import { descriptionListContract } from "./description-list.js";
 import { quoteContract } from "./quote.js";
@@ -28,6 +31,7 @@ import { timeFieldContract } from "./time-field.js";
 import { fileUploadContract } from "./file-upload.js";
 import { carouselContract } from "./carousel.js";
 import { fadeEdgeContract } from "./fade-edge.js";
+import { scrollHintContract } from "./scroll-hint.js";
 import { presenceContract } from "./presence.js";
 import { passwordInputContract } from "./password-input.js";
 import { qrCodeContract } from "./qr-code.js";
@@ -51,6 +55,7 @@ import { contentContract } from "./content.js";
 import { numberFieldContract } from "./number-field.js";
 import { navbarContract } from "./navbar.js";
 import { toolbarContract } from "./toolbar.js";
+import { dockContract } from "./dock.js";
 import { editorContract } from "./editor.js";
 import { tooltipContract } from "./tooltip.js";
 import { selectContract } from "./select.js";
@@ -71,6 +76,7 @@ import { calendarContract } from "./calendar.js";
 import { datePickerContract } from "./date-picker.js";
 import { colorPickerContract } from "./color-picker.js";
 import { dialogContract } from "./dialog.js";
+import { dialogStackContract } from "./dialog-stack.js";
 import { splitButtonContract } from "./split-button.js";
 import { popoverContract } from "./popover.js";
 import { windowContract } from "./window.js";
@@ -92,6 +98,7 @@ import { checkboxContract, radioGroupContract, switchContract } from "./selectio
 import { formFieldContract } from "./form-field.js";
 import { iconContract } from "./icon.js";
 import { inputContract } from "./input.js";
+import { imageCropperContract } from "./image-cropper.js";
 import { imageFrameContract } from "./image-frame.js";
 import { stickerContract } from "./sticker.js";
 import { navListContract } from "./nav-list.js";
@@ -149,9 +156,11 @@ export const contracts = fromContracts(
   folderContract,
   footerContract,
   iconContract,
+  imageCropperContract,
   imageFrameContract,
   stickerContract,
   fadeEdgeContract,
+  scrollHintContract,
   presenceContract,
   passwordInputContract,
   qrCodeContract,
@@ -182,6 +191,9 @@ export const contracts = fromContracts(
   placeholderContract,
   procedureContract,
   changelogContract,
+  compareSliderContract,
+  videoPlayerContract,
+  audioPlayerContract,
   comparisonTableContract,
   descriptionListContract,
   quoteContract,
@@ -189,6 +201,7 @@ export const contracts = fromContracts(
   resizableContract,
   scrollExpandContract,
   scrollStackContract,
+  dockContract,
   separatorContract,
   tagsInputContract,
   timelineContract,
@@ -223,6 +236,7 @@ export const contracts = fromContracts(
   datePickerContract,
   colorPickerContract,
   dialogContract,
+  dialogStackContract,
   splitButtonContract,
   popoverContract,
   windowContract,

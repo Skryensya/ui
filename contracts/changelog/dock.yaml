@@ -1,0 +1,74 @@
+surface: "9a5969541cafb127"
+entries:
+  - date: 2026-10-08
+    kind: feature
+    es:
+      title: Apps circulares en la cápsula
+      body: El gancho --sk-dock-item-radius permite redondear cada botón. La demo pill usa botones circulares.
+    en:
+      title: Circular apps in the pill
+      body: The --sk-dock-item-radius hook controls each button's corners. The pill demo uses circular buttons.
+  - date: 2026-10-08
+    kind: feature
+    es:
+      title: Dock de acciones
+      body: Grupo compacto de botones con iconos y nombres accesibles. La ampliación del icono no cambia el área de clic y se omite en táctil y con movimiento reducido. Vanilla usa HTML y CSS sin enhancer.
+    en:
+      title: Action dock
+      body: A compact group of icon buttons with accessible names. Icon magnification keeps hit areas stable and is omitted on touch and with reduced motion. Vanilla uses HTML and CSS without an enhancer.
+  - date: 2026-10-08
+    kind: feature
+    es:
+      title: Elevación y onda entre vecinos con CSS
+      body: El icono bajo el puntero sube y sus vecinos lo acompañan a media intensidad. Las transiciones suaves permiten cambiar de dirección y pulsar sin saltos. El nuevo gancho --sk-dock-lift ajusta la elevación. Las áreas de clic permanecen estables y el movimiento se omite en táctil y con movimiento reducido.
+    en:
+      title: CSS lift and neighboring wave
+      body: The hovered icon rises and its neighbors follow at half intensity. Smooth transitions retarget on direction changes and press without jumping. The new --sk-dock-lift hook adjusts elevation. Hit areas stay stable and motion is omitted on touch and with reduced motion.
+  - date: 2026-10-08
+    kind: feature
+    es:
+      title: Se eleva la pieza completa con su fondo
+      body: El fondo, la capa de estado y el icono se elevan juntos sin desplazar el área de clic. El tamaño aumenta un 16 % bajo el puntero y solo un 4 % en los vecinos; al pulsar se reduce un 2 %. El gancho --sk-dock-item-bg permite ajustar el fondo de cada pieza.
+    en:
+      title: Lift the whole piece with its background
+      body: The background, state layer and icon lift together without moving the hit area. Size increases by 16% under the pointer and just 4% for neighbors; pressing reduces it by 2%. The --sk-dock-item-bg hook customizes each piece's background.
+  - date: 2026-10-08
+    kind: feature
+    es:
+      title: Elevación con springs de Motion
+      body: React y Vanilla comparten elevación, ampliación y respuesta al pulsar mediante springs de Motion. El movimiento conserva velocidad al cambiar de dirección. Vanilla añade mountDock y el atributo data-sk-dock; sin enhancer mantiene la alternativa CSS. Movimiento reducido elimina las springs y conserva el feedback de color.
+    en:
+      title: Motion spring elevation
+      body: React and Vanilla share lift, magnification and press feedback through Motion springs. Motion carries velocity when retargeted. Vanilla adds mountDock and data-sk-dock; without enhancement it retains the CSS fallback. Reduced motion removes springs while retaining color feedback.
+  - date: 2026-10-08
+    kind: rework
+    es:
+      title: Elevación más expresiva
+      body: La elevación predeterminada aumenta a 1,5 veces la distancia media y la ampliación al 22 %. Los vecinos crecen solo un 5,5 %. Las springs incorporan un rebote suave (bounce 0,2) y una duración nominal de 0,5 segundos, conservando la velocidad al cambiar de dirección y respetando movimiento reducido.
+    en:
+      title: More expressive elevation
+      body: Default lift increases to 1.5 times the medium distance and magnification to 22%. Neighbors grow by just 5.5%. Springs gain a gentle bounce (0.2) with a nominal 0.5-second duration, retaining velocity when retargeted and respecting reduced motion.
+  - date: 2026-10-08
+    kind: rework
+    es:
+      title: La pieza activa se eleva por encima de sus vecinas
+      body: La pieza bajo el puntero ocupa la capa superior y la que vuelve a reposo conserva una capa intermedia hasta asentarse. La elevación utiliza la distancia grande, la ampliación aumenta al 30 % y el rebote a 0,3. Los vecinos crecen solo un 6 % y mantienen una elevación discreta.
+    en:
+      title: The active piece rises above its neighbors
+      body: The hovered piece occupies the upper layer while a returning piece retains an intermediate layer until settled. Lift uses the large distance, magnification increases to 30% and bounce to 0.3. Neighbors grow by just 6% with a restrained lift.
+  - date: 2026-10-08
+    kind: bugfix
+    es:
+      title: El área clicable acompaña a la pieza elevada
+      body: Se transforma el botón nativo completo, incluido su fondo, icono, foco y área clicable. La parte elevada responde a los clics y la zona abandonada deja de pertenecer al botón. Motion retargetea el hover con movimientos físicos del puntero para evitar oscilaciones cuando la pieza se desplaza bajo un puntero quieto.
+    en:
+      title: The hit area follows the raised piece
+      body: Transform the entire native button, including its background, icon, focus ring and hit area. The raised portion accepts clicks and the vacated region no longer belongs to the button. Motion retargets hover on physical pointer movement to avoid oscillation when a piece moves beneath a stationary pointer.
+  - date: 2026-10-08
+    kind: rework
+    es:
+      title: Dock más ligero y unificado
+      body: El contenedor adopta una superficie translúcida con borde fino y desenfoque progresivo. Los botones descansan sin fondo y revelan una superficie elevada al pasar el puntero, reduciendo el aspecto de una fila de tarjetas.
+    en:
+      title: A lighter, unified Dock
+      body: The container uses a translucent surface with a fine border and progressive blur. Buttons rest without a fill and reveal a raised surface on hover, avoiding the look of a row of separate cards.

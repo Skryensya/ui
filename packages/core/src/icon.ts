@@ -143,6 +143,25 @@ export const stableIconNames = [
    * are the shape of something that is not there yet. */
   "placeholder",
 
+  /* MEDIA, the roles a player's controls speak. Each names what the control DOES, never the drawing: `play`
+   * is "start the media" whether a set draws a triangle or a filled one, `volume-muted` is "the sound is off"
+   * whether it crosses a speaker or silences it with a slash. `fullscreen` is not `maximize`, which is the
+   * WINDOW's stage (a Window grows inside the page); this one takes the whole screen. `replay` is what the
+   * play button becomes when the media has ended, a role of its own because "start again" is not "refresh".
+   * `track-previous` and `track-next` move along a list of tracks (an audio player's playlist); they are not
+   * `chevron-left` and `chevron-right`, which name a direction on a page, nor `arrow-*`, and a set draws a bar
+   * beside a triangle, a double triangle or anything else that says "the track before/after this one". */
+  "play",
+  "pause",
+  "volume",
+  "volume-muted",
+  "captions",
+  "fullscreen",
+  "fullscreen-exit",
+  "replay",
+  "track-previous",
+  "track-next",
+
   // contenido y sistema
   "calendar",
   "clock",

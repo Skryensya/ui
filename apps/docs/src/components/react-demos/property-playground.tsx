@@ -12,6 +12,7 @@ import { SegmentedControl } from "@skryensya/react/segmented";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import { useRenderedTree } from "./use-rendered-tree";
 import { TreeDemo } from "./tree";
+import type { FramedOverrides } from "./framed";
 import { withOptionAt, type TreePath } from "./usage-tree-path";
 
 export interface PropertyPlaygroundProps {
@@ -46,10 +47,12 @@ export interface PropertyPlaygroundProps {
    * For an example that only reads at a width the docs column never has (a layout with a rail). `note` is the
    * sentence that says so, with `{width}` and `{scale}` standing for the screen's width and how far it is shrunk.
    */
-  frame?: { screen: "xl"; width: number; flush?: boolean; css?: string; note: string };
+  frame?: { screen?: "xl"; width?: number; flush?: boolean; css?: string; note?: string; viewport?: "auto" | "menu" | "overlay" | "menu-deep"; minHeight?: string };
+  /** Keep modal top layers inside the specimen's document, outside the control row. */
+  isolatedFrame?: FramedOverrides;
 }
 
-export function PropertyPlayground({ tree, optionName, trees, toggleLabel, target = [], values, boolean, onValue, defaultValue, labels, controlLabel, explain, remountOnChange = true, frame }: PropertyPlaygroundProps) {
+export function PropertyPlayground({ tree, optionName, trees, toggleLabel, target = [], values, boolean, onValue, defaultValue, labels, controlLabel, explain, remountOnChange = true, frame, isolatedFrame }: PropertyPlaygroundProps) {
   const [value, setValue] = useState(defaultValue);
   const [present, setPresent] = useState(true);
   const render = useRenderedTree(trees ? Object.values(trees) : tree);
@@ -74,19 +77,20 @@ export function PropertyPlayground({ tree, optionName, trees, toggleLabel, targe
   /* A frame that arrives after the page's own stage pass (every variant but the first) is not found by it, so it is started here:
      the doc the frame was built with becomes its `srcdoc`, and the frame's own runtime sizes it. */
   useEffect(() => {
-    if (!frame) return;
+    if (!frame && !isolatedFrame) return;
     for (const stage of stageRef.current?.querySelectorAll<HTMLIFrameElement>("iframe[data-sk-component-preview-doc]") ?? []) {
       if (!stage.srcdoc) stage.srcdoc = stage.getAttribute("data-sk-component-preview-doc") ?? "";
     }
-  }, [frame, value, hydrated]);
+  }, [frame, isolatedFrame, value, hydrated]);
   /* How far the screen is shrunk to fit this card: the same ratio the preview shell applies as `zoom` (`syncXlZoom`). */
   const stageRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
   useEffect(() => {
     const shell = stageRef.current?.closest<HTMLElement>("[data-sk-component-preview]");
-    if (!frame || !shell) return;
+    if (!frame?.width || !shell) return;
+    const width = frame.width;
     const measure = () => {
-      const next = Math.min(1, shell.clientWidth / frame.width);
+      const next = Math.min(1, shell.clientWidth / width);
       /* The shell's own enhancer sizes this for cards it finds at load; this one hydrates later, so it says so itself. */
       shell.style.setProperty("--sk-component-preview-xl-zoom", String(next));
       setScale(next);
@@ -122,14 +126,18 @@ export function PropertyPlayground({ tree, optionName, trees, toggleLabel, targe
             {toggleLabel}
           </Button>
         )}
-        {frame ? (
+        {isolatedFrame ? (
+          hydrated && <div className="sk-component-preview" data-sk-component-preview="" data-sk-component-preview-chrome="false" data-sk-component-preview-surface="none" style={{ width: "100%" }}>
+            <TreeDemo key={value} tree={liveTree} frameOptions={isolatedFrame} />
+          </div>
+        ) : frame ? (
           /* The shell around the card (`UsagePreview`) is what the enhancer zooms; this is the fixed screen inside it. */
-          hydrated && <TreeDemo key={value} tree={liveTree} frameOptions={{ screen: frame.screen, flush: frame.flush, css: frame.css }} />
+          hydrated && <TreeDemo key={value} tree={liveTree} frameOptions={{ screen: frame.screen, flush: frame.flush, css: frame.css, viewport: frame.viewport, minHeight: frame.minHeight }} />
         ) : render ? (
           render(liveTree)
         ) : null}
       </div>
-      {frame && (
+      {frame?.note && frame.width && (
         <p className="sk-property-playground__scale-note">
           {frame.note.replace("{width}", String(frame.width)).replace("{scale}", String(Math.round(scale * 100)))}
         </p>

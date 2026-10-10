@@ -12,10 +12,10 @@ export const appearanceMessages = {
 
     "appearancePage.specimenTitle": "El mismo ejemplo, cuatro expresiones",
     "appearancePage.specimenBody":
-      "Un botón, una tarjeta, una elección y un grupo de secciones. Cambia la apariencia con el selector: cada pieza la aplica a su manera, pero es la misma decisión.",
+      "Un botón, una tarjeta, una elección y un grupo de secciones. Cambia la apariencia desde el menú del ejemplo: cada pieza la aplica a su manera, pero es la misma decisión.",
     "appearancePage.specimenLabel": "Button, Tile y Accordion con la apariencia de la página",
     "appearancePage.backdropBody":
-      "<code>frosted</code> difumina lo que hay detrás, así que necesita algo detrás. Este es el mismo ejemplo sobre un degradado hecho con tokens; también sigue el selector.",
+      "<code>frosted</code> difumina lo que hay detrás, así que necesita algo detrás. Este es el mismo ejemplo sobre un degradado hecho con tokens, con su propio menú.",
     "appearancePage.backdropLabel": "El mismo ejemplo sobre un fondo",
 
     "appearancePage.valuesTitle": "Los cuatro valores",
@@ -91,10 +91,10 @@ export const appearanceMessages = {
 
     "appearancePage.specimenTitle": "One example, four expressions",
     "appearancePage.specimenBody":
-      "A button, a card, a choice and a group of sections. Change the appearance with the switch: each piece applies it in its own way, but it is the same decision.",
+      "A button, a card, a choice and a group of sections. Change the appearance from the example's menu: each piece applies it in its own way, but it is the same decision.",
     "appearancePage.specimenLabel": "Button, Tile and Accordion in the page's appearance",
     "appearancePage.backdropBody":
-      "<code>frosted</code> blurs what is behind it, so it needs something behind it. This is the same example on a gradient built from tokens; it follows the switch too.",
+      "<code>frosted</code> blurs what is behind it, so it needs something behind it. This is the same example on a gradient built from tokens, with its own menu.",
     "appearancePage.backdropLabel": "The same example over a backdrop",
 
     "appearancePage.valuesTitle": "The four values",

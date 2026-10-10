@@ -168,42 +168,10 @@
   /*
    * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
    *
-   * The axis Button, Tile, Box and Avatar publish, on the frame (button.css documents each
-   * construction in full). It sits on the CONTENT, the element that paints, because React portals the
-   * positioner to the body and an attribute on the root would never reach it. A window is dragged,
-   * never pressed, so none of the three moves. The title-bar controls stay plain ghost buttons: icon
-   * controls read the same in every frame. Radius, padding and the stack order are untouched.
+   * Plain, brutalist and frosted live on the CONTENT, the element that paints, because React
+   * portals the positioner away from its root. No tactile slab: a window is dragged, not pressed.
+   * The title-bar controls stay plain ghost buttons. Radius, padding and stack order are untouched.
    */
-
-  /* TACTILE: a solid slab. A ledge under the frame, in a darker step of its own surface, and Button's
-   * lit-top face gradient over the frame and the title bar. The modal shadow stays beneath the ledge. */
-  .sk-window__content[data-appearance="tactile"] {
-    --sk-window-depth: 6px;
-    --sk-window-wash: linear-gradient(
-      to bottom,
-      light-dark(color-mix(in oklab, white 10%, transparent), color-mix(in oklab, white 5%, transparent)),
-      transparent 40%
-    );
-    --tactile-ledge: light-dark(
-      color-mix(in oklab, var(--sk-window-bg) 76%, var(--color-text-primary)),
-      color-mix(in oklab, var(--sk-window-bg) 72%, var(--color-bg-surface-sunken))
-    );
-    box-shadow: 0 var(--sk-window-depth) 0 var(--tactile-ledge), var(--sk-window-shadow);
-  }
-
-  .sk-window__content[data-appearance="tactile"][data-behind] {
-    box-shadow: 0 calc(var(--sk-window-depth) * 0.6) 0 var(--tactile-ledge), var(--sk-window-shadow-behind);
-  }
-
-  .sk-window__content[data-appearance="tactile"] .sk-window__header {
-    background:
-      linear-gradient(
-        to bottom,
-        light-dark(color-mix(in oklab, white 12%, transparent), color-mix(in oklab, white 6%, transparent)),
-        light-dark(color-mix(in oklab, black 4%, transparent), color-mix(in oklab, black 8%, transparent))
-      ),
-      var(--sk-window-header-bg);
-  }
 
   /* BRUTALIST: the black edge, a black rule under the title bar, and a hard zero-blur offset toward
    * block-end and inline-end (mirrored in RTL). It replaces the soft modal shadow, and it is what says
@@ -235,32 +203,44 @@
     --brutalist-reach: 0;
   }
 
-  /* FROSTED: Button's material on the frame. The baseline is the plain overlay, opaque, plus a fine
-   * edge and a lit top rim; only where backdrop-filter exists and no reduced-transparency preference
-   * is set do the frame and its title bar become see-through sheets over a blurred backdrop. The
-   * modal shadow stays: a window still floats above the page, it is only made of glass. */
+  /* One continuous sheet of glass, not two translucent panels stacked at the title bar. A soft
+   * top wash and inner rim catch the light; the existing shadow still places it above the page.
+   * Every material-only detail reads the shared switch so an opaque fallback stays genuinely plain. */
   .sk-window__content[data-appearance="frosted"] {
     --sk-window-wash: none;
-    --sk-window-border-color: color-mix(in oklab, currentColor 18%, transparent);
-    box-shadow: inset 0 1px 0 var(--frost-highlight), var(--sk-window-shadow);
+    --frost-edge: var(--frost-on) color-mix(in oklab, currentColor 16%, transparent);
+    --sk-window-border-color: var(--frost-edge, var(--color-border-subtle));
+    --frost-glass: var(--frost-on) light-dark(
+      color-mix(in oklab, var(--sk-window-bg) 68%, transparent),
+      color-mix(in oklab, var(--sk-window-bg) 76%, transparent)
+    );
+    --frost-sheen: var(--frost-on) linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--frost-highlight) 24%, transparent),
+      transparent 45%
+    );
+    --frost-rim: var(--frost-on) inset 0 1px 0 var(--frost-highlight),
+      inset 0 0 0 1px color-mix(in oklab, var(--frost-highlight) 32%, transparent);
+    background: var(--frost-sheen, none) var(--frost-glass, var(--sk-window-bg));
+    box-shadow: var(--frost-rim, 0 0 0 transparent), var(--sk-window-shadow);
+    -webkit-backdrop-filter: var(--frost-on) blur(24px) saturate(140%);
+    backdrop-filter: var(--frost-on) blur(24px) saturate(140%);
   }
 
   .sk-window__content[data-appearance="frosted"][data-behind] {
-    box-shadow: inset 0 1px 0 var(--frost-highlight), var(--sk-window-shadow-behind);
+    box-shadow: var(--frost-rim, 0 0 0 transparent), var(--sk-window-shadow-behind);
   }
 
-  /* The material, behind the system switch (semantic/_frost.scss); off, the opaque overlay. */
-  .sk-window__content[data-appearance="frosted"] {
-    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-window-bg) 78%, transparent);
-    background: var(--frost-glass, var(--sk-window-bg));
-    -webkit-backdrop-filter: var(--frost-on) blur(24px) saturate(160%);
-    backdrop-filter: var(--frost-on) blur(24px) saturate(160%);
-  }
-
-  /* The title bar is the same sheet, a shade denser, not an opaque strip across the glass. */
+  /* A quiet tint separates the drag region without hiding the glass behind it. No second blur. */
   .sk-window__content[data-appearance="frosted"] .sk-window__header {
-    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-window-header-bg) 40%, transparent);
-    background: var(--frost-glass, var(--sk-window-header-bg));
+    --frost-header: var(--frost-on) color-mix(in oklab, var(--color-text-primary) 4%, transparent);
+    --frost-divider: var(--frost-on) color-mix(in oklab, currentColor 8%, transparent);
+    background: var(--frost-header, var(--sk-window-header-bg));
+    border-block-end-color: var(--frost-divider, var(--sk-window-header-border-color));
+  }
+
+  .sk-window__content[data-appearance="frosted"][data-minimized] .sk-window__header {
+    border-block-end-color: transparent;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -281,7 +261,7 @@
       background: Canvas;
     }
 
-    /* Every appearance falls back to the system frame: no ledge, no offset, no glass. */
+    /* Every appearance falls back to the system frame: no offset, no glass. */
     .sk-window__content[data-appearance] {
       background: Canvas;
       -webkit-backdrop-filter: none;

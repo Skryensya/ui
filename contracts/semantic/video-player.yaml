@@ -1,0 +1,16 @@
+# The structure lives in packages/core/src/video-player.ts. Here, only why it is chosen.
+
+VideoPlayer:
+  useWhen:
+    - "a video has to be played inside the page and its controls should look like the rest of the interface (same buttons, same focus ring, same dark chrome) instead of the browser's own bar"
+    - "the reader should be able to run it from the keyboard alone: play, seek, volume, speed, captions and fullscreen all have a key, scoped to the player and never to the page"
+    - "the video is a file you host or link (an mp4 or webm with an optional poster and caption tracks); the player draws over a real video element and leaves the sources and tracks to you"
+  avoidWhen:
+    - "the video lives on someone else's player (YouTube, Vimeo): that is an iframe with its own controls, and drawing a second bar over it controls nothing; embed it in an ImageFrame-sized box instead"
+    - "the media is a short looping clip with no sound, a decoration; a bare video with autoplay, muted and loop needs no controls at all"
+    - "it is audio only; the seek bar, the volume and the keys fit, but the stage, the poster and fullscreen do not, and a lighter control strip is the right shape"
+    - "a photo or a document is being viewed; that is Lightbox"
+  alternatives:
+    - Lightbox
+    - ImageFrame
+    - Carousel

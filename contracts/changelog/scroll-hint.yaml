@@ -1,0 +1,10 @@
+surface: "be00e5839cba595c"
+entries:
+  - date: 2026-10-08
+    kind: feature
+    es:
+      title: Pista de scroll que desaparece al usarla
+      body: ScrollHint indica scroll horizontal o vertical con tres movimientos sutiles de una flecha. Solo aparece si el contenido desborda y desaparece tras el primer desplazamiento real en ese eje. Respeta movimiento reducido.
+    en:
+      title: A scroll hint that disappears once used
+      body: ScrollHint signals horizontal or vertical scrolling with three subtle arrow nudges. It only appears for overflowing content and disappears after the first actual scroll in that axis. Reduced motion keeps a static cue.

@@ -1,0 +1,142 @@
+@property --dock-resolved-lift {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+@layer components {
+  .sk-dock {
+    --sk-dock-bg: color-mix(in oklab, var(--color-bg-surface) 84%, transparent);
+    --sk-dock-border-color: color-mix(in oklab, currentColor 12%, transparent);
+    --sk-dock-fg: var(--color-text-primary);
+    --sk-dock-gap: var(--space-inline-xs);
+    --sk-dock-padding: var(--space-inset-xs);
+    --sk-dock-radius: var(--radius-surface);
+    --sk-dock-item-radius: var(--radius-control);
+    --sk-dock-shadow: var(--elevation-overlay);
+    --sk-dock-size: max(var(--size-control-lg), var(--size-touch-target));
+    --sk-dock-item-bg: var(--color-bg-surface);
+    --sk-dock-magnification: 1.3;
+    --sk-dock-lift: var(--motion-distance-lg);
+    --dock-resolved-lift: var(--sk-dock-lift);
+
+    isolation: isolate;
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sk-dock-gap);
+    max-inline-size: 100%;
+    box-sizing: border-box;
+    padding: var(--sk-dock-padding);
+    border: 1px solid var(--sk-dock-border-color);
+    border-radius: var(--sk-dock-radius);
+    background:
+      linear-gradient(to bottom, color-mix(in oklab, var(--color-bg-surface) 30%, transparent), transparent 60%),
+      var(--sk-dock-bg);
+    -webkit-backdrop-filter: blur(16px) saturate(145%);
+    backdrop-filter: blur(16px) saturate(145%);
+    color: var(--sk-dock-fg);
+    box-shadow: var(--sk-dock-shadow);
+  }
+
+  .sk-dock__item {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    place-items: center;
+    flex: none;
+    inline-size: var(--sk-dock-size);
+    block-size: var(--sk-dock-size);
+    box-sizing: border-box;
+    padding: 0;
+    border: 0;
+    border-radius: var(--sk-dock-item-radius);
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    transform-origin: center;
+    transition:
+      transform var(--motion-reveal-duration) var(--motion-reveal-easing),
+      background-color var(--motion-feedback-duration) var(--motion-feedback-easing),
+      color var(--motion-feedback-duration) var(--motion-feedback-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  .sk-dock__item[data-dock-raised] { z-index: 1; }
+  .sk-dock__item[data-dock-hovered] {
+    z-index: 2;
+    background: var(--sk-dock-item-bg);
+    color: var(--color-text-primary);
+    box-shadow: var(--elevation-raised);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sk-dock:not([data-dock-motion]) > .sk-dock__item:not(:disabled):hover {
+      z-index: 2;
+      background: var(--sk-dock-item-bg);
+      color: var(--color-text-primary);
+      box-shadow: var(--elevation-raised);
+    }
+  }
+
+  .sk-dock__item:disabled {
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  .sk-dock__icon {
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+  }
+
+  /* Progressive fallback. Motion enhances the same native control, not a second
+   * painted layer: its transformed box is also its pointer and focus geometry. */
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .sk-dock:not([data-dock-motion]) {
+      > .sk-dock__item:not(:disabled):has(+ .sk-dock__item:not(:disabled):hover),
+      > .sk-dock__item:not(:disabled):hover + .sk-dock__item:not(:disabled) {
+        transform: translateY(calc(var(--sk-dock-lift) * -0.375))
+          scale(calc(1 + (var(--sk-dock-magnification) - 1) * 0.2));
+      }
+
+      > .sk-dock__item:not(:disabled):hover {
+        transform: translateY(calc(var(--sk-dock-lift) * -1)) scale(var(--sk-dock-magnification));
+      }
+
+      > .sk-dock__item:not(:disabled):hover:active {
+        transform: translateY(calc(var(--sk-dock-lift) * -0.5))
+          scale(calc(var(--sk-dock-magnification) * var(--motion-press-scale)));
+        transition-duration: var(--motion-feedback-duration);
+      }
+    }
+  }
+
+  .sk-dock[data-dock-motion] > .sk-dock__item {
+    transition:
+      background-color var(--motion-feedback-duration) var(--motion-feedback-easing),
+      color var(--motion-feedback-duration) var(--motion-feedback-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .sk-dock {
+      background: var(--color-bg-surface);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sk-dock__item { transition: none; }
+  }
+
+  @media (forced-colors: active) {
+    .sk-dock { border-color: CanvasText; box-shadow: none; background: Canvas; -webkit-backdrop-filter: none; backdrop-filter: none; }
+    .sk-dock__item,
+    .sk-dock__item[data-dock-hovered] { background: ButtonFace; border: 1px solid ButtonText; box-shadow: none; }
+    .sk-dock__item:disabled { color: GrayText; }
+  }
+}

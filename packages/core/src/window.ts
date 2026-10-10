@@ -191,7 +191,6 @@ export const windowContract = {
     "--sk-window-brutalist-offset-block",
     "--sk-window-brutalist-offset-inline",
     "--sk-window-brutalist-shadow",
-    "--sk-window-depth",
     "--sk-window-fg",
     "--sk-window-handle-size",
     "--sk-window-header-bg",
@@ -258,18 +257,19 @@ export const windowContract = {
     /** Opening height in CSS pixels. */
     defaultHeight: { type: "number", min: 1, attr: "data-default-height", machineInput: true },
     /** The narrowest a resize can make it, in CSS pixels. */
-    minWidth: { type: "number", min: 1, attr: "data-min-width", machineInput: true },
+    minWidth: { type: "number", min: 240, default: 240, attr: "data-min-width", machineInput: true },
     /** The shortest a resize can make it, in CSS pixels. */
-    minHeight: { type: "number", min: 1, attr: "data-min-height", machineInput: true },
+    minHeight: { type: "number", min: 120, default: 120, attr: "data-min-height", machineInput: true },
+    boundary: { type: "string", attr: "data-boundary", machineInput: true },
     /*
-     * HOW THE FRAME IS DRAWN, the axis Button, Tile, Box and Avatar publish: `tactile` a solid slab
-     * with a ledge, `brutalist` a black edge and hard offset, `frosted` a see-through sheet (opaque
-     * wherever the material cannot be trusted). Written on the CONTENT, the element that paints,
+     * HOW THE FRAME IS DRAWN: `plain`, `brutalist` a black edge and hard offset, `frosted` a
+     * continuous glass sheet (opaque wherever the material cannot be trusted). No tactile slab:
+     * a window is dragged, not pressed. Written on the CONTENT, the element that paints,
      * because React portals the positioner away from the root.
      */
     appearance: {
       type: "enum",
-      values: ["plain", "tactile", "brutalist", "frosted"],
+      values: ["plain", "brutalist", "frosted"],
       default: "plain",
       attr: "data-appearance",
     },
@@ -306,6 +306,7 @@ export const windowContract = {
         "defaultHeight",
         "minWidth",
         "minHeight",
+        "boundary",
         "closeLabel",
         "minimizeLabel",
         "maximizeLabel",

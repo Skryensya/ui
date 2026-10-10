@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "594d5184e745718f"
+surface: "5610b5cfc24a2362"
 entries:
   - date: 2026-09-26
     kind: feature
@@ -256,3 +256,13 @@ entries:
       title: Both halves share variant, tone and size
       body: >-
         The action and the menu trigger must agree on <code>variant</code>, <code>tone</code> and <code>size</code> (<code>pairs</code> rule); otherwise the welded halves stop reading as one control.
+  - date: 2026-10-09
+    kind: feature
+    es:
+      title: Una variante vertical para dos acciones que son un par
+      body: >-
+        Nueva firma <code>SplitButtonVertical</code>: dos botones de icono soldados uno sobre otro, sin menú, para un par como acercar y alejar. Las dos mitades siguen compartiendo variante, tono y tamaño.
+    en:
+      title: A vertical variant for two actions that are a pair
+      body: >-
+        New signature <code>SplitButtonVertical</code>: two icon buttons welded one above the other, with no menu, for a pair like zoom in and out. The two halves still share variant, tone and size.

@@ -1,0 +1,232 @@
+---
+import "@skryensya/core/components/video-player.css";
+/* The keys in the table, and the specimen that names the parts: a preview frame only copies styles THIS page loaded. */
+import "@skryensya/core/components/kbd.css";
+import "@skryensya/core/components/annotation.css";
+import "@skryensya/core/components/canvas.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import CodeBlock from "../CodeBlock.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import ComparisonTable from "../ComparisonTable.astro";
+import DoDont from "../DoDont.astro";
+import UsagePreview from "../UsagePreview.astro";
+import { videoPlayerParts } from "@skryensya/core/video-player";
+import {
+  videoPlayerAnatomyCss,
+  videoPlayerAnatomyTree,
+  videoPlayerDoPosterTree,
+  videoPlayerDontPosterTree,
+  videoPlayerDoRoomTree,
+  videoPlayerDontRoomTree,
+  videoPlayerStudyTree,
+  videoPlayerTree,
+} from "../../demos/video-player";
+import { getLocale, tList, useTranslations } from "../../i18n";
+
+const t = useTranslations(getLocale(Astro.url));
+
+const examples = [
+  { key: "default", story: "Default", tree: videoPlayerTree },
+  { key: "study", story: "Study", tree: videoPlayerStudyTree },
+] as const;
+
+const [, doesColumn] = t("videoPlayerPage.hooksColumns").split("|");
+const hooks = [
+  ["aspect", "16 / 9", "aspect"],
+  ["bg", "var(--color-bg-canvas)", "bg"],
+  ["fg", "var(--color-text-on-media)", "fg"],
+  ["radius", "var(--radius-surface)", "radius"],
+  ["gutter", "var(--space-inset-sm)", "gutter"],
+  ["scrim", "color-mix(in oklch, var(--color-bg-canvas) 82%, transparent)", "scrim"],
+  ["track-color", "color-mix(in oklch, var(--sk-video-player-fg) 28%, transparent)", "trackColor"],
+  ["buffered-color", "color-mix(in oklch, var(--sk-video-player-fg) 42%, transparent)", "bufferedColor"],
+  ["played-color", "var(--color-action-accent)", "playedColor"],
+  ["track-size", "0.1875rem", "trackSize"],
+  ["thumb-size", "0.875rem", "thumbSize"],
+  ["volume-width", "6rem", "volumeWidth"],
+  ["captions-bg", "color-mix(in oklch, var(--color-bg-canvas) 72%, transparent)", "captionsBg"],
+  ["captions-offset", "5rem", "captionsOffset"],
+  ["captions-underline-size", "var(--size-icon-md)", "captionsUnderlineSize"],
+  ["captions-underline-thickness", "0.1875rem", "captionsUnderlineThickness"],
+  ["captions-underline-offset", "var(--space-inset-xs)", "captionsUnderlineOffset"],
+  ["volume-pad", "var(--space-inset-sm)", "volumePad"],
+  ["fade-duration", "var(--motion-state-change-duration)", "fadeDuration"],
+] as const;
+const hookNotes = Object.fromEntries(
+  hooks.map(([name, , key]) => [`--sk-video-player-${name}`, t(`videoPlayerPage.hook.${key}` as Parameters<typeof t>[0])]),
+);
+
+const partOrder = ["root", "stage", "captions", "loader", "big", "controls", "seek", "bar", "control", "volume", "time"] as const;
+const partRows = partOrder.map((part) => ({
+  label: videoPlayerParts[part],
+  labelHtml: `<code>${videoPlayerParts[part]}</code>`,
+  cells: [t(`videoPlayerPage.part.${part}` as Parameters<typeof t>[0])],
+}));
+
+const kbd = (...keys: string[]) => keys.map((key) => `<kbd class="sk-kbd">${key}</kbd>`).join(" ");
+const keyRows = [
+  { keys: kbd("K"), key: "toggle" },
+  { keys: `${kbd("J")} ${kbd("L")}`, key: "seek" },
+  { keys: kbd("0") + " … " + kbd("9"), key: "digits" },
+  { keys: `${kbd("Home")} ${kbd("End")}`, key: "edges" },
+  { keys: `${kbd("↑")} ${kbd("↓")}`, key: "volume" },
+  { keys: kbd("M"), key: "mute" },
+  { keys: kbd("C"), key: "captions" },
+  { keys: `${kbd("&lt;")} ${kbd("&gt;")}`, key: "speed" },
+  { keys: `${kbd(",")} ${kbd(".")}`, key: "frame" },
+  { keys: kbd("F"), key: "fullscreen" },
+].map(({ keys, key }) => ({
+  label: key,
+  labelHtml: keys,
+  cells: [t(`videoPlayerPage.key.${key}` as Parameters<typeof t>[0])],
+}));
+
+const install = `pnpm add @skryensya/core
+# and, for React,
+pnpm add @skryensya/react`;
+const styles = `@import "@skryensya/core/components/video-player.css";`;
+const html = `<div class="sk-video-player" data-sk-video-player role="group" aria-label="Sintel, the trailer">
+  <div class="sk-video-player__stage">
+    <video src="sintel-trailer.mp4" poster="sintel-poster.jpg">
+      <track kind="captions" src="captions.en.vtt" srclang="en" label="English" />
+    </video>
+  </div>
+  <!-- the loader, the big button and the controls: copy them from the Storybook story -->
+</div>`;
+const react = `import { VideoPlayer } from "@skryensya/react/video-player";
+
+<VideoPlayer
+  label="Sintel, the trailer"
+  src="sintel-trailer.mp4"
+  poster="sintel-poster.jpg"
+  captionsSrc="captions.en.vtt"
+  captionsLang="en"
+  captionsTitle="English"
+/>
+
+{/* Your own <video>, with several sources or languages. */}
+<VideoPlayer label="Sintel, the trailer" skip={30} autoHide={false}>
+  <video poster="sintel-poster.jpg">
+    <source src="sintel.webm" type="video/webm" />
+    <source src="sintel.mp4" type="video/mp4" />
+  </video>
+</VideoPlayer>`;
+const tune = `.sk-video-player {
+  --sk-video-player-aspect: 21 / 9;                 /* a wider frame */
+  --sk-video-player-radius: 0px;                    /* square corners */
+  --sk-video-player-played-color: var(--color-action-danger);
+}`;
+---
+
+<ComponentPageShell
+  title="Video Player"
+  description={t("videoPlayerPage.description")}
+  contractId="video-player"
+  badge="Beta"
+  hookNotes={hookNotes}
+  hookNotesLabel={doesColumn}
+  testFiles={["packages/core/src/video-player.test.ts", "packages/react/src/components/video-player.test.tsx", "packages/vanilla/src/components/video-player.test.ts"]}
+>
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("videoPlayerPage.lede")} />
+
+    <h3>{t("videoPlayerPage.examplesTitle")}</h3>
+    <p set:html={t("videoPlayerPage.examplesBody")} />
+    {
+      examples.map(({ key, story, tree }) => (
+        <UsagePreview
+          tree={tree(t)}
+          title={t(`videoPlayerPage.example.${key}` as Parameters<typeof t>[0])}
+          description={t(`videoPlayerPage.example.${key}.explain` as Parameters<typeof t>[0])}
+          storybookTitle="Components/Media & Visuals/Video Player"
+          storybookStory={story}
+          stageMinBlockSize="26rem"
+        />
+      ))
+    }
+    <p class="video-credit" set:html={t("videoPlayerPage.mediaCredit")} />
+
+    <h3>{t("videoPlayerPage.keyboardTitle")}</h3>
+    <p set:html={t("videoPlayerPage.keyboardBody")} />
+    <div class="video-keys">
+      <ComparisonTable aspectLabel={t("videoPlayerPage.keyboardAspect")} columns={[t("videoPlayerPage.keyboardColumns")]} rows={keyRows} />
+    </div>
+
+    <h3>{t("videoPlayerPage.howTitle")}</h3>
+    <ul>
+      <li set:html={t("videoPlayerPage.how.element")} />
+      <li set:html={t("videoPlayerPage.how.chrome")} />
+      <li set:html={t("videoPlayerPage.how.captions")} />
+      <li set:html={t("videoPlayerPage.how.idle")} />
+      <li set:html={t("videoPlayerPage.how.names")} />
+    </ul>
+
+    <h3>{t("videoPlayerPage.contractTitle")}</h3>
+    <ul>
+      {tList(t, "videoPlayerPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+  </Fragment>
+
+  <Fragment slot="anatomy">
+    <p set:html={t("videoPlayerPage.anatomyBody")} />
+    <UsagePreview tree={videoPlayerAnatomyTree(t)} css={videoPlayerAnatomyCss} label={t("videoPlayerPage.anatomyPreviewLabel")} bare />
+    <h3>{t("videoPlayerPage.anatomyTitle")}</h3>
+    <div class="cmp-parts">
+      <ComparisonTable aspectLabel={t("videoPlayerPage.partsAspect")} columns={[t("videoPlayerPage.partsColumns")]} rows={partRows} />
+    </div>
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("videoPlayerPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "videoPlayerPage.when")} avoid={tList(t, "videoPlayerPage.whenNot")} />
+    <DoDont
+      title={t("videoPlayerPage.dd.poster.title")}
+      do={{ tree: videoPlayerDoPosterTree(t), caption: t("videoPlayerPage.dd.poster.do") }}
+      dont={{ tree: videoPlayerDontPosterTree(t), caption: t("videoPlayerPage.dd.poster.dont") }}
+    />
+    <DoDont
+      title={t("videoPlayerPage.dd.room.title")}
+      do={{ tree: videoPlayerDoRoomTree(t), caption: t("videoPlayerPage.dd.room.do") }}
+      dont={{ tree: videoPlayerDontRoomTree(t), caption: t("videoPlayerPage.dd.room.dont") }}
+    />
+    <ContentRules items={tList(t, "videoPlayerPage.content")} />
+  </Fragment>
+
+  <Fragment slot="install">
+    <p set:html={t("videoPlayerPage.installBody")} />
+    <CodeBlock code={install} label="terminal" />
+    <CodeBlock code={styles} label="CSS" lang="css" />
+    <CodeBlock code={html} label="HTML" lang="html" />
+    <CodeBlock code={react} label="React" lang="tsx" />
+  </Fragment>
+
+  <Fragment slot="style">
+    <h3>{t("videoPlayerPage.hooksTitle")}</h3>
+    <p set:html={t("videoPlayerPage.hooksBody")} />
+    <CodeBlock code={tune} label="CSS" lang="css" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("videoPlayerPage.a11yIntro")} does={tList(t, "videoPlayerPage.a11yDoes")} yours={tList(t, "videoPlayerPage.a11yYours")} />
+  </Fragment>
+</ComponentPageShell>
+
+<style is:global>
+  /* A class name is one token: breaking it at the hyphen makes two lines of what is a single word. */
+  .cmp-parts th code {
+    white-space: nowrap;
+  }
+
+  /* The licence line is a credit, not a paragraph of the lesson. */
+  .video-credit {
+    font-size: var(--font-size-body-sm);
+    color: var(--color-text-secondary);
+  }
+
+  /* A row of keys stays on one line: two keys split across two lines read as two rows. */
+  .video-keys th {
+    white-space: nowrap;
+  }
+</style>

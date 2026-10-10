@@ -36,30 +36,18 @@
  * fades, on the near-zero duration the `--motion-*` tokens collapse to there), and the enhancer
  * asks for an instant `scrollTo` besides.
  */
+@import url("./button.css");
+
 @layer components {
   .sk-back-to-top {
-    --sk-back-to-top-bg: var(--color-bg-surface-overlay);
-    /*
-     * ITS OWN IDENTITY WASH, composed into `background` below (`--elevation-wash-overlay`, see
-     * `semantic/_color.scss`'s own comment on the technique - `skip-link` uses the same layer for
-     * the same reason). Every OTHER overlay-tier surface in the kit (Dialog, Command Palette) sits
-     * on a scrim that dims the page behind it, which is most of what tells a reader "this is above
-     * the content, not part of it." This control has no scrim: it floats directly over whatever the
-     * page is showing, and in light mode `-surface-overlay` is literally `--palette-white`, the same
-     * white most page content already paints. The wash is the reinforcement the system already
-     * ships for exactly this case.
-     */
-    --sk-back-to-top-wash: var(--elevation-wash-overlay);
-    --sk-back-to-top-fg: var(--color-text-primary);
-    /*
-     * ONE RUNG STRONGER THAN DIALOG'S BORDER (`-default`, not `-subtle`), for the same "no scrim"
-     * reason the wash above states: a dialog's hairline only has to separate two surfaces that are
-     * already miles apart in prominence (a dimmed page vs. the one lit box on it), so `-subtle`
-     * reads fine there. This button's edge is the ONLY thing marking where an ordinary card ends and
-     * the control begins when both paint the same near-white, so it needs a boundary of its own
-     * rather than borrowing an overlay's.
-     */
-    --sk-back-to-top-border-color: var(--color-border-default);
+    /* Button soft's paint, with defaults for existing authored markup without sk-button. */
+    --sk-back-to-top-bg: var(--sk-button-bg, light-dark(
+      color-mix(in oklab, var(--color-bg-surface-sunken) 60%, transparent),
+      color-mix(in oklab, var(--color-action-neutral) 42%, transparent)
+    ));
+    --sk-back-to-top-wash: var(--sk-button-wash, var(--elevation-wash-raised));
+    --sk-back-to-top-fg: var(--sk-button-fg, var(--color-text-primary));
+    --sk-back-to-top-border-color: var(--sk-button-border-color, var(--color-border-subtle));
     --sk-back-to-top-radius: var(--radius-pill);
     /*
      * `-md`, not `-lg`: a corner FAB sitting over live content reads as an interruption in
@@ -71,13 +59,9 @@
      * not shrink at all.
      */
     --sk-back-to-top-size: var(--size-control-md);
-    --sk-back-to-top-shadow: var(--elevation-overlay);
-    /*
-     * The pointer state is a BORDER change, not a second shadow. It used to add a 1px ring on top of
-     * the overlay elevation, which read as the control gaining an outline on hover  -  a focus cue's
-     * job, on an event that is not focus. The surface says "you are on it" by firming its edge.
-     */
-    --sk-back-to-top-border-color-hover: var(--color-border-strong);
+    --sk-back-to-top-shadow: var(--sk-button-shadow, var(--elevation-raised));
+    /* Hover feedback comes from the shared interactive state layer. */
+    --sk-back-to-top-border-color-hover: var(--sk-back-to-top-border-color);
     /* How far it rises into place on reveal. */
     --sk-back-to-top-travel: var(--space-inset-sm);
     /* Where the pop starts from. */
@@ -318,6 +302,14 @@
   }
 
   /* Forced colors keep none of it: no ledge, no offset, no glass, no travel. The system border stays. */
+  @media (prefers-reduced-transparency: reduce) {
+    .sk-back-to-top[data-appearance="frosted"] {
+      --sk-back-to-top-bg: var(--color-bg-surface);
+      background: var(--sk-back-to-top-bg);
+      backdrop-filter: none;
+    }
+  }
+
   @media (forced-colors: active) {
     .sk-back-to-top[data-appearance] {
       border-color: CanvasText;

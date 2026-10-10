@@ -1424,6 +1424,14 @@ h2.docs-catalog-section__title {
   margin-inline: calc(var(--sk-list-row-padding-x) * -1);
 }
 
+.docs-related-components {
+  margin-block: var(--space-stack-xl) var(--space-stack-lg);
+}
+
+.docs-related-components > .sk-list {
+  margin-inline: calc(var(--sk-list-row-padding-x) * -1);
+}
+
 /* ── "En esta página", the index of the document ─────────────────────────── */
 /* The component (`@skryensya/core/components/toc.css`) owns the anatomy; this is only what makes
  * THIS shell's instance a rail rather than the disclosure it ships as. The list is compiled with
@@ -1593,7 +1601,7 @@ main > :where(h2, h3) {
   initial-value: 0px;
 }
 
-main[data-document-layout="grid"] :is(.sk-tabs__content, .docs-component-body).sk-layout-grid {
+main[data-document-layout="grid"] :is(.sk-tabs__content, .docs-component-body, .docs-related-components).sk-layout-grid {
   --sk-layout-content: var(--docs-reading-measure);
   --docs-preview-chrome-measure: var(--docs-reading-measure);
   --sk-layout-breakout: min(
@@ -2914,15 +2922,21 @@ main a:not(
   color: var(--color-text-link);
 }
 
-:is(p, li) > code {
-  font-family: var(--font-family-code);
-  font-size: var(--font-size-body-sm);
+/* Bare code in documentation prose follows core's `.sk-code` recipe, including nested emphasis
+ * and reference tables. Code blocks keep their own surface and syntax highlighting. */
+:where(p, li, td, th, dd, dt, h1, h2, h3, h4, h5, h6) code:not(pre code, .sk-code-preview code) {
+  padding-inline: 0.35em;
+  padding-block: 0.12em;
+  border-radius: calc(var(--scale-radius-sm) * var(--radius-multiplier));
+  background: color-mix(in oklab, var(--color-border-default) 16%, transparent);
   color: var(--color-text-primary);
+  font-family: var(--font-family-code);
+  font-size: 0.9em;
+  letter-spacing: normal;
+  font-variant-ligatures: none;
   overflow-wrap: anywhere;
-  background: var(--color-bg-surface-raised);
-  box-shadow: inset 0 0 0 1px var(--color-border-default);
-  padding: 0.08em var(--space-inset-xs);
-  border-radius: var(--scale-radius-sm);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 
@@ -3182,42 +3196,6 @@ html[data-sk-component-preview-pref="vanilla"] [data-sk-install-binding="react"]
   display: none;
 }
 
-/*
- * THE PAGE'S BINDING SWITCH, at the trailing edge of the masthead's title row.
- *
- * `margin-inline-start: auto` rather than `justify-content: space-between` on the row: the row also
- * holds the optional Beta badge, which belongs NEXT TO the title and not pushed to the far edge with
- * it. An auto margin moves one item and leaves the rest of the row packed where it was.
- *
- * It rides the collapse with the rest of the header (`sk-fx-collapse-header`), so it is still there
- * once the band has closed to its bar, which is the point of putting it here: previews are scattered
- * down a long page and the switch has to stay reachable from all of them.
- */
-.docs-component-hero__controls {
-  /*
-   * HELD STILL WHILE THE BAND COLLAPSES. The header is `position: sticky`, so it is already the
-   * containing block; its box is a constant 66px tall at every scroll position (the height that goes
-   * away lives in `.docs-component-hero__spacer`, which simply scrolls off), so an absolute box
-   * centred in it cannot move. Laid out in the title row instead, it rode the heading's interpolated
-   * type down and across by 25px and 8px over the collapse.
-   */
-  position: absolute;
-  /*
-   * A REAL INSET FROM THE BAND'S EDGE, in px rather than 0. The header's own padding is interpolated
-   * by the collapse, so anchoring to the padding box alone both sat the switch flush against the
-   * band's trailing edge and would have let it drift as that padding animates. An explicit length
-   * off the same edge is a constant the collapse cannot touch.
-   */
-  inset-inline-end: 24px;
-  inset-block-start: 50%;
-  /* `translate`, not `transform`, so it composes with the pressed `scale()` the option carries. */
-  translate: 0 -50%;
-  display: inline-flex;
-  flex-shrink: 0;
-  align-items: center;
-  gap: var(--space-inline-xs);
-}
-
 .docs-component-hero__binding {
   flex-shrink: 0;
 }
@@ -3273,18 +3251,6 @@ html[data-sk-component-preview-pref="vanilla"] [data-sk-install-binding="react"]
 
 .docs-appearance-menu .sk-menu__item:not([data-checked]) > .sk-menu__item-indicator {
   visibility: hidden;
-}
-
-/*
- * Below the reading width the heading needs the full line, so the switch stops being an overlay and
- * takes a row of its own under the title. Static again: there is nothing beside it to collide with.
- */
-@media (max-width: 40rem) {
-  .docs-component-hero__controls {
-    position: static;
-    translate: none;
-    margin-block-start: var(--space-stack-xs);
-  }
 }
 
 /* ── syntax token colours ───────────────────────────────────────────────── */

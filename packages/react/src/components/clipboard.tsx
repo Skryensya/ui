@@ -178,7 +178,7 @@ function Trigger({
       <span
         {...flag}
         aria-hidden="true"
-        data-sk-placement="inline-start"
+        data-sk-placement="block-start"
         data-state={clip.api.copied ? "open" : undefined}
       >
         <span {...{ [clipboardAttrs.feedbackText]: "copied" }}>{copiedLabel}</span>

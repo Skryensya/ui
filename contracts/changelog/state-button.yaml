@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "506fc5d4250407a2"
+surface: "8f404d1c3e808737"
 entries:
   - date: 2026-09-26
     kind: feature
@@ -269,3 +269,27 @@ entries:
       body: >-
         The list of icon roles <code>StateButton</code> accepts grows with <code>mask</code> (the
         symbol of a hidden character). Nothing about its behavior changes.
+  - date: 2026-10-09
+    kind: feature
+    es:
+      title: Los nombres de icono incluyen los roles de reproductor
+      body: >-
+        La lista de roles de icono que acepta <code>StateButton</code> crece con <code>play</code>,
+        <code>pause</code>, <code>replay</code>, <code>volume</code>, <code>volume-muted</code>,
+        <code>captions</code>, <code>fullscreen</code> y <code>fullscreen-exit</code>. No cambia su comportamiento.
+    en:
+      title: Icon names include the player roles
+      body: >-
+        The list of icon roles <code>StateButton</code> accepts grows with <code>play</code>, <code>pause</code>,
+        <code>replay</code>, <code>volume</code>, <code>volume-muted</code>, <code>captions</code>,
+        <code>fullscreen</code> and <code>fullscreen-exit</code>. Nothing about its behavior changes.
+  - date: 2026-10-09
+    kind: feature
+    es:
+      title: Los nombres de icono incluyen la pista anterior y la siguiente
+      body: >-
+        La lista de roles de icono que acepta <code>StateButton</code> crece con <code>track-previous</code> y <code>track-next</code>. No cambia su comportamiento.
+    en:
+      title: Icon names include the previous and next track
+      body: >-
+        The list of icon roles <code>StateButton</code> accepts grows with <code>track-previous</code> and <code>track-next</code>. Nothing about its behavior changes.

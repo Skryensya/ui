@@ -1,8 +1,18 @@
 export const windowMessages = {
   es: {
+    "windowPage.enabled": "Activado",
+    "windowPage.disabled": "Desactivado",
+    "windowPage.resizeTitle": "Cambiar de tamaño",
+    "windowPage.resizeBody": "Selecciona resizable y abre el inspector. Al desactivarlo desaparecen los bordes de redimensión y los controles de minimizar y maximizar.",
+    "windowPage.dragTitle": "Arrastrar la ventana",
+    "windowPage.dragBody": "Compara draggable activado y desactivado. Abre el inspector y prueba su barra de título.",
+    "windowPage.dragOn": "La barra de título permite mover la ventana dentro del ejemplo.",
+    "windowPage.dragOff": "La ventana permanece en su posición, pero conserva la redimensión y los demás controles.",
+    "windowPage.appearanceTitle": "Apariencia del marco",
+    "windowPage.appearanceBody": "Cambia la apariencia y abre el inspector para comparar el marco. El comportamiento y la semántica siguen siendo los mismos.",
     "windowPage.anatomyLabel": "Anatomía de Window",
     "windowPage.anatomyPreviewLabel": "Window, parte por parte",
-    "windowPage.anatomyBody": "Abierta y dibujada en su lugar: una ventana real la posiciona su máquina. El posicionador y la zona de arrastre ocupan la misma caja que el contenido y el encabezado, así que no se anillan dos veces; los ocho bordes de redimensión miden unos píxeles, y uno se nombra por todos.",
+    "windowPage.anatomyBody": "Abierta y dibujada en su lugar: una ventana real la posiciona su máquina. El diagrama separa el disparador, el posicionador, el marco que se pinta, la zona de arrastre, el título, los controles, el cuerpo y un borde de redimensión que representa a los ocho.",
     "demo.window.trigger": "Abrir inspector",
     "demo.window.title": "Inspector",
     "demo.window.body": "Arrastra la barra de título para moverla, y un borde o una esquina para cambiarle el tamaño.",
@@ -43,6 +53,7 @@ export const windowMessages = {
     "windowPage.when1": "Para herramientas que acompañan el contenido: un inspector, un reproductor, un chat.",
 
     "windowPage.contract3": "No hay fondo que tape la página ni trampa de foco.",
+    "windowPage.contract4": "Mínimo de 240 × 120 px, ampliable con <code>minWidth</code> y <code>minHeight</code>. El arrastre queda dentro del viewport; usa <code>boundary</code> con un selector para limitarlo a un contenedor. En React también se usa el portal <code>container</code> como límite.",
 
     "windowPage.contract2": "No recuerda dónde estaba: guardarlo es de tu app.",
 
@@ -60,9 +71,19 @@ export const windowMessages = {
     "windowPage.guidelinesLede": "Una ventana convive con la página: úsala para lo que se consulta mientras se trabaja.",
   },
   en: {
+    "windowPage.enabled": "Enabled",
+    "windowPage.disabled": "Disabled",
+    "windowPage.resizeTitle": "Resizing",
+    "windowPage.resizeBody": "Choose resizable and open the inspector. Disabling it removes resize handles and the minimize and maximize controls.",
+    "windowPage.dragTitle": "Dragging the window",
+    "windowPage.dragBody": "Compare draggable enabled and disabled. Open the inspector and try its title bar.",
+    "windowPage.dragOn": "The title bar lets you move the window within the example.",
+    "windowPage.dragOff": "The window stays in position while retaining resizing and its other controls.",
+    "windowPage.appearanceTitle": "Frame appearance",
+    "windowPage.appearanceBody": "Change appearance and open the inspector to compare its frame. Behavior and semantics stay the same.",
     "windowPage.anatomyLabel": "Window anatomy",
     "windowPage.anatomyPreviewLabel": "Window, part by part",
-    "windowPage.anatomyBody": "Open and drawn in place: a real window is positioned by its machine. The positioner and the drag region occupy the same box as the content and the header, so they are not ringed twice; the eight resize edges are a few pixels wide, and one is named for all of them.",
+    "windowPage.anatomyBody": "Open and drawn in place: a real window is positioned by its machine. The diagram separates the trigger, positioner, painted frame, drag region, title, controls, body, and one resize edge standing in for all eight.",
     "demo.window.trigger": "Open inspector",
     "demo.window.title": "Inspector",
     "demo.window.body": "Drag the title bar to move it, and an edge or a corner to resize it.",
@@ -103,6 +124,7 @@ export const windowMessages = {
     "windowPage.when1": "For tools that go with the content: an inspector, a player, a chat.",
 
     "windowPage.contract3": "There is no backdrop covering the page and no focus trap.",
+    "windowPage.contract4": "Minimum size is 240 × 120 px, increased with <code>minWidth</code> and <code>minHeight</code>. Dragging stays within the viewport; use a <code>boundary</code> selector to constrain it to a container. In React the portal <code>container</code> also acts as the boundary.",
 
     "windowPage.contract2": "It does not remember where it was: saving that is your app's job.",
 

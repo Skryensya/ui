@@ -1,0 +1,102 @@
+# What changed in video-player, in the words its users read. Only appended to, never rewritten.
+#
+# `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
+# does not match, something a consumer depends on has moved: write the entry and paste in the new
+# hash.
+surface: "89218ccb6f95b278"
+entries:
+  - date: 2026-10-09
+    kind: feature
+    es:
+      title: Primera publicación del contrato
+      body: >-
+        Un reproductor de video con los controles del sistema sobre un video real. El video llega por <code>src</code>, <code>poster</code> y
+        <code>captionsSrc</code>, o como un video tuyo con varias fuentes, y el reproductor dibuja la barra: reproducir y pausar, barra de progreso con lo
+        reproducido y lo cargado, tiempo, volumen, velocidad, subtítulos y pantalla completa. Se maneja entera con el
+        teclado (k, j, l, m, f, c, 0 al 9, flechas) solo mientras el foco está dentro, y los controles se esconden
+        solos mientras reproduce.
+    en:
+      title: First published contract
+      body: >-
+        A video player with the system's controls over a real video. The video comes in through <code>src</code>, <code>poster</code> and
+        <code>captionsSrc</code>, or as your own video with several sources, and the player draws the bar: play and pause, a seek bar with what is played and what is buffered, time,
+        volume, speed, captions and full screen. It runs entirely from the keyboard (k, j, l, m, f, c, 0 to 9, arrows)
+        only while focus is inside, and the controls hide by themselves while it plays.
+  - date: 2026-10-09
+    kind: feature
+    es:
+      title: Los subtítulos los dibuja el reproductor
+      body: >-
+        Nueva parte <code>captions</code>: el navegador pintaba cada subtítulo en el borde inferior del video, justo
+        debajo de la barra y sin estilo. Ahora las pistas pasan a modo oculto y el texto activo se dibuja sobre la barra,
+        con una placa, y baja al borde cuando la barra se va. Nuevos ganchos: <code>captions-bg</code> y
+        <code>captions-offset</code>.
+    en:
+      title: The player draws the captions
+      body: >-
+        New <code>captions</code> part: the browser painted each caption at the bottom edge of the video, right under
+        the bar and unstyled. Now the tracks go to hidden mode and the active text is drawn above the bar, on a plate,
+        and drops to the edge when the bar leaves. New hooks: <code>captions-bg</code> and
+        <code>captions-offset</code>.
+  - date: 2026-10-09
+    kind: feature
+    es:
+      title: El reloj cambia entre lo transcurrido y lo que falta
+      body: >-
+        El reloj de la barra es ahora un botón: al pulsarlo muestra el tiempo que falta (<code>-1:55 / 3:00</code>) y al
+        volver a pulsarlo el transcurrido. Su nombre dice lo que hará la próxima pulsación. Nuevas opciones:
+        <code>remainingLabel</code> y <code>elapsedLabel</code>.
+    en:
+      title: The clock swaps between elapsed and remaining
+      body: >-
+        The bar's clock is now a button: a press shows the time left (<code>-1:55 / 3:00</code>) and the next one the
+        time played. Its name says what the next press will do. New options: <code>remainingLabel</code> and
+        <code>elapsedLabel</code>.
+  - date: 2026-10-09
+    kind: feature
+    es:
+      title: El volumen es un popup
+      body: >-
+        El volumen ya no se abre empujando la barra: es un popup encima del botón que solo aparece, sin mover ningún control. Nuevo gancho <code>--sk-video-player-volume-pad</code>. Reproducir es siempre redondo.
+    en:
+      title: Volume is a popup
+      body: >-
+        Volume no longer opens by pushing the bar along: it is a popup above the button that only fades in, moving no control. New hook <code>--sk-video-player-volume-pad</code>. Play is always round.
+  - date: 2026-10-09
+    kind: feature
+    es:
+      title: Los atajos de cuadro miden el cuadro real y funcionan reproduciendo
+      body: >-
+        <kbd>,</kbd> y <kbd>.</kbd> retroceden y avanzan un cuadro. El tamaño del cuadro se mide con los cuadros que el
+        navegador presenta (24 por segundo en un video de cine) y vuelve a 30 por segundo donde no se puede medir.
+        Con el video en marcha lo pausan antes de moverse, en vez de no hacer nada.
+    en:
+      title: The frame keys measure the real frame and work while playing
+      body: >-
+        <kbd>,</kbd> and <kbd>.</kbd> step one frame back and forward. The frame's size is measured from the frames the
+        browser presents (24 a second for a film) and falls back to 30 a second where it cannot be measured. With the
+        video running they pause it first, instead of doing nothing.
+  - date: 2026-10-10
+    kind: breaking
+    es:
+      title: Mucho menos trabajo mientras se reproduce
+      body: >-
+        Reproduciendo, el reproductor gastaba unos 220 ms de cada segundo recalculando estilos y relayout en cada fotograma. Los ganchos de salida <code>--sk-video-player-played</code>, <code>-buffered</code>, <code>-volume</code> y <code>-hover</code> desaparecen: lo que se mueve se escribe directamente en su elemento, y solo cuando cambia lo que se ve. El video que dibuja el contrato empieza con <code>preload="none"</code> (el póster carga igual) y sube a <code>metadata</code> cuando el reproductor está cerca del viewport. Fuera de pantalla no dibuja nada, y los controles dejan de crear un temporizador por cada movimiento del puntero.
+    en:
+      title: Far less work while it plays
+      body: >-
+        While playing, the player spent about 220 ms of every second on style recalculation and a layout every frame. The output hooks <code>--sk-video-player-played</code>, <code>-buffered</code>, <code>-volume</code> and <code>-hover</code> are gone: what moves is written straight on its element, and only when what you can see changes. Video the contract renders starts at <code>preload="none"</code> (the poster still loads) and rises to <code>metadata</code> when the player is near the viewport. Off screen it draws nothing, and the controls no longer create a timer on every pointer move.
+  - date: 2026-10-10
+    kind: chore
+    es:
+      title: Las piezas internas se declaran como del sistema
+      body: >-
+        <code>media</code>, <code>track</code>, <code>volumeSlider</code> y <code>spacer</code> pasan a la lista
+        <code>systemOwned</code>: el reproductor las dibuja y nadie las escribe en un árbol. No cambia el marcado ni el
+        comportamiento.
+    en:
+      title: The inner pieces are declared as the system's
+      body: >-
+        <code>media</code>, <code>track</code>, <code>volumeSlider</code> and <code>spacer</code> join the
+        <code>systemOwned</code> list: the player draws them and nobody writes them in a tree. The markup and the
+        behaviour do not change.

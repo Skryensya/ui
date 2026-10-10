@@ -283,6 +283,68 @@
     },
     {
       "category": "content",
+      "css": "@skryensya/core/components/audio-player.css",
+      "id": "audio-player",
+      "signatures": [
+        {
+          "alternatives": [
+            "VideoPlayer",
+            "Slider"
+          ],
+          "avoidWhen": [
+            "the sound lives on someone else's player (Spotify, SoundCloud, a podcast host): that is an iframe with its own controls, and drawing a second bar over it controls nothing",
+            "it is a short effect or a click on an interface action; a sound that answers a press needs no controls",
+            "there is a picture to watch; that is VideoPlayer, which has a stage, a poster and fullscreen",
+            "the app needs shuffle, repeat, a queue the reader reorders or lyrics; those are the app's policy, and this player moves along a list and nothing more"
+          ],
+          "host": "div",
+          "id": "AudioPlayer",
+          "intent": [
+            "audio-player",
+            "play-audio",
+            "music-player",
+            "podcast-player",
+            "playlist",
+            "play-a-sound"
+          ],
+          "parents": [],
+          "useWhen": [
+            "a sound has to be played inside the page and its controls should look like the rest of the interface instead of the browser's own bar: a podcast episode, a song, a voice note, a recording",
+            "the reader should be able to run it from the keyboard alone: play, seek, volume, speed and the previous and next track all have a key, scoped to the player and never to the page",
+            "there is a list of tracks (an album, a set of episodes) and the player should load one, move on when it ends, and show which one is playing",
+            "the sound has a title, an artist or a cover that should sit with the controls, as a strip or as a card",
+            "you have the peaks of the file and want the seek bar to show its shape"
+          ]
+        },
+        {
+          "alternatives": [
+            "AudioPlayer"
+          ],
+          "avoidWhen": [
+            "there is a list of tracks, a cover, a title or an artist to show; that is AudioPlayer",
+            "the listener will want volume or speed, as with a long episode or a lecture; AudioPlayer has both",
+            "the sound is an effect that answers a press; that needs no controls at all"
+          ],
+          "host": "div",
+          "id": "AudioPlayerMinimal",
+          "intent": [
+            "simple-audio",
+            "minimal-audio-player",
+            "voice-note",
+            "audio-clip",
+            "inline-audio"
+          ],
+          "parents": [],
+          "useWhen": [
+            "a short sound sits inside the page and needs only to be played: a voice note, a clip, a pronunciation, a sample",
+            "the sound is part of a line of content or a table row, where a cover, a title and a transport would be heavier than what they play",
+            "you want the least that is still keyboard-operable: a play button, a seek bar and the time"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "content",
       "css": "@skryensya/core/components/avatar.css",
       "id": "avatar",
       "signatures": [
@@ -1259,6 +1321,41 @@
       ]
     },
     {
+      "category": "content",
+      "css": "@skryensya/core/components/compare-slider.css",
+      "id": "compare-slider",
+      "signatures": [
+        {
+          "alternatives": [
+            "Resizable",
+            "Tabs",
+            "Segmented"
+          ],
+          "avoidWhen": [
+            "the two things are different subjects or sizes; the divider only works if the layers are registered, so they would not line up; use side-by-side Grid columns",
+            "the user is resizing panels of a layout rather than revealing a layer; that is Resizable, which conserves a total between neighbours",
+            "what is inside the layers is interactive; a press anywhere on the box moves the divider, so a link or a button inside would be unreachable",
+            "there are more than two things to compare; a divider has two sides, and Tabs or a Segmented control fits a set"
+          ],
+          "host": "div",
+          "id": "CompareSlider",
+          "intent": [
+            "before-after",
+            "compare-two-layers",
+            "image-comparison",
+            "reveal-slider",
+            "draggable-divider-reveal"
+          ],
+          "parents": [],
+          "useWhen": [
+            "two versions of the same thing should be judged against each other at the same place: a photo before and after an edit, an interface old and new, a chart with and without a series",
+            "the reader should decide how much of each to see, by dragging a divider across the box, rather than being shown them one after the other",
+            "the two layers are the same size and the same subject, so that what is on one side of the divider lines up with what is on the other"
+          ]
+        }
+      ]
+    },
+    {
       "category": "data",
       "css": "@skryensya/core/components/comparison-table.css",
       "id": "comparison-table",
@@ -1610,6 +1707,278 @@
             "the rest of the page should be inert meanwhile",
             "on mobile the same dialog can be asked for as a sheet from the bottom (the vaul option)",
             "a destructive confirmation or a blocking error that needs immediate attention (the alert option)"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "overlays",
+      "css": "@skryensya/core/components/dialog-stack.css",
+      "id": "dialog-stack",
+      "signatures": [
+        {
+          "alternatives": [
+            "Dialog",
+            "Popover",
+            "Steps"
+          ],
+          "avoidWhen": [
+            "a single confirmation needs an answer: use Dialog",
+            "the flow is long or needs URLs, reload recovery or branching: use separate pages",
+            "the content explains a control without blocking: use Popover"
+          ],
+          "host": "div",
+          "id": "DialogStack",
+          "intent": [
+            "dialog-stack",
+            "multi-step-dialog",
+            "onboarding-dialog"
+          ],
+          "parents": [],
+          "useWhen": [
+            "a short blocking task has ordered steps and needs backward navigation",
+            "earlier steps should remain visible as stacked surfaces without exposing their controls"
+          ]
+        },
+        {
+          "alternatives": [
+            "DialogStackNext"
+          ],
+          "avoidWhen": [
+            "the action advances inside the stack: use DialogStackNext"
+          ],
+          "host": "button",
+          "id": "DialogStackTrigger",
+          "intent": [
+            "open-dialog-stack"
+          ],
+          "parents": [],
+          "useWhen": [
+            "a button opens the stack from the page"
+          ]
+        },
+        {
+          "alternatives": [
+            "Window"
+          ],
+          "avoidWhen": [
+            "the background is part of a non-modal panel: use Window"
+          ],
+          "host": "span",
+          "id": "DialogStackOverlay",
+          "intent": [
+            "dialog-stack-backdrop"
+          ],
+          "parents": [],
+          "useWhen": [
+            "the compound composition needs an explicit backdrop marker; the native ::backdrop paints it"
+          ]
+        },
+        {
+          "alternatives": [
+            "Dialog"
+          ],
+          "avoidWhen": [
+            "there is only one confirmation: use Dialog"
+          ],
+          "host": "dialog",
+          "id": "DialogStackBody",
+          "intent": [
+            "dialog-stack-panels"
+          ],
+          "parents": [
+            "DialogStack"
+          ],
+          "useWhen": [
+            "the stack needs its one native modal host around its steps"
+          ]
+        },
+        {
+          "alternatives": [
+            "Dialog"
+          ],
+          "avoidWhen": [
+            "the content needs a standalone URL: use a page"
+          ],
+          "host": "section",
+          "id": "DialogStackContent",
+          "intent": [
+            "dialog-stack-step"
+          ],
+          "parents": [
+            "DialogStackBody"
+          ],
+          "useWhen": [
+            "one step has a title, content and navigation controls"
+          ]
+        },
+        {
+          "alternatives": [
+            "DialogStackFooter"
+          ],
+          "avoidWhen": [
+            "the content is a set of actions: use DialogStackFooter"
+          ],
+          "host": "header",
+          "id": "DialogStackHeader",
+          "intent": [
+            "dialog-stack-heading-group"
+          ],
+          "parents": [],
+          "useWhen": [
+            "a step groups its title and optional description"
+          ]
+        },
+        {
+          "alternatives": [
+            "DialogStackDescription"
+          ],
+          "avoidWhen": [
+            "the text explains rather than names the step: use DialogStackDescription"
+          ],
+          "host": "h2",
+          "id": "DialogStackTitle",
+          "intent": [
+            "dialog-stack-step-title"
+          ],
+          "parents": [],
+          "useWhen": [
+            "a heading names the active step and its dialog"
+          ]
+        },
+        {
+          "alternatives": [
+            "DialogStackTitle"
+          ],
+          "avoidWhen": [
+            "the text is a heading: use DialogStackTitle"
+          ],
+          "host": "p",
+          "id": "DialogStackDescription",
+          "intent": [
+            "dialog-stack-step-description"
+          ],
+          "parents": [],
+          "useWhen": [
+            "a short sentence explains what the step asks for"
+          ]
+        },
+        {
+          "alternatives": [
+            "DialogStackHeader"
+          ],
+          "avoidWhen": [
+            "the group contains the step title: use DialogStackHeader"
+          ],
+          "host": "footer",
+          "id": "DialogStackFooter",
+          "intent": [
+            "dialog-stack-actions"
+          ],
+          "parents": [],
+          "useWhen": [
+            "navigation and completion controls need an action row"
+          ]
+        },
+        {
+          "alternatives": [
+            "DialogStackClose"
+          ],
+          "avoidWhen": [
+            "the last action completes the task: use DialogStackClose"
+          ],
+          "host": "button",
+          "id": "DialogStackNext",
+          "intent": [
+            "dialog-stack-next-step"
+          ],
+          "parents": [],
+          "useWhen": [
+            "a control advances to the next step"
+          ]
+        },
+        {
+          "alternatives": [
+            "DialogStackClose"
+          ],
+          "avoidWhen": [
+            "the control abandons the flow: use DialogStackClose"
+          ],
+          "host": "button",
+          "id": "DialogStackPrevious",
+          "intent": [
+            "dialog-stack-previous-step"
+          ],
+          "parents": [],
+          "useWhen": [
+            "a control returns to the previous step while keeping its authored content mounted"
+          ]
+        },
+        {
+          "alternatives": [
+            "DialogStackNext",
+            "DialogStackPrevious"
+          ],
+          "avoidWhen": [
+            "the action only changes steps: use DialogStackNext or DialogStackPrevious"
+          ],
+          "host": "button",
+          "id": "DialogStackClose",
+          "intent": [
+            "close-dialog-stack"
+          ],
+          "parents": [],
+          "useWhen": [
+            "a visible action cancels or completes the flow and closes the dialog"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "actions",
+      "css": "@skryensya/core/components/dock.css",
+      "id": "dock",
+      "signatures": [
+        {
+          "alternatives": [
+            "Toolbar",
+            "NavList"
+          ],
+          "avoidWhen": [
+            "The controls form a dense editor toolbar that needs roving keyboard focus.",
+            "The items are site destinations rather than actions."
+          ],
+          "host": "div",
+          "id": "Dock",
+          "intent": [
+            "dock",
+            "compact-action-launcher",
+            "icon-action-group"
+          ],
+          "parents": [],
+          "useWhen": [
+            "A small set of frequent application actions needs an icon-based launcher.",
+            "The actions are the application's own, always one press away, and a name on hover or focus is enough to tell the icons apart."
+          ]
+        },
+        {
+          "alternatives": [
+            "Button.action",
+            "Button.navigation"
+          ],
+          "avoidWhen": [
+            "The control navigates to a page or represents a persistent toggle."
+          ],
+          "host": "button",
+          "id": "DockItem",
+          "intent": [
+            "dock-action"
+          ],
+          "parents": [
+            "Dock"
+          ],
+          "useWhen": [
+            "A named icon button runs one action in a Dock."
           ]
         }
       ]
@@ -2053,6 +2422,44 @@
             "it reinforces an action that already has text; without a label, decorative",
             "it is the only content of a square control, and then the CONTROL carries the accessible name, not the icon",
             "the name is a role the system names: delete, visibility, chevron-down"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "content",
+      "css": "@skryensya/core/components/image-cropper.css",
+      "id": "image-cropper",
+      "signatures": [
+        {
+          "alternatives": [
+            "ImageFrame",
+            "FileUpload",
+            "Canvas"
+          ],
+          "avoidWhen": [
+            "the picture is only displayed in a frame and the browser can crop it for free; ImageFrame fits it with object-fit",
+            "the file has to be chosen or uploaded; FileUpload does that, and the two are joined by the consumer's src, not by this component",
+            "drawing, annotating or filtering is needed; this crops, zooms and rotates and does nothing else to the pixels",
+            "the crop is applied on the server from coordinates and no one needs to see or adjust it; send the crop numbers from a form instead"
+          ],
+          "host": "div",
+          "id": "ImageCropper",
+          "intent": [
+            "image-cropper",
+            "crop-image",
+            "avatar-crop",
+            "profile-picture-crop",
+            "cover-image-crop",
+            "rotate-and-zoom-image",
+            "crop-to-aspect-ratio"
+          ],
+          "parents": [],
+          "useWhen": [
+            "a person has to choose which part of a picture is used: a profile photo, a cover, a thumbnail, a product shot cut to a fixed ratio",
+            "the crop must be exact and reproducible: the result is a file at the picture's own resolution, or numbers that describe it, and the same value draws the same crop at any size",
+            "the picture may need turning or straightening before it is cut: zoom, quarter turns and a fine angle are part of the tool",
+            "an avatar is wanted: a circle crop exports a transparent PNG with the circle already cut, not a square to be masked afterwards"
           ]
         }
       ]
@@ -3988,6 +4395,36 @@
     },
     {
       "category": "layout",
+      "css": "@skryensya/core/components/scroll-hint.css",
+      "id": "scroll-hint",
+      "signatures": [
+        {
+          "alternatives": [
+            "FadeEdge",
+            "BackToTop"
+          ],
+          "avoidWhen": [
+            "the content fits without scrolling",
+            "a persistent scroll-position indicator or navigation button is needed",
+            "the hint would cover content or replace the region's accessible name and keyboard support"
+          ],
+          "host": "div",
+          "id": "ScrollHint",
+          "intent": [
+            "scroll-hint",
+            "scroll-affordance",
+            "swipe-hint"
+          ],
+          "parents": [],
+          "useWhen": [
+            "a scrollable region needs a one-time directional invitation before the person discovers scrolling",
+            "an animated visual cue should disappear after actual scrolling in the indicated axis"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "layout",
       "css": "@skryensya/core/components/scroll-stack.css",
       "id": "scroll-stack",
       "signatures": [
@@ -4447,6 +4884,28 @@
       "signatures": [
         {
           "alternatives": [
+            "SplitButton",
+            "Button.action"
+          ],
+          "avoidWhen": [
+            "there is one main action with variants of it behind a menu; that is SplitButton, which is horizontal and carries the menu",
+            "the two actions are unrelated, or one is clearly the primary one; two separate Buttons say that better",
+            "the buttons need labels; the halves are icon-only and a labelled pair is two Buttons in an Inline"
+          ],
+          "host": "div",
+          "id": "SplitButtonVertical",
+          "intent": [
+            "paired-vertical-actions",
+            "zoom-in-and-out"
+          ],
+          "parents": [],
+          "useWhen": [
+            "two icon-only actions are a pair, one above the other, and should read as one control: zoom in and out, previous and next, raise and lower",
+            "there is no menu and nothing to choose: both halves are plain actions of the same weight"
+          ]
+        },
+        {
+          "alternatives": [
             "Menu",
             "Button.action"
           ],
@@ -4652,7 +5111,11 @@
           ]
         },
         {
-          "alternatives": [],
+          "alternatives": [
+            "DataGrid",
+            "List",
+            "DescriptionList"
+          ],
           "avoidWhen": [
             "it is a list of things with no columns; that is a List",
             "it is used for layout; a table announces relationships the layout does not have"
@@ -5694,7 +6157,11 @@
       "id": "typography",
       "signatures": [
         {
-          "alternatives": [],
+          "alternatives": [
+            "Heading",
+            "Quote",
+            "Kbd"
+          ],
           "avoidWhen": [
             "it titles a section; that is a Heading, even if it looks small",
             "it goes inside another line of text, a button or a label as a <p>: there it is textElement span"
@@ -5939,6 +6406,41 @@
       ]
     },
     {
+      "category": "content",
+      "css": "@skryensya/core/components/video-player.css",
+      "id": "video-player",
+      "signatures": [
+        {
+          "alternatives": [
+            "Lightbox",
+            "ImageFrame",
+            "Carousel"
+          ],
+          "avoidWhen": [
+            "the video lives on someone else's player (YouTube, Vimeo): that is an iframe with its own controls, and drawing a second bar over it controls nothing; embed it in an ImageFrame-sized box instead",
+            "the media is a short looping clip with no sound, a decoration; a bare video with autoplay, muted and loop needs no controls at all",
+            "it is audio only; the seek bar, the volume and the keys fit, but the stage, the poster and fullscreen do not, and a lighter control strip is the right shape",
+            "a photo or a document is being viewed; that is Lightbox"
+          ],
+          "host": "div",
+          "id": "VideoPlayer",
+          "intent": [
+            "video-player",
+            "play-a-video",
+            "media-player",
+            "custom-video-controls",
+            "embed-video"
+          ],
+          "parents": [],
+          "useWhen": [
+            "a video has to be played inside the page and its controls should look like the rest of the interface (same buttons, same focus ring, same dark chrome) instead of the browser's own bar",
+            "the reader should be able to run it from the keyboard alone: play, seek, volume, speed, captions and fullscreen all have a key, scoped to the player and never to the page",
+            "the video is a file you host or link (an mp4 or webm with an optional poster and caption tracks); the player draws over a real video element and leaves the sources and tracks to you"
+          ]
+        }
+      ]
+    },
+    {
       "category": "overlays",
       "css": "@skryensya/core/components/window.css",
       "id": "window",
@@ -6006,5 +6508,5 @@
     }
   ],
   "schemaVersion": "2.3",
-  "sourceHash": "7dbc40b927ddc5f0"
+  "sourceHash": "2bc8f09a4375494f"
 }

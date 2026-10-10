@@ -50,6 +50,8 @@ export const resizableParts = {
   root: "sk-resizable",
   panel: "sk-resizable__panel",
   handle: "sk-resizable__handle",
+  /** The thumb in the middle of a handle: a small container with six dots, shown on hover, focus and drag. `aria-hidden`. */
+  grip: "sk-resizable__grip",
 } as const;
 
 export type ResizablePart = keyof typeof resizableParts;
@@ -337,6 +339,8 @@ export const resizableContract = {
         part: "handle",
         host: true,
         attrs: { role: "separator", tabindex: "0" },
+        // The thumb is paint (`patterns/grip.css`): the bar itself takes the pointer and the keys.
+        children: [{ element: "span", part: "grip", also: ["sk-grip"], attrs: { "aria-hidden": "true" } }],
       },
       react: { from: "@skryensya/react/resizable", name: "Resizable.Handle" },
     },

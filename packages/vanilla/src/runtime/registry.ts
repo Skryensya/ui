@@ -26,6 +26,14 @@ type Registration = {
 // Runtime plugin loading is intentional: static imports would defeat selector gating and ship every enhancer.
 const registrations: readonly Registration[] = [
   {
+    selector: "[data-sk-dock]",
+    load: async () => (await import("../components/dock.js")).mountDock,
+  },
+  {
+    selector: "[data-sk-dialog-stack]",
+    load: async () => (await import("../components/dialog-stack.js")).mountDialogStack,
+  },
+  {
     selector: "[data-sk-button]",
     load: async () => (await import("../components/button.js")).mountButton,
   },
@@ -73,6 +81,10 @@ const registrations: readonly Registration[] = [
   },
   {
     /* Every FadeEdge: its scrollbars' thickness is measured even when it is not scroll-aware. */
+    selector: "[data-sk-scroll-hint]",
+    load: async () => (await import("../components/scroll-hint.js")).mountScrollHint,
+  },
+  {
     selector: "[data-sk-fade-edge]",
     load: async () => (await import("../components/fade-edge.js")).mountFadeEdge,
   },
@@ -119,6 +131,18 @@ const registrations: readonly Registration[] = [
   {
     selector: "[data-sk-carousel]",
     load: async () => (await import("../components/carousel.js")).mountCarousel,
+  },
+  {
+    selector: "[data-sk-video-player]",
+    load: async () => (await import("../components/video-player.js")).mountVideoPlayer,
+  },
+  {
+    selector: "[data-sk-audio-player]",
+    load: async () => (await import("../components/audio-player.js")).mountAudioPlayer,
+  },
+  {
+    selector: "[data-sk-compare-slider]",
+    load: async () => (await import("../components/compare-slider.js")).mountCompareSlider,
   },
   {
     selector: "[data-sk-resizable]",
@@ -309,6 +333,10 @@ const registrations: readonly Registration[] = [
   {
     selector: "[data-sk-canvas]",
     load: async () => (await import("../components/canvas.js")).mountCanvas,
+  },
+  {
+    selector: "[data-sk-image-cropper]",
+    load: async () => (await import("../components/image-cropper.js")).mountImageCropper,
   },
   {
     /*

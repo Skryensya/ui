@@ -61,6 +61,27 @@ export const splitButtonContract = {
   },
 
   signatures: {
+    SplitButtonVertical: {
+      intent: ["paired-vertical-actions", "zoom-in-and-out"],
+      host: { element: "div" },
+      pairs: [
+        { a: { slot: "first", option: "variant" }, b: { slot: "second", option: "variant" } },
+        { a: { slot: "first", option: "tone" }, b: { slot: "second", option: "tone" } },
+        { a: { slot: "first", option: "size" }, b: { slot: "second", option: "size" } },
+      ],
+      options: ["label"],
+      forward: ["id", "aria-*"],
+      slots: {
+        first: { accepts: "signature", of: ["Button.action"], required: true },
+        second: { accepts: "signature", of: ["Button.action"], required: true },
+      },
+      template: {
+        element: "div", part: "root", host: true,
+        attrs: { role: "group", "data-orientation": "vertical" },
+        children: [{ slot: "first" }, { slot: "second" }],
+      },
+      react: { from: "@skryensya/react/split-button", name: "SplitButtonVertical" },
+    },
     SplitButton: {
       intent: ["primary-action-with-alternatives", "default-plus-more", "save-and-save-as"],
       host: { element: "div" },

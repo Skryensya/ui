@@ -155,6 +155,8 @@ const explain = (option: string, values: readonly string[]) =>
   }
 
   .rz-collapse__bar {
+    /* The buttons arrive after hydration (see the island); the bar holds their height until then. */
+    min-block-size: var(--size-control-sm);
     display: flex;
     flex-wrap: wrap;
     align-items: center;

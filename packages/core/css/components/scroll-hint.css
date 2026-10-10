@@ -1,0 +1,75 @@
+/* A one-time explanatory nudge, not an infinite attention loop. Three cycles, then a static cue. */
+@layer components {
+  .sk-scroll-hint {
+    --sk-scroll-hint-fg: var(--color-text-secondary);
+    --sk-scroll-hint-gap: var(--space-inline-sm);
+    --sk-scroll-hint-size: 1.75rem;
+    --sk-scroll-hint-travel: var(--motion-distance-sm);
+
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sk-scroll-hint-gap);
+    color: var(--sk-scroll-hint-fg);
+    font-size: var(--font-size-body-sm);
+    line-height: var(--font-line-height-body);
+    pointer-events: none;
+  }
+
+  .sk-scroll-hint[hidden] { display: none; }
+
+  .sk-scroll-hint__indicator {
+    display: grid;
+    place-items: center;
+    flex: none;
+    inline-size: calc(var(--sk-scroll-hint-size) * 0.7);
+    block-size: var(--sk-scroll-hint-size);
+    box-sizing: border-box;
+    border: 1px solid color-mix(in oklab, currentColor 35%, transparent);
+    border-radius: var(--radius-pill);
+  }
+
+  .sk-scroll-hint__mark {
+    inline-size: calc(var(--sk-scroll-hint-size) / 5);
+    block-size: calc(var(--sk-scroll-hint-size) / 5);
+    border-inline-end: 1.5px solid currentColor;
+    border-block-end: 1.5px solid currentColor;
+    rotate: 45deg;
+    animation: sk-scroll-hint-vertical calc(var(--motion-emphasize-duration) * 4) var(--motion-emphasize-easing) 3;
+  }
+
+  .sk-scroll-hint[data-axis="horizontal"] .sk-scroll-hint__indicator {
+    inline-size: var(--sk-scroll-hint-size);
+    block-size: calc(var(--sk-scroll-hint-size) * 0.7);
+  }
+
+  .sk-scroll-hint[data-axis="horizontal"] .sk-scroll-hint__mark {
+    rotate: -45deg;
+    animation-name: sk-scroll-hint-horizontal;
+  }
+
+  .sk-scroll-hint[data-axis="horizontal"]:dir(rtl) .sk-scroll-hint__mark {
+    rotate: 135deg;
+    animation-name: sk-scroll-hint-horizontal-rtl;
+  }
+
+  @keyframes sk-scroll-hint-vertical {
+    0%, 100% { translate: 0 0; opacity: 0.7; }
+    50% { translate: 0 var(--sk-scroll-hint-travel); opacity: 1; }
+  }
+  @keyframes sk-scroll-hint-horizontal {
+    0%, 100% { translate: 0 0; opacity: 0.7; }
+    50% { translate: var(--sk-scroll-hint-travel) 0; opacity: 1; }
+  }
+  @keyframes sk-scroll-hint-horizontal-rtl {
+    0%, 100% { translate: 0 0; opacity: 0.7; }
+    50% { translate: calc(-1 * var(--sk-scroll-hint-travel)) 0; opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sk-scroll-hint .sk-scroll-hint__mark { animation: none; }
+  }
+  @media (forced-colors: active) {
+    .sk-scroll-hint { color: CanvasText; }
+    .sk-scroll-hint__indicator { border-color: CanvasText; }
+  }
+}

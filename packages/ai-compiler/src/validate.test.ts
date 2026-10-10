@@ -197,6 +197,27 @@ describe("the empty frame: the bug a static check used to bless", () => {
     expect(rules(tree)).toContain("ambiguous-exactly-one");
   });
 
+  it("counts a filled collection as a source, so a list of tracks is a sound on its own", () => {
+    const tree: UsageTree = {
+      contract: "audio-player",
+      signature: "AudioPlayer",
+      slots: { tracks: [{ options: { src: "/one.mp3" }, slots: { title: "One" } }] },
+    };
+
+    expect(rules(tree)).not.toContain("missing-exactly-one");
+  });
+
+  it("still rejects a list given beside a single source", () => {
+    const tree: UsageTree = {
+      contract: "audio-player",
+      signature: "AudioPlayer",
+      options: { src: "/solo.mp3" },
+      slots: { tracks: [{ options: { src: "/one.mp3" }, slots: { title: "One" } }] },
+    };
+
+    expect(rules(tree)).toContain("ambiguous-exactly-one");
+  });
+
   it("accepts either source on its own", () => {
     const withSrc: UsageTree = {
       contract: "image-frame",

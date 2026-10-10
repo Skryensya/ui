@@ -194,13 +194,18 @@
    * kept to a tint rather than a box, because a border on every flag name turns prose into a fence.
    */
   .sk-code {
-    padding-inline: 0.3em;
-    padding-block: 0.1em;
-    border-radius: var(--radius-xs, 0.25rem);
-    background: var(--color-surface-sunken, rgb(0 0 0 / 6%));
+    padding-inline: 0.35em;
+    padding-block: 0.12em;
+    border-radius: calc(var(--scale-radius-sm) * var(--radius-multiplier));
+    background: color-mix(in oklab, var(--color-border-default) 16%, transparent);
     color: var(--color-text-primary);
     font-family: var(--font-family-code);
     font-size: 0.9em;
+    letter-spacing: normal;
+    font-variant-ligatures: none;
     overflow-wrap: anywhere;
+    /* Keep the tint and inset on every fragment without turning prose into inline-block chips. */
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
   }
 }

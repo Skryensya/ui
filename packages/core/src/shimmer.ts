@@ -23,7 +23,6 @@ export const shimmerContract = {
     "--sk-shimmer-angle",
     "--sk-shimmer-color",
     "--sk-shimmer-duration",
-    "--sk-shimmer-position",
     "--sk-shimmer-spread",
     "--sk-shimmer-text-fill",
   ],

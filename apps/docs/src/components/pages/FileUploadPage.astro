@@ -28,7 +28,7 @@ const t = useTranslations(getLocale(Astro.url));
 ---
 
 <ComponentPageShell
-  title="FileUpload"
+  title="Drop zone"
   description={t("fileUploadPage.description")}
   contractId="file-upload"
   testFiles={[
@@ -44,19 +44,21 @@ const t = useTranslations(getLocale(Astro.url));
     {/* 31rem reserves the room two chosen files take, so adding them does not push the page. */}
     <UsagePreview
       tree={fileUploadTree(t)}
+      css={`.sk-file-upload { inline-size: min(100%, 30rem); margin-inline: auto; }`}
       title={t("fileUploadPage.basicTitle")}
       description={t("fileUploadPage.basicBody")}
-      stageMinBlockSize="31rem"
-      storybookTitle="Components/Forms/FileUpload"
+      stageMinBlockSize="26rem"
+      storybookTitle="Components/Forms/Drop zone"
       storybookStory="Default"
     />
     <h3>{t("fileUploadPage.pageDropTitle")}</h3>
     <p set:html={t("fileUploadPage.pageDropBody")} />
     <UsagePreview
       tree={fileUploadPageDropTree(t)}
+      css={`.sk-file-upload { inline-size: min(100%, 30rem); margin-inline: auto; }`}
       label={t("fileUploadPage.pageDropLabel")}
-      measure="28rem"
-      stageMinBlockSize="31rem"
+      measure="32rem"
+      stageMinBlockSize="26rem"
     />
 
     <h3>{t("component.contractNotesTitle")}</h3>

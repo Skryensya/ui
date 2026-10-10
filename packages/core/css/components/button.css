@@ -658,10 +658,20 @@
   /* Solid is the base above: strongest edge, full offset. Each quieter emphasis spends LESS of the
    * construction instead of dropping it, so the four stay distinguishable inside the appearance. */
 
-  /* SOFT: the same black, a shorter offset under the receding fill. */
+  /* SOFT: a quiet paper face, not a translucent wash. The plain soft fill is deliberately see-through,
+   * but under a brutalist black edge/offset that transparency makes the construction look dirty and
+   * accidental. Keep soft quieter through a shorter offset and a pale/tinted opaque face instead. */
   .sk-button[data-appearance="brutalist"][data-variant="soft"] {
+    --sk-button-bg: var(--color-bg-surface);
     --sk-button-brutalist-offset-inline: 4px;
     --sk-button-brutalist-offset-block: 4px;
+  }
+
+  .sk-button:not(:disabled):not([aria-disabled="true"])[data-appearance="brutalist"][data-variant="soft"]:is(
+      [data-tone="accent"],
+      [data-tone="danger"]
+    ) {
+    --sk-button-bg: color-mix(in oklab, var(--sk-button-accent) 14%, var(--color-bg-surface));
   }
 
   /* GHOST: still no body (the transparent fill comes from ghost itself, and aria-pressed can still
@@ -883,19 +893,14 @@
   }
 
   /*
-   * A WELDED BRUTALIST GROUP is one slab, not a row of blocks each throwing its own shadow sideways
-   * onto the next. Every welded member drops the INLINE offset and keeps the block one, so the group
-   * casts a single continuous block-end shadow, and a pressed segment travels straight down instead
-   * of sliding over its neighbour's seam (the same reason plain skips its squeeze when welded).
+   * A WELDED BRUTALIST GROUP still presses like a brutalist button: down and toward inline-end
+   * (mirrored in RTL). SplitButton owns the shared outer shadow; Button keeps the same diagonal
+   * face travel so the action feedback does not flatten into a plain vertical drop.
    *
    * The SEAM is one line, drawn by the member that welds on its start: the weld rules above clear
    * both touching edges, which leaves a flat group with no division at all once the edge is the
    * construction's own ink. The leading member's end stays clear, so the line is never doubled.
    */
-  .sk-button[data-appearance="brutalist"]:is([data-weld-start], [data-weld-end]) {
-    --sk-button-brutalist-offset-inline: 0px;
-  }
-
   .sk-button[data-appearance="brutalist"][data-weld-start] {
     border-inline-start-color: var(--sk-button-brutalist-edge);
   }

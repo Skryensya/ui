@@ -11,7 +11,7 @@
  * the live label, and paints the feedback flag.
  *
  * THE FLAG'S PLACEMENT IS NOT HERE. It is the Anclaje pattern (decision 25): the root also carries
- * `sk-anchor`, the flag also carries `sk-anchored` and asks for `inline-start`, and the arrow is the
+ * `sk-anchor`, the flag also carries `sk-anchored` and asks for `block-start`, and the arrow is the
  * pattern's own `sk-anchored-arrow`. Sides, flip, gap, z-index, the lost anchor and the arrow's
  * geometry all live in `patterns/anchored.css`; this file only says what colour and what size.
  */
@@ -36,6 +36,16 @@
     --sk-copy-button-feedback-font-size: var(--font-size-body-sm);
     --sk-copy-button-feedback-shadow: var(--elevation-raised);
     --sk-copy-button-feedback-wash: var(--elevation-wash-raised);
+  }
+
+  /* The host is an anchor for fixed descendants. A press scale/translate changes their containing
+   * block until the release transition settles, making feedback jump on its first visible frames.
+   * Keep the host stable; the icon-toggle faces and shared state layer still provide feedback.
+   * Match Button's guarded press specificity so this invariant also holds for physical skins. */
+  .sk-copy-button.sk-button[data-icon-only],
+  .sk-copy-button.sk-button[data-icon-only]:is(:hover, :active, :focus-visible):not(:disabled):not([aria-disabled="true"]):not([data-weld-start]):not([data-weld-end]) {
+    scale: none;
+    translate: none;
   }
 
   /*
@@ -69,7 +79,8 @@
   }
 
   /*
-   * THE FEEDBACK FLAG: what the click just did, said beside the button for one beat.
+   * THE FEEDBACK FLAG: what the click just did, said above the button for one beat.
+   * Inline-start would cover the adjacent value in Clipboard or an install-command row.
    *
    * Positioner and painted box are the SAME element, as in Popover: there is one word in here, and
    * a positioner whose only child was a content box would be anatomy with nothing in it. That is

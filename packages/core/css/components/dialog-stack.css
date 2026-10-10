@@ -1,0 +1,174 @@
+/* A single top-layer box owns the stack. Inactive panels retain only their surface, never their tab stops. */
+@layer components {
+  .sk-dialog-stack {
+    --sk-dialog-stack-gap: var(--space-stack-xs);
+    --sk-dialog-stack-inline-size: min(32rem, calc(100vi - var(--space-inset-lg) * 2));
+    --sk-dialog-stack-bg: var(--color-bg-surface-overlay);
+    --sk-dialog-stack-border-color: var(--color-border-subtle);
+    --sk-dialog-stack-radius: var(--radius-surface);
+    --sk-dialog-stack-padding: var(--space-inset-lg);
+    --sk-dialog-stack-elevation: var(--elevation-modal);
+    --sk-dialog-stack-backdrop-bg: color-mix(in oklch, var(--color-text-primary) 40%, transparent);
+  }
+
+  .sk-dialog-stack__body {
+    inline-size: var(--sk-dialog-stack-inline-size);
+    max-inline-size: none;
+    max-block-size: none;
+    overflow: visible;
+    margin: auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-text-primary);
+    isolation: isolate;
+    transform: scale(var(--motion-materialize-scale));
+    transition:
+      transform var(--motion-reveal-duration) var(--motion-reveal-easing),
+      overlay var(--motion-exit-duration) var(--motion-exit-easing) allow-discrete,
+      display var(--motion-exit-duration) var(--motion-exit-easing) allow-discrete;
+  }
+
+  .sk-dialog-stack__body[open] {
+    transform: scale(1);
+    transition-duration: var(--motion-reveal-duration);
+    transition-timing-function: var(--motion-reveal-easing);
+  }
+
+  .sk-dialog-stack__body::backdrop {
+    background: var(--sk-dialog-stack-backdrop-bg);
+    opacity: 0;
+    transition:
+      opacity var(--motion-exit-duration) var(--motion-exit-easing),
+      overlay var(--motion-exit-duration) var(--motion-exit-easing) allow-discrete,
+      display var(--motion-exit-duration) var(--motion-exit-easing) allow-discrete;
+  }
+
+  .sk-dialog-stack__body[open]::backdrop {
+    opacity: 1;
+    transition-duration: var(--motion-reveal-duration);
+    transition-timing-function: var(--motion-reveal-easing);
+  }
+
+  @starting-style {
+    .sk-dialog-stack__body[open] {
+      transform: none;
+    }
+
+    .sk-dialog-stack__body[open]::backdrop {
+      opacity: 0;
+    }
+  }
+
+  .sk-dialog-stack__content {
+    box-sizing: border-box;
+    position: absolute;
+    inset: 0;
+    padding: var(--sk-dialog-stack-padding);
+    border: 1px solid var(--sk-dialog-stack-border-color);
+    border-radius: var(--sk-dialog-stack-radius);
+    background: var(--sk-dialog-stack-bg);
+    box-shadow: var(--sk-dialog-stack-elevation);
+    transform: translateY(calc(-1 * min(var(--sk-dialog-stack-depth, 0), 3) * var(--sk-dialog-stack-gap))) scale(calc(1 - min(var(--sk-dialog-stack-depth, 0), 3) * 0.04));
+    transform-origin: center top;
+    /* Only the surfaces move: opaque cards and immediate text changes avoid ghosted headings. */
+    transition: transform var(--motion-reveal-duration) var(--motion-reveal-easing);
+  }
+
+  .sk-dialog-stack__content[data-state="active"] {
+    position: relative;
+    z-index: 1;
+    /* Leave room for the three receding surfaces, even in landscape and with browser chrome visible. */
+    max-block-size: calc(100dvb - var(--space-inset-xl) * 2 - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    overflow: auto;
+    overscroll-behavior: contain;
+    overflow-wrap: anywhere;
+    outline: none;
+  }
+
+  .sk-dialog-stack__content[data-state="previous"] {
+    pointer-events: none;
+    color: transparent;
+    z-index: calc(-1 * var(--sk-dialog-stack-depth, 0));
+  }
+
+  .sk-dialog-stack__content[data-state="previous"] > *,
+  .sk-dialog-stack__content[data-state="upcoming"] > * {
+    visibility: hidden;
+  }
+
+  .sk-dialog-stack__content[data-state="upcoming"] {
+    /* Prepare a short entrance below the stack without painting an overlapping outgoing step. */
+    transform: translateY(var(--motion-enter-distance)) scale(var(--motion-materialize-scale));
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .sk-dialog-stack__header {
+    display: grid;
+    gap: var(--space-stack-sm);
+  }
+
+  .sk-dialog-stack__title {
+    margin: 0;
+    font-family: inherit;
+    font-size: var(--font-size-heading-h3);
+    line-height: var(--font-line-height-heading-h3);
+    font-weight: var(--font-weight-label);
+    text-wrap: balance;
+  }
+
+  .sk-dialog-stack__description {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-body-sm);
+    line-height: var(--font-line-height-body-sm);
+    text-wrap: pretty;
+  }
+
+  .sk-dialog-stack__footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: end;
+    gap: var(--space-inline-sm);
+    margin-block-start: var(--space-stack-lg);
+  }
+
+  /* Keyboard navigation never waits for motion; pointer transitions remain interruptible. */
+  .sk-dialog-stack[data-motion="instant"] .sk-dialog-stack__body,
+  .sk-dialog-stack[data-motion="instant"] .sk-dialog-stack__body::backdrop,
+  .sk-dialog-stack[data-motion="instant"] .sk-dialog-stack__content,
+  .sk-dialog-stack[data-motion="instant"] .sk-dialog-stack__content > * {
+    transition: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sk-dialog-stack__body,
+    .sk-dialog-stack__body[open] {
+      transform: none;
+    }
+
+    @starting-style {
+      .sk-dialog-stack__body[open] {
+        transform: none;
+      }
+    }
+
+    .sk-dialog-stack__content {
+      transition: none;
+    }
+
+    .sk-dialog-stack__content[data-state="upcoming"] {
+      transform: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .sk-dialog-stack__content {
+      border-color: CanvasText;
+      background: Canvas;
+      color: CanvasText;
+      box-shadow: none;
+    }
+  }
+}

@@ -25,9 +25,9 @@ const expectedOrder = [
 
 /* Component names as the rail shows them, by category. Two entries the brief did not place sit where a reader would look first. */
 const expected: Record<(typeof expectedOrder)[number], readonly string[]> = {
-  actions: ["AppBar", "Button", "Clipboard", "CommandPalette", "Menu", "Menubar", "SplitButton", "StateButton", "Toolbar"],
+  actions: ["AppBar", "Button", "Clipboard", "CommandPalette", "Dock", "Menu", "Menubar", "SplitButton", "StateButton", "Toolbar"],
   forms: [
-    "Calendar", "Checkbox", "ColorPicker", "Combobox", "DatePicker", "Editor", "FileUpload", "FormField", "Input", "Listbox",
+    "Calendar", "Checkbox", "ColorPicker", "Combobox", "DatePicker", "Editor", "Drop zone", "FormField", "Input", "Listbox",
     "NumberField", "OtpInput", "PasswordInput", "Questionnaire", "RadioGroup", "SegmentedControl", "Select", "Slider", "Switch",
     "TagsInput", "TimeField", "UserSelect",
   ],
@@ -37,9 +37,9 @@ const expected: Record<(typeof expectedOrder)[number], readonly string[]> = {
   identity: ["Avatar", "Badge", "Expressive Avatar", "Icon", "Tag"],
   surfaces: ["Accordion", "Card", "Changelog", "CommentThread", "Feed", "Folder", "List", "Message", "Procedure", "Tile", "Timeline", "TreeView"],
   feedback: ["Callout", "EmptyState", "Loader", "Placeholder", "Progress", "Toast"],
-  overlays: ["Dialog", "Drawer", "Popover", "Tooltip", "Tour", "Vaul", "Window"],
+  overlays: ["Dialog", "Dialog Stack", "Drawer", "Popover", "Tooltip", "Tour", "Vaul", "Window"],
   layout: ["AppShell", "Box", "Footer", "Grid", "Hero", "Inline", "Layout Grid", "Resizable", "Scroll Expand", "Scroll Stack", "Separator", "Stack", "Wrapper"],
-  media: ["Canvas", "Carousel", "Diagram", "ImageFrame", "Lightbox", "Marquee", "MediaOverlay", "Morph Stack", "QRCode", "Sticker"],
+  media: ["Canvas", "Carousel", "Compare Slider", "Diagram", "Image Cropper", "ImageFrame", "Lightbox", "Marquee", "MediaOverlay", "Morph Stack", "QRCode", "Sticker", "Video Player", "Audio Player"],
   utilities: ["FadeEdge", "Hotkey", "Presence", "Scrollbar"],
 };
 

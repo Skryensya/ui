@@ -1,0 +1,689 @@
+/* The controls are icon-only `sk-button`s and the playlist is a List; they bring their own sheets. */
+@import url("./button.css");
+@import url("./list.css");
+@import url("../patterns/icon-toggle.css");
+
+/*
+ * TIER 3, AUDIO PLAYER
+ *
+ * A skin over a real `<audio>`. See `@skryensya/core/audio-player` for why each control is what it is; this sheet owns the
+ * frame, the seek bar (a plain track or a waveform), the playlist and the two layouts.
+ *
+ * A SURFACE, NOT A SCREEN. The video player is always dark because it frames a moving picture; a sound has no picture to
+ * protect, so this one reads the page's own surface tokens and follows its mode.
+ *
+ * THE STATE IS THE ROOT'S, as in the video player: the controller writes `data-playing`, `data-ended`, `data-waiting`,
+ * `data-muted`, `data-scrubbing`, `data-wave`, `data-has-previous` and `data-has-next`, and the faces of a toggle and the
+ * marks of the list are selectors on those. What MOVES (the fills, the thumb, the waveform's clip, the volume level, the time
+ * under the pointer) is written inline on the one element it affects, never as a custom property on the root: see
+ * `media-progress.ts` for why, in measured numbers.
+ *
+ * THE FILLS ARE SCALED from the bar's start edge, not resized, so moving one needs no layout; the track clips them, so its
+ * rounded ends stay round. The waveform's played half is the same bars drawn twice and clipped, so the colour change cuts a
+ * bar in two instead of snapping between bars.
+ *
+ * Every hook resolves to a TIER-2 token, never a palette or raw color; scripts/lint.ts enforces it.
+ */
+@layer components {
+  .sk-audio-player {
+    --sk-audio-player-bg: var(--color-bg-surface);
+    --sk-audio-player-fg: var(--color-text-primary);
+    --sk-audio-player-radius: var(--radius-surface);
+    --sk-audio-player-padding: var(--space-inset-md);
+    --sk-audio-player-cover-size: 4.5rem;
+    --sk-audio-player-track-color: color-mix(in oklch, var(--sk-audio-player-fg) 16%, transparent);
+    --sk-audio-player-buffered-color: color-mix(in oklch, var(--sk-audio-player-fg) 28%, transparent);
+    --sk-audio-player-played-color: var(--color-action-accent);
+    /* The mark on the row that is loaded: the bar at its start. */
+    --sk-audio-player-item-accent: var(--sk-audio-player-played-color);
+    --sk-audio-player-track-size: 0.25rem;
+    --sk-audio-player-thumb-size: 0.875rem;
+    --sk-audio-player-volume-width: 6rem;
+    --sk-audio-player-wave-height: 2.5rem;
+    --sk-audio-player-bar-gap: 2px;
+    --sk-audio-player-bar-width: 0.375rem;
+
+    position: relative;
+    display: grid;
+    gap: var(--space-stack-sm) var(--space-inline-md);
+    grid-template-columns: minmax(0, 1fr);
+    inline-size: 100%;
+    min-inline-size: 0;
+    padding: var(--sk-audio-player-padding);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--sk-audio-player-radius);
+    background: var(--sk-audio-player-bg);
+    color: var(--sk-audio-player-fg);
+  }
+
+  /* Focus lands here by script or by a press, to give the keys somewhere to go; it is not a stop, so it draws no ring. */
+  .sk-audio-player:focus {
+    outline: none;
+  }
+
+  /* The audio element has no picture and no native bar. */
+  .sk-audio-player > audio {
+    display: none;
+  }
+
+  /* BAR: the cover, when there is one, sits beside the words and the controls. */
+  .sk-audio-player:has(> .sk-audio-player__cover[src]:not([hidden])) {
+    grid-template-columns: var(--sk-audio-player-cover-size) minmax(0, 1fr);
+  }
+
+  .sk-audio-player__cover {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    inline-size: var(--sk-audio-player-cover-size);
+    block-size: var(--sk-audio-player-cover-size);
+    border-radius: var(--radius-control);
+    background: var(--color-bg-surface-sunken);
+    object-fit: cover;
+  }
+
+  /* A cover with no picture to show (a list's track without one) draws nothing, not a broken image. */
+  .sk-audio-player__cover:is(:not([src]), [hidden]) {
+    display: none;
+  }
+
+  .sk-audio-player__meta {
+    display: grid;
+    min-inline-size: 0;
+  }
+
+  .sk-audio-player__title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: var(--font-weight-emphasis);
+  }
+
+  .sk-audio-player__artist {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: var(--font-size-caption);
+    color: var(--color-text-secondary);
+  }
+
+  .sk-audio-player__artist[hidden] {
+    display: none;
+  }
+
+  /* The seek bar and the buttons are two things, so they sit a full step apart; the words above belong to the bar and keep to it. */
+  .sk-audio-player__controls {
+    display: grid;
+    gap: var(--space-stack-sm);
+    min-inline-size: 0;
+  }
+
+  /* With a cover, every row except the cover takes the second column. */
+  .sk-audio-player:has(> .sk-audio-player__cover[src]:not([hidden])) > :is(.sk-audio-player__meta, .sk-audio-player__controls) {
+    grid-column: 2;
+  }
+
+  .sk-audio-player:has(> .sk-audio-player__cover[src]:not([hidden])) > .sk-audio-player__list {
+    grid-column: 1 / -1;
+  }
+
+  /* CARD: the cover is the head of a column. */
+  .sk-audio-player[data-variant="card"] {
+    /*
+     * NOT A BOX. The card is a column (cover, words, controls, list) that sits on the page's own surface: no plate, no
+     * border, no corners and no padding around it, so it can be dropped into any layout without a frame inside a frame. The
+     * hooks stay the way back for whoever wants the plate (`--sk-audio-player-bg`, `-padding`, `-radius`).
+     */
+    --sk-audio-player-padding: 0px;
+    --sk-audio-player-bg: transparent;
+    --sk-audio-player-radius: 0px;
+
+    border: 0;
+
+    /* The cover is large, so the words under it are a step further from it than the strip's rows are from each other. */
+    gap: var(--space-stack-md);
+    grid-template-columns: minmax(0, 1fr);
+    max-inline-size: 22rem;
+  }
+
+  .sk-audio-player[data-variant="card"]:has(> .sk-audio-player__cover[src]:not([hidden])) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sk-audio-player[data-variant="card"] > .sk-audio-player__cover {
+    grid-column: 1;
+    grid-row: auto;
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 1;
+    border-radius: var(--radius-surface);
+  }
+
+  .sk-audio-player[data-variant="card"] > :is(.sk-audio-player__meta, .sk-audio-player__controls, .sk-audio-player__list),
+  .sk-audio-player[data-variant="card"]:has(> .sk-audio-player__cover[src]:not([hidden])) > :is(.sk-audio-player__meta, .sk-audio-player__controls, .sk-audio-player__list) {
+    grid-column: 1;
+  }
+
+  .sk-audio-player[data-variant="card"] .sk-audio-player__title {
+    font-size: var(--font-size-heading-h4);
+  }
+
+  /*
+   * THE CARD'S BAR is two rows by design, not by overflow: the transport (previous, back, play, forward, next) centred on the
+   * first, and the clock, the speed and the volume on a second one, the clock at the start and the other two at the end. The
+   * spacer becomes the line break between them.
+   */
+  .sk-audio-player[data-variant="card"] .sk-audio-player__bar {
+    justify-content: center;
+    row-gap: var(--space-stack-xs);
+  }
+
+  .sk-audio-player[data-variant="card"] .sk-audio-player__bar > :not(.sk-audio-player__time, .sk-audio-player__spacer, .sk-audio-player__volume, [data-audio-action="speed"]) {
+    order: 1;
+  }
+
+  .sk-audio-player[data-variant="card"] .sk-audio-player__spacer {
+    order: 2;
+    flex: 0 0 100%;
+    block-size: 0;
+  }
+
+  .sk-audio-player[data-variant="card"] .sk-audio-player__time {
+    order: 3;
+    margin-inline: 0 auto;
+  }
+
+  .sk-audio-player[data-variant="card"] .sk-audio-player__bar > [data-audio-action="speed"],
+  .sk-audio-player[data-variant="card"] .sk-audio-player__volume {
+    order: 4;
+  }
+
+  /* THE SEEK BAR. A tall hit area around a thin track that grows under the pointer, the keys or a drag. */
+  .sk-audio-player__seek {
+    position: relative;
+    block-size: var(--space-inset-md);
+    display: grid;
+    align-items: center;
+    cursor: pointer;
+    touch-action: none;
+    outline: none;
+    /* The thumb is placed in `cqw` (a share of THIS box's width) by the controller, so moving it needs no layout and no custom property. */
+    container-type: inline-size;
+  }
+
+  .sk-audio-player__track {
+    position: relative;
+    block-size: var(--sk-audio-player-track-size);
+    border-radius: var(--radius-pill);
+    background: var(--sk-audio-player-track-color);
+    overflow: clip;
+    transition: block-size var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  .sk-audio-player__seek:is(:hover, :focus-visible) > .sk-audio-player__track,
+  .sk-audio-player[data-scrubbing] .sk-audio-player__track {
+    block-size: calc(var(--sk-audio-player-track-size) * 1.75);
+  }
+
+  .sk-audio-player__buffered,
+  .sk-audio-player__played {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+  }
+
+  /*
+   * THE FILLS ARE SCALED, NOT RESIZED. Each is a full-width bar the controller scales from the bar's start edge (`scale` inline,
+   * once per pixel it moves): that is a compositor-only change, where resizing a width relaid the page out on every frame. The
+   * track clips them, so the rounded ends stay round.
+   */
+  .sk-audio-player__buffered,
+  .sk-audio-player__played {
+    inline-size: 100%;
+    scale: 0 1;
+    transform-origin: 0 50%;
+  }
+
+  .sk-audio-player__seek:dir(rtl) :is(.sk-audio-player__buffered, .sk-audio-player__played) {
+    transform-origin: 100% 50%;
+  }
+
+  .sk-audio-player__buffered {
+    background: var(--sk-audio-player-buffered-color);
+  }
+
+  .sk-audio-player__played {
+    background: var(--sk-audio-player-played-color);
+  }
+
+  /* THE WAVEFORM replaces the track once the controller has drawn peaks; before that, and without peaks, the track is the bar. */
+  .sk-audio-player__wave {
+    display: none;
+  }
+
+  .sk-audio-player[data-wave] .sk-audio-player__seek {
+    block-size: var(--sk-audio-player-wave-height);
+  }
+
+  .sk-audio-player[data-wave] .sk-audio-player__track {
+    display: none;
+  }
+
+  .sk-audio-player[data-wave] .sk-audio-player__wave {
+    display: block;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .sk-audio-player__wave-bars,
+  .sk-audio-player__wave-fill {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--sk-audio-player-bar-gap);
+  }
+
+  .sk-audio-player__wave-bars > span,
+  .sk-audio-player__wave-fill > span {
+    flex: 1 1 0;
+    min-inline-size: 0;
+    max-inline-size: var(--sk-audio-player-bar-width);
+    block-size: max(calc(var(--sk-audio-player-peak, 0) * 100%), 2px);
+    border-radius: var(--radius-pill);
+  }
+
+  .sk-audio-player__wave-bars > span {
+    background: var(--sk-audio-player-track-color);
+  }
+
+  .sk-audio-player__wave-fill > span {
+    background: var(--sk-audio-player-played-color);
+  }
+
+  /* The played half is a clip of the second set of bars (the controller writes the clip inline), so it follows the fraction without moving a node. Nothing is played until it says so. */
+  .sk-audio-player__wave-fill {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  .sk-audio-player__seek:dir(rtl) .sk-audio-player__wave-fill {
+    clip-path: inset(0 0 0 100%);
+  }
+
+  /* The thumb is there for the keys and the pointer; at rest it is gone. */
+  .sk-audio-player__thumb {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 0;
+    inline-size: var(--sk-audio-player-thumb-size);
+    block-size: var(--sk-audio-player-thumb-size);
+    border-radius: var(--radius-pill);
+    background: var(--sk-audio-player-played-color);
+    translate: -50% -50%;
+    scale: 0;
+    pointer-events: none;
+    transition: scale var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  .sk-audio-player__seek:dir(rtl) > .sk-audio-player__thumb {
+    translate: 50% -50%;
+  }
+
+  .sk-audio-player__seek:is(:hover, :focus-visible) > .sk-audio-player__thumb,
+  .sk-audio-player[data-scrubbing] .sk-audio-player__thumb {
+    scale: 1;
+  }
+
+  .sk-audio-player__seek:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+    border-radius: var(--radius-control);
+  }
+
+  /* The time under the pointer. Kept inside the bar at both ends so it never clips. */
+  .sk-audio-player__tip {
+    position: absolute;
+    inset-block-end: calc(100% + var(--space-inset-xs));
+    /* Where the pointer is: the controller writes this inline while hovering. */
+    inset-inline-start: 1.5rem;
+    translate: -50% 0;
+    padding: var(--space-inset-xs) var(--space-inset-sm);
+    border-radius: var(--radius-control);
+    background: var(--color-bg-surface-raised);
+    box-shadow: var(--elevation-flat);
+    font-size: var(--font-size-caption);
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  .sk-audio-player__seek:dir(rtl) > .sk-audio-player__tip {
+    translate: 50% 0;
+  }
+
+  .sk-audio-player__seek:hover > .sk-audio-player__tip,
+  .sk-audio-player[data-scrubbing] .sk-audio-player__tip {
+    opacity: 1;
+  }
+
+  /* THE BUTTONS. */
+  .sk-audio-player__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-inline-sm);
+    min-inline-size: 0;
+  }
+
+  /*
+   * THE TRANSPORT IS ALWAYS ROUND. Play, previous and next take the pill as their radius, set on the button itself, so no radius
+   * setting or appearance reshapes the controls the player is for. Play also gets a little more air than its neighbours, since
+   * it is what the eye lands on.
+   */
+  .sk-audio-player :is([data-audio-action="play"], [data-audio-action="previous"], [data-audio-action="next"]) {
+    --sk-button-radius: var(--radius-pill);
+  }
+
+  .sk-audio-player [data-audio-action="play"] {
+    margin-inline: var(--space-inline-xs);
+  }
+
+  .sk-audio-player__spacer {
+    flex: 1;
+  }
+
+  /*
+   * Previous and next stay out of a player with nothing to go to. `!important` on purpose: the icon-toggle pattern sets its
+   * own display outside any cascade layer, which beats a layered `[hidden]` rule however specific it is, and a button that is
+   * hidden but drawn is a button that does nothing.
+   */
+  .sk-audio-player .sk-audio-player__control[hidden] {
+    display: none !important;
+  }
+
+  .sk-audio-player__time {
+    display: inline-flex;
+    gap: var(--space-inline-xs);
+    /* A little air from the transport it follows; the card, where the clock opens its own row, takes it back so it lines up with the left edge. */
+    margin-inline-start: var(--space-inline-xs);
+    font-size: var(--font-size-caption);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .sk-audio-player__duration {
+    color: var(--color-text-secondary);
+  }
+
+  .sk-audio-player__duration::before {
+    content: "/";
+    margin-inline-end: var(--space-inline-xs);
+  }
+
+  .sk-audio-player__speed {
+    font-size: var(--font-size-caption);
+    font-variant-numeric: tabular-nums;
+    min-inline-size: 2.5ch;
+  }
+
+  /*
+   * VOLUME IS A VERTICAL POPUP, NOT A GROWING ROW. The slider used to fold open beside the button, which pushed every control
+   * after it along the bar each time the pointer passed over (layout shift on a control people reach for constantly). Now the
+   * bar never changes: a column slider sits on a small surface above the button, out of flow, and only fades in. Silence is the
+   * bottom. The surface is the wrapper's own `::before`, so the slider stays exactly the track the pointer arithmetic measures.
+   * `--sk-audio-player-volume-width` is the slider's LENGTH (its height now); the name is kept so no consumer's override breaks.
+   */
+  .sk-audio-player__volume {
+    --sk-audio-player-volume-pad: var(--space-inset-sm);
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .sk-audio-player__volume::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    inset-block-end: 100%;
+    inset-inline-start: 50%;
+    translate: -50% 0;
+    inline-size: calc(var(--space-inset-md) + var(--sk-audio-player-volume-pad) * 2);
+    block-size: calc(var(--sk-audio-player-volume-width) + var(--sk-audio-player-volume-pad) * 2);
+    /* The gap between the surface and the button is a transparent border, so the pointer travelling across it is still over the wrapper and the popup does not close under it. */
+    border-block-end: var(--space-inset-xs) solid transparent;
+    border-radius: var(--radius-control);
+    background: var(--color-bg-surface-raised);
+    background-clip: padding-box;
+    box-shadow: var(--elevation-overlay);
+    box-sizing: content-box;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity var(--motion-state-change-duration) var(--motion-state-change-easing),
+      visibility 0s linear var(--motion-state-change-duration);
+  }
+
+  .sk-audio-player__volume-slider {
+    position: absolute;
+    z-index: 2;
+    inset-block-end: calc(100% + var(--space-inset-xs) + var(--sk-audio-player-volume-pad));
+    inset-inline-start: 50%;
+    translate: -50% 0;
+    inline-size: var(--space-inset-md);
+    block-size: var(--sk-audio-player-volume-width);
+    opacity: 0;
+    visibility: hidden;
+    overflow: clip;
+    cursor: pointer;
+    touch-action: none;
+    outline: none;
+    transition:
+      opacity var(--motion-state-change-duration) var(--motion-state-change-easing),
+      visibility 0s linear var(--motion-state-change-duration);
+  }
+
+  .sk-audio-player__volume:is(:hover, :focus-within)::before,
+  .sk-audio-player__volume:is(:hover, :focus-within) > .sk-audio-player__volume-slider {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+
+  .sk-audio-player__volume-slider::before,
+  .sk-audio-player__volume-fill {
+    content: "";
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-start: 50%;
+    inline-size: var(--sk-audio-player-track-size);
+    translate: -50% 0;
+    border-radius: var(--radius-pill);
+  }
+
+  .sk-audio-player__volume-slider::before {
+    block-size: 100%;
+    background: var(--sk-audio-player-track-color);
+  }
+
+  /* The level is a vertical `scale` from the bottom, written inline when the volume changes. */
+  .sk-audio-player__volume-fill {
+    block-size: 100%;
+    transform-origin: 50% 100%;
+    background: var(--sk-audio-player-fg);
+  }
+
+  .sk-audio-player__volume-slider:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+    border-radius: var(--radius-pill);
+  }
+
+  /* WHICH FACE OF A TOGGLE IS LIT. The sheet reads the root's state, so no script has to name a face. */
+  .sk-audio-player:not([data-playing], [data-ended]) [data-audio-action="play"] > [data-face="play"],
+  .sk-audio-player[data-playing] [data-audio-action="play"] > [data-face="pause"],
+  .sk-audio-player[data-ended] [data-audio-action="play"] > [data-face="replay"],
+  .sk-audio-player:not([data-muted]) [data-audio-action="mute"] > [data-face="volume"],
+  .sk-audio-player[data-muted] [data-audio-action="mute"] > [data-face="muted"],
+  .sk-audio-player [data-audio-action="previous"] > [data-face="previous"],
+  .sk-audio-player [data-audio-action="next"] > [data-face="next"] {
+    --sk-icon-toggle-on: 1;
+  }
+
+  /* BUFFERING. The play button says it with a pulse, since the sound has no picture to put a spinner on. */
+  .sk-audio-player[data-waiting] [data-audio-action="play"] {
+    opacity: 0.6;
+  }
+
+  /*
+   * THE PLAYLIST IS A LIST. The markup carries List's classes, so the rows are List's: a button that is the whole row, square
+   * corners, a hairline between rows, the state layer for hover and focus. What this sheet adds is only what a track has that a
+   * list row does not: its number, drawn by a counter so the markup has nothing to keep in order, and the mark on the one that
+   * is loaded, a bar at the start plus a heavier title, so it is told apart by more than colour.
+   */
+  /* Each rule below is one class deeper than List's own (`.sk-list`, `.sk-list__action`, `.sk-list__leading:empty`), so the result does not depend on which sheet the page happened to load last. */
+  .sk-audio-player > .sk-audio-player__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: sk-audio-track;
+    border-block-start: 1px solid var(--sk-list-divider-color);
+    /* The player's padding frames the controls; the list runs to the box's edges, where a row's divider belongs. */
+    margin-inline: calc(var(--sk-audio-player-padding) * -1);
+    margin-block-end: calc(var(--sk-audio-player-padding) * -1);
+  }
+
+  .sk-audio-player__item {
+    counter-increment: sk-audio-track;
+  }
+
+  .sk-audio-player__item > .sk-audio-player__item-button {
+    /* A bar of the same width on every row, transparent but the loaded one, so choosing a track never moves a title. */
+    border-inline-start: 3px solid transparent;
+    padding-inline-start: calc(var(--sk-list-row-padding-x) - 3px);
+  }
+
+  .sk-audio-player__item:last-child > .sk-audio-player__item-button {
+    border-end-start-radius: var(--sk-audio-player-radius);
+    border-end-end-radius: var(--sk-audio-player-radius);
+  }
+
+  .sk-audio-player .sk-audio-player__item-leading:empty {
+    display: inline-flex;
+    min-inline-size: 1.5ch;
+  }
+
+  .sk-audio-player .sk-audio-player__item-leading::before {
+    content: counter(sk-audio-track);
+    font-size: var(--font-size-caption);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sk-audio-player__item[data-current] > .sk-audio-player__item-button {
+    border-inline-start-color: var(--sk-audio-player-item-accent);
+    background: var(--color-bg-surface-sunken);
+  }
+
+  .sk-audio-player__item[data-current] .sk-audio-player__item-title {
+    font-weight: var(--font-weight-emphasis);
+  }
+
+  .sk-audio-player__item[data-current] .sk-audio-player__item-leading {
+    color: var(--sk-audio-player-item-accent);
+  }
+
+  /*
+   * THE MINIMAL PLAYER: one row, a play button, the seek bar and the clock. Nothing else is in the markup, so nothing here
+   * hides anything; the row only has to give the bar the space the other two leave.
+   */
+  .sk-audio-player[data-variant="minimal"] {
+    --sk-audio-player-padding: var(--space-inset-sm);
+
+    display: flex;
+    align-items: center;
+    gap: var(--space-inline-sm);
+  }
+
+  .sk-audio-player[data-variant="minimal"] > .sk-audio-player__seek {
+    flex: 1 1 0;
+    min-inline-size: 4rem;
+  }
+
+  .sk-audio-player[data-variant="minimal"] > .sk-audio-player__time {
+    flex: none;
+  }
+
+  /*
+   * WITH A NAME, the row becomes a small grid: play and the clock span both lines, the name sits over the bar. Still one row of
+   * controls, now with the context of what is playing; without a name none of this applies and the flex row above is the layout.
+   */
+  .sk-audio-player[data-variant="minimal"]:has(> .sk-audio-player__title) {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "play title time"
+      "play seek time";
+    column-gap: var(--space-inline-md);
+    row-gap: var(--space-stack-2xs);
+  }
+
+  .sk-audio-player[data-variant="minimal"] > [data-audio-action="play"] {
+    grid-area: play;
+  }
+
+  .sk-audio-player[data-variant="minimal"] > .sk-audio-player__title {
+    grid-area: title;
+    align-self: end;
+    min-inline-size: 0;
+    font-size: var(--font-size-body-sm);
+    line-height: var(--font-line-height-body);
+  }
+
+  .sk-audio-player[data-variant="minimal"]:has(> .sk-audio-player__title) > .sk-audio-player__seek {
+    grid-area: seek;
+  }
+
+  .sk-audio-player[data-variant="minimal"]:has(> .sk-audio-player__title) > .sk-audio-player__time {
+    grid-area: time;
+    align-self: center;
+    margin-inline-start: 0;
+  }
+
+  .sk-audio-player[data-variant="minimal"] > .sk-audio-player__time {
+    margin-inline-start: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sk-audio-player__track,
+    .sk-audio-player__thumb,
+    .sk-audio-player__tip,
+    .sk-audio-player__volume::before,
+    .sk-audio-player__volume-slider {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .sk-audio-player__track,
+    .sk-audio-player__volume-slider::before,
+    .sk-audio-player__wave-bars > span {
+      background: CanvasText;
+    }
+
+    .sk-audio-player__played,
+    .sk-audio-player__thumb,
+    .sk-audio-player__wave-fill > span {
+      background: Highlight;
+    }
+
+    .sk-audio-player__buffered,
+    .sk-audio-player__volume-fill {
+      background: GrayText;
+    }
+
+    .sk-audio-player__item[data-current] > .sk-audio-player__item-button {
+      border-inline-start-color: Highlight;
+    }
+  }
+}

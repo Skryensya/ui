@@ -15,6 +15,7 @@
  */
 
 @import url("../patterns/splitter.css");
+@import url("../patterns/grip.css");
 
 @layer components {
   .sk-sidebar {
@@ -392,6 +393,26 @@
 
   .sk-sidebar[data-resizing] .sk-sidebar__resize-handle::before {
     background: var(--sk-sidebar-resize-active-color);
+  }
+
+  /*
+   * THE THUMB (`patterns/grip.css`) rides the edge, flush INSIDE it: the root clips, so a thumb centred on the border
+   * would lose its outer half. It is not on screen at rest and comes up with the pointer, the keyboard focus and
+   * the drag, the same moments the line itself escalates.
+   */
+  .sk-sidebar__resize-grip {
+    inset-inline: auto 0;
+    translate: 0 -50%;
+  }
+
+  .sk-sidebar[data-side="end"] .sk-sidebar__resize-grip {
+    inset-inline: 0 auto;
+  }
+
+  .sk-sidebar__resize-handle:is(:hover, :focus-visible, [data-dragging]),
+  .sk-sidebar[data-resizing] .sk-sidebar__resize-handle {
+    --sk-grip-opacity: 1;
+    --sk-grip-scale: 1;
   }
 
   /* A collapsed rail has no width to negotiate: the trigger is what widens it again. */

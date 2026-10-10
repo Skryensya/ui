@@ -947,8 +947,15 @@ function checkRequiresForbids(
   }
 
   // Slots count as sources too: a frame takes its media as a `src` option or as authored children,
-  // and "exactly one source" is the rule either way.
-  const filled = new Set([...given, ...Object.keys(slotsOf(tree)).filter((slot) => slotItems(slotsOf(tree)[slot]).length > 0)]);
+  // and "exactly one source" is the rule either way. A COLLECTION is a source as well (an audio player
+  // takes `src`, a list of `tracks`, or children): `slotItems` filters entries out, so without
+  // `collectionItems` a filled list read as empty and the rule reported that nothing was given.
+  const filled = new Set([
+    ...given,
+    ...Object.keys(slotsOf(tree)).filter(
+      (slot) => slotItems(slotsOf(tree)[slot]).length > 0 || collectionItems(slotsOf(tree)[slot]).length > 0,
+    ),
+  ]);
 
   for (const group of signature.exactlyOneOf ?? []) {
     const supplied = group.filter((name) => filled.has(name));

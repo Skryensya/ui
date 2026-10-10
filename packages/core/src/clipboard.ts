@@ -37,7 +37,7 @@ export const clipboardParts = {
   face: "sk-copy-button__icon",
   /** Visually hidden, polite: says "Copied" or "Copy failed" once. */
   status: "sk-copy-button__label",
-  /** The small flag beside the button, anchored to it. Decorative: `status` is what is announced. */
+  /** The small flag above the button, anchored to it. Decorative: `status` is what is announced. */
   feedback: "sk-copy-button__feedback",
 } as const;
 
@@ -142,7 +142,7 @@ const faces = [
     part: "feedback",
     also: ["sk-anchored"],
     mount: clipboardAttrs.feedback,
-    attrs: { "data-sk-placement": "inline-start", "aria-hidden": "true" },
+    attrs: { "data-sk-placement": "block-start", "aria-hidden": "true" },
     children: [
       { element: "span", attrs: { [clipboardAttrs.feedbackText]: "copied" }, textFromOption: "copiedLabel" },
       { element: "span", attrs: { [clipboardAttrs.feedbackText]: "error" }, textFromOption: "errorLabel" },

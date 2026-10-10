@@ -19,6 +19,21 @@ describe("CommandPalette", () => {
     expect(brutalist.container.querySelector("dialog")?.getAttribute("data-appearance")).toBe("brutalist");
   });
 
+  it("gives each palette instance its own controlled listbox", () => {
+    const ui = render(
+      <>
+        <CommandPalette id="global-cmd" items={items} label="Buscar" open />
+        <CommandPalette id="component-cmd" items={items} label="Buscar componentes" open />
+      </>,
+    );
+
+    const inputs = ui.container.querySelectorAll<HTMLInputElement>("input[role='combobox']");
+    expect(inputs[0]!.getAttribute("aria-controls")).toBe("global-cmd-listbox");
+    expect(inputs[1]!.getAttribute("aria-controls")).toBe("component-cmd-listbox");
+    expect(ui.container.querySelectorAll("#global-cmd-listbox")).toHaveLength(1);
+    expect(ui.container.querySelectorAll("#component-cmd-listbox")).toHaveLength(1);
+  });
+
   it("claims nothing at rest: no options and no expanded popup", () => {
     const ui = render(<CommandPalette id="cmd" items={items} label="Buscar" open />);
     const input = open(ui);

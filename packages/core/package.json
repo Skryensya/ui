@@ -92,6 +92,30 @@
       "types": "./src/tag.ts",
       "default": "./src/tag.ts"
     },
+    "./video-player": {
+      "types": "./src/video-player.ts",
+      "default": "./src/video-player.ts"
+    },
+    "./video-player-controller": {
+      "types": "./src/video-player-controller.ts",
+      "default": "./src/video-player-controller.ts"
+    },
+    "./audio-player": {
+      "types": "./src/audio-player.ts",
+      "default": "./src/audio-player.ts"
+    },
+    "./audio-player-controller": {
+      "types": "./src/audio-player-controller.ts",
+      "default": "./src/audio-player-controller.ts"
+    },
+    "./compare-slider": {
+      "types": "./src/compare-slider.ts",
+      "default": "./src/compare-slider.ts"
+    },
+    "./compare-slider-view": {
+      "types": "./src/compare-slider-view.ts",
+      "default": "./src/compare-slider-view.ts"
+    },
     "./comparison-table": {
       "types": "./src/comparison-table.ts",
       "default": "./src/comparison-table.ts"
@@ -111,6 +135,14 @@
     "./scroll-expand": {
       "types": "./src/scroll-expand.ts",
       "default": "./src/scroll-expand.ts"
+    },
+    "./dock-controller": {
+      "types": "./src/dock-controller.ts",
+      "default": "./src/dock-controller.ts"
+    },
+    "./dock": {
+      "types": "./src/dock.ts",
+      "default": "./src/dock.ts"
     },
     "./scroll-stack": {
       "types": "./src/scroll-stack.ts",
@@ -294,6 +326,18 @@
       "types": "./src/layout.ts",
       "default": "./src/layout.ts"
     },
+    "./image-cropper": {
+      "types": "./src/image-cropper.ts",
+      "default": "./src/image-cropper.ts"
+    },
+    "./image-cropper-model": {
+      "types": "./src/image-cropper-model.ts",
+      "default": "./src/image-cropper-model.ts"
+    },
+    "./image-cropper-controller": {
+      "types": "./src/image-cropper-controller.ts",
+      "default": "./src/image-cropper-controller.ts"
+    },
     "./image-frame": {
       "types": "./src/image-frame.ts",
       "default": "./src/image-frame.ts"
@@ -450,6 +494,14 @@
       "types": "./src/diagram.ts",
       "default": "./src/diagram.ts"
     },
+    "./dialog-stack": {
+      "types": "./src/dialog-stack.ts",
+      "default": "./src/dialog-stack.ts"
+    },
+    "./dialog-stack-controller": {
+      "types": "./src/dialog-stack-controller.ts",
+      "default": "./src/dialog-stack-controller.ts"
+    },
     "./dialog": {
       "types": "./src/dialog.ts",
       "default": "./src/dialog.ts"
@@ -505,6 +557,14 @@
     "./fade-edge": {
       "types": "./src/fade-edge.ts",
       "default": "./src/fade-edge.ts"
+    },
+    "./scroll-hint": {
+      "types": "./src/scroll-hint.ts",
+      "default": "./src/scroll-hint.ts"
+    },
+    "./scroll-hint-dom": {
+      "types": "./src/scroll-hint-dom.ts",
+      "default": "./src/scroll-hint-dom.ts"
     },
     "./fade-edge-dom": {
       "types": "./src/fade-edge-dom.ts",
@@ -682,8 +742,8 @@
     "@zag-js/combobox": "^1.43.3",
     "@zag-js/date-picker": "^1.43.3",
     "@zag-js/file-upload": "^1.43.3",
-    "@zag-js/hotkeys": "^1.43.3",
     "@zag-js/floating-panel": "^1.43.3",
+    "@zag-js/hotkeys": "^1.43.3",
     "@zag-js/listbox": "^1.43.3",
     "@zag-js/menu": "^1.43.3",
     "@zag-js/number-input": "^1.43.3",
@@ -698,6 +758,7 @@
     "@zag-js/tags-input": "^1.43.3",
     "@zag-js/tooltip": "1.43.3",
     "@zag-js/tree-view": "^1.43.3",
+    "cropperjs": "2.2.0",
     "qrcode": "^1.5.4"
   }
 }

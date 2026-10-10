@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "928fb6b489c33326"
+surface: "756fcd30528d81c6"
 entries:
   - date: 2026-09-26
     kind: feature
@@ -249,3 +249,33 @@ entries:
         <code>mask</code> is the symbol that stands in for a hidden character: <code>OtpInput</code>
         draws it over each filled box when the code is masked. It names the role, not the drawing:
         Lucide and Phosphor draw an asterisk, Material its own. All three sets draw it.
+  - date: 2026-10-09
+    kind: feature
+    target: name
+    es:
+      title: Ocho roles de icono para los controles de un reproductor
+      body: >-
+        Nuevos roles <code>play</code>, <code>pause</code>, <code>replay</code>, <code>volume</code>,
+        <code>volume-muted</code>, <code>captions</code>, <code>fullscreen</code> y <code>fullscreen-exit</code>.
+        Nombran lo que hace el control, no el dibujo, y <code>fullscreen</code> no es <code>maximize</code>: ese es el
+        de una ventana dentro de la página. Los tres sets los dibujan.
+    en:
+      title: Eight icon roles for a player's controls
+      body: >-
+        New roles <code>play</code>, <code>pause</code>, <code>replay</code>, <code>volume</code>,
+        <code>volume-muted</code>, <code>captions</code>, <code>fullscreen</code> and <code>fullscreen-exit</code>.
+        They name what the control does, not the drawing, and <code>fullscreen</code> is not <code>maximize</code>:
+        that one is a window inside the page. All three sets draw them.
+  - date: 2026-10-09
+    kind: feature
+    target: name
+    es:
+      title: Dos roles de icono para moverse por una lista de pistas
+      body: >-
+        Nuevos roles <code>track-previous</code> y <code>track-next</code>: la pista anterior y la siguiente de un reproductor.
+        No son <code>chevron-left</code> ni <code>chevron-right</code>, que nombran una dirección en la página. Los tres sets los dibujan.
+    en:
+      title: Two icon roles for moving along a list of tracks
+      body: >-
+        New roles <code>track-previous</code> and <code>track-next</code>: the track before and after the current one in a player.
+        They are not <code>chevron-left</code> or <code>chevron-right</code>, which name a direction on a page. All three sets draw them.

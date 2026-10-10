@@ -61,16 +61,16 @@ const ACTIVITY: readonly Activity[] = [
   { initials: "AT", palette: "sky-600", name: "Alan Turing", action: 'Creó el ticket "Migrar auth a OAuth2"', time: "1h" },
   { initials: "MH", palette: "red-600", name: "Margaret Hamilton", action: "Cerró 3 issues en el sprint actual", time: "2h" },
   { initials: "DK", palette: "amber-600", name: "Donald Knuth", action: "Subió una nueva build a staging", time: "5h" },
-  { initials: "KP", palette: "emerald-600", name: "Katherine Johnson", action: 'Editó la página "Roadmap Q3"', time: "8h" },
+  { initials: "KJ", palette: "emerald-600", name: "Katherine Johnson", action: 'Editó la página "Roadmap Q3"', time: "8h" },
   { initials: "BL", palette: "blue-600", name: "Barbara Liskov", action: "Invitó a 2 personas al equipo", time: "1d" },
 ];
 
-const activityList = (label: string): UsageTree => ({
+const activityList = (label: string, t?: Translate): UsageTree => ({
   contract: "list",
   signature: "List",
   options: { dividers: false },
   attrs: { "aria-label": label },
-  children: ACTIVITY.map((row) => ({
+  children: ACTIVITY.map((row, index) => ({
     contract: "list",
     signature: "ListItem",
     slots: {
@@ -84,7 +84,7 @@ const activityList = (label: string): UsageTree => ({
         children: row.initials,
       },
       title: row.name,
-      description: row.action,
+      description: t ? t(`demo.fadeEdge.activity.action${index + 1}` as "demo.fadeEdge.activity.action1") : row.action,
       trailing: {
         contract: "typography",
         signature: "Text",
@@ -111,7 +111,7 @@ const TAGS = [
 
 /** A real sequence to browse: two complete sessions and part of the next one at rest. */
 export const fadeHorizontalAgendaTree = (t: Translate, directionOrHref: "to-right" | "to-left" | string = "to-right"): UsageTree => {
-  const direction = directionOrHref === "to-left" ? "to-left" : "to-right";
+  const direction = directionOrHref === "to-left" || directionOrHref === "horizontal" ? directionOrHref : "to-right";
 
   return {
   contract: "box",
@@ -177,12 +177,105 @@ export const fadeHorizontalAgendaTree = (t: Translate, directionOrHref: "to-righ
 };
 };
 
+const FADE_DEMO_DIRECTIONS = ["to-bottom", "to-top", "to-right", "to-left", "horizontal", "vertical"] as const;
+export type FadeDemoDirection = "to-bottom" | "to-top" | "to-right" | "to-left" | "horizontal" | "vertical";
+
+/** Change the content's axis with the fade, rather than fading a vertical list sideways. */
+export const fadeDirectionTree = (t: Translate, directionOrHref: FadeDemoDirection | string = "to-bottom"): UsageTree => {
+  /* Anything that is not a direction (the corpus test also passes a path, as the horizontal agenda's factory expects) reads as the default. */
+  const direction: FadeDemoDirection = FADE_DEMO_DIRECTIONS.includes(directionOrHref as FadeDemoDirection) ? (directionOrHref as FadeDemoDirection) : "to-bottom";
+  if (direction === "to-right" || direction === "to-left" || direction === "horizontal") {
+    return fadeHorizontalAgendaTree(t, direction);
+  }
+  return card({
+    contract: "layout", signature: "Stack", options: { gap: "none" },
+    children: [
+      { contract: "typography", signature: "Heading", options: { headingSize: "h4", flush: true }, attrs: { style: CARD_HEAD }, children: t("demo.fadeEdge.activity.title") },
+      {
+        contract: "fade-edge", signature: "FadeEdge",
+        options: { direction, scrollAware: true, size: "3rem" },
+        attrs: { class: "sk-scrollbar", style: `${VERTICAL_SCROLL} ${SCROLL_INSET}`, tabindex: "0", role: "region", "aria-label": t("demo.fadeEdge.activity.region") },
+        children: [activityList(t("demo.fadeEdge.activity.title"), t)],
+      },
+      { contract: "typography", signature: "Text", options: { size: "caption", tone: "secondary" }, attrs: { style: CARD_FOOT }, children: t("demo.fadeEdge.activity.hint") },
+    ],
+  });
+};
+
 /** 1. The default direction: a clipped list whose bottom edge says there are more rows below. */
 export const fadeBottomTree: UsageTree = card({
   contract: "fade-edge",
   signature: "FadeEdge",
   attrs: { class: "sk-scrollbar", style: `${VERTICAL_SCROLL} ${SCROLL_INSET}` },
   children: [activityList("Actividad reciente")],
+});
+
+/* Only the inner region scrolls. The mask and color overlay belong to its stationary frame, so
+ * neither needs scroll-offset compensation. The demo script retires the fade at the inner edge. */
+export const fadeModeScript = `
+const frame = document.getElementById('fade-mode-frame');
+const scroller = document.getElementById('fade-mode-scroll');
+if (frame && scroller) {
+  const sync = () => {
+    const atEnd = scroller.scrollHeight - scroller.clientHeight - scroller.scrollTop <= 1;
+    frame.toggleAttribute('data-at-edge', atEnd);
+    frame.style.maskImage = atEnd ? 'none' : '';
+  };
+  scroller.addEventListener('scroll', sync, { passive: true });
+  const resize = new ResizeObserver(sync);
+  resize.observe(scroller);
+  if (scroller.firstElementChild) resize.observe(scroller.firstElementChild);
+  sync();
+}
+`;
+
+/** The mask reveals the checkerboard; the color overlay paints it out. */
+export const fadeModeTree = (t: Translate): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface: "surface", border: "subtle", padding: "none" },
+  attrs: {
+    style: "inline-size: 26rem; max-inline-size: 100%; box-sizing: border-box; overflow: hidden; background-color: var(--color-bg-surface-sunken); background-image: conic-gradient(color-mix(in oklab, var(--color-text-accent) 24%, transparent) 25%, transparent 0 50%, color-mix(in oklab, var(--color-text-accent) 24%, transparent) 0 75%, transparent 0); background-size: 1.5rem 1.5rem;",
+  },
+  children: [
+    {
+      contract: "typography",
+      signature: "Heading",
+      options: { headingSize: "h4", flush: true },
+      attrs: { style: "padding: var(--space-inset-md); background: var(--color-bg-surface); border-block-end: 1px solid var(--color-border-subtle);" },
+      children: t("demo.fadeEdge.activity.title"),
+    },
+    {
+      contract: "fade-edge",
+      signature: "FadeEdge",
+      options: { mode: "transparent", size: "5rem" },
+      attrs: {
+        id: "fade-mode-frame",
+        style: "--sk-fade-edge-color: var(--color-bg-surface-raised); overflow: hidden; box-sizing: border-box; margin: var(--space-inset-md); border-radius: var(--radius-control); background: var(--color-bg-surface-raised);",
+      },
+      children: {
+        contract: "layout",
+        signature: "Stack",
+        options: { gap: "none" },
+        attrs: {
+          id: "fade-mode-scroll",
+          class: "sk-scrollbar",
+          style: "block-size: 12rem; overflow-y: auto; box-sizing: border-box; padding: var(--space-inset-sm);",
+          tabindex: "0",
+          role: "region",
+          "aria-label": t("demo.fadeEdge.activity.region"),
+        },
+        children: [activityList(t("demo.fadeEdge.activity.title"), t)],
+      },
+    },
+    {
+      contract: "typography",
+      signature: "Text",
+      options: { size: "caption", tone: "secondary" },
+      attrs: { style: "padding: var(--space-inset-sm) var(--space-inset-md); background: var(--color-bg-surface); border-block-start: 1px solid var(--color-border-subtle);" },
+      children: t("demo.fadeEdge.mode.hint"),
+    },
+  ],
 });
 
 /** 2. The same feed, started at the end, so what is missing is above and the fade says so. */

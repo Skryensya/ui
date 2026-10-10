@@ -63,16 +63,19 @@ export function connectStat(root: HTMLElement): Cleanup {
     if (cancelled) return;
     const duration = prefersReducedMotion() ? 0 : readStatCountDuration(root);
     handle?.stop();
+    /* A frame whose number formats to the same text as the last one writes nothing: replacing a text node restyles and relays out even when its characters are the same, and a slow count over a small number repeats the same text for many frames. */
+    let shown = tick.textContent ?? "";
+    const write = (text: string) => {
+      if (text === shown) return;
+      shown = text;
+      tick.textContent = text;
+    };
     handle = animateStatCount({
       from,
       to,
       duration,
-      onUpdate: (n) => {
-        tick.textContent = format(n);
-      },
-      onComplete: () => {
-        tick.textContent = finalText;
-      },
+      onUpdate: (n) => write(format(n)),
+      onComplete: () => write(finalText),
     });
   };
 

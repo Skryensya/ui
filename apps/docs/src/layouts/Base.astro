@@ -410,7 +410,14 @@ const scanned = fullBleed ? null : indexDocument(await Astro.slots.render("defau
 const heroTabs = scanned?.html.includes("docs-component-hero-tabs") ?? false;
 const heroIndex = heroTabs && scanned ? indexHeroTabPanel(scanned.html, "usage") : null;
 const documentIndex = heroIndex && scanned
-  ? { ...scanned, html: heroIndex.html, headings: heroIndex.headings }
+  ? {
+      ...scanned,
+      html: heroIndex.html,
+      headings: [
+        ...heroIndex.headings,
+        ...scanned.headings.filter((heading) => !heroIndex.headings.some((item) => item.id === heading.id)),
+      ],
+    }
   : scanned;
 
 /*
@@ -419,8 +426,14 @@ const documentIndex = heroIndex && scanned
  * hash is the exception, and the only part of this the page cannot know while it is being built:
  * a fragment never reaches the server. `toc-hash-seed.ts` is the three lines that clear the seed.
  */
+const relatedComponentsHeading = documentIndex?.html.includes('id="docs-related-components-title"') &&
+  !documentIndex.headings.some((heading) => heading.id === "docs-related-components-title")
+  ? [{ id: "docs-related-components-title", label: t("component.relatedTitle"), level: "h2" as const }]
+  : [];
+
 const tocItems = [
   ...(documentIndex?.headings ?? []),
+  ...relatedComponentsHeading,
   /* The installation block this layout appends after the document, which is therefore not in the
    * document's own HTML; it declares its own sections (`../lib/vanilla-mount-sections.ts`). */
   ...(documentIndex && !hideVanillaMount && vanillaMount
@@ -1477,7 +1490,8 @@ const PALETTE_PRESETS = palettePresets(locale);
           var list = tocRoot.querySelector("ul");
           if (!list) return;
 
-          var headings = panel.querySelectorAll(":scope > h3, :scope > h4");
+          var headings = Array.prototype.slice.call(panel.querySelectorAll(":scope > h3, :scope > h4"));
+          headings = headings.concat(Array.prototype.slice.call(document.querySelectorAll(".docs-related-components > h2")));
           if (headings.length < 1) {
             tocRoot.setAttribute("data-empty", "");
             tocRoot.setAttribute("data-ready", "");
@@ -1502,7 +1516,7 @@ const PALETTE_PRESETS = palettePresets(locale);
             }
             var item = document.createElement("li");
             item.className = "sk-toc__item";
-            item.setAttribute("data-level", heading.tagName === "H3" ? "h2" : "h3");
+            item.setAttribute("data-level", heading.tagName === "H4" ? "h3" : "h2");
             var link = document.createElement("a");
             link.className = "sk-toc__link sk-interactive";
             link.href = "#" + heading.id;
@@ -1548,9 +1562,10 @@ const PALETTE_PRESETS = palettePresets(locale);
       placeholder path exists for `ComponentPreview`'s frames, which do let a reader compare sets.
     */}
     <button
-      class={`${backToTopParts.root} sk-interactive`}
+      class={`${backToTopParts.root} sk-button sk-interactive`}
       type="button"
       data-sk-back-to-top
+      data-variant="soft"
       data-target="#main-content"
       hidden
     >

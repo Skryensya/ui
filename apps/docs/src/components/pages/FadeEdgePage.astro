@@ -6,6 +6,10 @@ import WhenToUse from "../WhenToUse.astro";
 import A11yNotes from "../A11yNotes.astro";
 import {
   fadeBottomTree,
+  fadeDirectionTree,
+  type FadeDemoDirection,
+  fadeModeTree,
+  fadeModeScript,
   fadeColorTree,
   fadeEdgeAnatomyTree,
   fadeIntensityTree,
@@ -49,6 +53,24 @@ const t = useTranslations(getLocale(Astro.url));
  */
 const storybookTitle = "Components/Layout/FadeEdge";
 
+const directionVariants = (directions: readonly FadeDemoDirection[]) => directions.map((direction) => ({
+  value: direction,
+  label: t(`fadeEdge.directionLabel.${direction}`),
+  tree: fadeDirectionTree(t, direction),
+  explain: t(`fadeEdge.prop.direction.${direction}`),
+}));
+
+const fadeDirectionScript = `
+const region = document.querySelector('.sk-fade-edge');
+if (region) {
+  const direction = region.getAttribute('data-direction');
+  if (direction === 'to-top') region.scrollTop = region.scrollHeight;
+  if (direction === 'to-left') region.scrollLeft = region.scrollWidth;
+  if (direction === 'vertical') region.scrollTop = (region.scrollHeight - region.clientHeight) / 2;
+  if (direction === 'horizontal') region.scrollLeft = (region.scrollWidth - region.clientWidth) / 2;
+}
+`;
+
 const fadeTopScript = `
 const region = document.getElementById("fade-top-scroll");
 if (region) region.scrollTop = region.scrollHeight;
@@ -88,27 +110,36 @@ const explain = (option: string, values: readonly string[]) =>
     <p class="lede" set:html={t("fadeEdge.lede")} />
 
     <UsagePreview
-      tree={fadeBottomTree}
-      target={["children", 0]}
-      optionName="direction"
-      title={t("fadeEdge.prop.direction.title")}
-      description={t("fadeEdge.prop.direction.body")}
-      explain={explain("direction", ["to-bottom", "to-top", "to-right", "to-left"])}
-      stageMinBlockSize="14rem"
+      variants={directionVariants(["to-bottom", "to-top", "vertical"])}
+      variantsLabel={t("fadeEdge.directionVerticalTitle")}
+      script={fadeDirectionScript}
+      title={t("fadeEdge.directionVerticalTitle")}
+      description={t("fadeEdge.directionVerticalBody")}
+      stageMinBlockSize="20rem"
       storybookTitle={storybookTitle}
       storybookStory="FadeBottom"
     />
 
     <UsagePreview
-      tree={fadeBottomTree}
-      target={["children", 0]}
+      variants={directionVariants(["to-right", "to-left", "horizontal"])}
+      variantsLabel={t("fadeEdge.directionHorizontalTitle")}
+      script={fadeDirectionScript}
+      title={t("fadeEdge.directionHorizontalTitle")}
+      description={t("fadeEdge.directionHorizontalBody")}
+      stageMinBlockSize="20rem"
+      storybookTitle={storybookTitle}
+      storybookStory="FadeRight"
+    />
+
+    <UsagePreview
+      tree={fadeModeTree(t)}
+      script={fadeModeScript}
+      target={["children", 1]}
       optionName="mode"
       title={t("fadeEdge.prop.mode.title")}
       description={t("fadeEdge.prop.mode.body")}
       explain={explain("mode", ["transparent", "color"])}
-      stageMinBlockSize="14rem"
-      storybookTitle={storybookTitle}
-      storybookStory="FadeBottom"
+      stageMinBlockSize="22rem"
     />
 
     <h3>{t("component.examplesTitle")}</h3>

@@ -37,6 +37,8 @@ const placement: Readonly<Record<string, Placement>> = {
   "hero-with-audience-tabs": ["hero", "composition", "marketing/audience/audience-tabs"],
   "hero-with-testimonial": ["hero", "composition", "marketing/proof/testimonial"],
   "footer-credit-line": ["navigation", "fragment", "navigation/site/footer-credit"],
+  "image-cropper-avatar": ["form", "component", "input/media/profile-picture"],
+  "image-cropper-cover": ["form", "component", "input/media/cover-crop"],
   "pagination-standalone": ["table", "component", "data/collections/pagination"],
   "table-with-pagination": ["table", "composition", "data/collections/paged-table"],
   "questionnaire-branching-survey": ["survey", "composition", "input/surveys/branching-survey"],

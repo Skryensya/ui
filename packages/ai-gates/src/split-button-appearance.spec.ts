@@ -6,10 +6,16 @@ import { waitForStage } from "./fixtures.js";
  * Tactile keeps each half's ledge, brutalist casts one hard offset around the whole pill.
  */
 
-const group = (id: string, appearance: string) => `
+const group = (id: string, appearance: string, variant = "solid") => `
   <div id="${id}" class="sk-split-button" role="group">
-    <button class="sk-button sk-interactive" type="button" data-tone="accent" data-appearance="${appearance}" data-weld-end>Guardar</button>
-    <div class="sk-menu"><button class="sk-button sk-interactive" type="button" data-tone="accent" data-appearance="${appearance}" data-weld-start data-icon-only aria-label="Más">▾</button></div>
+    <button class="sk-button sk-interactive" type="button" data-variant="${variant}" data-tone="accent" data-appearance="${appearance}" data-weld-end>Guardar</button>
+    <div class="sk-menu"><button class="sk-button sk-interactive" type="button" data-variant="${variant}" data-tone="accent" data-appearance="${appearance}" data-weld-start data-icon-only aria-label="Más">▾</button></div>
+  </div>`;
+
+const verticalGroup = (id: string, appearance: string) => `
+  <div id="${id}" class="sk-split-button" role="group" data-orientation="vertical">
+    <button class="sk-button sk-interactive" type="button" data-appearance="${appearance}">Zoom in</button>
+    <button class="sk-button sk-interactive" type="button" data-appearance="${appearance}">Zoom out</button>
   </div>`;
 
 async function mount(page: Page, html: string, hostAttrs: Record<string, string> = {}) {
@@ -71,6 +77,58 @@ test("brutalist: one hard offset around the whole pill, a black seam, mirrored i
 
   await mount(page, group("r", "brutalist"), { dir: "rtl" });
   expect((await shadows(page, "r")).group).toMatch(/-5px 5px 0px/);
+});
+
+test("brutalist split group offset follows soft and ghost button emphasis", async ({ page }) => {
+  await mount(page, group("soft", "brutalist", "soft") + group("ghost", "brutalist", "ghost"));
+  expect((await shadows(page, "soft")).group).toMatch(/4px 4px 0px/);
+  expect((await shadows(page, "ghost")).group).toMatch(/2px 2px 0px/);
+});
+
+test("brutalist press travels only the active split segment", async ({ page }) => {
+  await mount(page, group("split-brutal-press", "brutalist"));
+
+  const client = await page.context().newCDPSession(page);
+  await client.send("DOM.enable");
+  await client.send("CSS.enable");
+  const { root: documentRoot } = await client.send("DOM.getDocument");
+  const { nodeId } = await client.send("DOM.querySelector", {
+    nodeId: documentRoot.nodeId,
+    selector: "#split-brutal-press > button",
+  });
+  await client.send("CSS.forcePseudoState", { nodeId, forcedPseudoClasses: ["active"] });
+  await page.waitForTimeout(250);
+
+  const active = await page.evaluate(() => {
+    const root = document.getElementById("split-brutal-press")!;
+    const [action, trigger] = Array.from(root.querySelectorAll("button"));
+    return {
+      groupTranslate: getComputedStyle(root).translate,
+      actionTranslate: getComputedStyle(action!).translate,
+      actionShadow: getComputedStyle(action!).boxShadow,
+      triggerTranslate: getComputedStyle(trigger!).translate,
+      travel: getComputedStyle(action!).getPropertyValue("--brutalist-travel").trim(),
+      sourceOffsetInline: getComputedStyle(action!).getPropertyValue("--sk-button-brutalist-offset-inline").trim(),
+    };
+  });
+  expect(active.groupTranslate).toBe("none");
+  expect(active.travel).toBe("0.8");
+  expect(active.sourceOffsetInline).not.toBe("0px");
+  expect(active.actionShadow).toMatch(/1px 1px 0px/);
+  expect(active.triggerTranslate).toBe("none");
+});
+
+test("vertical brutalist split keeps a hard shadow on both actions", async ({ page }) => {
+  await mount(page, verticalGroup("v", "brutalist"));
+  const s = await page.evaluate(() => {
+    const [first, second] = Array.from(document.querySelectorAll<HTMLButtonElement>("#v > button"));
+    return {
+      first: getComputedStyle(first!).boxShadow,
+      second: getComputedStyle(second!).boxShadow,
+    };
+  });
+  expect(s.first).toMatch(/5px 5px 0px/);
+  expect(s.second).toMatch(/5px 5px 0px/);
 });
 
 test("forced colors: no group shadow in any appearance", async ({ page }) => {

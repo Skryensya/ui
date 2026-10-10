@@ -1,0 +1,17 @@
+# The structure lives in packages/core/src/image-cropper.ts. Here, only why it is chosen.
+
+ImageCropper:
+  useWhen:
+    - "a person has to choose which part of a picture is used: a profile photo, a cover, a thumbnail, a product shot cut to a fixed ratio"
+    - "the crop must be exact and reproducible: the result is a file at the picture's own resolution, or numbers that describe it, and the same value draws the same crop at any size"
+    - "the picture may need turning or straightening before it is cut: zoom, quarter turns and a fine angle are part of the tool"
+    - "an avatar is wanted: a circle crop exports a transparent PNG with the circle already cut, not a square to be masked afterwards"
+  avoidWhen:
+    - "the picture is only displayed in a frame and the browser can crop it for free; ImageFrame fits it with object-fit"
+    - "the file has to be chosen or uploaded; FileUpload does that, and the two are joined by the consumer's src, not by this component"
+    - "drawing, annotating or filtering is needed; this crops, zooms and rotates and does nothing else to the pixels"
+    - "the crop is applied on the server from coordinates and no one needs to see or adjust it; send the crop numbers from a form instead"
+  alternatives:
+    - ImageFrame
+    - FileUpload
+    - Canvas

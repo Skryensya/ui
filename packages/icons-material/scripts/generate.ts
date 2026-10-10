@@ -56,6 +56,16 @@ const MAP = {
   restore: "close_fullscreen",
   more: "more_horiz",
   menu: "menu",
+  play: "play_arrow",
+  pause: "pause",
+  volume: "volume_up",
+  "volume-muted": "volume_off",
+  captions: "closed_caption",
+  fullscreen: "fullscreen",
+  "fullscreen-exit": "fullscreen_exit",
+  replay: "replay",
+  "track-previous": "skip_previous",
+  "track-next": "skip_next",
   info: "info",
   /* `select`, Material's marquee: the only dashed empty box it draws. Lucide and Phosphor name the
    * shape (`SquareDashed`, `rectangle-dashed`), Material names what you do with it, and the drawing

@@ -313,7 +313,7 @@ const ResizableHandle = forwardRef<HTMLDivElement, ResizableHandleProps>(functio
 ) {
   const context = useContext(ResizableContext);
   const { __index: index = 0, ...rest } = props as Omit<InternalHandleProps, "label" | "className">;
-  const start = useRef<{ position: number; sizes: readonly number[]; dragging: boolean } | null>(null);
+  const start = useRef<{ position: number; sizes: readonly number[]; dragging: boolean; extent: number; sign: number } | null>(null);
   const [dragging, setDragging] = useState(false);
 
   if (!context) return null;
@@ -327,7 +327,7 @@ const ResizableHandle = forwardRef<HTMLDivElement, ResizableHandleProps>(functio
   const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (event.button !== 0) return;
     remember(sizes);
-    start.current = { position: position(event), sizes, dragging: false };
+    start.current = { position: position(event), sizes, dragging: false, extent: 0, sign: 1 };
     event.currentTarget.setPointerCapture?.(event.pointerId);
   };
   const onPointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -336,10 +336,13 @@ const ResizableHandle = forwardRef<HTMLDivElement, ResizableHandleProps>(functio
     if (!gesture.dragging) {
       if (!hasCrossedDragThreshold(gesture.position, position(event))) return;
       gesture.dragging = true;
+      /* The room being shared and the reading direction do not change during a drag, and asking for either is a layout read (every panel's box) or a style one, so they are taken once, when the drag starts, and not on every move. */
+      gesture.extent = extent();
+      gesture.sign = sign();
       setDragging(true);
       context.setDragging(true);
     }
-    resize(index, gesture.sizes, resizablePercentFromPixels((position(event) - gesture.position) * sign(), extent()));
+    resize(index, gesture.sizes, resizablePercentFromPixels((position(event) - gesture.position) * gesture.sign, gesture.extent));
   };
   const onPointerEnd = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (!start.current) return;
@@ -389,7 +392,10 @@ const ResizableHandle = forwardRef<HTMLDivElement, ResizableHandleProps>(functio
       onPointerCancel={onPointerEnd}
       onKeyDown={onKeyDown}
       onDoubleClick={() => resize(index, sizes, resetDelta())}
-    />
+    >
+      {/* The thumb is paint (`patterns/grip.css`): the bar itself takes the pointer and the keys. */}
+      <span aria-hidden="true" className={`${resizableParts.grip} sk-grip`} />
+    </div>
   );
 });
 

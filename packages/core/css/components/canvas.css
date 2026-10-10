@@ -75,20 +75,20 @@
      */
     touch-action: pan-x pan-y;
     /*
-     * THE GRID MOVES WITH THE DRAWING. The binding writes the view as `--sk-canvas-x`, `-y` and
-     * `-scale` on the root, so a pan slides the lines and a zoom spreads or packs them, the way a
-     * design tool's board does: the ground is part of the space being moved, not a wallpaper
-     * behind it. Never packed tighter than 12px, where a grid stops reading as lines and starts
-     * reading as a grey.
+     * THE GRID MOVES WITH THE DRAWING. The binding writes the view as this element's own `background-size` and
+     * `background-position`, inline, so a pan slides the lines and a zoom spreads or packs them, the way a design tool's board
+     * does: the ground is part of the space being moved, not a wallpaper behind it. Never packed tighter than 12px, where a
+     * grid stops reading as lines and starts reading as a grey. The values below are the resting view (not zoomed, not
+     * panned), which is also what a server renders.
      */
     background-color: var(--sk-canvas-viewport-bg);
     background-image:
       linear-gradient(to right, var(--sk-canvas-grid-color) 1px, transparent 1px),
       linear-gradient(to bottom, var(--sk-canvas-grid-color) 1px, transparent 1px);
     background-size:
-      max(12px, calc(var(--sk-canvas-grid-size) * var(--sk-canvas-scale, 1)))
-      max(12px, calc(var(--sk-canvas-grid-size) * var(--sk-canvas-scale, 1)));
-    background-position: var(--sk-canvas-x, 0px) var(--sk-canvas-y, 0px);
+      max(12px, var(--sk-canvas-grid-size))
+      max(12px, var(--sk-canvas-grid-size));
+    background-position: 0 0;
     cursor: grab;
     /* A drag is a pan, never a text selection: this is a drawing, not a document. */
     user-select: none;

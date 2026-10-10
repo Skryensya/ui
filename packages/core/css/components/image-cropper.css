@@ -1,0 +1,486 @@
+/* The toolbar is `sk-button`s; they bring their own sheet. */
+@import url("./button.css");
+
+/*
+ * TIER 3, IMAGE CROPPER
+ *
+ * A crop window over a picture, and the toolbar to place it. See `@skryensya/core/image-cropper` for what the component
+ * promises and `image-cropper-model` for the geometry; this sheet owns the stage, the toolbar and everything of Cropper.js
+ * that a reader can see.
+ *
+ * CROPPER.JS'S ELEMENTS ARE STYLED FROM HERE, AND ONLY FROM HERE. Cropper.js v2 draws with custom elements that keep their own
+ * CSS inside a shadow root, so nothing it ships can reach the rest of the page, and nothing here can leak into it: every
+ * rule that names one of its elements is nested under `.sk-image-cropper`. What it exposes is one custom property per
+ * element, `--theme-color`, and a rule written outside its shadow root wins over the `:host` rule that sets it, which is
+ * what makes these hooks the only place a colour is decided and lets dark mode follow the tokens.
+ *
+ * THE STAGE IS A NEUTRAL WELL, NOT A BLACK BOX. It takes the system's recessed ground, so it is dark in a dark theme and a
+ * quiet grey in a light one, and the picture is what carries colour either way. The part of the picture outside the window is
+ * not painted black but faded toward that ground, which is what a person reads as "this part is not used".
+ *
+ * SIZE: THE COMPONENT ANSWERS TO ITS CONTAINER. The root is a size container, so the preview moves beside the stage when the
+ * cropper is wide and under it when it is not, whatever the viewport is, and a cropper in a narrow dialog is as comfortable
+ * as one on a page. Every button is a touch target tall.
+ *
+ * MOTION: none of its own. The picture moves with the pointer and the keys, and Cropper.js adds no easing to it, so there is
+ * nothing here for `prefers-reduced-motion` to switch off. Only the handle's hover growth uses a motion token, and only
+ * where motion is welcome.
+ */
+@layer components {
+  .sk-image-cropper {
+    --sk-image-cropper-bg: var(--color-bg-well);
+    --sk-image-cropper-radius: var(--radius-surface);
+    --sk-image-cropper-gap: var(--space-stack-md);
+    --sk-image-cropper-stage-min-block-size: 16rem;
+    --sk-image-cropper-stage-aspect-ratio: 4 / 3;
+    /* What the part of the picture outside the window is faded toward, and how far. */
+    --sk-image-cropper-overlay: var(--color-bg-canvas);
+    --sk-image-cropper-overlay-opacity: 0.72;
+    --sk-image-cropper-frame-color: var(--color-border-accent);
+    --sk-image-cropper-frame-width: 2px;
+    --sk-image-cropper-grid-color: color-mix(in oklab, var(--color-text-on-media) 55%, transparent);
+    --sk-image-cropper-handle-size: 0.875rem;
+    --sk-image-cropper-handle-color: var(--color-border-accent);
+    --sk-image-cropper-focus-ring: var(--focus-ring-color);
+    --sk-image-cropper-panel-bg: var(--color-bg-surface);
+    --sk-image-cropper-preview-size: 7rem;
+    /* The side column: its width, and the width at which the stage still deserves to be beside it. */
+    --sk-image-cropper-side-size: 16rem;
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--sk-image-cropper-gap);
+    inline-size: 100%;
+    max-inline-size: 100%;
+    min-inline-size: 0;
+    /* The root answers for its own width: the layout below follows the box it is in, not the window. */
+    container-type: inline-size;
+  }
+
+  /* ---- the workspace: the stage, and the preview when there is one -------------------------------------------------- */
+
+  /*
+   * THE STAGE TAKES WHAT THE SIDE DOES NOT. The two are flex items that wrap: the stage asks for at least 22rem and grows into
+   * the rest, the side asks for its column and no more. Where both fit they sit beside each other, the controls to the right of
+   * the picture and no taller than it; where they do not (a phone, a narrow dialog) the side drops under the stage at full width.
+   * No breakpoint decides this: the box it is in does.
+   */
+  .sk-image-cropper__workspace {
+    display: grid;
+    flex: 1 1 100%;
+    min-inline-size: min(100%, 22rem);
+  }
+
+  .sk-image-cropper__side {
+    display: none;
+    flex: 0 1 var(--sk-image-cropper-side-size);
+    gap: var(--space-stack-sm);
+    min-inline-size: 0;
+    /* Alone on its line the side is as wide as the component; beside the stage it is its own column. */
+    inline-size: min(100%, var(--sk-image-cropper-side-size));
+  }
+
+
+  @container (max-width: 38rem) {
+    .sk-image-cropper__side {
+      flex-basis: 100%;
+      inline-size: 100%;
+    }
+  }
+
+  .sk-image-cropper__stage {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: stretch;
+    gap: var(--space-inline-xs);
+    min-inline-size: 0;
+    inline-size: 100%;
+    aspect-ratio: var(--sk-image-cropper-stage-aspect-ratio);
+    min-block-size: var(--sk-image-cropper-stage-min-block-size);
+    max-block-size: min(78vh, 44rem);
+    padding: var(--space-inset-xs);
+    overflow: clip;
+    border-radius: var(--sk-image-cropper-radius);
+    background: var(--sk-image-cropper-bg);
+    /* The picture is dragged with a finger: the browser must not scroll the page instead. */
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .sk-image-cropper__stage:focus-visible {
+    outline: var(--focus-ring-width) solid var(--sk-image-cropper-focus-ring);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  .sk-image-cropper__surface {
+    position: relative;
+    min-inline-size: 0;
+    min-block-size: 0;
+    overflow: clip;
+    border-radius: calc(var(--sk-image-cropper-radius) - var(--space-inset-xs));
+  }
+
+  /* The loading and error line. Centered, and out of the way of the pointer so it never blocks a picture that is ready. */
+  .sk-image-cropper__message {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    margin: 0;
+    padding: var(--space-inset-md);
+    text-align: center;
+    font-size: var(--font-size-body-sm);
+    color: var(--color-text-secondary);
+    pointer-events: none;
+  }
+
+  .sk-image-cropper__message[hidden] {
+    display: none;
+  }
+
+  .sk-image-cropper[data-status="error"] .sk-image-cropper__message {
+    color: var(--color-text-danger);
+  }
+
+  /* The keyboard instructions: read by the stage's description, never seen. Not `display: none`, which would remove them. */
+  .sk-image-cropper__help {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .sk-image-cropper__live {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* ---- Cropper.js, restyled ------------------------------------------------------------------------------------------ */
+
+  .sk-image-cropper cropper-canvas {
+    inline-size: 100%;
+    block-size: 100%;
+    min-inline-size: 0;
+    min-block-size: 0;
+    background: transparent;
+    --theme-color: transparent;
+  }
+
+  .sk-image-cropper cropper-shade {
+    /* The faded part: an outline as wide as the stage, painted in the overlay colour at the overlay's opacity. */
+    --theme-color: color-mix(in srgb, var(--sk-image-cropper-overlay) calc(var(--sk-image-cropper-overlay-opacity) * 100%), transparent);
+  }
+
+  .sk-image-cropper cropper-selection {
+    --theme-color: var(--sk-image-cropper-frame-color);
+    outline: var(--sk-image-cropper-frame-width) solid var(--sk-image-cropper-frame-color);
+  }
+
+  .sk-image-cropper cropper-grid {
+    --theme-color: var(--sk-image-cropper-grid-color);
+  }
+
+  .sk-image-cropper[data-grid="false"] cropper-grid {
+    display: none;
+  }
+
+  /* The window follows its shape: the same curve for the outline, the grid, the fade and the live preview. */
+  .sk-image-cropper[data-shape="circle"] cropper-selection,
+  .sk-image-cropper[data-shape="circle"] cropper-shade,
+  .sk-image-cropper[data-shape="circle"] cropper-grid {
+    border-radius: 50%;
+  }
+
+  .sk-image-cropper[data-shape="circle"] cropper-grid {
+    overflow: hidden;
+  }
+
+  /* The move layer covers the window and is invisible; the picture is what moves. */
+  .sk-image-cropper cropper-handle[action="move"] {
+    --theme-color: transparent;
+  }
+
+  /*
+   * THE HANDLES. Cropper.js draws a 5px dot inside a 15px hit area; here the hit area IS the handle, a square corner of the
+   * hook's size with a ring of the surface around it so that it reads over any picture. The four edges stay invisible hit
+   * strips. Only a free window can be resized, so only then are the corners shown and live: a fixed one keeps its corners as
+   * a mark of where the window ends, and they let the pointer through to the picture.
+   */
+  .sk-image-cropper cropper-handle[action$="-resize"] {
+    --theme-color: transparent;
+  }
+
+  .sk-image-cropper cropper-handle[action="ne-resize"],
+  .sk-image-cropper cropper-handle[action="nw-resize"],
+  .sk-image-cropper cropper-handle[action="se-resize"],
+  .sk-image-cropper cropper-handle[action="sw-resize"] {
+    inline-size: var(--sk-image-cropper-handle-size);
+    block-size: var(--sk-image-cropper-handle-size);
+    border-radius: calc(var(--sk-image-cropper-handle-size) / 4);
+    background-color: var(--sk-image-cropper-handle-color);
+    box-shadow: 0 0 0 2px var(--color-bg-surface);
+  }
+
+  .sk-image-cropper cropper-handle[action="ne-resize"] {
+    inset-block-start: calc(var(--sk-image-cropper-handle-size) / -2);
+    inset-inline-end: calc(var(--sk-image-cropper-handle-size) / -2);
+  }
+
+  .sk-image-cropper cropper-handle[action="nw-resize"] {
+    inset-block-start: calc(var(--sk-image-cropper-handle-size) / -2);
+    inset-inline-start: calc(var(--sk-image-cropper-handle-size) / -2);
+  }
+
+  .sk-image-cropper cropper-handle[action="se-resize"] {
+    inset-block-end: calc(var(--sk-image-cropper-handle-size) / -2);
+    inset-inline-end: calc(var(--sk-image-cropper-handle-size) / -2);
+  }
+
+  .sk-image-cropper cropper-handle[action="sw-resize"] {
+    inset-block-end: calc(var(--sk-image-cropper-handle-size) / -2);
+    inset-inline-start: calc(var(--sk-image-cropper-handle-size) / -2);
+  }
+
+  /* On a touch screen the corners are bigger: a finger is not a pointer. */
+  @media (pointer: coarse) {
+    .sk-image-cropper {
+      --sk-image-cropper-handle-size: 1.375rem;
+    }
+  }
+
+  /* A fixed window: corners are marks, not controls. */
+  .sk-image-cropper:not([data-resizable]) cropper-handle[action$="-resize"] {
+    pointer-events: none;
+  }
+
+  .sk-image-cropper:not([data-resizable]) cropper-handle[action$="-resize"]:not([action="ne-resize"], [action="nw-resize"], [action="se-resize"], [action="sw-resize"]) {
+    display: none;
+  }
+
+  .sk-image-cropper[data-shape="circle"] cropper-handle[action$="-resize"] {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .sk-image-cropper[data-resizable] cropper-handle[action$="-resize"] {
+      transition: scale var(--motion-feedback-duration) var(--motion-feedback-easing);
+    }
+
+    .sk-image-cropper[data-resizable] cropper-handle[action$="-resize"]:hover {
+      scale: 1.2;
+    }
+  }
+
+  /* ---- the preview -------------------------------------------------------------------------------------------------- */
+
+  .sk-image-cropper__preview {
+    display: none;
+    justify-content: center;
+  }
+
+  .sk-image-cropper__preview-canvas {
+    display: block;
+    max-inline-size: 100%;
+    inline-size: var(--sk-image-cropper-preview-size);
+    block-size: auto;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-control);
+    background: var(--sk-image-cropper-bg);
+  }
+
+  .sk-image-cropper[data-shape="circle"] .sk-image-cropper__preview-canvas {
+    border-radius: 50%;
+  }
+
+  /* ---- the toolbar -------------------------------------------------------------------------------------------------- */
+
+  .sk-image-cropper__controls {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-self: start;
+    align-items: center;
+    gap: var(--space-stack-2xs);
+    max-block-size: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    translate: 0 0;
+  }
+
+  .sk-image-cropper__group {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: var(--space-inline-2xs);
+    min-inline-size: 0;
+    padding: var(--space-inset-2xs);
+    border: 1px solid color-mix(in oklab, var(--color-border-subtle) 65%, transparent);
+    border: 1px solid color-mix(in oklab, var(--color-border-subtle) 65%, transparent);
+    border-radius: var(--radius-pill);
+    background: color-mix(in oklab, var(--sk-image-cropper-panel-bg) 88%, transparent);
+    box-shadow: 0 10px 24px -14px var(--shadow-lg), 0 1px 2px var(--shadow-sm);
+    backdrop-filter: blur(12px);
+  }
+
+  .sk-image-cropper[data-controls="false"] .sk-image-cropper__controls {
+    display: none;
+  }
+
+  /* HUD groups keep their accessible names, but the visible chrome stays compact over the canvas. */
+
+  .sk-image-cropper__group-label {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /*
+   * A BUTTON IS AS TALL AS A FINGER WHERE THERE IS ONE. On a fine pointer the toolbar keeps the system's compact control height; on
+   * a coarse pointer, and in a container too narrow for a mouse to have been the plan, every button and field is a full touch
+   * target. The button's own height hook is what moves, not a `min-block-size` laid over it, so its padding and its icon follow.
+   * The selector is as specific as the button's own size rule, which is what lets it win.
+   */
+  .sk-image-cropper .sk-image-cropper__control[data-size] {
+    --sk-button-height: 1.75rem;
+  }
+
+  .sk-image-cropper .sk-image-cropper__control[data-icon-only] {
+    min-inline-size: 1.75rem;
+    padding-inline: 0;
+  }
+
+  @media (pointer: coarse) {
+    .sk-image-cropper .sk-image-cropper__control[data-size] {
+      --sk-button-height: var(--size-touch-target);
+    }
+
+    .sk-image-cropper .sk-image-cropper__control[data-icon-only],
+    .sk-image-cropper .sk-image-cropper__ratio-input {
+      min-inline-size: var(--size-touch-target);
+      min-block-size: var(--size-touch-target);
+    }
+  }
+
+  @container (max-width: 30rem) {
+    .sk-image-cropper .sk-image-cropper__control[data-size] {
+      --sk-button-height: var(--size-touch-target);
+    }
+
+    .sk-image-cropper .sk-image-cropper__control[data-icon-only],
+    .sk-image-cropper .sk-image-cropper__ratio-input {
+      min-inline-size: var(--size-touch-target);
+      min-block-size: var(--size-touch-target);
+    }
+  }
+
+  /* A toggle that is on says so with more than its colour. */
+
+  .sk-image-cropper__control[aria-pressed="true"] {
+    background: var(--color-bg-accent-subtle);
+    border-color: var(--color-border-accent);
+    color: var(--color-text-accent);
+    font-weight: 600;
+  }
+
+  /* The left turn is the right turn's glyph, turned over. `.sk-icon` is what the binding draws, `[data-sk-icon]` its authored placeholder. */
+  .sk-image-cropper__control[data-flip] :where(.sk-icon, [data-sk-icon]) {
+    scale: -1 1;
+  }
+
+  .sk-image-cropper__range {
+    flex: 1 1 4rem;
+    min-inline-size: 3rem;
+    min-block-size: var(--size-touch-target);
+    margin: 0;
+    accent-color: var(--color-border-accent);
+    cursor: pointer;
+  }
+
+  .sk-image-cropper__range:focus-visible,
+  .sk-image-cropper__ratio-input:focus-visible {
+    outline: var(--focus-ring-width) solid var(--sk-image-cropper-focus-ring);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  .sk-image-cropper__output {
+    flex: 0 0 auto;
+    min-inline-size: auto;
+    font-size: var(--font-size-body-sm);
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+    color: var(--color-text-secondary);
+  }
+
+  .sk-image-cropper__ratio-input {
+    inline-size: 4.25rem;
+    min-block-size: var(--size-control-sm);
+    padding-inline: var(--space-inset-sm);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-control);
+    background: var(--color-bg-surface);
+    color: var(--color-text-primary);
+    font: inherit;
+    font-size: var(--font-size-body-sm);
+  }
+
+  .sk-image-cropper__ratio-input[aria-invalid="true"] {
+    border-color: var(--color-border-danger);
+  }
+
+  .sk-image-cropper__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--space-inline-xs);
+  }
+
+  .sk-image-cropper__actions > .sk-image-cropper__control {
+    flex: 1 1 auto;
+  }
+
+  /* ---- states ------------------------------------------------------------------------------------------------------- */
+
+  .sk-image-cropper[data-disabled] .sk-image-cropper__stage {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .sk-image-cropper[data-disabled] .sk-image-cropper__controls,
+  .sk-image-cropper[data-disabled] .sk-image-cropper__actions {
+    opacity: 0.6;
+  }
+
+  .sk-image-cropper[data-read-only] cropper-handle {
+    pointer-events: none;
+  }
+
+  .sk-image-cropper[data-status="loading"] .sk-image-cropper__stage {
+    cursor: progress;
+  }
+}

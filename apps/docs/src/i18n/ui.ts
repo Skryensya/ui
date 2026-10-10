@@ -69,6 +69,7 @@ import { commentThreadMessages } from "./messages/components/comment-thread";
 import { dataGridMessages } from "./messages/components/data-grid";
 import { datePickerMessages } from "./messages/components/date-picker";
 import { dialogMessages } from "./messages/components/dialog";
+import { dialogStackMessages } from "./messages/components/dialog-stack";
 import { drawerMessages } from "./messages/components/drawer";
 import { editorMessages } from "./messages/components/editor";
 import { emptyStateMessages } from "./messages/components/empty-state";
@@ -116,13 +117,18 @@ import { primitivesMessages } from "./messages/components/primitives";
 import { procedureMessages } from "./messages/components/procedure";
 import { timelineMessages } from "./messages/components/timeline";
 import { progressMessages } from "./messages/components/progress";
+import { compareSliderMessages } from "./messages/components/compare-slider";
+import { videoPlayerMessages } from "./messages/components/video-player";
+import { audioPlayerMessages } from "./messages/components/audio-player";
 import { comparisonTableMessages } from "./messages/components/comparison-table";
 import { descriptionListMessages } from "./messages/components/description-list";
 import { dodontPairsMessages } from "./messages/components/dodont-pairs";
+import { imageCropperMessages } from "./messages/components/image-cropper";
 import { morphStackMessages } from "./messages/components/morph-stack";
 import { resizableMessages } from "./messages/components/resizable";
 import { scrollExpandMessages } from "./messages/components/scroll-expand";
 import { scrollStackMessages } from "./messages/components/scroll-stack";
+import { dockMessages } from "./messages/components/dock";
 import { separatorMessages } from "./messages/components/separator";
 import { tagsInputMessages } from "./messages/components/tags-input";
 import { quoteMessages } from "./messages/components/quote";
@@ -227,6 +233,7 @@ export const ui = {
     ...dataGridMessages.es,
     ...datePickerMessages.es,
     ...dialogMessages.es,
+    ...dialogStackMessages.es,
     ...drawerMessages.es,
     ...editorMessages.es,
     ...emptyStateMessages.es,
@@ -274,15 +281,20 @@ export const ui = {
     ...procedureMessages.es,
     ...timelineMessages.es,
     ...progressMessages.es,
+    ...compareSliderMessages.es,
+    ...videoPlayerMessages.es,
+    ...audioPlayerMessages.es,
     ...comparisonTableMessages.es,
     ...descriptionListMessages.es,
     ...quoteMessages.es,
     ...tagsInputMessages.es,
     ...dodontPairsMessages.es,
+    ...imageCropperMessages.es,
     ...morphStackMessages.es,
     ...resizableMessages.es,
     ...scrollExpandMessages.es,
     ...scrollStackMessages.es,
+    ...dockMessages.es,
     ...separatorMessages.es,
     ...radioGroupMessages.es,
     ...segmentedMessages.es,
@@ -382,6 +394,7 @@ export const ui = {
     ...dataGridMessages.en,
     ...datePickerMessages.en,
     ...dialogMessages.en,
+    ...dialogStackMessages.en,
     ...drawerMessages.en,
     ...editorMessages.en,
     ...emptyStateMessages.en,
@@ -429,15 +442,20 @@ export const ui = {
     ...procedureMessages.en,
     ...timelineMessages.en,
     ...progressMessages.en,
+    ...compareSliderMessages.en,
+    ...videoPlayerMessages.en,
+    ...audioPlayerMessages.en,
     ...comparisonTableMessages.en,
     ...descriptionListMessages.en,
     ...quoteMessages.en,
     ...tagsInputMessages.en,
     ...dodontPairsMessages.en,
+    ...imageCropperMessages.en,
     ...morphStackMessages.en,
     ...resizableMessages.en,
     ...scrollExpandMessages.en,
     ...scrollStackMessages.en,
+    ...dockMessages.en,
     ...separatorMessages.en,
     ...radioGroupMessages.en,
     ...segmentedMessages.en,

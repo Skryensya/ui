@@ -1,0 +1,177 @@
+---
+import "@skryensya/core/components/compare-slider.css";
+/* The demos' layers hold photos and interface drawn with the kit's own pieces. */
+import "@skryensya/core/patterns/image-frame.css";
+/* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
+import "@skryensya/core/components/annotation.css";
+/* The Do/Don't shows a button inside a layer. */
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/typography.css";
+import "@skryensya/core/patterns/layout.css";
+import "@skryensya/core/patterns/box.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import CodeBlock from "../CodeBlock.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import ComparisonTable from "../ComparisonTable.astro";
+import DoDont from "../DoDont.astro";
+import UsagePreview from "../UsagePreview.astro";
+import { compareSliderParts } from "@skryensya/core/compare-slider";
+import { compareSliderAnatomyCss, compareSliderAnatomyTree, compareSliderDoRegisteredTree, compareSliderDontRegisteredTree, compareSliderDoStartTree, compareSliderDoStaticTree, compareSliderDontStartTree, compareSliderDontStaticTree, compareSliderInterfaceTree, compareSliderTree, compareSliderVerticalTree } from "../../demos/compare-slider";
+import { getLocale, tList, useTranslations } from "../../i18n";
+
+const t = useTranslations(getLocale(Astro.url));
+
+const examples = [
+  { key: "photo", story: "Default", tree: compareSliderTree },
+  { key: "ui", story: "Interface", tree: compareSliderInterfaceTree },
+  { key: "vertical", story: "Vertical", tree: compareSliderVerticalTree },
+] as const;
+
+const [, doesColumn] = t("compareSliderPage.hooksColumns").split("|");
+const hooks = [
+  ["bg", "var(--color-bg-surface-sunken)", "bg"],
+  ["radius", "var(--radius-surface)", "radius"],
+  ["handle-hit", "var(--space-inset-lg)", "handleHit"],
+  ["handle-line", "2px", "handleLine"],
+  ["handle-color", "var(--color-bg-surface)", "handleColor"],
+  ["handle-active-color", "var(--color-border-accent)", "handleActiveColor"],
+  ["position", "50", "position"],
+] as const;
+const hookNotes = Object.fromEntries(
+  hooks.map(([name, , key]) => [`--sk-compare-slider-${name}`, t(`compareSliderPage.hook.${key}` as Parameters<typeof t>[0])]),
+);
+
+const partOrder = ["root", "before", "after", "handle", "grip"] as const;
+const partRows = partOrder.map((part) => ({
+  label: compareSliderParts[part],
+  labelHtml: `<code>${compareSliderParts[part]}</code>`,
+  cells: [t(`compareSliderPage.part.${part}` as Parameters<typeof t>[0])],
+}));
+
+const install = `pnpm add @skryensya/core
+# and, for React,
+pnpm add @skryensya/react`;
+const styles = `@import "@skryensya/core/components/compare-slider.css";`;
+const html = `<div class="sk-compare-slider" data-sk-compare-slider data-position="50">
+  <div class="sk-compare-slider__before"><img src="coast-before.jpg" alt="The coast before the edit" /></div>
+  <div class="sk-compare-slider__after"><img src="coast-after.jpg" alt="The coast after the edit" /></div>
+  <div class="sk-compare-slider__handle" aria-label="Compare the photo before and after the edit">
+    <span class="sk-compare-slider__grip sk-grip" aria-hidden="true"></span>
+  </div>
+</div>`;
+const react = `import { CompareSlider } from "@skryensya/react/compare-slider";
+
+<CompareSlider
+  label="Compare the photo before and after the edit"
+  before={<img src="coast-before.jpg" alt="The coast before the edit" />}
+  after={<img src="coast-after.jpg" alt="The coast after the edit" />}
+  onPositionChange={(position) => console.log(position)}
+/>
+
+{/* Stacked, starting nearer the top. */}
+<CompareSlider direction="vertical" position={35} … />`;
+const tune = `.sk-compare-slider {
+  --sk-compare-slider-radius: 0px;                 /* square corners */
+  --sk-compare-slider-handle-line: 3px;            /* a heavier line */
+  --sk-compare-slider-handle-color: var(--color-bg-accent);
+}`;
+---
+
+<ComponentPageShell
+  title="Compare Slider"
+  description={t("compareSliderPage.description")}
+  contractId="compare-slider"
+  badge="Beta"
+  hookNotes={hookNotes}
+  hookNotesLabel={doesColumn}
+  testFiles={["packages/react/src/components/compare-slider.test.tsx", "packages/vanilla/src/components/compare-slider.test.ts"]}
+>
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("compareSliderPage.lede")} />
+
+    <h3>{t("compareSliderPage.examplesTitle")}</h3>
+    <p set:html={t("compareSliderPage.examplesBody")} />
+    {
+      examples.map(({ key, story, tree }) => (
+        <UsagePreview
+          tree={tree(t)}
+          title={t(`compareSliderPage.variant.${key}` as Parameters<typeof t>[0])}
+          description={t(`compareSliderPage.variant.${key}.explain` as Parameters<typeof t>[0])}
+          storybookTitle="Components/Media & Visuals/Compare Slider"
+          storybookStory={story}
+          stageMinBlockSize="22rem"
+        />
+      ))
+    }
+
+    <h3>{t("compareSliderPage.howTitle")}</h3>
+    <ul>
+      <li set:html={t("compareSliderPage.how.layers")} />
+      <li set:html={t("compareSliderPage.how.divider")} />
+      <li set:html={t("compareSliderPage.how.thumb")} />
+      <li set:html={t("compareSliderPage.how.rtl")} />
+    </ul>
+
+    <h3>{t("compareSliderPage.contractTitle")}</h3>
+    <ul>
+      {tList(t, "compareSliderPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+  </Fragment>
+
+  <Fragment slot="anatomy">
+    <p set:html={t("compareSliderPage.anatomyBody")} />
+    <UsagePreview tree={compareSliderAnatomyTree(t)} css={compareSliderAnatomyCss} label={t("compareSliderPage.anatomyPreviewLabel")} bare />
+    <h3>{t("compareSliderPage.anatomyTitle")}</h3>
+    <div class="cmp-parts">
+      <ComparisonTable aspectLabel={t("compareSliderPage.partsAspect")} columns={[t("compareSliderPage.partsColumns")]} rows={partRows} />
+    </div>
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("compareSliderPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "compareSliderPage.when")} avoid={tList(t, "compareSliderPage.whenNot")} />
+    <DoDont
+      title={t("compareSliderPage.dd.registered.title")}
+      do={{ tree: compareSliderDoRegisteredTree(t), caption: t("compareSliderPage.dd.registered.do") }}
+      dont={{ tree: compareSliderDontRegisteredTree(t), caption: t("compareSliderPage.dd.registered.dont") }}
+    />
+    <DoDont
+      title={t("compareSliderPage.dd.static.title")}
+      do={{ tree: compareSliderDoStaticTree(t), caption: t("compareSliderPage.dd.static.do") }}
+      dont={{ tree: compareSliderDontStaticTree(t), caption: t("compareSliderPage.dd.static.dont") }}
+    />
+    <DoDont
+      title={t("compareSliderPage.dd.start.title")}
+      do={{ tree: compareSliderDoStartTree(t), caption: t("compareSliderPage.dd.start.do") }}
+      dont={{ tree: compareSliderDontStartTree(t), caption: t("compareSliderPage.dd.start.dont") }}
+    />
+    <ContentRules items={tList(t, "compareSliderPage.content")} />
+  </Fragment>
+
+  <Fragment slot="install">
+    <p set:html={t("compareSliderPage.installBody")} />
+    <CodeBlock code={install} label="terminal" />
+    <CodeBlock code={styles} label="CSS" lang="css" />
+    <CodeBlock code={html} label="HTML" lang="html" />
+    <CodeBlock code={react} label="React" lang="tsx" />
+  </Fragment>
+
+  <Fragment slot="style">
+    <h3>{t("compareSliderPage.hooksTitle")}</h3>
+    <p set:html={t("compareSliderPage.hooksBody")} />
+    <CodeBlock code={tune} label="CSS" lang="css" />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("compareSliderPage.a11yIntro")} does={tList(t, "compareSliderPage.a11yDoes")} yours={tList(t, "compareSliderPage.a11yYours")} />
+  </Fragment>
+</ComponentPageShell>
+
+<style is:global>
+  /* A class name is one token: breaking it at the hyphen makes two lines of what is a single word. */
+  .cmp-parts th code {
+    white-space: nowrap;
+  }
+</style>

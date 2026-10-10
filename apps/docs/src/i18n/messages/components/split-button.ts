@@ -20,6 +20,9 @@ export const splitButtonMessages = {
     "demo.splitButton.dangerMenuLabel": "Más opciones de eliminación",
     "demo.splitButton.dangerItem1": "Eliminar permanentemente",
     "demo.splitButton.dangerItem2": "Mover a la papelera",
+    "demo.splitButton.zoomLabel": "Zoom",
+    "demo.splitButton.zoomIn": "Acercar",
+    "demo.splitButton.zoomOut": "Alejar",
 
     "splitButtonPage.description": "Pone la acción más común a un clic y sus variantes en un menú al lado.",
 
@@ -58,6 +61,8 @@ export const splitButtonMessages = {
     "splitButtonPage.contract1": "Las dos mitades llevan la misma variante y el mismo tamaño: se leen como un solo control.",
 
     "splitButtonPage.mainBody": "La acción de la izquierda no cambia al elegir en el menú.",
+    "splitButtonPage.verticalTitle": "Vertical: acercar y alejar",
+    "splitButtonPage.verticalBody": "Dos botones soldados en vertical, sin menú ni lógica propia.",
 
     "splitButtonPage.mainTitle": "Principal: Guardar y sus variantes",
 
@@ -111,6 +116,9 @@ export const splitButtonMessages = {
     "demo.splitButton.dangerMenuLabel": "More deletion options",
     "demo.splitButton.dangerItem1": "Delete permanently",
     "demo.splitButton.dangerItem2": "Move to trash",
+    "demo.splitButton.zoomLabel": "Zoom",
+    "demo.splitButton.zoomIn": "Zoom in",
+    "demo.splitButton.zoomOut": "Zoom out",
 
     "splitButtonPage.description": "Puts the most common action one click away and its variants in a menu beside it.",
 
@@ -149,6 +157,8 @@ export const splitButtonMessages = {
     "splitButtonPage.contract1": "Both halves carry the same variant and size: they read as one control.",
 
     "splitButtonPage.mainBody": "The left action does not change when choosing in the menu.",
+    "splitButtonPage.verticalTitle": "Vertical: zoom in and out",
+    "splitButtonPage.verticalBody": "Two buttons welded vertically, without a menu or built-in behavior.",
 
     "splitButtonPage.mainTitle": "Main: Save and its variants",
 

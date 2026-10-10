@@ -5,6 +5,22 @@
 # hash nuevo.
 surface: "7dbc5d593c102ab9"
 entries:
+  - date: 2026-10-08
+    kind: bugfix
+    es:
+      title: Copiado se coloca bien desde el primer frame
+      body: El botón de copia ya no se escala ni se desplaza al pulsarlo. Esas transformaciones cambiaban el contenedor de la burbuja y hacían que saltara al terminar la animación. El icono y la capa de estado conservan su feedback.
+    en:
+      title: Copy feedback is positioned correctly from its first frame
+      body: Copy buttons no longer scale or translate on press. Those transforms changed the bubble's containing block, making it jump when the release animation ended. Icon and state-layer feedback remain intact.
+  - date: 2026-10-08
+    kind: bugfix
+    es:
+      title: La confirmación no tapa el valor copiado
+      body: El mensaje Copiado se coloca encima del botón, en vez de sobre el campo o el comando adyacente. Conserva el icono de confirmación y el anuncio accesible.
+    en:
+      title: Copy confirmation no longer covers the copied value
+      body: The Copied message appears above the button instead of over the adjacent field or command. The confirmation icon and accessible announcement remain unchanged.
   - date: 2026-09-26
     kind: feature
     target: appearance

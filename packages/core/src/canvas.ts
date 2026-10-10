@@ -284,9 +284,9 @@ export type CanvasViewOptions = {
  * Wire one canvas. Both bindings call exactly this on a root carrying the canvas's parts, and it
  * returns the cleanup.
  *
- * It WRITES to two places and reads everything else: the content's `transform`, and on the root a
- * handful of `data-sk-*` flags plus the view as custom properties (`--sk-canvas-x`, `-y`, `-scale`,
- * which move the dotted ground, and `--sk-canvas-fit-block-size`, the viewport's height at rest).
+ * It WRITES to three places and reads everything else: the content's `transform`, the viewport's own background (the
+ * dotted ground, which moves with the drawing), and on the root a handful of `data-sk-*` flags plus
+ * `--sk-canvas-fit-block-size`, the viewport's height at rest.
  * React never sets any of those, so the two never fight over an attribute.
  *
  * THE VIEW FOLLOWS FIT until the reader moves it. A resize while fitted refits, so a rotating
@@ -312,10 +312,16 @@ export function connectCanvasView(root: HTMLElement, options: CanvasViewOptions 
 
   const apply = (): void => {
     content.style.transform = canvasTransform(view);
-    /* The same view, for the stylesheet: the dotted ground pans and zooms with the drawing. */
-    root.style.setProperty("--sk-canvas-x", `${view.x}px`);
-    root.style.setProperty("--sk-canvas-y", `${view.y}px`);
-    root.style.setProperty("--sk-canvas-scale", String(view.scale));
+    /*
+     * The same view for the dotted ground, which pans and zooms with the drawing. It is written on the VIEWPORT's own background,
+     * inline, and not as three custom properties on the root: a custom property is inherited, so changing one on the root
+     * restyled the whole drawing (every slotted node) on every pointer move. Measured while panning (Chromium, 3 s): ~72 ms of
+     * style work per second, with the ground as the only thing that reads the view. The grid size stays a stylesheet token
+     * (`var()` inside the inline value), so it is still the page's to set.
+     */
+    const cell = `max(12px, calc(var(--sk-canvas-grid-size) * ${view.scale}))`;
+    viewport.style.backgroundSize = `${cell} ${cell}`;
+    viewport.style.backgroundPosition = `${view.x}px ${view.y}px`;
     for (const control of controls) {
       const action = control.getAttribute(canvasAttrs.action);
       control.disabled =

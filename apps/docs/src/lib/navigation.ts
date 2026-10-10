@@ -303,6 +303,24 @@ const componentItems = [
     ],
   },
   {
+    href: "/components/compare-slider",
+    label: "Compare Slider",
+    trailing: "Beta",
+    aliases: ["compare slider", "compare-slider", "compare", "comparar", "antes y después", "antes y despues", "before after", "before and after", "image comparison", "comparador de imágenes", "reveal slider", "slider de comparación", "divisor", "swipe compare"],
+  },
+  {
+    href: "/components/video-player",
+    label: "Video Player",
+    trailing: "Beta",
+    aliases: ["video player", "video-player", "video", "reproductor de video", "reproductor", "media player", "player", "controles de video", "video controls", "youtube", "captions", "subtítulos", "subtitulos", "seek bar", "barra de progreso", "mp4"],
+  },
+  {
+    href: "/components/audio-player",
+    label: "Audio Player",
+    trailing: "Beta",
+    aliases: ["audio player", "audio-player", "audio", "reproductor de audio", "music player", "reproductor de música", "reproductor de musica", "podcast", "podcast player", "playlist", "lista de reproducción", "lista de reproduccion", "waveform", "forma de onda", "pista", "track", "mp3", "canción", "cancion"],
+  },
+  {
     href: "/components/charts",
     label: "Charts",
     aliases: [
@@ -384,6 +402,11 @@ const componentItems = [
     aliases: ["copy button", "copybutton", "copiar", "portapapeles", "copy to clipboard", "copy link"],
   },
   {
+    href: "/components/dialog-stack",
+    label: "Dialog Stack",
+    aliases: ["dialogstack", "diálogos apilados", "stacked dialogs", "multi-step dialog"],
+  },
+  {
     href: "/components/dialog",
     label: "Dialog",
     aliases: ["diálogo", "dialogo", "modal", "confirm", "dialog vaul", "dialog enhanced"],
@@ -453,6 +476,12 @@ const componentItems = [
     href: "/components/icon",
     label: "Icon",
     aliases: ["icono", "ícono", "icono componente", "sk-icon", "mountIcons"],
+  },
+  {
+    href: "/components/image-cropper",
+    label: "Image Cropper",
+    trailing: "Beta",
+    aliases: ["image cropper", "crop", "cropper", "recortar", "recortar imagen", "recortador", "avatar", "foto de perfil", "profile picture", "avatar crop", "aspect ratio", "proporción", "zoom", "rotate image", "rotar imagen", "cover image", "portada", "thumbnail", "miniatura", "cropperjs"],
   },
   {
     href: "/components/image-frame",
@@ -908,9 +937,9 @@ const componentItems = [
     aliases: ["carpeta", "folder", "pestaña", "pestana", "tab surface", "pila de carpetas"],
   },
   {
-    href: "/components/file-upload",
-    label: "FileUpload",
-    aliases: ["subir archivo", "carga de archivos", "dropzone"],
+    href: "/components/drop-zone",
+    label: "Drop zone",
+    aliases: ["subir archivo", "carga de archivos", "file upload", "upload file", "dropzone", "FileUpload"],
   },
   {
     href: "/components/megamenu",
@@ -996,6 +1025,11 @@ const componentItems = [
     ],
   },
   {
+    href: "/components/dock",
+    label: "Dock",
+    aliases: ["lanzador de acciones", "action launcher", "icon actions"],
+  },
+  {
     href: "/components/toolbar",
     label: "Toolbar",
     aliases: ["barra de herramientas", "grupo de controles"],
@@ -1050,6 +1084,7 @@ const allComponentNavigation = [
       "/components/button",
       "/components/clipboard",
       "/components/command-palette",
+      "/components/dock",
       "/components/menu",
       "/components/menubar",
       "/components/split-button",
@@ -1068,7 +1103,7 @@ const allComponentNavigation = [
       "/components/combobox",
       "/components/date-picker",
       "/components/editor",
-      "/components/file-upload",
+      "/components/drop-zone",
       "/components/form-field",
       "/components/input",
       "/components/listbox",
@@ -1184,6 +1219,7 @@ const allComponentNavigation = [
     blurb: "group.componentOverlays.blurb",
     items: componentGroupItems(
       "/components/dialog",
+      "/components/dialog-stack",
       "/components/drawer",
       "/components/popover",
       "/components/tooltip",
@@ -1220,7 +1256,9 @@ const allComponentNavigation = [
       "/components/annotation",
       "/components/canvas",
       "/components/carousel",
+      "/components/compare-slider",
       "/components/diagram",
+      "/components/image-cropper",
       "/components/image-frame",
       "/components/lightbox",
       "/components/marquee",
@@ -1228,6 +1266,8 @@ const allComponentNavigation = [
       "/components/morph-stack",
       "/components/qr-code",
       "/components/sticker",
+      "/components/video-player",
+      "/components/audio-player",
     ),
   },
   {

@@ -98,18 +98,27 @@ export const appShellMainDontTree = (_t: Translate): UsageTree =>
 
 /* ═════════════ Window ═════════════ */
 
-const windowMock = (title: string, body: UsageTree[], extra = ""): UsageTree =>
-  box(
-    `border: ${RULE}; border-radius: ${R}; overflow: hidden; box-shadow: var(--elevation-overlay); ${extra}`,
-    [
-      box(
-        `display: flex; justify-content: space-between; align-items: center; padding: 0.375rem 0.625rem; border-block-end: ${RULE};`,
-        [text(title, { size: "sm", weight: "emphasis" }), text("×", { size: "sm", tone: "secondary" })],
-        "raised",
-      ),
-      box("padding: 0.625rem;", stack("xs", ...body)),
-    ],
-  );
+const windowSpecimen = (t: Translate, title: string, body: UsageTree[], className = "dd-window"): UsageTree => ({
+  contract: "window",
+  signature: "Window",
+  options: {
+    closeLabel: t("demo.window.close"),
+    minimizeLabel: t("demo.window.minimize"),
+    maximizeLabel: t("demo.window.maximize"),
+    restoreLabel: t("demo.window.restore"),
+    defaultOpen: true,
+    draggable: false,
+    persistRect: false,
+    defaultWidth: 224,
+    defaultHeight: 144,
+  },
+  attrs: { class: className },
+  slots: {
+    trigger: t("demo.window.trigger"),
+    title,
+    children: stack("xs", ...body),
+  },
+});
 
 const inspectorBody = (t: Translate): UsageTree[] => [
   text(t("demo.mock.window.row1"), { size: "sm" }),
@@ -118,10 +127,10 @@ const inspectorBody = (t: Translate): UsageTree[] => [
 ];
 
 /** Named by what it holds. */
-export const windowTitleDoTree = (t: Translate): UsageTree => windowMock(t("demo.mock.window.inspector"), inspectorBody(t), "inline-size: 13rem;");
+export const windowTitleDoTree = (t: Translate): UsageTree => windowSpecimen(t, t("demo.mock.window.inspector"), inspectorBody(t), "dd-window dd-window--title");
 
 /** Named by what it is: every window is a window. */
-export const windowTitleDontTree = (t: Translate): UsageTree => windowMock(t("demo.mock.window.generic"), inspectorBody(t), "inline-size: 13rem;");
+export const windowTitleDontTree = (t: Translate): UsageTree => windowSpecimen(t, t("demo.mock.window.generic"), inspectorBody(t), "dd-window dd-window--title");
 
 const pageLines = (t: Translate): UsageTree =>
   stack("xs", heading(t("demo.mock.window.page"), "h5"), text(t("demo.mock.window.pageBody"), { size: "sm" }), text(t("demo.mock.window.pageBody2"), { size: "sm" }));
@@ -129,24 +138,25 @@ const pageLines = (t: Translate): UsageTree =>
 /** A tool beside the content: the page stays in view and in reach while the window is open. */
 export const windowBesideDoTree = (t: Translate): UsageTree =>
   box(
-    "position: relative; inline-size: 18rem; block-size: 9rem; overflow: hidden; border-radius: var(--radius-surface);",
+    "position: relative; inline-size: 32rem; block-size: 16rem; overflow: hidden; border-radius: var(--radius-surface);",
     [
       box("position: absolute; inset: 0; padding: 0.75rem; inline-size: 62%;", pageLines(t)),
-      windowMock(t("demo.mock.window.inspector"), inspectorBody(t).slice(0, 2), "position: absolute; inset-block-start: 0.75rem; inset-inline-end: 0.5rem; inline-size: 9rem;"),
+      windowSpecimen(t, t("demo.mock.window.inspector"), inspectorBody(t).slice(0, 2), "dd-window dd-window--floating"),
     ],
   );
 
 /** A question that must be answered, in a window over a dimmed page: that is a Dialog, and the page cannot be used meanwhile. */
 export const windowBesideDontTree = (t: Translate): UsageTree =>
   box(
-    "position: relative; inline-size: 18rem; block-size: 9rem; overflow: hidden; border-radius: var(--radius-surface);",
+    "position: relative; inline-size: 32rem; block-size: 16rem; overflow: hidden; border-radius: var(--radius-surface);",
     [
       box("position: absolute; inset: 0; padding: 0.75rem; inline-size: 62%;", pageLines(t)),
       box("position: absolute; inset: 0; background: var(--color-bg-well); opacity: 0.7;", label("\u00a0")),
-      windowMock(
+      windowSpecimen(
+        t,
         t("demo.mock.window.confirm"),
         [text(t("demo.mock.window.confirmBody"), { size: "sm" }), inline({ gap: "xs", justify: "end" }, button(t("demo.mock.cancel"), "ghost"), button(t("demo.mock.accept")))],
-        "position: absolute; inset-block-start: 1.25rem; inset-inline: 1.5rem; z-index: 2;",
+        "dd-window dd-window--dialogish",
       ),
     ],
   );

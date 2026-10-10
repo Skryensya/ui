@@ -26,6 +26,7 @@
  * render. The contract-level prose these pages already carried stays exactly where every other
  * page keeps ITS un-compiled contract notes: inside the Uso slot, under `component.contractNotesTitle`.
  */
+import "@skryensya/core/components/list.css";
 import Base from "../../layouts/Base.astro";
 import ContractChangelog from "../ContractChangelog.astro";
 import ContractReference from "../ContractReference.astro";
@@ -33,8 +34,11 @@ import StylingHooks, { type HookGroup } from "../StylingHooks.astro";
 import { getContract } from "@skryensya/core/registry";
 import TestCoverage, { type TestGroup } from "../TestCoverage.astro";
 import { changelogFor } from "../../lib/contract-reference";
-import { findComponentIconMarkup } from "../../lib/component-icons";
-import { getLocale, useTranslations } from "../../i18n";
+import { getComponentDescription } from "../../lib/component-catalog";
+import { componentIconMarkup, findComponentIconMarkup } from "../../lib/component-icons";
+import { getNavigation } from "../../lib/navigation";
+import { relatedComponents as chosenRelated } from "../../lib/related-components";
+import { canonicalPath, getLocale, useTranslations } from "../../i18n";
 import CodeBlock from "../CodeBlock.astro";
 import { vanillaMountFor } from "../../lib/vanilla-mounts";
 
@@ -87,7 +91,8 @@ const {
   appearanceTargetSelector,
   untitledCode = false,
 } = Astro.props;
-const t = useTranslations(getLocale(Astro.url));
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
 const hasContract = Boolean(contractId);
 const hasChanges = contractId ? changelogFor(contractId).length > 0 : false;
 const hasInstall = Astro.slots.has("install");
@@ -180,6 +185,34 @@ const hasAppearanceControl = Astro.slots.has("appearance");
  * is a build error; here it is simply a title with no mark.
  */
 const markMarkup = findComponentIconMarkup(Astro.url.pathname, { className: "docs-component-hero__mark" });
+
+const normalizePath = (path: string) => path.replace(/\/$/, "") || "/";
+const currentPath = normalizePath(Astro.url.pathname);
+const componentSection = getNavigation(locale).find((section) => section.id === "components");
+const relatedGroup = componentSection?.groups.find((group) =>
+  group.items.some((item) => normalizePath(item.href) === currentPath),
+);
+const currentGroupIndex = relatedGroup
+  ? relatedGroup.items.findIndex((item) => normalizePath(item.href) === currentPath)
+  : -1;
+/* The list is keyed by the canonical (English) path, so the Spanish page finds the same entry. */
+const chosen = chosenRelated[canonicalPath(currentPath)];
+const everyComponent = componentSection?.groups.flatMap((group) => group.items) ?? [];
+/* A page that names its relatives gets them; every other page gets its category's next entries. */
+const relatedComponents = chosen
+  ? chosen
+      .map((href) => everyComponent.find((item) => canonicalPath(normalizePath(item.href)) === href))
+      .filter((item): item is NonNullable<typeof item> => Boolean(item) && !item!.todo)
+      .slice(0, 4)
+  : relatedGroup && currentGroupIndex >= 0
+    ? [
+        ...relatedGroup.items.slice(currentGroupIndex + 1),
+        ...relatedGroup.items.slice(0, currentGroupIndex),
+      ]
+        .filter((item) => !item.todo)
+        .slice(0, 4)
+    : [];
+
 ---
 
 <Base title={title} description={description} documentLayout="grid" hideVanillaMount={hideVanillaMount}>
@@ -203,9 +236,11 @@ const markMarkup = findComponentIconMarkup(Astro.url.pathname, { className: "doc
    */}
   <div
     class="docs-component-shell"
-    data-docs-appearance-scope={hasAppearanceControl ? "" : undefined}
+    data-docs-appearance-page={hasAppearanceControl ? "" : undefined}
     data-docs-appearance-target={hasAppearanceControl ? appearanceTargetSelector : undefined}
   >
+    {/* The page declares ONE menu; each preview card gets its own copy (scripts/appearance.ts). */}
+    {hasAppearanceControl && <template data-docs-appearance-template><slot name="appearance" /></template>}
     <div class="docs-component-head">
       {/*
        * THE TALL HALF OF THE BAND, and the reason it is a box of its own rather than padding on the
@@ -268,75 +303,6 @@ const markMarkup = findComponentIconMarkup(Astro.url.pathname, { className: "doc
           )}
 
         </div>
-
-          {/*
-            * THE PAGE'S ONE BINDING SWITCH, and the masthead is where it belongs because the
-            * question is about the page. Every preview used to carry its own copy, so a page with a
-            * dozen demos asked the reader the same thing a dozen times and the Installation tab
-            * asked it a thirteenth; and because the preference was shared all along, answering any
-            * one of them moved all the others, which is a control that looks per-demo and is not.
-            *
-            * ALWAYS RENDERED, not gated on the page having React demos. The preference is global
-            * (`data-sk-component-preview-pref` on `<html>`, persisted): it decides what the
-            * Installation tab says here and what every preview shows on the next page too, so a page
-            * whose own demos happen to be Vanilla-only is still a place a reader may want to set it.
-            *
-            * A SIBLING OF THE TITLE ROW, NOT AN ITEM IN IT, and positioned against the header
-            * itself (site.css). The collapse interpolates the title's TYPE rather than transforming
-            * the band, so a switch laid out beside the heading rode its shrinking line box: measured
-            * across the collapse it drifted 25px down and 8px across while the reader scrolled. The
-            * header's own box is a constant 66px at every scroll position, so anchoring to that
-            * holds the switch still.
-            *
-            * `data-sk-segmented` and the docs hook on one node, the doubling the previews used: the
-            * site's global enhancer runs the widget and `scripts/page-binding.ts` only listens for
-            * the `sk:segmentedvaluechange` it dispatches.
-            */}
-          <div class="docs-component-hero__controls">
-            {hasAppearanceControl && <slot name="appearance" />}
-            <div
-              class="sk-segmented docs-component-hero__binding"
-              data-sk-segmented
-              data-sk-page-binding-tabs
-              data-value="vanilla"
-              role="radiogroup"
-              aria-label={t("install.bindingGroup")}
-            >
-              <span class="sk-segmented__indicator" aria-hidden="true" />
-              <button
-                class="sk-segmented__option sk-interactive"
-                data-sk-segmented-option
-                data-value="vanilla"
-                type="button"
-                role="radio"
-              >
-                Vanilla
-              </button>
-              <button
-                class="sk-segmented__option sk-interactive"
-                data-sk-segmented-option
-                data-value="react"
-                type="button"
-                role="radio"
-              >
-                React
-              </button>
-            </div>
-          </div>
-
-        {/* Head FOUC already wrote the preference on `<html>`; this only keeps the pill from flipping
-            Vanilla -> React once the Segmented enhancer arrives. */}
-        <script is:inline>
-          (function () {
-            var pref = document.documentElement.getAttribute("data-sk-component-preview-pref") || "vanilla";
-            var tabs = document.querySelector("[data-sk-page-binding-tabs]");
-            if (!tabs) return;
-            tabs.setAttribute("data-value", pref);
-            tabs.querySelectorAll("[data-sk-segmented-option]").forEach(function (option) {
-              option.setAttribute("aria-checked", option.getAttribute("data-value") === pref ? "true" : "false");
-            });
-          })();
-        </script>
       </header>
     </div>
     <div class="sk-tabs" data-orientation="horizontal" data-activation-mode="automatic" data-value="usage" data-sk-tabs>
@@ -547,4 +513,32 @@ const markMarkup = findComponentIconMarkup(Astro.url.pathname, { className: "doc
       }
     </div>
   </div>
+
+  {relatedComponents.length > 0 && (
+    <section class="docs-related-components sk-layout-grid" aria-labelledby="docs-related-components-title" data-toc-transparent>
+      <h2 id="docs-related-components-title">{t("component.relatedTitle")}</h2>
+      <ul class="sk-list" role="list">
+        {relatedComponents.map((item) => {
+          const useCase = getComponentDescription(item.href, locale);
+
+          return (
+            <li class="sk-list__item">
+              <a href={item.href} class="sk-list__action sk-interactive">
+                <span class="sk-list__leading" set:html={componentIconMarkup(item.href)} />
+                <span class="sk-list__content">
+                  <span class="sk-list__title">{item.label}</span>
+                  <span class="sk-list__description">{t("component.relatedUseCase", { useCase })}</span>
+                </span>
+                {item.trailing && (
+                  <span class="sk-list__trailing">
+                    <span class="sk-badge" data-size="sm" data-tone="warning">{item.trailing}</span>
+                  </span>
+                )}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  )}
 </Base>

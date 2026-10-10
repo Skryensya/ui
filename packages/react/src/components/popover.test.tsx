@@ -132,6 +132,15 @@ describe("Popover (React)", () => {
     expect(content.getAttribute("data-sk-placement")).toBe("inline-start");
   });
 
+  it("names an icon-only trigger from the panel title when triggerLabel is omitted", () => {
+    const ui = render(
+      <Popover trigger={<svg aria-hidden="true" />} triggerIconOnly title="Filtros">
+        Content
+      </Popover>,
+    );
+    expect(ui.getByRole("button", { name: "Filtros" })).toBeTruthy();
+  });
+
   it("names an icon-only trigger with triggerLabel", () => {
     const ui = render(
       <Popover trigger={<svg />} triggerLabel="Abrir filtros">

@@ -1,0 +1,19 @@
+# Structure lives in packages/core/src/dock.ts; this records why each signature is chosen.
+Dock:
+  useWhen:
+    - A small set of frequent application actions needs an icon-based launcher.
+    - The actions are the application's own, always one press away, and a name on hover or focus is enough to tell the icons apart.
+  avoidWhen:
+    - The controls form a dense editor toolbar that needs roving keyboard focus.
+    - The items are site destinations rather than actions.
+  alternatives:
+    - Toolbar
+    - NavList
+DockItem:
+  useWhen:
+    - A named icon button runs one action in a Dock.
+  avoidWhen:
+    - The control navigates to a page or represents a persistent toggle.
+  alternatives:
+    - Button.action
+    - Button.navigation

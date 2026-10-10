@@ -1,0 +1,525 @@
+/* The controls are icon-only `sk-button`s and the wait is a Loader; they bring their own sheets. */
+@import url("./button.css");
+@import url("./loader.css");
+@import url("../patterns/icon-toggle.css");
+
+/*
+ * TIER 3, VIDEO PLAYER
+ *
+ * A skin over a real `<video>`. See `@skryensya/core/video-player` for why each control is what it is; this sheet owns the
+ * frame, the bar, the two sliders and the way the chrome leaves.
+ *
+ * ALWAYS DARK, for Lightbox's reason: a bright frame around a moving picture changes how its colours read, and every player
+ * frames in near-black. It is `color-scheme: dark` rather than new colours, so each semantic token inside (the buttons, the
+ * loader, the focus ring) resolves its own dark half.
+ *
+ * THE STATE IS THE ROOT'S. The controller writes `data-playing`, `data-ended`, `data-waiting`, `data-muted`,
+ * `data-fullscreen`, `data-idle` and `data-scrubbing`, and which face of a toggle is lit is a selector on those. What MOVES
+ * (the fills, the thumb, the volume level, the time under the pointer) is written inline on the one element it affects, never
+ * as a custom property on the root, which would invalidate every descendant on every frame (see `media-progress.ts`, with the
+ * numbers). The markup a server renders is still the markup a reader sees before any script runs.
+ *
+ * THE FILLS ARE SCALED from the bar's start edge, not resized, so moving one needs no layout; the track clips them, so its
+ * rounded ends stay round.
+ *
+ * Every hook resolves to a TIER-2 token, never a palette or raw color; scripts/lint.ts enforces it.
+ */
+@layer components {
+  .sk-video-player {
+    --sk-video-player-aspect: 16 / 9;
+    --sk-video-player-bg: var(--color-bg-canvas);
+    --sk-video-player-fg: var(--color-text-on-media);
+    --sk-video-player-radius: var(--radius-surface);
+    --sk-video-player-gutter: var(--space-inset-sm);
+    /* The wash under the bar, so the buttons read over whatever frame is behind them. */
+    --sk-video-player-scrim: color-mix(in oklch, var(--color-bg-canvas) 82%, transparent);
+    /* The caption's own plate, and how high it stands: clear of the bar while the bar shows. */
+    --sk-video-player-captions-bg: color-mix(in oklch, var(--color-bg-canvas) 72%, transparent);
+    --sk-video-player-captions-offset: 5rem;
+    /* The bar under the captions button when captions are on: as wide as its icon, at the foot of the button. */
+    --sk-video-player-captions-underline-size: var(--size-icon-md);
+    --sk-video-player-captions-underline-thickness: 0.1875rem;
+    --sk-video-player-captions-underline-offset: var(--space-inset-xs);
+    --sk-video-player-track-color: color-mix(in oklch, var(--sk-video-player-fg) 28%, transparent);
+    --sk-video-player-buffered-color: color-mix(in oklch, var(--sk-video-player-fg) 42%, transparent);
+    --sk-video-player-played-color: var(--color-action-accent);
+    --sk-video-player-track-size: 0.1875rem;
+    --sk-video-player-thumb-size: 0.875rem;
+    --sk-video-player-volume-width: 6rem;
+    --sk-video-player-fade-duration: var(--motion-state-change-duration);
+
+    color-scheme: dark;
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    inline-size: 100%;
+    min-inline-size: 0;
+    aspect-ratio: var(--sk-video-player-aspect);
+    overflow: clip;
+    border-radius: var(--sk-video-player-radius);
+    background: var(--sk-video-player-bg);
+    color: var(--sk-video-player-fg);
+    user-select: none;
+  }
+
+  /* Focus lands here by script or by a press, to give the keys somewhere to go; it is not a stop, so it draws no ring. */
+  .sk-video-player:focus {
+    outline: none;
+  }
+
+  .sk-video-player:fullscreen {
+    aspect-ratio: auto;
+    border-radius: 0;
+  }
+
+  /* The cursor leaves with the bar, or a resting pointer is a hole in the picture. */
+  .sk-video-player[data-idle] {
+    cursor: none;
+  }
+
+  .sk-video-player__stage,
+  .sk-video-player__captions,
+  .sk-video-player__loader,
+  .sk-video-player__big,
+  .sk-video-player__controls {
+    grid-area: 1 / 1;
+  }
+
+  /* THE PICTURE. The author's `<video>` fills the stage and keeps its own ratio inside it. */
+  .sk-video-player__stage {
+    min-inline-size: 0;
+    min-block-size: 0;
+    overflow: clip;
+    cursor: pointer;
+  }
+
+  .sk-video-player__stage > video {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: contain;
+  }
+
+  /* Captions the browser draws sit above the bar while it is on screen, and drop back when it leaves. */
+  .sk-video-player__stage > video::cue {
+    font-size: var(--font-size-body);
+  }
+
+  /*
+   * CAPTIONS. Drawn by the player (the browser would paint them under the bar, at the very bottom edge) and standing clear of
+   * the bar while it shows. When the bar leaves they drop to the edge, so they never hang in the middle of the picture. They
+   * take no pointer: a press on them is a press on the picture.
+   */
+  .sk-video-player__captions {
+    z-index: 1;
+    align-self: end;
+    justify-self: center;
+    box-sizing: border-box;
+    max-inline-size: calc(100% - 2 * var(--sk-video-player-gutter));
+    margin-block-end: var(--sk-video-player-captions-offset);
+    padding: var(--space-inset-xs) var(--space-inset-sm);
+    border-radius: var(--radius-control);
+    background: var(--sk-video-player-captions-bg);
+    color: var(--sk-video-player-fg);
+    font-size: var(--font-size-body);
+    line-height: 1.35;
+    text-align: center;
+    text-wrap: balance;
+    white-space: pre-line;
+    pointer-events: none;
+    transition: margin-block-end var(--sk-video-player-fade-duration) var(--motion-state-change-easing);
+  }
+
+  .sk-video-player__captions:empty {
+    display: none;
+  }
+
+  .sk-video-player[data-idle] > .sk-video-player__captions {
+    margin-block-end: var(--sk-video-player-gutter);
+  }
+
+  /* BUFFERING. A Loader in the middle, only while the element says it is waiting. */
+  .sk-video-player__loader {
+    place-self: center;
+    z-index: 1;
+    pointer-events: none;
+    color: var(--sk-video-player-fg);
+    opacity: 0;
+    transition: opacity var(--sk-video-player-fade-duration) var(--motion-state-change-easing);
+  }
+
+  .sk-video-player[data-waiting] > .sk-video-player__loader {
+    opacity: 1;
+  }
+
+  /* THE BIG BUTTON: the start, before anything has played, and the way back once it has ended. */
+  .sk-video-player__big {
+    place-self: center;
+    z-index: 1;
+    opacity: 1;
+    transition:
+      opacity var(--sk-video-player-fade-duration) var(--motion-state-change-easing),
+      visibility 0s linear 0s;
+  }
+
+  .sk-video-player[data-started]:not([data-ended]) > .sk-video-player__big {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition-delay: 0s, var(--sk-video-player-fade-duration);
+  }
+
+  /* THE BAR. Seek bar above, buttons below, over a wash that fades with it. */
+  .sk-video-player__controls {
+    z-index: 2;
+    align-self: end;
+    display: grid;
+    /* The seek bar sits right on the buttons: its hit area already gives the track room above and below. */
+    gap: 0;
+    padding-block: var(--space-inset-lg) var(--space-inset-xs);
+    padding-inline: var(--sk-video-player-gutter);
+    background: linear-gradient(to top, var(--sk-video-player-scrim), transparent);
+    transition:
+      opacity var(--sk-video-player-fade-duration) var(--motion-state-change-easing),
+      translate var(--sk-video-player-fade-duration) var(--motion-state-change-easing);
+  }
+
+  .sk-video-player[data-idle] > .sk-video-player__controls {
+    opacity: 0;
+    translate: 0 var(--space-inset-xs);
+    pointer-events: none;
+  }
+
+  /* THE SEEK BAR. A tall hit area around a thin track that grows under the pointer, the keys or a drag. */
+  .sk-video-player__seek {
+    position: relative;
+    block-size: var(--space-inset-md);
+    display: grid;
+    /* The track rests at the foot of its hit area, a hair above the buttons, instead of floating in the middle of it. */
+    align-items: end;
+    padding-block-end: var(--space-inset-xs);
+    box-sizing: border-box;
+    cursor: pointer;
+    touch-action: none;
+    outline: none;
+    /* The thumb is placed in `cqw` (a share of THIS box's width) by the controller, so moving it needs no layout and no custom property. */
+    container-type: inline-size;
+  }
+
+  .sk-video-player__track {
+    position: relative;
+    block-size: var(--sk-video-player-track-size);
+    border-radius: var(--radius-pill);
+    background: var(--sk-video-player-track-color);
+    overflow: clip;
+    transition: block-size var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  .sk-video-player__seek:is(:hover, :focus-visible) > .sk-video-player__track,
+  .sk-video-player[data-scrubbing] .sk-video-player__track {
+    block-size: calc(var(--sk-video-player-track-size) * 1.75);
+  }
+
+  .sk-video-player__buffered,
+  .sk-video-player__played {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    /* A full-width bar the controller scales from the start edge (once per pixel it moves): a compositor-only change. */
+    inline-size: 100%;
+    scale: 0 1;
+    transform-origin: 0 50%;
+  }
+
+  .sk-video-player__seek:dir(rtl) :is(.sk-video-player__buffered, .sk-video-player__played) {
+    transform-origin: 100% 50%;
+  }
+
+  .sk-video-player__buffered {
+    background: var(--sk-video-player-buffered-color);
+  }
+
+  .sk-video-player__played {
+    background: var(--sk-video-player-played-color);
+  }
+
+  /* The thumb is there for the keys and the pointer; at rest it is gone, as the picture is the point. */
+  .sk-video-player__thumb {
+    position: absolute;
+    /* Centred on the track, which rests at the foot of the seek bar's hit area. */
+    inset-block-end: calc(var(--space-inset-xs) + var(--sk-video-player-track-size) / 2);
+    inset-inline-start: 0;
+    inline-size: var(--sk-video-player-thumb-size);
+    block-size: var(--sk-video-player-thumb-size);
+    border-radius: var(--radius-pill);
+    background: var(--sk-video-player-played-color);
+    translate: -50% 50%;
+    scale: 0;
+    pointer-events: none;
+    transition: scale var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  .sk-video-player__seek:dir(rtl) > .sk-video-player__thumb {
+    translate: 50% 50%;
+  }
+
+  .sk-video-player__seek:is(:hover, :focus-visible) > .sk-video-player__thumb,
+  .sk-video-player[data-scrubbing] .sk-video-player__thumb {
+    scale: 1;
+  }
+
+  .sk-video-player__seek:focus-visible > .sk-video-player__thumb {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  /* The time under the pointer. Kept inside the bar at both ends so it never clips. */
+  .sk-video-player__tip {
+    position: absolute;
+    inset-block-end: calc(100% + var(--space-inset-xs));
+    /* Where the pointer is: the controller writes this inline while hovering. */
+    inset-inline-start: 1.5rem;
+    translate: -50% 0;
+    padding: var(--space-inset-xs) var(--space-inset-sm);
+    border-radius: var(--radius-control);
+    background: var(--sk-video-player-scrim);
+    font-size: var(--font-size-caption);
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  .sk-video-player__seek:dir(rtl) > .sk-video-player__tip {
+    translate: 50% 0;
+  }
+
+  .sk-video-player__seek:hover > .sk-video-player__tip,
+  .sk-video-player[data-scrubbing] .sk-video-player__tip {
+    opacity: 1;
+  }
+
+  /* THE BUTTONS. */
+  .sk-video-player__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-inline-sm);
+    min-inline-size: 0;
+  }
+
+  /* PLAY IS ALWAYS A CIRCLE, in the bar and as the big button: its radius is the pill, so no radius setting or appearance reshapes it. */
+  .sk-video-player [data-video-action="play"] {
+    --sk-button-radius: var(--radius-pill);
+  }
+
+  .sk-video-player__bar [data-video-action="play"] {
+    margin-inline: var(--space-inline-xs);
+  }
+
+  .sk-video-player__spacer {
+    flex: 1;
+  }
+
+  /* A button, so a press can swap elapsed for remaining; it is drawn as the clock it is, not as a chip. */
+  .sk-video-player__time {
+    display: inline-flex;
+    gap: var(--space-inline-xs);
+    padding-inline: var(--space-inline-sm);
+    font-size: var(--font-size-caption);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .sk-video-player__duration {
+    color: color-mix(in oklch, var(--sk-video-player-fg) 72%, transparent);
+  }
+
+  .sk-video-player__duration::before {
+    content: "/";
+    margin-inline-end: var(--space-inline-xs);
+  }
+
+  .sk-video-player__speed {
+    font-size: var(--font-size-caption);
+    font-variant-numeric: tabular-nums;
+    min-inline-size: 2.5ch;
+  }
+
+  /*
+   * The captions toggle says it is on the way YouTube's does: a short bar under the icon, in the played colour, and nothing
+   * else. Button's pressed paint (a fill and a border, a control "held down") is what makes a toggle read as a key, and a
+   * picture is not a key, so the button stays flat and transparent. The bar grows from the middle when it turns on, and its
+   * presence, not only its colour, is the cue.
+   */
+  .sk-video-player .sk-video-player__control[aria-pressed="true"] {
+    --sk-button-bg: transparent;
+    --sk-button-border-color: transparent;
+    --sk-button-shadow: none;
+  }
+
+  /*
+   * The bar is the button's own background image, not a pseudo-element: `.sk-button::after` is its 44px touch target and
+   * `::before` its state layer, and both are taken. It is drawn at the foot of the button, as wide as the icon, and grows
+   * from the middle when captions turn on.
+   */
+  .sk-video-player__control[data-video-action="captions"] {
+    background-image: linear-gradient(var(--sk-video-player-played-color), var(--sk-video-player-played-color));
+    background-repeat: no-repeat;
+    background-position: 50% calc(100% - var(--sk-video-player-captions-underline-offset));
+    background-size: 0 var(--sk-video-player-captions-underline-thickness);
+    transition: background-size var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  .sk-video-player__control[data-video-action="captions"][aria-pressed="true"] {
+    background-size: var(--sk-video-player-captions-underline-size) var(--sk-video-player-captions-underline-thickness);
+  }
+
+  /*
+   * VOLUME IS A VERTICAL POPUP, NOT A GROWING ROW. The slider used to fold open beside the button, which pushed every control
+   * after it along the bar each time the pointer passed over (layout shift on a control people reach for constantly). Now the
+   * bar never changes: a column slider sits on a small surface above the button, out of flow, and only fades in. Silence is the
+   * bottom. The surface is the wrapper's own `::before`, so the slider stays exactly the track the pointer arithmetic measures.
+   * `--sk-video-player-volume-width` is the slider's LENGTH (its height now); the name is kept so no consumer's override breaks.
+   */
+  .sk-video-player__volume {
+    --sk-video-player-volume-pad: var(--space-inset-sm);
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .sk-video-player__volume::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    inset-block-end: 100%;
+    inset-inline-start: 50%;
+    translate: -50% 0;
+    inline-size: calc(var(--space-inset-md) + var(--sk-video-player-volume-pad) * 2);
+    block-size: calc(var(--sk-video-player-volume-width) + var(--sk-video-player-volume-pad) * 2);
+    /* The gap between the surface and the button is a transparent border, so the pointer travelling across it is still over the wrapper and the popup does not close under it. */
+    border-block-end: var(--space-inset-xs) solid transparent;
+    border-radius: var(--radius-control);
+    background: var(--color-bg-surface-raised);
+    background-clip: padding-box;
+    box-shadow: var(--elevation-overlay);
+    box-sizing: content-box;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity var(--sk-video-player-fade-duration) var(--motion-state-change-easing),
+      visibility 0s linear var(--sk-video-player-fade-duration);
+  }
+
+  .sk-video-player__volume-slider {
+    position: absolute;
+    z-index: 2;
+    inset-block-end: calc(100% + var(--space-inset-xs) + var(--sk-video-player-volume-pad));
+    inset-inline-start: 50%;
+    translate: -50% 0;
+    inline-size: var(--space-inset-md);
+    block-size: var(--sk-video-player-volume-width);
+    opacity: 0;
+    visibility: hidden;
+    overflow: clip;
+    cursor: pointer;
+    touch-action: none;
+    outline: none;
+    transition:
+      opacity var(--sk-video-player-fade-duration) var(--motion-state-change-easing),
+      visibility 0s linear var(--sk-video-player-fade-duration);
+  }
+
+  .sk-video-player__volume:is(:hover, :focus-within)::before,
+  .sk-video-player__volume:is(:hover, :focus-within) > .sk-video-player__volume-slider {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+
+  .sk-video-player__volume-slider::before,
+  .sk-video-player__volume-fill {
+    content: "";
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-start: 50%;
+    inline-size: var(--sk-video-player-track-size);
+    translate: -50% 0;
+    border-radius: var(--radius-pill);
+  }
+
+  .sk-video-player__volume-slider::before {
+    block-size: 100%;
+    background: var(--sk-video-player-track-color);
+  }
+
+  /* The level is a vertical `scale` from the bottom, written inline when the volume changes. */
+  .sk-video-player__volume-fill {
+    block-size: 100%;
+    transform-origin: 50% 100%;
+    background: var(--sk-video-player-fg);
+  }
+
+  .sk-video-player__volume-slider:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+    border-radius: var(--radius-pill);
+  }
+
+  /* WHICH FACE OF A TOGGLE IS LIT. The sheet reads the root's state, so no script has to name a face. */
+  .sk-video-player:not([data-playing], [data-ended]) [data-video-action="play"] > [data-face="play"],
+  .sk-video-player[data-playing] .sk-video-player__bar [data-video-action="play"] > [data-face="pause"],
+  .sk-video-player[data-ended] [data-video-action="play"] > [data-face="replay"],
+  .sk-video-player:not([data-muted]) [data-video-action="mute"] > [data-face="volume"],
+  .sk-video-player[data-muted] [data-video-action="mute"] > [data-face="muted"],
+  .sk-video-player:not([data-fullscreen]) [data-video-action="fullscreen"] > [data-face="enter"],
+  .sk-video-player[data-fullscreen] [data-video-action="fullscreen"] > [data-face="exit"],
+  .sk-video-player [data-video-action="captions"] > [data-face="captions"] {
+    --sk-icon-toggle-on: 1;
+  }
+
+  /* The big button offers the start while it shows at all, so while playing (it is gone) its play face is still the lit one. */
+  .sk-video-player[data-playing] > .sk-video-player__big > [data-face="play"] {
+    --sk-icon-toggle-on: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sk-video-player__control[data-video-action="captions"] {
+      transition: none;
+    }
+
+    .sk-video-player__controls,
+    .sk-video-player__captions,
+    .sk-video-player__loader,
+    .sk-video-player__big,
+    .sk-video-player__track,
+    .sk-video-player__thumb,
+    .sk-video-player__tip,
+    .sk-video-player__volume::before,
+    .sk-video-player__volume-slider {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .sk-video-player__track,
+    .sk-video-player__volume-slider::before {
+      background: CanvasText;
+    }
+
+    .sk-video-player__played,
+    .sk-video-player__thumb {
+      background: Highlight;
+    }
+
+    .sk-video-player__buffered,
+    .sk-video-player__volume-fill {
+      background: GrayText;
+    }
+
+    .sk-video-player__control[data-video-action="captions"] {
+      background-image: linear-gradient(Highlight, Highlight);
+    }
+  }
+}
