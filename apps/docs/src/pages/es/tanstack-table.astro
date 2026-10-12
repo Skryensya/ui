@@ -1,0 +1,97 @@
+---
+import FoundationPage from "../../components/FoundationPage.astro";
+import CodeBlock from "../../components/CodeBlock.astro";
+
+const example = `import {
+  createPaginatedRowModel, createSortedRowModel, rowPaginationFeature,
+  rowSelectionFeature, rowSortingFeature, tableFeatures, useTable,
+} from "@tanstack/react-table";
+import { DataTable, DataTablePagination, selectColumn } from "@skryensya/react/data-table";
+
+const features = tableFeatures({
+  rowSortingFeature, rowSelectionFeature, rowPaginationFeature,
+  sortedRowModel: createSortedRowModel(),
+  paginatedRowModel: createPaginatedRowModel(),
+});
+
+/* Defined once, outside the component: TanStack needs stable columns. */
+const columns = [
+  selectColumn(),
+  { accessorKey: "name", header: "Name" },
+  { accessorKey: "age", header: "Age" },
+];
+
+export function People({ data }) {
+  const table = useTable({ features, columns, data });
+  return (
+    <>
+      <DataTable table={table} caption="People" />
+      <DataTablePagination table={table} />
+    </>
+  );
+}`;
+
+const features = [
+  ["Ninguna registrada", "Una tabla simple: encabezados, filas y celdas, con su nombre en el caption."],
+  ["Ordenación", "Cada encabezado ordenable pasa a ser un botón, y su celda reporta aria-sort: none, ascending o descending."],
+  ["Selección de filas", "selectColumn añade un checkbox por fila y uno en el encabezado para la página. Una página seleccionada a medias se lee como indeterminada."],
+  ["Paginación", "DataTablePagination dibuja páginas numeradas desde el índice de página de la propia tabla."],
+];
+---
+
+<FoundationPage
+  title="TanStack Table"
+  description="TanStack Table para ordenar, seleccionar y paginar, y el Table de este sistema para cómo se lee el dato."
+>
+  <p class="lede">
+    Una tabla headless se encarga del estado: qué columna está ordenada, qué filas están seleccionadas,
+    qué página se ve. No tiene marcado propio. <code>DataTable</code> lee lo que la instancia ya decidió
+    y lo dice con el Table de este sistema, así la librería manda sobre los datos y el sistema sobre
+    cómo se leen.
+  </p>
+
+  <h2>Una tabla</h2>
+  <p>
+    Registra solo las funcionalidades que la tabla necesita. Una funcionalidad no registrada no se
+    dibuja, así que el mismo <code>DataTable</code> sirve para una tabla simple, una ordenable y una
+    seleccionable.
+  </p>
+  <CodeBlock code={example} label="TSX" />
+
+  <h2>Qué muestra cada funcionalidad</h2>
+  <div class="sk-table-scroll">
+    <table class="sk-table">
+      <thead class="sk-table__head">
+        <tr class="sk-table__row">
+          <th class="sk-table__header">Funcionalidad</th>
+          <th class="sk-table__header">En la tabla</th>
+        </tr>
+      </thead>
+      <tbody class="sk-table__body">
+        {
+          features.map(([feature, shows]) => (
+            <tr class="sk-table__row">
+              <td class="sk-table__cell">{feature}</td>
+              <td class="sk-table__cell">{shows}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Comportamiento que conviene conocer</h2>
+  <ul>
+    <li>La instancia decide qué filas existen. Por eso la paginación pasa por <code>DataTablePagination</code>; el patrón <code>TablePager</code> pagina las filas que ya están en el DOM, que es el otro modelo, para una tabla que lo renderiza todo.</li>
+    <li>La ordenación se anuncia en la celda del encabezado, y el botón conserva el nombre de la columna, así que un lector de pantalla dice el nombre y el orden juntos.</li>
+    <li>Todo checkbox tiene nombre. Los nombres por defecto están en inglés; pasa los tuyos a <code>selectColumn</code>.</li>
+    <li>El redimensionado de columnas es de este sistema: <code>resizableColumns</code> y las demás opciones de <code>Table</code> pasan por <code>DataTable</code> sin tocar.</li>
+    <li>Define las columnas una sola vez, fuera del componente. Un arreglo nuevo en cada render remonta cada encabezado y celda.</li>
+  </ul>
+
+  <h2>Instalación</h2>
+  <p>
+    Importa desde <code>@skryensya/react/data-table</code>. Necesita TanStack Table 9 como dependencia
+    peer opcional, y no carga nada de su código: solo corre la instancia que construiste.
+  </p>
+</FoundationPage>

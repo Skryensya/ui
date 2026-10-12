@@ -1,0 +1,96 @@
+---
+import FoundationPage from "../components/FoundationPage.astro";
+import CodeBlock from "../components/CodeBlock.astro";
+
+const example = `import {
+  createPaginatedRowModel, createSortedRowModel, rowPaginationFeature,
+  rowSelectionFeature, rowSortingFeature, tableFeatures, useTable,
+} from "@tanstack/react-table";
+import { DataTable, DataTablePagination, selectColumn } from "@skryensya/react/data-table";
+
+const features = tableFeatures({
+  rowSortingFeature, rowSelectionFeature, rowPaginationFeature,
+  sortedRowModel: createSortedRowModel(),
+  paginatedRowModel: createPaginatedRowModel(),
+});
+
+/* Defined once, outside the component: TanStack needs stable columns. */
+const columns = [
+  selectColumn(),
+  { accessorKey: "name", header: "Name" },
+  { accessorKey: "age", header: "Age" },
+];
+
+export function People({ data }) {
+  const table = useTable({ features, columns, data });
+  return (
+    <>
+      <DataTable table={table} caption="People" />
+      <DataTablePagination table={table} />
+    </>
+  );
+}`;
+
+const features = [
+  ["No feature registered", "A plain table: headers, rows and cells, named by its caption."],
+  ["Sorting", "Each sortable header becomes a button, and its cell reports aria-sort: none, ascending or descending."],
+  ["Row selection", "selectColumn adds a checkbox per row and one in the header for the page. A partly selected page reads as indeterminate."],
+  ["Pagination", "DataTablePagination draws numbered pages from the table's own page index."],
+];
+---
+
+<FoundationPage
+  title="TanStack Table"
+  description="Use TanStack Table for sorting, selection and paging, and this system's Table for how the data reads."
+>
+  <p class="lede">
+    A headless table owns the state: which column is sorted, which rows are selected, which page is
+    showing. It owns no markup. <code>DataTable</code> reads what the table instance already decided and
+    says it with this system's Table, so the library stays in charge of the data and the system of how it
+    reads.
+  </p>
+
+  <h2>One table</h2>
+  <p>
+    Register only the features the table needs. A feature that is not registered is not drawn, so the
+    same <code>DataTable</code> serves a plain table, a sortable one and a selectable one.
+  </p>
+  <CodeBlock code={example} label="TSX" />
+
+  <h2>What each feature shows</h2>
+  <div class="sk-table-scroll">
+    <table class="sk-table">
+      <thead class="sk-table__head">
+        <tr class="sk-table__row">
+          <th class="sk-table__header">Feature</th>
+          <th class="sk-table__header">In the table</th>
+        </tr>
+      </thead>
+      <tbody class="sk-table__body">
+        {
+          features.map(([feature, shows]) => (
+            <tr class="sk-table__row">
+              <td class="sk-table__cell">{feature}</td>
+              <td class="sk-table__cell">{shows}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Behaviour to know</h2>
+  <ul>
+    <li>The instance decides which rows exist. Paging therefore goes through <code>DataTablePagination</code>; the <code>TablePager</code> pattern pages the rows already in the DOM, which is the other model, for a table that renders everything.</li>
+    <li>Sorting is announced on the header cell, and the sort button keeps the column's name, so a screen reader says the name and the order together.</li>
+    <li>Every checkbox is named. The default names are in English; pass yours to <code>selectColumn</code>.</li>
+    <li>Column resizing is this system's: <code>resizableColumns</code> and the other <code>Table</code> options pass through <code>DataTable</code> untouched.</li>
+    <li>Define the columns once, outside the component. A new array on every render remounts each header and cell.</li>
+  </ul>
+
+  <h2>Installing</h2>
+  <p>
+    Import from <code>@skryensya/react/data-table</code>. It needs TanStack Table 9 as an optional peer
+    dependency, and loads none of its code itself: only the instance you built runs.
+  </p>
+</FoundationPage>

@@ -1,0 +1,131 @@
+---
+import FoundationPage from "../../components/FoundationPage.astro";
+import CodeBlock from "../../components/CodeBlock.astro";
+
+const example = `import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { ControlledField, Form } from "@skryensya/react/hook-form";
+import { Input } from "@skryensya/react/input";
+import { Button } from "@skryensya/react/button";
+
+const schema = z.object({ email: z.string().email("Enter a valid email.") });
+
+export function Signup() {
+  const form = useForm({ resolver: zodResolver(schema), defaultValues: { email: "" } });
+  return (
+    <Form form={form} onSubmit={(values) => save(values)}>
+      <ControlledField name="email" label="Email" required>
+        {({ bind }) => <Input type="email" {...bind.input()} />}
+      </ControlledField>
+      <Button type="submit">Create account</Button>
+    </Form>
+  );
+}`;
+
+const bindings = [
+  ["Input, Textarea, SelectNative", "bind.input()", "Una cadena"],
+  ["Checkbox, Switch", "bind.checked()", "Un booleano"],
+  ["Select, Combobox, TagsInput, DatePicker", "bind.value()", "Una lista de cadenas"],
+  ["SegmentedControl, RadioGroup, OtpInput, ColorPicker", "bind.value()", "Una cadena"],
+  ["Slider, Rating", "bind.value()", "Un número"],
+];
+---
+
+<FoundationPage
+  title="React Hook Form"
+  description="React Hook Form para el valor y la validación de un formulario, y FormField para cómo se ve y se lee cada campo."
+>
+  <p class="lede">
+    La librería decide qué guarda un campo y si es válido. Este sistema decide cómo se ve el campo y
+    qué oye un lector de pantalla. La integración es la costura entre ambos: entrega el error al campo
+    y el valor al control, y no decide nada sobre ninguno de los dos.
+  </p>
+
+  <h2>Quién se encarga de qué</h2>
+  <div class="sk-table-scroll">
+    <table class="sk-table">
+      <thead class="sk-table__head">
+        <tr class="sk-table__row">
+          <th class="sk-table__header">React Hook Form</th>
+          <th class="sk-table__header">Este sistema</th>
+        </tr>
+      </thead>
+      <tbody class="sk-table__body">
+        <tr class="sk-table__row">
+          <td class="sk-table__cell">El valor de cada campo y los valores por defecto</td>
+          <td class="sk-table__cell">La etiqueta, la ayuda y el error, y los ids que los atan al control</td>
+        </tr>
+        <tr class="sk-table__row">
+          <td class="sk-table__cell">Las reglas, o el esquema mediante un resolver como Zod</td>
+          <td class="sk-table__cell">Marcar el control como inválido y anunciar por qué</td>
+        </tr>
+        <tr class="sk-table__row">
+          <td class="sk-table__cell">Cuándo validar y cuándo enviar</td>
+          <td class="sk-table__cell">El aspecto de cada control</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Un campo</h2>
+  <p>
+    <code>ControlledField</code> es un campo del formulario dibujado como <code>FormField</code>. Su
+    mensaje viene del esquema, se imprime bajo el control, se anuncia al enfocarlo y marca el control
+    como inválido, sin nada que cablear a mano.
+  </p>
+  <CodeBlock code={example} label="TSX" />
+
+  <h2>Enlazar un control</h2>
+  <p>
+    Cada control reporta su valor con su propia forma. Un adaptador convierte el campo en las props que
+    ese control espera, y el formulario guarda exactamente lo que el control reporta, así que los
+    valores por defecto usan la misma forma.
+  </p>
+  <div class="sk-table-scroll">
+    <table class="sk-table">
+      <thead class="sk-table__head">
+        <tr class="sk-table__row">
+          <th class="sk-table__header">Control</th>
+          <th class="sk-table__header">Adaptador</th>
+          <th class="sk-table__header">El formulario guarda</th>
+        </tr>
+      </thead>
+      <tbody class="sk-table__body">
+        {
+          bindings.map(([control, adapter, holds]) => (
+            <tr class="sk-table__row">
+              <td class="sk-table__cell">{control}</td>
+              <td class="sk-table__cell"><code>{adapter}</code></td>
+              <td class="sk-table__cell">{holds}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Un control que ningún adaptador cubre recibe el <code>field</code> y el <code>fieldState</code> de
+    la librería, sin tocar.
+  </p>
+
+  <h2>Lo que obtienes sin cablear</h2>
+  <ul>
+    <li>El error es el del campo, enlazado al control con <code>aria-describedby</code>, y el control se lee como inválido. El color nunca es la única señal.</li>
+    <li>Cada adaptador también entrega al control el <code>id</code> del campo y el cableado del error, así que un <code>Checkbox</code> o un <code>Switch</code> recibe su nombre de la etiqueta del campo igual que un <code>Input</code>.</li>
+    <li>Tras un envío fallido, el foco va al primer campo inválido cuando ese control expone un elemento enfocable. <code>Input</code>, <code>Checkbox</code> y <code>Switch</code> lo hacen; uno construido sobre un popup no, así que compruébalo.</li>
+    <li>Las burbujas de validación del navegador están apagadas, para que hable un solo validador. Los mensajes que quedan son los del campo.</li>
+  </ul>
+  <p>
+    Cuando un control trae su propio texto, como un checkbox con una frase al lado, tanto la etiqueta
+    del campo como ese texto lo nombran. Oculta la etiqueta del campo con <code>labelHidden</code>, o
+    deja fuera el texto del control.
+  </p>
+
+  <h2>Instalación</h2>
+  <p>
+    Importa desde <code>@skryensya/react/hook-form</code>. <code>react-hook-form</code> es una
+    dependencia peer opcional: solo se necesita donde uses esta entrada. La librería de esquemas y su
+    resolver los eliges tú; nada aquí sabe cuál está en uso.
+  </p>
+</FoundationPage>

@@ -1,0 +1,131 @@
+---
+import FoundationPage from "../components/FoundationPage.astro";
+import CodeBlock from "../components/CodeBlock.astro";
+
+const example = `import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { ControlledField, Form } from "@skryensya/react/hook-form";
+import { Input } from "@skryensya/react/input";
+import { Button } from "@skryensya/react/button";
+
+const schema = z.object({ email: z.string().email("Enter a valid email.") });
+
+export function Signup() {
+  const form = useForm({ resolver: zodResolver(schema), defaultValues: { email: "" } });
+  return (
+    <Form form={form} onSubmit={(values) => save(values)}>
+      <ControlledField name="email" label="Email" required>
+        {({ bind }) => <Input type="email" {...bind.input()} />}
+      </ControlledField>
+      <Button type="submit">Create account</Button>
+    </Form>
+  );
+}`;
+
+const bindings = [
+  ["Input, Textarea, SelectNative", "bind.input()", "A string"],
+  ["Checkbox, Switch", "bind.checked()", "A boolean"],
+  ["Select, Combobox, TagsInput, DatePicker", "bind.value()", "A list of strings"],
+  ["SegmentedControl, RadioGroup, OtpInput, ColorPicker", "bind.value()", "A string"],
+  ["Slider, Rating", "bind.value()", "A number"],
+];
+---
+
+<FoundationPage
+  title="React Hook Form"
+  description="Use React Hook Form for the value and validation of a form, and FormField for how each field looks and reads."
+>
+  <p class="lede">
+    The library decides what a field holds and whether it is valid. This system decides how the field
+    looks and what a screen reader hears. The integration is the seam between the two: it hands the
+    error to the field and the value to the control, and decides nothing about either.
+  </p>
+
+  <h2>Who owns what</h2>
+  <div class="sk-table-scroll">
+    <table class="sk-table">
+      <thead class="sk-table__head">
+        <tr class="sk-table__row">
+          <th class="sk-table__header">React Hook Form</th>
+          <th class="sk-table__header">This system</th>
+        </tr>
+      </thead>
+      <tbody class="sk-table__body">
+        <tr class="sk-table__row">
+          <td class="sk-table__cell">The value of each field and the default values</td>
+          <td class="sk-table__cell">The label, the hint and the error, and the ids that tie them to the control</td>
+        </tr>
+        <tr class="sk-table__row">
+          <td class="sk-table__cell">The rules, or the schema through a resolver such as Zod</td>
+          <td class="sk-table__cell">Marking the control invalid and announcing why</td>
+        </tr>
+        <tr class="sk-table__row">
+          <td class="sk-table__cell">When to validate and when to submit</td>
+          <td class="sk-table__cell">The look of every control</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>One field</h2>
+  <p>
+    <code>ControlledField</code> is a field of the form drawn as a <code>FormField</code>. Its message
+    comes from the schema, prints under the control, is announced when the control is focused, and
+    marks the control invalid, with nothing to wire by hand.
+  </p>
+  <CodeBlock code={example} label="TSX" />
+
+  <h2>Binding a control</h2>
+  <p>
+    Each control reports its value in its own shape. An adapter turns the field into the props that
+    control expects, and the form holds exactly what the control reports, so the default values use
+    the same shape.
+  </p>
+  <div class="sk-table-scroll">
+    <table class="sk-table">
+      <thead class="sk-table__head">
+        <tr class="sk-table__row">
+          <th class="sk-table__header">Control</th>
+          <th class="sk-table__header">Adapter</th>
+          <th class="sk-table__header">The form holds</th>
+        </tr>
+      </thead>
+      <tbody class="sk-table__body">
+        {
+          bindings.map(([control, adapter, holds]) => (
+            <tr class="sk-table__row">
+              <td class="sk-table__cell">{control}</td>
+              <td class="sk-table__cell"><code>{adapter}</code></td>
+              <td class="sk-table__cell">{holds}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+  <p>
+    A control no adapter fits receives the library's own <code>field</code> and <code>fieldState</code>
+    untouched.
+  </p>
+
+  <h2>What you get without wiring</h2>
+  <ul>
+    <li>The error is the field's own, linked to the control through <code>aria-describedby</code>, and the control reads as invalid. Colour is never the only cue.</li>
+    <li>Every adapter also hands the control the field's <code>id</code> and error wiring, so a <code>Checkbox</code> or a <code>Switch</code> is named by the field's label like an <code>Input</code> is.</li>
+    <li>After a failed submit, focus goes to the first invalid field when that control exposes a focusable element. <code>Input</code>, <code>Checkbox</code> and <code>Switch</code> do; a control built on a popup does not, so check it.</li>
+    <li>The browser's own validation bubbles are off, so only one validator speaks. The messages that remain are the field's.</li>
+  </ul>
+  <p>
+    When a control carries its own text, such as a checkbox with a sentence beside it, both the field
+    label and that text name it. Hide the field label with <code>labelHidden</code>, or leave the
+    control's text out.
+  </p>
+
+  <h2>Installing</h2>
+  <p>
+    Import from <code>@skryensya/react/hook-form</code>. <code>react-hook-form</code> is an optional peer
+    dependency: it is only needed where you use this entry. The schema library and its resolver are
+    yours to choose; nothing here knows which one is in use.
+  </p>
+</FoundationPage>

@@ -536,6 +536,14 @@
     "./user-select": {
       "types": "./src/components/user-select.tsx",
       "default": "./src/components/user-select.tsx"
+    },
+    "./data-table": {
+      "types": "./src/integrations/data-table.tsx",
+      "default": "./src/integrations/data-table.tsx"
+    },
+    "./hook-form": {
+      "types": "./src/integrations/hook-form.tsx",
+      "default": "./src/integrations/hook-form.tsx"
     }
   },
   "scripts": {
@@ -552,8 +560,10 @@
     "@skryensya/editor": "workspace:*",
     "@skryensya/icons-material": "workspace:*",
     "@skryensya/icons-phosphor": "workspace:*",
+    "@tanstack/react-table": ">=9",
     "react": ">=19",
-    "react-dom": ">=19"
+    "react-dom": ">=19",
+    "react-hook-form": ">=7.50"
   },
   "peerDependenciesMeta": {
     "@skryensya/editor": {
@@ -564,20 +574,30 @@
     },
     "@skryensya/icons-phosphor": {
       "optional": true
+    },
+    "@tanstack/react-table": {
+      "optional": true
+    },
+    "react-hook-form": {
+      "optional": true
     }
   },
   "devDependencies": {
+    "@hookform/resolvers": "^5.9.1",
     "@skryensya/editor": "workspace:*",
     "@skryensya/icons-material": "workspace:*",
     "@skryensya/icons-phosphor": "workspace:*",
+    "@tanstack/react-table": "^9.2.4",
     "@testing-library/react": "^16.3.2",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "axe-core": "^4.12.1",
     "jsdom": "^29.1.1",
     "react-dom": "^19.2.7",
+    "react-hook-form": "^7.88.0",
     "typescript": "^5.9.3",
-    "vitest": "^4.1.11"
+    "vitest": "^4.1.11",
+    "zod": "^4.4.3"
   },
   "sideEffects": false
 }

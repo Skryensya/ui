@@ -1580,6 +1580,23 @@ export const documentationNavigation = [
         ],
       },
       {
+        id: "foundations-integrations",
+        group: "group.integrations",
+        blurb: "group.integrations.blurb",
+        items: [
+          {
+            href: "/react-hook-form",
+            label: "React Hook Form",
+            aliases: ["formularios", "forms", "validación", "validation", "zod", "resolver", "controlled field", "useForm", "campo controlado"],
+          },
+          {
+            href: "/tanstack-table",
+            label: "TanStack Table",
+            aliases: ["tabla", "tablas", "data table", "datatable", "ordenar", "sorting", "paginación", "pagination", "selección de filas", "row selection", "headless"],
+          },
+        ],
+      },
+      {
         id: "foundations-platform",
         group: "group.platformAccessibility",
         blurb: "group.platformAccessibility.blurb",
