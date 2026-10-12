@@ -10,7 +10,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/progress";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Feedback/Progress", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Progress", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.progressAnatomyTree);
 export const Default: StoryObj = treeStory(demos.progressTree);
@@ -20,12 +20,6 @@ export const Quarter: StoryObj = treeStory(demos.progressQuarterTree);
 export const Most: StoryObj = treeStory(demos.progressMostTree);
 export const Full: StoryObj = treeStory(demos.progressFullTree);
 export const Single: StoryObj = treeStory(demos.progressSingleTree);
-export const DoRunning: StoryObj = treeStory(demos.progressDoRunningTree);
-export const DontRunning: StoryObj = treeStory(demos.progressDontRunningTree);
-export const DontMeasure: StoryObj = treeStory(demos.progressDontMeasureTree);
-export const DoTask: StoryObj = treeStory(demos.progressDoTaskTree);
-export const DoValue: StoryObj = treeStory(demos.progressDoValueTree);
-export const DontBare: StoryObj = treeStory(demos.progressDontBareTree);
 export const Segments: StoryObj = treeStory(demos.progressSegmentsTree);
 export const AsBar: StoryObj = treeStory(demos.progressAsBarTree);
 export const AsSegments: StoryObj = treeStory(demos.progressAsSegmentsTree);

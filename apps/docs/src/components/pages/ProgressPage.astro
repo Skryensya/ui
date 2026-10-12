@@ -75,6 +75,8 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("progressPage.prop.tone.body")}
       explain={explain("tone", ["accent", "success", "warning", "danger"])}
       stageMinBlockSize="7rem"
+      storybookTitle="Components/Progress"
+      storybookStory="Most"
     />
 
     <UsagePreview
@@ -84,6 +86,8 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("progressPage.valueTitle")}
       description={t("progressPage.valueBody")}
       stageMinBlockSize="7rem"
+      storybookTitle="Components/Progress"
+      storybookStory="Most"
     />
 
     <UsagePreview
@@ -93,14 +97,16 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("progressPage.styleTitle")}
       description={t("progressPage.styleBody")}
       stageMinBlockSize="7rem"
+      storybookTitle="Components/Progress"
+      storybookStory="Most"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={progressTree(t)} title={t("progressPage.tasksTitle")} description={t("progressPage.tasksBody")} />
+    <UsagePreview tree={progressTree(t)} title={t("progressPage.tasksTitle")} description={t("progressPage.tasksBody")} storybookTitle="Components/Progress" storybookStory="Default" />
     <h4>{t("progressPage.segmentsTitle")}</h4>
     <p set:html={t("progressPage.segmentsBody")} />
-    <UsagePreview tree={progressSegmentsTree(t)} label={t("progressPage.segmentsTitle")} />
-    <UsagePreview tree={progressStepsTree(t)} title={t("progressPage.stepsTitle")} description={t("progressPage.stepsBody")} />
+    <UsagePreview tree={progressSegmentsTree(t)} label={t("progressPage.segmentsTitle")} storybookTitle="Components/Progress" storybookStory="Segments" />
+    <UsagePreview tree={progressStepsTree(t)} title={t("progressPage.stepsTitle")} description={t("progressPage.stepsBody")} storybookTitle="Components/Progress" storybookStory="Steps" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

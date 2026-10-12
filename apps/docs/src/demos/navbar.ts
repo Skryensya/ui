@@ -86,11 +86,35 @@ export const navbarBareCss = `.sk-navbar {
   --sk-navbar-wash: none;
   --sk-navbar-elevation: none;
   --sk-navbar-border-color: transparent;
+  --sk-navbar-fg: #fff;
+  --sk-navbar-brand-fg: #fff;
 }
 
 .sk-navbar .sk-nav-list {
+  --sk-nav-list-link-fg: color-mix(in oklab, #fff 78%, transparent);
   --sk-nav-list-link-current-bg: transparent;
-  --sk-nav-list-link-current-fg: var(--color-text-primary);
+  --sk-nav-list-link-current-fg: #fff;
+}
+
+.sk-navbar .sk-button[data-variant="ghost"] {
+  --sk-button-ink: #fff;
+}
+
+/* The cover the bar sits over: a dark gradient, tall enough to read as a hero's top edge. The preview
+   frame owns the body's own background and height, so the cover is a layer behind it and the room around
+   the bar is padding (above it, so the card's own buttons do not sit on the bar). */
+html body.sk-component-preview__frame-body {
+  padding-block: 3.5rem 7rem;
+}
+
+html body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(60% 90% at 85% 10%, oklch(0.62 0.18 285 / 0.75), transparent 70%),
+    linear-gradient(160deg, oklch(0.28 0.06 265), oklch(0.18 0.03 250));
 }`;
 
 /** The same bar with no surface of its own: a marketing header sitting straight on the page. */

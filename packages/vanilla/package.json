@@ -355,8 +355,8 @@
     }
   },
   "scripts": {
-    "build": "svelte-check --tsconfig ./tsconfig.json",
-    "check": "svelte-check --tsconfig ./tsconfig.json && vitest run"
+    "build": "node ../../scripts/build-library.ts",
+    "check": "node ../../scripts/build-library.ts && node ../../scripts/verify-library.ts && svelte-check --tsconfig ./tsconfig.json && vitest run"
   },
   "dependencies": {
     "@skryensya/core": "workspace:*",
@@ -382,5 +382,6 @@
     "svelte-check": "^4.7.3",
     "typescript": "^5.9.3",
     "vitest": "^4.1.11"
-  }
+  },
+  "sideEffects": false
 }

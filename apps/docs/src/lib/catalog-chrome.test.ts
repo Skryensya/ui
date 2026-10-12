@@ -2,7 +2,7 @@ import { sheetsForTree } from "@skryensya/ai-compiler/sheets-for-tree";
 import { validateUsageTree } from "@skryensya/ai-compiler/validate";
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { backTree, headerTree, introTree, metaTree, pagerTree, resultsTree, searchTree, type ChromeWords } from "./catalog-chrome";
+import { modalTree, headerTree, introTree, metaTree, pagerTree, resultsTree, searchTree, type ChromeWords } from "./catalog-chrome";
 import { catalogView } from "./catalog-view";
 
 /*
@@ -11,7 +11,7 @@ import { catalogView } from "./catalog-view";
  */
 const page = readFileSync(new URL("../components/pages/CatalogPage.astro", import.meta.url), "utf8");
 
-const words: ChromeWords = { search: "Search examples", searchPlaceholder: "Name, purpose or intent", advanced: "Advanced filters", facetSubject: "Subject", facetScale: "Scale", facetDomain: "Intent", facetComponent: "Component", remove: "Remove", clearAll: "Clear all", results: "Results", back: "Back to results", metaIntent: "Intent", metaLayout: "Layout", metaComponents: "Components", previous: "Previous", next: "Next", pagerLabel: "More examples" };
+const words: ChromeWords = { search: "Search examples", searchPlaceholder: "Name, purpose or intent", advanced: "Advanced filters", facetSubject: "Subject", facetScale: "Scale", facetDomain: "Intent", facetComponent: "Component", remove: "Remove", clearAll: "Clear all", results: "Results", close: "Close", metaIntent: "Intent", metaLayout: "Layout", metaComponents: "Components", previous: "Previous", next: "Next", pagerLabel: "More examples" };
 
 const treesFor = (locale: "en" | "es") => {
   const view = catalogView(locale);
@@ -21,8 +21,8 @@ const treesFor = (locale: "en" | "es") => {
     ["pager first", pagerTree(words, undefined, { id: "b", title: "B" })],
     ["pager last", pagerTree(words, { id: "a", title: "A" })],
     ["search", searchTree(words, view.facets)],
-    ["results", resultsTree(words, view.subjects.flatMap((subject) => subject.scales.flatMap((group) => group.variants.map((variant) => ({ id: variant.id, title: variant.title, context: variant.context, scaleLabel: group.label })))))],
-    ["back", backTree(words)],
+    ["results", resultsTree(words, view.subjects.flatMap((subject) => subject.scales.flatMap((group) => group.variants.map((variant) => ({ id: variant.id, title: variant.title, context: variant.context, components: variant.components })))))],
+    ["modal", modalTree(words, "Catalog")],
   ];
   for (const subject of view.subjects)
     for (const group of subject.scales)

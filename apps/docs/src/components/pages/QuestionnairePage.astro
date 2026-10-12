@@ -98,6 +98,8 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("questionnairePage.prop.progress.body")}
       explain={explain("progress", ["text", "bar", "steps", "segments"])}
       stageMinBlockSize="26rem"
+      storybookTitle="Components/Questionnaire"
+      storybookStory="Default"
     />
     <UsagePreview
       tree={questionnaireTree(t)}
@@ -106,10 +108,12 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("questionnairePage.prop.shortcuts.body")}
       explain={explain("shortcuts", ["none", "letters", "numbers"])}
       stageMinBlockSize="26rem"
+      storybookTitle="Components/Questionnaire"
+      storybookStory="Default"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={questionnaireTree(t)} title={t("questionnairePage.basicTitle")} description={t("questionnairePage.basicBody")} />
+    <UsagePreview tree={questionnaireTree(t)} title={t("questionnairePage.basicTitle")} description={t("questionnairePage.basicBody")} storybookTitle="Components/Questionnaire" storybookStory="Default" />
     <UsagePreview
       tree={questionnaireSubmittedTree(t)}
       script={questionnaireSubmitScript}
@@ -117,15 +121,17 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("questionnairePage.submittedBody")}
       label={t("questionnairePage.submittedTitle")}
       stageMinBlockSize="22rem"
+      storybookTitle="Components/Questionnaire"
+      storybookStory="Submitted"
     />
-    <UsagePreview tree={questionnaireChoicesOnlyTree(t)} title={t("questionnairePage.choicesOnlyTitle")} description={t("questionnairePage.choicesOnlyBody")} />
-    <UsagePreview tree={questionnaireLikertTree(t)} title={t("questionnairePage.likertTitle")} description={t("questionnairePage.likertBody")} />
-    <UsagePreview tree={questionnaireBranchingTree(t)} title={t("questionnairePage.branchTitle")} description={t("questionnairePage.branchBody")} />
-    <UsagePreview tree={questionnaireFollowUpTree(t)} title={t("questionnairePage.followUpTitle")} description={t("questionnairePage.followUpBody")} />
-    <UsagePreview tree={questionnaireControlTree(t)} title={t("questionnairePage.controlTitle")} description={t("questionnairePage.controlBody")} />
+    <UsagePreview tree={questionnaireChoicesOnlyTree(t)} title={t("questionnairePage.choicesOnlyTitle")} description={t("questionnairePage.choicesOnlyBody")} storybookTitle="Components/Questionnaire" storybookStory="ChoicesOnly" />
+    <UsagePreview tree={questionnaireLikertTree(t)} title={t("questionnairePage.likertTitle")} description={t("questionnairePage.likertBody")} storybookTitle="Components/Questionnaire" storybookStory="Likert" />
+    <UsagePreview tree={questionnaireBranchingTree(t)} title={t("questionnairePage.branchTitle")} description={t("questionnairePage.branchBody")} storybookTitle="Components/Questionnaire" storybookStory="Branching" />
+    <UsagePreview tree={questionnaireFollowUpTree(t)} title={t("questionnairePage.followUpTitle")} description={t("questionnairePage.followUpBody")} storybookTitle="Components/Questionnaire" storybookStory="FollowUp" />
+    <UsagePreview tree={questionnaireControlTree(t)} title={t("questionnairePage.controlTitle")} description={t("questionnairePage.controlBody")} storybookTitle="Components/Questionnaire" storybookStory="Control" />
     {/* The side rail needs about 750px; below `desktop` it falls back to the top bar. */}
-    <UsagePreview tree={questionnaireRailTree(t)} title={t("questionnairePage.railTitle")} description={t("questionnairePage.railBody")} />
-    <UsagePreview tree={questionnaireTextAnswersTree(t)} title={t("questionnairePage.textTitle")} description={t("questionnairePage.textBody")} />
+    <UsagePreview tree={questionnaireRailTree(t)} title={t("questionnairePage.railTitle")} description={t("questionnairePage.railBody")} storybookTitle="Components/Questionnaire" storybookStory="Rail" />
+    <UsagePreview tree={questionnaireTextAnswersTree(t)} title={t("questionnairePage.textTitle")} description={t("questionnairePage.textBody")} storybookTitle="Components/Questionnaire" storybookStory="TextAnswers" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
@@ -176,7 +182,7 @@ const explain = (option: string, values: readonly string[]) =>
       rows={keyRows}
     />
     <p>{t("questionnairePage.keysNoteShort")}</p>
-    <UsagePreview tree={questionnaireShortcutsTree(t)} title={t("questionnairePage.keyboardTitle")} description={t("questionnairePage.keyboardBody")} />
+    <UsagePreview tree={questionnaireShortcutsTree(t)} title={t("questionnairePage.keyboardTitle")} description={t("questionnairePage.keyboardBody")} storybookTitle="Components/Questionnaire" storybookStory="Shortcuts" />
   </Fragment>
 
   <Fragment slot="install">

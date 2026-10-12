@@ -7,19 +7,10 @@ import "@skryensya/core/components/listbox.css";
 import * as demos from "@docs/demos/listbox";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Forms/Listbox", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Listbox", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.listboxAnatomyTree);
 export const Single: StoryObj = treeStory(demos.listboxSingleTree);
 export const Multiple: StoryObj = treeStory(demos.listboxMultipleTree);
 export const Horizontal: StoryObj = treeStory(demos.listboxHorizontalTree);
 export const Plain: StoryObj = treeStory(demos.listboxPlainTree);
-export const DoMultipleFilters: StoryObj = treeStory(demos.listboxDoMultipleFiltersTree);
-export const DontSingleFilters: StoryObj = treeStory(demos.listboxDontSingleFiltersTree);
-export const DoHorizontalShort: StoryObj = treeStory(demos.listboxDoHorizontalShortTree);
-export const DontHorizontalLong: StoryObj = treeStory(demos.listboxDontHorizontalLongTree);
-export const DoDisabled: StoryObj = treeStory(demos.listboxDoDisabledTree);
-export const DontMissing: StoryObj = treeStory(demos.listboxDontMissingTree);
-export const DoNaturalOrder: StoryObj = treeStory(demos.listboxDoNaturalOrderTree);
-export const DontAlphabeticalDays: StoryObj = treeStory(demos.listboxDontAlphabeticalDaysTree);
-export const DontActions: StoryObj = treeStory(demos.listboxDontActionsTree);

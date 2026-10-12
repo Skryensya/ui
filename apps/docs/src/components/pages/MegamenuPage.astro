@@ -63,7 +63,7 @@ const hrefs = { overview: "#", pricing: "#", integrations: "#", teams: "#", ente
     <h3>{t("component.examplesTitle")}</h3>
     <h3>{t("megamenuPage.siteTitle")}</h3>
     <p set:html={t("megamenuPage.siteBody")} />
-    <UsagePreview tree={megamenuTree(t, hrefs)} label="Megamenu" viewport="overlay" screen="xl" flush />
+    <UsagePreview tree={megamenuTree(t, hrefs)} label="Megamenu" viewport="overlay" screen="xl" flush storybookTitle="Components/Megamenu" storybookStory="Default" />
 
     <h3>{t("megamenuPage.variantsTitle")}</h3>
     <UsagePreview
@@ -76,6 +76,8 @@ const hrefs = { overview: "#", pricing: "#", integrations: "#", teams: "#", ente
       variantsLabel={t("megamenuPage.columnsLabel")}
       css={megamenuOpenCss}
       label="Megamenu"
+      storybookTitle="Components/Megamenu"
+      storybookStory="ThreeColumns"
     />
 
     <h3>{t("component.contractNotesTitle")}</h3>

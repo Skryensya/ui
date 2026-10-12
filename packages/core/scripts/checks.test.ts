@@ -40,6 +40,21 @@ test("the real corpus is clean, same judgement lint.ts makes", () => {
   assert.deepEqual(problems, [], `expected a clean system, got:\n${JSON.stringify(problems, null, 2)}`);
 });
 
+test("the accent is a parameter: every contrast pair holds for ANY seed hue and chroma", () => {
+  const pairs = (JSON.parse(readFileSync(join(PKG_ROOT, "contrast-pairs.json"), "utf8")) as { pairs: ContrastPair[] }).pairs;
+  const real = parseTokens(CSS_DIR);
+  const base = real.paletteMap();
+  const failures: string[] = [];
+  for (const chroma of [0.02, 0.1, 0.2, 0.4]) {
+    for (let hue = 0; hue < 360; hue += 10) {
+      const palettes = new Map(base).set("--palette-accent", `oklch(55% ${chroma} ${hue})`);
+      const problems = runChecks({ ...real, paletteMap: () => palettes }, pairs);
+      for (const p of problems) failures.push(`seed c=${chroma} h=${hue}: ${JSON.stringify(p)}`);
+    }
+  }
+  assert.deepEqual(failures, [], `${failures.length} contrast failures across the seed sweep`);
+});
+
 test("refs-resolve, a var() with no declaration and no fallback fails", () => {
   const problems = runChecks(
     corpus({

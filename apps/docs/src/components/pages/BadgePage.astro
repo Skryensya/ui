@@ -42,7 +42,7 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
  * unlike the hand-written `tree` this page used to keep locally, every preview below now points at a
  * demo module export so the generator actually sees it and a story exists to link to.
  */
-const storybookTitle = "Components/Content/Badge";
+const storybookTitle = "Components/Badge";
 
 /* What each value of a property is for, read from this page's messages: `badge.prop.<option>.<value>`. */
 const explain = (option: string, values: readonly string[]) =>
@@ -67,8 +67,7 @@ const explain = (option: string, values: readonly string[]) =>
       explain={explain("tone", ["neutral", "accent", "success", "warning", "danger"])}
       stageMinBlockSize="8rem"
       storybookTitle={storybookTitle}
-      storybookStory="Label"
-    />
+      storybookStory="Label" />
 
     <UsagePreview
       tree={badgeLabelTree(t)}
@@ -79,8 +78,7 @@ const explain = (option: string, values: readonly string[]) =>
       labels={{ xs: "xs", sm: "sm", md: "md" }}
       stageMinBlockSize="8rem"
       storybookTitle={storybookTitle}
-      storybookStory="Label"
-    />
+      storybookStory="Label" />
 
     <UsagePreview
       tree={badgeLabelTree(t)}
@@ -90,8 +88,7 @@ const explain = (option: string, values: readonly string[]) =>
       explain={explain("appearance", ["plain", "brutalist"])}
       stageMinBlockSize="8rem"
       storybookTitle={storybookTitle}
-      storybookStory="Label"
-    />
+      storybookStory="Label" />
 
     <UsagePreview
       tree={badgeLoneDotTree(t)}
@@ -102,8 +99,7 @@ const explain = (option: string, values: readonly string[]) =>
       labels={{ false: t("badge.prop.pulse.falseLabel"), true: t("badge.prop.pulse.trueLabel") }}
       stageMinBlockSize="8rem"
       storybookTitle={storybookTitle}
-      storybookStory="LoneDot"
-    />
+      storybookStory="LoneDot" />
 
     <h3>{t("component.examplesTitle")}</h3>
 
@@ -112,16 +108,14 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("badge.tagTitle")}
       description={t("badge.tagBody")}
       storybookTitle={storybookTitle}
-      storybookStory="Tag"
-    />
+      storybookStory="Tag" />
 
     <UsagePreview
       tree={badgeHoldersTree(t)}
       title={t("badge.cornerTitle")}
       description={t("badge.cornerBody")}
       storybookTitle={storybookTitle}
-      storybookStory="Holders"
-    />
+      storybookStory="Holders" />
 
     <p set:html={t("component.reactNote")} />
 

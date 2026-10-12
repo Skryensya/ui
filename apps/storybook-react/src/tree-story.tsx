@@ -4,6 +4,7 @@ import type { UsageTree } from "@skryensya/core/usage-tree";
 import { loadTree, renderTree } from "@skryensya/react/render-tree";
 import type { Translate } from "@docs/i18n";
 import { isLocale, translator } from "@skryensya/storybook-kit/translate";
+import { rootControls, withRootOptions } from "@skryensya/storybook-kit/controls";
 
 /*
  * THIS STORYBOOK'S BINDING: what every generated story imports (`treeStory`, `argsStory`, `withCss`,
@@ -26,15 +27,27 @@ const source = (code: (context: { args: never; globals: Record<string, unknown> 
   transform: (_code: string, context: { args: never; globals: Record<string, unknown> }) => code(context),
 });
 
+/* The root's options as Controls: read from the English tree once, when the story is declared. */
+function controlsOf(factory: TreeFactory) {
+  try {
+    return rootControls(treeFor(factory, "en"));
+  } catch {
+    return { args: {}, argTypes: {} };
+  }
+}
+
 /*
- * ONE STORY PER DOCS TREE, and the story adds nothing to it. The tree is translated into the toolbar's
+ * ONE STORY PER DOCS TREE, and the story adds nothing to it beyond Controls for the root's options. The tree is translated into the toolbar's
  * locale, its families are loaded (`loadTree`, the same lazy map the docs frame uses), and it is drawn
  * by `renderTree`. The "Show code" panel is `emitReact` over that same tree, so the snippet a reader
  * copies here is the one the docs page prints.
  */
 export function treeStory(factory: TreeFactory, story: StoryObj = {}): StoryObj {
+  const { args, argTypes } = controlsOf(factory);
   return {
     ...story,
+    args: { ...args, ...story.args },
+    argTypes: { ...argTypes, ...story.argTypes },
     loaders: [
       async ({ globals }) => {
         const tree = treeFor(factory, globals.locale);
@@ -42,12 +55,12 @@ export function treeStory(factory: TreeFactory, story: StoryObj = {}): StoryObj 
         return { tree };
       },
     ],
-    render: (_args, { loaded }) => <>{renderTree(loaded.tree as UsageTree)}</>,
+    render: (args, { loaded }) => <>{renderTree(withRootOptions(loaded.tree as UsageTree, args))}</>,
     parameters: {
       ...story.parameters,
       docs: {
         ...story.parameters?.docs,
-        source: source(({ globals }) => emitReact(treeFor(factory, globals.locale))),
+        source: source(({ args, globals }) => emitReact(withRootOptions(treeFor(factory, globals.locale), args))),
       },
     },
   };

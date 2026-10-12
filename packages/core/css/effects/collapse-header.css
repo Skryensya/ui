@@ -85,41 +85,43 @@
 
   @supports (animation-timeline: scroll()) {
     @media (prefers-reduced-motion: no-preference) {
-      .sk-fx-collapse-header__spacer {
-        display: block;
-        block-size: var(--sk-fx-collapse-range);
-      }
+      :where(:root:not([data-motion="reduced"])) {
+        .sk-fx-collapse-header__spacer {
+          display: block;
+          block-size: var(--sk-fx-collapse-range);
+        }
 
-      .sk-fx-collapse-header {
-        position: sticky;
-        top: var(--sk-fx-collapse-top, 0px);
-        /* Constant, and always the collapsed height. The expanded look is the spacer above plus
-         * type that overflows this box upward onto it. */
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        block-size: var(--sk-fx-collapse-bar-height);
-        /* LONGHANDS, never the `animation` shorthand. Lightning CSS (Vite's CSS transformer, through
-         * 1.33.0) folds a following `animation-timeline` back INTO the shorthand as
-         * `animation: linear both sk-fx-collapse-header scroll(root)`. The shorthand has no
-         * `<timeline>` slot, so every browser drops that whole declaration: no `animation-name`, no
-         * timeline, and the collapse silently never runs in a production build (dev, unminified, is
-         * fine - which is exactly how this shipped broken). Kept apart, each longhand survives. */
-        animation-name: sk-fx-collapse-header;
-        animation-timing-function: linear;
-        animation-fill-mode: both;
-        /* `root`, not `nearest`: a `nearest` scroller could be an inner `overflow: auto` rail and
-         * become a coin flip about which box this is measured against. */
-        animation-timeline: scroll(root block);
-        animation-range: 0 var(--sk-fx-collapse-range);
-      }
+        .sk-fx-collapse-header {
+          position: sticky;
+          top: var(--sk-fx-collapse-top, 0px);
+          /* Constant, and always the collapsed height. The expanded look is the spacer above plus
+           * type that overflows this box upward onto it. */
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          block-size: var(--sk-fx-collapse-bar-height);
+          /* LONGHANDS, never the `animation` shorthand. Lightning CSS (Vite's CSS transformer, through
+           * 1.33.0) folds a following `animation-timeline` back INTO the shorthand as
+           * `animation: linear both sk-fx-collapse-header scroll(root)`. The shorthand has no
+           * `<timeline>` slot, so every browser drops that whole declaration: no `animation-name`, no
+           * timeline, and the collapse silently never runs in a production build (dev, unminified, is
+           * fine - which is exactly how this shipped broken). Kept apart, each longhand survives. */
+          animation-name: sk-fx-collapse-header;
+          animation-timing-function: linear;
+          animation-fill-mode: both;
+          /* `root`, not `nearest`: a `nearest` scroller could be an inner `overflow: auto` rail and
+           * become a coin flip about which box this is measured against. */
+          animation-timeline: scroll(root block);
+          animation-range: 0 var(--sk-fx-collapse-range);
+        }
 
-      /* Overflow, not shrink. A flex item defaults to `flex-shrink: 1`, and this box is shorter
-       * than its own content for most of the range, so left alone the oversized type gets crushed
-       * into the bar and the band reads as empty while the font-size says otherwise. `none` lets the
-       * column keep its natural height and hang over the top edge, which is the effect. */
-      .sk-fx-collapse-header > * {
-        flex: none;
+        /* Overflow, not shrink. A flex item defaults to `flex-shrink: 1`, and this box is shorter
+         * than its own content for most of the range, so left alone the oversized type gets crushed
+         * into the bar and the band reads as empty while the font-size says otherwise. `none` lets the
+         * column keep its natural height and hang over the top edge, which is the effect. */
+        .sk-fx-collapse-header > * {
+          flex: none;
+        }
       }
     }
   }
@@ -135,22 +137,24 @@
    * on the docs site for the consumer.
    */
   @media (prefers-reduced-motion: no-preference) {
-    [data-sk-fx-collapse-js] .sk-fx-collapse-header__spacer {
-      display: block;
-      block-size: var(--sk-fx-collapse-range);
-    }
+    :where(:root:not([data-motion="reduced"])) {
+      [data-sk-fx-collapse-js] .sk-fx-collapse-header__spacer {
+        display: block;
+        block-size: var(--sk-fx-collapse-range);
+      }
 
-    [data-sk-fx-collapse-js] .sk-fx-collapse-header {
-      position: sticky;
-      top: var(--sk-fx-collapse-top, 0px);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      block-size: var(--sk-fx-collapse-bar-height);
-    }
+      [data-sk-fx-collapse-js] .sk-fx-collapse-header {
+        position: sticky;
+        top: var(--sk-fx-collapse-top, 0px);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        block-size: var(--sk-fx-collapse-bar-height);
+      }
 
-    [data-sk-fx-collapse-js] .sk-fx-collapse-header > * {
-      flex: none;
+      [data-sk-fx-collapse-js] .sk-fx-collapse-header > * {
+        flex: none;
+      }
     }
   }
 }

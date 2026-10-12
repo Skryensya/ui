@@ -80,12 +80,12 @@ import { userSelectEmailDoTree, userSelectEmailDontTree, userSelectNameDoTree, u
     <h3>{t("component.examplesTitle")}</h3>
     <h3>{t("userSelectPage.basicTitle")}</h3>
     <p set:html={t("userSelectPage.basicBody")} />
-    <UsagePreview tree={userSelectTree(t)} label="UserSelect" viewport="menu-deep" />
+    <UsagePreview tree={userSelectTree(t)} label="UserSelect" viewport="menu-deep" storybookTitle="Components/UserSelect" storybookStory="Default" />
 
     <h3>{t("userSelectPage.statesTitle")}</h3>
     <p set:html={t("userSelectPage.statesBody")} />
-    <UsagePreview tree={userSelectMultipleTree(t)} label="UserSelect (multiple)" viewport="menu" />
-    <UsagePreview tree={userSelectLoadingTree(t)} label="UserSelect (loading)" viewport="menu" />
+    <UsagePreview tree={userSelectMultipleTree(t)} label="UserSelect (multiple)" viewport="menu" storybookTitle="Components/UserSelect" storybookStory="Multiple" />
+    <UsagePreview tree={userSelectLoadingTree(t)} label="UserSelect (loading)" viewport="menu" storybookTitle="Components/UserSelect" storybookStory="Loading" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

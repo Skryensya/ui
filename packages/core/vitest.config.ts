@@ -14,5 +14,5 @@ import { defineConfig } from "vitest/config";
  * this runner by construction rather than by neglect.
  */
 export default defineConfig({
-  test: { include: ["src/**/*.test.ts"] },
+  test: { include: ["src/**/*.test.ts", "scripts/**/*.vitest.ts"] },
 });

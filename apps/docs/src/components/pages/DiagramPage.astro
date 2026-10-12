@@ -52,7 +52,7 @@ import "@skryensya/core/components/canvas.css";
 
 const t = useTranslations(getLocale(Astro.url));
 
-const storybookTitle = "Components/Content/Diagram";
+const storybookTitle = "Components/Diagram";
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`diagram.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
@@ -147,8 +147,7 @@ const hooks = `.mi-diagrama {
       explain={explain("arrow", ["end", "both", "none"])}
       css={diagramFlowCss}
       storybookTitle={storybookTitle}
-      storybookStory="Flow"
-    />
+      storybookStory="Flow" />
 
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview tree={diagramBranchTree(t)} css={diagramCycleCss} title={t("diagram.branchTitle")} description={t("diagram.branchBody")} storybookTitle={storybookTitle} storybookStory="Branch" />

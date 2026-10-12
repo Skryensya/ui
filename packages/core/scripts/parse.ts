@@ -336,11 +336,38 @@ export function evalColor(expr: string | null | undefined, env: Map<string, stri
   }
 
   if (expr.startsWith("color-mix(")) return evalMix(expr, env, depth);
+  if (expr.startsWith("oklch(from ")) return evalRelative(expr, env, depth);
 
   const named = NAMED_COLORS[expr.toLowerCase()];
   if (named) return oklchLit(...named);
 
   return parseOklch(expr);
+}
+
+/**
+ * `oklch(from <color> L C H)`, the relative form the accent ramp is written in. Each channel is a
+ * number/percentage, the origin's own `l` / `c` / `h`, or `calc(<channel> * <number>)`; anything
+ * else is unresolvable (null) rather than guessed.
+ */
+function evalRelative(expr: string, env: Map<string, string> | null | undefined, depth: number) {
+  const inner = expr.slice(expr.indexOf("(") + 1, expr.lastIndexOf(")")).trim().replace(/^from\s+/, "");
+  const parts = splitTopLevel(inner.replace(/\s+/g, " ").replace(/ (?![^(]*\))/g, ","));
+  if (parts.length !== 4) return null;
+  const origin = evalColor(parts[0], env, depth + 1);
+  if (!origin) return null;
+  const channel = (src: string, own: number, pct: number): number => {
+    const t = src.trim();
+    if (t === "l" || t === "c" || t === "h") return own;
+    const calc = t.match(/^calc\(\s*(l|c|h|[\d.]+%?)\s*\*\s*([\d.]+)\s*\)$/);
+    if (calc) return channel(calc[1], own, pct) * parseFloat(calc[2]);
+    const n = parseFloat(t);
+    if (Number.isNaN(n)) return NaN;
+    return t.endsWith("%") ? (n / 100) * pct : n;
+  };
+  const L = channel(parts[1], origin.L, 1);
+  const C = channel(parts[2], origin.C, 0.4);
+  const H = channel(parts[3], origin.H, 360);
+  return [L, C, H].some(Number.isNaN) ? null : oklchLit(L, C, H);
 }
 
 function evalMix(expr: string, env: Map<string, string> | null | undefined, depth: number) {
@@ -376,7 +403,8 @@ function evalMix(expr: string, env: Map<string, string> | null | undefined, dept
   return oklabToOklch({ L: la.L + (lb.L - la.L) * t, a: la.a + (lb.a - la.a) * t, b: la.b + (lb.b - la.b) * t });
 }
 
-export function oklchToSrgb({ L, C, H }: OklchColor) {
+/** Linear sRGB of an oklch color, unclamped (out-of-gamut channels fall outside 0..1). */
+function oklchToLinearSrgb({ L, C, H }: OklchColor) {
   const hr = (H * Math.PI) / 180;
   const a = C * Math.cos(hr),
     b = C * Math.sin(hr);
@@ -386,12 +414,36 @@ export function oklchToSrgb({ L, C, H }: OklchColor) {
   const l = l_ ** 3,
     m = m_ ** 3,
     s = s_ ** 3;
-  const lr = +4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s;
-  const lg = -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s;
-  const lb = -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s;
+  return [
+    +4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+    -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+    -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s,
+  ];
+}
+
+const inGamut = (rgb: number[]) => rgb.every((v) => v >= -1e-6 && v <= 1 + 1e-6);
+
+/**
+ * oklch to gamma-encoded sRGB. A color outside sRGB is gamut-mapped the way a browser paints it:
+ * chroma is reduced at constant lightness and hue until it fits, NOT clipped channel by channel
+ * (clipping shifts luminance, which is exactly what a contrast check must not get wrong). A color
+ * already inside sRGB, every shipped palette rung, comes through untouched.
+ */
+export function oklchToSrgb(color: OklchColor) {
+  let rgb = oklchToLinearSrgb(color);
+  if (!inGamut(rgb)) {
+    let lo = 0,
+      hi = color.C;
+    for (let i = 0; i < 24; i++) {
+      const mid = (lo + hi) / 2;
+      if (inGamut(oklchToLinearSrgb({ ...color, C: mid }))) lo = mid;
+      else hi = mid;
+    }
+    rgb = oklchToLinearSrgb({ ...color, C: lo });
+  }
   const gamma = (x: number) => {
     const cl = Math.max(0, Math.min(1, x));
     return cl <= 0.0031308 ? 12.92 * cl : 1.055 * cl ** (1 / 2.4) - 0.055;
   };
-  return { r: gamma(lr), g: gamma(lg), b: gamma(lb) };
+  return { r: gamma(rgb[0]), g: gamma(rgb[1]), b: gamma(rgb[2]) };
 }

@@ -41,6 +41,8 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("tagPage.prop.tone.body")}
       explain={explain("tone", ["neutral", "accent", "success", "warning", "danger"])}
       stageMinBlockSize="7rem"
+      storybookTitle="Components/Tag"
+      storybookStory="Simple"
     />
 
     <UsagePreview
@@ -51,13 +53,15 @@ const explain = (option: string, values: readonly string[]) =>
       explain={explain("removable", ["false", "true"])}
       labels={{ false: t("tagPage.prop.removable.falseLabel"), true: t("tagPage.prop.removable.trueLabel") }}
       stageMinBlockSize="7rem"
+      storybookTitle="Components/Tag"
+      storybookStory="Simple"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={tagSimpleTree(t)} title={t("tagPage.simpleTitle")} description={t("tagPage.simpleBody")} />
-    <UsagePreview tree={tagTonesTree(t)} title={t("tagPage.tonesTitle")} description={t("tagPage.tonesBody")} />
-    <UsagePreview tree={tagLinksTree(t)} title={t("tagPage.linksTitle")} description={t("tagPage.linksBody")} />
-    <UsagePreview tree={tagRemovableTree(t)} title={t("tagPage.removableTitle")} description={t("tagPage.removableBody")} />
+    <UsagePreview tree={tagSimpleTree(t)} title={t("tagPage.simpleTitle")} description={t("tagPage.simpleBody")} storybookTitle="Components/Tag" storybookStory="Simple" />
+    <UsagePreview tree={tagTonesTree(t)} title={t("tagPage.tonesTitle")} description={t("tagPage.tonesBody")} storybookTitle="Components/Tag" storybookStory="Tones" />
+    <UsagePreview tree={tagLinksTree(t)} title={t("tagPage.linksTitle")} description={t("tagPage.linksBody")} storybookTitle="Components/Tag" storybookStory="Links" />
+    <UsagePreview tree={tagRemovableTree(t)} title={t("tagPage.removableTitle")} description={t("tagPage.removableBody")} storybookTitle="Components/Tag" storybookStory="Removable" />
 
 
     <h3>{t("component.contractNotesTitle")}</h3>

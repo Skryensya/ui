@@ -67,15 +67,17 @@ import { dd2 } from "../../demos/dodont-labels";
       explain={explain("hourCycle", ["h12", "h24"])}
       stageMinBlockSize="9rem"
       labels={{ h12: "12 h", h24: "24 h" }}
+      storybookTitle="Components/TimeField"
+      storybookStory="DoCycle"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={timeFieldTree(t, { locale: "es-DO", name: "salida" })} title={t("timeFieldPage.basicTitle")} description={t("timeFieldPage.basicBody")} viewport="menu" />
-    <UsagePreview tree={timeFieldForced24Tree(t, { locale: "es", name: "llegada" })} title={t("timeFieldPage.forced24Title")} description={t("timeFieldPage.forced24Body")} viewport="menu" />
-    <UsagePreview tree={timeFieldQuarterHourTree(t, { locale: "es", name: "reunion" })} title={t("timeFieldPage.optionsTitle")} description={t("timeFieldPage.optionsBody")} viewport="menu" />
+    <UsagePreview tree={timeFieldTree(t, { locale: "es-DO", name: "salida" })} title={t("timeFieldPage.basicTitle")} description={t("timeFieldPage.basicBody")} viewport="menu" storybookTitle="Components/TimeField" storybookStory="Default" />
+    <UsagePreview tree={timeFieldForced24Tree(t, { locale: "es", name: "llegada" })} title={t("timeFieldPage.forced24Title")} description={t("timeFieldPage.forced24Body")} viewport="menu" storybookTitle="Components/TimeField" storybookStory="Forced24" />
+    <UsagePreview tree={timeFieldQuarterHourTree(t, { locale: "es", name: "reunion" })} title={t("timeFieldPage.optionsTitle")} description={t("timeFieldPage.optionsBody")} viewport="menu" storybookTitle="Components/TimeField" storybookStory="QuarterHour" />
     {/* The native fallback goes last: the exit for a reader who found everything above too much.
         `measure` matches `--sk-time-field-inline-size`, since `.sk-input` fills its container. */}
-    <UsagePreview tree={timeFieldNativeTree(t, { name: "inicio" })} title={t("timeFieldPage.nativeTitle")} description={t("timeFieldPage.nativeBody")} measure="12rem" />
+    <UsagePreview tree={timeFieldNativeTree(t, { name: "inicio" })} title={t("timeFieldPage.nativeTitle")} description={t("timeFieldPage.nativeBody")} measure="12rem" storybookTitle="Components/TimeField" storybookStory="Native" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

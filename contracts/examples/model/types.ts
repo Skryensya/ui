@@ -51,7 +51,10 @@ export type SubjectId =
   | "navigation"
   | "table"
   | "survey"
-  | "screen";
+  | "screen"
+  | "media"
+  | "overlay"
+  | "layout";
 
 export interface BuildContext {
   readonly locale: Locale;

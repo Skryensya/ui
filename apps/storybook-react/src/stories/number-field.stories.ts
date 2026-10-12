@@ -7,16 +7,11 @@ import "@skryensya/core/components/number-field.css";
 import * as demos from "@docs/demos/number-field";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Forms/NumberField", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/NumberField", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.numberFieldAnatomyTree);
 export const Default: StoryObj = treeStory(demos.numberFieldTree);
 export const Single: StoryObj = treeStory(demos.numberFieldSingleTree);
-export const DontApprox: StoryObj = treeStory(demos.numberFieldDontApproxTree);
 export const Locale: StoryObj = treeStory((t) => demos.numberFieldLocaleTree(t, "#"));
 export const Decimal: StoryObj = treeStory(demos.numberFieldDecimalTree);
 export const Unbounded: StoryObj = treeStory(demos.numberFieldUnboundedTree);
-export const DoBounds: StoryObj = treeStory(demos.numberFieldDoBoundsTree);
-export const DontBounds: StoryObj = treeStory(demos.numberFieldDontBoundsTree);
-export const DoLabel: StoryObj = treeStory(demos.numberFieldDoLabelTree);
-export const DontLabel: StoryObj = treeStory(demos.numberFieldDontLabelTree);

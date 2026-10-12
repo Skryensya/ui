@@ -15,7 +15,7 @@
  *
  * Everything a story needs beyond the tree is READ from the docs, never restated:
  *
- *   title    the component's catalog group and label (`lib/navigation.ts`).
+ *   title    the component's catalog label (`lib/navigation.ts`), flat under Components.
  *   order    the order the component's page shows its previews in, anatomy first.
  *   css      the `css={...}` a page hands a preview (an anatomy's annotation type, a demo's sizing).
  *   sheets   `sheetsForTree` over the module's trees: the stylesheets the file imports.
@@ -153,10 +153,10 @@ export async function generateStories({ app, check = false }: GenerateOptions): 
         (p) => p.severity === "error",
       ).length;
 
-    /* href → "Group/Label", from the catalog the docs rail renders. */
+    /* href → "Components/Label": the docs' groups are how the docs browse, Storybook is one list A to Z. */
     const titles = new Map<string, string>();
     for (const group of componentNavigation as { group: string; items: { href: string; label: string }[] }[]) {
-      for (const item of group.items) titles.set(item.href, `Components/${en[group.group] ?? group.group}/${item.label}`);
+      for (const item of group.items) titles.set(item.href, `Components/${item.label}`);
     }
 
     /*
@@ -207,13 +207,29 @@ export async function generateStories({ app, check = false }: GenerateOptions): 
       return previews;
     }
 
+    /*
+     * DO / DON'T PAIRS ARE DOCUMENTATION, NOT THE COMPONENT: Storybook shows the overview examples only. A tree is a
+     * pair's when the page hands it to a `<DoDont>` block, and a module is when it only exists to feed those blocks
+     * (`dodont-*`), so neither becomes a story.
+     */
+    const inDoDont = (page: Page | undefined): { paired: Set<string>; elsewhere: Set<string> } => {
+      if (!page) return { paired: new Set(), elsewhere: new Set() };
+      const blocks = /<DoDont\b[\s\S]*?\/>/g;
+      const words = (text: string) => new Set(text.match(/\w+/g) ?? []);
+      const paired = words([...page.source.matchAll(blocks)].map(([block]) => block).join(" "));
+      /* The "do" side often is the overview example itself, so a name the page also uses outside its pairs stays a story.
+         The imports list everything the page touches, so they do not count as use. */
+      const elsewhere = words(page.source.replace(blocks, " ").replace(/^import[\s\S]*?from\s*"[^"]*";?$/gm, " "));
+      return { paired: new Set([...paired].filter((name) => !elsewhere.has(name))), elsewhere };
+    };
+
     const expected = new Map<string, string>();
     const files: { module: string; title: string; text: string }[] = [];
     const report: string[] = [];
 
     for (const file of readdirSync(demosDir).filter((f) => f.endsWith(".ts") && !f.endsWith(".test.ts")).sort()) {
       const module = basename(file, ".ts");
-      if (helperModules.has(module)) continue;
+      if (helperModules.has(module) || module.startsWith("dodont")) continue;
       let exports: Record<string, unknown>;
       try {
         exports = await load(join(demosDir, file));
@@ -233,7 +249,14 @@ export async function generateStories({ app, check = false }: GenerateOptions): 
         cardCopy: cardCopy as Record<string, unknown>,
         placeholderHrefs: placeholderHrefs as () => unknown,
       };
+      /* Every page that draws this module counts: a tree one page pairs may be another page's overview card. */
+      const users = pages.filter((p) => p.modules.has(module) || p === home).map(inDoDont);
+      const elsewhere = new Set(users.flatMap((u) => [...u.elsewhere]));
+      const pairs = new Set(users.flatMap((u) => [...u.paired]).filter((name) => !elsewhere.has(name)));
       for (const [exportName, value] of Object.entries(exports)) {
+        /* A `Do…` name alone does not make a pair: a property card may be named for the property it varies. */
+        const pairNamed = /(?:^|[a-z])Don?t?[A-Z]/.test(exportName.replace(/Tree$|Html$/, "")) && !elsewhere.has(exportName);
+        if (pairs.has(exportName) || pairNamed) continue;
         const params = declared.get(exportName);
         let chosen: { call: string; tree: Tree } | undefined;
         if (params === null && isTree(value) && errors(value) === 0) {
@@ -290,7 +313,7 @@ export async function generateStories({ app, check = false }: GenerateOptions): 
       const title =
         (home && titles.get(home.route)) ??
         (home?.route.startsWith("/components/")
-          ? `Components/Unlisted/${pascal(home.route.split("/").pop()!)}`
+          ? `Components/${pascal(home.route.split("/").pop()!)}`
           : `Foundations/${pascal(module)}`);
       const cssImports = new Map<string, Set<string>>();
       for (const s of stories) if (s.css && s.cssFrom) (cssImports.get(s.cssFrom) ?? cssImports.set(s.cssFrom, new Set()).get(s.cssFrom)!).add(s.css);
@@ -332,7 +355,11 @@ export async function generateStories({ app, check = false }: GenerateOptions): 
        story ids, so a shared title gets each module's name under it. */
     for (const file of files) {
       const shared = files.filter((other) => other.title === file.title).length > 1;
-      const title = shared ? `${file.title}/${pascal(file.module)}` : file.title;
+      /* One flat list: `Components/Button`. A component with several pages keeps the plain name for the page
+         that is its own (`Card`) and names the others after it (`Card - CardGuide`), still one level. */
+      const label = file.title.split("/").pop()!;
+      const own = shared && pascal(file.module) === pascal(label);
+      const title = shared && !own ? `${file.title} - ${pascal(file.module)}` : file.title;
       expected.set(`${file.module}.stories.ts`, file.text.replace("__TITLE__", JSON.stringify(title)));
     }
 

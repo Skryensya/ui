@@ -22,17 +22,21 @@
 import { getContract, getSignature } from "@skryensya/core/registry";
 import { signatureOptions, type ContractOption } from "@skryensya/core/contract";
 import type { UsageTree } from "@skryensya/core/usage-tree";
-import { ExampleStage } from "./react-demos/example-stage";
+import { emitMarkup } from "@skryensya/ai-compiler/emit";
 import { TreeDemo } from "./react-demos/tree";
 import { compileDemoScript } from "../lib/demo-script";
 import "../styles/component-preview.css";
 import { PropertyPlayground } from "./react-demos/property-playground";
 import { nodeAt, type TreePath } from "./react-demos/usage-tree-path";
-import { iconMarkup } from "../icons";
 import { storybookDocsUrl, storybookReactUrl, storybookVanillaUrl } from "../lib/navigation";
 import { resolveStorybookStory } from "../lib/storybook-stories";
 import { getLocale, useTranslations } from "../i18n";
 import "@skryensya/core/components/segmented.css";
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/menu.css";
+import "@skryensya/core/components/tooltip.css";
+import "@skryensya/core/patterns/anchored.css";
+import "@skryensya/core/patterns/icon.css";
 import "./preview-card.css";
 
 interface Props {
@@ -131,6 +135,8 @@ const {
   bare = false,
   screen,
 } = Astro.props;
+/* Content the page brings itself (a hands-on demo with its own state): drawn in the card's stage as given. */
+const custom = Astro.slots.has("default");
 const authoredTree = (givenTree ?? variants?.[0]?.tree)!;
 /*
  * AN ANATOMY DIAGRAM IS LOOKED AT, NOT EXPLORED: no zoom bar, no gestures, no tab stop on the canvas,
@@ -139,15 +145,21 @@ const authoredTree = (givenTree ?? variants?.[0]?.tree)!;
  */
 const anatomy = bare && authoredTree.contract === "annotation" && authoredTree.signature === "Annotated";
 const tree = anatomy ? { ...authoredTree, options: { ...authoredTree.options, fitOnly: true } } : authoredTree;
+/* A fixed example is drawn by the same playground as a controlled one, just without a control: same card, same
+   stage. The ones that need their own frame (a phone or tablet screen, a script, a scroll, an overlay) keep
+   the plain path; XL is the one frame the playground draws itself. */
+const fixed = !optionName && !variants;
+const needsFrame = !custom && (isolate || flush || scroll || Boolean(script) || Boolean(screen) || viewport !== "auto");
+const asPlayground = fixed && !bare && needsFrame;
 /* A fixed screen is the card's own authoring decision, so the root says which (the enhancer keeps it
    instead of falling back to "free"). `xl` is drawn at 840px, just past the 52rem desktop query. */
 const screenRoot = screen
   ? {
       "data-sk-component-preview-screen-local": screen,
-      style: screen === "xl" ? `--sk-component-preview-screen-xl: ${variants ? 1200 : 840}px;` : undefined,
+      style: screen === "xl" ? `--sk-component-preview-screen-xl: ${variants || asPlayground ? 1200 : 840}px;` : undefined,
     }
   : {};
-const framedStage = !optionName && !variants && (isolate || bare || flush || scroll || Boolean(script) || Boolean(screen) || viewport !== "auto");
+const framedStage = fixed && bare;
 const t = useTranslations(getLocale(Astro.url));
 
 let values: readonly string[] = [];
@@ -214,9 +226,39 @@ if (storybookTitle && storybookStory && !codeStory) {
 }
 const reactCodeHref = codeStory ? storybookDocsUrl(storybookReactUrl, codeStory.title, codeStory.story) : null;
 const vanillaCodeHref = codeStory ? storybookDocsUrl(storybookVanillaUrl, codeStory.title, codeStory.story) : null;
-const codeHref = reactCodeHref;
-const hasCodeMenu = Boolean((optionName || variants) && (reactCodeHref || vanillaCodeHref));
-const codeIcon = iconMarkup("code", { size: "sm" });
+const hasCodeMenu = Boolean(reactCodeHref || vanillaCodeHref);
+/* The code button is the kit's own: an icon-only Menu with a Tooltip over it (placed above, centred), its two items
+   links to the same story in each Storybook. */
+const codeMenuTree: UsageTree | null = hasCodeMenu
+  ? {
+      contract: "tooltip",
+      signature: "Tooltip",
+      slots: { content: t("preview.viewCode") },
+      children: {
+        contract: "menu",
+        signature: "Menu",
+        options: { label: t("preview.viewCode"), triggerLabel: `${t("preview.viewCode")} (${title ?? label ?? optionName ?? ""})`.replace(" ()", ""), triggerIconOnly: true, triggerVariant: "ghost", triggerSize: "sm", density: "compact" },
+        slots: {
+          trigger: { contract: "icon", signature: "Icon", options: { name: "code" } },
+          items: [
+            ...(reactCodeHref ? [{ options: { value: "react", href: reactCodeHref }, slots: { label: t("preview.storybookReactAction") } }] : []),
+            ...(vanillaCodeHref ? [{ options: { value: "vanilla", href: vanillaCodeHref }, slots: { label: t("preview.storybookVanillaAction") } }] : []),
+          ],
+        },
+      },
+    }
+  : null;
+/* A menu item has `href` but no `target`, and these links leave the docs for Storybook: each opens in a new tab. A label
+   slot takes text only, so the launch glyph that says "this leaves the page" is a stable-name icon
+   placeholder added after each link's label; the page's icon pass paints it like every other. */
+const codeMenuMarkup = codeMenuTree
+  ? emitMarkup(codeMenuTree, { fillDefaults: false })
+      .replace(/<a\b([^>]*\bsk-menu__item\b)/g, '<a target="_blank" rel="noreferrer"$1')
+      .replace(
+      /(<a\b[^>]*\bsk-menu__item\b[\s\S]*?<span class="sk-menu__item-label">[^<]*<\/span>)/g,
+      '$1<span data-sk-icon="external-link" data-sk-icon-size="sm"></span>',
+    )
+  : "";
 const id = title ? `usage-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}` : undefined;
 /* A scope per card, stable across builds: the same tree and css always get the same attribute. */
 /* The frame's settings, when the example renders in one. Its script is COMPILED here: the frame runs
@@ -224,11 +266,14 @@ const id = title ? `usage-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}` : 
 const frameOptions = framedStage
   ? { flush: flush || anatomy, scroll, viewport, minHeight: stageMinBlockSize, css, screen, script: script ? compileDemoScript(script) : undefined }
   : undefined;
-const scope = css ? `u${[...(css + JSON.stringify(tree))].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7).toString(36)}` : undefined;
+/* A fixed example in the page is plain HTML from the server: no island, no bindings to download. The
+   vanilla enhancers that run over the whole document bring it to life, as for any other markup. */
+const staticMarkup = !custom && !optionName && !variants && !framedStage && !asPlayground ? emitMarkup(tree, { fillDefaults: false }) : "";
+const scope = css && !asPlayground ? `u${[...(css + JSON.stringify(tree))].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7).toString(36)}` : undefined;
 ---
 
 <section
-  class:list={["sk-preview-section", (optionName || variants) && "sk-usage-preview--controlled", framedStage && viewport === "overlay" && "sk-preview-section--overlay-stage"]}
+  class:list={["sk-preview-section", (optionName || variants || asPlayground) && "sk-usage-preview--controlled", (framedStage || asPlayground) && viewport === "overlay" && "sk-preview-section--overlay-stage"]}
   data-width={width}
   {...(id ? { "aria-labelledby": id } : label ? { "aria-label": label } : {})}
 >
@@ -248,34 +293,14 @@ const scope = css ? `u${[...(css + JSON.stringify(tree))].reduce((h, c) => (h * 
       >
         {
           hasCodeMenu ? (
-            <details class="sk-preview-card__code-menu">
-              <summary class="sk-preview-card__code-link sk-interactive" aria-label={`${t("preview.viewCode")} (${title ?? label ?? optionName})`}>
-                <Fragment set:html={codeIcon} />
-              </summary>
-              <div class="sk-preview-card__code-menu-panel">
-                {vanillaCodeHref && (
-                  <a href={vanillaCodeHref} rel="noreferrer" target="_blank">
-                    {t("preview.storybookVanillaAction")}
-                  </a>
-                )}
-                {reactCodeHref && (
-                  <a href={reactCodeHref} rel="noreferrer" target="_blank">
-                    {t("preview.storybookReactAction")}
-                  </a>
-                )}
-              </div>
-            </details>
-          ) : codeHref ? (
-            <a class="sk-preview-card__code-link" href={codeHref} rel="noreferrer" target="_blank" aria-label={`${t("preview.viewCode")} (${title ?? label ?? optionName})`}>
-              <Fragment set:html={codeIcon} />
-            </a>
+            <div class="sk-preview-card__code-menu" set:html={codeMenuMarkup} />
           ) : null
         }
         {
-          optionName || variants ? (
+          optionName || variants || asPlayground ? (
             <div
-              class:list={[variants && screen === "xl" && "sk-component-preview"]}
-              {...(variants && screen === "xl"
+              class:list={[(variants || asPlayground) && screen === "xl" && "sk-component-preview"]}
+              {...((variants || asPlayground) && screen === "xl"
                 ? { "data-sk-component-preview": "", "data-sk-component-preview-chrome": "false", "data-sk-component-preview-surface": "none", ...screenRoot }
                 : {})}
             >
@@ -290,28 +315,25 @@ const scope = css ? `u${[...(css + JSON.stringify(tree))].reduce((h, c) => (h * 
               boolean={isBoolean}
               onValue={onValue}
               defaultValue={defaultValue}
+              measure={asPlayground ? measure : undefined}
               labels={segmentLabels}
               controlLabel={variantsLabel ?? title ?? optionName ?? label ?? ""}
               explain={explainByValue}
               remountOnChange={remountOnChange}
-              frame={variants && screen === "xl"
+              frame={(variants || asPlayground) && screen === "xl"
                 ? { screen: "xl", width: 1200, flush, css, note: t("preview.scaledNote") }
                 : isolate || viewport !== "auto"
                   ? { flush, css, viewport, minHeight: stageMinBlockSize }
                   : undefined}
-              isolatedFrame={screen !== "xl" && (isolate || viewport !== "auto" || Boolean(script)) ? { flush, scroll, viewport, minHeight: stageMinBlockSize, css, screen, script: script ? compileDemoScript(script) : undefined } : undefined}
+              isolatedFrame={screen !== "xl" && (asPlayground || isolate || viewport !== "auto" || Boolean(script)) ? { flush, scroll, viewport, minHeight: stageMinBlockSize, css, screen, script: script ? compileDemoScript(script) : undefined } : undefined}
             />
+            {asPlayground && caption && <p class="sk-preview-card__caption" set:html={caption} />}
             </div>
-          ) : framedStage ? (
-            <>
-              <div class="sk-component-preview" data-sk-component-preview data-sk-component-preview-chrome="false" data-sk-component-preview-surface="none" {...screenRoot}>
-                <TreeDemo client:visible tree={tree} measure={measure} frameOptions={frameOptions} />
-              </div>
-              {caption && <p class="sk-preview-card__caption" set:html={caption} />}
-            </>
           ) : (
             <>
-              <ExampleStage client:visible tree={tree} measure={measure} />
+              <div class="sk-preview-card__stage" data-static-stage={custom ? undefined : ""}>
+                {custom ? <slot /> : measure ? <div style={`inline-size: 100%; max-inline-size: ${measure};`} set:html={staticMarkup} /> : <Fragment set:html={staticMarkup} />}
+              </div>
               {caption && <p class="sk-preview-card__caption" set:html={caption} />}
             </>
           )
@@ -320,6 +342,22 @@ const scope = css ? `u${[...(css + JSON.stringify(tree))].reduce((h, c) => (h * 
     )
   }
 </section>
+
+<script>
+  /* A form inside a static example never submits natively: that would reload the docs page under the reader. */
+  document.addEventListener("submit", (event) => {
+    if ((event.target as HTMLElement | null)?.closest?.("[data-static-stage]")) event.preventDefault();
+  });
+
+  /* A link inside an example is part of the specimen, not a way out: it goes nowhere. The card's own links
+     (the code menu's Storybook items) live outside the example and keep working. */
+  const inertLink = (event: Event) => {
+    const link = (event.target as HTMLElement | null)?.closest?.("a[href]");
+    if (link && link.closest(".sk-preview-section") && !link.closest(".sk-preview-card__code-menu")) event.preventDefault();
+  };
+  document.addEventListener("click", inertLink);
+  document.addEventListener("auxclick", inertLink);
+</script>
 
 <style>
   /* The card itself is `preview-card.css`; only the optional control and crossfading sentence are

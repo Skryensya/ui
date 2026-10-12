@@ -52,6 +52,8 @@ const trigger = (ui: ReturnType<typeof render>, name: string) => ui.getByRole("b
 const content = () => document.querySelector<HTMLElement>("[data-sk-megamenu-content]")!;
 const visiblePanel = () => content().querySelector<HTMLElement>(".sk-megamenu__panel--visible")!;
 
+const mouse = { pointerType: "mouse" };
+
 describe("Megamenu (React)", () => {
   it("renders one shared panel, sized by a hidden ruler holding every trigger's columns", () => {
     const ui = render(<Fixture />);
@@ -114,10 +116,83 @@ describe("Megamenu (React)", () => {
     expect(visiblePanel().textContent).not.toContain("Overview");
   });
 
+  it("clicking a hover-opened trigger closes it once the moment has passed", () => {
+    vi.useFakeTimers();
+    const ui = render(<Fixture />);
+    fireEvent.pointerEnter(trigger(ui, "Products"), mouse);
+    advance(150);
+    advance(750);
+    fireEvent.click(trigger(ui, "Products"));
+
+    expect(trigger(ui, "Products").getAttribute("aria-expanded")).toBe("false");
+    vi.useRealTimers();
+  });
+
+  it("a click right after hover opened it pins it: the pointer leaving no longer closes it", () => {
+    vi.useFakeTimers();
+    const ui = render(<Fixture />);
+    fireEvent.pointerEnter(trigger(ui, "Products"), mouse);
+    advance(250);
+    fireEvent.click(trigger(ui, "Products"));
+    fireEvent.pointerLeave(trigger(ui, "Products"), mouse);
+    advance(500);
+    expect(trigger(ui, "Products").getAttribute("aria-expanded")).toBe("true");
+
+    fireEvent.click(trigger(ui, "Products"));
+    expect(trigger(ui, "Products").getAttribute("aria-expanded")).toBe("false");
+    vi.useRealTimers();
+  });
+
+  it("marks the trigger data-pinned only after a click pinned it", () => {
+    vi.useFakeTimers();
+    const ui = render(<Fixture />);
+    const products = trigger(ui, "Products");
+    fireEvent.pointerEnter(products, mouse);
+    advance(150);
+    expect(products.hasAttribute("data-pinned")).toBe(false);
+
+    fireEvent.click(products);
+    expect(products.hasAttribute("data-pinned")).toBe(true);
+
+    fireEvent.click(products);
+    expect(products.hasAttribute("data-pinned")).toBe(false);
+    vi.useRealTimers();
+  });
+
+  it("while a panel is open, hovering another trigger switches at once", () => {
+    vi.useFakeTimers();
+    const ui = render(<Fixture />);
+    fireEvent.pointerEnter(trigger(ui, "Products"), mouse);
+    advance(150);
+    fireEvent.pointerLeave(trigger(ui, "Products"), mouse);
+    fireEvent.pointerEnter(trigger(ui, "Resources"), mouse);
+
+    expect(trigger(ui, "Resources").getAttribute("aria-expanded")).toBe("true");
+    vi.useRealTimers();
+  });
+
+  it("touch pointers do not hover-open", () => {
+    vi.useFakeTimers();
+    const ui = render(<Fixture />);
+    fireEvent.pointerEnter(trigger(ui, "Products"), { pointerType: "touch" });
+    advance(500);
+
+    expect(trigger(ui, "Products").getAttribute("aria-expanded")).toBe("false");
+    vi.useRealTimers();
+  });
+
+  it("a press outside the bar closes a pinned panel", () => {
+    const ui = render(<Fixture />);
+    fireEvent.click(trigger(ui, "Products"));
+    fireEvent.pointerDown(document.body);
+
+    expect(trigger(ui, "Products").getAttribute("aria-expanded")).toBe("false");
+  });
+
   it("opens on hover intent after its delay, not immediately", () => {
     vi.useFakeTimers();
     const ui = render(<Fixture />);
-    fireEvent.pointerEnter(trigger(ui, "Products"));
+    fireEvent.pointerEnter(trigger(ui, "Products"), mouse);
     expect(trigger(ui, "Products").getAttribute("aria-expanded")).toBe("false");
 
     advance(150);
@@ -128,8 +203,8 @@ describe("Megamenu (React)", () => {
   it("cancels the open-intent timer when the pointer leaves before the delay elapses", () => {
     vi.useFakeTimers();
     const ui = render(<Fixture />);
-    fireEvent.pointerEnter(trigger(ui, "Products"));
-    fireEvent.pointerLeave(trigger(ui, "Products"));
+    fireEvent.pointerEnter(trigger(ui, "Products"), mouse);
+    fireEvent.pointerLeave(trigger(ui, "Products"), mouse);
     advance(150);
 
     expect(trigger(ui, "Products").getAttribute("aria-expanded")).toBe("false");
@@ -139,8 +214,9 @@ describe("Megamenu (React)", () => {
   it("closes on hover intent after its own delay once the pointer leaves both trigger and panel", () => {
     vi.useFakeTimers();
     const ui = render(<Fixture />);
-    fireEvent.click(trigger(ui, "Products"));
-    fireEvent.pointerLeave(trigger(ui, "Products"));
+    fireEvent.pointerEnter(trigger(ui, "Products"), mouse);
+    advance(150);
+    fireEvent.pointerLeave(trigger(ui, "Products"), mouse);
     advance(150);
 
     expect(trigger(ui, "Products").getAttribute("aria-expanded")).toBe("false");
@@ -151,10 +227,11 @@ describe("Megamenu (React)", () => {
   it("re-entering the shared panel cancels its pending close", () => {
     vi.useFakeTimers();
     const ui = render(<Fixture />);
-    fireEvent.click(trigger(ui, "Products"));
-    fireEvent.pointerLeave(trigger(ui, "Products"));
+    fireEvent.pointerEnter(trigger(ui, "Products"), mouse);
+    advance(150);
+    fireEvent.pointerLeave(trigger(ui, "Products"), mouse);
     const positioner = document.querySelector<HTMLElement>("[data-sk-megamenu-positioner]")!;
-    fireEvent.pointerEnter(positioner);
+    fireEvent.pointerEnter(positioner, mouse);
     advance(150);
 
     expect(trigger(ui, "Products").getAttribute("aria-expanded")).toBe("true");

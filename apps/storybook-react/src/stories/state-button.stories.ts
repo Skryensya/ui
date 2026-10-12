@@ -7,7 +7,7 @@ import "@skryensya/core/components/state-button.css";
 import * as demos from "@docs/demos/state-button";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Actions/StateButton", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/StateButton", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.stateButtonAnatomyTree);
 export const Basic: StoryObj = treeStory(demos.stateButtonBasicTree);

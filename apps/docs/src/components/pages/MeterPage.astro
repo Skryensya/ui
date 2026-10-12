@@ -49,10 +49,12 @@ const explain = (option: string, values: readonly string[]) =>
       explain={explain("tone", ["accent", "success", "warning", "danger"])}
       css={toneCardCss}
       stageMinBlockSize="8rem"
+      storybookTitle="Components/Meter"
+      storybookStory="Single"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={meterTree(t)} title={t("meterPage.panelTitle")} description={t("meterPage.panelBody")} />
+    <UsagePreview tree={meterTree(t)} title={t("meterPage.panelTitle")} description={t("meterPage.panelBody")} storybookTitle="Components/Meter" storybookStory="Default" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

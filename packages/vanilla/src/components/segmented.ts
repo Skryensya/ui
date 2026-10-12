@@ -65,6 +65,7 @@ export function connectSegmented(root: HTMLElement): Cleanup {
     for (const cleanup of cleanups) cleanup();
     observer?.disconnect();
     root.removeAttribute("data-sk-segmented-ready");
+    root.removeAttribute("data-sk-segmented-motion");
   };
 }
 
@@ -77,7 +78,10 @@ function alignIndicator(root: HTMLElement, indicator: HTMLElement | null): void 
   indicator.style.transform = `translate3d(${selected.offsetLeft}px, ${selected.offsetTop}px, 0)`;
   indicator.style.inlineSize = `${selected.offsetWidth}px`;
   indicator.style.blockSize = `${selected.offsetHeight}px`;
+  const first = !root.hasAttribute("data-sk-segmented-ready");
   root.setAttribute("data-sk-segmented-ready", "");
+  /* Placed without motion; only later changes glide. */
+  if (first) requestAnimationFrame(() => requestAnimationFrame(() => root.setAttribute("data-sk-segmented-motion", "")));
 }
 
 function onOptionKeydown(

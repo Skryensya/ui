@@ -68,6 +68,8 @@ import { cardActionDoTree, cardActionDontTree } from "../../demos/dodont-more";
       description={t("cardPage.prop.surface.body")}
       explain={explain("surface", ["none", "sunken", "surface", "raised"])}
       stageMinBlockSize="14rem"
+      storybookTitle="Components/Card"
+      storybookStory="Basic"
     />
 
     <h3>{t("cardPage.chooseTitle")}</h3>
@@ -89,11 +91,11 @@ import { cardActionDoTree, cardActionDontTree } from "../../demos/dodont-more";
     </div>
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={cardPlainMediaTree(copy)} title={t("cardPage.plainMediaTitle")} description={t("cardPage.plainMediaBody")} caption={t("cardPage.plainMediaNote")} />
-    <UsagePreview tree={cardLinkTree(copy)} title={t("cardPage.linkTitle")} description={t("cardPage.linkBody")} caption={t("cardPage.linkNote")} />
-    <UsagePreview tree={cardActionTree(copy)} title={t("cardPage.actionTitle")} description={t("cardPage.actionBody")} caption={t("cardPage.actionNote")} />
-    <UsagePreview tree={cardSelectTree(copy)} title={t("cardPage.selectTitle")} description={t("cardPage.selectBody")} caption={t("cardPage.selectNote")} />
-    <UsagePreview tree={cardProductTree(copy)} title={t("cardPage.productTitle")} description={t("cardPage.productBody")} caption={t("cardPage.productNote")} />
+    <UsagePreview tree={cardPlainMediaTree(copy)} title={t("cardPage.plainMediaTitle")} description={t("cardPage.plainMediaBody")} caption={t("cardPage.plainMediaNote")} storybookTitle="Components/Card" storybookStory="PlainMedia" />
+    <UsagePreview tree={cardLinkTree(copy)} title={t("cardPage.linkTitle")} description={t("cardPage.linkBody")} caption={t("cardPage.linkNote")} storybookTitle="Components/Card" storybookStory="Link" />
+    <UsagePreview tree={cardActionTree(copy)} title={t("cardPage.actionTitle")} description={t("cardPage.actionBody")} caption={t("cardPage.actionNote")} storybookTitle="Components/Card" storybookStory="Action" />
+    <UsagePreview tree={cardSelectTree(copy)} title={t("cardPage.selectTitle")} description={t("cardPage.selectBody")} caption={t("cardPage.selectNote")} storybookTitle="Components/Card" storybookStory="Select" />
+    <UsagePreview tree={cardProductTree(copy)} title={t("cardPage.productTitle")} description={t("cardPage.productBody")} caption={t("cardPage.productNote")} storybookTitle="Components/Card" storybookStory="Product" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

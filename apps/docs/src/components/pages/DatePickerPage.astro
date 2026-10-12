@@ -21,7 +21,7 @@ import "@skryensya/core/components/annotation.css";
 
 const t = useTranslations(getLocale(Astro.url));
 
-const storybookTitle = "Components/Forms/DatePicker";
+const storybookTitle = "Components/DatePicker";
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`datePicker.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
@@ -59,13 +59,12 @@ import { dd2 } from "../../demos/dodont-labels";
       explain={explain("selectionMode", ["single", "range"])}
       stageMinBlockSize="26rem"
       storybookTitle={storybookTitle}
-      storybookStory="Default"
-    />
+      storybookStory="Default" />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={nativeDatePickerTree(t)} title={t("datePicker.nativeTitle")} description={t("datePicker.nativeBody")} />
+    <UsagePreview tree={nativeDatePickerTree(t)} title={t("datePicker.nativeTitle")} description={t("datePicker.nativeBody")} storybookTitle="Components/DatePicker" storybookStory="NativeDatePicker" />
     <UsagePreview tree={datePickerTree(t)} title={t("datePicker.customTitle")} description={t("datePicker.customBody")} stageMinBlockSize="26rem" storybookTitle={storybookTitle} storybookStory="Default" />
-    <UsagePreview tree={datePickerDisabledTree(t)} title={t("datePicker.disabledTitle")} description={t("datePicker.disabledBody")} />
+    <UsagePreview tree={datePickerDisabledTree(t)} title={t("datePicker.disabledTitle")} description={t("datePicker.disabledBody")} storybookTitle="Components/DatePicker" storybookStory="Disabled" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

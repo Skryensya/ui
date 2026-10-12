@@ -58,16 +58,18 @@ const t = useTranslations(getLocale(Astro.url));
       title={t("inlinePage.prop.justify.title")}
       description={t("inlinePage.prop.justify.body")}
       explain={explain("justify", ["start", "center", "end", "between"])}
+      storybookTitle="Components/Grid - LayoutGuide"
+      storybookStory="InlineButtons"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={inlineTree(t)} title={t("inlinePage.barTitle")} description={t("inlinePage.barBody")} />
-    <UsagePreview tree={inlineCardFloorTree(t)} title={t("inlinePage.floorTitle")} description={t("inlinePage.floorBody")} />
+    <UsagePreview tree={inlineTree(t)} title={t("inlinePage.barTitle")} description={t("inlinePage.barBody")} storybookTitle="Components/Box - Layout" storybookStory="Inline" />
+    <UsagePreview tree={inlineCardFloorTree(t)} title={t("inlinePage.floorTitle")} description={t("inlinePage.floorBody")} storybookTitle="Components/Box - Layout" storybookStory="InlineCardFloor" />
 
     <h3>{t("inlinePage.showTitle")}</h3>
     <p set:html={t("inlinePage.showBody")} />
-    <UsagePreview tree={inlineShowTree(t)} title={t("inlinePage.showPhone")} screen="mobile" />
-    <UsagePreview tree={inlineShowTree(t)} title={t("inlinePage.showWide")} screen="xl" />
+    <UsagePreview tree={inlineShowTree(t)} title={t("inlinePage.showPhone")} screen="mobile" storybookTitle="Components/Grid - LayoutContainer" storybookStory="InlineShow" />
+    <UsagePreview tree={inlineShowTree(t)} title={t("inlinePage.showWide")} screen="xl" storybookTitle="Components/Grid - LayoutContainer" storybookStory="InlineShow" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

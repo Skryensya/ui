@@ -4,14 +4,12 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/diagram.css";
-import "@skryensya/core/components/procedure.css";
 import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/canvas";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Media & Visuals/Canvas", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Canvas", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.canvasAnatomyTree);
 export const Diagram: StoryObj = treeStory(demos.canvasDiagramTree);
-export const DontFits: StoryObj = treeStory(demos.canvasDontFitsTree);

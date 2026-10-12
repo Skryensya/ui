@@ -3,15 +3,12 @@
 import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
-import "@skryensya/core/components/form-field.css";
-import "@skryensya/core/components/input.css";
 import "@skryensya/core/components/otp-input.css";
-import "@skryensya/core/components/password-input.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/otp-input";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Forms/OtpInput", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/OtpInput", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.otpInputAnatomyTree);
 export const Sms: StoryObj = treeStory(demos.otpInputSmsTree);
@@ -19,9 +16,5 @@ export const Alphanumeric: StoryObj = treeStory(demos.otpInputAlphanumericTree);
 export const Pin: StoryObj = treeStory(demos.otpInputPinTree);
 export const States: StoryObj = treeStory(demos.otpInputStatesTree);
 export const Single: StoryObj = treeStory(demos.otpInputSingleTree);
-export const DontNoHint: StoryObj = treeStory(demos.otpInputDontNoHintTree);
-export const DontLong: StoryObj = treeStory(demos.otpInputDontLongTree);
-export const DoLong: StoryObj = treeStory(demos.otpInputDoLongTree);
 export const CountCase: StoryObj = treeStory(demos.otpInputCountCase);
 export const StateCase: StoryObj = treeStory(demos.otpInputStateCase);
-export const DontPassword: StoryObj = treeStory(demos.otpInputDontPasswordTree);

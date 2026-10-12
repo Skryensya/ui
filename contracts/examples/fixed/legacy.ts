@@ -2,16 +2,13 @@ import { actionRowInCardsSnippet } from "./action-row-in-cards.js";
 import { calloutErrorWithRetrySnippet } from "./callout-error-with-retry.js";
 import { footerCreditLineSnippet } from "./footer-credit-line.js";
 import { formFieldHintAndErrorSnippet } from "./form-field-hint-and-error.js";
-import { formFieldValidatedIdentifierSnippet } from "./form-field-validated-identifier.js";
 import { heroCenteredMinimalSnippet } from "./hero-centered-minimal.js";
 import { heroSplitWithMediaSnippet } from "./hero-split-with-media.js";
 import { heroWithActionsSnippet } from "./hero-with-actions.js";
-import { heroWithAppBadgesSnippet } from "./hero-with-app-badges.js";
 import { heroWithAudienceTabsSnippet } from "./hero-with-audience-tabs.js";
 import { heroWithCodePreviewSnippet } from "./hero-with-code-preview.js";
 import { heroWithEmailCaptureSnippet } from "./hero-with-email-capture.js";
 import { heroWithEyebrowSnippet } from "./hero-with-eyebrow.js";
-import { heroWithLogoWallSnippet } from "./hero-with-logo-wall.js";
 import { heroWithPricingToggleSnippet } from "./hero-with-pricing-toggle.js";
 import { heroWithSocialProofSnippet } from "./hero-with-social-proof.js";
 import { heroWithTestimonialSnippet } from "./hero-with-testimonial.js";
@@ -47,7 +44,6 @@ export const legacySnippets: readonly Snippet[] = [
   calloutErrorWithRetrySnippet,
   iconOnlyButtonTooltipSnippet,
   formFieldHintAndErrorSnippet,
-  formFieldValidatedIdentifierSnippet,
   heroWithActionsSnippet,
   heroCenteredMinimalSnippet,
   heroWithEyebrowSnippet,
@@ -64,8 +60,6 @@ export const legacySnippets: readonly Snippet[] = [
   heroSplitWithMediaSnippet,
   heroWithSocialProofSnippet,
   heroWithEmailCaptureSnippet,
-  heroWithAppBadgesSnippet,
-  heroWithLogoWallSnippet,
   heroWithPricingToggleSnippet,
   heroWithCodePreviewSnippet,
   heroWithVideoDemoSnippet,

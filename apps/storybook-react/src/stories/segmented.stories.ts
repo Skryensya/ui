@@ -7,8 +7,7 @@ import "@skryensya/core/components/segmented.css";
 import * as demos from "@docs/demos/segmented";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Forms/SegmentedControl", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/SegmentedControl", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.segmentedAnatomyTree);
 export const Default: StoryObj = treeStory(demos.segmentedTree);
-export const DontMany: StoryObj = treeStory(demos.segmentedDontManyTree);

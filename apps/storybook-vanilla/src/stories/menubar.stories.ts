@@ -7,11 +7,10 @@ import "@skryensya/core/patterns/anchored.css";
 import * as demos from "@docs/demos/menubar";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Actions/Menubar", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Menubar", tags: ["autodocs"] } satisfies Meta;
 
 export const Default: StoryObj = treeStory(demos.menubarTree);
 export const Submenu: StoryObj = treeStory(demos.menubarSubmenuTree);
-export const DontSingle: StoryObj = treeStory(demos.menubarDontSingleTree);
 export const Command: StoryObj = treeStory(demos.menubarCommandTree);
 export const Rows: StoryObj = treeStory(demos.menubarRowsTree);
 export const Editor: StoryObj = treeStory(demos.menubarEditorTree);

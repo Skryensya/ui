@@ -16,7 +16,7 @@ packages/core/            ← this package (tokens + shared contract)
     semantic/               tier-2 source partials (color, space, size, radius, type, motion, state)
     scripts/build-css.ts   generates dist/*.css: the batteries-included bundle, tokens.css, and
                              compiled modes/dimensions, all minified, for <link> without a bundler
-    modes/hc.scss           opt-in Sass high-contrast: overrides tier-2 color
+    modes/hc.scss           high contrast: overrides tier-2 color, always in base
     dimensions/radius.scss  opt-in Sass roundness dimension: overrides tier-2 radius roles
     components/button.css   opt-in tier-3 hooks, scoped to .sk-button
     patterns/state-layer.css  opt-in state layer (hover/focus/pressed/selected/dragged)
@@ -79,7 +79,7 @@ contrast tools validate exactly the values the application ships.
 | Dimension | Owns | Mechanism | File |
 |-----------|------|-----------|------|
 | **Color mode** | tier-2 color | `light-dark()` picks a slot | `semantic.scss` |
-| **High contrast** | tier-2 color | override block re-declares the same tokens | `modes/hc.scss` |
+| **High contrast** | tier-2 color | override block re-declares the same tokens | in base (`tokens.scss`) |
 | **Density** | tier-2 spacing | runtime `--sk-density` multiplier | `semantic.scss` |
 | **Radius** | tier-2 radius | `data-radius` override block | `dimensions/radius.scss` |
 
@@ -155,7 +155,6 @@ bundles, just as they validate any unlayered override.
 
 ```scss
 @import "@skryensya/core/tokens.scss";
-@import "@skryensya/core/modes/hc.scss";            /* optional */
 @import "@skryensya/core/dimensions/radius.scss";   /* optional */
 @import "@skryensya/core/components/button.css";    /* optional */
 ```
@@ -167,14 +166,13 @@ plus only the components a page uses pulls in exactly what those components need
 
 ```html
 <link rel="stylesheet" href="node_modules/@skryensya/core/tokens.css">
-<link rel="stylesheet" href="node_modules/@skryensya/core/modes/hc.css">          <!-- optional -->
 <link rel="stylesheet" href="node_modules/@skryensya/core/dimensions/radius.css"> <!-- optional -->
 <link rel="stylesheet" href="node_modules/@skryensya/core/components/button.css">
 ```
 
 `tokens.css` is `primitives.scss` + `semantic.scss` compiled, plus the three patterns `tokens.scss`
-ships in base (state layer, visually hidden, icon: never opt-in). `modes/hc.css` and
-`dimensions/*.css` mirror the Sass path's optional pieces. `components/*.css` and `patterns/*.css`
+ships in base (state layer, visually hidden, icon: never opt-in). High contrast and forced colors are in `tokens.css` too, they
+follow the user's system setting and are never opt-in. `dimensions/*.css` mirror the Sass path's optional pieces. `components/*.css` and `patterns/*.css`
 are exactly the files a bundler-based consumer imports, exported unmodified. The only thing that
 changed is that `tokens.css` now exists compiled, so a plain `<link>` reader has the same
 per-component granularity a bundler already gets.

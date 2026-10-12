@@ -436,10 +436,12 @@
    * The question that just became active enters; progress and actions stay still. Longhands only: the
    * minifier folds a shorthand with custom properties into something invalid. */
   @media (prefers-reduced-motion: no-preference) {
-    .sk-questionnaire__item[data-active] {
-      animation-name: sk-questionnaire-enter;
-      animation-duration: var(--motion-enter-duration);
-      animation-timing-function: var(--motion-enter-easing);
+    :where(:root:not([data-motion="reduced"])) {
+      .sk-questionnaire__item[data-active] {
+        animation-name: sk-questionnaire-enter;
+        animation-duration: var(--motion-enter-duration);
+        animation-timing-function: var(--motion-enter-easing);
+      }
     }
   }
 

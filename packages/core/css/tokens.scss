@@ -14,9 +14,15 @@
  *   components  tier 3, opt-in per-component hooks
  *   overrides   high contrast and optional dimensions
  */
+@use "./layers";
 @use "./primitives";
 @use "./semantic";
+@use "./modes/hc";
+@use "./mixins";
 @layer primitives, semantic, components, overrides;
+
+/* Forced colors is automatic and always on: the user's system palette, not a mode the app offers. */
+@include mixins.forced-colors;
 
 
 /* The state layer is the SYSTEM'S interaction mechanism, not an opt-in extra, so it ships in
@@ -42,8 +48,8 @@
 /* Density scopes ship with semantic tokens: add `data-sk-density-scope` to a container, then set
  * `--sk-density-factor` for a value relative to the system or `--sk-density` for an absolute value.
  *
- * Optional additions:
- *   @import "@skryensya/core/modes/hc.scss";
+ * High contrast and forced colors are not additions: they follow the user's system setting and ship
+ * in base. Optional additions:
  *   @import "@skryensya/core/dimensions/radius.scss";
  *   @import "@skryensya/core/components/button.css";
  *

@@ -50,6 +50,8 @@ import { separatorWordDoTree, separatorWordDontTree } from "../../demos/dodont-l
       description={t("separatorPage.prop.tone.body")}
       explain={explain("tone", ["subtle", "default", "strong"])}
       stageMinBlockSize="8rem"
+      storybookTitle="Components/Separator"
+      storybookStory="Single"
     />
 
     <UsagePreview
@@ -59,16 +61,20 @@ import { separatorWordDoTree, separatorWordDontTree } from "../../demos/dodont-l
       description={t("separatorPage.prop.orientation.body")}
       explain={explain("orientation", ["horizontal", "vertical"])}
       stageMinBlockSize="8rem"
+      storybookTitle="Components/Separator"
+      storybookStory="Single"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={separatorTree(t)} title={t("separatorPage.meaningTitle")} description={t("separatorPage.meaningBody")} />
-    <UsagePreview tree={separatorVerticalTree(t)} title={t("separatorPage.verticalTitle")} description={t("separatorPage.verticalBody")} />
-    <UsagePreview tree={separatorLabelledTree(t)} title={t("separatorPage.labelledTitle")} description={t("separatorPage.labelledBody")} />
+    <UsagePreview tree={separatorTree(t)} title={t("separatorPage.meaningTitle")} description={t("separatorPage.meaningBody")} storybookTitle="Components/Separator" storybookStory="Default" />
+    <UsagePreview tree={separatorVerticalTree(t)} title={t("separatorPage.verticalTitle")} description={t("separatorPage.verticalBody")} storybookTitle="Components/Separator" storybookStory="Vertical" />
+    <UsagePreview tree={separatorLabelledTree(t)} title={t("separatorPage.labelledTitle")} description={t("separatorPage.labelledBody")} storybookTitle="Components/Separator" storybookStory="Labelled" />
     <UsagePreview
       tree={variantsTree(separatorScaleSpecimenTree(), [{ label: "none", options: { spacing: "none" } }, { label: "sm", options: { spacing: "sm" } }, { label: "md", options: { spacing: "md" } }, { label: "lg", options: { spacing: "lg" } }], ["children", 1])}
       title={t("component.scaleTitle", { option: "spacing" })}
       description={t("component.scaleBody")}
+      storybookTitle="Components/Separator"
+      storybookStory="ScaleSpecimen"
     />
 
 

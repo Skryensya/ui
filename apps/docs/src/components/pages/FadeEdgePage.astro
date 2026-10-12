@@ -51,7 +51,7 @@ const t = useTranslations(getLocale(Astro.url));
  * write around the pattern, not part of it. Each runs inside the stage for both bindings, so it
  * drives the demo through the DOM and never through a binding's own API.
  */
-const storybookTitle = "Components/Layout/FadeEdge";
+const storybookTitle = "Components/FadeEdge";
 
 const directionVariants = (directions: readonly FadeDemoDirection[]) => directions.map((direction) => ({
   value: direction,
@@ -140,20 +140,22 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("fadeEdge.prop.mode.body")}
       explain={explain("mode", ["transparent", "color"])}
       stageMinBlockSize="22rem"
+      storybookTitle="Components/FadeEdge"
+      storybookStory="FadeMode"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
     <h3>{t("fadeEdge.topTitle")}</h3>
     <p set:html={t("fadeEdge.topBody")} />
-    <UsagePreview tree={fadeTopTree} script={fadeTopScript} label={t("fadeEdge.topLabel")} />
-    <UsagePreview tree={fadeHorizontalAgendaTree(t)} title={t("fadeEdge.rightTitle")} description={t("fadeEdge.rightBody")} storybookTitle={storybookTitle} storybookStory="FadeRight" />
+    <UsagePreview tree={fadeTopTree} script={fadeTopScript} label={t("fadeEdge.topLabel")} storybookTitle="Components/FadeEdge" storybookStory="FadeTop" />
+    <UsagePreview tree={fadeHorizontalAgendaTree(t)} title={t("fadeEdge.rightTitle")} description={t("fadeEdge.rightBody")} storybookTitle={storybookTitle} storybookStory="FadeHorizontalAgenda" />
     <h3>{t("fadeEdge.leftTitle")}</h3>
     <p set:html={t("fadeEdge.leftBody")} />
-    <UsagePreview tree={fadeHorizontalAgendaTree(t, "to-left")} script={fadeLeftScript} label={t("fadeEdge.leftLabel")} />
+    <UsagePreview tree={fadeHorizontalAgendaTree(t, "to-left")} script={fadeLeftScript} label={t("fadeEdge.leftLabel")} storybookTitle="Components/FadeEdge" storybookStory="FadeHorizontalAgenda" />
     <UsagePreview tree={fadeColorTree} title={t("fadeEdge.colorTitle")} description={t("fadeEdge.colorBody")} storybookTitle={storybookTitle} storybookStory="FadeColor" />
     <h3>{t("fadeEdge.intensityTitle")}</h3>
     <p set:html={t("fadeEdge.intensityBody")} />
-    <UsagePreview tree={fadeIntensityTree} script={fadeIntensityScript} label={t("fadeEdge.intensityLabel")} />
+    <UsagePreview tree={fadeIntensityTree} script={fadeIntensityScript} label={t("fadeEdge.intensityLabel")} storybookTitle="Components/FadeEdge" storybookStory="FadeIntensity" />
     <UsagePreview tree={fadeScrollAwareTree} title={t("fadeEdge.scrollAwareTitle")} description={t("fadeEdge.scrollAwareBody")} storybookTitle={storybookTitle} storybookStory="FadeScrollAware" />
 
     <h3>{t("component.contractNotesTitle")}</h3>

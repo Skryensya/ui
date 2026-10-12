@@ -5,6 +5,7 @@ import { lucideIcons } from "@skryensya/icons-lucide";
 import { mountComponentsWithIcons } from "@skryensya/vanilla/auto";
 import type { Translate } from "@docs/i18n";
 import { isLocale, translator } from "@skryensya/storybook-kit/translate";
+import { rootControls, withRootOptions } from "@skryensya/storybook-kit/controls";
 
 /*
  * THIS STORYBOOK'S BINDING: what every generated story imports (`treeStory`, `argsStory`, `withCss`,
@@ -58,16 +59,28 @@ const source = (code: (context: { args: never; globals: Record<string, unknown> 
   transform: (_code: string, context: { args: never; globals: Record<string, unknown> }) => code(context),
 });
 
-/** One story per docs tree, drawn in the toolbar's locale. */
+/* The root's options as Controls: read from the English tree once, when the story is declared. */
+function controlsOf(factory: TreeFactory) {
+  try {
+    return rootControls(treeFor(factory, "en"));
+  } catch {
+    return { args: {}, argTypes: {} };
+  }
+}
+
+/** One story per docs tree, drawn in the toolbar's locale, with Controls for the root's options. */
 export function treeStory(factory: TreeFactory, story: StoryObj = {}): StoryObj {
+  const { args, argTypes } = controlsOf(factory);
   return {
     ...story,
-    render: (_args, { globals }) => render(treeFor(factory, globals.locale)),
+    args: { ...args, ...story.args },
+    argTypes: { ...argTypes, ...story.argTypes },
+    render: (args, { globals }) => render(withRootOptions(treeFor(factory, globals.locale), args)),
     parameters: {
       ...story.parameters,
       docs: {
         ...story.parameters?.docs,
-        source: source(({ globals }) => emitMarkup(treeFor(factory, globals.locale), { fillDefaults: false })),
+        source: source(({ args, globals }) => emitMarkup(withRootOptions(treeFor(factory, globals.locale), args), { fillDefaults: false })),
       },
     },
   };

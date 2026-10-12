@@ -52,7 +52,10 @@ export function SegmentedControl({
       indicator.style.transform = `translate3d(${option.offsetLeft}px, ${option.offsetTop}px, 0)`;
       indicator.style.inlineSize = `${option.offsetWidth}px`;
       indicator.style.blockSize = `${option.offsetHeight}px`;
+      const first = !root.hasAttribute("data-sk-segmented-ready");
       root.setAttribute("data-sk-segmented-ready", "");
+      /* Placed without motion; only later changes glide. */
+      if (first) requestAnimationFrame(() => requestAnimationFrame(() => root.setAttribute("data-sk-segmented-motion", "")));
     };
 
     alignIndicator();

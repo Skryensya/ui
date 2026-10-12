@@ -12,15 +12,13 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/rating";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Data/Rating", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Rating", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.ratingAnatomyTree);
 export const Display: StoryObj = treeStory(demos.ratingDisplayTree);
 export const Input: StoryObj = treeStory(demos.ratingInputTree);
 export const Fractions: StoryObj = treeStory(demos.ratingFractionsTree);
 export const Sizes: StoryObj = treeStory(demos.ratingSizesTree);
-export const DontNoCount: StoryObj = treeStory(demos.ratingDontNoCountTree);
-export const DontInputAverage: StoryObj = treeStory(demos.ratingDontInputAverageTree);
 export const Playground: StoryObj = treeStory(demos.ratingPlaygroundTree);
 export const ThreeSteps: StoryObj = treeStory(demos.ratingThreeStepsTree);
 export const FiveSteps: StoryObj = treeStory(demos.ratingFiveStepsTree);

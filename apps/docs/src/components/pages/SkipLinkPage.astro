@@ -57,12 +57,12 @@ import { skipLinkDoTree, skipLinkDontTree, skipLinkOrderDoTree, skipLinkOrderDon
     <p class="lede" set:html={t("skipLink.lede")} />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={skipLinkTree(t)} title={t("skipLink.oneTitle")} description={t("skipLink.oneBody")} />
+    <UsagePreview tree={skipLinkTree(t)} title={t("skipLink.oneTitle")} description={t("skipLink.oneBody")} storybookTitle="Components/SkipLink" storybookStory="Default" />
     <h4>{t("skipLink.targetTitle")}</h4>
     <p set:html={t("skipLink.targetBody1")} />
     <CodeBlock code={target} label="HTML" lang="html" />
     <CodeBlock code={targetReact} label="React" lang="tsx" />
-    <UsagePreview tree={skipLinkPairTree(t)} title={t("skipLink.severalTitle")} description={t("skipLink.severalBody1")} />
+    <UsagePreview tree={skipLinkPairTree(t)} title={t("skipLink.severalTitle")} description={t("skipLink.severalBody1")} storybookTitle="Components/SkipLink" storybookStory="Pair" />
     <CodeBlock code={pair} label="HTML" lang="html" />
 
     <h3>{t("component.contractNotesTitle")}</h3>

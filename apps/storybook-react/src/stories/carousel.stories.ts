@@ -13,7 +13,7 @@ import "@skryensya/core/patterns/media-overlay.css";
 import * as demos from "@docs/demos/carousel";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Media & Visuals/Carousel", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Carousel", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.carouselAnatomyTree);
 export const Cards: StoryObj = treeStory(demos.carouselCardsTree);
@@ -21,4 +21,3 @@ export const Autoplay: StoryObj = treeStory(demos.carouselAutoplayTree);
 export const Focusable: StoryObj = treeStory(demos.carouselFocusableTree);
 export const Bare: StoryObj = treeStory(demos.carouselBareTree);
 export const Native: StoryObj = treeStory(demos.carouselNativeTree);
-export const DontFew: StoryObj = treeStory(demos.carouselDontFewTree);

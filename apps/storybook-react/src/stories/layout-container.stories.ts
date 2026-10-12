@@ -9,7 +9,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/layout-container";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Layout/Grid/LayoutContainer", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Grid - LayoutContainer", tags: ["autodocs"] } satisfies Meta;
 
 export const StackJustify: StoryObj = treeStory(demos.stackJustifyTree);
 export const InlineShow: StoryObj = treeStory(demos.inlineShowTree);

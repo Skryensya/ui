@@ -308,10 +308,25 @@ function evalOklab(text: string): Oklab {
     const [channels, alpha] = splitAlpha(oklch.inner);
     const parts = splitSpaces(channels);
     if (parts[0] === "from") {
-      // Relative colour. Only the identity channels are supported (`l c h`); the alpha may change.
+      // Relative colour. Each channel is a number/percentage, the origin's own `l` / `c` / `h`, or
+      // `calc(<channel> * <number>)` (how the accent ramp scales a seed's chroma). Anything else is
+      // unsupported rather than guessed. The alpha may change.
       const base = evalOklab(parts[1]);
-      if (parts.slice(2).join(" ") !== "l c h") throw new Unsupported(`relative oklch channels: ${t}`);
-      return { ...base, alpha: alpha === undefined ? base.alpha : alphaOf(alpha) };
+      const own = toOklch(base);
+      const channel = (src: string, value: number, pct: number): number => {
+        if (src === "l" || src === "c" || src === "h") return value;
+        const calc = src.match(/^calc\(\s*(l|c|h|[\d.]+%?)\s*\*\s*([\d.]+)\s*\)$/);
+        if (calc) return channel(calc[1], value, pct) * parseFloat(calc[2]);
+        const n = parseFloat(src);
+        return src.endsWith("%") ? (n / 100) * pct : n;
+      };
+      const rest = parts.slice(2);
+      if (rest.length !== 3) throw new Unsupported(`relative oklch channels: ${t}`);
+      const L = channel(rest[0], own.L, 1);
+      const C = channel(rest[1], own.C, 0.4);
+      const H = channel(rest[2], own.H, 360);
+      if ([L, C, H].some(Number.isNaN)) throw new Unsupported(`relative oklch channels: ${t}`);
+      return fromOklch(L, C, H, alpha === undefined ? base.alpha : alphaOf(alpha));
     }
     if (parts.length !== 3) throw new Unsupported(`oklch(): ${t}`);
     const L = parts[0].endsWith("%") ? parseFloat(parts[0]) / 100 : parseFloat(parts[0]);

@@ -61,14 +61,16 @@ const t = useTranslations(getLocale(Astro.url));
       tree={variantsTree(headingFlushTree(t), [{ label: "display-lg", options: { headingSize: "display-lg" } }, { label: "display-md", options: { headingSize: "display-md" } }, { label: "display-sm", options: { headingSize: "display-sm" } }, { label: "h1", options: { headingSize: "h1" } }, { label: "h2", options: { headingSize: "h2" } }, { label: "h3", options: { headingSize: "h3" } }, { label: "h4", options: { headingSize: "h4" } }], [], "1")}
       title={t("heading.sizesTitle")}
       description={t("heading.sizesBody")}
+      storybookTitle="Components/Heading"
+      storybookStory="HeadingFlush"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={headingDisplayTree(t)} title={t("heading.displayTitle")} description={t("heading.displayBody")} storybookTitle="Components/Content/Heading" storybookStory="HeadingDisplay" />
-    <UsagePreview tree={headingDocumentTree(t)} title={t("heading.documentTitle")} description={t("heading.documentBody")} storybookTitle="Components/Content/Heading" storybookStory="HeadingDocument" />
-    <UsagePreview tree={headingPageTitleTree(t)} title={t("heading.pageTitleTitle")} description={t("heading.pageTitleBody")} storybookTitle="Components/Content/Heading" storybookStory="HeadingPageTitle" />
-    <UsagePreview tree={headingOutlineTree(t)} title={t("heading.outlineTitle")} description={t("heading.outlineBody")} storybookTitle="Components/Content/Heading" storybookStory="HeadingOutline" />
-    <UsagePreview tree={headingCompactTree(t)} title={t("heading.compactTitle")} description={t("heading.compactBody")} storybookTitle="Components/Content/Heading" storybookStory="HeadingCompact" />
+    <UsagePreview tree={headingDisplayTree(t)} title={t("heading.displayTitle")} description={t("heading.displayBody")} storybookTitle="Components/Heading" storybookStory="HeadingDisplay" />
+    <UsagePreview tree={headingDocumentTree(t)} title={t("heading.documentTitle")} description={t("heading.documentBody")} storybookTitle="Components/Heading" storybookStory="HeadingDocument" />
+    <UsagePreview tree={headingPageTitleTree(t)} title={t("heading.pageTitleTitle")} description={t("heading.pageTitleBody")} storybookTitle="Components/Heading" storybookStory="HeadingPageTitle" />
+    <UsagePreview tree={headingOutlineTree(t)} title={t("heading.outlineTitle")} description={t("heading.outlineBody")} storybookTitle="Components/Heading" storybookStory="HeadingOutline" />
+    <UsagePreview tree={headingCompactTree(t)} title={t("heading.compactTitle")} description={t("heading.compactBody")} storybookTitle="Components/Heading" storybookStory="HeadingCompact" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

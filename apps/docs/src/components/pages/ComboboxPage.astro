@@ -32,7 +32,7 @@ const styles = `@import "@skryensya/core/patterns/anchored.css";
 /* The list scrolls: the rail is painted by the pattern, marked with sk-scrollbar. */
 @import "@skryensya/core/patterns/scrollbar.css";`;
 
-const storybookTitle = "Components/Forms/Combobox";
+const storybookTitle = "Components/Combobox";
 import { dd2 } from "../../demos/dodont-labels";
 ---
 
@@ -68,6 +68,8 @@ import { dd2 } from "../../demos/dodont-labels";
       tree={variantsTree(comboboxSingleTree(t, locale), [{ label: t("component.state.default"), options: {} }, { label: t("component.state.disabled"), options: { disabled: true } }, { label: t("component.state.invalid"), options: { invalid: true } }])}
       title={t("component.statesTitle")}
       description={t("component.statesBody")}
+      storybookTitle="Components/Combobox"
+      storybookStory="Single"
     />
 
   </Fragment>

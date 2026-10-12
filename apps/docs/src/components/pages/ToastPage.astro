@@ -52,11 +52,11 @@ import { toastDoTree, toastDontTree, toastFailDoTree, toastFailDontTree } from "
     <p class="lede" set:html={t("toastPage.lede")} />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={toastEmitTree(t)} script={toastEmitScript} title={t("toastPage.emitTitle")} description={t("toastPage.emitBody")} viewport="menu" />
-    <UsagePreview tree={toastSimpleTree(t)} title={t("toastPage.simpleTitle")} description={t("toastPage.simpleBody")} viewport="menu" />
-    <UsagePreview tree={toastStatusTree(t)} script={toastStatusScript} title={t("toastPage.statusTitle")} description={t("toastPage.statusBody1")} viewport="overlay" />
-    <UsagePreview tree={toastActionTree(t)} title={t("toastPage.actionTitle")} description={t("toastPage.actionBody")} viewport="menu" />
-    <UsagePreview tree={toastStackTree(t)} script={toastStackScript} title={t("toastPage.stackTitle")} description={t("toastPage.stackBody1")} caption={t("toastPage.stackNote")} viewport="overlay" />
+    <UsagePreview tree={toastEmitTree(t)} script={toastEmitScript} title={t("toastPage.emitTitle")} description={t("toastPage.emitBody")} viewport="menu" storybookTitle="Components/Toast" storybookStory="Emit" />
+    <UsagePreview tree={toastSimpleTree(t)} title={t("toastPage.simpleTitle")} description={t("toastPage.simpleBody")} viewport="menu" storybookTitle="Components/Toast" storybookStory="Simple" />
+    <UsagePreview tree={toastStatusTree(t)} script={toastStatusScript} title={t("toastPage.statusTitle")} description={t("toastPage.statusBody1")} viewport="overlay" storybookTitle="Components/Toast" storybookStory="Status" />
+    <UsagePreview tree={toastActionTree(t)} title={t("toastPage.actionTitle")} description={t("toastPage.actionBody")} viewport="menu" storybookTitle="Components/Toast" storybookStory="Action" />
+    <UsagePreview tree={toastStackTree(t)} script={toastStackScript} title={t("toastPage.stackTitle")} description={t("toastPage.stackBody1")} caption={t("toastPage.stackNote")} viewport="overlay" storybookTitle="Components/Toast" storybookStory="Stack" />
     <CodeBlock code={vanilla} label="JavaScript" />
 
     <h3>{t("component.contractNotesTitle")}</h3>

@@ -1076,7 +1076,7 @@
    * SNAP THE HEIGHT, FADE THE CONTENT  -  not the grid-track height animation this used to run.
    * That technique (`grid-template-rows: 0fr` → `1fr`, smoothly interpolated) reads beautifully on
    * a short block, but `grid-template-rows` is a LAYOUT property: every one of the ~20 frames a
-   * `--motion-collapse/expand-duration` transition plays forces the browser to re-lay-out this
+   * `--motion-expand-duration` transition plays forces the browser to re-lay-out this
    * whole subtree, `contain: layout style` only stops that cost from reaching further OUT, it does
    * not make the cost smaller  -  and Shiki's own output is a few HUNDRED `<span>`s on a real
    * snippet. Confirmed live: that reflow-per-frame is exactly what read as stutter, worse the

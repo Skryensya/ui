@@ -60,18 +60,21 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("resizablePage.prop.direction.body")}
       explain={explain("direction", ["horizontal", "vertical"])}
       stageMinBlockSize="12rem"
+      storybookTitle="Components/Resizable"
+      storybookStory="Specimen"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={resizableHorizontalTree(t)} title={t("resizablePage.horizontalTitle")} description={t("resizablePage.horizontalBody")} />
-    <UsagePreview tree={resizableVerticalTree(t)} title={t("resizablePage.verticalTitle")} description={t("resizablePage.verticalBody")} />
-    <UsagePreview tree={resizableThreeTree(t)} title={t("resizablePage.threeTitle")} description={t("resizablePage.threeBody")} />
+    <UsagePreview tree={resizableHorizontalTree(t)} title={t("resizablePage.horizontalTitle")} description={t("resizablePage.horizontalBody")} storybookTitle="Components/Resizable" storybookStory="Horizontal" />
+    <UsagePreview tree={resizableVerticalTree(t)} title={t("resizablePage.verticalTitle")} description={t("resizablePage.verticalBody")} storybookTitle="Components/Resizable" storybookStory="Vertical" />
+    <UsagePreview tree={resizableThreeTree(t)} title={t("resizablePage.threeTitle")} description={t("resizablePage.threeBody")} storybookTitle="Components/Resizable" storybookStory="Three" />
 
     <h3>{t("resizablePage.collapseTitle")}</h3>
     <p set:html={t("resizablePage.collapseBody")} />
-    <UsagePreview tree={resizableCollapsibleTree(t)} title={t("resizablePage.collapseTitle")} description={t("resizablePage.collapseBody")} />
+    <UsagePreview tree={resizableCollapsibleTree(t)} title={t("resizablePage.collapseTitle")} description={t("resizablePage.collapseBody")} storybookTitle="Components/Resizable" storybookStory="Collapsible" />
     <h4>{t("resizablePage.collapseDemoTitle")}</h4>
     <p set:html={t("resizablePage.collapseDemoBody")} />
+    <UsagePreview label={t("resizablePage.collapseDemoTitle")}>
     <div class="rz-stage">
       <ResizableCollapse
         client:visible
@@ -89,6 +92,7 @@ const explain = (option: string, values: readonly string[]) =>
         }}
       />
     </div>
+    </UsagePreview>
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

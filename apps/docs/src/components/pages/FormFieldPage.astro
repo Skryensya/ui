@@ -76,11 +76,13 @@ const ddField = (tree: UsageTree): UsageTree => ({
       explain={explain("labelHidden", ["false", "true"])}
       stageMinBlockSize="10rem"
       labels={{ false: t("formFieldPage.prop.labelHidden.falseLabel"), true: t("formFieldPage.prop.labelHidden.trueLabel") }}
+      storybookTitle="Components/FormField"
+      storybookStory="Default"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={formFieldTree(t)} title={t("formFieldPage.basicTitle")} description={t("formFieldPage.basicBody")} storybookTitle="Components/Forms/FormField" storybookStory="Default" />
-    <UsagePreview tree={formFieldAroundSelectTree(t)} title={t("formFieldPage.independentTitle")} description={t("formFieldPage.independentBody")} stageMinBlockSize="22rem" storybookTitle="Components/Forms/FormField" storybookStory="AroundSelect" />
+    <UsagePreview tree={formFieldTree(t)} title={t("formFieldPage.basicTitle")} description={t("formFieldPage.basicBody")} storybookTitle="Components/FormField" storybookStory="Default" />
+    <UsagePreview tree={formFieldAroundSelectTree(t)} title={t("formFieldPage.independentTitle")} description={t("formFieldPage.independentBody")} stageMinBlockSize="22rem" storybookTitle="Components/FormField" storybookStory="AroundSelect" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

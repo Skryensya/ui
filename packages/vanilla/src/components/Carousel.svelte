@@ -1,5 +1,6 @@
 <script lang="ts">
   import { carousel } from "@skryensya/core/machines";
+  import { prefersReducedMotion as reducedMotion } from "@skryensya/core/reduced-motion";
   import { carouselEvents, carouselParts, carouselTranslations, type CarouselGotoDetail } from "@skryensya/core/carousel";
   import { normalizeProps, useMachine } from "@zag-js/svelte";
   import { onDestroy, onMount } from "svelte";
@@ -66,7 +67,7 @@
    * moves on its own. The option stays declared anyway, so if the user changes their preference the
    * markup does not lie; it simply does not start here.
    */
-  const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+  const prefersReducedMotion = reducedMotion();
   const autoplayAttr = root.getAttribute("data-autoplay");
   const autoplayDelay = Number(autoplayAttr);
   const wantsAutoplay = autoplayAttr !== null;

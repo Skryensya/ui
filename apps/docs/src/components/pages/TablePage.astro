@@ -38,13 +38,13 @@ import { tableHeadersDoTree, tableHeadersDontTree } from "../../demos/dodont-mor
     <p class="lede" set:html={t("tablePage.lede")} />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={tableTree(t)} title={t("tablePage.basicTitle")} description={t("tablePage.basicBody")} />
-    <UsagePreview tree={tableStickyColumnTree(t)} title={t("tablePage.stickyColTitle")} description={t("tablePage.stickyColBody")} />
-    <UsagePreview tree={tableStickyHeaderTree(t)} title={t("tablePage.stickyHeadTitle")} description={t("tablePage.stickyHeadBody")} />
-    <UsagePreview tree={tableResizableColumnsTree(t)} title={t("tablePage.resizableTitle")} description={t("tablePage.resizableBody")} />
-    <UsagePreview tree={tableInBoxTree(t)} title={t("tablePage.boxTitle")} description={t("tablePage.boxBody")} />
-    <UsagePreview tree={tableDensityTree(t, 1.2)} title={t("tablePage.densityTitle")} description={t("tablePage.densityBody")} label={t("tablePage.densityWideLabel")} />
-    <UsagePreview tree={tableDensityTree(t, 0.6)} label={t("tablePage.densityCompactLabel")} />
+    <UsagePreview tree={tableTree(t)} title={t("tablePage.basicTitle")} description={t("tablePage.basicBody")} storybookTitle="Components/Table" storybookStory="Default" />
+    <UsagePreview tree={tableStickyColumnTree(t)} title={t("tablePage.stickyColTitle")} description={t("tablePage.stickyColBody")} storybookTitle="Components/Table" storybookStory="StickyColumn" />
+    <UsagePreview tree={tableStickyHeaderTree(t)} title={t("tablePage.stickyHeadTitle")} description={t("tablePage.stickyHeadBody")} storybookTitle="Components/Table" storybookStory="StickyHeader" />
+    <UsagePreview tree={tableResizableColumnsTree(t)} title={t("tablePage.resizableTitle")} description={t("tablePage.resizableBody")} storybookTitle="Components/Table" storybookStory="ResizableColumns" />
+    <UsagePreview tree={tableInBoxTree(t)} title={t("tablePage.boxTitle")} description={t("tablePage.boxBody")} storybookTitle="Components/Table" storybookStory="InBox" />
+    <UsagePreview tree={tableDensityTree(t, 1.2)} title={t("tablePage.densityTitle")} description={t("tablePage.densityBody")} label={t("tablePage.densityWideLabel")} storybookTitle="Components/Table" storybookStory="Density" />
+    <UsagePreview tree={tableDensityTree(t, 0.6)} label={t("tablePage.densityCompactLabel")} storybookTitle="Components/Table" storybookStory="Density" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

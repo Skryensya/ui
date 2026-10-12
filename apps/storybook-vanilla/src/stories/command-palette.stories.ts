@@ -3,15 +3,12 @@
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/command-palette.css";
 import "@skryensya/core/components/dialog.css";
-import "@skryensya/core/components/kbd.css";
 import "@skryensya/core/patterns/dialog-vaul.css";
 import "@skryensya/core/patterns/icon.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/command-palette";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Actions/CommandPalette", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/CommandPalette", tags: ["autodocs"] } satisfies Meta;
 
 export const Demo: StoryObj = treeStory(demos.commandPaletteDemoTree);
-export const DoShortcut: StoryObj = treeStory(demos.commandPaletteDoShortcutTree);
-export const DontShortcut: StoryObj = treeStory(() => demos.commandPaletteDontShortcutTree);

@@ -195,19 +195,19 @@ thread.addEventListener(commentThreadEvents.reply, async (event) => {
     <p class="lede" set:html={t("commentThread.lede")} />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={commentAloneTree(t)} title={t("commentThread.demoTitle")} description={t("commentThread.demoBody")} />
+    <UsagePreview tree={commentAloneTree(t)} title={t("commentThread.demoTitle")} description={t("commentThread.demoBody")} storybookTitle="Components/CommentThread" storybookStory="CommentAlone" />
 
     <h4>{t("commentThread.demoActionsTitle")}</h4>
     <p set:html={t("commentThread.demoActionsBody")} />
-    <UsagePreview script={actionsScript} tree={commentActionsTree(t)} label={t("commentThread.demoActionsLabel")} />
+    <UsagePreview script={actionsScript} tree={commentActionsTree(t)} label={t("commentThread.demoActionsLabel")} storybookTitle="Components/CommentThread" storybookStory="CommentActions" />
 
     <h4>{t("commentThread.demoLikesTitle")}</h4>
     <p set:html={t("commentThread.demoLikesBody")} />
-    <UsagePreview script={actionsScript} tree={commentLikesTree(t)} label={t("commentThread.demoLikesLabel")} />
+    <UsagePreview script={actionsScript} tree={commentLikesTree(t)} label={t("commentThread.demoLikesLabel")} storybookTitle="Components/CommentThread" storybookStory="CommentLikes" />
 
     <h4>{t("commentThread.demoThreadTitle")}</h4>
     <p set:html={t("commentThread.demoThreadBody")} />
-    <UsagePreview script={actionsScript} tree={commentThreadTree(t)} label={t("commentThread.demoLabel")} />
+    <UsagePreview script={actionsScript} tree={commentThreadTree(t)} label={t("commentThread.demoLabel")} storybookTitle="Components/CommentThread" storybookStory="Default" />
 
     <h4>{t("commentThread.demoFixedTitle")}</h4>
     <p set:html={t("commentThread.demoFixedBody")} />
@@ -216,6 +216,8 @@ thread.addEventListener(commentThreadEvents.reply, async (event) => {
       tree={commentThreadFixedTree(t)}
       label={t("commentThread.demoFixedLabel")}
       stageMinBlockSize="26rem"
+      storybookTitle="Components/CommentThread"
+      storybookStory="Fixed"
     />
 
     <h4>{t("commentThread.demoDeepTitle")}</h4>
@@ -225,12 +227,14 @@ thread.addEventListener(commentThreadEvents.reply, async (event) => {
       tree={commentDeepTree(t)}
       label={t("commentThread.demoDeepLabel")}
       stageMinBlockSize="26rem"
+      storybookTitle="Components/CommentThread"
+      storybookStory="CommentDeep"
     />
 
     <h3>{t("commentThread.demoLoadingTitle")}</h3>
     <p set:html={t("commentThread.demoLoadingBody")} />
 
-    <UsagePreview tree={commentSkeletonTree(t)} title={t("commentThread.demoSkeletonTitle")} description={t("commentThread.demoSkeletonBody")} />
+    <UsagePreview tree={commentSkeletonTree(t)} title={t("commentThread.demoSkeletonTitle")} description={t("commentThread.demoSkeletonBody")} storybookTitle="Components/CommentThread" storybookStory="CommentSkeleton" />
 
     <h4>{t("commentThread.demoInfiniteTitle")}</h4>
     <p set:html={t("commentThread.demoInfiniteBody")} />
@@ -238,6 +242,8 @@ thread.addEventListener(commentThreadEvents.reply, async (event) => {
       script={infiniteScrollScript}
       tree={commentThreadInfiniteScrollTree(t)}
       label={t("commentThread.demoInfiniteLabel")}
+      storybookTitle="Components/CommentThread"
+      storybookStory="InfiniteScroll"
     />
 
     <h3>{t("component.contractNotesTitle")}</h3>

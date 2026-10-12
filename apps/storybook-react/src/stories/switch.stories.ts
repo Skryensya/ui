@@ -10,10 +10,8 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/switch";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Forms/Switch", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Switch", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.switchAnatomyTree);
 export const Default: StoryObj = treeStory(demos.switchTree);
 export const TileSwitch: StoryObj = treeStory(demos.tileSwitchTree);
-export const DontSave: StoryObj = treeStory(demos.switchDontSaveTree);
-export const DoCheckbox: StoryObj = treeStory(demos.switchDoCheckboxTree);

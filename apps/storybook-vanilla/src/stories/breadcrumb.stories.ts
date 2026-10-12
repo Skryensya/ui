@@ -7,13 +7,10 @@ import "@skryensya/core/patterns/icon.css";
 import * as demos from "@docs/demos/breadcrumb";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Navigation/Breadcrumb", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Breadcrumb", tags: ["autodocs"] } satisfies Meta;
 
 export const Two: StoryObj = treeStory(demos.breadcrumbTwoTree);
 export const Multi: StoryObj = treeStory(demos.breadcrumbMultiTree);
 export const Icon: StoryObj = treeStory(demos.breadcrumbIconTree);
 export const Long: StoryObj = treeStory(demos.breadcrumbLongTree);
 export const Collapse: StoryObj = treeStory(demos.breadcrumbCollapseTree);
-export const DontGeneric: StoryObj = treeStory(demos.breadcrumbDontGenericTree);
-export const History: StoryObj = treeStory(demos.breadcrumbHistoryTree);
-export const MissingCurrent: StoryObj = treeStory(demos.breadcrumbMissingCurrentTree);

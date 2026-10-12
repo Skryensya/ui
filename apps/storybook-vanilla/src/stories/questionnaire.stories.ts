@@ -23,7 +23,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/questionnaire";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Forms/Questionnaire", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Questionnaire", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.questionnaireAnatomyTree);
 export const Default: StoryObj = treeStory(demos.questionnaireTree);
@@ -38,8 +38,4 @@ export const Segments: StoryObj = treeStory(demos.questionnaireSegmentsTree);
 export const Rail: StoryObj = treeStory(demos.questionnaireRailTree);
 export const Branching: StoryObj = treeStory(demos.questionnaireBranchingTree);
 export const TextAnswers: StoryObj = treeStory(demos.questionnaireTextAnswersTree);
-export const DoEmail: StoryObj = treeStory(demos.questionnaireDoEmailTree);
-export const DontEmail: StoryObj = treeStory(demos.questionnaireDontEmailTree);
-export const DoFew: StoryObj = treeStory(demos.questionnaireDoFewTree);
-export const DontMany: StoryObj = treeStory(demos.questionnaireDontManyTree);
 export const Submitted: StoryObj = treeStory(demos.questionnaireSubmittedTree);

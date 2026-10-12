@@ -755,6 +755,12 @@ async function boot(): Promise<void> {
   // Not passive: forwarding depends on preventDefault() to stop the (otherwise no-op) local scroll
   // attempt cleanly, rather than racing it.
   window.addEventListener("wheel", forwardWheelToParent, { passive: false });
+  /* A link in a preview is part of the specimen: it goes nowhere, so the frame never navigates away. */
+  const inertLink = (event: Event) => {
+    if ((event.target as HTMLElement | null)?.closest?.("a[href]")) event.preventDefault();
+  };
+  document.addEventListener("click", inertLink);
+  document.addEventListener("auxclick", inertLink);
   watchFrameModal();
   window.addEventListener(
     "pagehide",

@@ -10,7 +10,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/resizable";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Layout/Resizable", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Resizable", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.resizableAnatomyTree);
 export const Horizontal: StoryObj = treeStory(demos.resizableHorizontalTree);
@@ -18,7 +18,3 @@ export const Collapsible: StoryObj = treeStory(demos.resizableCollapsibleTree);
 export const Vertical: StoryObj = treeStory(demos.resizableVerticalTree);
 export const Three: StoryObj = treeStory(demos.resizableThreeTree);
 export const Specimen: StoryObj = treeStory(demos.resizableSpecimenTree);
-export const DoBounds: StoryObj = treeStory(demos.resizableDoBoundsTree);
-export const DontBounds: StoryObj = treeStory(demos.resizableDontBoundsTree);
-export const DoCount: StoryObj = treeStory(demos.resizableDoCountTree);
-export const DontCount: StoryObj = treeStory(demos.resizableDontCountTree);

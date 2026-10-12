@@ -35,8 +35,8 @@ const t = useTranslations(getLocale(Astro.url));
     <p class="lede" set:html={t("sliderPage.lede")} />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={sliderTree(t)} title={t("sliderPage.singleTitle")} description={t("sliderPage.singleBody")} />
-    <UsagePreview tree={sliderRangeTree(t)} title={t("sliderPage.rangeTitle")} description={t("sliderPage.rangeBody")} />
+    <UsagePreview tree={sliderTree(t)} title={t("sliderPage.singleTitle")} description={t("sliderPage.singleBody")} storybookTitle="Components/Slider" storybookStory="Default" />
+    <UsagePreview tree={sliderRangeTree(t)} title={t("sliderPage.rangeTitle")} description={t("sliderPage.rangeBody")} storybookTitle="Components/Slider" storybookStory="Range" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

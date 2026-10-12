@@ -262,7 +262,7 @@ describe("get_examples", () => {
     expect(Object.keys(payload.pattern.fields)).toEqual(expect.arrayContaining(["label", "value", "used", "limit"]));
     expect(payload.content.label).toBe("Storage used");
     /* Same layout, another job: the tree is the pattern, the content is the use. */
-    expect(payload.relations.sameLayout.map((ref: Payload) => ref.id)).toEqual(expect.arrayContaining(["quota-seats", "quota-api-calls"]));
+    expect(payload.relations.sameLayout.map((ref: Payload) => ref.id)).toEqual(expect.arrayContaining(["quota-api-calls", "goal-streak"]));
     const plan = (await call("get_examples", { id: "plan-team" })).payload;
     expect(plan.relations.containedIn.map((ref: Payload) => ref.id)).toContain("plans-comparison");
     /* Siblings on one pattern are the same layout; "sameIntent" is the OTHER ways to do the job. */
@@ -316,7 +316,7 @@ describe("validate_ui, the hard boundary", () => {
       expect(payload.emitted.react, snippet.id).toBe(emitReactSource(tree).component);
       expect(payload.css, snippet.id).toEqual(sheetsForTree(tree).sheets);
     }
-  });
+  }, 60_000); // one round trip per example: the catalogue is the loop, so the default five seconds is not a bound it can keep
 
   it("includes the sheets the old MCP-local resolver missed (hookSheets, compose sheets)", async () => {
     const tooltip = snippets.find((s) => s.id === "icon-only-button-tooltip")!;

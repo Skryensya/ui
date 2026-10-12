@@ -61,10 +61,12 @@ const styles = `@import "@skryensya/core/components/procedure.css";
       title={t("procedurePage.content.title")}
       description={t("procedurePage.content.body")}
       stageMinBlockSize="24rem"
+      storybookTitle="Components/Procedure"
+      storybookStory="Content"
     />
-    <UsagePreview tree={procedureTree(t)} title={t("procedurePage.guideTitle")} description={t("procedurePage.guideBody")} />
-    <UsagePreview tree={procedureDeployTree(t)} title={t("procedurePage.deployTitle")} description={t("procedurePage.deployBody")} />
-    <UsagePreview tree={procedureSecurityTree(t)} title={t("procedurePage.securityTitle")} description={t("procedurePage.securityBody")} />
+    <UsagePreview tree={procedureTree(t)} title={t("procedurePage.guideTitle")} description={t("procedurePage.guideBody")} storybookTitle="Components/Procedure" storybookStory="Default" />
+    <UsagePreview tree={procedureDeployTree(t)} title={t("procedurePage.deployTitle")} description={t("procedurePage.deployBody")} storybookTitle="Components/Procedure" storybookStory="Deploy" />
+    <UsagePreview tree={procedureSecurityTree(t)} title={t("procedurePage.securityTitle")} description={t("procedurePage.securityBody")} storybookTitle="Components/Procedure" storybookStory="Security" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

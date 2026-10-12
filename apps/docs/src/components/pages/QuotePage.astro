@@ -61,15 +61,17 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("quotePage.prop.variant.body")}
       explain={explain("variant", ["block", "pull"])}
       stageMinBlockSize="12rem"
+      storybookTitle="Components/Quote"
+      storybookStory="Default"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={quoteTextTree(t)} title={t("quotePage.citedTitle")} description={t("quotePage.citedBody")} />
-    <UsagePreview tree={quoteAvatarTree(t)} title={t("quotePage.portraitTitle")} description={t("quotePage.portraitBody")} />
-    <UsagePreview tree={quoteBareTree(t)} title={t("quotePage.bareTitle")} description={t("quotePage.bareBody")} />
-    <UsagePreview tree={quotePullTree(t)} title={t("quotePage.pullTitle")} description={t("quotePage.pullBody")} />
-    <UsagePreview tree={quotePullAvatarTree(t)} title={t("quotePage.pullPortraitTitle")} description={t("quotePage.pullPortraitBody")} />
-    <UsagePreview tree={quoteTestimonialTree(t)} title={t("quotePage.testimonialTitle")} description={t("quotePage.testimonialBody")} />
+    <UsagePreview tree={quoteTextTree(t)} title={t("quotePage.citedTitle")} description={t("quotePage.citedBody")} storybookTitle="Components/Quote" storybookStory="Text" />
+    <UsagePreview tree={quoteAvatarTree(t)} title={t("quotePage.portraitTitle")} description={t("quotePage.portraitBody")} storybookTitle="Components/Quote" storybookStory="Avatar" />
+    <UsagePreview tree={quoteBareTree(t)} title={t("quotePage.bareTitle")} description={t("quotePage.bareBody")} storybookTitle="Components/Quote" storybookStory="Bare" />
+    <UsagePreview tree={quotePullTree(t)} title={t("quotePage.pullTitle")} description={t("quotePage.pullBody")} storybookTitle="Components/Quote" storybookStory="Pull" />
+    <UsagePreview tree={quotePullAvatarTree(t)} title={t("quotePage.pullPortraitTitle")} description={t("quotePage.pullPortraitBody")} storybookTitle="Components/Quote" storybookStory="PullAvatar" />
+    <UsagePreview tree={quoteTestimonialTree(t)} title={t("quotePage.testimonialTitle")} description={t("quotePage.testimonialBody")} storybookTitle="Components/Quote" storybookStory="Testimonial" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

@@ -36,6 +36,7 @@ export const headingStack: PatternModule<Content> = {
       intent: "content/presentation/heading-block",
       title: { en: "Heading", es: "Encabezado" },
       purpose: { en: "The block a card opens with: category, title and one line of context.", es: "El bloque con el que abre una card: categoría, título y una línea de contexto." },
+      catalog: false,
       content: { eyebrow: { en: "Project", es: "Proyecto" }, title: { en: "Customer portal redesign", es: "Rediseño del portal de clientes" }, subtitle: { en: "Updated 2 hours ago", es: "Actualizado hace 2 horas" } },
     }),
   ],

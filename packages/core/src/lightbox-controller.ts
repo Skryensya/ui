@@ -1,3 +1,4 @@
+import { prefersReducedMotion } from "./reduced-motion.js";
 import { tabbables, trapModalDialogs } from "./focus-trap.js";
 import { isTypingContext } from "./hotkey.js";
 import {
@@ -643,7 +644,7 @@ export function connectLightbox(dialog: HTMLDialogElement, initial: LightboxConf
    */
   const canAnimate = (): boolean => typeof image.animate === "function";
   const canMove = (): boolean =>
-    canAnimate() && !win.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    canAnimate() && !prefersReducedMotion(win);
   const token = (name: string): string => win.getComputedStyle(dialog).getPropertyValue(name).trim();
   const ms = (name: string, fallback: number): number => {
     const raw = token(name);

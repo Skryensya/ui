@@ -41,6 +41,7 @@ export const cornerLabelImage: PatternModule<Content> = {
       intent: "content/presentation/labelled-image",
       title: { en: "Labelled image", es: "Imagen con etiqueta" },
       purpose: { en: "An image that classifies its content with a label on top.", es: "Una imagen que clasifica su contenido con una etiqueta encima." },
+      catalog: false,
       content: { src: "https://dummyimage.com/640x360/d9e2ec/334e68&text=%20", alt: { en: "Sample image", es: "Imagen de ejemplo" }, label: { en: "Guide", es: "Guía" } },
     }),
   ],

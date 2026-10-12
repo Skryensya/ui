@@ -60,11 +60,13 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("toolbarPage.prop.orientation.body")}
       explain={explain("orientation", ["horizontal", "vertical"])}
       stageMinBlockSize="12rem"
+      storybookTitle="Components/Toolbar"
+      storybookStory="Default"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={toolbarTree(t)} title={t("toolbarPage.basicTitle")} description={t("toolbarPage.basicBody")} />
-    <UsagePreview tree={nestedToolbarTree(t)} title={t("toolbarPage.compositeTitle")} description={t("toolbarPage.compositeBody")} />
+    <UsagePreview tree={toolbarTree(t)} title={t("toolbarPage.basicTitle")} description={t("toolbarPage.basicBody")} storybookTitle="Components/Toolbar" storybookStory="Default" />
+    <UsagePreview tree={nestedToolbarTree(t)} title={t("toolbarPage.compositeTitle")} description={t("toolbarPage.compositeBody")} storybookTitle="Components/Toolbar" storybookStory="NestedToolbar" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

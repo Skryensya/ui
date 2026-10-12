@@ -1,3 +1,4 @@
+import { prefersReducedMotion } from "./reduced-motion.js";
 import { isShown, tabbables } from "./focus-trap.js";
 import { STORAGE_KEY, readStore, writeStore } from "./storage.js";
 import {
@@ -337,7 +338,7 @@ export function connectTour(root: HTMLElement, initial: TourConfig = {}): TourCo
     height: win.visualViewport?.height || doc.documentElement.clientHeight || win.innerHeight,
   });
 
-  const reducedMotion = () => win.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
+  const reducedMotion = () => prefersReducedMotion(win);
 
   const rtl = () => (win.getComputedStyle(root).direction || doc.documentElement.dir) === "rtl";
 

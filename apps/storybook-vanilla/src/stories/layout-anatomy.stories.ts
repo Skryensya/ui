@@ -12,7 +12,7 @@ import "@skryensya/core/patterns/wrapper.css";
 import * as demos from "@docs/demos/layout-anatomy";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Layout/Box/LayoutAnatomy", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Box - LayoutAnatomy", tags: ["autodocs"] } satisfies Meta;
 
 export const BoxAnatomy: StoryObj = treeStory(demos.boxAnatomyTree);
 export const StackAnatomy: StoryObj = treeStory(demos.stackAnatomyTree);

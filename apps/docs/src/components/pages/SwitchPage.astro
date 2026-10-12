@@ -52,8 +52,8 @@ for (const root of document.querySelectorAll(
     <p class="lede" set:html={t("switchPage.lede")} />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={switchTree(t)} title={t("switchPage.basicTitle")} description={t("switchPage.basicBody")} />
-    <UsagePreview tree={tileSwitchTree(t)} title={t("switchPage.tileTitle")} description={t("switchPage.tileBody1")} />
+    <UsagePreview tree={switchTree(t)} title={t("switchPage.basicTitle")} description={t("switchPage.basicBody")} storybookTitle="Components/Switch" storybookStory="Default" />
+    <UsagePreview tree={tileSwitchTree(t)} title={t("switchPage.tileTitle")} description={t("switchPage.tileBody1")} storybookTitle="Components/Switch" storybookStory="TileSwitch" />
     <p set:html={t("switchPage.tileBody2")} />
     <CodeBlock code={tileSwitchVanilla} label="JavaScript" />
 
@@ -66,6 +66,8 @@ for (const root of document.querySelectorAll(
       tree={variantsTree(switchTree(t), [{ label: t("component.state.default"), options: {} }, { label: t("component.state.checked"), options: { defaultChecked: true } }, { label: t("component.state.disabled"), options: { disabled: true } }])}
       title={t("component.statesTitle")}
       description={t("component.statesBody")}
+      storybookTitle="Components/Switch"
+      storybookStory="Default"
     />
 
     <h3>{t("component.anatomy")}</h3>

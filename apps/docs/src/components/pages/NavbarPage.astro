@@ -83,6 +83,8 @@ const css = `@import "@skryensya/core/tokens.scss";
       explain={appearanceExplain}
       css={navbarLayoutCss}
       stageMinBlockSize="7rem"
+      storybookTitle="Components/Navbar"
+      storybookStory="Layout"
     />
     <UsagePreview
       variants={layoutVariants}
@@ -92,6 +94,9 @@ const css = `@import "@skryensya/core/tokens.scss";
       description={t("navbarPage.layoutBody")}
       css={navbarLayoutCss}
       stageMinBlockSize="7rem"
+      screen="xl"
+      storybookTitle="Components/Navbar"
+      storybookStory="Layout"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
@@ -107,6 +112,8 @@ const css = `@import "@skryensya/core/tokens.scss";
       label="Navbar"
       flush
       screen="xl"
+      storybookTitle="Components/Navbar"
+      storybookStory="Default"
     />
 
     <h3>{t("navbarPage.bareTitle")}</h3>
@@ -117,19 +124,21 @@ const css = `@import "@skryensya/core/tokens.scss";
       label={t("navbarPage.bareTitle")}
       flush
       screen="xl"
+      storybookTitle="Components/Navbar"
+      storybookStory="Bare"
     />
 
     <h3>{t("navbarPage.appTitle")}</h3>
     <p set:html={t("navbarPage.appBody")} />
-    <UsagePreview tree={navbarAppTree(t, hrefs)} label={t("navbarPage.appTitle")} flush screen="xl" />
+    <UsagePreview tree={navbarAppTree(t, hrefs)} label={t("navbarPage.appTitle")} flush screen="xl" storybookTitle="Components/Navbar" storybookStory="App" />
 
     <h3>{t("navbarPage.megaTitle")}</h3>
     <p set:html={t("navbarPage.megaBody")} />
-    <UsagePreview tree={navbarMegamenuTree(t)} label={t("navbarPage.megaTitle")} flush viewport="overlay" screen="xl" />
+    <UsagePreview tree={navbarMegamenuTree(t)} label={t("navbarPage.megaTitle")} flush viewport="overlay" screen="xl" storybookTitle="Components/Navbar" storybookStory="Megamenu" />
 
     <h3>{t("navbarPage.megaAppTitle")}</h3>
     <p set:html={t("navbarPage.megaAppBody")} />
-    <UsagePreview tree={navbarMegamenuAppTree(t)} label={t("navbarPage.megaAppTitle")} flush viewport="overlay" screen="xl" />
+    <UsagePreview tree={navbarMegamenuAppTree(t)} label={t("navbarPage.megaAppTitle")} flush viewport="overlay" screen="xl" storybookTitle="Components/Navbar" storybookStory="MegamenuApp" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

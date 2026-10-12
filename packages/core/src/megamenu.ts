@@ -25,7 +25,9 @@ import type { ComponentContract } from "./contract.js";
  * bindings that drive it).
  *
  * Activation is click/Enter/Space (native `<button>` semantics: nothing here re-implements them);
- * hover-intent is a mouse-only enhancement layered on top by the bindings, never a second code path.
+ * hover-intent is a MOUSE-only (`pointerType === "mouse"`) enhancement layered on top by the
+ * bindings, never a second code path. Hover previews, a click pins: see `MegamenuState.pinned`. While
+ * a panel is open, moving to another trigger switches at once instead of waiting out the open delay.
  * No focus trap: Tab flows through a panel's links in normal DOM order and on into whatever follows
  * on the page. Mobile does not get a second markup shape. The same `NavListGroup` columns collapse
  * into `NavListGroup`'s own existing `collapsible` accordion mechanic below a breakpoint, in CSS only
@@ -64,6 +66,9 @@ export type MegamenuPartClass = (typeof megamenuParts)[MegamenuPart];
 export const megamenuAttrs = {
   root: "data-sk-megamenu",
   trigger: "data-sk-megamenu-trigger",
+  /** State, set by the bindings on the open trigger once a click pinned its panel. CSS styles it;
+   *  never authored. */
+  pinned: "data-pinned",
   positioner: "data-sk-megamenu-positioner",
   content: "data-sk-megamenu-content",
   /**
@@ -251,33 +256,44 @@ export const megamenuContract = {
 
 export interface MegamenuState {
   readonly openIndex: number | null;
+  /** True once a click or Enter/Space chose this panel: it then ignores the pointer leaving and
+   *  closes only on a second activation, Escape, or a press or focus outside (WCAG 1.4.13: dismissible,
+   *  persistent). A panel that merely hover-opened is not pinned, and closes when the pointer goes. */
+  readonly pinned: boolean;
 }
 
 export type MegamenuEvent =
-  /** Click, or Enter/Space on a trigger: toggles ITS panel, closing whichever else was open. */
-  | { readonly kind: "activate"; readonly index: number }
+  /** Click, or Enter/Space on a trigger: a plain disclosure toggle, so `aria-expanded` always flips
+   *  (WCAG 3.2.1/3.2.2: a button must do what its state says). Closed or other panel: opens this one,
+   *  pinned. This one open: closes it, with ONE exception, `justOpened`: the binding sets it when the
+   *  panel hover-opened moments ago, so a click that was already on its way (the user aimed at a
+   *  closed button) pins what it was meant to open instead of immediately undoing it. */
+  | { readonly kind: "activate"; readonly index: number; readonly justOpened?: boolean }
   /** The binding's hover-intent delay elapsed while the pointer was still over this trigger or its
-   *  panel. Opens it, closing whichever else was open. The same exclusivity a click gets. */
+   *  panel. Opens it, closing whichever else was open, and keeps an existing pin. */
   | { readonly kind: "hoverIntentOpen"; readonly index: number }
   /** The binding's hover-intent delay elapsed after the pointer left this trigger AND its panel with
-   *  no re-entry. A no-op unless THIS index is still the open one. A stale timer from a trigger the
-   *  user already moved away from must never close whatever they moved TO. */
+   *  no re-entry. A no-op unless THIS index is still the open one and it is not pinned. A stale
+   *  timer from a trigger the user already moved away from must never close whatever they moved TO. */
   | { readonly kind: "hoverIntentClose"; readonly index: number }
   /** Closes whichever panel is open, unconditionally. The binding returns focus to its trigger. */
   | { readonly kind: "escape" }
-  /** Focus left the bar+panel subtree entirely. Closes whichever panel is open. */
+  /** Focus or a pointer press left the bar+panel subtree entirely. Closes whichever panel is open. */
   | { readonly kind: "blur" };
+
+const closedState: MegamenuState = { openIndex: null, pinned: false };
 
 export function resolveMegamenuEvent(state: MegamenuState, event: MegamenuEvent): MegamenuState {
   switch (event.kind) {
     case "activate":
-      return { openIndex: state.openIndex === event.index ? null : event.index };
+      if (state.openIndex !== event.index) return { openIndex: event.index, pinned: true };
+      return event.justOpened && !state.pinned ? { openIndex: event.index, pinned: true } : closedState;
     case "hoverIntentOpen":
-      return { openIndex: event.index };
+      return state.openIndex === event.index ? state : { openIndex: event.index, pinned: state.pinned };
     case "hoverIntentClose":
-      return state.openIndex === event.index ? { openIndex: null } : state;
+      return state.openIndex === event.index && !state.pinned ? closedState : state;
     case "escape":
     case "blur":
-      return state.openIndex === null ? state : { openIndex: null };
+      return state.openIndex === null ? state : closedState;
   }
 }

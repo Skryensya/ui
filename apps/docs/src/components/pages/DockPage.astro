@@ -71,13 +71,15 @@ const html = `<div class="sk-dock" data-sk-dock role="group" aria-label="Quick a
   <Fragment slot="usage">
     <p class="lede" set:html={t("dockPage.usage")} />
     <h3>{t("dockPage.examplesTitle")}</h3>
-    <UsagePreview tree={tree} title={t("dockPage.defaultTitle")} description={t("dockPage.defaultBody")} />
+    <UsagePreview tree={tree} title={t("dockPage.defaultTitle")} description={t("dockPage.defaultBody")} storybookTitle="Components/Dock" storybookStory="Default" />
     <UsagePreview
       tree={sizePlayground.tree}
       variants={sizePlayground.variants}
       variantsLabel={t("dockPage.sizeControl")}
       title={t("dockPage.sizePlaygroundTitle")}
       description={t("dockPage.sizePlaygroundBody")}
+      storybookTitle="Components/Dock"
+      storybookStory="Default"
     />
     <UsagePreview
       tree={surfacePlayground.tree}
@@ -85,6 +87,8 @@ const html = `<div class="sk-dock" data-sk-dock role="group" aria-label="Quick a
       variantsLabel={t("dockPage.surfaceControl")}
       title={t("dockPage.surfacePlaygroundTitle")}
       description={t("dockPage.surfacePlaygroundBody")}
+      storybookTitle="Components/Dock"
+      storybookStory="Default"
     />
     <h3>{t("dockPage.propertiesTitle")}</h3>
     <p set:html={t("dockPage.propertiesBody")} />

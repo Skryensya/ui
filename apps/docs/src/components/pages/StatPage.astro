@@ -46,13 +46,15 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("statPage.prop.trend.body")}
       explain={explain("trend", ["up", "down", "neutral"])}
       stageMinBlockSize="8rem"
+      storybookTitle="Components/Stat"
+      storybookStory="Single"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={statCardsTree(t, locale)} title={t("statPage.cardTitle")} description={t("statPage.cardBody")} />
+    <UsagePreview tree={statCardsTree(t, locale)} title={t("statPage.cardTitle")} description={t("statPage.cardBody")} storybookTitle="Components/Stat" storybookStory="Cards" />
     <h3 id="animar">{t("statPage.animateTitle")}</h3>
     <p set:html={t("statPage.animateBody")} />
-    <UsagePreview tree={statAnimatedTree(t, locale)} label={t("statPage.animateLabel")} />
+    <UsagePreview tree={statAnimatedTree(t, locale)} label={t("statPage.animateLabel")} storybookTitle="Components/Stat" storybookStory="Animated" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

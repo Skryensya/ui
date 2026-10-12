@@ -41,6 +41,8 @@ import { relatedComponents as chosenRelated } from "../../lib/related-components
 import { canonicalPath, getLocale, useTranslations } from "../../i18n";
 import CodeBlock from "../CodeBlock.astro";
 import { vanillaMountFor } from "../../lib/vanilla-mounts";
+import { installFor } from "../../lib/install-manifest";
+import { localizePath } from "../../i18n";
 
 interface Props {
   title: string;
@@ -95,7 +97,10 @@ const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
 const hasContract = Boolean(contractId);
 const hasChanges = contractId ? changelogFor(contractId).length > 0 : false;
-const hasInstall = Astro.slots.has("install");
+/* Everything a page needs to use this component ON ITS OWN, from `@skryensya/core/install-manifest.json`
+   (generated from the contracts, the CSS and the two packages' exports; see `packages/core/scripts`). */
+const install = installFor(contractId);
+const hasInstall = Astro.slots.has("install") || Boolean(install);
 
 /*
  * The styling-hooks table is DERIVED from the contract when a page does not say otherwise.
@@ -144,14 +149,35 @@ const hasVanillaInstall = Astro.slots.has("installVanilla");
  *
  * A page that needs to say more passes `installVanilla` and this is skipped entirely.
  */
-const vanillaMount = vanillaMountFor(Astro.url.pathname);
-const vanillaInstallCommand = "pnpm add @skryensya/core";
-const vanillaStyleImports = derivedStyleGroups
-  .map((group) => `@import "@skryensya/core/${group.file}";`)
-  .join("\n");
+/* The manifest names the enhancer a contract owns; a route whose page documents a differently named one
+   (the checkbox page mounts `tile-checkbox`) still falls back to the route catalogue. */
+const mountFact = install?.vanilla
+  ? { name: title, entrypoint: install.vanilla.entry, mount: install.vanilla.mount!, selector: install.vanilla.selectors[0] ?? "", auto: install.vanilla.auto }
+  : (() => {
+      const route = vanillaMountFor(Astro.url.pathname);
+      return route ? { ...route, auto: true } : undefined;
+    })();
+const vanillaMount = mountFact;
+const vanillaInstallCommand = "pnpm add @skryensya/core @skryensya/vanilla";
+const sheets = install?.css.files ?? derivedStyleGroups.map((group) => `@skryensya/core/${group.file}`);
+/** The stylesheet the component names; the others load through its own `@import`s. */
+const ownSheet = install?.css.entry ?? sheets.at(-1);
+const vanillaStyleImports = ownSheet ? `@import "@skryensya/core/tokens.css";\n@import "${ownSheet.replace(/^@skryensya\/core\//, "@skryensya/core/")}";` : "";
+const alsoLoads = sheets.filter((sheet) => sheet !== ownSheet);
+const autoSnippet = `import { initComponents } from "@skryensya/vanilla/auto";
+
+// ${t("install.autoOnce")}
+await initComponents();
+
+// ${t("install.autoAgain")}
+await initComponents(container);`;
 const vanillaMountSnippet = vanillaMount
-  ? `import { ${vanillaMount.mount} } from "${vanillaMount.entrypoint}";\n\n${vanillaMount.mount}();`
+  ? `import { ${vanillaMount.mount} } from "${vanillaMount.entrypoint}";\n\n// ${t("install.mountAll")}\n${vanillaMount.mount}();\n\n// ${t("install.mountOne")}\n${vanillaMount.mount}(document.querySelector("${vanillaMount.selector}"));`
   : null;
+const reactSnippet = install?.react
+  ? `import { ${install.react.names.join(", ")} } from "${install.react.entry}";\nimport "${ownSheet}";`
+  : null;
+const autoLink = `<a href="${localizePath("/automatic-mounting", locale)}">${t("vanilla.autoLinkLabel")}</a>`;
 
 /* Nothing to switch between when the page has no React half to begin with. */
 const canToggleInstall = hasInstall && (hasVanillaInstall || vanillaStyleImports.length > 0 || vanillaMountSnippet);
@@ -398,7 +424,32 @@ const relatedComponents = chosen
               * section from every reader whose preference is Vanilla, which is the default.
               */}
             <div class="docs-install__half" data-sk-install-binding={canToggleInstall ? "react" : undefined}>
-              <slot name="install" />
+              {Astro.slots.has("install") ? (
+                <slot name="install" />
+              ) : (
+                <>
+                  <h4>{t("install.stepInstall")}</h4>
+                  <CodeBlock code="pnpm add @skryensya/core @skryensya/react" label={untitledCode ? undefined : "terminal"} lang="bash" />
+                  <h4>{t("install.stepImport")}</h4>
+                  {reactSnippet ? (
+                    <>
+                      <p>{t("install.reactOnly", { name: title })}</p>
+                      <CodeBlock code={reactSnippet} label={untitledCode ? undefined : "TypeScript"} lang="tsx" />
+                    </>
+                  ) : (
+                    <>
+                      <p>{t("install.reactNone", { name: title })}</p>
+                      {ownSheet && <CodeBlock code={`import "${ownSheet}";`} label={untitledCode ? undefined : "TypeScript"} lang="ts" />}
+                    </>
+                  )}
+                  {install?.react && install.vanilla && (
+                    <>
+                      <h4>{t("install.stepMount")}</h4>
+                      <p set:html={t("install.reactMount", { name: title })} />
+                    </>
+                  )}
+                </>
+              )}
             </div>
 
             {canToggleInstall && (
@@ -407,15 +458,33 @@ const relatedComponents = chosen
                 <slot name="installVanilla" />
               ) : (
                 <>
-                  <p>{t("install.vanillaGenerated")}</p>
+                  <h4>{t("install.stepInstall")}</h4>
                   <CodeBlock code={vanillaInstallCommand} label={untitledCode ? undefined : "terminal"} lang="bash" />
                   {vanillaStyleImports.length > 0 && (
-                    <CodeBlock code={vanillaStyleImports} label={untitledCode ? undefined : "CSS"} lang="css" />
-                  )}
-                  {vanillaMountSnippet ? (
                     <>
-                      <p set:html={t("install.vanillaMount", { name: vanillaMount!.name })} />
-                      <CodeBlock code={vanillaMountSnippet} label={untitledCode ? undefined : "JavaScript"} lang="ts" />
+                      <h4>{t("install.stepStyles")}</h4>
+                      <p>{t("install.sheetOnly", { name: title })}</p>
+                      <CodeBlock code={vanillaStyleImports} label={untitledCode ? undefined : "CSS"} lang="css" />
+                      {alsoLoads.length > 0 && (
+                        <p set:html={t("install.sheetAlso", { sheets: alsoLoads.map((sheet) => `<code>${sheet.replace("@skryensya/core/", "")}</code>`).join(", ") })} />
+                      )}
+                    </>
+                  )}
+                  <h4>{t("install.stepMount")}</h4>
+                  {vanillaMount ? (
+                    <>
+                      {/* WHEN each strategy mounts is the question this block answers, so each says so first. */}
+                      {vanillaMount.auto ? (
+                        <>
+                          <p set:html={t("install.autoWhen", { selector: vanillaMount.selector, name: title })} />
+                          <CodeBlock code={autoSnippet} label={untitledCode ? undefined : "JavaScript"} lang="ts" />
+                          <p set:html={t("install.autoLater", { autoLink })} />
+                        </>
+                      ) : (
+                        <p set:html={t("install.notAuto", { name: title, mount: vanillaMount.mount })} />
+                      )}
+                      <p set:html={t("install.vanillaMount", { name: title })} />
+                      <CodeBlock code={vanillaMountSnippet!} label={untitledCode ? undefined : "JavaScript"} lang="ts" />
                     </>
                   ) : (
                     <p>{t("install.vanillaNoMount")}</p>
@@ -424,6 +493,7 @@ const relatedComponents = chosen
               )}
             </div>
             )}
+            {Astro.slots.has("installNote") && <slot name="installNote" />}
             </>
           )
         }

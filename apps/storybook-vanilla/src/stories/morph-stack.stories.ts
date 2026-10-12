@@ -11,7 +11,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/morph-stack";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Media & Visuals/Morph Stack", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Morph Stack", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.morphStackAnatomyTree);
 export const Default: StoryObj = treeStory(demos.morphStackTree);

@@ -65,18 +65,20 @@ initComponents();`;
       title={t("menubarPage.entry.title")}
       description={t("menubarPage.entry.intro")}
       stageMinBlockSize="26rem"
+      storybookTitle="Components/Menubar"
+      storybookStory="Default"
     />
 
     <h3>{t("menubarPage.rows.title")}</h3>
     <p set:html={t("menubarPage.rows.intro")} />
-    <UsagePreview tree={menubarRowsTree(t)} label={t("menubarPage.rows.title")} viewport="menu-deep" />
+    <UsagePreview tree={menubarRowsTree(t)} label={t("menubarPage.rows.title")} viewport="menu-deep" storybookTitle="Components/Menubar" storybookStory="Rows" />
     <ul>
       {[1, 2, 3, 4, 5, 6].map((n) => <li set:html={t(`menubarPage.rows.legend${n}` as Parameters<typeof t>[0])} />)}
     </ul>
 
     <h3>{t("menubarPage.editor.title")}</h3>
     <p set:html={t("menubarPage.editor.body")} />
-    <UsagePreview tree={menubarEditorTree(t)} label={t("menubarPage.editor.title")} viewport="menu-deep" />
+    <UsagePreview tree={menubarEditorTree(t)} label={t("menubarPage.editor.title")} viewport="menu-deep" storybookTitle="Components/Menubar" storybookStory="Editor" />
 
     <MenubarVsAppBar />
 

@@ -16,20 +16,14 @@ import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/comment-thread";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Surfaces & Collections/CommentThread", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/CommentThread", tags: ["autodocs"] } satisfies Meta;
 
 export const CommentAnatomy: StoryObj = treeStory(demos.commentAnatomyTree);
 export const CommentAlone: StoryObj = treeStory(demos.commentAloneTree);
 export const CommentActions: StoryObj = treeStory(demos.commentActionsTree);
 export const CommentLikes: StoryObj = treeStory(demos.commentLikesTree);
-export const DoPermissions: StoryObj = treeStory(demos.commentThreadDoPermissionsTree);
-export const DontPermissions: StoryObj = treeStory(demos.commentThreadDontPermissionsTree);
-export const NestingDo: StoryObj = treeStory(demos.commentThreadNestingDoTree);
-export const DontFlatReplies: StoryObj = treeStory(demos.commentThreadDontFlatRepliesTree);
-export const DontVoteForLike: StoryObj = treeStory(demos.commentThreadDontVoteForLikeTree);
 export const Default: StoryObj = treeStory(demos.commentThreadTree);
 export const Fixed: StoryObj = treeStory(demos.commentThreadFixedTree);
 export const CommentSkeleton: StoryObj = treeStory(demos.commentSkeletonTree);
 export const InfiniteScroll: StoryObj = treeStory(demos.commentThreadInfiniteScrollTree);
-export const CommentCollapseGuide: StoryObj = treeStory((t) => demos.commentCollapseGuideTree(t, "#"));
 export const CommentDeep: StoryObj = treeStory(demos.commentDeepTree);

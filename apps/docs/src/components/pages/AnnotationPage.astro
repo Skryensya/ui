@@ -38,7 +38,7 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
 const styles = `@import "@skryensya/core/components/annotation.css";`;
 
 /* Same Storybook handoff Badge and Accordion use (`lib/navigation.ts` files Annotation under Content). */
-const storybookTitle = "Components/Content/Annotation";
+const storybookTitle = "Components/Annotation";
 
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
 const explain = (option: string, values: readonly string[]) =>
@@ -63,8 +63,7 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("annotation.prop.side.body")}
       explain={explain("side", ["inline-start", "inline-end", "block-start", "block-end"])}
       storybookTitle={storybookTitle}
-      storybookStory="One"
-    />
+      storybookStory="One" />
 
     <UsagePreview
       tree={annotationOneTree(t)}
@@ -74,8 +73,7 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("annotation.prop.mark.body")}
       explain={explain("mark", ["ring", "bracket"])}
       storybookTitle={storybookTitle}
-      storybookStory="One"
-    />
+      storybookStory="One" />
 
     <UsagePreview
       tree={annotationMatchTree(t)}
@@ -85,8 +83,7 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("annotation.prop.match.body")}
       explain={explain("match", ["first", "all"])}
       storybookTitle={storybookTitle}
-      storybookStory="Match"
-    />
+      storybookStory="Match" />
 
     <h3>{t("component.examplesTitle")}</h3>
     <p set:html={t("annotation.showcaseBody")} />
@@ -96,8 +93,7 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("annotation.anatomyTitle")}
       description={t("annotation.anatomyBody")}
       storybookTitle={storybookTitle}
-      storybookStory="Anatomy"
-    />
+      storybookStory="Anatomy" />
 
     <p set:html={t("component.reactNote")} />
 

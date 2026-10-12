@@ -12,15 +12,9 @@ import "@skryensya/core/patterns/media-overlay.css";
 import * as demos from "@docs/demos/compare-slider";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Media & Visuals/Compare Slider", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Compare Slider", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.compareSliderAnatomyTree);
 export const Default: StoryObj = treeStory(demos.compareSliderTree);
 export const Interface: StoryObj = treeStory(demos.compareSliderInterfaceTree);
 export const Vertical: StoryObj = treeStory(demos.compareSliderVerticalTree);
-export const DoRegistered: StoryObj = treeStory(demos.compareSliderDoRegisteredTree);
-export const DontRegistered: StoryObj = treeStory(demos.compareSliderDontRegisteredTree);
-export const DoStatic: StoryObj = treeStory(demos.compareSliderDoStaticTree);
-export const DontStatic: StoryObj = treeStory(demos.compareSliderDontStaticTree);
-export const DoStart: StoryObj = treeStory(demos.compareSliderDoStartTree);
-export const DontStart: StoryObj = treeStory(demos.compareSliderDontStartTree);

@@ -1,0 +1,5 @@
+// The tier order, emitted FIRST. A cascade layer's rank is fixed by where its name first appears, and
+// Sass hoists every `@use`d module's CSS above the entry file's own rules, so a statement written
+// after the `@use`s lands after the layers they open and no longer decides anything. Using this
+// module first is what keeps `overrides` (high contrast, forced colors, dimensions) above `components`.
+@layer primitives, semantic, components, overrides;

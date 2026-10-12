@@ -11,7 +11,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/split-button";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Actions/SplitButton", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/SplitButton", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.splitButtonAnatomyTree);
 export const Default: StoryObj = treeStory(demos.splitButtonTree);

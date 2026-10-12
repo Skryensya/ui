@@ -6,8 +6,6 @@ import "@skryensya/core/patterns/wrapper.css";
 import * as demos from "@docs/demos/wrapper";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Layout/Wrapper", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Wrapper", tags: ["autodocs"] } satisfies Meta;
 
 export const Default: StoryObj = treeStory(demos.wrapperTree);
-export const DoBox: StoryObj = treeStory(demos.wrapperDoBoxTree);
-export const DontPaint: StoryObj = treeStory(demos.wrapperDontPaintTree);

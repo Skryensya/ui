@@ -66,16 +66,18 @@ const explain = (option: string, values: readonly string[]) =>
       explain={explain("dividers", ["false", "true"])}
       stageMinBlockSize="14rem"
       labels={{ false: t("listPage.prop.dividers.falseLabel"), true: t("listPage.prop.dividers.trueLabel") }}
+      storybookTitle="Components/List"
+      storybookStory="Plain"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
     <p set:html={t("listPage.stepsBody")} />
-    <UsagePreview tree={listPlainTree(t)} css={listMeasureCss} title={t("listPage.step1Title")} description={t("listPage.step1Body")} />
-    <UsagePreview tree={listTitledTree(t)} css={listMeasureCss} title={t("listPage.step2Title")} description={t("listPage.step2Body")} />
-    <UsagePreview tree={listLeadingTree(t)} css={listMeasureCss} title={t("listPage.step3Title")} description={t("listPage.step3Body")} />
-    <UsagePreview tree={listTrailingTree(t)} css={listMeasureCss} title={t("listPage.step4Title")} description={t("listPage.step4Body")} />
-    <UsagePreview tree={listLinksTree(t, LINK_HREFS)} css={listMeasureCss} title={t("listPage.step5Title")} description={t("listPage.step5Body")} />
-    <UsagePreview tree={listFullTree(t, TEAM_HREFS)} css={listMeasureCss} title={t("listPage.step6Title")} description={t("listPage.step6Body")} />
+    <UsagePreview tree={listPlainTree(t)} css={listMeasureCss} title={t("listPage.step1Title")} description={t("listPage.step1Body")} storybookTitle="Components/List" storybookStory="Plain" />
+    <UsagePreview tree={listTitledTree(t)} css={listMeasureCss} title={t("listPage.step2Title")} description={t("listPage.step2Body")} storybookTitle="Components/List" storybookStory="Titled" />
+    <UsagePreview tree={listLeadingTree(t)} css={listMeasureCss} title={t("listPage.step3Title")} description={t("listPage.step3Body")} storybookTitle="Components/List" storybookStory="Leading" />
+    <UsagePreview tree={listTrailingTree(t)} css={listMeasureCss} title={t("listPage.step4Title")} description={t("listPage.step4Body")} storybookTitle="Components/List" storybookStory="Trailing" />
+    <UsagePreview tree={listLinksTree(t, LINK_HREFS)} css={listMeasureCss} title={t("listPage.step5Title")} description={t("listPage.step5Body")} storybookTitle="Components/List" storybookStory="Links" />
+    <UsagePreview tree={listFullTree(t, TEAM_HREFS)} css={listMeasureCss} title={t("listPage.step6Title")} description={t("listPage.step6Body")} storybookTitle="Components/List" storybookStory="Full" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

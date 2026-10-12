@@ -9,7 +9,7 @@ import "@skryensya/core/components/tags-input.css";
 import * as demos from "@docs/demos/tags-input";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Forms/TagsInput", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/TagsInput", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.tagsInputAnatomyTree);
 export const Default: StoryObj = treeStory(demos.tagsInputTree);
@@ -17,5 +17,3 @@ export const Empty: StoryObj = treeStory(demos.tagsInputEmptyTree);
 export const Max: StoryObj = treeStory(demos.tagsInputMaxTree);
 export const ReadOnly: StoryObj = treeStory(demos.tagsInputReadOnlyTree);
 export const Field: StoryObj = treeStory(demos.tagsInputFieldTree);
-export const DontLong: StoryObj = treeStory(demos.tagsInputDontLongTree);
-export const DoShort: StoryObj = treeStory(demos.tagsInputDoShortTree);

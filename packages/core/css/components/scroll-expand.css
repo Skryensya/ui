@@ -151,112 +151,114 @@
 
   @supports (animation-timeline: view()) and (timeline-scope: --a) {
     @media (prefers-reduced-motion: no-preference) {
-      .sk-scroll-expand {
-        timeline-scope: --sk-scroll-expand-progress;
-      }
+      :where(:root:not([data-motion="reduced"])) {
+        .sk-scroll-expand {
+          timeline-scope: --sk-scroll-expand-progress;
+        }
 
-      /* One box for the stage, one of scroll while it is held. */
-      .sk-scroll-expand__track {
-        block-size: 200cqh;
-      }
+        /* One box for the stage, one of scroll while it is held. */
+        .sk-scroll-expand__track {
+          block-size: 200cqh;
+        }
 
-      .sk-scroll-expand__clock {
-        display: block;
-        position: absolute;
-        inset-block-start: 0;
-        inset-inline-start: 0;
-        inline-size: 1px;
-        block-size: 100cqh;
-        pointer-events: none;
-        view-timeline: --sk-scroll-expand-progress block;
-      }
+        .sk-scroll-expand__clock {
+          display: block;
+          position: absolute;
+          inset-block-start: 0;
+          inset-inline-start: 0;
+          inline-size: 1px;
+          block-size: 100cqh;
+          pointer-events: none;
+          view-timeline: --sk-scroll-expand-progress block;
+        }
 
-      .sk-scroll-expand__stage {
-        position: sticky;
-        inset-block-start: 0;
-        block-size: 100cqh;
-        /* The lead and the container share one cell: the lead stands in the band above the window. */
-        display: grid;
-        overflow: clip;
-      }
+        .sk-scroll-expand__stage {
+          position: sticky;
+          inset-block-start: 0;
+          block-size: 100cqh;
+          /* The lead and the container share one cell: the lead stands in the band above the window. */
+          display: grid;
+          overflow: clip;
+        }
 
-      .sk-scroll-expand__lead,
-      .sk-scroll-expand__container {
-        grid-area: 1 / 1;
-      }
+        .sk-scroll-expand__lead,
+        .sk-scroll-expand__container {
+          grid-area: 1 / 1;
+        }
 
-      /* The band above the window, as tall as the window's own top inset: the big words stand on the stage, not on the container. */
-      .sk-scroll-expand__lead {
-        z-index: 1;
-        align-self: start;
-        block-size: var(--sk-scroll-expand-inset-block);
-        box-sizing: border-box;
-        display: grid;
-        place-content: center;
-        padding-block: 0;
-        pointer-events: none;
-      }
+        /* The band above the window, as tall as the window's own top inset: the big words stand on the stage, not on the container. */
+        .sk-scroll-expand__lead {
+          z-index: 1;
+          align-self: start;
+          block-size: var(--sk-scroll-expand-inset-block);
+          box-sizing: border-box;
+          display: grid;
+          place-content: center;
+          padding-block: 0;
+          pointer-events: none;
+        }
 
-      .sk-scroll-expand__lead {
-        animation-name: sk-scroll-expand-lead;
-        animation-fill-mode: both;
-        animation-timing-function: linear;
-        animation-timeline: --sk-scroll-expand-progress;
-        animation-range: exit 0% exit 40%;
-      }
+        .sk-scroll-expand__lead {
+          animation-name: sk-scroll-expand-lead;
+          animation-fill-mode: both;
+          animation-timing-function: linear;
+          animation-timeline: --sk-scroll-expand-progress;
+          animation-range: exit 0% exit 40%;
+        }
 
-      .sk-scroll-expand__container {
-        aspect-ratio: auto;
-        block-size: 100%;
+        .sk-scroll-expand__container {
+          aspect-ratio: auto;
+          block-size: 100%;
+          /*
+           * LONGHANDS, never the `animation` shorthand: a CSS minifier folds a following `animation-timeline` back into
+           * the shorthand, which has no slot for it, so the whole declaration is dropped in a production build.
+           */
+          animation-name: sk-scroll-expand-open;
+          animation-fill-mode: both;
+          animation-timing-function: linear;
+          animation-timeline: --sk-scroll-expand-progress;
+          animation-range: exit 0% exit 85%;
+        }
+
         /*
-         * LONGHANDS, never the `animation` shorthand: a CSS minifier folds a following `animation-timeline` back into
-         * the shorthand, which has no slot for it, so the whole declaration is dropped in a production build.
+         * THE REVEAL arrives after the window has started to open, and each child a little after the one before: the wash
+         * first, then the children in a cascade. Nothing is on screen in the small window but the backdrop.
          */
-        animation-name: sk-scroll-expand-open;
-        animation-fill-mode: both;
-        animation-timing-function: linear;
-        animation-timeline: --sk-scroll-expand-progress;
-        animation-range: exit 0% exit 85%;
-      }
+        .sk-scroll-expand__reveal::before {
+          animation-name: sk-scroll-expand-scrim;
+          animation-fill-mode: both;
+          animation-timing-function: linear;
+          animation-timeline: --sk-scroll-expand-progress;
+          animation-range: exit 25% exit 60%;
+        }
 
-      /*
-       * THE REVEAL arrives after the window has started to open, and each child a little after the one before: the wash
-       * first, then the children in a cascade. Nothing is on screen in the small window but the backdrop.
-       */
-      .sk-scroll-expand__reveal::before {
-        animation-name: sk-scroll-expand-scrim;
-        animation-fill-mode: both;
-        animation-timing-function: linear;
-        animation-timeline: --sk-scroll-expand-progress;
-        animation-range: exit 25% exit 60%;
-      }
+        .sk-scroll-expand__reveal > * {
+          animation-name: sk-scroll-expand-reveal;
+          animation-fill-mode: both;
+          animation-timing-function: var(--motion-enter-easing);
+          animation-timeline: --sk-scroll-expand-progress;
+          animation-range: exit 35% exit 65%;
+        }
 
-      .sk-scroll-expand__reveal > * {
-        animation-name: sk-scroll-expand-reveal;
-        animation-fill-mode: both;
-        animation-timing-function: var(--motion-enter-easing);
-        animation-timeline: --sk-scroll-expand-progress;
-        animation-range: exit 35% exit 65%;
-      }
+        .sk-scroll-expand__reveal > :nth-child(2) {
+          animation-range: exit 43% exit 73%;
+        }
 
-      .sk-scroll-expand__reveal > :nth-child(2) {
-        animation-range: exit 43% exit 73%;
-      }
+        .sk-scroll-expand__reveal > :nth-child(3) {
+          animation-range: exit 51% exit 81%;
+        }
 
-      .sk-scroll-expand__reveal > :nth-child(3) {
-        animation-range: exit 51% exit 81%;
-      }
+        .sk-scroll-expand__reveal > :nth-child(n + 4) {
+          animation-range: exit 59% exit 85%;
+        }
 
-      .sk-scroll-expand__reveal > :nth-child(n + 4) {
-        animation-range: exit 59% exit 85%;
-      }
-
-      /* CONTRACT is the same move run backwards: full first, then closing to the window, the reveal leaving as it goes. */
-      .sk-scroll-expand[data-direction="contract"] .sk-scroll-expand__container,
-      .sk-scroll-expand[data-direction="contract"] .sk-scroll-expand__lead,
-      .sk-scroll-expand[data-direction="contract"] .sk-scroll-expand__reveal::before,
-      .sk-scroll-expand[data-direction="contract"] .sk-scroll-expand__reveal > * {
-        animation-direction: reverse;
+        /* CONTRACT is the same move run backwards: full first, then closing to the window, the reveal leaving as it goes. */
+        .sk-scroll-expand[data-direction="contract"] .sk-scroll-expand__container,
+        .sk-scroll-expand[data-direction="contract"] .sk-scroll-expand__lead,
+        .sk-scroll-expand[data-direction="contract"] .sk-scroll-expand__reveal::before,
+        .sk-scroll-expand[data-direction="contract"] .sk-scroll-expand__reveal > * {
+          animation-direction: reverse;
+        }
       }
     }
   }

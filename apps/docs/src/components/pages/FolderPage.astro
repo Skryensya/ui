@@ -41,7 +41,7 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
-const storybookTitle = "Components/Content/Folder";
+const storybookTitle = "Components/Folder";
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`folderPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
@@ -78,18 +78,17 @@ mountFolder();`;
       explain={explain("active", ["false", "true"])}
       stageMinBlockSize="18rem"
       storybookTitle={storybookTitle}
-      storybookStory="Appearance"
-    />
+      storybookStory="Appearance" />
 
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview tree={folderTree(t)} title={t("folderPage.stackTitle")} description={t("folderPage.stackBody")} stageMinBlockSize="24rem" storybookTitle={storybookTitle} storybookStory="Default" />
-    <UsagePreview tree={folderAlbumsTree(t)} title={t("folderPage.albumsTitle")} description={t("folderPage.albumsBody")} stageMinBlockSize="24rem" />
-    <UsagePreview tree={folderFilesTree(t)} title={t("folderPage.filesTitle")} description={t("folderPage.filesBody")} stageMinBlockSize="22rem" />
+    <UsagePreview tree={folderAlbumsTree(t)} title={t("folderPage.albumsTitle")} description={t("folderPage.albumsBody")} stageMinBlockSize="24rem" storybookTitle="Components/Folder" storybookStory="Albums" />
+    <UsagePreview tree={folderFilesTree(t)} title={t("folderPage.filesTitle")} description={t("folderPage.filesBody")} stageMinBlockSize="22rem" storybookTitle="Components/Folder" storybookStory="Files" />
     <UsagePreview tree={folderPlainTree(t)} title={t("folderPage.previewsTitle")} description={t("folderPage.previewsBody")} stageMinBlockSize="22rem" storybookTitle={storybookTitle} storybookStory="Plain" />
     <UsagePreview tree={folderActiveTree(t)} title={t("folderPage.touchTitle")} description={t("folderPage.touchBody")} stageMinBlockSize="24rem" storybookTitle={storybookTitle} storybookStory="Active" />
     <UsagePreview tree={folderSunkenTree(t)} title={t("folderPage.groundTitle")} description={t("folderPage.groundBody")} storybookTitle={storybookTitle} storybookStory="Sunken" />
     <UsagePreview tree={folderRaisedTree(t)} storybookTitle={storybookTitle} storybookStory="Raised" />
-    <UsagePreview tree={onAppearanceStage(folderAppearanceTree(t))} title={t("folderPage.appearanceTitle")} description={t("folderPage.appearanceBody")} stageMinBlockSize="18rem" />
+    <UsagePreview tree={onAppearanceStage(folderAppearanceTree(t))} title={t("folderPage.appearanceTitle")} description={t("folderPage.appearanceBody")} stageMinBlockSize="18rem" storybookTitle="Components/Folder" storybookStory="Appearance" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

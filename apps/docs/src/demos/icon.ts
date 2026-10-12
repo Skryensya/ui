@@ -14,23 +14,23 @@ export const iconSingleTree: UsageTree = {
   options: { name: "check" },
 };
 
-const iconCard = (name: string, label: string, body: string): UsageTree => ({
+const iconCard = (name: string, body: string): UsageTree => ({
   contract: "box",
   signature: "Box",
   options: { surface: "surface", border: "subtle", padding: "md" },
   children: {
     contract: "layout",
-    signature: "Stack",
-    options: { gap: "sm", align: "start" },
+    signature: "Inline",
+    options: { gap: "md", inlineAlign: "start", wrap: false },
     children: [
       { contract: "icon", signature: "Icon", options: { name, size: "lg" } },
       {
         contract: "layout",
         signature: "Stack",
-        options: { gap: "xs" },
+        options: { gap: "xs", align: "start" },
         children: [
           { contract: "typography", signature: "Code", children: name },
-          { contract: "typography", signature: "Text", options: { size: "sm", tone: "secondary" }, children: body || label },
+          { contract: "typography", signature: "Text", options: { size: "sm", tone: "secondary" }, children: body },
         ],
       },
     ],
@@ -40,15 +40,15 @@ const iconCard = (name: string, label: string, body: string): UsageTree => ({
 export const iconTree = (t: Translate): UsageTree => ({
   contract: "layout",
   signature: "Grid",
-  options: { columns: "3", gap: "md", responsive: true },
-  attrs: { style: "inline-size: 38rem; max-inline-size: 100%;" },
+  options: { columns: "2", gap: "md", responsive: true },
+  attrs: { style: "inline-size: 40rem; max-inline-size: 100%;" },
   children: [
-    iconCard("search", t("demo.icon.role.search"), t("demo.icon.role.searchBody")),
-    iconCard("settings", t("demo.icon.role.settings"), t("demo.icon.role.settingsBody")),
-    iconCard("warning", t("demo.icon.role.warning"), t("demo.icon.role.warningBody")),
-    iconCard("success", t("demo.icon.role.success"), t("demo.icon.role.successBody")),
-    iconCard("download", t("demo.icon.role.download"), t("demo.icon.role.downloadBody")),
-    iconCard("chevron-down", t("demo.icon.role.chevron"), t("demo.icon.role.chevronBody")),
+    iconCard("search", t("demo.icon.role.searchBody")),
+    iconCard("settings", t("demo.icon.role.settingsBody")),
+    iconCard("warning", t("demo.icon.role.warningBody")),
+    iconCard("success", t("demo.icon.role.successBody")),
+    iconCard("download", t("demo.icon.role.downloadBody")),
+    iconCard("chevron-down", t("demo.icon.role.chevronBody")),
   ],
 });
 

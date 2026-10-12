@@ -1358,28 +1358,32 @@ export const makerUrl: string | null =
  */
 export const storybookReactUrl: string | null =
   import.meta.env.PUBLIC_STORYBOOK_REACT_URL ??
-  (import.meta.env.DEV ? "http://localhost:6006/" : null);
+  (import.meta.env.DEV ? "http://localhost:6106/" : null);
 
 export const storybookVanillaUrl: string | null =
   import.meta.env.PUBLIC_STORYBOOK_VANILLA_URL ??
-  (import.meta.env.DEV ? "http://localhost:6007/" : null);
+  (import.meta.env.DEV ? "http://localhost:6107/" : null);
 
 /*
- * ONE EXAMPLE, ONE STORY: the deep link a `ComponentPreview` hands over when it knows which generated
+ * ONE EXAMPLE, ONE STORY: the deep link a `UsagePreview` hands over when it knows which generated
  * story (each storybook app's own `scripts/generate-stories.ts`) its tree became. `title` is the story's
  * "kind" as that script computes it (`Components/<catalog group>/<label>`, English always: Storybook
  * has no locale), `story` is the PascalCase export name it derives from the demo's own export
- * (`badgeSmallTree` -> `Small`). The id this builds is exactly what Storybook's own `toId(kind, name)`
- * produces, verified against a real build's `index.json` rather than assumed: lower-case, every run of
- * non `[a-z0-9]` collapsed to one `-`, kind and story joined by `--`. `slugify` (this file already
- * imports it for nothing else, `document-index.ts`) happens to do exactly that.
+ * (`badgeSmallTree` -> `Small`).
  *
- * Points at the component's DOCS page (`/docs/<id>--docs`), not its bare story: that is the one route
- * `@storybook/addon-docs` is guaranteed to render every story's source under a "Show code" block on,
- * autodocs needing no further setup than the `tags: ["autodocs"]` every generated file already
- * carries. The story's own anchor is appended as a hash for a direct scroll where Storybook's docs
- * page happens to honor one; landing on the page at all does not depend on it.
+ * The id is Storybook's own `toId(kind, name)`, checked against a live `index.json` (every link the docs
+ * emit): the KIND is lower-cased with every run of non `[a-z0-9]` collapsed to one `-`, but the STORY
+ * name comes from the export name split into words first (`ThreeColumns` -> `three-columns`), so it is
+ * not the same slug. Joining both with `--` and slugifying the export whole (`threecolumns`) named a
+ * story that does not exist.
+ *
+ * Points at the component's DOCS page (`/docs/<id>--docs`), where every story is drawn with its source
+ * under a "Show code" block (autodocs, the `tags: ["autodocs"]` every generated file carries). The story's
+ * own anchor (`anchor--<story id>`) is appended as a hash for a direct scroll.
  */
+const storyWords = (exportName: string): string =>
+  (exportName.match(/[A-Z]{2,}(?=[A-Z][a-z]+|\b)|[A-Z]?[a-z]+|[A-Z]|[0-9]+/g) ?? [exportName]).join("-").toLowerCase();
+
 export function storybookDocsUrl(
   base: string | null,
   title: string,
@@ -1387,8 +1391,7 @@ export function storybookDocsUrl(
 ): string | null {
   if (!base) return null;
   const kind = slugify(title);
-  const name = slugify(story);
-  return `${base}?path=/docs/${kind}--docs#${name}`;
+  return `${base}?path=/docs/${kind}--docs#anchor--${kind}--${storyWords(story)}`;
 }
 
 /* The row reads as one journey through the documentation: start, foundations, the catalogue, what
@@ -1523,6 +1526,28 @@ export const documentationNavigation = [
             ],
           },
           {
+            href: "/motion",
+            label: "Motion",
+            aliases: [
+              "movimiento",
+              "animación",
+              "animacion",
+              "transición",
+              "transicion",
+              "duración",
+              "duracion",
+              "easing",
+              "curvas",
+              "intención",
+              "intent",
+              "movimiento reducido",
+              "reduced motion",
+              "prefers-reduced-motion",
+              "data-motion",
+              "adr-4",
+            ],
+          },
+          {
             href: "/icons",
             label: "Iconografía",
             aliases: ["iconos", "icon set", "roles de icono", "vocabulario de iconos", "adr-15"],
@@ -1536,7 +1561,6 @@ export const documentationNavigation = [
         items: [
           { href: "/styling-hooks", label: "Styling hooks" },
           // { href: "/state-layer", label: "State layer" },
-          // { href: "/motion", label: "Motion" },
           // {
             // href: "/effects",
             // label: "Efectos",

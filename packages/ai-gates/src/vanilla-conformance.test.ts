@@ -85,7 +85,7 @@ describe("the vanilla layer over emitted markup", () => {
       }),
     );
     expect(unexercised).toEqual([]);
-  });
+  }, 60_000); // walks every example: the catalogue is the loop, so the default five seconds is not a bound it can keep
 
   for (const { name, markup, enhanced } of cases) {
     it(`${name}: enhances every root it claims to know`, async () => {

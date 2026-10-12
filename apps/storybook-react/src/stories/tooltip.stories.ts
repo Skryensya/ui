@@ -9,9 +9,6 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/tooltip";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Overlays/Tooltip", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Tooltip", tags: ["autodocs"] } satisfies Meta;
 
 export const Default: StoryObj = treeStory(demos.tooltipTree);
-export const DoIcon: StoryObj = treeStory(demos.tooltipDoIconTree);
-export const DontLong: StoryObj = treeStory(demos.tooltipDontLongTree);
-export const DontRepeat: StoryObj = treeStory(demos.tooltipDontRepeatTree);

@@ -38,7 +38,7 @@
     --color-bg-surface-sunken: light-dark(var(--palette-stone-100), var(--palette-stone-950));
     --color-bg-well: light-dark(var(--palette-stone-300), var(--palette-black));
     --color-bg-inverse: light-dark(var(--palette-stone-900), var(--palette-stone-100));
-    --color-bg-accent-subtle: light-dark(var(--palette-blue-50), var(--palette-blue-950));
+    --color-bg-accent-subtle: light-dark(var(--palette-accent-50), var(--palette-accent-950));
     --color-bg-danger-subtle: light-dark(var(--palette-red-50), var(--palette-red-950));
     --color-bg-success-subtle: light-dark(var(--palette-emerald-50), var(--palette-emerald-950));
     --color-bg-warning-subtle: light-dark(var(--palette-amber-50), var(--palette-amber-950));
@@ -55,18 +55,18 @@
     /*
      * ACCENT, TWO ADJACENT RUNGS PER MODE, and the text one is the outer of the two.
      *
-     * Light already worked this way (`blue-700` here, `blue-600` for every non-text accent below):
+     * Light already worked this way (`accent-700` here, `accent-600` for every non-text accent below):
      * a 5.8-point lightness band at full chroma, so the family reads as one colour. Dark did not.
-     * It spread `blue-300` / `blue-400` / `blue-500` across an 18.6-point band, three different
-     * blues at three different intensities, and the text end sat at `blue-300` - C 0.105 against
+     * It spread `accent-300` / `accent-400` / `accent-500` across an 18.6-point band, three different
+     * blues at three different intensities, and the text end sat at `accent-300` - C 0.105 against
      * light mode's C 0.243, a pale wash rather than the same accent seen on a dark page.
      *
      * IT HAD TO GO DARKER TO GET MORE INTENSE, which is the part that is not obvious. At this hue
      * the sRGB gamut narrows as lightness climbs: max chroma is 0.204 at L 62.3 and 0.154 at
-     * L 70.7, but only 0.096 at L 80.9 - `blue-300`'s own C 0.105 is already past the boundary and
+     * L 70.7, but only 0.096 at L 80.9 - `accent-300`'s own C 0.105 is already past the boundary and
      * clamped by the browser. So there is no version of a bright dark-mode accent that is also
-     * saturated; reaching for one is how the pale blue got there. `blue-400` (L 70.7, C 0.165)
-     * carries 57% more chroma than `blue-300` and mirrors light's structure exactly: outer rung for
+     * saturated; reaching for one is how the pale blue got there. `accent-400` (L 70.7, C 0.165)
+     * carries 57% more chroma than `accent-300` and mirrors light's structure exactly: outer rung for
      * text, inner rung for everything else, two steps either side of the ramp's middle.
      *
      * Contrast is not spent on this, it is EVENED OUT. Dark text-accent was running 8.39-10.91
@@ -77,7 +77,7 @@
      * `hc-tokens` (`_mixins.scss`) keeps its own, wider accent set on purpose: high contrast is
      * asked to maximise separation, not to look like the base tier.
      */
-    --color-text-accent: light-dark(var(--palette-blue-700), var(--palette-blue-400));
+    --color-text-accent: light-dark(var(--palette-accent-700), var(--palette-accent-400));
     --color-text-danger: light-dark(var(--palette-red-700), var(--palette-red-300));
     --color-text-success: light-dark(var(--palette-emerald-800), var(--palette-emerald-300));
     --color-text-warning: light-dark(var(--palette-amber-800), var(--palette-amber-300));
@@ -88,20 +88,20 @@
     --color-border-subtle: light-dark(var(--palette-stone-300), var(--palette-stone-800));
     --color-border-default: light-dark(var(--palette-stone-500), var(--palette-stone-500));
     --color-border-strong: light-dark(var(--palette-stone-600), var(--palette-stone-400));
-    --color-border-accent: light-dark(var(--palette-blue-600), var(--palette-blue-500));
+    --color-border-accent: light-dark(var(--palette-accent-600), var(--palette-accent-500));
     --color-border-danger: light-dark(var(--palette-red-600), var(--palette-red-500));
     --color-border-success: light-dark(var(--palette-emerald-600), var(--palette-emerald-500));
     --color-border-warning: light-dark(var(--palette-amber-600), var(--palette-amber-500));
     --color-border-info: light-dark(var(--palette-sky-600), var(--palette-sky-500));
     /* The focus ring is a non-text accent, so it takes the inner rung like the three above it, in
-     * both modes. It was the one token breaking the pair: `blue-400` in dark while `-accent` and
-     * `-action` sat on `blue-500`, which is what made the dark family span three rungs. Measured on
+     * both modes. It was the one token breaking the pair: `accent-400` in dark while `-accent` and
+     * `-action` sat on `accent-500`, which is what made the dark family span three rungs. Measured on
      * dark canvas it lands at 5.25, ABOVE light mode's own 4.82, so the ring gives up nothing for
      * the consistency. */
-    --color-border-focus: light-dark(var(--palette-blue-600), var(--palette-blue-500));
+    --color-border-focus: light-dark(var(--palette-accent-600), var(--palette-accent-500));
 
     /* ── action: interactive fills. Hover/press feedback comes from the state layer. ── */
-    --color-action-accent: light-dark(var(--palette-blue-600), var(--palette-blue-500));
+    --color-action-accent: light-dark(var(--palette-accent-600), var(--palette-accent-500));
     --color-action-neutral: light-dark(var(--palette-stone-100), var(--palette-stone-800));
     --color-action-danger: light-dark(var(--palette-red-600), var(--palette-red-500));
     --color-action-disabled: light-dark(var(--palette-stone-300), var(--palette-stone-800));

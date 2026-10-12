@@ -29,7 +29,7 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 const t = useTranslations(getLocale(Astro.url));
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`mediaOverlay.prop.${option}.${value}` as Parameters<typeof t>[0])]));
-const storybookTitle = "Components/Content/MediaOverlay";
+const storybookTitle = "Components/MediaOverlay";
 /* A card at the width a card is used at: stretched to the stage, the photo would crowd the page. */
 const cardWidthCss = `.sk-box { inline-size: min(100%, 24rem); margin-inline: auto; }`;
 const styles = `@import "@skryensya/core/patterns/image-frame.css";
@@ -58,8 +58,7 @@ const tint = `.hero-media .sk-media-overlay-shade {
       explain={explain("edge", ["bottom", "top", "start", "end"])}
       css={cardWidthCss}
       storybookTitle={storybookTitle}
-      storybookStory="Card"
-    />
+      storybookStory="Card" />
     <UsagePreview
       tree={mediaOverlayCardTree(t)}
       target={["children", 0, "caption", "children", 0]}
@@ -69,8 +68,7 @@ const tint = `.hero-media .sk-media-overlay-shade {
       explain={explain("strength", ["subtle", "moderate", "strong"])}
       css={cardWidthCss}
       storybookTitle={storybookTitle}
-      storybookStory="Card"
-    />
+      storybookStory="Card" />
 
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview
@@ -79,8 +77,7 @@ const tint = `.hero-media .sk-media-overlay-shade {
       description={t("mediaOverlay.cardBody")}
       css={cardWidthCss}
       storybookTitle={storybookTitle}
-      storybookStory="Card"
-    />
+      storybookStory="Card" />
     <h4>{t("mediaOverlay.tintTitle")}</h4>
     <p set:html={t("mediaOverlay.tintBody")} />
     <CodeBlock code={tint} label="CSS" lang="css" />

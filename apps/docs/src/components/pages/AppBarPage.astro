@@ -30,7 +30,7 @@ const t = useTranslations(getLocale(Astro.url));
 
 const install = `@import "@skryensya/core/components/app-bar.css";
 @import "@skryensya/core/patterns/state-layer.css";`;
-const storybookTitle = "Components/Actions/AppBar";
+const storybookTitle = "Components/AppBar";
 
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`appBarPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
@@ -57,8 +57,7 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("appBarPage.prop.strong.body")}
       explain={explain("strong", ["false", "true"])}
       storybookTitle={storybookTitle}
-      storybookStory="Minimal"
-    />
+      storybookStory="Minimal" />
 
     <h3>{t("component.examplesTitle")}</h3>
 
@@ -68,8 +67,7 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("appBarPage.fullBody")}
       stageMinBlockSize="16rem"
       storybookTitle={storybookTitle}
-      storybookStory="Default"
-    />
+      storybookStory="Default" />
 
     <UsagePreview
       tree={appBarMinimalTree(t)}
@@ -77,8 +75,7 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("appBarPage.minimalBody")}
       stageMinBlockSize="12rem"
       storybookTitle={storybookTitle}
-      storybookStory="Minimal"
-    />
+      storybookStory="Minimal" />
 
     <MenubarVsAppBar from="app-bar" />
 

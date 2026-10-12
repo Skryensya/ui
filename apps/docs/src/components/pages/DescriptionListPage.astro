@@ -34,7 +34,7 @@ import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
-const storybookTitle = "Components/Data/DescriptionList";
+const storybookTitle = "Components/DescriptionList";
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const styles = `@import "@skryensya/core/components/description-list.css";`;
 
@@ -59,6 +59,8 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("descriptionListPage.prop.layout.body")}
       explain={explain("layout", ["stacked", "columns"])}
       stageMinBlockSize="14rem"
+      storybookTitle="Components/DescriptionList"
+      storybookStory="Default"
     />
 
     <UsagePreview
@@ -69,6 +71,8 @@ const explain = (option: string, values: readonly string[]) =>
       explain={explain("dividers", ["false", "true"])}
       stageMinBlockSize="14rem"
       labels={{ false: t("descriptionListPage.prop.dividers.falseLabel"), true: t("descriptionListPage.prop.dividers.trueLabel") }}
+      storybookTitle="Components/DescriptionList"
+      storybookStory="Default"
     />
 
     <h3>{t("component.examplesTitle")}</h3>

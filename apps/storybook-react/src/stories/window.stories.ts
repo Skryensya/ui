@@ -7,7 +7,7 @@ import "@skryensya/core/components/window.css";
 import * as demos from "@docs/demos/window";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Overlays/Window", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Window", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.windowAnatomyTree);
 export const Default: StoryObj = treeStory(demos.windowTree);

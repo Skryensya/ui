@@ -38,21 +38,23 @@
 @layer components {
   @supports (animation-timeline: view()) {
     @media (prefers-reduced-motion: no-preference) {
-      .sk-fx-reveal {
-        /* LONGHANDS, never the `animation` shorthand: Lightning CSS (Vite's CSS transformer, through
-         * 1.33.0) folds a following `animation-timeline` back INTO the shorthand as
-         * `animation: both sk-fx-reveal view()`. The shorthand has no `<timeline>` slot, so every
-         * browser drops that whole declaration and the effect silently never runs in a production
-         * build. Kept apart, each longhand survives the minifier intact. */
-        animation-name: sk-fx-reveal;
-        animation-fill-mode: both;
-        animation-timeline: view();
-        /* Starts once the element has peeked a tenth of the way in, finishes while it is still
-         * rising into the covered zone, so it settles ahead of the reader rather than trailing the
-         * scroll. An element already on screen at load is past the range end, so it renders
-         * finished: no first-paint flash for above-the-fold content. */
-        animation-range: var(--sk-fx-reveal-range, entry 10% cover 30%);
-        animation-timing-function: var(--motion-enter-easing);
+      :where(:root:not([data-motion="reduced"])) {
+        .sk-fx-reveal {
+          /* LONGHANDS, never the `animation` shorthand: Lightning CSS (Vite's CSS transformer, through
+           * 1.33.0) folds a following `animation-timeline` back INTO the shorthand as
+           * `animation: both sk-fx-reveal view()`. The shorthand has no `<timeline>` slot, so every
+           * browser drops that whole declaration and the effect silently never runs in a production
+           * build. Kept apart, each longhand survives the minifier intact. */
+          animation-name: sk-fx-reveal;
+          animation-fill-mode: both;
+          animation-timeline: view();
+          /* Starts once the element has peeked a tenth of the way in, finishes while it is still
+           * rising into the covered zone, so it settles ahead of the reader rather than trailing the
+           * scroll. An element already on screen at load is past the range end, so it renders
+           * finished: no first-paint flash for above-the-fold content. */
+          animation-range: var(--sk-fx-reveal-range, entry 10% cover 30%);
+          animation-timing-function: var(--motion-enter-easing);
+        }
       }
     }
   }

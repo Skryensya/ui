@@ -104,9 +104,9 @@ const hooks = `/* The same families on every component that publishes the value.
 
     <h2>{t("appearancePage.specimenTitle")}</h2>
     <p set:html={t("appearancePage.specimenBody")} />
-    <UsagePreview tree={appearanceSpecimenTree(t)} label={t("appearancePage.specimenLabel")} />
+    <UsagePreview tree={appearanceSpecimenTree(t)} label={t("appearancePage.specimenLabel")} storybookTitle="Foundations/Appearance" storybookStory="Specimen" />
     <p set:html={t("appearancePage.backdropBody")} />
-    <UsagePreview tree={onAppearanceStage(appearanceSpecimenTree(t))} label={t("appearancePage.backdropLabel")} />
+    <UsagePreview tree={onAppearanceStage(appearanceSpecimenTree(t))} label={t("appearancePage.backdropLabel")} storybookTitle="Foundations/Appearance" storybookStory="Specimen" />
 
     <h2>{t("appearancePage.valuesTitle")}</h2>
     <div class="sk-table-scroll">

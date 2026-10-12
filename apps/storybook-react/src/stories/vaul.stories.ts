@@ -15,7 +15,7 @@ import "@skryensya/core/patterns/vaul.css";
 import * as demos from "@docs/demos/vaul";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Overlays/Drawer/Vaul", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Drawer - Vaul", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.vaulAnatomyTree);
 export const Share: StoryObj = treeStory(demos.vaulShareTree);

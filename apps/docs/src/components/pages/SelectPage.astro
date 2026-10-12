@@ -87,14 +87,16 @@ import { dd2 } from "../../demos/dodont-labels";
       description={t("selectPage.prop.variant.body")}
       explain={explain("variant", ["outline", "ghost"])}
       stageMinBlockSize="8rem"
+      storybookTitle="Components/Select"
+      storybookStory="Single"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={selectTree(t)} title={t("selectPage.enhancedTitle")} description={t("selectPage.enhancedBody")} viewport="menu" />
+    <UsagePreview tree={selectTree(t)} title={t("selectPage.enhancedTitle")} description={t("selectPage.enhancedBody")} viewport="menu" storybookTitle="Components/Select" storybookStory="Default" />
     <h4>{t("selectPage.htmlTitle")}</h4>
     <p set:html={t("selectPage.htmlBody")} />
     <CodeBlock code={forms} label="HTML" />
-    <UsagePreview tree={selectNativeTree(t)} title={t("selectPage.nativeTitle")} description={t("selectPage.nativeBody")} viewport="menu" />
+    <UsagePreview tree={selectNativeTree(t)} title={t("selectPage.nativeTitle")} description={t("selectPage.nativeBody")} viewport="menu" storybookTitle="Components/Select" storybookStory="Native" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

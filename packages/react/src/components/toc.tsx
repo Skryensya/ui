@@ -52,24 +52,75 @@ export function Toc({ className, items, title, ...props }: TocProps) {
       .filter((el): el is HTMLElement => el !== null);
     if (headings.length < 2) return;
 
+    const bandTop = 72;
     const onScreen = new Set<string>();
+    const first = () => headings.find((heading) => onScreen.has(heading.id))?.id;
+
+    /* First frame: the observer reports after layout, so read where the reader already is once, now:
+       the first heading inside the band, else the last one above it, else the first of the page. */
+    const seed = () => {
+      const edge = window.innerHeight * 0.3;
+      let above: string | undefined;
+      let id: string | undefined;
+      for (const heading of headings) {
+        const top = heading.getBoundingClientRect().top;
+        if (top < bandTop) {
+          above = heading.id;
+          continue;
+        }
+        id = top <= edge ? heading.id : above;
+        break;
+      }
+      setCurrent(hrefById.get(id ?? above ?? headings[0]!.id));
+    };
+    seed();
+
+    /* A click names its destination: mark it at once and ignore the headings the scroll passes through. */
+    let pinned = false;
+    let target: HTMLElement | null = null;
+    const release = () => {
+      pinned = false;
+      /* The page cannot always bring the last sections up to the band; one that ended on screen keeps its mark. */
+      const landed = target?.getBoundingClientRect();
+      target = null;
+      if (landed && landed.top < window.innerHeight && landed.bottom > 0) return;
+      const id = first();
+      if (id) setCurrent(hrefById.get(id));
+      else seed();
+    };
+    const onClick = (event: Event) => {
+      const link = (event.target as HTMLElement | null)?.closest?.("a[href^='#']") as HTMLAnchorElement | null;
+      const id = link ? decodeURIComponent(link.hash.slice(1)) : "";
+      if (!id || !hrefById.has(id)) return;
+      setCurrent(hrefById.get(id));
+      pinned = true;
+      target = document.getElementById(id);
+      window.addEventListener("scrollend", release, { once: true });
+      window.setTimeout(release, 2500);
+    };
+    root.addEventListener("click", onClick);
+
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) onScreen.add(entry.target.id);
           else onScreen.delete(entry.target.id);
         }
-
-        const currentId = headings.find((heading) => onScreen.has(heading.id))?.id;
-        // Nothing in the band means "between sections", not "nowhere": the last answer stands.
-        if (!currentId) return;
-        setCurrent(hrefById.get(currentId));
+        if (pinned) return;
+        const currentId = first();
+        // Nothing in the band means "between sections", not "nowhere": the heading last passed answers.
+        if (currentId) setCurrent(hrefById.get(currentId));
+        else seed();
       },
-      { rootMargin: "-72px 0px -70% 0px" },
+      { rootMargin: `-${bandTop}px 0px -70% 0px` },
     );
 
     for (const heading of headings) observer.observe(heading);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      root.removeEventListener("click", onClick);
+      window.removeEventListener("scrollend", release);
+    };
   }, [items]);
 
   return (

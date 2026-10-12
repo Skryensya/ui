@@ -56,7 +56,7 @@ const styles = `@import "@skryensya/core/patterns/anchored.css";
     {/* One card per option the contract declares that has a closed set of values: the trigger takes
         Button's own variant, tone and size, so those values are Button's. The popup needs room, so each
         stage is reserved tall enough for the menu to open without moving the card. */}
-    <UsagePreview tree={menuTree(t)} optionName="triggerVariant" {...prop("triggerVariant")} explain={explain("triggerVariant", ["solid", "soft", "ghost"])} stageMinBlockSize="16rem" />
+    <UsagePreview tree={menuTree(t)} optionName="triggerVariant" {...prop("triggerVariant")} explain={explain("triggerVariant", ["solid", "soft", "ghost"])} stageMinBlockSize="16rem" storybookTitle="Components/Menu" storybookStory="Default" />
     {/* The tone also changes what the menu holds: the button's colour is a claim about its contents. */}
     <UsagePreview
       tree={menuToneTree(t, "neutral")}
@@ -69,8 +69,10 @@ const styles = `@import "@skryensya/core/patterns/anchored.css";
       variantsLabel="triggerTone"
       {...prop("triggerTone")}
       stageMinBlockSize="16rem"
+      storybookTitle="Components/Menu"
+      storybookStory="Tone"
     />
-    <UsagePreview tree={menuTree(t)} optionName="triggerSize" {...prop("triggerSize")} explain={explain("triggerSize", ["xs", "sm", "md", "lg"])} stageMinBlockSize="16rem" />
+    <UsagePreview tree={menuTree(t)} optionName="triggerSize" {...prop("triggerSize")} explain={explain("triggerSize", ["xs", "sm", "md", "lg"])} stageMinBlockSize="16rem" storybookTitle="Components/Menu" storybookStory="Default" />
     <UsagePreview
       tree={menuDensityTree(t)}
       optionName="density"
@@ -78,6 +80,8 @@ const styles = `@import "@skryensya/core/patterns/anchored.css";
       labels={{ false: t("menuPage.prop.density.off"), true: t("menuPage.prop.density.on") }}
       explain={explain("density", ["false", "true"])}
       stageMinBlockSize="20rem"
+      storybookTitle="Components/Menu"
+      storybookStory="Density"
     />
     <UsagePreview
       tree={menuTree(t)}
@@ -86,6 +90,8 @@ const styles = `@import "@skryensya/core/patterns/anchored.css";
       labels={{ false: t("menuPage.prop.disabled.off"), true: t("menuPage.prop.disabled.on") }}
       explain={explain("disabled", ["false", "true"])}
       stageMinBlockSize="16rem"
+      storybookTitle="Components/Menu"
+      storybookStory="Default"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
@@ -93,15 +99,15 @@ const styles = `@import "@skryensya/core/patterns/anchored.css";
         to hold it, which only a frame of its own gives. */}
     <h3>{t("menuPage.actionsTitle")}</h3>
     <p set:html={t("menuPage.actionsBody")} />
-    <UsagePreview tree={menuTree(t)} label="Menu" viewport="menu" />
+    <UsagePreview tree={menuTree(t)} label="Menu" viewport="menu" storybookTitle="Components/Menu" storybookStory="Default" />
 
     <h3>{t("menuPage.multilevelTitle")}</h3>
     <p set:html={t("menuPage.multilevelBody")} />
-    <UsagePreview tree={menuMultilevelTree(t)} label={t("menuPage.multilevelTitle")} viewport="menu" />
+    <UsagePreview tree={menuMultilevelTree(t)} label={t("menuPage.multilevelTitle")} viewport="menu" storybookTitle="Components/Menu" storybookStory="Multilevel" />
 
     <h3>{t("menuPage.safetyTitle")}</h3>
     <p set:html={t("menuPage.safetyBody")} />
-    <UsagePreview tree={menuSafetyTree(t)} label={t("menuPage.safetyTitle")} viewport="menu-deep" />
+    <UsagePreview tree={menuSafetyTree(t)} label={t("menuPage.safetyTitle")} viewport="menu-deep" storybookTitle="Components/Menu" storybookStory="Safety" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

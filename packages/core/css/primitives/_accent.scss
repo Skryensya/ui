@@ -1,0 +1,37 @@
+/*
+ * TIER 1, THE ACCENT, DERIVED FROM ONE SEED
+ *
+ * `--palette-accent` is the single input. Everything the system paints with its accent is a rung of
+ * the ramp below, which keeps the seed's hue and scales its chroma, and takes a FIXED lightness per
+ * rung. Lightness is what sets contrast, and these rungs sit on the same L stops the system's
+ * blue ramp always used, so the WCAG pairs the semantic tier relies on hold for EVERY hue, not just
+ * the default one (measured around the whole hue circle: text on surface >= 5.9:1, white on the
+ * action fill >= 4.5:1, dark-mode pairs >= 4.9:1; see `docs/accent.md`).
+ *
+ * Change it on :root, once:
+ *
+ *   :root { --palette-accent: oklch(58% 0.2 25); }   // or #e11d48, any CSS color
+ *
+ * The seed's chroma is the ramp's PEAK (rung 600/700); lighter and darker rungs take their share of
+ * it, the way every perceptual ramp thins toward white and black. An out-of-gamut peak is mapped by
+ * the browser at constant lightness, which is what keeps the contrast intact.
+ */
+
+/* rung: lightness, then the share of the seed's peak chroma */
+@layer primitives {
+  :root {
+    --palette-accent: oklch(54.6% 0.245 262.881);
+
+    --palette-accent-50: oklch(from var(--palette-accent) 97% calc(c * 0.0571) h);
+    --palette-accent-100: oklch(from var(--palette-accent) 93.2% calc(c * 0.1306) h);
+    --palette-accent-200: oklch(from var(--palette-accent) 88.2% calc(c * 0.2408) h);
+    --palette-accent-300: oklch(from var(--palette-accent) 80.9% calc(c * 0.4286) h);
+    --palette-accent-400: oklch(from var(--palette-accent) 70.7% calc(c * 0.6735) h);
+    --palette-accent-500: oklch(from var(--palette-accent) 62.3% calc(c * 0.8735) h);
+    --palette-accent-600: oklch(from var(--palette-accent) 54.6% c h);
+    --palette-accent-700: oklch(from var(--palette-accent) 48.8% calc(c * 0.9918) h);
+    --palette-accent-800: oklch(from var(--palette-accent) 42.4% calc(c * 0.8122) h);
+    --palette-accent-900: oklch(from var(--palette-accent) 37.9% calc(c * 0.5959) h);
+    --palette-accent-950: oklch(from var(--palette-accent) 28.2% calc(c * 0.3714) h);
+  }
+}

@@ -148,10 +148,10 @@ import { scrollbarVisibleDoTree, scrollbarVisibleDontTree } from "../../demos/do
     <CodeBlock code={markup} label="HTML" lang="html" />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={scrollbarAlwaysTree(t)} css={scrollbarDemoCss} title={copy.alwaysTitle} description={copy.alwaysBody} caption="sk-scrollbar" />
-    <UsagePreview tree={scrollbarRevealTree(t)} css={scrollbarDemoCss} title={copy.revealTitle} description={copy.revealBody} caption={copy.revealCaption} />
-    <UsagePreview tree={scrollbarHorizontalTree(t)} css={scrollbarDemoCss} title={copy.horizontalTitle} description={copy.horizontalBody} />
-    <UsagePreview tree={scrollbarCustomTree(t)} css={scrollbarDemoCss} title={copy.customTitle} description={copy.customBody} />
+    <UsagePreview tree={scrollbarAlwaysTree(t)} css={scrollbarDemoCss} title={copy.alwaysTitle} description={copy.alwaysBody} caption="sk-scrollbar" storybookTitle="Components/Scrollbar" storybookStory="Always" />
+    <UsagePreview tree={scrollbarRevealTree(t)} css={scrollbarDemoCss} title={copy.revealTitle} description={copy.revealBody} caption={copy.revealCaption} storybookTitle="Components/Scrollbar" storybookStory="Reveal" />
+    <UsagePreview tree={scrollbarHorizontalTree(t)} css={scrollbarDemoCss} title={copy.horizontalTitle} description={copy.horizontalBody} storybookTitle="Components/Scrollbar" storybookStory="Horizontal" />
+    <UsagePreview tree={scrollbarCustomTree(t)} css={scrollbarDemoCss} title={copy.customTitle} description={copy.customBody} storybookTitle="Components/Scrollbar" storybookStory="Custom" />
     <CodeBlock code={hooks} label="CSS" lang="css" />
 
     <h3>{copy.contractTitle}</h3>

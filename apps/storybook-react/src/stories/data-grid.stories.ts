@@ -8,7 +8,7 @@ import "@skryensya/core/patterns/icon.css";
 import * as demos from "@docs/demos/data-grid";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Unlisted/DataGrid", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/DataGrid", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.dataGridAnatomyTree);
 export const Scores: StoryObj = treeStory(demos.dataGridScoresTree);

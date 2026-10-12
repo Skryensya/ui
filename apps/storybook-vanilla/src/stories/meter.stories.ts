@@ -8,12 +8,8 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/meter";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Data/Meter", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Meter", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.meterAnatomyTree);
 export const Default: StoryObj = treeStory(demos.meterTree);
 export const Single: StoryObj = treeStory(demos.meterSingleTree);
-export const DoTone: StoryObj = treeStory(demos.meterDoToneTree);
-export const DontTone: StoryObj = treeStory(demos.meterDontToneTree);
-export const DontTask: StoryObj = treeStory(demos.meterDontTaskTree);
-export const DoMeasure: StoryObj = treeStory(demos.meterDoMeasureTree);

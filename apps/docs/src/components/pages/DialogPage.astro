@@ -91,10 +91,10 @@ await initComponents();`;
         dialog from taking over this page. */}
     <h3>{t("dialog.confirmTitle")}</h3>
     <p set:html={t("dialog.confirmAnatomy")} />
-    <UsagePreview tree={dialogConfirmTree(t)} script={dialogConfirmScript} label="Confirm" viewport="overlay" />
+    <UsagePreview tree={dialogConfirmTree(t)} script={dialogConfirmScript} label="Confirm" viewport="overlay" storybookTitle="Components/Dialog" storybookStory="Confirm" />
     <h3>{t("dialog.vaulTitle")}</h3>
     <p set:html={t("dialog.vaulIntro")} />
-    <UsagePreview tree={dialogVaulTree(t)} script={dialogVaulScript} label="Dialog Vaul" viewport="overlay" />
+    <UsagePreview tree={dialogVaulTree(t)} script={dialogVaulScript} label="Dialog Vaul" viewport="overlay" storybookTitle="Components/Dialog" storybookStory="Vaul" />
 
     <h3>{t("dialog.openingTitle")}</h3>
     <CodeBlock code={confirmJs} label="JavaScript" />

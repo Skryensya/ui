@@ -53,20 +53,20 @@ import { tileDoTree, tileDontTree, tileDisabledDoTree, tileDisabledDontTree } fr
     <p class="lede" set:html={t("tilePage.lede")} />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={tileLinkGridTree(t)} title={t("tilePage.linkTitle")} description={t("tilePage.linkBody")} />
-    <UsagePreview tree={tileButtonGroupTree(t)} title={t("tilePage.buttonTitle")} description={t("tilePage.buttonBody")} />
-    <UsagePreview tree={tileCheckboxTree(t)} title={t("tilePage.checkboxTitle")} description={t("tilePage.checkboxBody")} />
-    <UsagePreview tree={tileSwitchTree(t)} title={t("tilePage.switchTitle")} description={t("tilePage.switchBody")} />
-    <UsagePreview tree={tileRadioGroupTree(t)} title={t("tilePage.radioTitle")} description={t("tilePage.radioBody")} />
-    <UsagePreview tree={expandableTileTree(t)} title={t("tilePage.expandableTitle")} description={t("tilePage.expandableBody")} />
-    <UsagePreview tree={tileVersusBoxTree(t)} title={t("tilePage.versusTitle")} description={t("tilePage.versusBody")} />
-    <UsagePreview tree={tilePaddingTree(t)} title={t("tilePage.paddingTitle")} description={t("tilePage.paddingBody")} />
+    <UsagePreview tree={tileLinkGridTree(t)} title={t("tilePage.linkTitle")} description={t("tilePage.linkBody")} storybookTitle="Components/Tile" storybookStory="LinkGrid" />
+    <UsagePreview tree={tileButtonGroupTree(t)} title={t("tilePage.buttonTitle")} description={t("tilePage.buttonBody")} storybookTitle="Components/Tile" storybookStory="ButtonGroup" />
+    <UsagePreview tree={tileCheckboxTree(t)} title={t("tilePage.checkboxTitle")} description={t("tilePage.checkboxBody")} storybookTitle="Components/Checkbox" storybookStory="TileCheckbox" />
+    <UsagePreview tree={tileSwitchTree(t)} title={t("tilePage.switchTitle")} description={t("tilePage.switchBody")} storybookTitle="Components/Switch" storybookStory="TileSwitch" />
+    <UsagePreview tree={tileRadioGroupTree(t)} title={t("tilePage.radioTitle")} description={t("tilePage.radioBody")} storybookTitle="Components/RadioGroup" storybookStory="TileRadioGroup" />
+    <UsagePreview tree={expandableTileTree(t)} title={t("tilePage.expandableTitle")} description={t("tilePage.expandableBody")} storybookTitle="Components/Tile" storybookStory="ExpandableTile" />
+    <UsagePreview tree={tileVersusBoxTree(t)} title={t("tilePage.versusTitle")} description={t("tilePage.versusBody")} storybookTitle="Components/Tile" storybookStory="VersusBox" />
+    <UsagePreview tree={tilePaddingTree(t)} title={t("tilePage.paddingTitle")} description={t("tilePage.paddingBody")} storybookTitle="Components/Tile" storybookStory="Padding" />
 
     <h3>{t("tilePage.appearanceTitle")}</h3>
     <p set:html={t("tilePage.appearanceBody")} />
     {/* A comparison of appearances: the page-wide appearance switch must not repaint it. */}
     <div data-docs-appearance-fixed>
-      <UsagePreview tree={tileAppearanceTree(t)} />
+      <UsagePreview tree={tileAppearanceTree(t)} storybookTitle="Components/Tile" storybookStory="Appearance" />
     </div>
 
     <h3>{t("component.contractNotesTitle")}</h3>

@@ -7,14 +7,13 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/fade-edge.css";
 import "@skryensya/core/components/input.css";
 import "@skryensya/core/components/list.css";
-import "@skryensya/core/components/tag.css";
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/fade-edge";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Utilities/FadeEdge", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/FadeEdge", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.fadeEdgeAnatomyTree);
 export const FadeHorizontalAgenda: StoryObj = treeStory(demos.fadeHorizontalAgendaTree);
@@ -27,9 +26,3 @@ export const FadeLeft: StoryObj = treeStory(() => demos.fadeLeftTree);
 export const FadeColor: StoryObj = treeStory(() => demos.fadeColorTree);
 export const FadeIntensity: StoryObj = treeStory(() => demos.fadeIntensityTree);
 export const FadeScrollAware: StoryObj = treeStory(() => demos.fadeScrollAwareTree);
-export const FadeDoFits: StoryObj = treeStory(() => demos.fadeDoFitsTree);
-export const FadeDontFits: StoryObj = treeStory(() => demos.fadeDontFitsTree);
-export const FadeDirectionGuide: StoryObj = treeStory(() => demos.fadeDirectionGuideTree);
-export const FadeDontDirection: StoryObj = treeStory(() => demos.fadeDontDirectionTree);
-export const FadeDontMode: StoryObj = treeStory(() => demos.fadeDontModeTree);
-export const FadeDontNestedScroll: StoryObj = treeStory(() => demos.fadeDontNestedScrollTree);

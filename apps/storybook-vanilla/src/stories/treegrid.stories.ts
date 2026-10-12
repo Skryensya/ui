@@ -8,9 +8,8 @@ import "@skryensya/core/components/treegrid.css";
 import * as demos from "@docs/demos/treegrid";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Data/Treegrid", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Treegrid", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.treegridAnatomyTree);
 export const Inbox: StoryObj = treeStory(demos.treegridInboxTree);
 export const Stress: StoryObj = treeStory(demos.treegridStressTree);
-export const DontOneColumn: StoryObj = treeStory(demos.treegridDontOneColumnTree);

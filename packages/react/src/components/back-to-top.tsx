@@ -5,6 +5,7 @@ import {
   backToTopScrollBehavior,
   backToTopShouldReveal,
 } from "@skryensya/core/back-to-top";
+import { prefersReducedMotion as reducedMotion } from "@skryensya/core/reduced-motion";
 import {
   useCallback,
   useEffect,
@@ -90,9 +91,7 @@ export function BackToTop({
       if (event.defaultPrevented) return;
 
       const host = scrollTargetRef.current ?? window;
-      const prefersReducedMotion =
-        typeof window !== "undefined" &&
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const prefersReducedMotion = reducedMotion();
       const options: ScrollToOptions = {
         top: 0,
         left: 0,

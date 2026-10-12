@@ -45,6 +45,10 @@ function markup(): HTMLElement {
   return root;
 }
 
+const mouse = {
+  enter: (el: Element) => fireEvent.pointerEnter(el, { pointerType: "mouse" }),
+  leave: (el: Element) => fireEvent.pointerLeave(el, { pointerType: "mouse" }),
+};
 const triggers = (root: HTMLElement) => Array.from(root.querySelectorAll<HTMLButtonElement>("[data-sk-megamenu-trigger]"));
 const sharedContent = (root: HTMLElement) => root.querySelector<HTMLElement>("[data-sk-megamenu-content]")!;
 const visiblePanel = (root: HTMLElement) => sharedContent(root).querySelector<HTMLElement>(".sk-megamenu__panel--visible")!;
@@ -132,7 +136,7 @@ describe("Megamenu vanilla enhancer", () => {
   it("opens on hover intent after its delay, not immediately", () => {
     vi.useFakeTimers();
     const root = markup();
-    fireEvent.pointerEnter(triggers(root)[0]!);
+    mouse.enter(triggers(root)[0]!);
     expect(isOpen(root, 0)).toBe(false);
 
     vi.advanceTimersByTime(150);
@@ -142,8 +146,8 @@ describe("Megamenu vanilla enhancer", () => {
   it("cancels the open-intent timer when the pointer leaves before the delay elapses", () => {
     vi.useFakeTimers();
     const root = markup();
-    fireEvent.pointerEnter(triggers(root)[0]!);
-    fireEvent.pointerLeave(triggers(root)[0]!);
+    mouse.enter(triggers(root)[0]!);
+    mouse.leave(triggers(root)[0]!);
     vi.advanceTimersByTime(150);
 
     expect(isOpen(root, 0)).toBe(false);
@@ -152,8 +156,9 @@ describe("Megamenu vanilla enhancer", () => {
   it("closes on hover intent after its own delay once the pointer leaves both trigger and panel", () => {
     vi.useFakeTimers();
     const root = markup();
-    fireEvent.click(triggers(root)[0]!);
-    fireEvent.pointerLeave(triggers(root)[0]!);
+    mouse.enter(triggers(root)[0]!);
+    vi.advanceTimersByTime(150);
+    mouse.leave(triggers(root)[0]!);
     vi.advanceTimersByTime(150);
 
     expect(isOpen(root, 0)).toBe(false);
@@ -163,13 +168,85 @@ describe("Megamenu vanilla enhancer", () => {
   it("re-entering the shared panel cancels its pending close", () => {
     vi.useFakeTimers();
     const root = markup();
-    fireEvent.click(triggers(root)[0]!);
-    fireEvent.pointerLeave(triggers(root)[0]!);
+    mouse.enter(triggers(root)[0]!);
+    vi.advanceTimersByTime(150);
+    mouse.leave(triggers(root)[0]!);
     const positioner = root.querySelector<HTMLElement>("[data-sk-megamenu-positioner]")!;
-    fireEvent.pointerEnter(positioner);
+    mouse.enter(positioner);
     vi.advanceTimersByTime(150);
 
     expect(isOpen(root, 0)).toBe(true);
+  });
+
+  it("clicking a hover-opened trigger closes it once the moment has passed", () => {
+    vi.useFakeTimers();
+    const root = markup();
+    mouse.enter(triggers(root)[0]!);
+    vi.advanceTimersByTime(900);
+    fireEvent.click(triggers(root)[0]!);
+
+    expect(isOpen(root, 0)).toBe(false);
+  });
+
+  it("a click right after hover opened it pins it open, and the pointer leaving no longer closes it", () => {
+    vi.useFakeTimers();
+    const root = markup();
+    mouse.enter(triggers(root)[0]!);
+    vi.advanceTimersByTime(150);
+    vi.advanceTimersByTime(100);
+    fireEvent.click(triggers(root)[0]!);
+    expect(isOpen(root, 0)).toBe(true);
+
+    mouse.leave(triggers(root)[0]!);
+    vi.advanceTimersByTime(500);
+    expect(isOpen(root, 0)).toBe(true);
+
+    fireEvent.click(triggers(root)[0]!);
+    expect(isOpen(root, 0)).toBe(false);
+  });
+
+  it("marks the trigger data-pinned only after a click pinned it", () => {
+    vi.useFakeTimers();
+    const root = markup();
+    const [products] = triggers(root);
+    mouse.enter(products!);
+    vi.advanceTimersByTime(150);
+    expect(products!.hasAttribute("data-pinned")).toBe(false);
+
+    fireEvent.click(products!);
+    expect(products!.hasAttribute("data-pinned")).toBe(true);
+
+    fireEvent.click(products!);
+    expect(products!.hasAttribute("data-pinned")).toBe(false);
+  });
+
+  it("while a panel is open, hovering another trigger switches at once", () => {
+    vi.useFakeTimers();
+    const root = markup();
+    mouse.enter(triggers(root)[0]!);
+    vi.advanceTimersByTime(150);
+    mouse.leave(triggers(root)[0]!);
+    mouse.enter(triggers(root)[1]!);
+
+    expect(isOpen(root, 1)).toBe(true);
+    expect(isOpen(root, 0)).toBe(false);
+  });
+
+  it("touch pointers do not hover-open", () => {
+    vi.useFakeTimers();
+    const root = markup();
+    fireEvent.pointerEnter(triggers(root)[0]!, { pointerType: "touch" });
+    vi.advanceTimersByTime(500);
+
+    expect(isOpen(root, 0)).toBe(false);
+  });
+
+  it("a press outside the bar closes a pinned panel", () => {
+    const root = markup();
+    fireEvent.click(triggers(root)[0]!);
+    fireEvent.pointerDown(document.body);
+
+    expect(isOpen(root, 0)).toBe(false);
   });
 
   it("Escape closes the open panel and returns focus to its trigger", () => {

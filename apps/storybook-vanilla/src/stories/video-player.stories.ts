@@ -9,12 +9,8 @@ import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/video-player";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Media & Visuals/Video Player", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Video Player", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.videoPlayerAnatomyTree);
 export const Default: StoryObj = treeStory(demos.videoPlayerTree);
 export const Study: StoryObj = treeStory(demos.videoPlayerStudyTree);
-export const DoPoster: StoryObj = treeStory(demos.videoPlayerDoPosterTree);
-export const DontPoster: StoryObj = treeStory(demos.videoPlayerDontPosterTree);
-export const DoRoom: StoryObj = treeStory(demos.videoPlayerDoRoomTree);
-export const DontRoom: StoryObj = treeStory(demos.videoPlayerDontRoomTree);

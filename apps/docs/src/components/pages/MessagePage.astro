@@ -27,7 +27,7 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const styles = `@import "@skryensya/core/components/message.css";`;
-const storybookTitle = "Components/Content/Message";
+const storybookTitle = "Components/Message";
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`messagePage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 const doAlignmentGood = `<div class="message-demo message-demo--pair">
@@ -145,6 +145,8 @@ const react = `import {
       description={t("messagePage.prop.align.body")}
       explain={explain("align", ["start", "end"])}
       stageMinBlockSize="10rem"
+      storybookTitle="Components/Message"
+      storybookStory="Playground"
     />
 
     <UsagePreview
@@ -155,6 +157,8 @@ const react = `import {
       title={t("messagePage.prop.metadata.title")}
       description={t("messagePage.prop.metadata.body")}
       stageMinBlockSize="10rem"
+      storybookTitle="Components/Message"
+      storybookStory="Playground"
     />
 
     <UsagePreview
@@ -163,12 +167,14 @@ const react = `import {
       title={t("messagePage.prop.group.title")}
       description={t("messagePage.prop.group.body")}
       stageMinBlockSize="11rem"
+      storybookTitle="Components/Message"
+      storybookStory="Group"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
 
-    <UsagePreview tree={messageWritingTree(t)} css={messageDemoCss} title={t("messagePage.writingTitle")} description={t("messagePage.writingBody")} />
-    <UsagePreview tree={messageReactionTree(t)} css={messageDemoCss} title={t("messagePage.reactionTitle")} description={t("messagePage.reactionBody")} />
+    <UsagePreview tree={messageWritingTree(t)} css={messageDemoCss} title={t("messagePage.writingTitle")} description={t("messagePage.writingBody")} storybookTitle="Components/Message" storybookStory="Writing" />
+    <UsagePreview tree={messageReactionTree(t)} css={messageDemoCss} title={t("messagePage.reactionTitle")} description={t("messagePage.reactionBody")} storybookTitle="Components/Message" storybookStory="Reaction" />
     <UsagePreview
       tree={messageActionsTree(t)}
       css={messageDemoCss}
@@ -176,6 +182,8 @@ const react = `import {
       stageMinBlockSize="20rem"
       title={t("messagePage.actionsTitle")}
       description={t("messagePage.actionsBody")}
+      storybookTitle="Components/Message"
+      storybookStory="Actions"
     />
 
     <h3>{t("component.contractNotesTitle")}</h3>

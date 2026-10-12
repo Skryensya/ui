@@ -277,12 +277,14 @@
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    .sk-image-cropper[data-resizable] cropper-handle[action$="-resize"] {
-      transition: scale var(--motion-feedback-duration) var(--motion-feedback-easing);
-    }
+    :where(:root:not([data-motion="reduced"])) {
+      .sk-image-cropper[data-resizable] cropper-handle[action$="-resize"] {
+        transition: scale var(--motion-feedback-duration) var(--motion-feedback-easing);
+      }
 
-    .sk-image-cropper[data-resizable] cropper-handle[action$="-resize"]:hover {
-      scale: 1.2;
+      .sk-image-cropper[data-resizable] cropper-handle[action$="-resize"]:hover {
+        scale: 1.2;
+      }
     }
   }
 

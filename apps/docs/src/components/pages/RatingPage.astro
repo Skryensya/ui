@@ -76,6 +76,8 @@ const explain = (option: string, values: readonly string[]) =>
       explain={explain("symbolSize", ["sm", "md", "lg"])}
       stageMinBlockSize="7rem"
       labels={{ sm: "sm", md: "md", lg: "lg" }}
+      storybookTitle="Components/Rating"
+      storybookStory="Display"
     />
 
     <UsagePreview
@@ -86,6 +88,8 @@ const explain = (option: string, values: readonly string[]) =>
       labels={{ false: t("ratingPage.readOnly.false"), true: t("ratingPage.readOnly.true") }}
       explain={{ false: t("ratingPage.readOnlyExplain.false"), true: t("ratingPage.readOnlyExplain.true") }}
       stageMinBlockSize="7rem"
+      storybookTitle="Components/Rating"
+      storybookStory="Playground"
     />
     <UsagePreview
       variants={maxVariants}
@@ -94,19 +98,23 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("ratingPage.maxTitle")}
       description={t("ratingPage.maxBody")}
       stageMinBlockSize="7rem"
+      storybookTitle="Components/Rating"
+      storybookStory="Display"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={ratingProductTree(t)} title={t("ratingPage.productTitle")} description={t("ratingPage.productBody")} />
-    <UsagePreview tree={ratingReviewTree(t)} title={t("ratingPage.reviewTitle")} description={t("ratingPage.reviewBody")} />
-    <UsagePreview tree={ratingDisplayTree(t)} title={t("ratingPage.displayTitle")} description={t("ratingPage.displayBody")} />
-    <UsagePreview tree={ratingInputTree(t)} title={t("ratingPage.inputTitle")} description={t("ratingPage.inputBody")} />
-    <UsagePreview tree={ratingFractionsTree(t)} title={t("ratingPage.fractionTitle")} description={t("ratingPage.fractionBody")} />
-    <UsagePreview tree={ratingHeartsTree(t)} css={ratingHeartsCss} title={t("ratingPage.symbolTitle")} description={t("ratingPage.symbolBody")} />
+    <UsagePreview tree={ratingProductTree(t)} title={t("ratingPage.productTitle")} description={t("ratingPage.productBody")} storybookTitle="Components/Rating" storybookStory="Product" />
+    <UsagePreview tree={ratingReviewTree(t)} title={t("ratingPage.reviewTitle")} description={t("ratingPage.reviewBody")} storybookTitle="Components/Rating" storybookStory="Review" />
+    <UsagePreview tree={ratingDisplayTree(t)} title={t("ratingPage.displayTitle")} description={t("ratingPage.displayBody")} storybookTitle="Components/Rating" storybookStory="Display" />
+    <UsagePreview tree={ratingInputTree(t)} title={t("ratingPage.inputTitle")} description={t("ratingPage.inputBody")} storybookTitle="Components/Rating" storybookStory="Input" />
+    <UsagePreview tree={ratingFractionsTree(t)} title={t("ratingPage.fractionTitle")} description={t("ratingPage.fractionBody")} storybookTitle="Components/Rating" storybookStory="Fractions" />
+    <UsagePreview tree={ratingHeartsTree(t)} css={ratingHeartsCss} title={t("ratingPage.symbolTitle")} description={t("ratingPage.symbolBody")} storybookTitle="Components/Rating" storybookStory="Hearts" />
     <UsagePreview
       tree={variantsTree(ratingInputTree(t), [{ label: t("component.state.default"), options: {} }, { label: t("component.state.readOnly"), options: { readOnly: true } }, { label: t("component.state.disabled"), options: { disabled: true } }])}
       title={t("component.statesTitle")}
       description={t("component.statesBody")}
+      storybookTitle="Components/Rating"
+      storybookStory="Input"
     />
 
 

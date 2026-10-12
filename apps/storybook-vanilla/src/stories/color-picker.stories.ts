@@ -6,7 +6,7 @@ import "@skryensya/core/patterns/anchored.css";
 import * as demos from "@docs/demos/color-picker";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Forms/ColorPicker", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/ColorPicker", tags: ["autodocs"] } satisfies Meta;
 
 export const Default: StoryObj = treeStory(demos.colorPickerTree);
 export const CompactColorPicker: StoryObj = treeStory(demos.compactColorPickerTree);

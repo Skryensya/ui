@@ -135,6 +135,11 @@
 
   .sk-segmented[data-sk-segmented-ready] .sk-segmented__indicator {
     visibility: visible;
+  }
+
+  /* Motion is for CHANGES. The enhancer adds `data-sk-segmented-motion` a couple of frames after the
+   * first placement, so the thumb is in its place on the first frame instead of growing from 0 x 0. */
+  .sk-segmented[data-sk-segmented-motion] .sk-segmented__indicator {
     /* Position + size together: width-only snaps between "Mes"/"Semana" look quirky while sliding.
      * No local `prefers-reduced-motion` override, the same reason checkbox.css and switch.css's
      * thumb have none: `--motion-state-change-duration` already resolves to the SAME fast value

@@ -376,7 +376,7 @@ export function diffTreegridVisibility(
  * The ceiling either binding waits for an "exiting" row's own animation before treating it as
  * settled and finally setting `hidden`, if `animationend` never fires for some reason (jsdom does
  * not reliably fire it for CSS `animation`, so this is the PRIMARY mechanism under test, not a
- * rare fallback). Matches `--motion-collapse-duration` (`--scale-duration-slow`, `semantic/
+ * rare fallback). Matches `--motion-expand-duration` (`--scale-duration-slow`, `semantic/
  * _motion.scss`) plus a small buffer. Kept as a JS constant, not read off the token, because JS
  * cannot resolve a custom property's primitive value without a live element to measure it against,
  * and this only ever needs to be an upper bound, never exact.

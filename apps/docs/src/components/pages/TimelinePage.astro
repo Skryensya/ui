@@ -49,11 +49,13 @@ const explain = (option: string, values: readonly string[]) =>
       explain={explain("tone", ["neutral", "accent", "success", "warning", "danger"])}
       stageMinBlockSize="14rem"
       target={["children", 0]}
+      storybookTitle="Components/Timeline"
+      storybookStory="DoTime"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={timelineTree(t)} title={t("timelinePage.orderTitle")} description={t("timelinePage.orderBody")} />
-    <UsagePreview tree={timelineTonesTree(t)} title={t("timelinePage.tonesTitle")} description={t("timelinePage.tonesBody")} />
+    <UsagePreview tree={timelineTree(t)} title={t("timelinePage.orderTitle")} description={t("timelinePage.orderBody")} storybookTitle="Components/Timeline" storybookStory="Default" />
+    <UsagePreview tree={timelineTonesTree(t)} title={t("timelinePage.tonesTitle")} description={t("timelinePage.tonesBody")} storybookTitle="Components/Timeline" storybookStory="Tones" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

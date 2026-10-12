@@ -101,7 +101,6 @@ function buildTokenBundle() {
   const imports = [
     `@use "./primitives";`,
     `@use "./semantic";`,
-    `@import "./modes/hc.scss";`,
     `@import "./dimensions/radius.scss";`,
   ].join("\n");
   const entry = join(CSS_DIR, "__prune_entry__.scss");

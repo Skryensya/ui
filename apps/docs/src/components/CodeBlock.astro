@@ -176,14 +176,18 @@ const language =
 const toggleIcon = iconMarkup("chevron-down", { size: "sm" });
 ---
 
+{
+  (label || note) && (
+    <p class="code-caption">
+      {label && <span>{label}</span>}
+      {note && <span>{note}</span>}
+    </p>
+  )
+}
 <div class={codePreviewParts.root} {...rootAttrs}>
   {
-    (label || note || hasDensity) && (
+    hasDensity && (
       <div class={codePreviewParts.label}>
-        <span class={codePreviewParts.meta}>
-          {label && <span>{label}</span>}
-          {note && <span>{note}</span>}
-        </span>
         {
           hasDensity && (
             <div class={codePreviewParts.density}>
@@ -278,3 +282,25 @@ const toggleIcon = iconMarkup("chevron-down", { size: "sm" });
 
   mountCodePreview();
 </script>
+
+<style>
+  /* The file name or language sits OUTSIDE the box, as a plain caption: the box holds only the code. */
+  .code-caption {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-inline-sm);
+    margin-block: var(--space-stack-sm) 0;
+    color: var(--color-text-secondary);
+    font-family: var(--font-family-code);
+    font-size: var(--font-size-caption);
+  }
+
+  .code-caption > :first-child {
+    color: var(--color-text-primary);
+  }
+
+  .code-caption > :not(:first-child)::before {
+    content: "·";
+    margin-inline-end: var(--space-inline-sm);
+  }
+</style>

@@ -1,6 +1,5 @@
 ---
 import FoundationPage from "../components/FoundationPage.astro";
-import CodeBlock from "../components/CodeBlock.astro";
 import EasingCurve from "../components/EasingCurve.astro";
 import MotionTrack from "../components/MotionTrack.astro";
 import MotionTransport from "../components/MotionTransport.astro";
@@ -73,25 +72,6 @@ const intents = tokens
     };
   });
 
-const bad = `.sk-dialog {
-  transition: opacity var(--scale-duration-fast);
-}`;
-
-const good = `.sk-dialog {
-  transition: opacity var(--motion-enter-duration)
-    var(--motion-enter-easing);
-  translate: 0 var(--motion-enter-distance);
-}`;
-
-const reduced = `@media (prefers-reduced-motion: reduce) {
-  /* spatial: no travel, a fade remains */
-  --motion-enter-distance: 0px;
-  /* essential: stays readable */
-  --motion-expand-duration: 120ms;
-  /* decorative: removed */
-  --motion-emphasize-duration: 0ms;
-  --motion-count-duration: 0ms;
-}`;
 ---
 
 <FoundationPage
@@ -99,26 +79,76 @@ const reduced = `@media (prefers-reduced-motion: reduce) {
   description="A motion language with intent tokens: components describe what a movement means, not how long it lasts."
 >
   <p class="lede">
-    Motion says why something moves: entering, leaving, revealing, responding, loading. Components
-    consume intent tokens; the technical durations, curves and distances sit underneath and can change
-    without touching a Contract.
+    Motion says why something moves. Components ask for an intent (entering, leaving, responding) and the
+    durations, curves and distances sit underneath, free to change without touching a Contract.
   </p>
 
-  <h2>What fails without intent</h2>
+  <h2>Intents</h2>
   <p>
-    A raw duration does not say whether a change is essential, decorative or spatial. If a component
-    reads <code>--scale-duration-fast</code>, reduced motion cannot decide what to keep and what to
-    drop. The tier-skip rule blocks it: a tier 3 component does not consume tier 1 primitives.
+    Each intent is one duration, one easing and, where it travels, one distance. Entering decelerates and
+    travels farther: the element arrives and settles. Leaving accelerates and travels less, because the
+    decision already happened. Collapse is the same intent as expand, so two panels swapping never
+    disagree on speed.
   </p>
-  <CodeBlock code={bad} label="CSS · invalid" />
-  <CodeBlock code={good} label="CSS · valid" />
 
-  <h2>How it works</h2>
-  <p>
-    Tier 1 measures time and curve. Tier 2 composes those values into intent tokens. A component only
-    sees the semantic name, so a timing review restyles the whole system without migrating a single
-    transition. Motion ships with <code>tokens.scss</code>: there is nothing to import.
-  </p>
+  <figure class="specimens" data-motion-group data-motion-specimen>
+    <figcaption class="specimens__head">
+      <span class="specimens__title">{intents.length} intents</span>
+      <MotionTransport label="the intents" />
+    </figcaption>
+    <div class="sk-table-scroll">
+      <table class="sk-table intents">
+        <thead class="sk-table__head">
+          <tr class="sk-table__row">
+            <th class="sk-table__header">Intent</th>
+            <th class="sk-table__header">Duration</th>
+            <th class="sk-table__header">Easing</th>
+            <th class="sk-table__header">Distance</th>
+            <th class="sk-table__header intents__sample">Sample</th>
+          </tr>
+        </thead>
+        <tbody class="sk-table__body">
+          {
+            intents.map((i) => (
+              <tr class="sk-table__row">
+                <td class="sk-table__cell mono intents__name">--motion-{i.key}-*</td>
+                <td class="sk-table__cell mono">
+                  <span class="intents__ref">{i.duration}</span>
+                  <span class="intents__used"><Used token={`--motion-${i.key}-duration`} /></span>
+                </td>
+                <td class="sk-table__cell mono">
+                  <span class="intents__ref">{i.easing}</span>
+                </td>
+                <td class="sk-table__cell mono">
+                  {i.distance ? (
+                    <>
+                      <span class="intents__ref">{i.distance}</span>
+                      <span class="intents__used"><Used token={`--motion-${i.key}-distance`} /></span>
+                    </>
+                  ) : (
+                    <span class="intents__none">n/a</span>
+                  )}
+                </td>
+                <td class="sk-table__cell">
+                  <MotionTrack
+                    duration={`var(--motion-${i.key}-duration)`}
+                    easing={`var(--motion-${i.key}-easing)`}
+                    loop={i.loops}
+                  />
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <p class="specimens__note">
+      The samples read the same tokens a component does, so under reduced motion they stop matching the
+      durations above and show the reduced ones.
+    </p>
+  </figure>
+
+  <h2>Scale</h2>
   <p class="howto">
     The samples use the real tokens. Pressing <em>Play</em> moves every row of a block together, so you
     can compare time, curve or intent without copying values by hand.
@@ -182,85 +212,13 @@ const reduced = `@media (prefers-reduced-motion: reduce) {
     </p>
   </figure>
 
-  <h2>Intent tokens</h2>
-  <p>
-    Each intent combines one duration, one easing and, where it applies, a distance. The table shows the
-    primitive it composes and the value the browser resolves right now.
-  </p>
-
-  <figure class="specimens" data-motion-group data-motion-specimen>
-    <figcaption class="specimens__head">
-      <span class="specimens__title">{intents.length} intents</span>
-      <MotionTransport label="the intents" />
-    </figcaption>
-    <div class="sk-table-scroll">
-      <table class="sk-table intents">
-        <thead class="sk-table__head">
-          <tr class="sk-table__row">
-            <th class="sk-table__header">Intent</th>
-            <th class="sk-table__header">Duration</th>
-            <th class="sk-table__header">Easing</th>
-            <th class="sk-table__header">Distance</th>
-            <th class="sk-table__header intents__sample">Sample</th>
-          </tr>
-        </thead>
-        <tbody class="sk-table__body">
-          {
-            intents.map((i) => (
-              <tr class="sk-table__row">
-                <td class="sk-table__cell mono intents__name">--motion-{i.key}-*</td>
-                <td class="sk-table__cell mono">
-                  <span class="intents__ref">{i.duration}</span>
-                  <span class="intents__used"><Used token={`--motion-${i.key}-duration`} /></span>
-                </td>
-                <td class="sk-table__cell mono">
-                  <span class="intents__ref">{i.easing}</span>
-                </td>
-                <td class="sk-table__cell mono">
-                  {i.distance ? (
-                    <>
-                      <span class="intents__ref">{i.distance}</span>
-                      <span class="intents__used"><Used token={`--motion-${i.key}-distance`} /></span>
-                    </>
-                  ) : (
-                    <span class="intents__none">n/a</span>
-                  )}
-                </td>
-                <td class="sk-table__cell">
-                  <MotionTrack
-                    duration={`var(--motion-${i.key}-duration)`}
-                    easing={`var(--motion-${i.key}-easing)`}
-                    loop={i.loops}
-                  />
-                </td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-    </div>
-    <p class="specimens__note">
-      The samples read the same tokens a component does, so under reduced motion they stop matching the
-      durations above and show the reduced ones.
-    </p>
-  </figure>
-
-  <h2>Direction and role</h2>
-  <ul>
-    <li>Entering decelerates and travels farther: the element arrives and settles.</li>
-    <li>Leaving accelerates and travels less: the decision already happened, so it must not add latency.</li>
-    <li>Reveal and navigate use distance to express hierarchy, not decoration.</li>
-    <li>State-change and expand stay readable because they explain a change of state.</li>
-    <li>Emphasize and count are decorative and can disappear under reduced motion.</li>
-  </ul>
-
   <h2>Reduced motion</h2>
   <p>
-    Reduced motion does not switch everything off. It redeclares the same intent tokens by role: it
-    removes spatial travel, keeps essential changes and cuts decorative movement. Because components
-    already consume those tokens, none of them changes.
+    Reduced motion does not switch everything off. It follows the system setting, and an app can add to
+    it with <code>data-motion="reduced"</code> on <code>&lt;html&gt;</code>, but never take it away: travel
+    goes, essential changes stay short, decorative movement stops. Tokens, component sheets and scripts
+    all honour both.
   </p>
-  <CodeBlock code={reduced} label="semantic.scss" />
 
   <div class="sk-table-scroll">
     <table class="sk-table roles">
@@ -276,28 +234,24 @@ const reduced = `@media (prefers-reduced-motion: reduce) {
           <td class="sk-table__cell">Distance to 0; a short fade remains.</td>
         </tr>
         <tr class="sk-table__row">
-          <td class="sk-table__cell">Essential: state-change, expand, collapse</td>
-          <td class="sk-table__cell">Short but readable duration.</td>
+          <td class="sk-table__cell">Essential: state-change, expand</td>
+          <td class="sk-table__cell">Short, still readable.</td>
         </tr>
         <tr class="sk-table__row">
-          <td class="sk-table__cell">Decorative: emphasize, count</td>
+          <td class="sk-table__cell">Instant: feedback, emphasize, count</td>
           <td class="sk-table__cell">Duration to 0.</td>
         </tr>
         <tr class="sk-table__row">
+          <td class="sk-table__cell">Release: letting go of a drag</td>
+          <td class="sk-table__cell">A short, plain move; it still has to arrive.</td>
+        </tr>
+        <tr class="sk-table__row">
           <td class="sk-table__cell">Continuous: loading</td>
-          <td class="sk-table__cell">Softer cycle or a non-spatial variant.</td>
+          <td class="sk-table__cell">A slower cycle, or a non-spatial variant.</td>
         </tr>
       </tbody>
     </table>
   </div>
-
-  <h2>Limits and next</h2>
-  <ul>
-    <li>Spring exists as a primitive but is not for critical UI: overshoot reads as imprecision.</li>
-    <li>A loop does not communicate progress toward a final state, so loading needs a non-spatial alternative.</li>
-    <li><a href="/state-layer">State layer</a> uses these tokens for interaction feedback.</li>
-    <li><a href="/tiers">Tiers</a> explains why a component never jumps to primitive values.</li>
-  </ul>
 </FoundationPage>
 
 <style>

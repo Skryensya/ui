@@ -96,13 +96,15 @@ const sizesCss = `/* another size? you re-declare the hook, like every
       description={t("iconPage.prop.size.body")}
       explain={explain("size", ["sm", "md", "lg"])}
       stageMinBlockSize="7rem"
+      storybookTitle="Components/Icon"
+      storybookStory="Single"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={iconTree(t)} title={t("iconPage.vocabularyTitle")} description={t("iconPage.vocabularyBody")} stageMinBlockSize="18rem" />
-    <UsagePreview tree={iconSizesExampleTree(t)} title={t("iconPage.sizeExamplesTitle")} description={t("iconPage.sizeExamplesBody")} stageMinBlockSize="18rem" />
-    <UsagePreview tree={iconStatusExampleTree(t)} title={t("iconPage.statusExamplesTitle")} description={t("iconPage.statusExamplesBody")} stageMinBlockSize="18rem" />
-    <UsagePreview tree={iconDirectionExampleTree(t)} title={t("iconPage.directionExamplesTitle")} description={t("iconPage.directionExamplesBody")} stageMinBlockSize="18rem" />
+    <UsagePreview tree={iconTree(t)} title={t("iconPage.vocabularyTitle")} description={t("iconPage.vocabularyBody")} storybookTitle="Components/Icon" storybookStory="Default" />
+    <UsagePreview tree={iconSizesExampleTree(t)} title={t("iconPage.sizeExamplesTitle")} description={t("iconPage.sizeExamplesBody")} storybookTitle="Components/Icon" storybookStory="SizesExample" />
+    <UsagePreview tree={iconStatusExampleTree(t)} title={t("iconPage.statusExamplesTitle")} description={t("iconPage.statusExamplesBody")} storybookTitle="Components/Icon" storybookStory="StatusExample" />
+    <UsagePreview tree={iconDirectionExampleTree(t)} title={t("iconPage.directionExamplesTitle")} description={t("iconPage.directionExamplesBody")} storybookTitle="Components/Icon" storybookStory="DirectionExample" />
 
     <h3>{t("iconPage.reactTitle")}</h3>
     <p set:html={t("iconPage.reactBody1")} />

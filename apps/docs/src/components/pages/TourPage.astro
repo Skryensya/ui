@@ -116,8 +116,8 @@ import { tourTitleDoTree, tourTitleDontTree, tourLengthDoTree, tourLengthDontTre
     <p class="lede" set:html={t("tour.lede")} />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={tourBasicTree(t)} css={tourDemoCss} title={t("tour.basicTitle")} description={t("tour.basicBody")} stageMinBlockSize="30rem" />
-    <UsagePreview tree={tourMissingTree(t)} css={tourDemoCss} title={t("tour.missingTitle")} description={t("tour.missingBody")} stageMinBlockSize="30rem" />
+    <UsagePreview tree={tourBasicTree(t)} css={tourDemoCss} title={t("tour.basicTitle")} description={t("tour.basicBody")} stageMinBlockSize="30rem" storybookTitle="Components/Tour" storybookStory="Basic" />
+    <UsagePreview tree={tourMissingTree(t)} css={tourDemoCss} title={t("tour.missingTitle")} description={t("tour.missingBody")} stageMinBlockSize="30rem" storybookTitle="Components/Tour" storybookStory="Missing" />
     <h4>{t("tour.programmaticTitle")}</h4>
     <p set:html={t("tour.programmaticBody")} />
     <CodeBlock code={reactSteps} label="React" lang="tsx" />

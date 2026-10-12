@@ -11,15 +11,9 @@ import "@skryensya/core/patterns/media-overlay.css";
 import * as demos from "@docs/demos/media-overlay";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Media & Visuals/MediaOverlay", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/MediaOverlay", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.mediaOverlayAnatomyTree);
 export const Card: StoryObj = treeStory(demos.mediaOverlayCardTree);
 export const Edges: StoryObj = treeStory((t) => demos.mediaOverlayEdgesTree());
 export const Strengths: StoryObj = treeStory((t) => demos.mediaOverlayStrengthsTree());
-export const DoShortText: StoryObj = treeStory(demos.mediaOverlayDoShortTextTree);
-export const DontLongText: StoryObj = treeStory(demos.mediaOverlayDontLongTextTree);
-export const DoShade: StoryObj = treeStory(demos.mediaOverlayDoShadeTree);
-export const DontNoShade: StoryObj = treeStory(demos.mediaOverlayDontNoShadeTree);
-export const DoStrength: StoryObj = treeStory(demos.mediaOverlayDoStrengthTree);
-export const DontStrength: StoryObj = treeStory(demos.mediaOverlayDontStrengthTree);

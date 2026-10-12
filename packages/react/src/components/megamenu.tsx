@@ -27,6 +27,8 @@ const cx = (base: string, className: string | undefined) => (className ? `${base
 
 const OPEN_DELAY_MS = 150;
 const CLOSE_DELAY_MS = 150;
+/** A click this soon after a hover opened the panel was aimed at a closed button: pin, never undo. */
+const JUST_OPENED_MS = 500;
 
 /*
  * MEGAMENU, the React binding: no `@zag-js/*` machine here either (`core/src/megamenu.ts`'s own
@@ -78,9 +80,10 @@ function findDefaultImage(columns: ReactNode): { src: string; alt: string } | un
 type MegamenuContextValue = {
   readonly state: MegamenuState;
   readonly dispatch: (event: MegamenuEvent) => void;
-  readonly scheduleOpen: (index: number) => void;
-  readonly scheduleClose: (index: number) => void;
+  readonly scheduleOpen: (index: number, pointerType: string) => void;
+  readonly scheduleClose: (index: number, pointerType: string) => void;
   readonly clearTimers: () => void;
+  readonly justOpened: () => boolean;
   readonly registerTrigger: (index: number, element: HTMLElement | null) => void;
 };
 
@@ -103,7 +106,7 @@ export type MegamenuProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
 export function Megamenu({ children, className, container, label, onOpenChange, ...props }: MegamenuProps) {
   const id = useId();
   const anchored = useAnchored(id);
-  const [state, setState] = useState<MegamenuState>({ openIndex: null });
+  const [state, setState] = useState<MegamenuState>({ openIndex: null, pinned: false });
   const [displayedIndex, setDisplayedIndex] = useState<number | null>(null);
   const rootRef = useRef<HTMLElement | null>(null);
   const visiblePanelRef = useRef<HTMLDivElement | null>(null);
@@ -131,6 +134,12 @@ export function Megamenu({ children, className, container, label, onOpenChange, 
     const onPointerDownCapture = (event: globalThis.PointerEvent) => {
       const target = event.target as Node | null;
       pointerDownWasInsideRef.current = !!target && (rootRef.current?.contains(target) || visiblePanelRef.current?.contains(target)) === true;
+      // A press outside closes the menu even when nothing inside had focus (Safari does not focus a
+      // clicked button, and a hover-opened panel never had focus at all).
+      if (!pointerDownWasInsideRef.current) {
+        clearTimers();
+        setState((current) => resolveMegamenuEvent(current, { kind: "blur" }));
+      }
     };
     document.addEventListener("pointerdown", onPointerDownCapture, true);
     return () => document.removeEventListener("pointerdown", onPointerDownCapture, true);
@@ -139,9 +148,11 @@ export function Megamenu({ children, className, container, label, onOpenChange, 
   const dispatch = (event: MegamenuEvent) => setState((current) => resolveMegamenuEvent(current, event));
 
   const prevOpenIndex = useRef<number | null>(null);
+  const openedAt = useRef(0);
   useEffect(() => {
     if (prevOpenIndex.current === state.openIndex) return;
     prevOpenIndex.current = state.openIndex;
+    openedAt.current = Date.now();
     const detail = { open: state.openIndex !== null, index: state.openIndex };
     onOpenChangeRef.current?.(detail);
     rootRef.current?.dispatchEvent(
@@ -166,15 +177,19 @@ export function Megamenu({ children, className, container, label, onOpenChange, 
     outgoingPreviewImage.current = null;
   }, [displayedIndex]);
 
-  const scheduleOpen = (index: number) => {
+  const scheduleOpen = (index: number, pointerType: string) => {
+    if (pointerType !== "mouse") return;
     clearTimeout(closeTimer.current);
     closeTimer.current = undefined;
     if (state.openIndex === index) return;
     clearTimeout(openTimer.current);
+    // Already browsing a panel: the pointer's intent is settled, so switch at once.
+    if (state.openIndex !== null) return dispatch({ kind: "hoverIntentOpen", index });
     openTimer.current = setTimeout(() => dispatch({ kind: "hoverIntentOpen", index }), OPEN_DELAY_MS);
   };
 
-  const scheduleClose = (index: number) => {
+  const scheduleClose = (index: number, pointerType: string) => {
+    if (pointerType !== "mouse") return;
     clearTimeout(openTimer.current);
     openTimer.current = undefined;
     clearTimeout(closeTimer.current);
@@ -184,11 +199,13 @@ export function Megamenu({ children, className, container, label, onOpenChange, 
   // The one shared panel's own hover-intent: read `openIndex` at the moment the timer FIRES, never
   // a fixed index captured at schedule time, so a stale timer can't close a different trigger the
   // user has since switched to.
-  const cancelPanelClose = () => {
+  const cancelPanelClose = (event: PointerEvent<HTMLElement>) => {
+    if (event.pointerType !== "mouse") return;
     clearTimeout(closeTimer.current);
     closeTimer.current = undefined;
   };
-  const schedulePanelClose = () => {
+  const schedulePanelClose = (event: PointerEvent<HTMLElement>) => {
+    if (event.pointerType !== "mouse") return;
     clearTimeout(openTimer.current);
     openTimer.current = undefined;
     clearTimeout(closeTimer.current);
@@ -233,6 +250,7 @@ export function Megamenu({ children, className, container, label, onOpenChange, 
 
   const context: MegamenuContextValue = {
     clearTimers,
+    justOpened: () => Date.now() - openedAt.current < JUST_OPENED_MS,
     dispatch,
     registerTrigger: (index, element) => {
       if (element) triggers.current.set(index, element);
@@ -424,14 +442,15 @@ export function MegamenuTrigger(publicProps: MegamenuTriggerProps) {
     <li className={megamenuParts.item}>
       <button
         aria-expanded={open}
+        data-pinned={open && context.state.pinned ? "" : undefined}
         className={cx(megamenuParts.trigger, "sk-interactive")}
         data-sk-megamenu-trigger
         onClick={() => {
           context.clearTimers();
-          context.dispatch({ kind: "activate", index });
+          context.dispatch({ kind: "activate", index, justOpened: context.justOpened() });
         }}
-        onPointerEnter={() => context.scheduleOpen(index)}
-        onPointerLeave={() => context.scheduleClose(index)}
+        onPointerEnter={(event) => context.scheduleOpen(index, event.pointerType)}
+        onPointerLeave={(event) => context.scheduleClose(index, event.pointerType)}
         ref={(element) => context.registerTrigger(index, element)}
         type="button"
       >

@@ -32,7 +32,7 @@ const react = `import { Canvas } from "@skryensya/react/canvas";
 <Canvas label="Flujo de publicación">
   <PublicationDiagram />
 </Canvas>`;
-const storybookTitle = "Components/Content/Canvas";
+const storybookTitle = "Components/Canvas";
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`canvas.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 const hooks = `.mi-canvas {
@@ -63,8 +63,7 @@ import { canvasDrawingDoTree, canvasDrawingDontTree } from "../../demos/dodont-m
       explain={explain("fitOnly", ["false", "true"])}
       css={canvasDiagramCss}
       storybookTitle={storybookTitle}
-      storybookStory="Diagram"
-    />
+      storybookStory="Diagram" />
 
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview
@@ -73,8 +72,7 @@ import { canvasDrawingDoTree, canvasDrawingDontTree } from "../../demos/dodont-m
       description={t("canvas.demoBody")}
       css={canvasDiagramCss}
       storybookTitle={storybookTitle}
-      storybookStory="Diagram"
-    />
+      storybookStory="Diagram" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

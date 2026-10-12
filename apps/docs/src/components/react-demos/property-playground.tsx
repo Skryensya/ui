@@ -29,6 +29,8 @@ export interface PropertyPlaygroundProps {
   /** For an enum with one value: "true" writes this into the tree and "false" leaves the option out. */
   onValue?: string;
   defaultValue: string;
+  /** Cap the specimen's width on the stage, for a fixed example (no control). */
+  measure?: string;
   /** What each value is called on its segment. */
   labels: Record<string, string>;
   controlLabel: string;
@@ -52,7 +54,7 @@ export interface PropertyPlaygroundProps {
   isolatedFrame?: FramedOverrides;
 }
 
-export function PropertyPlayground({ tree, optionName, trees, toggleLabel, target = [], values, boolean, onValue, defaultValue, labels, controlLabel, explain, remountOnChange = true, frame, isolatedFrame }: PropertyPlaygroundProps) {
+export function PropertyPlayground({ tree, optionName, trees, measure, toggleLabel, target = [], values, boolean, onValue, defaultValue, labels, controlLabel, explain, remountOnChange = true, frame, isolatedFrame }: PropertyPlaygroundProps) {
   const [value, setValue] = useState(defaultValue);
   const [present, setPresent] = useState(true);
   const render = useRenderedTree(trees ? Object.values(trees) : tree);
@@ -69,7 +71,9 @@ export function PropertyPlayground({ tree, optionName, trees, toggleLabel, targe
 
   const chosen: UsageTree =
     trees?.[value] ??
-    (onValue
+    (!optionName
+      ? tree
+      : onValue
       ? withOptionAt(tree, target, optionName!, value === "true" ? onValue : undefined)
       : withOptionAt(tree, target, optionName!, boolean ? value === "true" : value));
   const liveTree: UsageTree = toggleLabel ? withOptionAt(chosen, [], "present", present) : chosen;
@@ -103,7 +107,7 @@ export function PropertyPlayground({ tree, optionName, trees, toggleLabel, targe
 
   return (
     <div className="sk-property-playground">
-      {hydrated ? (
+      {values.length === 0 ? null : hydrated ? (
         <SegmentedControl
           className="sk-property-playground__control"
           size="lg"
@@ -127,14 +131,14 @@ export function PropertyPlayground({ tree, optionName, trees, toggleLabel, targe
           </Button>
         )}
         {isolatedFrame ? (
-          hydrated && <div className="sk-component-preview" data-sk-component-preview="" data-sk-component-preview-chrome="false" data-sk-component-preview-surface="none" style={{ width: "100%" }}>
-            <TreeDemo key={value} tree={liveTree} frameOptions={isolatedFrame} />
+          hydrated && <div className="sk-component-preview" data-sk-component-preview="" data-sk-component-preview-chrome="false" data-sk-component-preview-surface="none" data-sk-component-preview-screen-local={isolatedFrame.screen} style={{ width: "100%" }}>
+            <TreeDemo key={value} tree={liveTree} measure={measure} frameOptions={isolatedFrame} />
           </div>
         ) : frame ? (
           /* The shell around the card (`UsagePreview`) is what the enhancer zooms; this is the fixed screen inside it. */
           hydrated && <TreeDemo key={value} tree={liveTree} frameOptions={{ screen: frame.screen, flush: frame.flush, css: frame.css, viewport: frame.viewport, minHeight: frame.minHeight }} />
         ) : render ? (
-          render(liveTree)
+          measure ? <div style={{ inlineSize: "100%", maxInlineSize: measure }}>{render(liveTree)}</div> : render(liveTree)
         ) : null}
       </div>
       {frame?.note && frame.width && (

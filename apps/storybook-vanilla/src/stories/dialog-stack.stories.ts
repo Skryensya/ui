@@ -5,6 +5,6 @@ import "@skryensya/core/components/dialog-stack.css";
 import * as demos from "@docs/demos/dialog-stack";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Overlays/Dialog Stack", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Dialog Stack", tags: ["autodocs"] } satisfies Meta;
 
 export const Default: StoryObj = treeStory(demos.dialogStackTree);

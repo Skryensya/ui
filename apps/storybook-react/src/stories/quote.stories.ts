@@ -3,16 +3,14 @@
 import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/avatar.css";
 import "@skryensya/core/components/button.css";
-import "@skryensya/core/components/callout.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/quote.css";
-import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/quote";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Typography & Code/Quote", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Quote", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.quoteAnatomyTree);
 export const Default: StoryObj = treeStory(demos.quoteTree);
@@ -22,13 +20,3 @@ export const PullAvatar: StoryObj = treeStory(demos.quotePullAvatarTree);
 export const Bare: StoryObj = treeStory(demos.quoteBareTree);
 export const Pull: StoryObj = treeStory(demos.quotePullTree);
 export const Testimonial: StoryObj = treeStory(demos.quoteTestimonialTree);
-export const DoPull: StoryObj = treeStory(demos.quoteDoPullTree);
-export const DontLongPull: StoryObj = treeStory(demos.quoteDontLongPullTree);
-export const DontNotice: StoryObj = treeStory(demos.quoteDontNoticeTree);
-export const DoNotice: StoryObj = treeStory(demos.quoteDoNoticeTree);
-export const DoInText: StoryObj = treeStory(demos.quoteDoInTextTree);
-export const DontPullInText: StoryObj = treeStory(demos.quoteDontPullInTextTree);
-export const DoNamed: StoryObj = treeStory(demos.quoteDoNamedTree);
-export const DontVague: StoryObj = treeStory(demos.quoteDontVagueTree);
-export const DoAvatar: StoryObj = treeStory(demos.quoteDoAvatarTree);
-export const DontInitials: StoryObj = treeStory(demos.quoteDontInitialsTree);

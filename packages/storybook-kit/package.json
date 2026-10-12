@@ -24,6 +24,14 @@
     "./button-playground": {
       "types": "./src/button-playground.ts",
       "default": "./src/button-playground.ts"
+    },
+    "./controls": {
+      "types": "./src/controls.ts",
+      "default": "./src/controls.ts"
+    },
+    "./manager": {
+      "types": "./src/manager.ts",
+      "default": "./src/manager.ts"
     }
   },
   "scripts": {
@@ -36,6 +44,10 @@
     "vite": "^8.1.5"
   },
   "devDependencies": {
-    "@types/node": "catalog:"
+    "@storybook/addon-docs": "^10.5.10",
+    "@types/node": "catalog:",
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0",
+    "storybook": "^10.5.10"
   }
 }

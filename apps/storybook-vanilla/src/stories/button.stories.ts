@@ -12,7 +12,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/button";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Actions/Button", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Button", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.buttonAnatomyTree);
 export const Default: StoryObj = treeStory(demos.buttonDefaultTree);
@@ -34,12 +34,3 @@ export const IconOnly: StoryObj = treeStory(demos.buttonIconOnlyTree);
 export const AsLink: StoryObj = treeStory(demos.buttonAsLinkTree);
 export const FirstComponentButtons: StoryObj = treeStory(demos.firstComponentButtonsTree);
 export const TileButton: StoryObj = treeStory(demos.tileButtonTree);
-export const DoOnePrimary: StoryObj = treeStory(demos.buttonDoOnePrimaryTree);
-export const DontTwoPrimary: StoryObj = treeStory(demos.buttonDontTwoPrimaryTree);
-export const DoCost: StoryObj = treeStory(demos.buttonDoCostTree);
-export const DontOk: StoryObj = treeStory(demos.buttonDontOkTree);
-export const DoHardDelete: StoryObj = treeStory(demos.buttonDoHardDeleteTree);
-export const DontHardDelete: StoryObj = treeStory(demos.buttonDontHardDeleteTree);
-export const DoPrimaryLast: StoryObj = treeStory(demos.buttonDoPrimaryLastTree);
-export const DontPrimaryFirst: StoryObj = treeStory(demos.buttonDontPrimaryFirstTree);
-export const DontAmbiguousIcon: StoryObj = treeStory(demos.buttonDontAmbiguousIconTree);

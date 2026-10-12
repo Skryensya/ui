@@ -124,14 +124,16 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("grid.prop.columns.body")}
       explain={explain("columns", ["1", "2", "3", "4", "5"])}
       stageMinBlockSize="14rem"
+      storybookTitle="Components/Box - Layout"
+      storybookStory="Grid"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={gridSpanTree(t)} title={t("grid.spanTitle")} description={t("grid.spanBody")} />
-    <UsagePreview tree={gridTree(t)} title={t("grid.basicTitle")} description={t("grid.basicBody")} />
-    <UsagePreview tree={gridMulticolTree(t)} title={t("grid.multicolTitle")} description={t("grid.multicolBody1")} />
+    <UsagePreview tree={gridSpanTree(t)} title={t("grid.spanTitle")} description={t("grid.spanBody")} storybookTitle="Components/Grid - LayoutContainer" storybookStory="GridSpan" />
+    <UsagePreview tree={gridTree(t)} title={t("grid.basicTitle")} description={t("grid.basicBody")} storybookTitle="Components/Box - Layout" storybookStory="Grid" />
+    <UsagePreview tree={gridMulticolTree(t)} title={t("grid.multicolTitle")} description={t("grid.multicolBody1")} storybookTitle="Components/Box - Layout" storybookStory="GridMulticol" />
     <CodeBlock code={multicolCss} label="patterns/layout.css" />
-    <UsagePreview tree={gridResponsiveTree(t)} title={t("grid.responsiveTitle")} description={t("grid.responsiveBody1")} />
+    <UsagePreview tree={gridResponsiveTree(t)} title={t("grid.responsiveTitle")} description={t("grid.responsiveBody1")} storybookTitle="Components/Box - Layout" storybookStory="GridResponsive" />
     <CodeBlock code={responsiveCss} label="patterns/layout.css" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
@@ -144,6 +146,8 @@ const explain = (option: string, values: readonly string[]) =>
       tree={variantsTree(gridScaleSpecimenTree(t), [{ label: "none", options: { gap: "none" } }, { label: "xs", options: { gap: "xs" } }, { label: "sm", options: { gap: "sm" } }, { label: "md", options: { gap: "md" } }, { label: "lg", options: { gap: "lg" } }, { label: "xl", options: { gap: "xl" } }], [], "3")}
       title={t("component.scaleTitle", { option: "gap" })}
       description={t("component.scaleBody")}
+      storybookTitle="Components/Box - Layout"
+      storybookStory="GridScaleSpecimen"
     />
 
     <h3>{t("component.anatomy")}</h3>

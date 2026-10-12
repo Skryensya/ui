@@ -544,8 +544,8 @@
     display: none;
     opacity: 0;
     transition:
-      opacity var(--motion-dismiss-duration) var(--motion-dismiss-easing),
-      display var(--motion-dismiss-duration) allow-discrete;
+      opacity var(--motion-exit-duration) var(--motion-exit-easing),
+      display var(--motion-exit-duration) allow-discrete;
   }
 
   /*
@@ -599,8 +599,8 @@
     display: none;
     opacity: 0;
     transition:
-      opacity var(--motion-dismiss-duration) var(--motion-dismiss-easing),
-      display var(--motion-dismiss-duration) allow-discrete;
+      opacity var(--motion-exit-duration) var(--motion-exit-easing),
+      display var(--motion-exit-duration) allow-discrete;
   }
 
   /*

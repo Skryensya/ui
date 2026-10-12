@@ -1,5 +1,7 @@
 import type { Decorator, Preview } from "@storybook/react-vite";
-import { applyPage, globalTypes, initialGlobals, parameters } from "@skryensya/storybook-kit/shared";
+import { DocsContainer } from "@storybook/addon-docs/blocks";
+import { themes } from "storybook/theming";
+import { applyPage, docsParameters, globalTypes, initialGlobals, parameters } from "@skryensya/storybook-kit/shared";
 
 /*
  * Only what every story shares: the font, the tokens and the tier-3 dimension switches. Each generated stories file imports its own component sheets, the
@@ -16,6 +18,7 @@ const withPage: Decorator = (Story, { globals }) => {
   return <Story />;
 };
 
-const preview: Preview = { decorators: [withPage], globalTypes, initialGlobals, parameters };
+/* Foundations first, then the components A to Z, then the playground. Inline because Storybook reads `storySort` from this file statically; names are not compared, so a component's stories keep the order the generator wrote. */
+const preview: Preview = { decorators: [withPage], globalTypes, initialGlobals, parameters: { ...parameters, options: { storySort: { method: "alphabetical", order: ["Foundations", "Components", "Playground"], locales: "en" } }, docs: docsParameters(themes, DocsContainer) } };
 
 export default preview;

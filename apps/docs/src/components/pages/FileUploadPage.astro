@@ -48,7 +48,7 @@ const t = useTranslations(getLocale(Astro.url));
       title={t("fileUploadPage.basicTitle")}
       description={t("fileUploadPage.basicBody")}
       stageMinBlockSize="26rem"
-      storybookTitle="Components/Forms/Drop zone"
+      storybookTitle="Components/Drop zone"
       storybookStory="Default"
     />
     <h3>{t("fileUploadPage.pageDropTitle")}</h3>
@@ -59,6 +59,8 @@ const t = useTranslations(getLocale(Astro.url));
       label={t("fileUploadPage.pageDropLabel")}
       measure="32rem"
       stageMinBlockSize="26rem"
+      storybookTitle="Components/Drop zone"
+      storybookStory="PageDrop"
     />
 
     <h3>{t("component.contractNotesTitle")}</h3>
@@ -70,6 +72,8 @@ const t = useTranslations(getLocale(Astro.url));
       tree={variantsTree(fileUploadTree(t), [{ label: t("component.state.default"), options: {} }, { label: t("component.state.disabled"), options: { disabled: true } }])}
       title={t("component.statesTitle")}
       description={t("component.statesBody")}
+      storybookTitle="Components/Drop zone"
+      storybookStory="Default"
     />
 
   </Fragment>

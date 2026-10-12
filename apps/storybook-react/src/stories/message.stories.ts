@@ -8,7 +8,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/message";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Surfaces & Collections/Message", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Message", tags: ["autodocs"] } satisfies Meta;
 
 export const Playground: StoryObj = treeStory(demos.messagePlaygroundTree);
 export const Group: StoryObj = treeStory(demos.messageGroupTree);

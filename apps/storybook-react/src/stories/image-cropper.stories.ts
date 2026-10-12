@@ -13,7 +13,7 @@ import "@skryensya/core/patterns/media-overlay.css";
 import * as demos from "@docs/demos/image-cropper";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Media & Visuals/Image Cropper", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Image Cropper", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.imageCropperAnatomyTree);
 export const Default: StoryObj = treeStory(demos.imageCropperTree);

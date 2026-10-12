@@ -16,7 +16,7 @@
  * different tokens (`--motion-press-scale` here, `--motion-feedback-duration` there).
  *
  * Activated with `data-press-scale="off"` on :root or any subtree, opt-in import like
- * `modes/hc.scss` and `dimensions/radius.scss`. `on` is not a value that exists: the baseline
+ * `dimensions/radius.scss`. `on` is not a value that exists: the baseline
  * (no attribute) already is on at the semantic `--motion-press-scale`; a subtree only ever opts OUT,
  * back toward its ancestor's value the same way an un-set `data-radius` falls back to `md` rather
  * than needing its own explicit "on".

@@ -28,7 +28,7 @@ import "@skryensya/core/patterns/box.css";
 
 const t = useTranslations(getLocale(Astro.url));
 const install = `pnpm add @skryensya/core @skryensya/react`;
-const storybookTitle = "Components/Content/Kbd";
+const storybookTitle = "Components/Kbd";
 
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
 const explain = (option: string, values: readonly string[]) =>
@@ -56,6 +56,8 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("kbdPage.prop.tone.body")}
       explain={explain("tone", ["neutral", "accent"])}
       stageMinBlockSize="7rem"
+      storybookTitle="Components/Kbd"
+      storybookStory="Single"
     />
     <UsagePreview
       tree={kbdSingleTree}
@@ -64,6 +66,8 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("kbdPage.prop.appearance.body")}
       explain={explain("appearance", ["plain", "brutalist"])}
       stageMinBlockSize="7rem"
+      storybookTitle="Components/Kbd"
+      storybookStory="Single"
     />
 
     <h3>{t("component.examplesTitle")}</h3>

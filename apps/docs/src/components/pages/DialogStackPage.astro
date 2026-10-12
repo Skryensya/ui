@@ -66,7 +66,7 @@ await initComponents();`;
 <ComponentPageShell title="Dialog Stack" description={t("dialogStackPage.description")} contractId="dialog-stack" badge="Beta" testFiles={["packages/react/src/components/dialog-stack.test.tsx", "packages/vanilla/src/components/dialog-stack.test.ts"]}>
   <Fragment slot="usage">
     <p class="lede">{t("dialogStackPage.lede")}</p>
-    <UsagePreview tree={dialogStackTree(t)} title={t("dialogStackPage.example")} viewport="overlay" css=".sk-dialog-stack { inline-size: 100%; min-block-size: calc(100dvh - 2 * var(--sk-component-preview-stage-padding)); display: grid; place-items: center; }" storybookStory="Default" storybookTitle="Components/Overlays/Dialog Stack" />
+    <UsagePreview tree={dialogStackTree(t)} title={t("dialogStackPage.example")} viewport="overlay" css=".sk-dialog-stack { inline-size: 100%; min-block-size: calc(100dvh - 2 * var(--sk-component-preview-stage-padding)); display: grid; place-items: center; }" storybookStory="Default" storybookTitle="Components/Dialog Stack" />
     <UsagePreview
       variants={dialogStackScenarios(getLocale(Astro.url) === "es")}
       title={getLocale(Astro.url) === "es" ? "Tareas cortas, pasos concretos" : "Short tasks, concrete steps"}
@@ -75,7 +75,7 @@ await initComponents();`;
       stageMinBlockSize="28rem"
       css={dialogStackScenarioCss}
       storybookStory="Default"
-      storybookTitle="Components/Overlays/Dialog Stack"
+      storybookTitle="Components/Dialog Stack"
     />
     <p>{t("dialogStackPage.motion")}</p>
     <p>{t("dialogStackPage.overlay")}</p>

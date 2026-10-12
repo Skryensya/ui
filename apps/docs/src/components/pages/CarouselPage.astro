@@ -25,7 +25,7 @@ import "../../examples/carousel.css";
 
 const t = useTranslations(getLocale(Astro.url));
 
-const storybookTitle = "Components/Content/Carousel";
+const storybookTitle = "Components/Carousel";
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`carousel.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
@@ -93,8 +93,7 @@ import { carouselTitlesDoTree, carouselTitlesDontTree } from "../../demos/dodont
       explain={explain("controls", ["auto", "none"])}
       stageMinBlockSize="24rem"
       storybookTitle={storybookTitle}
-      storybookStory="Cards"
-    />
+      storybookStory="Cards" />
 
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview tree={carouselCardsTree(t)} title={t("carousel.cardsTitle")} description={t("carousel.cardsBody")} storybookTitle={storybookTitle} storybookStory="Cards" />
@@ -106,7 +105,7 @@ import { carouselTitlesDoTree, carouselTitlesDontTree } from "../../demos/dodont
         Vanilla frame can show; the React stage always mounts the machine. */}
     <h3>{t("carousel.nativeTitle")}</h3>
     <p set:html={t("carousel.nativeBody")} />
-    <UsagePreview tree={carouselNativeTree(t)} label={t("carousel.nativeLabel")} caption={t("carousel.nativeNote")} />
+    <UsagePreview tree={carouselNativeTree(t)} label={t("carousel.nativeLabel")} caption={t("carousel.nativeNote")} storybookTitle="Components/Carousel" storybookStory="Native" />
     <CodeBlock code={nativeCss} label={t("carousel.nativeCssLabel")} lang="css" />
 
     <h3>{t("carousel.apiTitle")}</h3>

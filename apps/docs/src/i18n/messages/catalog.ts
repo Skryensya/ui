@@ -7,7 +7,6 @@ export const catalogMessages = {
   es: {
     "catalog.title": "Catálogo",
     "catalog.description": "Variantes de componentes y composiciones, desde fragmentos hasta bloques completos, todas construidas con contratos del kit y las mismas que sirve el MCP.",
-    "catalog.navLabel": "Catálogo",
     "catalog.search.label": "Buscar ejemplos",
     "catalog.search.placeholder": "Busca por nombre, propósito, intención o componente",
     "catalog.search.advanced": "Filtros avanzados",
@@ -19,7 +18,7 @@ export const catalogMessages = {
     "catalog.facet.component": "Componente",
     "catalog.results.label": "Resultados",
     "catalog.results.count": "{count} de {total} ejemplos",
-    "catalog.results.back": "Volver a los resultados",
+    "catalog.modal.close": "Cerrar",
     "catalog.pager.label": "Más ejemplos",
     "catalog.pager.previous": "Anterior",
     "catalog.pager.next": "Siguiente",
@@ -40,7 +39,6 @@ export const catalogMessages = {
   en: {
     "catalog.title": "Catalog",
     "catalog.description": "Variants of components and compositions, from fragments to whole blocks, all built from the kit's contracts and the very ones the MCP serves.",
-    "catalog.navLabel": "Catalog",
     "catalog.search.label": "Search examples",
     "catalog.search.placeholder": "Search by name, purpose, intent or component",
     "catalog.search.advanced": "Advanced filters",
@@ -52,7 +50,7 @@ export const catalogMessages = {
     "catalog.facet.component": "Component",
     "catalog.results.label": "Results",
     "catalog.results.count": "{count} of {total} examples",
-    "catalog.results.back": "Back to results",
+    "catalog.modal.close": "Close",
     "catalog.pager.label": "More examples",
     "catalog.pager.previous": "Previous",
     "catalog.pager.next": "Next",

@@ -59,6 +59,8 @@ const explain = (option: string, values: readonly string[]) =>
       explain={explain("size", ["sm", "md", "lg"])}
       stageMinBlockSize="8rem"
       labels={{ sm: "sm", md: "md", lg: "lg" }}
+      storybookTitle="Components/Loader"
+      storybookStory="Single"
     />
 
     <UsagePreview
@@ -68,15 +70,17 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("loaderPage.prop.speed.body")}
       explain={explain("speed", ["fast", "normal", "slow"])}
       stageMinBlockSize="8rem"
+      storybookTitle="Components/Loader"
+      storybookStory="Single"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
     <h3>{t("loaderPage.simTitle")}</h3>
     <p set:html={t("loaderPage.simBody")} />
-    <UsagePreview tree={loaderSimulationTree(t)} script={loaderSimulationScript} label={t("loaderPage.simLabel")} />
-    <UsagePreview tree={loaderContextsTree(t)} title={t("loaderPage.contextsTitle")} description={t("loaderPage.contextsBody")} />
-    <UsagePreview tree={loaderPseudoVariantsTree(t)} title={t("loaderPage.variantsTitle")} description={t("loaderPage.variantsBody")} storybookTitle="Components/Feedback/Loader" storybookStory="PseudoVariants" />
-    <UsagePreview tree={loaderStaggeredVariantsTree(t)} />
+    <UsagePreview tree={loaderSimulationTree(t)} script={loaderSimulationScript} label={t("loaderPage.simLabel")} storybookTitle="Components/Loader" storybookStory="Simulation" />
+    <UsagePreview tree={loaderContextsTree(t)} title={t("loaderPage.contextsTitle")} description={t("loaderPage.contextsBody")} storybookTitle="Components/Loader" storybookStory="Contexts" />
+    <UsagePreview tree={loaderPseudoVariantsTree(t)} title={t("loaderPage.variantsTitle")} description={t("loaderPage.variantsBody")} storybookTitle="Components/Loader" storybookStory="PseudoVariants" />
+    <UsagePreview tree={loaderStaggeredVariantsTree(t)} storybookTitle="Components/Loader" storybookStory="StaggeredVariants" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
@@ -132,11 +136,13 @@ const explain = (option: string, values: readonly string[]) =>
   <Fragment slot="style">
     <h3>{t("loaderPage.hookPlaygroundTitle")}</h3>
     <p set:html={t("loaderPage.hookPlaygroundBody")} />
-    <HookPlayground
-      tree={loaderHookPlaygroundTree(t)}
-      controls={loaderHookPlaygroundControls}
-      label={t("loaderPage.hookPlaygroundLabel")}
-      probe=".sk-loader"
-    />
+    <UsagePreview label={t("loaderPage.hookPlaygroundLabel")}>
+      <HookPlayground
+        tree={loaderHookPlaygroundTree(t)}
+        controls={loaderHookPlaygroundControls}
+        label={t("loaderPage.hookPlaygroundLabel")}
+        probe=".sk-loader"
+      />
+    </UsagePreview>
   </Fragment>
 </ComponentPageShell>

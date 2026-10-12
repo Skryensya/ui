@@ -61,13 +61,15 @@ import { sidebarDoTree, sidebarDontTree, sidebarNamesDoTree, sidebarNamesDontTre
     <h3>{t("component.examplesTitle")}</h3>
     {/* The `.app-shell` around the Sidebar is inside the tree: a rail only reads beside a main
         that widens when it collapses. */}
-    <UsagePreview tree={sidebarTree(t, { home: "/", reports: "/reportes" })} title={t("sidebarPage.collapseTitle")} description={t("sidebarPage.collapseBody")} flush />
-    <UsagePreview tree={sidebarResizableTree(t)} title={t("sidebarPage.widthTitle")} description={t("sidebarPage.widthBody1")} flush />
+    <UsagePreview tree={sidebarTree(t, { home: "/", reports: "/reportes" })} title={t("sidebarPage.collapseTitle")} description={t("sidebarPage.collapseBody")} flush storybookTitle="Components/Sidebar" storybookStory="Default" />
+    <UsagePreview tree={sidebarResizableTree(t)} title={t("sidebarPage.widthTitle")} description={t("sidebarPage.widthBody1")} flush storybookTitle="Components/Sidebar" storybookStory="Resizable" />
     <UsagePreview
       tree={sidebarFloatingTriggerTree(t, { home: "/", reports: "/reportes" })}
       title={t("sidebarPage.floatingTriggerTitle")}
       description={t("sidebarPage.floatingTriggerBody")}
       flush
+      storybookTitle="Components/Sidebar"
+      storybookStory="FloatingTrigger"
     />
 
     <h3>{t("component.contractNotesTitle")}</h3>

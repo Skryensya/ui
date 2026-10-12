@@ -19,7 +19,7 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
-const storybookTitle = "Components/Forms/Editor";
+const storybookTitle = "Components/Editor";
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`editorPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
@@ -54,8 +54,7 @@ import { dd2 } from "../../demos/dodont-labels";
       description={t("editorPage.prop.toolbarCompact.body")}
       explain={explain("toolbarCompact", ["false", "true"])}
       storybookTitle={storybookTitle}
-      storybookStory="Compact"
-    />
+      storybookStory="Compact" />
 
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview tree={editorTree(t)} title={t("editorPage.defaultTitle")} description={t("editorPage.defaultBody")} storybookTitle={storybookTitle} storybookStory="Default" />

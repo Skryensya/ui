@@ -11,9 +11,8 @@ import "@skryensya/core/patterns/anchored.css";
 import * as demos from "@docs/demos/editor";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Forms/Editor", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Editor", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.editorAnatomyTree);
 export const Default: StoryObj = treeStory(demos.editorTree);
 export const Compact: StoryObj = treeStory(demos.editorCompactTree);
-export const DontSingleLine: StoryObj = treeStory(demos.editorDontSingleLineTree);

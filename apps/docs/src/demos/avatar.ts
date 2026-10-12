@@ -2,20 +2,28 @@ import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
 import { anatomyCanvas, anatomyHints, namePart } from "./annotation-parts";
 
-const ACCENT_HEX = "1f5fc3";
-const ON_ACCENT_HEX = "ffffff";
 /*
- * 96, not the displayed avatar's own pixel size (32/40/48/64 for sm/md/lg/xl): dummyimage.com's
- * baked-in text does not scale proportionally with the requested canvas. A 160px canvas (the previous
- * value) drew the SAME roughly-fixed-size initials as a 64px one, just with more empty margin
- * around them, so at avatar scale the letters read as tiny and thin next to the real, properly
- * sized initials `Avatar.initials` renders as text. 96 keeps enough headroom for a retina lg
- * avatar (48px × 2) while drawing initials that are a much larger share of the square, measured.
- * The photo demo tops out at `lg` deliberately: an `xl` disc is 64px, and a retina one would want
- * a 128px canvas, which is where dummyimage's fixed-size text starts looking small again.
+ * The photo demos' picture: a blank, anonymous portrait (a head and shoulders cut out of a soft
+ * field) drawn here as an inline SVG, so it needs no network, no file in `public/`, and works the same
+ * in the docs and in both Storybooks. Three palettes, so a row of avatars reads as three different
+ * people rather than one picture repeated. The key is only the person's initials, kept from the old
+ * placeholders so the call sites did not change.
  */
-const demoSrc = (initials: string) =>
-  `https://dummyimage.com/96/${ACCENT_HEX}/${ON_ACCENT_HEX}?text=${initials}`;
+const PORTRAITS: Record<string, { field: string; figure: string }> = {
+  AL: { field: "#dbe4f3", figure: "#8fa4c9" },
+  AT: { field: "#efe2d6", figure: "#c49a7c" },
+  GH: { field: "#dcebe3", figure: "#7fae96" },
+};
+
+const demoSrc = (initials: string) => {
+  const { field, figure } = PORTRAITS[initials] ?? PORTRAITS.AL!;
+  const svg =
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">` +
+    `<rect width="96" height="96" fill="${field}"/>` +
+    `<circle cx="48" cy="37" r="17" fill="${figure}"/>` +
+    `<path d="M14 96c1-19 15-30 34-30s33 11 34 30z" fill="${figure}"/></svg>`;
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+};
 
 /*
  * A fallback avatar's own background, straight from the base RAMP palette (Tier 1) rather than a

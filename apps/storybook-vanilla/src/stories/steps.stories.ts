@@ -8,10 +8,8 @@ import "@skryensya/core/patterns/icon.css";
 import * as demos from "@docs/demos/steps";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Navigation/Steps", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Steps", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.stepsAnatomyTree);
 export const Default: StoryObj = treeStory(demos.stepsTree);
 export const Vertical: StoryObj = treeStory(demos.stepsVerticalTree);
-export const DontMany: StoryObj = treeStory(demos.stepsDontManyTree);
-export const DontColor: StoryObj = treeStory(demos.stepsDontColorTree);

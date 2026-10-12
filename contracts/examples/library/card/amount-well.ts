@@ -32,6 +32,7 @@ export const amountWell: PatternModule<Content> = {
       intent: "metrics/money/breakdown",
       title: { en: "Breakdown", es: "Desglose" },
       purpose: { en: "Rows of amounts that add up to a total, in a sunken well.", es: "Filas de montos que suman un total, en un pozo hundido." },
+      catalog: false,
       content: {
         rows: [
           { label: { en: "Net royalties", es: "Regalías netas" }, value: { en: "$1,248.75", es: "1.248,75 US$" } },
@@ -45,6 +46,7 @@ export const amountWell: PatternModule<Content> = {
       intent: "metrics/money/breakdown",
       title: { en: "Credits left", es: "Créditos restantes" },
       purpose: { en: "What was granted, what was used and what is left, when the unit is not money.", es: "Lo que se otorgó, lo que se usó y lo que queda, cuando la unidad no es dinero." },
+      catalog: false,
       content: {
         rows: [
           { label: { en: "Plan credits", es: "Créditos del plan" }, value: "5,000" },

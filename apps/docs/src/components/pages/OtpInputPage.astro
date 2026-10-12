@@ -60,6 +60,8 @@ const explain = (option: string, values: readonly string[]) =>
       explain={explain("mask", ["false", "true"])}
       stageMinBlockSize="8rem"
       labels={{ false: t("otpInput.prop.mask.falseLabel"), true: t("otpInput.prop.mask.trueLabel") }}
+      storybookTitle="Components/OtpInput"
+      storybookStory="Single"
     />
 
     <UsagePreview
@@ -70,6 +72,8 @@ const explain = (option: string, values: readonly string[]) =>
       explain={explain("groupSize", ["2", "3", "4"])}
       labels={{ "2": "2", "3": "3", "4": "4" }}
       stageMinBlockSize="8rem"
+      storybookTitle="Components/OtpInput"
+      storybookStory="Single"
     />
 
     <UsagePreview
@@ -85,6 +89,8 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("otpInput.prop.count.title")}
       description={t("otpInput.prop.count.body")}
       stageMinBlockSize="8rem"
+      storybookTitle="Components/OtpInput"
+      storybookStory="Single"
     />
 
     <UsagePreview
@@ -99,12 +105,14 @@ const explain = (option: string, values: readonly string[]) =>
       title={t("otpInput.state.title")}
       description={t("otpInput.state.body")}
       stageMinBlockSize="9rem"
+      storybookTitle="Components/OtpInput"
+      storybookStory="Single"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={otpInputSmsTree(t)} title={t("otpInput.smsTitle")} description={t("otpInput.smsBody")} />
-    <UsagePreview tree={otpInputAlphanumericTree(t)} title={t("otpInput.alphanumericTitle")} description={t("otpInput.alphanumericBody")} />
-    <UsagePreview tree={otpInputPinTree(t)} title={t("otpInput.pinTitle")} description={t("otpInput.pinBody")} />
+    <UsagePreview tree={otpInputSmsTree(t)} title={t("otpInput.smsTitle")} description={t("otpInput.smsBody")} storybookTitle="Components/OtpInput" storybookStory="Sms" />
+    <UsagePreview tree={otpInputAlphanumericTree(t)} title={t("otpInput.alphanumericTitle")} description={t("otpInput.alphanumericBody")} storybookTitle="Components/OtpInput" storybookStory="Alphanumeric" />
+    <UsagePreview tree={otpInputPinTree(t)} title={t("otpInput.pinTitle")} description={t("otpInput.pinBody")} storybookTitle="Components/OtpInput" storybookStory="Pin" />
 
     <PasswordVsOtp from="otp-input" />
 

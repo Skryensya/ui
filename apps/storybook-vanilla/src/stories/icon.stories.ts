@@ -10,7 +10,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/icon";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Labels & Identity/Icon", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Icon", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.iconAnatomyTree);
 export const Single: StoryObj = treeStory(() => demos.iconSingleTree);
@@ -19,11 +19,3 @@ export const Size: StoryObj = treeStory(() => demos.iconSizeTree);
 export const SizesExample: StoryObj = treeStory(demos.iconSizesExampleTree);
 export const StatusExample: StoryObj = treeStory(demos.iconStatusExampleTree);
 export const DirectionExample: StoryObj = treeStory(demos.iconDirectionExampleTree);
-export const DoText: StoryObj = treeStory(demos.iconDoTextTree);
-export const DontText: StoryObj = treeStory(() => demos.iconDontTextTree);
-export const DoSize: StoryObj = treeStory(demos.iconDoSizeTree);
-export const DontSize: StoryObj = treeStory(demos.iconDontSizeTree);
-export const DoStatus: StoryObj = treeStory(demos.iconDoStatusTree);
-export const DontStatus: StoryObj = treeStory(() => demos.iconDontStatusTree);
-export const DoTone: StoryObj = treeStory(demos.iconDoToneTree);
-export const DontTone: StoryObj = treeStory(demos.iconDontToneTree);

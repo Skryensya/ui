@@ -26,7 +26,7 @@ export interface ChromeWords {
   remove: string;
   clearAll: string;
   results: string;
-  back: string;
+  close: string;
   metaIntent: string;
   metaLayout: string;
   metaComponents: string;
@@ -82,7 +82,7 @@ export function metaTree(words: ChromeWords, caption: Caption): UsageTree {
   return {
     contract: "description-list",
     signature: "DescriptionList",
-    options: { layout: "columns", dividers: true },
+    options: { layout: "stacked", dividers: true },
     children: [
       item(words.metaIntent, text(caption.intentLabel, { size: "sm" })),
       item(words.metaLayout, text(caption.layoutLabel, { size: "sm" })),
@@ -104,7 +104,7 @@ export function pagerTree(words: ChromeWords, previous?: Neighbour, next?: Neigh
   const step = (neighbour: Neighbour, label: string, direction: "previous" | "next"): UsageTree => ({
     contract: "button",
     signature: "Button.navigation",
-    options: { href: `#${neighbour.id}`, variant: "ghost" },
+    options: { href: `#${neighbour.id}`, variant: "ghost", size: "sm" },
     attrs: { "aria-label": `${label}: ${neighbour.title}` },
     slots: direction === "previous" ? { pre: icon("arrow-left") } : { post: icon("arrow-right") },
     children: neighbour.title,
@@ -152,6 +152,7 @@ function facetTree(words: ChromeWords, facet: Facet, options: FacetOption[]): Us
  */
 export function searchTree(words: ChromeWords, facets: FacetOptions): UsageTree {
   const query: UsageTree = { contract: "form-field", signature: "FormField", options: { labelHidden: true }, slots: { label: words.search, children: { contract: "input", signature: "Input", options: { type: "search", name: "q", placeholder: words.searchPlaceholder } } } };
+  /* Closed until asked for: the page is one text field, and the facets are the way down when it is not enough. */
   const advanced: UsageTree = {
     contract: "accordion",
     signature: "Details",
@@ -167,9 +168,10 @@ export function searchTree(words: ChromeWords, facets: FacetOptions): UsageTree 
   return {
     contract: "layout",
     signature: "Stack",
-    options: { gap: "sm" },
+    options: { gap: "xs" },
     attrs: { role: "search", "aria-label": words.search },
-    children: [query, advanced, inline([...chips, { contract: "button", signature: "Button.action", options: { variant: "ghost", size: "sm" }, attrs: { id: "catalog-clear" }, children: words.clearAll }], { gap: "xs", wrap: true, inlineAlign: "center" })],
+    /* The applied row exists only while something is applied; the script hides it otherwise. */
+    children: [query, advanced, { ...inline([...chips, { contract: "button", signature: "Button.action", options: { variant: "ghost", size: "sm" }, attrs: { id: "catalog-clear" }, children: words.clearAll }], { gap: "xs", wrap: true, inlineAlign: "center" }), attrs: { id: "catalog-applied" } }],
   };
 }
 
@@ -177,7 +179,21 @@ export interface ResultRow {
   id: string;
   title: string;
   context: string;
-  scaleLabel: string;
+  components: string[];
+}
+
+/** The building blocks nearly every example uses: they say little about what an example is, so they go last. */
+const PLAIN = new Set(["layout", "typography", "icon"]);
+/** How many component tags a result shows before the rest fold into "+n". */
+export const MAX_TAGS = 3;
+
+/** The tags a result card shows: the components that name the example first, the plain blocks after, then "+n" for what does not fit. */
+export function tagsFor(components: string[]): UsageTree[] {
+  const ranked = [...components.filter((name) => !PLAIN.has(name)), ...components.filter((name) => PLAIN.has(name))];
+  const shown = ranked.slice(0, MAX_TAGS);
+  const hidden = ranked.slice(MAX_TAGS);
+  const more: UsageTree[] = hidden.length ? [{ contract: "tag", signature: "Tag", options: { tone: "neutral" }, children: `+${hidden.length}` }] : [];
+  return [...shown.map(tag), ...more];
 }
 
 /** Every example as a result row; the script hides the ones the search leaves out. */
@@ -187,11 +203,16 @@ export function resultsTree(words: ChromeWords, rows: ResultRow[]): UsageTree {
     signature: "List",
     options: { dividers: true },
     attrs: { "aria-label": words.results, id: "catalog-results" },
-    children: rows.map((row): UsageTree => ({ contract: "list", signature: "ListItemLink", options: { href: `#${row.id}` }, slots: { title: row.title, description: row.context, trailing: tag(row.scaleLabel) } })),
+    children: rows.map((row): UsageTree => ({ contract: "list", signature: "ListItemLink", options: { href: `#${row.id}` }, slots: { title: row.title, description: row.context, trailing: inline(tagsFor(row.components), { gap: "xs", wrap: true }) } })),
   };
 }
 
-/** From an example back to the results that led to it. */
-export function backTree(words: ChromeWords): UsageTree {
-  return { contract: "button", signature: "Button.navigation", options: { href: "#results", variant: "ghost", size: "sm" }, slots: { pre: icon("arrow-left") }, children: words.back };
+/**
+ * THE MODAL an example opens in. The script fills the title and moves the example into the body; the contract
+ * brings the native `<dialog>`, its close button and the focus trap; `vaul` makes it a bottom sheet on compact
+ * screens (the contract's own composition), centred above them. The body's one child is a stand-in the
+ * script clears.
+ */
+export function modalTree(words: ChromeWords, title: string): UsageTree {
+  return { contract: "dialog", signature: "Dialog", options: { closeLabel: words.close, vaul: true }, attrs: { id: "catalog-modal" }, slots: { title }, children: { contract: "layout", signature: "Stack", options: {}, attrs: { id: "catalog-modal-slot" }, children: [text(title)] } };
 }

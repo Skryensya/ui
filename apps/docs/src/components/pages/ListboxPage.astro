@@ -69,6 +69,8 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("listbox.prop.selectionMode.body")}
       explain={explain("selectionMode", ["single", "multiple", "extended"])}
       stageMinBlockSize="12rem"
+      storybookTitle="Components/Listbox"
+      storybookStory="Plain"
     />
 
     <UsagePreview
@@ -78,12 +80,14 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("listbox.prop.orientation.body")}
       explain={explain("orientation", ["vertical", "horizontal"])}
       stageMinBlockSize="12rem"
+      storybookTitle="Components/Listbox"
+      storybookStory="Plain"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={listboxSingleTree(t)} title={t("listbox.singleTitle")} description={t("listbox.singleBody")} />
-    <UsagePreview tree={listboxMultipleTree(t)} title={t("listbox.multipleTitle")} description={t("listbox.multipleBody")} />
-    <UsagePreview tree={listboxHorizontalTree(t)} title={t("listbox.horizontalTitle")} description={t("listbox.horizontalBody")} />
+    <UsagePreview tree={listboxSingleTree(t)} title={t("listbox.singleTitle")} description={t("listbox.singleBody")} storybookTitle="Components/Listbox" storybookStory="Single" />
+    <UsagePreview tree={listboxMultipleTree(t)} title={t("listbox.multipleTitle")} description={t("listbox.multipleBody")} storybookTitle="Components/Listbox" storybookStory="Multiple" />
+    <UsagePreview tree={listboxHorizontalTree(t)} title={t("listbox.horizontalTitle")} description={t("listbox.horizontalBody")} storybookTitle="Components/Listbox" storybookStory="Horizontal" />
 
     <h3>{t("listbox.eventsTitle")}</h3>
     <p set:html={t("listbox.eventsBody")} />

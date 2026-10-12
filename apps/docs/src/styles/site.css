@@ -155,6 +155,8 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* Default-size button: its height hook is the same `max(control-md, touch-target)` the search field
+   below sets as its `min-block-size`, so the two share one height. */
 .dimensions__version-menu .sk-menu__trigger {
   border: 1px solid var(--color-border-default);
 }

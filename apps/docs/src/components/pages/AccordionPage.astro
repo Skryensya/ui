@@ -77,7 +77,7 @@ const nativeStyles = `@import "@skryensya/core/components/details.css";`;
 
 /* Same Storybook handoff Badge uses: every fixed preview below points at the generated story for
    the exact tree it renders, so the page and the code sample cannot drift silently. */
-const storybookTitle = "Components/Content/Accordion";
+const storybookTitle = "Components/Accordion";
 
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
 const explain = (option: string, values: readonly string[]) =>
@@ -115,8 +115,7 @@ const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel
       explain={explain("type", ["single", "multiple"])}
       stageMinBlockSize="18rem"
       storybookTitle={storybookTitle}
-      storybookStory="Exclusive"
-    />
+      storybookStory="Exclusive" />
 
     <UsagePreview
       tree={accordionExclusiveTree(t)}
@@ -127,8 +126,7 @@ const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel
       labels={{ false: t("accordion.prop.collapsible.falseLabel"), true: t("accordion.prop.collapsible.trueLabel") }}
       stageMinBlockSize="18rem"
       storybookTitle={storybookTitle}
-      storybookStory="Exclusive"
-    />
+      storybookStory="Exclusive" />
 
     <h3>{t("component.examplesTitle")}</h3>
     <p set:html={t("accordion.showcaseBody")} />
@@ -138,8 +136,7 @@ const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel
       title={t("accordion.oneItemTitle")}
       description={t("accordion.oneItemBody")}
       storybookTitle={storybookTitle}
-      storybookStory="Single"
-    />
+      storybookStory="Single" />
 
     {/*
       * THE PLATFORM'S ANSWER TO THE SECTION ABOVE, and it sits here for that reason: `name` on a
@@ -155,8 +152,7 @@ const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel
       tree={detailsGroupTree(t)}
       description={t("accordion.nativeBody")}
       storybookTitle={storybookTitle}
-      storybookStory="DetailsGroup"
-    />
+      storybookStory="DetailsGroup" />
 
     <h4>{t("accordion.nativeContractTitle")}</h4>
     <ul>
@@ -172,8 +168,7 @@ const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel
       title={t("accordion.multipleTitle")}
       description={t("accordion.multipleBody")}
       storybookTitle={storybookTitle}
-      storybookStory="Multiple"
-    />
+      storybookStory="Multiple" />
 
     {/*
       * Two bullets, where there were seven. The other five said what the Referencia tab now

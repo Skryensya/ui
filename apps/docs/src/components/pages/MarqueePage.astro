@@ -62,6 +62,8 @@ const explain = (option: string, values: readonly string[]) =>
       explain={explain("speed", ["slow", "normal", "fast"])}
       stageMinBlockSize="9rem"
       remountOnChange={false}
+      storybookTitle="Components/Marquee"
+      storybookStory="Manual"
     />
 
     <UsagePreview
@@ -71,14 +73,16 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("marquee.prop.fade.body")}
       explain={explain("fade", ["edges", "none"])}
       stageMinBlockSize="9rem"
+      storybookTitle="Components/Marquee"
+      storybookStory="Manual"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={marqueeAutoplayTree()} title={t("marquee.autoplayTitle")} description={t("marquee.autoplayBody")} storybookTitle="Components/Content/Marquee" storybookStory="Autoplay" />
-    <UsagePreview tree={marqueeControlTree(t)} title={t("marquee.controlTitle")} description={t("marquee.controlBody")} storybookTitle="Components/Content/Marquee" storybookStory="Control" />
-    <UsagePreview tree={marqueeBadgeTree(t)} title={t("marquee.anyChildTitle")} description={t("marquee.anyChildBody")} storybookTitle="Components/Content/Marquee" storybookStory="Badge" />
-    <UsagePreview tree={marqueeAvatarTree(t)} storybookTitle="Components/Content/Marquee" storybookStory="Avatar" />
-    <UsagePreview tree={marqueeVerticalTree(t)} title={t("marquee.verticalTitle")} description={t("marquee.verticalBody")} storybookTitle="Components/Content/Marquee" storybookStory="Vertical" />
+    <UsagePreview tree={marqueeAutoplayTree()} title={t("marquee.autoplayTitle")} description={t("marquee.autoplayBody")} storybookTitle="Components/Marquee" storybookStory="Autoplay" />
+    <UsagePreview tree={marqueeControlTree(t)} title={t("marquee.controlTitle")} description={t("marquee.controlBody")} storybookTitle="Components/Marquee" storybookStory="Control" />
+    <UsagePreview tree={marqueeBadgeTree(t)} title={t("marquee.anyChildTitle")} description={t("marquee.anyChildBody")} storybookTitle="Components/Marquee" storybookStory="Badge" />
+    <UsagePreview tree={marqueeAvatarTree(t)} storybookTitle="Components/Marquee" storybookStory="Avatar" />
+    <UsagePreview tree={marqueeVerticalTree(t)} title={t("marquee.verticalTitle")} description={t("marquee.verticalBody")} storybookTitle="Components/Marquee" storybookStory="Vertical" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

@@ -35,7 +35,7 @@ const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`avatar.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
-const storybookTitle = "Components/Content/Avatar";
+const storybookTitle = "Components/Avatar";
 
 /*
  * `max` is React's own shorthand, not a contract option, so it cannot be shown as a usage tree: the
@@ -51,65 +51,6 @@ const groupMax = `import { Avatar, AvatarGroup } from "@skryensya/react/avatar";
   <Avatar name="Edsger Dijkstra" />
 </AvatarGroup>;`;
 
-/*
- * Demo photos, as dummyimage.com placeholders painted in the accent fill.
- *
- * The hexes are the DEFAULT brand's `--color-action-accent` / `--color-text-on-accent`: a URL is a
- * string and cannot hold a var(). `previewScript` re-resolves both tokens inside the frame and
- * rewrites `src`, so the demo follows the reader's mode and brand while the source stays a URL
- * anyone can paste.
- */
-const ACCENT_HEX = "1f5fc3";
-const ON_ACCENT_HEX = "ffffff";
-
-const previewScript = `
-const probe = document.createElement("span");
-probe.hidden = true;
-document.body.append(probe);
-
-const canvas = document.createElement("canvas");
-canvas.width = 1;
-canvas.height = 1;
-const ctx = canvas.getContext("2d", { willReadFrequently: true });
-
-function hexOf(token, fallback) {
-  if (!ctx) return fallback;
-  probe.style.removeProperty("color");
-  probe.style.setProperty("color", "var(" + token + ")");
-  const used = getComputedStyle(probe).color;
-  if (!used) return fallback;
-  ctx.clearRect(0, 0, 1, 1);
-  ctx.fillStyle = "#000";
-  ctx.fillStyle = used;
-  ctx.fillRect(0, 0, 1, 1);
-  const pixel = ctx.getImageData(0, 0, 1, 1).data;
-  if (pixel[3] === 0) return fallback;
-  return [pixel[0], pixel[1], pixel[2]]
-    .map((channel) => channel.toString(16).padStart(2, "0"))
-    .join("");
-}
-
-function retint() {
-  const bg = hexOf("--color-action-accent", "${ACCENT_HEX}");
-  const fg = hexOf("--color-text-on-accent", "${ON_ACCENT_HEX}");
-  for (const img of document.querySelectorAll('img[src*="dummyimage.com"]')) {
-    // The authored src is the template; keep it, the first repaint would otherwise consume it.
-    const template = (img.dataset.skTintTemplate ||= img.getAttribute("src"));
-    const url = new URL(template);
-    const segments = url.pathname.split("/");
-    if (segments.length !== 4) continue;
-    segments[2] = bg;
-    segments[3] = fg;
-    url.pathname = segments.join("/");
-    if (img.getAttribute("src") !== url.href) img.setAttribute("src", url.href);
-  }
-}
-
-retint();
-const observer = new MutationObserver(retint);
-observer.observe(document.documentElement, { attributes: true });
-window.addEventListener("pagehide", () => observer.disconnect(), { once: true });
-`;
 ---
 
 <ComponentPageShell
@@ -138,8 +79,7 @@ window.addEventListener("pagehide", () => observer.disconnect(), { once: true })
       explain={explain("size", ["sm", "md", "lg", "xl"])}
       stageMinBlockSize="8rem"
       storybookTitle={storybookTitle}
-      storybookStory="Single"
-    />
+      storybookStory="Single" />
 
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview
@@ -147,15 +87,13 @@ window.addEventListener("pagehide", () => observer.disconnect(), { once: true })
       title={t("avatar.imagesTitle")}
       description={t("avatar.imagesBody")}
       storybookTitle={storybookTitle}
-      storybookStory="Image"
-    />
+      storybookStory="Image" />
     <UsagePreview
       tree={avatarGroupTree(t)}
       title={t("avatar.groupTitle")}
       description={t("avatar.groupBody")}
       storybookTitle={storybookTitle}
-      storybookStory="Group"
-    />
+      storybookStory="Group" />
     <p set:html={t("avatar.groupMaxBody")} />
     <CodeBlock code={groupMax} label="React" lang="tsx" note={t("avatar.groupMaxNote")} />
     <UsagePreview
@@ -163,15 +101,13 @@ window.addEventListener("pagehide", () => observer.disconnect(), { once: true })
       title={t("avatar.profileTitle")}
       description={t("avatar.profileBody")}
       storybookTitle={storybookTitle}
-      storybookStory="Profile"
-    />
+      storybookStory="Profile" />
     <UsagePreview
       tree={avatarColorsTree(t)}
       title={t("avatar.colorsTitle")}
       description={t("avatar.colorsBody")}
       storybookTitle={storybookTitle}
-      storybookStory="Colors"
-    />
+      storybookStory="Colors" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
@@ -185,7 +121,6 @@ window.addEventListener("pagehide", () => observer.disconnect(), { once: true })
       tree={avatarAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("avatar.anatomyPreviewLabel")}
-      script={previewScript}
       bare
     />
     <p set:html={t("avatar.groupAnatomyBody")} />

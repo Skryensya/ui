@@ -32,7 +32,7 @@
  * (or "none") ancestor.
  *
  * Activated with data-radius on :root or any subtree, or by setting --radius-multiplier
- * directly for a value off the preset ladder. Opt-in import, like modes/hc.scss.
+ * directly for a value off the preset ladder. Opt-in import.
  */
 @layer overrides {
   [data-radius="none"] {

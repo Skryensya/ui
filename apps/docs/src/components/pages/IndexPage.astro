@@ -116,3 +116,39 @@ const componentSearchIndex = componentSection.groups.flatMap((group) =>
     }
   </div>
 </Base>
+
+<script>
+  /*
+   * THE RAIL READS ROW BY ROW, like the eye crossing two columns. The groups are in the DOM down the first
+   * column and then down the second (that is what multi-column does), so the rail's default order is a
+   * column at a time. Here it is rebuilt from where the groups actually sit: each column's list by rank,
+   * interleaved (left 1, right 1, left 2, right 2…). One column, or one group, leaves the DOM order alone.
+   */
+  const container = document.querySelector<HTMLElement>(".docs-catalog-groups");
+  const list = document.querySelector<HTMLElement>(".sk-toc__list");
+  if (container && list) {
+    const reorder = () => {
+      const byId = new Map<string, HTMLElement>();
+      for (const link of list.querySelectorAll<HTMLAnchorElement>(".sk-toc__link")) {
+        const item = link.closest<HTMLElement>(".sk-toc__item");
+        if (item) byId.set(decodeURIComponent(link.hash.slice(1)), item);
+      }
+      const columns = new Map<number, HTMLElement[]>();
+      for (const section of container.querySelectorAll<HTMLElement>(".docs-catalog-section")) {
+        const heading = section.querySelector<HTMLElement>("h2[id]");
+        const item = heading && byId.get(heading.id);
+        if (!item) continue;
+        const left = Math.round(section.offsetLeft);
+        columns.set(left, [...(columns.get(left) ?? []), item]);
+      }
+      const ordered = [...columns.entries()].sort(([a], [b]) => a - b).map(([, items]) => items);
+      const rows = Math.max(0, ...ordered.map((items) => items.length));
+      const sorted: HTMLElement[] = [];
+      for (let row = 0; row < rows; row++) for (const items of ordered) if (items[row]) sorted.push(items[row]!);
+      const current = [...list.children];
+      if (sorted.length === current.length && sorted.some((item, index) => item !== current[index])) list.append(...sorted);
+    };
+    reorder();
+    new ResizeObserver(reorder).observe(container);
+  }
+</script>

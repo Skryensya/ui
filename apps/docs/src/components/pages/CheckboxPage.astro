@@ -33,7 +33,7 @@ import { variantsTree } from "../../demos/variants";
 
 const t = useTranslations(getLocale(Astro.url));
 
-const storybookTitle = "Components/Forms/Checkbox";
+const storybookTitle = "Components/Checkbox";
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`checkbox.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
@@ -81,13 +81,12 @@ for (const root of document.querySelectorAll(
       explain={explain("orientation", ["vertical", "horizontal"])}
       stageMinBlockSize="12rem"
       storybookTitle={storybookTitle}
-      storybookStory="Group"
-    />
+      storybookStory="Group" />
 
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview tree={checkboxTree(t)} title={t("checkbox.singleTitle")} description={t("checkbox.singleBody")} storybookTitle={storybookTitle} storybookStory="Default" />
     <UsagePreview tree={checkboxGroupTree(t)} title={t("checkbox.groupTitle")} description={t("checkbox.groupBody1")} storybookTitle={storybookTitle} storybookStory="Group" />
-    <UsagePreview tree={tileCheckboxTree(t)} title={t("checkbox.tileTitle")} description={t("checkbox.tileBody1")} />
+    <UsagePreview tree={tileCheckboxTree(t)} title={t("checkbox.tileTitle")} description={t("checkbox.tileBody1")} storybookTitle="Components/Checkbox" storybookStory="TileCheckbox" />
     <p set:html={t("checkbox.tileBody2")} />
     <CodeBlock code={tileCheckboxVanilla} label="JavaScript" />
     <UsagePreview tree={checkboxScaleTree(t)} title={t("checkboxPage.scaleTitle")} description={t("checkboxPage.scaleBody")} storybookTitle={storybookTitle} storybookStory="Scale" />
@@ -102,6 +101,8 @@ for (const root of document.querySelectorAll(
       tree={variantsTree(checkboxTree(t), [{ label: t("component.state.default"), options: {} }, { label: t("component.state.checked"), options: { defaultChecked: true } }, { label: t("component.state.indeterminate"), options: { defaultIndeterminate: true } }, { label: t("component.state.disabled"), options: { disabled: true } }])}
       title={t("component.statesTitle")}
       description={t("component.statesBody")}
+      storybookTitle="Components/Checkbox"
+      storybookStory="Default"
     />
 
     <h3>{t("component.anatomy")}</h3>

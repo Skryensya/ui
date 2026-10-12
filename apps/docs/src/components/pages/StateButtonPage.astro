@@ -41,9 +41,9 @@ import { stateButtonDoTree, stateButtonDontTree, stateButtonSwitchDoTree, stateB
     <p class="lede" set:html={t("stateButtonPage.lede")} />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={stateButtonBasicTree(t)} script={stateButtonDemoScript} title={t("stateButtonPage.viewTitle")} description={t("stateButtonPage.viewBody")} />
-    <UsagePreview tree={stateButtonThemeToggleTree(t)} script={stateButtonDemoScript} title={t("stateButtonPage.themeTitle")} description={t("stateButtonPage.themeBody")} />
-    <UsagePreview tree={stateButtonCopyTree(t)} script={stateButtonDemoScript} title={t("stateButtonPage.copyTitle")} description={t("stateButtonPage.copyBody")} />
+    <UsagePreview tree={stateButtonBasicTree(t)} script={stateButtonDemoScript} title={t("stateButtonPage.viewTitle")} description={t("stateButtonPage.viewBody")} storybookTitle="Components/StateButton" storybookStory="Basic" />
+    <UsagePreview tree={stateButtonThemeToggleTree(t)} script={stateButtonDemoScript} title={t("stateButtonPage.themeTitle")} description={t("stateButtonPage.themeBody")} storybookTitle="Components/StateButton" storybookStory="ThemeToggle" />
+    <UsagePreview tree={stateButtonCopyTree(t)} script={stateButtonDemoScript} title={t("stateButtonPage.copyTitle")} description={t("stateButtonPage.copyBody")} storybookTitle="Components/StateButton" storybookStory="Copy" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

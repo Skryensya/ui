@@ -121,7 +121,7 @@ export const buttonMessages = {
     "button.linkBody": "Cuando la acción lleva a otra página, el componente renderiza un enlace. Un enlace no puede estar deshabilitado: renderiza el contenido sin enlace.",
     "button.tileTitle": "TileButton: toda la superficie es la acción",
     "button.tileBody": "Cuando la acción ocupa una tarjeta entera, no solo un texto dentro de ella.",
-    "button.vanillaInitTitle": "Inicializar vanilla",
+    "button.vanillaInitTitle": "Iconos dentro del botón",
     "button.iconsComment":
       "Los iconos se autoran como placeholders <span data-sk-icon>;\nmountIcons los reemplaza por el <svg> del set enlazado.",
     "button.prop.variant.title": "Variant: qué tan fuerte se ve",
@@ -280,7 +280,7 @@ export const buttonMessages = {
     "button.linkBody": "When the action goes to another page, the component renders a link. A link cannot be disabled: it renders the content unlinked instead.",
     "button.tileTitle": "TileButton: the whole surface is the action",
     "button.tileBody": "When the action takes a whole card, not just a line of text inside it.",
-    "button.vanillaInitTitle": "Initialize vanilla",
+    "button.vanillaInitTitle": "Icons inside the button",
     "button.iconsComment":
       "Icons are authored as <span data-sk-icon> placeholders;\nmountIcons replaces them with the <svg> of the linked set.",
     "button.prop.variant.title": "Variant: how strong it looks",

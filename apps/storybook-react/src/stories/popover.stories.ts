@@ -13,7 +13,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/popover";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Overlays/Popover", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Popover", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.popoverAnatomyTree);
 export const PopupAnatomy: StoryObj = treeStory(demos.popupAnatomyTree);
@@ -21,12 +21,4 @@ export const Default: StoryObj = treeStory(demos.popoverTree);
 export const Structured: StoryObj = treeStory(demos.popoverStructuredTree);
 export const Placement: StoryObj = treeStory(demos.popoverPlacementTree);
 export const Popup: StoryObj = treeStory(demos.popupTree);
-export const DoInteractive: StoryObj = treeStory(demos.popoverDoInteractiveTree);
-export const DontLabel: StoryObj = treeStory(demos.popoverDontLabelTree);
-export const DoShort: StoryObj = treeStory(demos.popoverDoShortTree);
-export const DontLong: StoryObj = treeStory(demos.popoverDontLongTree);
-export const DoName: StoryObj = treeStory(demos.popoverDoNameTree);
-export const DontName: StoryObj = treeStory(demos.popoverDontNameTree);
-export const DoAction: StoryObj = treeStory(demos.popoverDoActionTree);
-export const DontDecision: StoryObj = treeStory(demos.popoverDontDecisionTree);
 export const CardCase: StoryObj = treeStory(demos.popoverCardCase);

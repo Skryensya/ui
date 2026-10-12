@@ -8,10 +8,9 @@ import "@skryensya/core/patterns/icon.css";
 import * as demos from "@docs/demos/toc";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Navigation/Table of contents", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Table of contents", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.tocAnatomyTree);
 export const Plain: StoryObj = treeStory(demos.tocPlainTree);
 export const Nested: StoryObj = treeStory(demos.tocNestedTree);
 export const Icons: StoryObj = treeStory(demos.tocIconsTree);
-export const DontLong: StoryObj = treeStory(demos.tocDontLongTree);

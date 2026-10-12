@@ -8,12 +8,8 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/slider";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Forms/Slider", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Slider", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.sliderAnatomyTree);
 export const Default: StoryObj = treeStory(demos.sliderTree);
 export const Range: StoryObj = treeStory(demos.sliderRangeTree);
-export const DontTwo: StoryObj = treeStory(demos.sliderDontTwoTree);
-export const DoRange: StoryObj = treeStory(demos.sliderDoRangeTree);
-export const DontExact: StoryObj = treeStory(demos.sliderDontExactTree);
-export const DoApprox: StoryObj = treeStory(demos.sliderDoApproxTree);

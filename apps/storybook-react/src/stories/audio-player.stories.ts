@@ -9,14 +9,10 @@ import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/audio-player";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Media & Visuals/Audio Player", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Audio Player", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.audioPlayerAnatomyTree);
 export const Default: StoryObj = treeStory(demos.audioPlayerTree);
 export const Card: StoryObj = treeStory(demos.audioPlayerCardTree);
 export const Playlist: StoryObj = treeStory(demos.audioPlayerPlaylistTree);
 export const Minimal: StoryObj = treeStory(demos.audioPlayerMinimalTree);
-export const DoName: StoryObj = treeStory(demos.audioPlayerDoNameTree);
-export const DontName: StoryObj = treeStory(demos.audioPlayerDontNameTree);
-export const DoRoom: StoryObj = treeStory(demos.audioPlayerDoRoomTree);
-export const DontRoom: StoryObj = treeStory(demos.audioPlayerDontRoomTree);

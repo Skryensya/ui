@@ -15,7 +15,7 @@ import "@skryensya/core/patterns/media-overlay.css";
 import * as demos from "@docs/demos/placeholder";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Feedback/Placeholder", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Placeholder", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.placeholderAnatomyTree);
 export const PublicationPlaceholder: StoryObj = treeStory(demos.publicationPlaceholderTree);
@@ -23,10 +23,4 @@ export const PublicationSwap: StoryObj = treeStory(demos.publicationSwapTree);
 export const Match: StoryObj = treeStory(demos.placeholderMatchTree);
 export const Gallery: StoryObj = treeStory(demos.placeholderGalleryTree);
 export const Table: StoryObj = treeStory(demos.placeholderTableTree);
-export const DoShape: StoryObj = treeStory((t) => demos.placeholderDoShapeTree());
-export const DontSlab: StoryObj = treeStory((t) => demos.placeholderDontSlabTree());
-export const DoRole: StoryObj = treeStory((t) => demos.placeholderDoRoleTree());
-export const DontRole: StoryObj = treeStory((t) => demos.placeholderDontRoleTree());
-export const DoAvatar: StoryObj = treeStory((t) => demos.placeholderDoAvatarTree());
-export const DontAvatar: StoryObj = treeStory((t) => demos.placeholderDontAvatarTree());
 export const Paragraph: StoryObj = treeStory((t) => demos.placeholderParagraphTree());

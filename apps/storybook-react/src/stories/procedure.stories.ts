@@ -15,18 +15,10 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/procedure";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Surfaces & Collections/Procedure", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Procedure", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.procedureAnatomyTree);
 export const Default: StoryObj = treeStory(demos.procedureTree);
 export const Deploy: StoryObj = treeStory(demos.procedureDeployTree);
 export const Security: StoryObj = treeStory(demos.procedureSecurityTree);
-export const DoOrder: StoryObj = treeStory(demos.procedureDoOrderTree);
-export const DontOrder: StoryObj = treeStory(demos.procedureDontOrderTree);
-export const DoTitles: StoryObj = treeStory(demos.procedureDoTitlesTree);
-export const DontTitles: StoryObj = treeStory(demos.procedureDontTitlesTree);
-export const DoActions: StoryObj = treeStory(demos.procedureDoActionsTree);
-export const DontActions: StoryObj = treeStory(demos.procedureDontActionsTree);
-export const DoCommand: StoryObj = treeStory(demos.procedureDoCommandTree);
-export const DontCommand: StoryObj = treeStory(demos.procedureDontCommandTree);
 export const Content: StoryObj = treeStory((t) => demos.procedureContentTree(t, "#"));

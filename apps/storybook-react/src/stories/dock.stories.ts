@@ -5,7 +5,7 @@ import "@skryensya/core/patterns/icon.css";
 import * as demos from "@docs/demos/dock";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Actions/Dock", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Dock", tags: ["autodocs"] } satisfies Meta;
 
 export const Default: StoryObj = treeStory(demos.dockTree);
 export const Size: StoryObj = treeStory((t) => demos.dockSizeTree(t, "#"));

@@ -8,6 +8,7 @@ import {
 } from "@skryensya/core/carousel";
 import type { OptionValue } from "@skryensya/core/contract";
 import { carousel } from "@skryensya/core/machines";
+import { prefersReducedMotion as reducedMotion } from "@skryensya/core/reduced-motion";
 import { normalizeProps, useMachine } from "@zag-js/react";
 import {
   Children,
@@ -123,9 +124,6 @@ function StaticCarousel(inner: InnerProps) {
   );
 }
 
-function prefersReducedMotion(): boolean {
-  return typeof window !== "undefined" && (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false);
-}
 
 function MountedCarousel(inner: InnerProps) {
   const { autoplay, children, className, controls, dir, handleRef, id, loop, mouseDrag, orientation, slideSize, style, ...props } =
@@ -149,7 +147,7 @@ function MountedCarousel(inner: InnerProps) {
   /* Autoplay, with the brake on: whoever asked for less motion does not get a carousel that moves. */
   const wantsAutoplay = autoplay !== undefined && autoplay !== false;
   const [initialAutoplay] = useState(() =>
-    !wantsAutoplay || prefersReducedMotion()
+    !wantsAutoplay || reducedMotion()
       ? false
       : typeof autoplay === "number" && autoplay > 0
         ? { delay: autoplay }

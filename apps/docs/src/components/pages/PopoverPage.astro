@@ -73,15 +73,15 @@ mountIcons(document, lucideIcons);`;
 
     {/* One card per option with a closed set of values. The panel opens over the card, so each stage is
         reserved tall enough, and wide enough for a side placement, not to move when it opens. */}
-    <UsagePreview tree={popoverCardCase(t, "placement")} optionName="placement" {...prop("placement")} explain={explain("placement", ["block-start", "block-end", "inline-start", "inline-end"])} labels={{ "block-start": "Arriba", "block-end": "Abajo", "inline-start": "Inicio", "inline-end": "Final" }} stageMinBlockSize="24rem" />
-    <UsagePreview tree={popoverCardCase(t, "arrow")} optionName="arrow" {...prop("arrow")} explain={explain("arrow", ["false", "true"])} labels={{ false: t("popoverPage.prop.arrow.off"), true: t("popoverPage.prop.arrow.on") }} stageMinBlockSize="24rem" />
-    <UsagePreview tree={popoverCardCase(t, "triggerVariant")} optionName="triggerVariant" {...prop("triggerVariant")} explain={explain("triggerVariant", ["solid", "soft", "ghost"])} stageMinBlockSize="24rem" />
-    <UsagePreview tree={popoverCardCase(t, "triggerTone")} optionName="triggerTone" {...prop("triggerTone")} explain={explain("triggerTone", ["neutral", "accent", "danger"])} stageMinBlockSize="24rem" />
+    <UsagePreview tree={popoverCardCase(t, "placement")} optionName="placement" {...prop("placement")} explain={explain("placement", ["block-start", "block-end", "inline-start", "inline-end"])} labels={{ "block-start": "Arriba", "block-end": "Abajo", "inline-start": "Inicio", "inline-end": "Final" }} stageMinBlockSize="24rem" storybookTitle="Components/Popover" storybookStory="Default" />
+    <UsagePreview tree={popoverCardCase(t, "arrow")} optionName="arrow" {...prop("arrow")} explain={explain("arrow", ["false", "true"])} labels={{ false: t("popoverPage.prop.arrow.off"), true: t("popoverPage.prop.arrow.on") }} stageMinBlockSize="24rem" storybookTitle="Components/Popover" storybookStory="Default" />
+    <UsagePreview tree={popoverCardCase(t, "triggerVariant")} optionName="triggerVariant" {...prop("triggerVariant")} explain={explain("triggerVariant", ["solid", "soft", "ghost"])} stageMinBlockSize="24rem" storybookTitle="Components/Popover" storybookStory="Default" />
+    <UsagePreview tree={popoverCardCase(t, "triggerTone")} optionName="triggerTone" {...prop("triggerTone")} explain={explain("triggerTone", ["neutral", "accent", "danger"])} stageMinBlockSize="24rem" storybookTitle="Components/Popover" storybookStory="Default" />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={popoverTree(t)} title={t("popoverPage.simpleTitle")} description={t("popoverPage.simpleBody")} viewport="overlay" />
+    <UsagePreview tree={popoverTree(t)} title={t("popoverPage.simpleTitle")} description={t("popoverPage.simpleBody")} viewport="overlay" storybookTitle="Components/Popover" storybookStory="Default" />
 
-    <UsagePreview tree={popoverStructuredTree(t)} title={t("popoverPage.structuredTitle")} description={t("popoverPage.structuredBody")} viewport="overlay" />
+    <UsagePreview tree={popoverStructuredTree(t)} title={t("popoverPage.structuredTitle")} description={t("popoverPage.structuredBody")} viewport="overlay" storybookTitle="Components/Popover" storybookStory="Structured" />
 
     {/*
       * POPUP IS THIS FAMILY'S BARE SIGNATURE, not a component of its own, and this section is where
@@ -96,7 +96,7 @@ mountIcons(document, lucideIcons);`;
       */}
     <h3 id="popup">{t("popoverPage.popupTitle")}</h3>
     <p set:html={t("popoverPage.popupBody")} />
-    <UsagePreview tree={popupTree(t)} label="Popup" viewport="menu" />
+    <UsagePreview tree={popupTree(t)} label="Popup" viewport="menu" storybookTitle="Components/Popover" storybookStory="Popup" />
 
     <p set:html={t("popoverPage.popupAnatomyBody")} />
     <UsagePreview

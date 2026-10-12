@@ -99,6 +99,8 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("imageFrame.prop.aspect.body")}
       explain={explain("aspect", ["auto", "1/1", "4/3", "3/2", "16/9", "3/4", "2/3", "9/16"])}
       stageMinBlockSize="26rem"
+      storybookTitle="Components/ImageFrame"
+      storybookStory="Single"
     />
 
     <UsagePreview
@@ -108,6 +110,8 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("imageFrame.prop.fit.body")}
       explain={explain("fit", ["cover", "contain", "fill", "none", "scale-down"])}
       stageMinBlockSize="18rem"
+      storybookTitle="Components/ImageFrame"
+      storybookStory="FitSpecimen"
     />
 
     <UsagePreview
@@ -117,13 +121,15 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("imageFrame.prop.radius.body")}
       explain={explain("radius", ["none", "top", "control", "surface", "pill"])}
       stageMinBlockSize="26rem"
+      storybookTitle="Components/ImageFrame"
+      storybookStory="Single"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={imageFrameTree(t)} title={t("imageFrame.basicTitle")} description={t("imageFrame.basicBody")} storybookTitle="Components/Content/ImageFrame" storybookStory="Default" />
-    <UsagePreview tree={imageFrameAspectTree(t)} title={t("imageFrame.aspectTitle")} description={t("imageFrame.aspectBody")} storybookTitle="Components/Content/ImageFrame" storybookStory="Aspect" />
-    <UsagePreview tree={imageFrameFitTree(t)} title={t("imageFrame.fitTitle")} description={t("imageFrame.fitBody")} storybookTitle="Components/Content/ImageFrame" storybookStory="Fit" />
-    <UsagePreview tree={imageFramePositionTree(t)} title={t("imageFrame.positionTitle")} description={t("imageFrame.positionBody")} storybookTitle="Components/Content/ImageFrame" storybookStory="Position" />
+    <UsagePreview tree={imageFrameTree(t)} title={t("imageFrame.basicTitle")} description={t("imageFrame.basicBody")} storybookTitle="Components/ImageFrame" storybookStory="Default" />
+    <UsagePreview tree={imageFrameAspectTree(t)} title={t("imageFrame.aspectTitle")} description={t("imageFrame.aspectBody")} storybookTitle="Components/ImageFrame" storybookStory="Aspect" />
+    <UsagePreview tree={imageFrameFitTree(t)} title={t("imageFrame.fitTitle")} description={t("imageFrame.fitBody")} storybookTitle="Components/ImageFrame" storybookStory="Fit" />
+    <UsagePreview tree={imageFramePositionTree(t)} title={t("imageFrame.positionTitle")} description={t("imageFrame.positionBody")} storybookTitle="Components/ImageFrame" storybookStory="Position" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

@@ -56,56 +56,22 @@
   inset-inline-end: var(--space-inset-md);
 }
 
-.sk-preview-card .sk-preview-card__code-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  inline-size: 2rem;
-  block-size: 2rem;
-  border-radius: var(--radius-control);
-  color: var(--color-text-tertiary);
+/* The code button sits in the card's top-right corner, so its menu opens below it and grows toward the left, with its
+   end edge on the button's end edge (the kit's anchoring hooks, not a position of our own). */
+.sk-preview-card__code-menu .sk-menu__positioner {
+  --sk-anchored-position-area: block-end span-inline-start;
+  --sk-anchored-justify: end;
 }
 
-.sk-preview-card .sk-preview-card__code-menu > summary {
-  position: static;
-  list-style: none;
-  cursor: pointer;
+/* Each link: its name at the start, the launch glyph at the end. */
+.sk-preview-card__code-menu .sk-menu__item {
+  justify-content: space-between;
+  gap: var(--space-inline-lg);
 }
 
-.sk-preview-card .sk-preview-card__code-menu > summary::-webkit-details-marker {
+/* "View code" names the button; once its menu is open the menu is the answer, and the hint must not open over it. */
+.sk-preview-card__code-menu .sk-tooltip:has([aria-expanded="true"]) .sk-tooltip__positioner {
   display: none;
-}
-
-.sk-preview-card .sk-preview-card__code-menu-panel {
-  position: absolute;
-  inset-block-start: calc(100% + var(--space-stack-2xs));
-  inset-inline-end: 0;
-  display: grid;
-  gap: var(--space-stack-2xs);
-  min-inline-size: max-content;
-  padding: var(--space-inset-xs);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-surface);
-  background: var(--color-bg-surface-raised);
-  box-shadow: var(--elevation-overlay);
-}
-
-.sk-preview-card .sk-preview-card__code-menu:not([open]) .sk-preview-card__code-menu-panel {
-  display: none;
-}
-
-.sk-preview-card .sk-preview-card__code-menu-panel > a {
-  padding: var(--space-inset-xs) var(--space-inset-sm);
-  border-radius: var(--radius-control);
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-caption);
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.sk-preview-card .sk-preview-card__code-menu-panel > a:hover {
-  background: var(--color-bg-surface-sunken);
-  color: var(--color-text-primary);
 }
 
 /* THE LINK'S STRIP IS THE LINK'S. The code link floats over the card's top-right corner, so an example as wide as the stage
@@ -120,12 +86,6 @@
    Only then does the stage give the link its own row. */
 .sk-preview-section:not(.sk-usage-preview--controlled) .sk-preview-card:has(> :is(.sk-preview-card__code-link, .sk-preview-card__code-menu)) .sk-preview-card__stage:has(.sk-canvas) {
   padding-block-start: calc(2rem + var(--space-inset-md));
-}
-
-.sk-preview-card .sk-preview-card__code-link:hover,
-.sk-preview-card .sk-preview-card__code-menu[open] > .sk-preview-card__code-link {
-  background: var(--color-bg-surface-sunken);
-  color: var(--color-text-secondary);
 }
 
 /* The example is what is centred; room enough that a small one does not look lost or cramped. */

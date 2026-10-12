@@ -12,12 +12,10 @@ import "@skryensya/core/patterns/media-overlay.css";
 import * as demos from "@docs/demos/scroll-expand";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Layout/Scroll Expand", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Scroll Expand", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.scrollExpandAnatomyTree);
 export const Default: StoryObj = treeStory(demos.scrollExpandTree);
 export const Interface: StoryObj = treeStory(demos.scrollExpandInterfaceTree);
 export const Wide: StoryObj = treeStory(demos.scrollExpandWideTree);
 export const Contract: StoryObj = treeStory(demos.scrollExpandContractTree);
-export const DoCentre: StoryObj = treeStory(demos.scrollExpandDoCentreTree);
-export const DontCentre: StoryObj = treeStory(demos.scrollExpandDontCentreTree);

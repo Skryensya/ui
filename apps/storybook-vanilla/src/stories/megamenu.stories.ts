@@ -14,16 +14,10 @@ import * as demos from "@docs/demos/megamenu";
 import { placeholderHrefs } from "@docs/lib/placeholder-hrefs";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Navigation/Megamenu", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Megamenu", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.megamenuAnatomyTree);
 export const Default: StoryObj = treeStory(demos.megamenuTree);
 export const TwoColumns: StoryObj = treeStory((t) => demos.megamenuTwoColumnsTree(t, placeholderHrefs()));
 export const FourColumns: StoryObj = treeStory((t) => demos.megamenuFourColumnsTree(t, placeholderHrefs()));
 export const ThreeColumns: StoryObj = treeStory((t) => demos.megamenuThreeColumnsTree(t, placeholderHrefs()));
-export const DoNamedLinks: StoryObj = treeStory(demos.megamenuDoNamedLinksTree);
-export const DontVagueLinks: StoryObj = treeStory(demos.megamenuDontVagueLinksTree);
-export const DoShortColumns: StoryObj = treeStory(demos.megamenuDoShortColumnsTree);
-export const DontLongColumn: StoryObj = treeStory(demos.megamenuDontLongColumnTree);
-export const DoShortTriggers: StoryObj = treeStory(demos.megamenuDoShortTriggersTree);
-export const DontLongTriggers: StoryObj = treeStory(demos.megamenuDontLongTriggersTree);

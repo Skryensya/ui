@@ -50,17 +50,13 @@ const explain = (option: string, values: readonly string[]) =>
 /* The link demo points at a real docs page, and that page's path differs per locale, which is
    what this resolves: a Spanish reader clicking the demo used to land on the English page. */
 const LINK_HREF = "https://example.com/news";
-const storybookTitle = "Components/Actions/Button";
+const storybookTitle = "Components/Button";
 
-const install = `pnpm add @skryensya/core @skryensya/vanilla`;
-const js = `import { initComponents } from "@skryensya/vanilla/auto";
-import { mountIcons } from "@skryensya/vanilla/icon";
+const iconsSnippet = `import { mountIcons } from "@skryensya/vanilla/icon";
 import { lucideIcons } from "@skryensya/icons-lucide";
 
 // ${t("button.iconsComment").split("\n").join("\n// ")}
-mountIcons(document, lucideIcons);
-
-await initComponents();`;
+mountIcons(document, lucideIcons);`;
 
 const tileButtonVanilla = `import { createTileButton } from "@skryensya/vanilla/tile-button";
 
@@ -91,8 +87,7 @@ button.addEventListener("click", runDeployment);`;
       title={t("button.prop.variant.title")}
       description={t("button.prop.variant.body")}
       explain={explain("variant", ["solid", "soft", "ghost"])}
-      stageMinBlockSize="8rem"
-    />
+      stageMinBlockSize="8rem" />
 
     <UsagePreview
       tree={buttonDefaultTree(t)}
@@ -102,8 +97,7 @@ button.addEventListener("click", runDeployment);`;
       title={t("button.prop.tone.title")}
       description={t("button.prop.tone.body")}
       explain={explain("tone", ["neutral", "accent", "danger"])}
-      stageMinBlockSize="8rem"
-    />
+      stageMinBlockSize="8rem" />
 
     <UsagePreview
       tree={buttonDefaultTree(t)}
@@ -113,8 +107,7 @@ button.addEventListener("click", runDeployment);`;
       title={t("button.prop.size.title")}
       description={t("button.prop.size.body")}
       explain={explain("size", ["xs", "sm", "md", "lg"])}
-      stageMinBlockSize="8rem"
-    />
+      stageMinBlockSize="8rem" />
 
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview
@@ -122,43 +115,37 @@ button.addEventListener("click", runDeployment);`;
       title={t("button.defaultTitle")}
       description={t("button.defaultBody")}
       storybookTitle={storybookTitle}
-      storybookStory="Default"
-    />
+      storybookStory="Default" />
     <UsagePreview
       tree={buttonIconTree(t)}
       title={t("button.iconTitle")}
       description={t("button.iconBody")}
       storybookTitle={storybookTitle}
-      storybookStory="Icon"
-    />
+      storybookStory="Icon" />
     <UsagePreview
       tree={buttonIconOnlyTree(t)}
       title={t("button.iconOnlyTitle")}
       description={t("button.iconOnlyBody")}
       storybookTitle={storybookTitle}
-      storybookStory="IconOnly"
-    />
+      storybookStory="IconOnly" />
     <UsagePreview
       tree={buttonVariantTree(t)}
       title={t("button.variantsTitle")}
       description={t("button.variantsBody")}
       storybookTitle={storybookTitle}
-      storybookStory="Variant"
-    />
+      storybookStory="Variant" />
     <UsagePreview
       tree={buttonDestructivePairTree(t)}
       title={t("button.destructiveTitle")}
       description={t("button.destructiveBody")}
       storybookTitle={storybookTitle}
-      storybookStory="DestructivePair"
-    />
+      storybookStory="DestructivePair" />
     <UsagePreview
       tree={buttonAsLinkTree(t, LINK_HREF)}
       title={t("button.linkTitle")}
       description={t("button.linkBody")}
       storybookTitle={storybookTitle}
-      storybookStory="AsLink"
-    />
+      storybookStory="AsLink" />
     <UsagePreview tree={tileButtonTree(t)} title={t("button.tileTitle")} description={t("button.tileBody")} storybookTitle={storybookTitle} storybookStory="TileButton" />
     <CodeBlock code={tileButtonVanilla} label="JavaScript" />
 
@@ -169,58 +156,50 @@ button.addEventListener("click", runDeployment);`;
       storybookTitle={storybookTitle}
       storybookStory="Appearance"
       title={t("button.appearanceTitle")}
-      description={t("button.appearanceBody")}
-    />
+      description={t("button.appearanceBody")} />
     <UsagePreview
       tree={buttonBrutalistMatrixTree(t)}
       storybookTitle={storybookTitle}
       storybookStory="BrutalistMatrix"
       title={t("button.brutalistMatrixTitle")}
-      description={t("button.brutalistMatrixBody")}
-    />
+      description={t("button.brutalistMatrixBody")} />
     <UsagePreview
       tree={buttonBrutalistRadiusTree(t)}
       storybookTitle={storybookTitle}
       storybookStory="BrutalistRadius"
       title={t("button.brutalistRadiusTitle")}
-      description={t("button.brutalistRadiusBody")}
-    />
+      description={t("button.brutalistRadiusBody")} />
     <UsagePreview
       tree={buttonBrutalistStatesTree(t)}
       storybookTitle={storybookTitle}
       storybookStory="BrutalistStates"
       title={t("button.brutalistStatesTitle")}
       description={t("button.brutalistStatesBody")}
-      css={buttonBrutalistStatesCss}
-    />
+      css={buttonBrutalistStatesCss} />
     <UsagePreview
       tree={buttonBrutalistShapesTree(t, LINK_HREF)}
       storybookTitle={storybookTitle}
       storybookStory="BrutalistShapes"
       title={t("button.brutalistShapesTitle")}
-      description={t("button.brutalistShapesBody")}
-    />
+      description={t("button.brutalistShapesBody")} />
     <UsagePreview
       tree={buttonFrostedBackdropsTree(t)}
       storybookTitle={storybookTitle}
       storybookStory="FrostedBackdrops"
       title={t("button.frostedTitle")}
-      description={t("button.frostedBody")}
-    />
+      description={t("button.frostedBody")} />
     <UsagePreview
       tree={buttonFrostedMatrixTree(t)}
       storybookTitle={storybookTitle}
       storybookStory="FrostedMatrix"
       title={t("button.frostedMatrixTitle")}
-      description={t("button.frostedMatrixBody")}
-    />
+      description={t("button.frostedMatrixBody")} />
     <UsagePreview
       tree={buttonFrostedRadiusTree(t)}
       storybookTitle={storybookTitle}
       storybookStory="FrostedRadius"
       title={t("button.frostedDetailsTitle")}
-      description={t("button.frostedDetailsBody")}
-    />
+      description={t("button.frostedDetailsBody")} />
     <UsagePreview tree={buttonFrostedStatesTree(t)} storybookTitle={storybookTitle} storybookStory="FrostedStates" />
     <UsagePreview tree={buttonFrostedShapesTree(t, LINK_HREF)} storybookTitle={storybookTitle} storybookStory="FrostedShapes" />
     </div>
@@ -266,11 +245,9 @@ button.addEventListener("click", runDeployment);`;
     <ContentRules items={tList(t, "button.content")} />
   </Fragment>
 
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-
-    <h3>{t("button.vanillaInitTitle")}</h3>
-    <CodeBlock code={js} label="JavaScript" />
+  <Fragment slot="installNote">
+    <h4>{t("button.vanillaInitTitle")}</h4>
+    <CodeBlock code={iconsSnippet} label="JavaScript" />
   </Fragment>
 
   <Fragment slot="a11y">

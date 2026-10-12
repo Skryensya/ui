@@ -39,7 +39,7 @@
   font-family: "Hanken Grotesk";
   font-style: normal;
   font-weight: 100 900;
-  font-display: swap;
+  font-display: optional;
   src: url("./files/hanken-grotesk-latin-wght-normal.woff2") format("woff2-variations");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
     U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
@@ -50,7 +50,7 @@
   font-family: "Hanken Grotesk";
   font-style: normal;
   font-weight: 100 900;
-  font-display: swap;
+  font-display: optional;
   src: url("./files/hanken-grotesk-latin-ext-wght-normal.woff2") format("woff2-variations");
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308,
     U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
@@ -68,7 +68,7 @@
   font-family: "Hanken Grotesk";
   font-style: italic;
   font-weight: 100 900;
-  font-display: swap;
+  font-display: optional;
   src: url("./files/hanken-grotesk-latin-wght-italic.woff2") format("woff2-variations");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
     U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
@@ -79,7 +79,7 @@
   font-family: "Hanken Grotesk";
   font-style: italic;
   font-weight: 100 900;
-  font-display: swap;
+  font-display: optional;
   src: url("./files/hanken-grotesk-latin-ext-wght-italic.woff2") format("woff2-variations");
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308,
     U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
@@ -89,8 +89,10 @@
 /*
  * THE FALLBACK, WITH THE REAL FONT'S METRICS ON IT.
  *
- * `font-display: swap` above means the first paint uses whatever comes next in the stack, and a
- * plain `system-ui` there is a different width and a different vertical rhythm, so the swap shifts
+ * `font-display: optional` above means the face is used only if it is ready at first paint (the
+ * site preloads it, and pages are full document loads, so it almost always is); otherwise this page
+ * keeps the fallback and the next one gets the cached face. Nothing swaps mid-page. A plain
+ * `system-ui` fallback is a different width and a different vertical rhythm, so it would shift
  * every dense row on the page: the rail's labels, the Toc, the meta bar. This face is the same local
  * system font, re-metricised to the shape of Hanken Grotesk, so the swap is a change of drawing and
  * not a change of layout.

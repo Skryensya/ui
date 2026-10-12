@@ -58,6 +58,8 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("tabsPage.prop.variant.body")}
       explain={explain("variant", ["underline", "hanging"])}
       stageMinBlockSize="12rem"
+      storybookTitle="Components/Tabs"
+      storybookStory="Basic"
     />
 
     <UsagePreview
@@ -68,6 +70,8 @@ const explain = (option: string, values: readonly string[]) =>
       explain={explain("size", ["sm", "md"])}
       stageMinBlockSize="12rem"
       labels={{ sm: "sm", md: "md" }}
+      storybookTitle="Components/Tabs"
+      storybookStory="Basic"
     />
 
     <UsagePreview
@@ -77,12 +81,14 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("tabsPage.prop.orientation.body")}
       explain={explain("orientation", ["horizontal", "vertical"])}
       stageMinBlockSize="14rem"
+      storybookTitle="Components/Tabs"
+      storybookStory="Basic"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={tabsBasicTree(t)} title={t("tabsPage.basicTitle")} description={t("tabsPage.basicBody")} />
-    <UsagePreview tree={tabsStatesTree(t)} title={t("tabsPage.statesTitle")} description={t("tabsPage.statesBody")} />
-    <UsagePreview tree={tabsAdvancedTree(t)} script={tabsAdvancedScript} title={t("tabsPage.advancedTitle")} description={t("tabsPage.advancedBody")} />
+    <UsagePreview tree={tabsBasicTree(t)} title={t("tabsPage.basicTitle")} description={t("tabsPage.basicBody")} storybookTitle="Components/Tabs" storybookStory="Basic" />
+    <UsagePreview tree={tabsStatesTree(t)} title={t("tabsPage.statesTitle")} description={t("tabsPage.statesBody")} storybookTitle="Components/Tabs" storybookStory="States" />
+    <UsagePreview tree={tabsAdvancedTree(t)} script={tabsAdvancedScript} title={t("tabsPage.advancedTitle")} description={t("tabsPage.advancedBody")} storybookTitle="Components/Tabs" storybookStory="Advanced" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

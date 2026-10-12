@@ -63,9 +63,9 @@ const items = headings.map((h) => ({ href: \`#\${h.id}\`, label: h.label, level:
     <h3>{t("component.examplesTitle")}</h3>
     {/* `stageMinBlockSize` holds the stage at its loading reserve, so the short indexes do not
         collapse out of it once ready and shift everything below. */}
-    <UsagePreview tree={tocPlainTree(t)} title={t("tocPage.plainTitle")} description={t("tocPage.plainBody")} flush stageMinBlockSize="12rem" />
-    <UsagePreview tree={tocNestedTree(t)} title={t("tocPage.levelsTitle")} description={t("tocPage.levelsBody")} flush stageMinBlockSize="12rem" />
-    <UsagePreview tree={tocIconsTree(t)} title={t("tocPage.iconsTitle")} description={t("tocPage.iconsBody")} flush stageMinBlockSize="12rem" />
+    <UsagePreview tree={tocPlainTree(t)} title={t("tocPage.plainTitle")} description={t("tocPage.plainBody")} flush stageMinBlockSize="12rem" storybookTitle="Components/Table of contents" storybookStory="Plain" />
+    <UsagePreview tree={tocNestedTree(t)} title={t("tocPage.levelsTitle")} description={t("tocPage.levelsBody")} flush stageMinBlockSize="12rem" storybookTitle="Components/Table of contents" storybookStory="Nested" />
+    <UsagePreview tree={tocIconsTree(t)} title={t("tocPage.iconsTitle")} description={t("tocPage.iconsBody")} flush stageMinBlockSize="12rem" storybookTitle="Components/Table of contents" storybookStory="Icons" />
     <CodeBlock code={linkWithIcon} label={t("tocPage.iconsCodeLabel")} />
     <h4>{t("tocPage.spyTitle")}</h4>
     <p set:html={t("tocPage.spyBody")} />

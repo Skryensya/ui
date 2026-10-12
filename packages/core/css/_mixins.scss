@@ -18,7 +18,7 @@
   --color-bg-surface-sunken: light-dark(var(--palette-stone-100), var(--palette-black));
   --color-bg-well: light-dark(var(--palette-stone-300), var(--palette-black));
   --color-bg-inverse: light-dark(var(--palette-black), var(--palette-white));
-  --color-bg-accent-subtle: light-dark(var(--palette-blue-100), var(--palette-blue-950));
+  --color-bg-accent-subtle: light-dark(var(--palette-accent-100), var(--palette-accent-950));
   --color-bg-danger-subtle: light-dark(var(--palette-red-100), var(--palette-red-950));
   --color-bg-success-subtle: light-dark(var(--palette-emerald-100), var(--palette-emerald-950));
   --color-bg-warning-subtle: light-dark(var(--palette-amber-100), var(--palette-amber-950));
@@ -29,7 +29,7 @@
   --color-text-disabled: light-dark(var(--palette-stone-500), var(--palette-stone-500));
   --color-text-inverse: light-dark(var(--palette-white), var(--palette-black));
   --color-text-on-accent: light-dark(var(--palette-white), var(--palette-stone-950));
-  --color-text-accent: light-dark(var(--palette-blue-900), var(--palette-blue-200));
+  --color-text-accent: light-dark(var(--palette-accent-900), var(--palette-accent-200));
   --color-text-danger: light-dark(var(--palette-red-900), var(--palette-red-200));
   --color-text-success: light-dark(var(--palette-emerald-900), var(--palette-emerald-200));
   --color-text-warning: light-dark(var(--palette-amber-900), var(--palette-amber-200));
@@ -37,13 +37,13 @@
   --color-border-subtle: light-dark(var(--palette-stone-400), var(--palette-stone-700));
   --color-border-default: light-dark(var(--palette-stone-600), var(--palette-stone-400));
   --color-border-strong: light-dark(var(--palette-stone-800), var(--palette-stone-200));
-  --color-border-accent: light-dark(var(--palette-blue-700), var(--palette-blue-400));
+  --color-border-accent: light-dark(var(--palette-accent-700), var(--palette-accent-400));
   --color-border-danger: light-dark(var(--palette-red-700), var(--palette-red-400));
   --color-border-success: light-dark(var(--palette-emerald-700), var(--palette-emerald-400));
   --color-border-warning: light-dark(var(--palette-amber-700), var(--palette-amber-400));
   --color-border-info: light-dark(var(--palette-sky-700), var(--palette-sky-400));
-  --color-border-focus: light-dark(var(--palette-blue-700), var(--palette-blue-300));
-  --color-action-accent: light-dark(var(--palette-blue-700), var(--palette-blue-400));
+  --color-border-focus: light-dark(var(--palette-accent-700), var(--palette-accent-300));
+  --color-action-accent: light-dark(var(--palette-accent-700), var(--palette-accent-400));
   --color-action-neutral: light-dark(var(--palette-stone-100), var(--palette-stone-900));
   --color-action-danger: light-dark(var(--palette-red-700), var(--palette-red-400));
   --color-action-disabled: light-dark(var(--palette-stone-300), var(--palette-stone-800));
@@ -98,4 +98,81 @@
   // `[data-contrast]` block of its own, so both HC triggers (the attribute and the OS
   // signal) stay in sync the same way every other token above does.
   --state-layer-keyline-scale: 8px;
+}
+
+// FORCED COLORS (Windows High Contrast and the like). The browser replaces the colors of ordinary
+// properties with the user's palette on its own, but it cannot touch what lives in a custom
+// property: a gradient stop, an SVG fill, a color-mix() wash, a shadow's color. So the tokens are
+// re-pointed at the system colors, and every consumer of them follows without a line of its own.
+//
+// Three things the palette cannot carry here, handled on purpose:
+//   - Tints and shadows are gone (forced colors drops box-shadow and backdrops anyway), so the
+//     SEPARATION they gave comes from borders, which map to CanvasText, and from the state-layer
+//     keyline below.
+//   - Status (danger, success, warning, info) has no system color. Text stays CanvasText and the
+//     border is the cue; a status must never rely on hue alone, and in this mode it cannot.
+//   - A hover/press fill is also dropped. The keyline is the same lever high contrast uses
+//     (`hc-tokens`), so the interaction is still visible.
+@mixin forced-colors-tokens {
+  --color-bg-canvas: Canvas;
+  --color-bg-surface: Canvas;
+  --color-bg-surface-raised: Canvas;
+  --color-bg-surface-overlay: Canvas;
+  --color-bg-surface-sunken: Canvas;
+  --color-bg-well: Canvas;
+  --color-bg-inverse: CanvasText;
+  --color-bg-accent-subtle: Canvas;
+  --color-bg-danger-subtle: Canvas;
+  --color-bg-success-subtle: Canvas;
+  --color-bg-warning-subtle: Canvas;
+  --color-bg-info-subtle: Canvas;
+  --color-text-primary: CanvasText;
+  --color-text-secondary: CanvasText;
+  --color-text-tertiary: CanvasText;
+  --color-text-disabled: GrayText;
+  --color-text-inverse: Canvas;
+  --color-text-on-accent: HighlightText;
+  --color-text-accent: LinkText;
+  --color-text-link: LinkText;
+  --color-text-danger: CanvasText;
+  --color-text-success: CanvasText;
+  --color-text-warning: CanvasText;
+  --color-text-info: CanvasText;
+  --color-border-subtle: CanvasText;
+  --color-border-default: CanvasText;
+  --color-border-strong: CanvasText;
+  --color-border-accent: Highlight;
+  --color-border-danger: CanvasText;
+  --color-border-success: CanvasText;
+  --color-border-warning: CanvasText;
+  --color-border-info: CanvasText;
+  --color-border-focus: Highlight;
+  --color-action-accent: Highlight;
+  --color-action-neutral: ButtonFace;
+  --color-action-danger: Highlight;
+  --color-action-disabled: ButtonFace;
+  --focus-ring-color: Highlight;
+  --shadow-sm: transparent;
+  --shadow-md: transparent;
+  --shadow-lg: transparent;
+  --elevation-tint-sunken: transparent;
+  --elevation-tint-raised: transparent;
+  --elevation-tint-overlay: transparent;
+  --elevation-tint-modal: transparent;
+  --state-layer-keyline-scale: 8px;
+}
+
+// Wraps the tokens above where they must be emitted: AFTER the `@layer` order statement (so
+// `overrides` keeps its place above `components`), and at `:root:root:root` so it outranks BOTH
+// high-contrast triggers (`[data-contrast]` and `:root:not([data-contrast])`) that share the layer
+// when a user has forced colors AND prefers-contrast on, which Windows High Contrast sets together.
+// The system palette is the user's stronger instruction there.
+@mixin forced-colors {
+  @layer overrides {
+    @media (forced-colors: active) {
+      :root:root:root {
+        @include forced-colors-tokens;
+      }
+    }
+  }
 }

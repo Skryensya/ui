@@ -29,7 +29,7 @@ import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
-const storybookTitle = "Components/Data/ComparisonTable";
+const storybookTitle = "Components/ComparisonTable";
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const styles = `@import "@skryensya/core/components/comparison-table.css";`;
 
@@ -55,6 +55,8 @@ const explain = (option: string, values: readonly string[]) =>
       explain={explain("density", ["false", "true"])}
       labels={{ false: t("comparisonTablePage.prop.density.off"), true: t("comparisonTablePage.prop.density.on") }}
       stageMinBlockSize="13rem"
+      storybookTitle="Components/ComparisonTable"
+      storybookStory="Density"
     />
 
     <h3>{t("component.examplesTitle")}</h3>

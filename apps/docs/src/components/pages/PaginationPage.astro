@@ -69,6 +69,8 @@ paginationRange(5, 20);
       description={t("paginationPage.appearanceBody")}
       explain={appearanceExplain}
       stageMinBlockSize="8rem"
+      storybookTitle="Components/Pagination"
+      storybookStory="Appearance"
     />
     <UsagePreview
       variants={siblingsVariants}
@@ -77,6 +79,8 @@ paginationRange(5, 20);
       title={t("paginationPage.siblingsTitle")}
       description={t("paginationPage.siblingsBody")}
       stageMinBlockSize="8rem"
+      storybookTitle="Components/Pagination"
+      storybookStory="Appearance"
     />
     <UsagePreview
       variants={positionVariants}
@@ -85,11 +89,13 @@ paginationRange(5, 20);
       title={t("paginationPage.positionTitle")}
       description={t("paginationPage.positionBody")}
       stageMinBlockSize="8rem"
+      storybookTitle="Components/Pagination"
+      storybookStory="Appearance"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={paginationTree(t)} title={t("paginationPage.twelveTitle")} description={t("paginationPage.twelveBody")} />
-    <UsagePreview tree={paginationResultsTree(t)} title={t("paginationPage.resultsTitle")} description={t("paginationPage.resultsBody")} />
+    <UsagePreview tree={paginationTree(t)} title={t("paginationPage.twelveTitle")} description={t("paginationPage.twelveBody")} storybookTitle="Components/Pagination" storybookStory="Default" />
+    <UsagePreview tree={paginationResultsTree(t)} title={t("paginationPage.resultsTitle")} description={t("paginationPage.resultsBody")} storybookTitle="Components/Pagination" storybookStory="Results" />
     <h4>{t("paginationPage.rangeTitle")}</h4>
     <p set:html={t("paginationPage.rangeBody")} />
     <CodeBlock code={rangeExample} lang="ts" label="@skryensya/core/pagination" />

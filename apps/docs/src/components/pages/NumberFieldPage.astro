@@ -70,6 +70,8 @@ const styles = `@import "@skryensya/core/patterns/state-layer.css";
       title={t("numberFieldPage.prop.locale.title")}
       description={t("numberFieldPage.prop.locale.body")}
       stageMinBlockSize="9rem"
+      storybookTitle="Components/NumberField"
+      storybookStory="Locale"
     />
 
     <UsagePreview
@@ -84,12 +86,14 @@ const styles = `@import "@skryensya/core/patterns/state-layer.css";
       title={t("numberFieldPage.state.title")}
       description={t("numberFieldPage.state.body")}
       stageMinBlockSize="9rem"
+      storybookTitle="Components/NumberField"
+      storybookStory="Single"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={numberFieldSingleTree(t)} title={t("numberFieldPage.quantityTitle")} description={t("numberFieldPage.quantityBody")} />
-    <UsagePreview tree={numberFieldDecimalTree(t)} title={t("numberFieldPage.decimalTitle")} description={t("numberFieldPage.decimalBody")} />
-    <UsagePreview tree={numberFieldUnboundedTree(t)} title={t("numberFieldPage.unboundedTitle")} description={t("numberFieldPage.unboundedBody")} />
+    <UsagePreview tree={numberFieldSingleTree(t)} title={t("numberFieldPage.quantityTitle")} description={t("numberFieldPage.quantityBody")} storybookTitle="Components/NumberField" storybookStory="Single" />
+    <UsagePreview tree={numberFieldDecimalTree(t)} title={t("numberFieldPage.decimalTitle")} description={t("numberFieldPage.decimalBody")} storybookTitle="Components/NumberField" storybookStory="Decimal" />
+    <UsagePreview tree={numberFieldUnboundedTree(t)} title={t("numberFieldPage.unboundedTitle")} description={t("numberFieldPage.unboundedBody")} storybookTitle="Components/NumberField" storybookStory="Unbounded" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

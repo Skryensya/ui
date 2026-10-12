@@ -1,3 +1,4 @@
+import { prefersReducedMotion as prefersReducedMotionPage } from "./reduced-motion.js";
 import type { ComponentContract } from "./contract.js";
 
 /*
@@ -131,8 +132,9 @@ export function statCountFractionDigits(n: number): number {
   return dot === -1 ? 0 : text.length - dot - 1;
 }
 
-export function prefersReducedMotion(media = globalThis.matchMedia?.("(prefers-reduced-motion: reduce)")): boolean {
-  return media?.matches ?? false;
+/** Reduced-motion check for the count-up. Passing a MediaQueryList keeps the old, testable form. */
+export function prefersReducedMotion(media?: { matches: boolean } | null): boolean {
+  return media ? media.matches : prefersReducedMotionPage();
 }
 
 function clamp01(n: number): number {

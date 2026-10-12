@@ -73,13 +73,13 @@ const keyboardReact = `import { Feed, FeedArticle } from "@skryensya/react/feed"
     <p class="lede" set:html={t("feedPage.lede")} />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={feedTree(t)} title={t("feedPage.demoTitle")} description={t("feedPage.demoBody")} storybookTitle="Components/Content/Feed" storybookStory="Default" />
-    <UsagePreview tree={feedActivityTree(t)} title={t("feedPage.demoActivityTitle")} description={t("feedPage.demoActivityBody")} storybookTitle="Components/Content/Feed" storybookStory="Activity" />
-    <UsagePreview tree={feedBusyTree(t)} title={t("feedPage.demoBusyTitle")} description={t("feedPage.demoBusyBody")} storybookTitle="Components/Content/Feed" storybookStory="Busy" />
+    <UsagePreview tree={feedTree(t)} title={t("feedPage.demoTitle")} description={t("feedPage.demoBody")} storybookTitle="Components/Feed" storybookStory="Default" />
+    <UsagePreview tree={feedActivityTree(t)} title={t("feedPage.demoActivityTitle")} description={t("feedPage.demoActivityBody")} storybookTitle="Components/Feed" storybookStory="Activity" />
+    <UsagePreview tree={feedBusyTree(t)} title={t("feedPage.demoBusyTitle")} description={t("feedPage.demoBusyBody")} storybookTitle="Components/Feed" storybookStory="Busy" />
     <h3>{t("feedPage.demoInfiniteTitle")}</h3>
     <p set:html={t("feedPage.demoInfiniteBody")} />
-    <UsagePreview script={loadMoreScript} tree={feedInfiniteTree(t)} label={t("feedPage.demoInfiniteLabel")} />
-    <UsagePreview tree={feedCommentsTree(t)} title={t("feedPage.demoCommentsTitle")} description={t("feedPage.demoCommentsBody")} storybookTitle="Components/Content/Feed" storybookStory="Comments" />
+    <UsagePreview script={loadMoreScript} tree={feedInfiniteTree(t)} label={t("feedPage.demoInfiniteLabel")} storybookTitle="Components/Feed" storybookStory="Infinite" />
+    <UsagePreview tree={feedCommentsTree(t)} title={t("feedPage.demoCommentsTitle")} description={t("feedPage.demoCommentsBody")} storybookTitle="Components/Feed" storybookStory="Comments" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

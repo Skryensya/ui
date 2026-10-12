@@ -18,7 +18,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/charts";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Data/Charts", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Charts", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.chartsAnatomyTree);
 export const ChartHistoryCard: StoryObj = treeStory(demos.chartHistoryCardTree);
@@ -35,6 +35,3 @@ export const ChartGallery: StoryObj = treeStory(demos.chartGalleryTree);
 export const ChartComparison: StoryObj = treeStory(demos.chartComparisonTree);
 export const ChartPeriodCard: StoryObj = treeStory(demos.chartPeriodCardTree);
 export const Values: StoryObj = treeStory(demos.chartsValuesTree);
-export const DoOneTone: StoryObj = treeStory(demos.chartsDoOneToneTree);
-export const DontRainbow: StoryObj = treeStory(demos.chartsDontRainbowTree);
-export const DontThree: StoryObj = treeStory(demos.chartsDontThreeTree);

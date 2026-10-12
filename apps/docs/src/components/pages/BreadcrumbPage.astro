@@ -30,7 +30,7 @@ const t = useTranslations(getLocale(Astro.url));
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
 const styles = `@import "@skryensya/core/components/breadcrumb.css";`;
-const storybookTitle = "Components/Navigation/Breadcrumb";
+const storybookTitle = "Components/Breadcrumb";
 ---
 
 <ComponentPageShell
@@ -49,8 +49,7 @@ const storybookTitle = "Components/Navigation/Breadcrumb";
       title={t("breadcrumb.multiTitle")}
       description={t("breadcrumb.multiBody")}
       storybookTitle={storybookTitle}
-      storybookStory="Multi"
-    />
+      storybookStory="Multi" />
     <UsagePreview tree={breadcrumbIconTree(t, "/proyectos")} title={t("breadcrumb.iconTitle")} description={t("breadcrumb.iconBody")} storybookTitle={storybookTitle} storybookStory="Icon" />
     <UsagePreview tree={breadcrumbLongTree(t, "/proyectos")} title={t("breadcrumb.longTitle")} description={t("breadcrumb.longBody")} storybookTitle={storybookTitle} storybookStory="Long" />
     <ul>
@@ -67,8 +66,7 @@ const storybookTitle = "Components/Navigation/Breadcrumb";
       title={t("breadcrumb.collapseTitle")}
       description={t("breadcrumb.collapseBody")}
       storybookTitle={storybookTitle}
-      storybookStory="Collapse"
-    />
+      storybookStory="Collapse" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

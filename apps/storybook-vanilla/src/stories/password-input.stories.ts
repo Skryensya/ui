@@ -5,23 +5,16 @@ import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/form-field.css";
 import "@skryensya/core/components/input.css";
-import "@skryensya/core/components/otp-input.css";
 import "@skryensya/core/components/password-input.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/password-input";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Forms/PasswordInput", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/PasswordInput", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.passwordInputAnatomyTree);
 export const SignIn: StoryObj = treeStory(demos.passwordInputSignInTree);
 export const SignUp: StoryObj = treeStory(demos.passwordInputSignUpTree);
 export const States: StoryObj = treeStory(demos.passwordInputStatesTree);
-export const DontNoHint: StoryObj = treeStory(demos.passwordInputDontNoHintTree);
-export const DoHint: StoryObj = treeStory(demos.passwordInputDoHintTree);
-export const DontRepeat: StoryObj = treeStory(demos.passwordInputDontRepeatTree);
-export const DoPassword: StoryObj = treeStory(demos.passwordInputDoPasswordTree);
-export const DontOtp: StoryObj = treeStory(demos.passwordInputDontOtpTree);
-export const DontPlain: StoryObj = treeStory(demos.passwordInputDontPlainTree);
 export const Compare: StoryObj = treeStory(demos.passwordInputCompareTree);
 export const StateCase: StoryObj = treeStory(demos.passwordInputStateCase);

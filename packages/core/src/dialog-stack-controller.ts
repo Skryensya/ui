@@ -1,3 +1,4 @@
+import { prefersReducedMotion } from "./reduced-motion.js";
 import { dialogStackParts as p } from "./dialog-stack.js";
 import { trapModalDialogs } from "./focus-trap.js";
 
@@ -113,7 +114,7 @@ export function connectDialogStack(root: HTMLElement, options: { onOpenRequest?:
     const next = Math.max(0, Math.min(active + delta, panels().length - 1));
     if (next === active) return;
     const win = root.ownerDocument.defaultView;
-    const animate = root.dataset.motion === "animated" && !win?.matchMedia?.("(prefers-reduced-motion: reduce)").matches && typeof dialog.animate === "function";
+    const animate = root.dataset.motion === "animated" && !prefersReducedMotion(win) && typeof dialog.animate === "function";
     // A different step height recentres the native dialog immediately. Keep its painted top
     // continuous with a translation, not an animated height or a scale that stretches the text.
     const before = animate ? dialog.getBoundingClientRect() : undefined;

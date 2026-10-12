@@ -5,7 +5,7 @@
   "type": "module",
   "description": "The Vanilla Storybook: every docs demo tree as emitted markup brought to life by the Vanilla enhancers, with that markup in the code panel.",
   "scripts": {
-    "storybook": "storybook dev --port 6007",
+    "storybook": "storybook dev --port 6107",
     "build-storybook": "storybook build --output-dir storybook-static",
     "generate": "node scripts/generate-stories.ts",
     "check": "node scripts/generate-stories.ts --check && tsc -p tsconfig.json --noEmit"

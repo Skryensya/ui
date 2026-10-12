@@ -13,7 +13,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/user-select";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Forms/UserSelect", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/UserSelect", tags: ["autodocs"] } satisfies Meta;
 
 export const Default: StoryObj = treeStory(demos.userSelectTree);
 export const Multiple: StoryObj = treeStory(demos.userSelectMultipleTree);

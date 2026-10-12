@@ -43,6 +43,8 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("stepsPage.prop.orientation.body")}
       explain={explain("orientation", ["horizontal", "vertical"])}
       stageMinBlockSize="20rem"
+      storybookTitle="Components/Steps"
+      storybookStory="Default"
     />
 
     <UsagePreview
@@ -52,11 +54,13 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("stepsPage.prop.appearance.body")}
       explain={explain("appearance", ["markers", "segments"])}
       stageMinBlockSize="10rem"
+      storybookTitle="Components/Steps"
+      storybookStory="Default"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={stepsTree(t)} title={t("stepsPage.checkoutTitle")} description={t("stepsPage.checkoutBody")} />
-    <UsagePreview tree={stepsVerticalTree(t)} title={t("stepsPage.verticalTitle")} description={t("stepsPage.verticalBody")} />
+    <UsagePreview tree={stepsTree(t)} title={t("stepsPage.checkoutTitle")} description={t("stepsPage.checkoutBody")} storybookTitle="Components/Steps" storybookStory="Default" />
+    <UsagePreview tree={stepsVerticalTree(t)} title={t("stepsPage.verticalTitle")} description={t("stepsPage.verticalBody")} storybookTitle="Components/Steps" storybookStory="Vertical" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

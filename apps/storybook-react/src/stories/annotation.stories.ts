@@ -15,17 +15,11 @@ import "@skryensya/core/patterns/anchored.css";
 import * as demos from "@docs/demos/annotation";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Unlisted/Annotation", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Annotation", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.annotationAnatomyTree);
 export const SelfAnatomy: StoryObj = treeStory(demos.annotationSelfAnatomyTree);
 export const Sides: StoryObj = treeStory(demos.annotationSidesTree);
 export const Plural: StoryObj = treeStory(demos.annotationPluralTree);
 export const One: StoryObj = treeStory(demos.annotationOneTree);
-export const DoBracket: StoryObj = treeStory(demos.annotationDoBracketTree);
-export const DontRingArea: StoryObj = treeStory(demos.annotationDontRingAreaTree);
-export const DoNearestSide: StoryObj = treeStory(demos.annotationDoNearestSideTree);
-export const DontOneSide: StoryObj = treeStory(demos.annotationDontOneSideTree);
 export const Match: StoryObj = treeStory(demos.annotationMatchTree);
-export const DoAllCopies: StoryObj = treeStory(demos.annotationDoAllCopiesTree);
-export const DontFirstOnly: StoryObj = treeStory(demos.annotationDontFirstOnlyTree);

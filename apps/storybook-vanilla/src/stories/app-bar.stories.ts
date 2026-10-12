@@ -6,14 +6,8 @@ import "@skryensya/core/patterns/anchored.css";
 import * as demos from "@docs/demos/app-bar";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Actions/AppBar", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/AppBar", tags: ["autodocs"] } satisfies Meta;
 
 export const Default: StoryObj = treeStory(demos.appBarTree);
 export const Minimal: StoryObj = treeStory(demos.appBarMinimalTree);
-export const DoShortStatus: StoryObj = treeStory(demos.appBarDoShortStatusTree);
-export const DontLongStatus: StoryObj = treeStory(demos.appBarDontLongStatusTree);
-export const DoAppMenu: StoryObj = treeStory(demos.appBarDoAppMenuTree);
-export const DontNoAppMenu: StoryObj = treeStory(demos.appBarDontNoAppMenuTree);
-export const DoShortTitles: StoryObj = treeStory(demos.appBarDoShortTitlesTree);
-export const DontLongTitles: StoryObj = treeStory(demos.appBarDontLongTitlesTree);
 export const Compare: StoryObj = treeStory(demos.appBarCompareTree);

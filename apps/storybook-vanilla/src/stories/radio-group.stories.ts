@@ -15,7 +15,7 @@ import "@skryensya/core/patterns/wrapper.css";
 import * as demos from "@docs/demos/radio-group";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Forms/RadioGroup", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/RadioGroup", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.radioGroupAnatomyTree);
 export const TileRadioGroupAnatomy: StoryObj = treeStory(demos.tileRadioGroupAnatomyTree);
@@ -23,8 +23,6 @@ export const Default: StoryObj = treeStory(demos.radioGroupTree);
 export const TileRadioGroup: StoryObj = treeStory(demos.tileRadioGroupTree);
 export const Likert: StoryObj = treeStory(demos.radioGroupLikertTree);
 export const Matrix: StoryObj = treeStory(demos.radioGroupMatrixTree);
-export const DontMany: StoryObj = treeStory(demos.radioGroupDontManyTree);
 export const Spread: StoryObj = treeStory(demos.radioGroupSpreadTree);
 export const Disabled: StoryObj = treeStory(demos.radioGroupDisabledTree);
 export const OptionState: StoryObj = treeStory(demos.radioGroupOptionStateTree);
-export const DontLong: StoryObj = treeStory(demos.radioGroupDontLongTree);

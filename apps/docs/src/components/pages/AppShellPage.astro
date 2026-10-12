@@ -49,9 +49,9 @@ import { appShellOneDoTree, appShellOneDontTree, appShellMainDoTree, appShellMai
     <p class="lede" set:html={t("appShellPage.lede")} />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={appShellDocumentTree(t)} title={t("appShellPage.documentTitle")} description={t("appShellPage.documentBody")} flush isolate stageMinBlockSize="22rem" />
-    <UsagePreview tree={appShellApplicationTree(t)} title={t("appShellPage.applicationTitle")} description={t("appShellPage.applicationBody")} flush screen="xl" css={screenTall} />
-    <UsagePreview tree={appShellApplicationTree(t)} title={t("appShellPage.phoneTitle")} description={t("appShellPage.phoneBody")} flush screen="mobile" css={screenTall} />
+    <UsagePreview tree={appShellDocumentTree(t)} title={t("appShellPage.documentTitle")} description={t("appShellPage.documentBody")} flush isolate stageMinBlockSize="22rem" storybookTitle="Components/AppShell - AppShellPage" storybookStory="AppShellDocument" />
+    <UsagePreview tree={appShellApplicationTree(t)} title={t("appShellPage.applicationTitle")} description={t("appShellPage.applicationBody")} flush screen="xl" css={screenTall} storybookTitle="Components/AppShell - AppShellPage" storybookStory="AppShellApplication" />
+    <UsagePreview tree={appShellApplicationTree(t)} title={t("appShellPage.phoneTitle")} description={t("appShellPage.phoneBody")} flush screen="mobile" css={screenTall} storybookTitle="Components/AppShell - AppShellPage" storybookStory="AppShellApplication" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

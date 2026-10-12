@@ -75,6 +75,8 @@ const doDontSpecimen = (tree: UsageTree, inlineSize = "24rem"): UsageTree => ({
       description={t("box.prop.surface.body")}
       explain={explain("surface", ["none", "sunken", "surface", "raised"])}
       stageMinBlockSize="11rem"
+      storybookTitle="Components/Box - Layout"
+      storybookStory="Box"
     />
 
     <UsagePreview
@@ -84,17 +86,21 @@ const doDontSpecimen = (tree: UsageTree, inlineSize = "24rem"): UsageTree => ({
       description={t("box.prop.border.body")}
       explain={explain("border", ["none", "subtle", "default"])}
       stageMinBlockSize="11rem"
+      storybookTitle="Components/Box - Layout"
+      storybookStory="Box"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={boxTree(t)} title={t("box.htmlTitle")} description={t("box.htmlBody")} />
-    <UsagePreview tree={boxSurfacesTree(t)} title={t("box.surfacesTitle")} description={t("box.surfacesBody")} />
-    <UsagePreview tree={boxControlsTree(t)} title={t("box.controlsTitle")} description={t("box.controlsBody")} />
+    <UsagePreview tree={boxTree(t)} title={t("box.htmlTitle")} description={t("box.htmlBody")} storybookTitle="Components/Box - Layout" storybookStory="Box" />
+    <UsagePreview tree={boxSurfacesTree(t)} title={t("box.surfacesTitle")} description={t("box.surfacesBody")} storybookTitle="Components/Box - Layout" storybookStory="BoxSurfaces" />
+    <UsagePreview tree={boxControlsTree(t)} title={t("box.controlsTitle")} description={t("box.controlsBody")} storybookTitle="Components/Box - Layout" storybookStory="BoxControls" />
 
     <UsagePreview
       tree={variantsTree(boxScaleSpecimenTree(t), [{ label: "none", options: { padding: "none" } }, { label: "xs", options: { padding: "xs" } }, { label: "sm", options: { padding: "sm" } }, { label: "md", options: { padding: "md" } }, { label: "lg", options: { padding: "lg" } }, { label: "xl", options: { padding: "xl" } }], [], "3")}
       title={t("component.scaleTitle", { option: "padding" })}
       description={t("component.scaleBody")}
+      storybookTitle="Components/Box - Layout"
+      storybookStory="BoxScaleSpecimen"
     />
 
     <h3>{t("component.contractNotesTitle")}</h3>

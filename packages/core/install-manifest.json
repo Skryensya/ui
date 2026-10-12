@@ -1,0 +1,2456 @@
+{
+  "accordion": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/accordion.css",
+      "files": [
+        "@skryensya/core/components/accordion.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/accordion",
+      "names": [
+        "Accordion",
+        "Accordion.Item",
+        "Accordion.Trigger",
+        "Accordion.Content",
+        "DetailsGroup",
+        "Details",
+        "Details.Summary",
+        "Details.Content"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/accordion",
+      "mount": "mountAccordion",
+      "selectors": [
+        "[data-sk-accordion]"
+      ],
+      "auto": true
+    }
+  },
+  "annotation": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/annotation.css",
+      "files": [
+        "@skryensya/core/components/button.css",
+        "@skryensya/core/components/canvas.css",
+        "@skryensya/core/components/annotation.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/annotation",
+      "names": [
+        "Annotated"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/annotation",
+      "mount": "mountAnnotated",
+      "selectors": [
+        "[data-sk-annotated]"
+      ],
+      "auto": true
+    }
+  },
+  "app-bar": {
+    "category": "actions",
+    "css": {
+      "entry": "@skryensya/core/components/app-bar.css",
+      "files": [
+        "@skryensya/core/components/menu.css",
+        "@skryensya/core/components/app-bar.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/app-bar",
+      "names": [
+        "AppBar",
+        "AppBarMenu",
+        "AppBarStatus"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/app-bar",
+      "mount": "mountAppBar",
+      "selectors": [
+        "[data-sk-app-bar]"
+      ],
+      "auto": true
+    }
+  },
+  "audio-player": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/audio-player.css",
+      "files": [
+        "@skryensya/core/components/button.css",
+        "@skryensya/core/components/list.css",
+        "@skryensya/core/patterns/icon-toggle.css",
+        "@skryensya/core/components/audio-player.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/audio-player",
+      "names": [
+        "AudioPlayer",
+        "AudioPlayerMinimal"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/audio-player",
+      "mount": "mountAudioPlayer",
+      "selectors": [
+        "[data-sk-audio-player]"
+      ],
+      "auto": true
+    }
+  },
+  "avatar": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/avatar.css",
+      "files": [
+        "@skryensya/core/components/avatar.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/avatar",
+      "names": [
+        "Avatar",
+        "AvatarGroup"
+      ]
+    },
+    "vanilla": null
+  },
+  "back-to-top": {
+    "category": "navigation",
+    "css": {
+      "entry": "@skryensya/core/components/back-to-top.css",
+      "files": [
+        "@skryensya/core/components/button.css",
+        "@skryensya/core/components/back-to-top.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/back-to-top",
+      "names": [
+        "BackToTop"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/back-to-top",
+      "mount": "mountBackToTop",
+      "selectors": [
+        "[data-sk-back-to-top]"
+      ],
+      "auto": true
+    }
+  },
+  "badge": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/badge.css",
+      "files": [
+        "@skryensya/core/components/badge.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/badge",
+      "names": [
+        "Badge",
+        "BadgeDot",
+        "BadgeHolder"
+      ]
+    },
+    "vanilla": null
+  },
+  "box": {
+    "category": "layout",
+    "css": {
+      "entry": "@skryensya/core/patterns/box.css",
+      "files": [
+        "@skryensya/core/patterns/box.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/box",
+      "names": [
+        "Box"
+      ]
+    },
+    "vanilla": null
+  },
+  "breadcrumb": {
+    "category": "navigation",
+    "css": {
+      "entry": "@skryensya/core/components/breadcrumb.css",
+      "files": [
+        "@skryensya/core/components/breadcrumb.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/breadcrumb",
+      "names": [
+        "Breadcrumb"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/breadcrumb",
+      "mount": "mountBreadcrumb",
+      "selectors": [
+        "[data-sk-breadcrumb]"
+      ],
+      "auto": true
+    }
+  },
+  "button": {
+    "category": "actions",
+    "css": {
+      "entry": "@skryensya/core/components/button.css",
+      "files": [
+        "@skryensya/core/components/button.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/button",
+      "names": [
+        "Button"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/button",
+      "mount": "mountButton",
+      "selectors": [
+        "[data-sk-button]"
+      ],
+      "auto": true
+    }
+  },
+  "calendar": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/calendar.css",
+      "files": [
+        "@skryensya/core/components/button.css",
+        "@skryensya/core/components/calendar.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/calendar",
+      "names": [
+        "Calendar"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/calendar",
+      "mount": "mountCalendar",
+      "selectors": [
+        "[data-sk-calendar]"
+      ],
+      "auto": true
+    }
+  },
+  "callout": {
+    "category": "feedback",
+    "css": {
+      "entry": "@skryensya/core/components/callout.css",
+      "files": [
+        "@skryensya/core/components/callout.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/callout",
+      "names": [
+        "Callout"
+      ]
+    },
+    "vanilla": null
+  },
+  "canvas": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/canvas.css",
+      "files": [
+        "@skryensya/core/components/button.css",
+        "@skryensya/core/components/canvas.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/canvas",
+      "names": [
+        "Canvas"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/canvas",
+      "mount": "mountCanvas",
+      "selectors": [
+        "[data-sk-canvas]"
+      ],
+      "auto": true
+    }
+  },
+  "carousel": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/carousel.css",
+      "files": [
+        "@skryensya/core/components/carousel.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/carousel",
+      "names": [
+        "Carousel",
+        "CarouselSlide"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/carousel",
+      "mount": "mountCarousel",
+      "selectors": [
+        "[data-sk-carousel]"
+      ],
+      "auto": true
+    }
+  },
+  "changelog": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/changelog.css",
+      "files": [
+        "@skryensya/core/components/badge.css",
+        "@skryensya/core/components/changelog.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/changelog",
+      "names": [
+        "Changelog",
+        "ChangelogRelease",
+        "ChangelogEntry"
+      ]
+    },
+    "vanilla": null
+  },
+  "chart": {
+    "category": "data",
+    "css": {
+      "entry": "@skryensya/core/components/chart.css",
+      "files": [
+        "@skryensya/core/components/chart.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/chart",
+      "names": [
+        "Chart"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/chart",
+      "mount": "mountChart",
+      "selectors": [
+        "[data-sk-chart]"
+      ],
+      "auto": true
+    }
+  },
+  "checkbox": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/checkbox.css",
+      "files": [
+        "@skryensya/core/components/checkbox.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/checkbox",
+      "names": [
+        "Checkbox",
+        "CheckboxGroup"
+      ]
+    },
+    "vanilla": null
+  },
+  "clipboard": {
+    "category": "actions",
+    "css": {
+      "entry": "@skryensya/core/components/clipboard.css",
+      "files": [
+        "@skryensya/core/patterns/icon-toggle.css",
+        "@skryensya/core/components/copy-button.css",
+        "@skryensya/core/components/clipboard.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/clipboard",
+      "names": [
+        "CopyButton",
+        "Clipboard"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/clipboard",
+      "mount": "mountClipboard",
+      "selectors": [
+        "[data-sk-clipboard]"
+      ],
+      "auto": true
+    }
+  },
+  "code-preview": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/code-preview.css",
+      "files": [
+        "@skryensya/core/components/code-preview.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/code-preview",
+      "names": [
+        "CodePreview",
+        "CodePreviewDensity"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/code-preview",
+      "mount": "mountCodePreview",
+      "selectors": [],
+      "auto": false
+    }
+  },
+  "color-picker": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/color-picker.css",
+      "files": [
+        "@skryensya/core/components/color-picker.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/color-picker",
+      "names": [
+        "ColorPicker",
+        "CompactColorPicker",
+        "NativeColorPicker"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/color-picker",
+      "mount": "mountColorPicker",
+      "selectors": [
+        "[data-sk-color-picker]"
+      ],
+      "auto": true
+    }
+  },
+  "combobox": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/combobox.css",
+      "files": [
+        "@skryensya/core/components/combobox.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/combobox",
+      "names": [
+        "Combobox"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/combobox",
+      "mount": "mountCombobox",
+      "selectors": [
+        "[data-sk-combobox]"
+      ],
+      "auto": true
+    }
+  },
+  "command-palette": {
+    "category": "actions",
+    "css": {
+      "entry": "@skryensya/core/components/command-palette.css",
+      "files": [
+        "@skryensya/core/components/command-palette.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/command-palette",
+      "names": [
+        "CommandPalette"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/command-palette",
+      "mount": "mountCommandPalette",
+      "selectors": [
+        "[data-sk-command-palette]"
+      ],
+      "auto": true
+    }
+  },
+  "comment-thread": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/comment-thread.css",
+      "files": [
+        "@skryensya/core/components/comment-thread.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/comment-thread",
+      "names": [
+        "CommentThread",
+        "Comment",
+        "CommentActions",
+        "CommentVote",
+        "CommentTemplate",
+        "CommentComposer"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/comment-thread",
+      "mount": "mountCommentThread",
+      "selectors": [
+        "[data-sk-comment-thread], [data-sk-comment], [data-sk-comment-composer]"
+      ],
+      "auto": true
+    }
+  },
+  "compare-slider": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/compare-slider.css",
+      "files": [
+        "@skryensya/core/patterns/grip.css",
+        "@skryensya/core/components/compare-slider.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/compare-slider",
+      "names": [
+        "CompareSlider"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/compare-slider",
+      "mount": "mountCompareSlider",
+      "selectors": [
+        "[data-sk-compare-slider]"
+      ],
+      "auto": true
+    }
+  },
+  "comparison-table": {
+    "category": "data",
+    "css": {
+      "entry": "@skryensya/core/components/comparison-table.css",
+      "files": [
+        "@skryensya/core/components/comparison-table.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/comparison-table",
+      "names": [
+        "ComparisonTable",
+        "ComparisonColumn",
+        "ComparisonRow",
+        "ComparisonCell"
+      ]
+    },
+    "vanilla": null
+  },
+  "content": {
+    "category": "feedback",
+    "css": {
+      "entry": "@skryensya/core/components/toast.css",
+      "files": [
+        "@skryensya/core/components/toast.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/content",
+      "names": [
+        "ToastRegion",
+        "ToastTemplate",
+        "Toast"
+      ]
+    },
+    "vanilla": null
+  },
+  "data-grid": {
+    "category": "data",
+    "css": {
+      "entry": "@skryensya/core/components/data-grid.css",
+      "files": [
+        "@skryensya/core/components/data-grid.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/data-grid",
+      "names": [
+        "DataGrid",
+        "DataGridRow",
+        "DataGridCell"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/data-grid",
+      "mount": "mountDataGrid",
+      "selectors": [
+        "[data-sk-data-grid]"
+      ],
+      "auto": true
+    }
+  },
+  "date-picker": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/date-picker.css",
+      "files": [
+        "@skryensya/core/components/button.css",
+        "@skryensya/core/components/calendar.css",
+        "@skryensya/core/components/date-picker.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/date-picker",
+      "names": [
+        "DatePicker",
+        "NativeDatePicker"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/date-picker",
+      "mount": "mountDatePicker",
+      "selectors": [
+        "[data-sk-date-picker]"
+      ],
+      "auto": true
+    }
+  },
+  "description-list": {
+    "category": "data",
+    "css": {
+      "entry": "@skryensya/core/components/description-list.css",
+      "files": [
+        "@skryensya/core/components/description-list.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/description-list",
+      "names": [
+        "DescriptionList",
+        "DescriptionItem"
+      ]
+    },
+    "vanilla": null
+  },
+  "diagram": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/diagram.css",
+      "files": [
+        "@skryensya/core/components/diagram.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/diagram",
+      "names": [
+        "Diagram"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/diagram",
+      "mount": "mountDiagram",
+      "selectors": [
+        "[data-sk-diagram]"
+      ],
+      "auto": true
+    }
+  },
+  "dialog": {
+    "category": "overlays",
+    "css": {
+      "entry": "@skryensya/core/components/dialog.css",
+      "files": [
+        "@skryensya/core/components/dialog.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/dialog",
+      "names": [
+        "Dialog"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/dialog",
+      "mount": "mountDialog",
+      "selectors": [
+        "dialog"
+      ],
+      "auto": true
+    }
+  },
+  "dialog-stack": {
+    "category": "overlays",
+    "css": {
+      "entry": "@skryensya/core/components/dialog-stack.css",
+      "files": [
+        "@skryensya/core/components/dialog-stack.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/dialog-stack",
+      "names": [
+        "DialogStack",
+        "DialogStackTrigger",
+        "DialogStackOverlay",
+        "DialogStackBody",
+        "DialogStackContent",
+        "DialogStackHeader",
+        "DialogStackTitle",
+        "DialogStackDescription",
+        "DialogStackFooter",
+        "DialogStackNext",
+        "DialogStackPrevious",
+        "DialogStackClose"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/dialog-stack",
+      "mount": "mountDialogStack",
+      "selectors": [
+        "[data-sk-dialog-stack]"
+      ],
+      "auto": true
+    }
+  },
+  "dock": {
+    "category": "actions",
+    "css": {
+      "entry": "@skryensya/core/components/dock.css",
+      "files": [
+        "@skryensya/core/components/dock.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/dock",
+      "names": [
+        "Dock",
+        "DockItem"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/dock",
+      "mount": "mountDock",
+      "selectors": [
+        "[data-sk-dock]"
+      ],
+      "auto": true
+    }
+  },
+  "editor": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/editor.css",
+      "files": [
+        "@skryensya/core/components/editor.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/editor",
+      "names": [
+        "Editor"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/editor",
+      "mount": "mountEditor",
+      "selectors": [],
+      "auto": false
+    }
+  },
+  "empty-state": {
+    "category": "feedback",
+    "css": {
+      "entry": "@skryensya/core/components/empty-state.css",
+      "files": [
+        "@skryensya/core/components/empty-state.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/empty-state",
+      "names": [
+        "EmptyState"
+      ]
+    },
+    "vanilla": null
+  },
+  "expressive-avatar": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/expressive-avatar.css",
+      "files": [
+        "@skryensya/core/components/expressive-avatar.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/expressive-avatar",
+      "names": [
+        "ExpressiveAvatar"
+      ]
+    },
+    "vanilla": null
+  },
+  "fade-edge": {
+    "category": "layout",
+    "css": {
+      "entry": "@skryensya/core/components/fade-edge.css",
+      "files": [
+        "@skryensya/core/components/fade-edge.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/fade-edge",
+      "names": [
+        "FadeEdge"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/fade-edge",
+      "mount": "mountFadeEdge",
+      "selectors": [
+        "[data-sk-fade-edge]"
+      ],
+      "auto": true
+    }
+  },
+  "feed": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/feed.css",
+      "files": [
+        "@skryensya/core/components/feed.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/feed",
+      "names": [
+        "Feed",
+        "FeedArticle"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/feed",
+      "mount": "mountFeed",
+      "selectors": [
+        "[data-sk-feed]"
+      ],
+      "auto": true
+    }
+  },
+  "file-upload": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/file-upload.css",
+      "files": [
+        "@skryensya/core/components/file-upload.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/file-upload",
+      "names": [
+        "FileUpload"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/file-upload",
+      "mount": "mountFileUpload",
+      "selectors": [
+        "[data-sk-file-upload]"
+      ],
+      "auto": true
+    }
+  },
+  "folder": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/folder.css",
+      "files": [
+        "@skryensya/core/components/folder.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/folder",
+      "names": [
+        "Folder",
+        "FolderLink",
+        "FolderPreview",
+        "FolderStack"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/folder",
+      "mount": "mountFolder",
+      "selectors": [
+        "[data-sk-folder]"
+      ],
+      "auto": true
+    }
+  },
+  "footer": {
+    "category": "layout",
+    "css": {
+      "entry": "@skryensya/core/patterns/footer.css",
+      "files": [
+        "@skryensya/core/patterns/footer.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null
+  },
+  "form-field": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/form-field.css",
+      "files": [
+        "@skryensya/core/components/form-field.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/form-field",
+      "names": [
+        "FormField"
+      ]
+    },
+    "vanilla": null
+  },
+  "hero": {
+    "category": "layout",
+    "css": {
+      "entry": "@skryensya/core/patterns/hero.css",
+      "files": [
+        "@skryensya/core/patterns/hero.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null
+  },
+  "icon": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/patterns/icon.css",
+      "files": [
+        "@skryensya/core/patterns/icon.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/icon",
+      "names": [
+        "Icon"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/icon",
+      "mount": "mountIcons",
+      "selectors": [],
+      "auto": false
+    }
+  },
+  "image-cropper": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/image-cropper.css",
+      "files": [
+        "@skryensya/core/components/button.css",
+        "@skryensya/core/components/image-cropper.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/image-cropper",
+      "names": [
+        "ImageCropper"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/image-cropper",
+      "mount": "mountImageCropper",
+      "selectors": [
+        "[data-sk-image-cropper]"
+      ],
+      "auto": true
+    }
+  },
+  "image-frame": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/patterns/image-frame.css",
+      "files": [
+        "@skryensya/core/patterns/image-frame.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/image-frame",
+      "names": [
+        "ImageFrame"
+      ]
+    },
+    "vanilla": null
+  },
+  "input": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/input.css",
+      "files": [
+        "@skryensya/core/components/input.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/input",
+      "names": [
+        "Input",
+        "NativeInput",
+        "Textarea"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/input",
+      "mount": "mountInput",
+      "selectors": [
+        "input[data-format]"
+      ],
+      "auto": true
+    }
+  },
+  "kbd": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/kbd.css",
+      "files": [
+        "@skryensya/core/components/kbd.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/kbd",
+      "names": [
+        "Kbd"
+      ]
+    },
+    "vanilla": null
+  },
+  "layout": {
+    "category": "layout",
+    "css": {
+      "entry": "@skryensya/core/patterns/layout.css",
+      "files": [
+        "@skryensya/core/patterns/box.css",
+        "@skryensya/core/patterns/wrapper.css",
+        "@skryensya/core/patterns/image-frame.css",
+        "@skryensya/core/patterns/layout.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/layout",
+      "names": [
+        "Stack",
+        "Inline",
+        "Grid",
+        "LayoutGrid",
+        "AppShell",
+        "Main"
+      ]
+    },
+    "vanilla": null
+  },
+  "lightbox": {
+    "category": "overlays",
+    "css": {
+      "entry": "@skryensya/core/components/lightbox.css",
+      "files": [
+        "@skryensya/core/components/button.css",
+        "@skryensya/core/components/loader.css",
+        "@skryensya/core/components/lightbox.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/lightbox",
+      "names": [
+        "Lightbox",
+        "Lightbox.Trigger"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/lightbox",
+      "mount": "mountLightbox",
+      "selectors": [
+        "dialog[data-sk-lightbox]"
+      ],
+      "auto": true
+    }
+  },
+  "list": {
+    "category": "data",
+    "css": {
+      "entry": "@skryensya/core/components/list.css",
+      "files": [
+        "@skryensya/core/components/list.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/list",
+      "names": [
+        "List",
+        "OrderedList",
+        "ListItemPlain",
+        "ListItem",
+        "ListItemLink",
+        "ListItemButton"
+      ]
+    },
+    "vanilla": null
+  },
+  "listbox": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/listbox.css",
+      "files": [
+        "@skryensya/core/components/listbox.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/listbox",
+      "names": [
+        "Listbox"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/listbox",
+      "mount": "mountListbox",
+      "selectors": [
+        "[data-sk-listbox]"
+      ],
+      "auto": true
+    }
+  },
+  "loader": {
+    "category": "feedback",
+    "css": {
+      "entry": "@skryensya/core/components/loader.css",
+      "files": [
+        "@skryensya/core/components/loader.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/loader",
+      "names": [
+        "Loader",
+        "LoaderStatus"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/loader",
+      "mount": "mountLoader",
+      "selectors": [
+        "[data-sk-loader]"
+      ],
+      "auto": true
+    }
+  },
+  "marquee": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/marquee.css",
+      "files": [
+        "@skryensya/core/components/marquee.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/marquee",
+      "names": [
+        "Marquee",
+        "AutoplayMarquee"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/marquee",
+      "mount": "mountMarquee",
+      "selectors": [
+        "[data-sk-marquee]"
+      ],
+      "auto": true
+    }
+  },
+  "media-overlay": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/patterns/media-overlay.css",
+      "files": [
+        "@skryensya/core/patterns/media-overlay.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/media-overlay",
+      "names": [
+        "MediaOverlay",
+        "MediaOverlayShade"
+      ]
+    },
+    "vanilla": null
+  },
+  "megamenu": {
+    "category": "navigation",
+    "css": {
+      "entry": "@skryensya/core/components/megamenu.css",
+      "files": [
+        "@skryensya/core/components/megamenu.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/megamenu",
+      "names": [
+        "Megamenu",
+        "MegamenuTrigger"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/megamenu",
+      "mount": "mountMegamenu",
+      "selectors": [
+        "[data-sk-megamenu]"
+      ],
+      "auto": true
+    }
+  },
+  "menu": {
+    "category": "actions",
+    "css": {
+      "entry": "@skryensya/core/components/menu.css",
+      "files": [
+        "@skryensya/core/components/menu.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/menu",
+      "names": [
+        "Menu"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/menu",
+      "mount": "mountMenu",
+      "selectors": [
+        "[data-sk-menu]"
+      ],
+      "auto": true
+    }
+  },
+  "menubar": {
+    "category": "actions",
+    "css": {
+      "entry": "@skryensya/core/components/menubar.css",
+      "files": [
+        "@skryensya/core/components/menu.css",
+        "@skryensya/core/components/button.css",
+        "@skryensya/core/components/menubar.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/menubar",
+      "names": [
+        "Menubar",
+        "MenubarItem"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/menubar",
+      "mount": "mountMenubar",
+      "selectors": [
+        "[data-sk-menubar]"
+      ],
+      "auto": true
+    }
+  },
+  "message": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/message.css",
+      "files": [
+        "@skryensya/core/components/message.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/message",
+      "names": [
+        "Message",
+        "MessageGroup",
+        "MessageAvatar",
+        "MessageContent",
+        "MessageHeader",
+        "MessageFooter",
+        "MessageActions"
+      ]
+    },
+    "vanilla": null
+  },
+  "meter": {
+    "category": "data",
+    "css": {
+      "entry": "@skryensya/core/components/meter.css",
+      "files": [
+        "@skryensya/core/components/meter.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/meter",
+      "names": [
+        "Meter"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/meter",
+      "mount": "mountMeter",
+      "selectors": [
+        "[data-sk-meter]"
+      ],
+      "auto": true
+    }
+  },
+  "morph-stack": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/morph-stack.css",
+      "files": [
+        "@skryensya/core/components/morph-stack.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/morph-stack",
+      "names": [
+        "MorphStack"
+      ]
+    },
+    "vanilla": null
+  },
+  "nav-list": {
+    "category": "navigation",
+    "css": {
+      "entry": "@skryensya/core/patterns/nav-list.css",
+      "files": [
+        "@skryensya/core/patterns/nav-list.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/nav-list",
+      "names": [
+        "NavList",
+        "NavListGroup",
+        "NavListLink"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/nav-list",
+      "mount": "mountNavListGroup",
+      "selectors": [
+        "[data-sk-nav-list-group-trigger]"
+      ],
+      "auto": true
+    }
+  },
+  "navbar": {
+    "category": "navigation",
+    "css": {
+      "entry": "@skryensya/core/components/navbar.css",
+      "files": [
+        "@skryensya/core/components/navbar.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/navbar",
+      "names": [
+        "Navbar",
+        "NavbarBrand",
+        "NavbarActions"
+      ]
+    },
+    "vanilla": null
+  },
+  "number-field": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/number-field.css",
+      "files": [
+        "@skryensya/core/components/number-field.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/number-field",
+      "names": [
+        "NumberField"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/number-field",
+      "mount": "mountNumberField",
+      "selectors": [
+        "[data-sk-number-field]"
+      ],
+      "auto": true
+    }
+  },
+  "otp-input": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/otp-input.css",
+      "files": [
+        "@skryensya/core/components/otp-input.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/otp-input",
+      "names": [
+        "OtpInput"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/otp-input",
+      "mount": "mountOtpInput",
+      "selectors": [
+        "[data-sk-otp-input]"
+      ],
+      "auto": true
+    }
+  },
+  "pagination": {
+    "category": "navigation",
+    "css": {
+      "entry": "@skryensya/core/components/pagination.css",
+      "files": [
+        "@skryensya/core/components/pagination.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/pagination",
+      "names": [
+        "Pagination"
+      ]
+    },
+    "vanilla": null
+  },
+  "password-input": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/password-input.css",
+      "files": [
+        "@skryensya/core/components/password-input.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/password-input",
+      "names": [
+        "PasswordInput"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/password-input",
+      "mount": "mountPasswordInput",
+      "selectors": [
+        "[data-sk-password-input]"
+      ],
+      "auto": true
+    }
+  },
+  "placeholder": {
+    "category": "feedback",
+    "css": {
+      "entry": "@skryensya/core/components/placeholder.css",
+      "files": [
+        "@skryensya/core/components/placeholder.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/placeholder",
+      "names": [
+        "Placeholder",
+        "PlaceholderParagraph",
+        "PlaceholderBlock",
+        "PlaceholderCircle"
+      ]
+    },
+    "vanilla": null
+  },
+  "popover": {
+    "category": "overlays",
+    "css": {
+      "entry": "@skryensya/core/components/popover.css",
+      "files": [
+        "@skryensya/core/components/popover.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/popover",
+      "names": [
+        "Popover"
+      ]
+    },
+    "vanilla": null
+  },
+  "presence": {
+    "category": "layout",
+    "css": {
+      "entry": "@skryensya/core/components/presence.css",
+      "files": [
+        "@skryensya/core/components/presence.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/presence",
+      "names": [
+        "Presence"
+      ]
+    },
+    "vanilla": null
+  },
+  "procedure": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/procedure.css",
+      "files": [
+        "@skryensya/core/components/procedure.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/procedure",
+      "names": [
+        "Procedure",
+        "ProcedureStep"
+      ]
+    },
+    "vanilla": null
+  },
+  "progress": {
+    "category": "feedback",
+    "css": {
+      "entry": "@skryensya/core/components/progress.css",
+      "files": [
+        "@skryensya/core/components/progress.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/progress",
+      "names": [
+        "Progress"
+      ]
+    },
+    "vanilla": null
+  },
+  "qr-code": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/qr-code.css",
+      "files": [
+        "@skryensya/core/components/qr-code.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/qr-code",
+      "names": [
+        "QRCode"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/qr-code",
+      "mount": "mountQrCode",
+      "selectors": [
+        "[data-sk-qr-code]"
+      ],
+      "auto": true
+    }
+  },
+  "questionnaire": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/questionnaire.css",
+      "files": [
+        "@skryensya/core/components/questionnaire.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/questionnaire",
+      "names": [
+        "Questionnaire",
+        "QuestionnaireItem"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/questionnaire",
+      "mount": "mountQuestionnaire",
+      "selectors": [
+        "[data-sk-questionnaire]"
+      ],
+      "auto": true
+    }
+  },
+  "quote": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/quote.css",
+      "files": [
+        "@skryensya/core/components/quote.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/quote",
+      "names": [
+        "Quote"
+      ]
+    },
+    "vanilla": null
+  },
+  "radio-group": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/radio-group.css",
+      "files": [
+        "@skryensya/core/components/radio-group.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/radio-group",
+      "names": [
+        "Radio",
+        "RadioGroup"
+      ]
+    },
+    "vanilla": null
+  },
+  "rating": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/rating.css",
+      "files": [
+        "@skryensya/core/components/rating.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/rating",
+      "names": [
+        "Rating",
+        "RatingDisplay"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/rating",
+      "mount": "mountRating",
+      "selectors": [
+        "[data-sk-rating]"
+      ],
+      "auto": true
+    }
+  },
+  "resizable": {
+    "category": "layout",
+    "css": {
+      "entry": "@skryensya/core/components/resizable.css",
+      "files": [
+        "@skryensya/core/patterns/grip.css",
+        "@skryensya/core/components/resizable.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/resizable",
+      "names": [
+        "Resizable",
+        "Resizable.Panel",
+        "Resizable.Handle"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/resizable",
+      "mount": "mountResizable",
+      "selectors": [
+        "[data-sk-resizable]"
+      ],
+      "auto": true
+    }
+  },
+  "scroll-expand": {
+    "category": "layout",
+    "css": {
+      "entry": "@skryensya/core/components/scroll-expand.css",
+      "files": [
+        "@skryensya/core/components/scroll-expand.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/scroll-expand",
+      "names": [
+        "ScrollExpand"
+      ]
+    },
+    "vanilla": null
+  },
+  "scroll-hint": {
+    "category": "layout",
+    "css": {
+      "entry": "@skryensya/core/components/scroll-hint.css",
+      "files": [
+        "@skryensya/core/components/scroll-hint.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/scroll-hint",
+      "names": [
+        "ScrollHint"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/scroll-hint",
+      "mount": "mountScrollHint",
+      "selectors": [
+        "[data-sk-scroll-hint]"
+      ],
+      "auto": true
+    }
+  },
+  "scroll-stack": {
+    "category": "layout",
+    "css": {
+      "entry": "@skryensya/core/components/scroll-stack.css",
+      "files": [
+        "@skryensya/core/components/scroll-stack.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/scroll-stack",
+      "names": [
+        "ScrollStack"
+      ]
+    },
+    "vanilla": null
+  },
+  "segmented": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/segmented.css",
+      "files": [
+        "@skryensya/core/components/segmented.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/segmented",
+      "names": [
+        "SegmentedControl"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/segmented",
+      "mount": "mountSegmented",
+      "selectors": [
+        "[data-sk-segmented]"
+      ],
+      "auto": true
+    }
+  },
+  "select": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/select.css",
+      "files": [
+        "@skryensya/core/components/select.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/select",
+      "names": [
+        "NativeSelect",
+        "Select"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/select",
+      "mount": "mountSelect",
+      "selectors": [
+        "[data-sk-select]"
+      ],
+      "auto": true
+    }
+  },
+  "separator": {
+    "category": "layout",
+    "css": {
+      "entry": "@skryensya/core/components/separator.css",
+      "files": [
+        "@skryensya/core/components/separator.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/separator",
+      "names": [
+        "Separator",
+        "LabelledSeparator"
+      ]
+    },
+    "vanilla": null
+  },
+  "shimmer": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/shimmer.css",
+      "files": [
+        "@skryensya/core/components/shimmer.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/shimmer",
+      "names": [
+        "Shimmer"
+      ]
+    },
+    "vanilla": null
+  },
+  "sidebar": {
+    "category": "navigation",
+    "css": {
+      "entry": "@skryensya/core/components/sidebar.css",
+      "files": [
+        "@skryensya/core/patterns/splitter.css",
+        "@skryensya/core/patterns/grip.css",
+        "@skryensya/core/components/sidebar.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/sidebar",
+      "names": [
+        "Sidebar",
+        "SidebarHeader",
+        "SidebarContent",
+        "SidebarFooter",
+        "SidebarSeparator",
+        "SidebarTrigger",
+        "SidebarResizeHandle"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/sidebar",
+      "mount": "mountSidebar",
+      "selectors": [
+        "[data-sk-sidebar]"
+      ],
+      "auto": true
+    }
+  },
+  "skip-link": {
+    "category": "navigation",
+    "css": {
+      "entry": "@skryensya/core/components/skip-link.css",
+      "files": [
+        "@skryensya/core/components/skip-link.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/skip-link",
+      "names": [
+        "SkipLink"
+      ]
+    },
+    "vanilla": null
+  },
+  "slider": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/slider.css",
+      "files": [
+        "@skryensya/core/components/slider.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/slider",
+      "names": [
+        "Slider",
+        "SliderRange"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/slider",
+      "mount": "mountSlider",
+      "selectors": [
+        "[data-sk-slider]"
+      ],
+      "auto": true
+    }
+  },
+  "split-button": {
+    "category": "actions",
+    "css": {
+      "entry": "@skryensya/core/components/split-button.css",
+      "files": [
+        "@skryensya/core/components/split-button.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/split-button",
+      "names": [
+        "SplitButtonVertical",
+        "SplitButton"
+      ]
+    },
+    "vanilla": null
+  },
+  "stat": {
+    "category": "data",
+    "css": {
+      "entry": "@skryensya/core/components/stat.css",
+      "files": [
+        "@skryensya/core/components/stat.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/stat",
+      "names": [
+        "Stat"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/stat",
+      "mount": "mountStat",
+      "selectors": [
+        "[data-sk-stat][data-animate]"
+      ],
+      "auto": true
+    }
+  },
+  "state-button": {
+    "category": "actions",
+    "css": {
+      "entry": "@skryensya/core/components/state-button.css",
+      "files": [
+        "@skryensya/core/patterns/icon-toggle.css",
+        "@skryensya/core/components/state-button.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/state-button",
+      "names": [
+        "StateButton"
+      ]
+    },
+    "vanilla": null
+  },
+  "steps": {
+    "category": "navigation",
+    "css": {
+      "entry": "@skryensya/core/components/steps.css",
+      "files": [
+        "@skryensya/core/components/steps.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/steps",
+      "names": [
+        "Steps"
+      ]
+    },
+    "vanilla": null
+  },
+  "sticker": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/sticker.css",
+      "files": [
+        "@skryensya/core/components/sticker.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/sticker",
+      "names": [
+        "Sticker"
+      ]
+    },
+    "vanilla": null
+  },
+  "switch": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/switch.css",
+      "files": [
+        "@skryensya/core/components/switch.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/switch",
+      "names": [
+        "Switch"
+      ]
+    },
+    "vanilla": null
+  },
+  "table": {
+    "category": "data",
+    "css": {
+      "entry": "@skryensya/core/components/table.css",
+      "files": [
+        "@skryensya/core/patterns/splitter.css",
+        "@skryensya/core/components/table.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/table",
+      "names": [
+        "TableScroll",
+        "Table",
+        "TableCaption",
+        "TableHead",
+        "TableBody",
+        "TableFooter",
+        "TableRow",
+        "TableHeader",
+        "TableCell"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/table",
+      "mount": "mountTable",
+      "selectors": [
+        "table.sk-table[data-resizable-columns]:not([data-sk-treegrid])"
+      ],
+      "auto": true
+    }
+  },
+  "table-pager": {
+    "category": "data",
+    "css": {
+      "entry": "@skryensya/core/patterns/table-pager.css",
+      "files": [
+        "@skryensya/core/patterns/table-pager.css"
+      ]
+    },
+    "react": null,
+    "vanilla": {
+      "entry": "@skryensya/vanilla/table-pager",
+      "mount": "mountTablePager",
+      "selectors": [
+        "[data-sk-table-pager]"
+      ],
+      "auto": true
+    }
+  },
+  "tabs": {
+    "category": "navigation",
+    "css": {
+      "entry": "@skryensya/core/components/tabs.css",
+      "files": [
+        "@skryensya/core/components/tabs.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/tabs",
+      "names": [
+        "Tabs"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/tabs",
+      "mount": "mountTabs",
+      "selectors": [
+        "[data-sk-tabs]"
+      ],
+      "auto": true
+    }
+  },
+  "tag": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/tag.css",
+      "files": [
+        "@skryensya/core/components/tag.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/tag",
+      "names": [
+        "Tag"
+      ]
+    },
+    "vanilla": null
+  },
+  "tags-input": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/tags-input.css",
+      "files": [
+        "@skryensya/core/components/tags-input.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/tags-input",
+      "names": [
+        "TagsInput"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/tags-input",
+      "mount": "mountTagsInput",
+      "selectors": [
+        "[data-sk-tags-input]"
+      ],
+      "auto": true
+    }
+  },
+  "tile": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/tile.css",
+      "files": [
+        "@skryensya/core/components/tile.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/tile",
+      "names": [
+        "TileLink",
+        "TileButton",
+        "TileContent",
+        "TileChevron",
+        "TileCheckbox",
+        "TileSwitch",
+        "TileRadioGroup",
+        "ExpandableTile",
+        "ExpandableTileTrigger",
+        "ExpandableTileContent"
+      ]
+    },
+    "vanilla": null
+  },
+  "time-field": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/time-field.css",
+      "files": [
+        "@skryensya/core/components/time-field.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/time-field",
+      "names": [
+        "TimeField"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/time-field",
+      "mount": "mountTimeField",
+      "selectors": [
+        "[data-sk-time-field]"
+      ],
+      "auto": true
+    }
+  },
+  "timeline": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/timeline.css",
+      "files": [
+        "@skryensya/core/components/timeline.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/timeline",
+      "names": [
+        "Timeline",
+        "TimelineItem"
+      ]
+    },
+    "vanilla": null
+  },
+  "toc": {
+    "category": "navigation",
+    "css": {
+      "entry": "@skryensya/core/components/toc.css",
+      "files": [
+        "@skryensya/core/components/toc.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/toc",
+      "names": [
+        "Toc"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/toc",
+      "mount": "mountToc",
+      "selectors": [
+        "[data-sk-toc]"
+      ],
+      "auto": true
+    }
+  },
+  "toolbar": {
+    "category": "actions",
+    "css": {
+      "entry": "@skryensya/core/components/toolbar.css",
+      "files": [
+        "@skryensya/core/components/toolbar.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/toolbar",
+      "names": [
+        "Toolbar",
+        "ToolbarGroup",
+        "ToolbarSeparator"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/toolbar",
+      "mount": "mountToolbar",
+      "selectors": [
+        "[data-sk-toolbar]"
+      ],
+      "auto": true
+    }
+  },
+  "tooltip": {
+    "category": "overlays",
+    "css": {
+      "entry": "@skryensya/core/components/tooltip.css",
+      "files": [
+        "@skryensya/core/components/tooltip.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/tooltip",
+      "names": [
+        "Tooltip"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/tooltip",
+      "mount": "mountTooltip",
+      "selectors": [
+        "[data-sk-anchor]"
+      ],
+      "auto": true
+    }
+  },
+  "tour": {
+    "category": "overlays",
+    "css": {
+      "entry": "@skryensya/core/components/tour.css",
+      "files": [
+        "@skryensya/core/components/button.css",
+        "@skryensya/core/patterns/visually-hidden.css",
+        "@skryensya/core/components/tour.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/tour",
+      "names": [
+        "Tour",
+        "Tour.Trigger"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/tour",
+      "mount": "mountTour",
+      "selectors": [
+        "[data-sk-tour]"
+      ],
+      "auto": true
+    }
+  },
+  "tree-view": {
+    "category": "navigation",
+    "css": {
+      "entry": "@skryensya/core/components/tree-view.css",
+      "files": [
+        "@skryensya/core/components/tree-view.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/tree-view",
+      "names": [
+        "TreeView"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/tree-view",
+      "mount": "mountTreeView",
+      "selectors": [
+        "[data-sk-tree-view]"
+      ],
+      "auto": true
+    }
+  },
+  "treegrid": {
+    "category": "data",
+    "css": {
+      "entry": "@skryensya/core/components/treegrid.css",
+      "files": [
+        "@skryensya/core/patterns/splitter.css",
+        "@skryensya/core/components/treegrid.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/treegrid",
+      "names": [
+        "TreegridScroll",
+        "Treegrid",
+        "TreegridHead",
+        "TreegridHeadRow",
+        "TreegridColumnHeader",
+        "TreegridBody",
+        "TreegridRow",
+        "TreegridCell"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/treegrid",
+      "mount": "mountTreegrid",
+      "selectors": [
+        "[data-sk-treegrid]"
+      ],
+      "auto": true
+    }
+  },
+  "typography": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/typography.css",
+      "files": [
+        "@skryensya/core/components/typography.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/typography",
+      "names": [
+        "Text",
+        "Strong",
+        "Output",
+        "Code",
+        "Heading",
+        "Link"
+      ]
+    },
+    "vanilla": null
+  },
+  "user-select": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/user-select.css",
+      "files": [
+        "@skryensya/core/components/user-select.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/user-select",
+      "names": [
+        "UserSelect"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/user-select",
+      "mount": "mountUserSelect",
+      "selectors": [
+        "[data-sk-user-select]"
+      ],
+      "auto": true
+    }
+  },
+  "vaul": {
+    "category": "overlays",
+    "css": {
+      "entry": "@skryensya/core/patterns/vaul.css",
+      "files": [
+        "@skryensya/core/patterns/vaul.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/vaul",
+      "names": [
+        "Vaul",
+        "Drawer",
+        "Vaul.Trigger",
+        "Vaul.Close"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/vaul",
+      "mount": "mountVaul",
+      "selectors": [
+        "[data-sk-vaul], [data-sk-dialog-vaul]:not([data-sk-command-palette]):not([data-sk-command-palette-lazy])"
+      ],
+      "auto": true
+    }
+  },
+  "video-player": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/video-player.css",
+      "files": [
+        "@skryensya/core/components/button.css",
+        "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/icon-toggle.css",
+        "@skryensya/core/components/video-player.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/video-player",
+      "names": [
+        "VideoPlayer"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/video-player",
+      "mount": "mountVideoPlayer",
+      "selectors": [
+        "[data-sk-video-player]"
+      ],
+      "auto": true
+    }
+  },
+  "window": {
+    "category": "overlays",
+    "css": {
+      "entry": "@skryensya/core/components/window.css",
+      "files": [
+        "@skryensya/core/components/window.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/window",
+      "names": [
+        "Window"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/window",
+      "mount": "mountWindow",
+      "selectors": [
+        "[data-sk-window]"
+      ],
+      "auto": true
+    }
+  },
+  "wrapper": {
+    "category": "layout",
+    "css": {
+      "entry": "@skryensya/core/patterns/wrapper.css",
+      "files": [
+        "@skryensya/core/patterns/wrapper.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/wrapper",
+      "names": [
+        "Wrapper"
+      ]
+    },
+    "vanilla": null
+  }
+}

@@ -19,7 +19,7 @@ import "@skryensya/core/patterns/wrapper.css";
 import * as demos from "@docs/demos/app-shell";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Layout/AppShell/AppShell", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/AppShell", tags: ["autodocs"] } satisfies Meta;
 
 export const Default: StoryObj = treeStory(demos.appShellTree);
 export const Explorer: StoryObj = treeStory(demos.appShellExplorerTree);

@@ -27,6 +27,7 @@ export const decisionRow: PatternModule<Content> = {
       intent: "decision/confirmation/decision-row",
       title: { en: "Actions", es: "Acciones" },
       purpose: { en: "The row that closes a card asking for a decision.", es: "La fila con la que cierra una card que pide una decisión." },
+      catalog: false,
       content: { secondary: { en: "Decline", es: "Rechazar" }, primary: { en: "Approve", es: "Aprobar" } },
     }),
   ],

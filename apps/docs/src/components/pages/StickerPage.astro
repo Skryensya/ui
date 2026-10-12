@@ -76,13 +76,15 @@ import { stickerDoTree, stickerDontTree, stickerShapeDoTree, stickerShapeDontTre
       explain={explain("state", ["idle", "peeled", "applied"])}
       stageMinBlockSize="10rem"
       target={["children", 0]}
+      storybookTitle="Components/Sticker"
+      storybookStory="Default"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={stickerTree(t)} title={t("sticker.setTitle")} description={t("sticker.setBody")} />
-    <UsagePreview tree={stickerPlacementTree(t)} script={placementScript} title={t("sticker.placementHeading")} description={t("sticker.placementIntro")} />
-    <UsagePreview tree={stickerOriginsTree(t)} title={t("sticker.originsHeading")} description={t("sticker.originsIntro")} />
-    <UsagePreview tree={stickerHooksTree(t)} title={t("sticker.hooksHeading")} description={t("sticker.hooksIntro")} />
+    <UsagePreview tree={stickerTree(t)} title={t("sticker.setTitle")} description={t("sticker.setBody")} storybookTitle="Components/Sticker" storybookStory="Default" />
+    <UsagePreview tree={stickerPlacementTree(t)} script={placementScript} title={t("sticker.placementHeading")} description={t("sticker.placementIntro")} storybookTitle="Components/Sticker" storybookStory="Placement" />
+    <UsagePreview tree={stickerOriginsTree(t)} title={t("sticker.originsHeading")} description={t("sticker.originsIntro")} storybookTitle="Components/Sticker" storybookStory="Origins" />
+    <UsagePreview tree={stickerHooksTree(t)} title={t("sticker.hooksHeading")} description={t("sticker.hooksIntro")} storybookTitle="Components/Sticker" storybookStory="Hooks" />
     <h4>{t("sticker.reactTitle")}</h4>
     <p set:html={t("sticker.reactBody")} />
     <CodeBlock code={react} label="React" lang="tsx" />

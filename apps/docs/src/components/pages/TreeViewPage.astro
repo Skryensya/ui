@@ -60,14 +60,16 @@ import { treeViewNamesDoTree, treeViewNamesDontTree } from "../../demos/dodont-m
       description={t("treeViewPage.prop.selectionMode.body")}
       explain={explain("selectionMode", ["single", "multiple"])}
       stageMinBlockSize="16rem"
+      storybookTitle="Components/TreeView"
+      storybookStory="Initial"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={treeViewMinimalTree(t)} title={t("treeViewPage.minimalTitle")} description={t("treeViewPage.minimalBody")} />
-    <UsagePreview tree={treeViewInitialTree(t)} title={t("treeViewPage.initialTitle")} description={t("treeViewPage.initialBody")} />
-    <UsagePreview tree={treeViewMultipleTree(t)} title={t("treeViewPage.multipleTitle")} description={t("treeViewPage.multipleBody")} />
-    <UsagePreview tree={treeViewDisabledTree(t)} title={t("treeViewPage.disabledTitle")} description={t("treeViewPage.disabledBody")} />
-    <UsagePreview tree={treeViewEventsTree(t)} script={treeViewEventsScript} title={t("treeViewPage.eventsTitle")} description={t("treeViewPage.eventsBody")} />
+    <UsagePreview tree={treeViewMinimalTree(t)} title={t("treeViewPage.minimalTitle")} description={t("treeViewPage.minimalBody")} storybookTitle="Components/TreeView" storybookStory="Minimal" />
+    <UsagePreview tree={treeViewInitialTree(t)} title={t("treeViewPage.initialTitle")} description={t("treeViewPage.initialBody")} storybookTitle="Components/TreeView" storybookStory="Initial" />
+    <UsagePreview tree={treeViewMultipleTree(t)} title={t("treeViewPage.multipleTitle")} description={t("treeViewPage.multipleBody")} storybookTitle="Components/TreeView" storybookStory="Multiple" />
+    <UsagePreview tree={treeViewDisabledTree(t)} title={t("treeViewPage.disabledTitle")} description={t("treeViewPage.disabledBody")} storybookTitle="Components/TreeView" storybookStory="Disabled" />
+    <UsagePreview tree={treeViewEventsTree(t)} script={treeViewEventsScript} title={t("treeViewPage.eventsTitle")} description={t("treeViewPage.eventsBody")} storybookTitle="Components/TreeView" storybookStory="Events" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

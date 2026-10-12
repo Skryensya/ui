@@ -232,8 +232,8 @@
 
   .sk-sidebar[data-state="collapsed"] {
     --sk-sidebar-inline-size: var(--sk-sidebar-collapsed-inline-size);
-    --sk-sidebar-duration: var(--motion-collapse-duration);
-    --sk-sidebar-easing: var(--motion-collapse-easing);
+    --sk-sidebar-duration: var(--motion-expand-duration);
+    --sk-sidebar-easing: var(--motion-expand-easing);
 
     /*
      * THE GUTTER GOES BACK TO TIGHT when there is nothing but an icon to frame. A collapsed rail is

@@ -11,11 +11,8 @@ import "@skryensya/core/patterns/icon.css";
 import * as demos from "@docs/demos/toolbar";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Actions/Toolbar", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Toolbar", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.toolbarAnatomyTree);
 export const Default: StoryObj = treeStory(demos.toolbarTree);
 export const NestedToolbar: StoryObj = treeStory(demos.nestedToolbarTree);
-export const DontFlat: StoryObj = treeStory(demos.toolbarDontFlatTree);
-export const DontSingle: StoryObj = treeStory(demos.toolbarDontSingleTree);
-export const DoSingle: StoryObj = treeStory(demos.toolbarDoSingleTree);

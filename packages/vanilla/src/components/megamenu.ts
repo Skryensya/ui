@@ -49,6 +49,8 @@ import { selectorsFor } from "@skryensya/core/selectors";
 
 const OPEN_DELAY_MS = 150;
 const CLOSE_DELAY_MS = 150;
+/** A click this soon after a hover opened the panel was aimed at a closed button: pin, never undo. */
+const JUST_OPENED_MS = 500;
 
 /* Derived from the contract's own mount attributes; see `selectorsFor`. */
 const selector = {
@@ -184,7 +186,8 @@ function connect(root: HTMLElement): () => void {
 
   const triggers = parsed.map(({ trigger }) => trigger);
 
-  let state: MegamenuState = { openIndex: null };
+  let state: MegamenuState = { openIndex: null, pinned: false };
+  let openedAt = 0;
   let openTimer: ReturnType<typeof setTimeout> | undefined;
   let closeTimer: ReturnType<typeof setTimeout> | undefined;
   let currentDefaultImage: PreviewImage | undefined = defaultImageByIndex[0];
@@ -196,11 +199,20 @@ function connect(root: HTMLElement): () => void {
     closeTimer = undefined;
   };
 
+  const syncPinned = () =>
+    triggers.forEach((trigger, index) => trigger.toggleAttribute(megamenuAttrs.pinned, state.pinned && state.openIndex === index));
+
   const apply = (next: MegamenuState) => {
-    if (next.openIndex === state.openIndex) return;
+    if (next.openIndex === state.openIndex) {
+      state = next;
+      syncPinned();
+      return;
+    }
     const openingDifferent = next.openIndex !== null && next.openIndex !== state.openIndex;
     state = next;
+    openedAt = Date.now();
     triggers.forEach((trigger, index) => trigger.setAttribute("aria-expanded", String(state.openIndex === index)));
+    syncPinned();
     root.dispatchEvent(
       new CustomEvent(megamenuEvents.openChange, {
         bubbles: true,
@@ -319,18 +331,22 @@ function connect(root: HTMLElement): () => void {
   triggers.forEach((trigger, index) => {
     trigger.addEventListener("click", () => {
       clearTimers();
-      dispatch({ kind: "activate", index });
+      dispatch({ kind: "activate", index, justOpened: Date.now() - openedAt < JUST_OPENED_MS });
     });
 
-    const scheduleOpen = () => {
+    const scheduleOpen = (event: PointerEvent) => {
+      if (event.pointerType !== "mouse") return;
       clearTimeout(closeTimer);
       closeTimer = undefined;
       if (state.openIndex === index) return;
       clearTimeout(openTimer);
+      // Already browsing a panel: the pointer's intent is settled, so switch at once.
+      if (state.openIndex !== null) return dispatch({ kind: "hoverIntentOpen", index });
       openTimer = setTimeout(() => dispatch({ kind: "hoverIntentOpen", index }), OPEN_DELAY_MS);
     };
 
-    const scheduleClose = () => {
+    const scheduleClose = (event: PointerEvent) => {
+      if (event.pointerType !== "mouse") return;
       clearTimeout(openTimer);
       openTimer = undefined;
       clearTimeout(closeTimer);
@@ -345,11 +361,13 @@ function connect(root: HTMLElement): () => void {
   // means "reconsider whichever trigger is currently open". Read at the moment the timer FIRES,
   // never a fixed index captured at schedule time, so a stale timer can't close a different trigger
   // the user has since switched to.
-  const cancelPanelClose = () => {
+  const cancelPanelClose = (event: PointerEvent) => {
+    if (event.pointerType !== "mouse") return;
     clearTimeout(closeTimer);
     closeTimer = undefined;
   };
-  const schedulePanelClose = () => {
+  const schedulePanelClose = (event: PointerEvent) => {
+    if (event.pointerType !== "mouse") return;
     clearTimeout(openTimer);
     openTimer = undefined;
     clearTimeout(closeTimer);
@@ -383,6 +401,12 @@ function connect(root: HTMLElement): () => void {
   const onDocumentPointerDownCapture = (event: PointerEvent) => {
     const target = event.target as Node | null;
     lastPointerDownWasInside = !!target && root.contains(target);
+    // A press outside closes the menu even when nothing inside had focus (Safari does not focus a
+    // clicked button, and a hover-opened panel never had focus at all).
+    if (!lastPointerDownWasInside && state.openIndex !== null) {
+      clearTimers();
+      dispatch({ kind: "blur" });
+    }
   };
 
   // No focus trap, no wraparound (`megamenu.ts`'s own doc): this only notices when focus has left

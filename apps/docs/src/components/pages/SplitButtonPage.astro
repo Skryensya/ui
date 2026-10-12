@@ -54,7 +54,7 @@ import { splitButtonDoTree, splitButtonDontTree, splitButtonSingleDoTree, splitB
 
     <h3>{t("component.examplesTitle")}</h3>
     <h4>{t("splitButtonPage.mainTitle")}</h4>
-    <UsagePreview tree={splitButtonTree(t)} description={t("splitButtonPage.mainBody")} label={t("splitButtonPage.mainTitle")} viewport="menu" />
+    <UsagePreview tree={splitButtonTree(t)} description={t("splitButtonPage.mainBody")} label={t("splitButtonPage.mainTitle")} viewport="menu" storybookTitle="Components/SplitButton" storybookStory="Default" />
     <h4>{t("splitButtonPage.verticalTitle")}</h4>
     <UsagePreview
       variants={[
@@ -67,17 +67,19 @@ import { splitButtonDoTree, splitButtonDontTree, splitButtonSingleDoTree, splitB
       variantsLabel={t("splitButtonPage.verticalTitle")}
       description={t("splitButtonPage.verticalBody")}
       label={t("splitButtonPage.verticalTitle")}
+      storybookTitle="Components/SplitButton"
+      storybookStory="Default"
     />
     <h4>{t("splitButtonPage.smallTitle")}</h4>
-    <UsagePreview tree={splitButtonSmallTree(t)} description={t("splitButtonPage.smallBody")} label={t("splitButtonPage.smallTitle")} viewport="menu" />
+    <UsagePreview tree={splitButtonSmallTree(t)} description={t("splitButtonPage.smallBody")} label={t("splitButtonPage.smallTitle")} viewport="menu" storybookTitle="Components/SplitButton" storybookStory="Small" />
     <h4>{t("splitButtonPage.subtleTitle")}</h4>
-    <UsagePreview tree={splitButtonSubtleTree(t)} description={t("splitButtonPage.subtleBody")} label={t("splitButtonPage.subtleTitle")} viewport="menu" />
+    <UsagePreview tree={splitButtonSubtleTree(t)} description={t("splitButtonPage.subtleBody")} label={t("splitButtonPage.subtleTitle")} viewport="menu" storybookTitle="Components/SplitButton" storybookStory="Subtle" />
     <h4>{t("splitButtonPage.overMediaTitle")}</h4>
-    <UsagePreview tree={splitButtonOverMediaTree(t)} description={t("splitButtonPage.overMediaBody")} label={t("splitButtonPage.overMediaTitle")} viewport="menu" />
+    <UsagePreview tree={splitButtonOverMediaTree(t)} description={t("splitButtonPage.overMediaBody")} label={t("splitButtonPage.overMediaTitle")} viewport="menu" storybookTitle="Components/SplitButton" storybookStory="OverMedia" />
     <h4>{t("splitButtonPage.ghostTitle")}</h4>
-    <UsagePreview tree={splitButtonGhostTree(t)} description={t("splitButtonPage.ghostBody")} label={t("splitButtonPage.ghostTitle")} viewport="menu" />
+    <UsagePreview tree={splitButtonGhostTree(t)} description={t("splitButtonPage.ghostBody")} label={t("splitButtonPage.ghostTitle")} viewport="menu" storybookTitle="Components/SplitButton" storybookStory="Ghost" />
     <h4>{t("splitButtonPage.dangerTitle")}</h4>
-    <UsagePreview tree={splitButtonDangerTree(t)} description={t("splitButtonPage.dangerBody")} label={t("splitButtonPage.dangerTitle")} viewport="menu" />
+    <UsagePreview tree={splitButtonDangerTree(t)} description={t("splitButtonPage.dangerBody")} label={t("splitButtonPage.dangerTitle")} viewport="menu" storybookTitle="Components/SplitButton" storybookStory="Danger" />
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
       {tList(t, "splitButtonPage.contract").map((item) => <li set:html={item} />)}

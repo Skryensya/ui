@@ -54,8 +54,8 @@ import "@skryensya/core/components/button.css";
    that looks perfectly correct on the page, which is the one class of bug a QR hides best. */
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
-const reactStorybook = storybookDocsUrl(storybookReactUrl, "Components/Content/QRCode", "Logo");
-const vanillaStorybook = storybookDocsUrl(storybookVanillaUrl, "Components/Content/QRCode", "Logo");
+const reactStorybook = storybookDocsUrl(storybookReactUrl, "Components/QRCode", "Logo");
+const vanillaStorybook = storybookDocsUrl(storybookVanillaUrl, "Components/QRCode", "Logo");
 
 const install = `pnpm add @skryensya/core @skryensya/react
 # or, for authored HTML
@@ -89,6 +89,8 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("qrCodePage.prop.moduleShape.body")}
       explain={explain("moduleShape", ["square", "dot", "rounded"])}
       stageMinBlockSize="22rem"
+      storybookTitle="Components/QRCode"
+      storybookStory="Default"
     />
 
     <UsagePreview
@@ -99,6 +101,8 @@ const explain = (option: string, values: readonly string[]) =>
       explain={explain("qrSize", ["sm", "md", "lg", "xl"])}
       stageMinBlockSize="22rem"
       labels={{ sm: "sm", md: "md", lg: "lg", xl: "xl" }}
+      storybookTitle="Components/QRCode"
+      storybookStory="Default"
     />
 
     <UsagePreview
@@ -108,6 +112,8 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("qrCodePage.prop.tone.body")}
       explain={explain("tone", ["neutral", "accent", "success", "warning", "danger", "info"])}
       stageMinBlockSize="22rem"
+      storybookTitle="Components/QRCode"
+      storybookStory="Default"
     />
 
     <UsagePreview
@@ -117,15 +123,17 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("qrCodePage.prop.level.body")}
       explain={explain("level", ["L", "M", "Q", "H"])}
       stageMinBlockSize="22rem"
+      storybookTitle="Components/QRCode"
+      storybookStory="Default"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={qrCodeLogoTree(locale)} title={t("qrCodePage.logoTitle")} description={t("qrCodePage.logoBody")} />
-    <UsagePreview tree={qrCodeCardTree(locale)} title={t("qrCodePage.compositionTitle")} description={t("qrCodePage.compositionBody")} />
+    <UsagePreview tree={qrCodeLogoTree(locale)} title={t("qrCodePage.logoTitle")} description={t("qrCodePage.logoBody")} storybookTitle="Components/QRCode" storybookStory="Logo" />
+    <UsagePreview tree={qrCodeCardTree(locale)} title={t("qrCodePage.compositionTitle")} description={t("qrCodePage.compositionBody")} storybookTitle="Components/QRCode" storybookStory="Card" />
     <h3>{t("qrCodePage.popoverTitle")}</h3>
     <p set:html={t("qrCodePage.popoverBody")} />
-    <UsagePreview tree={qrCodePopoverTree(locale)} label={t("qrCodePage.popoverLabel")} viewport="overlay" />
-    <UsagePreview tree={qrCodeTicketTree(locale)} title={t("qrCodePage.ticketTitle")} description={t("qrCodePage.ticketBody")} />
+    <UsagePreview tree={qrCodePopoverTree(locale)} label={t("qrCodePage.popoverLabel")} viewport="overlay" storybookTitle="Components/QRCode" storybookStory="Popover" />
+    <UsagePreview tree={qrCodeTicketTree(locale)} title={t("qrCodePage.ticketTitle")} description={t("qrCodePage.ticketBody")} storybookTitle="Components/QRCode" storybookStory="Ticket" />
     <h4>{t("qrCodePage.runtimeTitle")}</h4>
     <p set:html={t("qrCodePage.runtimeBody")} />
     <h4>{t("qrCodePage.exportTitle")}</h4>

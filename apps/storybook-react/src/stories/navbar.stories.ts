@@ -14,19 +14,13 @@ import "@skryensya/core/patterns/nav-list.css";
 import * as demos from "@docs/demos/navbar";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Navigation/Navbar", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Navbar", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.navbarAnatomyTree);
 export const Default: StoryObj = treeStory(demos.navbarTree);
 export const Bare: StoryObj = treeStory(demos.navbarBareTree);
 export const App: StoryObj = treeStory(demos.navbarAppTree);
 export const Megamenu: StoryObj = treeStory(demos.navbarMegamenuTree);
-export const DoOneAction: StoryObj = treeStory(demos.navbarDoOneActionTree);
-export const DontManyActions: StoryObj = treeStory(demos.navbarDontManyActionsTree);
-export const DoFewLinks: StoryObj = treeStory(demos.navbarDoFewLinksTree);
-export const DontManyLinks: StoryObj = treeStory(demos.navbarDontManyLinksTree);
-export const DoShortBrand: StoryObj = treeStory(demos.navbarDoShortBrandTree);
-export const DontLongBrand: StoryObj = treeStory(demos.navbarDontLongBrandTree);
 export const Layout: StoryObj = treeStory(demos.navbarLayoutTree);
 export const LayoutCentered: StoryObj = treeStory(demos.navbarLayoutCenteredTree);
 export const LayoutBrandCenter: StoryObj = treeStory(demos.navbarLayoutBrandCenterTree);

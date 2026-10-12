@@ -1,0 +1,21 @@
+<!-- The first paint, before any module loads. The iframe's address carries the toolbar's Mode, so the page can already be the right canvas colour (the values of --color-bg-canvas, light and dark) and Storybook's own loading skeleton (`.sb-preparing-*`, white by default) can wear it too, instead of a white flash until the first story renders. `preview.ts` repaints the same from the tokens. -->
+<script>
+  (function () {
+    var m = /(?:^|[?&;=])mode:(auto|light|dark)/.exec(decodeURIComponent(location.search));
+    var mode = m ? m[1] : "auto";
+    var dark = mode === "dark" || (mode === "auto" && matchMedia("(prefers-color-scheme: dark)").matches);
+    var canvas = dark ? "oklch(0.147 0.004 49.25)" : "oklch(0.97 0.001 106.424)";
+    var line = dark ? "rgba(255, 255, 255, 0.14)" : "rgba(0, 0, 0, 0.1)";
+    var root = document.documentElement;
+    root.style.colorScheme = mode === "auto" ? "light dark" : mode;
+    root.style.background = canvas;
+    var style = document.createElement("style");
+    style.textContent =
+      ".sb-preparing-story,.sb-preparing-docs{background-color:" + canvas + " !important}" +
+      ".sb-previewBlock{background:transparent !important;border-color:" + line + " !important}" +
+      ".sb-previewBlock_icon,.sb-argstableBlock th span,.sb-argstableBlock td span{background:" + line + " !important}" +
+      ".sb-argstableBlock-body tr:not(:first-child){border-top-color:" + line + " !important}" +
+      ".sb-loader{border-color:" + line + " !important;border-top-color:" + (dark ? "#9a9a9a" : "#646464") + " !important}";
+    document.head.appendChild(style);
+  })();
+</script>

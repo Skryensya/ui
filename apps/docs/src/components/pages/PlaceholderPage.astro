@@ -67,16 +67,18 @@ const explain = (option: string, values: readonly string[]) =>
       explain={explain("shimmer", ["false", "true"])}
       stageMinBlockSize="8rem"
       labels={{ false: t("placeholderPage.prop.shimmer.falseLabel"), true: t("placeholderPage.prop.shimmer.trueLabel") }}
+      storybookTitle="Components/Placeholder"
+      storybookStory="Paragraph"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={publicationPlaceholderTree(t)} title={t("placeholderPage.layoutTitle")} description={t("placeholderPage.layoutBody")} />
+    <UsagePreview tree={publicationPlaceholderTree(t)} title={t("placeholderPage.layoutTitle")} description={t("placeholderPage.layoutBody")} storybookTitle="Components/Placeholder" storybookStory="PublicationPlaceholder" />
     <h3>{t("placeholderPage.swapTitle")}</h3>
     <p set:html={t("placeholderPage.swapBody")} />
-    <UsagePreview tree={publicationSwapTree(t)} script={swapScript} label={t("placeholderPage.swapLabel")} />
-    <UsagePreview tree={placeholderGalleryTree(t)} title={t("placeholderPage.shapesTitle")} description={t("placeholderPage.shapesBody")} />
-    <UsagePreview tree={placeholderTableTree(t)} title={t("placeholderPage.tableTitle")} description={t("placeholderPage.tableBody")} />
-    <UsagePreview tree={placeholderMatchTree(t)} title={t("placeholderPage.matchTitle")} description={t("placeholderPage.matchBody")} />
+    <UsagePreview tree={publicationSwapTree(t)} script={swapScript} label={t("placeholderPage.swapLabel")} storybookTitle="Components/Placeholder" storybookStory="PublicationSwap" />
+    <UsagePreview tree={placeholderGalleryTree(t)} title={t("placeholderPage.shapesTitle")} description={t("placeholderPage.shapesBody")} storybookTitle="Components/Placeholder" storybookStory="Gallery" />
+    <UsagePreview tree={placeholderTableTree(t)} title={t("placeholderPage.tableTitle")} description={t("placeholderPage.tableBody")} storybookTitle="Components/Placeholder" storybookStory="Table" />
+    <UsagePreview tree={placeholderMatchTree(t)} title={t("placeholderPage.matchTitle")} description={t("placeholderPage.matchBody")} storybookTitle="Components/Placeholder" storybookStory="Match" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

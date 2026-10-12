@@ -41,10 +41,6 @@
       "types": "./src/components/avatar.tsx",
       "default": "./src/components/avatar.tsx"
     },
-    "./pixel-portrait": {
-      "types": "./src/components/pixel-portrait.tsx",
-      "default": "./src/components/pixel-portrait.tsx"
-    },
     "./tag": {
       "types": "./src/components/tag.tsx",
       "default": "./src/components/tag.tsx"
@@ -543,8 +539,8 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "check": "tsc -p tsconfig.json --noEmit && vitest run"
+    "build": "node ../../scripts/build-library.ts",
+    "check": "node ../../scripts/build-library.ts && node ../../scripts/verify-library.ts && tsc -p tsconfig.json --noEmit && vitest run"
   },
   "dependencies": {
     "@skryensya/core": "workspace:*",
@@ -582,5 +578,6 @@
     "react-dom": "^19.2.7",
     "typescript": "^5.9.3",
     "vitest": "^4.1.11"
-  }
+  },
+  "sideEffects": false
 }

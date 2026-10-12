@@ -10,7 +10,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/toast";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Feedback/Toast", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Toast", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.toastAnatomyTree);
 export const Simple: StoryObj = treeStory(demos.toastSimpleTree);

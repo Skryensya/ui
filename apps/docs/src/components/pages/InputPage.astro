@@ -76,12 +76,14 @@ const explain = (option: string, values: readonly string[]) =>
       stageMinBlockSize="8rem"
       labels={{ sm: "sm", md: "md", lg: "lg" }}
       target={["children"]}
+      storybookTitle="Components/Input"
+      storybookStory="Single"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={inputTree(t)} title={t("inputPage.basicTitle")} description={t("inputPage.basicBody")} storybookTitle="Components/Forms/Input" storybookStory="Default" />
-    <UsagePreview tree={textareaTree(t)} title={t("inputPage.textareaTitle")} description={t("inputPage.textareaBody")} />
-    <UsagePreview tree={inputFormatTree(t)} title={t("inputPage.formatTitle")} description={t("inputPage.formatBody")} storybookTitle="Components/Forms/Input" storybookStory="Format" />
+    <UsagePreview tree={inputTree(t)} title={t("inputPage.basicTitle")} description={t("inputPage.basicBody")} storybookTitle="Components/Input" storybookStory="Default" />
+    <UsagePreview tree={textareaTree(t)} title={t("inputPage.textareaTitle")} description={t("inputPage.textareaBody")} storybookTitle="Components/Input" storybookStory="Textarea" />
+    <UsagePreview tree={inputFormatTree(t)} title={t("inputPage.formatTitle")} description={t("inputPage.formatBody")} storybookTitle="Components/Input" storybookStory="Format" />
     <h4>{t("inputPage.formatPhoneTitle")}</h4>
     <p set:html={t("inputPage.formatPhoneBody")} />
     <CodeBlock code={phoneSetup} label="TypeScript" />
@@ -96,6 +98,8 @@ const explain = (option: string, values: readonly string[]) =>
       tree={variantsTree(inputSingleTree(t), [{ label: t("component.state.default"), options: {} }, { label: t("component.state.disabled"), options: { disabled: true } }], ["children"])}
       title={t("component.statesTitle")}
       description={t("component.statesBody")}
+      storybookTitle="Components/Input"
+      storybookStory="Single"
     />
 
     <h3>{t("component.anatomy")}</h3>

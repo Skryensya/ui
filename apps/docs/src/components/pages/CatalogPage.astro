@@ -1,6 +1,60 @@
 ---
 import { emitMarkup } from "@skryensya/ai-compiler/emit";
-import "@skryensya/core/components/sidebar.css";
+import "@skryensya/core/patterns/scrollbar.css";
+import "@skryensya/core/components/changelog.css";
+import "@skryensya/core/components/message.css";
+import "@skryensya/core/components/number-field.css";
+import "@skryensya/core/components/procedure.css";
+import "@skryensya/core/components/quote.css";
+import "@skryensya/core/components/rating.css";
+import "@skryensya/core/components/toc.css";
+import "@skryensya/core/components/annotation.css";
+import "@skryensya/core/components/lightbox.css";
+import "@skryensya/core/patterns/scroll-lock.css";
+import "@skryensya/core/components/canvas.css";
+import "@skryensya/core/components/treegrid.css";
+import "@skryensya/core/components/audio-player.css";
+import "@skryensya/core/components/data-grid.css";
+import "@skryensya/core/components/video-player.css";
+import "@skryensya/core/components/app-bar.css";
+import "@skryensya/core/components/diagram.css";
+import "@skryensya/core/components/editor.css";
+import "@skryensya/core/components/feed.css";
+import "@skryensya/core/components/megamenu.css";
+import "@skryensya/core/components/menubar.css";
+import "@skryensya/core/components/resizable.css";
+import "@skryensya/core/components/window.css";
+import "@skryensya/core/components/calendar.css";
+import "@skryensya/core/components/color-picker.css";
+import "@skryensya/core/components/date-picker.css";
+import "@skryensya/core/components/dock.css";
+import "@skryensya/core/components/otp-input.css";
+import "@skryensya/core/components/popover.css";
+import "@skryensya/core/components/split-button.css";
+import "@skryensya/core/components/combobox.css";
+import "@skryensya/core/components/compare-slider.css";
+import "@skryensya/core/components/comparison-table.css";
+import "@skryensya/core/components/morph-stack.css";
+import "@skryensya/core/components/placeholder.css";
+import "@skryensya/core/components/slider.css";
+import "@skryensya/core/components/state-button.css";
+import "@skryensya/core/components/tags-input.css";
+import "@skryensya/core/components/time-field.css";
+import "@skryensya/core/components/tree-view.css";
+import "@skryensya/core/components/user-select.css";
+import "@skryensya/core/components/carousel.css";
+import "@skryensya/core/components/expressive-avatar.css";
+import "@skryensya/core/components/file-upload.css";
+import "@skryensya/core/components/folder.css";
+import "@skryensya/core/components/listbox.css";
+import "@skryensya/core/components/marquee.css";
+import "@skryensya/core/components/shimmer.css";
+import "@skryensya/core/components/toast.css";
+import "@skryensya/core/components/chart.css";
+import "@skryensya/core/components/clipboard.css";
+import "@skryensya/core/components/copy-button.css";
+import "@skryensya/core/components/loader.css";
+import "@skryensya/core/patterns/visually-hidden.css";
 import "@skryensya/core/components/typography.css";
 /*
  * One import per stylesheet a variant needs. `catalog.test.ts` reads this file and fails, naming the
@@ -36,6 +90,7 @@ import "@skryensya/core/components/radio-group.css";
 import "@skryensya/core/components/steps.css";
 import "@skryensya/core/components/table.css";
 import "@skryensya/core/components/tabs.css";
+import "@skryensya/core/components/timeline.css";
 import "@skryensya/core/components/tooltip.css";
 import "@skryensya/core/patterns/footer.css";
 import "@skryensya/core/patterns/hero.css";
@@ -43,6 +98,9 @@ import "@skryensya/core/patterns/wrapper.css";
 import "@skryensya/core/components/breadcrumb.css";
 import "@skryensya/core/components/accordion.css";
 import "@skryensya/core/components/callout.css";
+import "@skryensya/core/components/comment-thread.css";
+import "@skryensya/core/components/dialog.css";
+import "@skryensya/core/patterns/dialog-vaul.css";
 import "@skryensya/core/components/details.css";
 import "@skryensya/core/components/menu.css";
 import "@skryensya/core/components/toolbar.css";
@@ -54,10 +112,8 @@ import "@skryensya/core/components/segmented.css";
 import "@skryensya/core/components/select.css";
 import "@skryensya/core/patterns/anchored.css";
 import { getLocale, useTranslations } from "../../i18n";
-import type { NavigationSection } from "../../lib/navigation";
 import { catalogView } from "../../lib/catalog-view";
-import { backTree, headerTree, introTree, metaTree, pagerTree, resultsTree, searchTree, type ChromeWords } from "../../lib/catalog-chrome";
-import SidebarNav from "../SidebarNav.astro";
+import { modalTree, headerTree, introTree, metaTree, pagerTree, resultsTree, searchTree, type ChromeWords } from "../../lib/catalog-chrome";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
@@ -74,7 +130,7 @@ const words: ChromeWords = {
   remove: t("catalog.search.remove"),
   clearAll: t("catalog.search.clear"),
   results: t("catalog.results.label"),
-  back: t("catalog.results.back"),
+  close: t("catalog.modal.close"),
   metaIntent: t("catalog.meta.intent"),
   metaLayout: t("catalog.meta.layout"),
   metaComponents: t("catalog.meta.components"),
@@ -103,59 +159,38 @@ const examples = ordered.map(({ subject, group, variant }, index) => {
   };
 });
 
-/* The SAME rail as Templates and the rest of the site (`SidebarNav`): one group per subject, one link per example. */
-const railNavigation: NavigationSection[] = [
-  {
-    id: "catalog",
-    section: t("catalog.navLabel"),
-    blurb: "",
-    caption: "",
-    groups: view.subjects.map((subject) => ({
-      id: `catalog-${subject.id}`,
-      group: subject.title,
-      collapsible: true,
-      defaultOpen: true,
-      items: subject.scales.flatMap((group) => group.variants.map((variant) => ({ href: `#${variant.id}`, label: variant.title }))),
-    })),
-  },
-];
-
+/* No rail: the page is one text field over a grid of thumbnails, and the subject is a facet like the rest. An open example moves to its neighbours with the pager. */
 const intro = emit(introTree(t("catalog.title"), t("catalog.description")));
 const search = emit(searchTree(words, view.facets));
-const results = emit(resultsTree(words, ordered.map(({ group, variant }) => ({ id: variant.id, title: variant.title, context: variant.context, scaleLabel: group.label }))));
-const back = emit(backTree(words));
+const results = emit(resultsTree(words, ordered.map(({ variant }) => ({ id: variant.id, title: variant.title, context: variant.context, components: variant.components }))));
+const modal = emit(modalTree(words, t("catalog.title")));
+/* The server paints the state the script settles on with nothing asked: every example in the results, no example open, nothing applied. Nothing may move when the script arrives. */
+const initialCount = t("catalog.results.count", { count: String(examples.length), total: String(examples.length) });
+/* Where the screenshots live (`public/catalog/thumbs`, written by `pnpm --filter @skryensya/ai-gates catalog:thumbs`). */
+const thumbsBase = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/catalog/thumbs/`;
 const countTemplate = t("catalog.results.count", { count: "{count}", total: "{total}" });
 ---
 
-<div class="catalog" data-catalog data-count-template={countTemplate}>
-  <aside class="sk-sidebar catalog__sidebar">
-    <div class="sk-sidebar__content">
-      <SidebarNav nav={railNavigation} path="" idPrefix="catalog-nav" />
-    </div>
-  </aside>
-
+<div class="catalog" data-catalog data-count-template={countTemplate} data-thumbs={thumbsBase}>
   <main class="catalog__stage">
     <header class="catalog__intro">
       <Fragment set:html={intro} />
       <Fragment set:html={search} />
     </header>
 
-    <section class="catalog__results" id="catalog-results-view" aria-labelledby="catalog-results-count" hidden>
-      <h2 class="catalog__count" id="catalog-results-count" aria-live="polite"></h2>
+    <section class="catalog__results" id="catalog-results-view" aria-labelledby="catalog-results-count">
+      <h2 class="catalog__count" id="catalog-results-count" aria-live="polite">{initialCount}</h2>
       <Fragment set:html={results} />
     </section>
 
-    <div class="catalog__back" id="catalog-back" hidden>
-      <Fragment set:html={back} />
-    </div>
-
     {
-      examples.map((example, index) => (
-        <article id={example.id} class="catalog__example" aria-labelledby={`${example.id}-title`} data-scale={example.scale} data-subject={example.facets.subject} data-domain={example.facets.domain} data-component={example.facets.component} data-words={example.words} hidden={index !== 0}>
+      examples.map((example) => (
+        <article id={example.id} class="catalog__example" aria-labelledby={`${example.id}-title`} data-scale={example.scale} data-subject={example.facets.subject} data-domain={example.facets.domain} data-component={example.facets.component} data-words={example.words} hidden>
           <Fragment set:html={example.header} />
-          <div class="catalog__canvas">
+          <div class="catalog__canvas sk-scrollbar sk-scrollbar--reveal">
             <div class="catalog__specimen">
-              <Fragment set:html={example.markup} />
+              {/* A <template> is parsed but never rendered, laid out or enhanced: the example is built only when it is opened. */}
+              <template set:html={example.markup} />
             </div>
           </div>
           <Fragment set:html={example.meta} />
@@ -164,59 +199,77 @@ const countTemplate = t("catalog.results.count", { count: "{count}", total: "{to
       ))
     }
   </main>
+
+  <Fragment set:html={modal} />
 </div>
 
 <style lang="scss">
-  /* The Templates page's frame: a sticky rail on desktop that rides into the drawer below `desktop`. */
   @use "@skryensya/core/breakpoints" as bp;
 
-  .catalog {
-    display: flex;
-    align-items: flex-start;
-  }
-
-  .catalog__sidebar {
-    position: sticky;
-    top: var(--docs-navbar-h, var(--docs-header-block-size));
-    block-size: calc(100dvh - var(--docs-navbar-h, var(--docs-header-block-size)));
-    flex: none;
-  }
-
   .catalog__stage {
-    flex: 1;
     min-inline-size: 0;
+    max-inline-size: 72rem;
+    margin-inline: auto;
     padding: var(--space-inset-xl);
   }
 
   @include bp.down("desktop") {
-    .catalog__sidebar {
-      display: none;
-    }
-
     .catalog__stage {
       padding: var(--space-inset-md);
     }
   }
 
-  .catalog__intro,
-  .catalog__results,
-  .catalog__example {
-    max-inline-size: 72rem;
-  }
-
+  /* One column: the title, one text field, and under it a quiet way to ask for more. */
   .catalog__intro {
     display: grid;
     gap: var(--space-stack-lg);
-    padding-block-end: var(--space-stack-lg);
     margin-block-end: var(--space-stack-xl);
-    border-block-end: 1px solid var(--color-border-subtle);
   }
 
-  /* Tall enough that the short facets show whole; only a long one (the components) scrolls inside its column. */
-  .catalog__intro :global([role="group"]) {
-    max-block-size: 26rem;
-    overflow-y: auto;
+  /* The field is the page: full width, a touch taller than a form input. */
+  .catalog__intro :global(input[type="search"]) {
+    inline-size: 100%;
+    min-block-size: var(--size-control-lg);
+    font-size: var(--font-size-body-lg);
+  }
+
+  /* The Details contract draws its own framed row; here it is only made quieter and shorter (a field's neighbour, not a card of its own), and the facets sit flush inside it. */
+  .catalog__intro :global(.sk-details) {
+    --sk-details-bg: transparent;
+    --sk-details-content-bg: transparent;
+    --sk-details-padding: var(--space-inset-sm) var(--space-inset-md);
+  }
+
+  .catalog__intro :global(.sk-details__summary) {
+    min-block-size: var(--size-control-md);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-body-sm);
+    font-weight: var(--font-weight-label);
+  }
+
+  .catalog__intro :global(.sk-details__content) {
+    padding-block: var(--space-inset-md) var(--space-inset-lg);
+  }
+
+  /* Four columns whose lists start together; only the long one (the components) scrolls inside its own column, so no short list is ever cut off. */
+  .catalog__intro :global(.sk-details__content [role="group"]) {
     align-content: start;
+  }
+
+  .catalog__intro :global(.sk-details__content [role="group"]:last-child) {
+    max-block-size: 18rem;
+    overflow-y: auto;
+    /* It always overflows, so its end fades out instead of cutting a row in half. */
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 2rem), transparent);
+  }
+
+  /* The contract spans the chevron over many rows, which leaves a one-line label sitting high in the first of them. */
+  .catalog__intro :global(.sk-details__summary > .sk-details__indicator) {
+    grid-row: 1;
+  }
+
+  .catalog__intro :global(#catalog-applied:not([data-active])) {
+    display: none;
   }
 
   .catalog__results {
@@ -231,8 +284,325 @@ const countTemplate = t("catalog.results.count", { count: "{count}", total: "{to
     color: var(--color-text-secondary);
   }
 
-  .catalog__back {
-    margin-block-end: var(--space-stack-md);
+  /*
+   * THE RESULTS AS A GRID OF THUMBNAILS. The List the tree emits stays the markup (it is what a screen reader
+   * and the contract gate see); here its rows become cards, each carrying a screenshot of the example above its
+   * title, so a hundred of one component can be chosen by eye. The images load lazily as the cards scroll into view,
+   * and `content-visibility` keeps the off-screen ones from being laid out at all.
+   */
+  .catalog__results :global(#catalog-results) {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    column-gap: var(--space-stack-lg);
+    row-gap: var(--space-stack-xl);
+  }
+
+  .catalog__results :global(#catalog-results > li) {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 22rem;
+  }
+
+  .catalog__results :global(#catalog-results > li + li) {
+    border: 0;
+  }
+
+  /* No frame: the thumbnail is the card, and the title, the line under it and the tags sit on the page. */
+  .catalog__results :global(#catalog-results .sk-list__action) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    block-size: 100%;
+    padding: 0;
+  }
+
+  /* Three steps down the card, each owning its own space (no gap on the row, so nothing doubles): thumbnail to title is `sm`, title to its line is tight, the line to the tags is `sm` again. */
+  .catalog__results :global(#catalog-results .sk-list__content) {
+    gap: 0;
+    margin-block-start: var(--space-stack-sm);
+  }
+
+  .catalog__results :global(#catalog-results .sk-list__description) {
+    margin-block-start: var(--space-stack-3xs);
+  }
+
+  .catalog__results :global(#catalog-results .sk-list__content),
+  .catalog__results :global(#catalog-results .sk-list__trailing) {
+    padding-inline: 0;
+  }
+
+  .catalog__results :global(#catalog-results .sk-list__trailing) {
+    margin-inline-start: 0;
+    margin-block-start: var(--space-stack-sm);
+    justify-content: flex-start;
+    white-space: normal;
+    gap: var(--space-inline-xs);
+  }
+
+  /* Smaller chips for the results: Tag has no size option, so its own height hook and type size are set here. */
+  .catalog__results :global(#catalog-results .sk-tag) {
+    --sk-tag-height: 1.25rem;
+    padding-inline: var(--space-inset-xs);
+    font-size: calc(var(--font-size-caption) * 0.85);
+    font-weight: var(--font-weight-body);
+  }
+
+  /* The window: a fixed shape the screenshot fills. Until it loads (or when there is none), the same box is painted by the card itself, so adding it moves nothing. */
+  .catalog :global(.catalog__thumb),
+  .catalog__results :global(#catalog-results .sk-list__action:not(:has(> .catalog__thumb))::before) {
+    content: "";
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--radius-surface);
+    background-color: var(--color-bg-surface-sunken);
+    background-image: radial-gradient(var(--color-border-subtle) 1px, transparent 1px);
+    background-size: 12px 12px;
+    pointer-events: none;
+  }
+
+  /*
+   * HOVER AND FOCUS ON A CARD: the thumbnail is the card, so it is the thumbnail that answers, not the row's
+   * wash (off: the card has no frame). Everything stays inside the thumbnail's own box, because the row's
+   * `content-visibility` clips whatever is painted outside it: hover darkens the border (the image never moves or scales),
+   * keyboard focus draws a ring inside the edge. The title takes the accent on both. Reduced motion: no easing.
+   */
+  .catalog :global(.catalog__thumb),
+  .catalog__results :global(#catalog-results .sk-list__action:not(:has(> .catalog__thumb))::before) {
+    border: 1px solid var(--color-border-subtle);
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+  }
+
+  .catalog__results :global(#catalog-results .sk-list__action) {
+    --state-layer-hover-opacity: 0;
+    --state-layer-focus-opacity: 0;
+    --state-layer-pressed-opacity: 0.06;
+  }
+
+  .catalog__results :global(#catalog-results .sk-list__action:hover .catalog__thumb) {
+    border-color: var(--color-border-strong);
+    box-shadow: inset 0 0 0 1px var(--color-border-strong);
+  }
+
+  .catalog__results :global(#catalog-results .sk-list__action:focus-visible) {
+    outline: none;
+  }
+
+  .catalog__results :global(#catalog-results .sk-list__action:focus-visible .catalog__thumb) {
+    border-color: var(--color-border-focus);
+    box-shadow: inset 0 0 0 2px var(--color-border-focus);
+  }
+
+  .catalog__results :global(#catalog-results .sk-list__action:is(:hover, :focus-visible) .sk-list__title) {
+    color: var(--color-text-accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .catalog :global(.catalog__thumb) {
+      transition: none;
+    }
+  }
+
+  /* The screenshot fills the window: one image per colour mode, the one for the page's mode shown. It is the same box the example was shot in, so nothing is cropped. */
+  .catalog :global(.catalog__thumb-image) {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: contain;
+  }
+
+  .catalog :global(.catalog__thumb-image[data-mode="dark"]) {
+    display: none;
+  }
+
+  :global(:root[data-scheme="dark"]) .catalog :global(.catalog__thumb-image[data-mode="light"]) {
+    display: none;
+  }
+
+  :global(:root[data-scheme="dark"]) .catalog :global(.catalog__thumb-image[data-mode="dark"]) {
+    display: block;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-scheme="light"])) .catalog :global(.catalog__thumb-image[data-mode="light"]) {
+      display: none;
+    }
+
+    :global(:root:not([data-scheme="light"])) .catalog :global(.catalog__thumb-image[data-mode="dark"]) {
+      display: block;
+    }
+  }
+
+  /*
+   * THE MODAL: nearly the whole viewport, with no bar of its own. The Dialog contract is the native `<dialog>`;
+   * only its size is set here. Its header strip is not a row: the close button floats in the corner and the
+   * title the contract draws is kept for assistive technology only, because the example's own name opens the
+   * right column. Nothing outside the example takes height, so the example gets all of it.
+   */
+  .catalog :global(#catalog-modal) {
+    --sk-dialog-inline-size: calc(100% - 2rem);
+  }
+
+  /* Above the Dialog Vaul breakpoint (52rem) it is the centred box, the whole viewport minus a uniform 1rem on every side; at and below it the
+   * contract makes it a bottom sheet, which this only gives a tall, steady height. */
+  @media (min-width: 52rem) {
+    .catalog :global(#catalog-modal) {
+      block-size: calc(100dvh - 2rem);
+      max-block-size: none;
+    }
+  }
+
+  @media (max-width: 52rem) {
+    .catalog :global(#catalog-modal) {
+      --sk-vaul-block-size: 90dvh;
+
+      block-size: 90dvh;
+    }
+  }
+
+  .catalog :global(#catalog-modal[open]) {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .catalog :global(#catalog-modal .sk-dialog__header) {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    z-index: 2;
+    padding: var(--space-inset-sm);
+    border: 0;
+  }
+
+  .catalog :global(#catalog-modal .sk-dialog__title) {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .catalog :global(#catalog-modal .sk-dialog__body) {
+    flex: 1;
+    min-block-size: 0;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr);
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .catalog :global(#catalog-modal-slot) {
+    min-block-size: 0;
+    block-size: 100%;
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  /*
+   * TWO COLUMNS: the viewer takes two thirds; the third beside it is the example's record. The column is three
+   * rows: the name and purpose at the top, the record in the middle (the only part that scrolls) and the way to
+   * the neighbours stuck to the bottom. The example's children are placed by kind: header, viewer, record, pager.
+   */
+  .catalog :global(#catalog-modal .catalog__example) {
+    max-inline-size: none;
+    block-size: 100%;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    column-gap: 0;
+    row-gap: var(--space-stack-md);
+  }
+
+  /* The viewer is flush with the dialog's edge, so the record column carries the padding the body no longer has. */
+  .catalog :global(#catalog-modal .catalog__example > *) {
+    grid-column: 2;
+    padding-inline: var(--space-inset-lg);
+  }
+
+  .catalog :global(#catalog-modal .catalog__example > :first-child) {
+    padding-inline-end: var(--space-inset-xl);
+    padding-block-start: var(--space-inset-lg);
+  }
+
+  .catalog :global(#catalog-modal .catalog__example > .sk-description-list) {
+    overflow-y: auto;
+    min-block-size: 0;
+    overscroll-behavior: contain;
+  }
+
+  .catalog :global(#catalog-modal .catalog__example > [role="navigation"]) {
+    padding-block: var(--space-inset-xs) var(--space-inset-lg);
+  }
+
+  /*
+   * THE VIEWER: a window onto the specimen that fills the left of the modal edge to edge: no padding of the body
+   * around it, no border on the outer sides, its corners on the dialog's side following the dialog's radius and
+   * its right side square where it meets the record. What does not fit scrolls inside it.
+   */
+  .catalog :global(#catalog-modal .catalog__canvas) {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+    align-self: stretch;
+    min-block-size: 0;
+    overflow: auto;
+    border: 0;
+    border-inline-end: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-dialog, var(--radius-surface)) 0 0 var(--radius-dialog, var(--radius-surface));
+    align-items: safe center;
+    justify-items: safe center;
+  }
+
+  /*
+   * ONE COLUMN below `desktop`: the body scrolls as a whole, the name and the viewer come first and the way to
+   * the neighbours stays stuck to the bottom of the modal.
+   */
+  @include bp.down("desktop") {
+    .catalog :global(#catalog-modal .sk-dialog__body) {
+      grid-template-rows: none;
+      overflow-y: auto;
+      padding: var(--space-inset-md);
+    }
+
+    .catalog :global(#catalog-modal-slot) {
+      block-size: auto;
+      grid-template-rows: none;
+    }
+
+    .catalog :global(#catalog-modal .catalog__example) {
+      block-size: auto;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: none;
+    }
+
+    .catalog :global(#catalog-modal .catalog__example > *),
+    .catalog :global(#catalog-modal .catalog__canvas) {
+      grid-column: 1;
+      grid-row: auto;
+    }
+
+    .catalog :global(#catalog-modal .catalog__canvas) {
+      block-size: min(30rem, 70dvh);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-surface);
+    }
+
+    .catalog :global(#catalog-modal .catalog__example > *) {
+      padding-inline: 0;
+    }
+
+    .catalog :global(#catalog-modal .catalog__example > :first-child) {
+      padding-block-start: 0;
+    }
+
+    .catalog :global(#catalog-modal .catalog__example > .sk-description-list) {
+      overflow: visible;
+    }
+
+    .catalog :global(#catalog-modal .catalog__example > [role="navigation"]) {
+      position: sticky;
+      inset-block-end: calc(-1 * var(--space-inset-md));
+      padding-block: var(--space-inset-xs);
+      background: var(--sk-dialog-bg, var(--color-bg-surface-overlay));
+    }
   }
 
   .catalog__example {
@@ -286,9 +656,9 @@ const countTemplate = t("catalog.results.count", { count: "{count}", total: "{to
 
   /*
    * THE ADVANCED SEARCH. Words that must all appear, AND every facet that has something checked (any value
-   * within a facet). With nothing asked, the stage shows one example; with something asked, the results, and
-   * choosing one shows it with the way back. The search lives in the query string (`?q=&subject=card&
-   * component=meter`), the chosen example in the hash, so both can be shared. The rail narrows with the search.
+   * within a facet). The results are always the stage, narrowed by what is asked;
+   * choosing one opens it in a modal over them. The search lives in the query string (`?q=&subject=card&
+   * component=meter`), the chosen example in the hash, so both can be shared. 
    */
   const root = document.querySelector<HTMLElement>("[data-catalog]");
   if (root) {
@@ -296,14 +666,49 @@ const countTemplate = t("catalog.results.count", { count: "{count}", total: "{to
     const boxes = [...root.querySelectorAll<HTMLInputElement>('input[type="checkbox"]')].filter((box) => (FACETS as readonly string[]).includes(box.name));
     const articles = [...root.querySelectorAll<HTMLElement>(".catalog__example")];
     const resultRows = new Map([...root.querySelectorAll<HTMLAnchorElement>("#catalog-results a[href^='#']")].map((anchor) => [anchor.getAttribute("href")!.slice(1), anchor.closest("li") as HTMLElement] as const));
-    const railLinks = [...root.querySelectorAll<HTMLAnchorElement>(".catalog__sidebar a[href^='#']")];
-    const railGroups = [...root.querySelectorAll<HTMLElement>(".catalog__sidebar .sk-nav-list__group")];
     const resultsView = root.querySelector<HTMLElement>("#catalog-results-view")!;
     const count = root.querySelector<HTMLElement>("#catalog-results-count")!;
-    const back = root.querySelector<HTMLElement>("#catalog-back")!;
+    const stage = root.querySelector<HTMLElement>(".catalog__stage")!;
+    const modal = root.querySelector<HTMLDialogElement>("#catalog-modal")!;
+    const modalBody = modal.querySelector<HTMLElement>("#catalog-modal-slot")!;
+    const modalTitle = modal.querySelector<HTMLElement>(".sk-dialog__title")!;
+    modalBody.replaceChildren();
+    // The regions that scroll wear the design system's scrollbar: the record is emitted markup, so it is marked here.
+    for (const region of [modal.querySelector(".sk-dialog__body"), ...document.querySelectorAll(".catalog__example > .sk-description-list")]) {
+      region?.classList.add("sk-scrollbar", "sk-scrollbar--reveal");
+    }
     const clear = root.querySelector<HTMLButtonElement>("#catalog-clear")!;
+    const applied = root.querySelector<HTMLElement>("#catalog-applied")!;
     const details = root.querySelector<HTMLDetailsElement>("details")!;
     const chip = (facet: string, value: string) => root.querySelector<HTMLElement>(`#catalog-chip-${facet}-${CSS.escape(value)}`);
+
+    /*
+     * THE THUMBNAILS ARE SCREENSHOTS, not renders: each result card gets an image of its example, taken ahead of
+     * time by `pnpm --filter @skryensya/ai-gates catalog:thumbs` (one per colour mode), and nothing is built for a
+     * card. The real example is only rendered when it is opened. A card whose image is missing keeps the
+     * empty window the card paints for itself.
+     */
+    const base = root.dataset.thumbs ?? "";
+    for (const [rowId, row] of resultRows) {
+      const action = row.querySelector<HTMLElement>(".sk-list__action");
+      if (!action) continue;
+      const thumb = document.createElement("div");
+      thumb.className = "catalog__thumb";
+      thumb.dataset.scale = document.getElementById(rowId)?.dataset.scale ?? "";
+      thumb.setAttribute("aria-hidden", "true");
+      for (const mode of ["light", "dark"]) {
+        const image = new Image();
+        image.className = "catalog__thumb-image";
+        image.dataset.mode = mode;
+        image.loading = "lazy";
+        image.decoding = "async";
+        image.alt = "";
+        image.addEventListener("error", () => image.remove(), { once: true });
+        image.src = `${base}${rowId}.${mode}.jpg`;
+        thumb.append(image);
+      }
+      action.prepend(thumb);
+    }
 
     const checked = (facet: Facet) => boxes.filter((box) => box.name === facet && box.checked).map((box) => box.value);
     const asking = () => query.value.trim() !== "" || boxes.some((box) => box.checked);
@@ -319,32 +724,55 @@ const countTemplate = t("catalog.results.count", { count: "{count}", total: "{to
       });
     };
 
+    /*
+     * THE EXAMPLE'S OWN BEHAVIOUR, switched on once it is opened: the emitted markup is static, and a code
+     * field, a date, a colour or a combobox only shows its value and its states once its enhancer has run.
+     * An example is built (from its template) and woken one time only, when it is first opened.
+     */
+    const awake = new WeakSet<HTMLElement>();
+    const wake = async (article: HTMLElement) => {
+      if (awake.has(article)) return;
+      awake.add(article);
+      const template = article.querySelector<HTMLTemplateElement>(".catalog__specimen > template");
+      if (template) {
+        template.parentElement!.append(template.content.cloneNode(true));
+        template.remove();
+      }
+      const [{ mountComponentsWithIcons }, { siteIcons }] = await Promise.all([import("@skryensya/vanilla/auto"), import("../../icons")]);
+      await mountComponentsWithIcons(article, siteIcons);
+    };
+
     const render = () => {
       const visible = new Set(articles.filter(matches).map((article) => article.id));
       const id = decodeURIComponent(location.hash.slice(1));
       const chosen = articles.find((article) => article.id === id);
-      const showResults = !chosen && asking();
-      const onStage = chosen ?? (showResults ? undefined : articles[0]);
+      const onStage = chosen;
 
-      for (const article of articles) article.hidden = article !== onStage;
-      resultsView.hidden = !showResults;
-      back.hidden = !(chosen && asking());
+      /* The results stay under the modal: opening an example never takes the reader's place in them. */
+      resultsView.hidden = false;
+      for (const article of articles) {
+        if (article === onStage) continue;
+        article.hidden = true;
+        if (modalBody.contains(article)) stage.append(article);
+      }
+      if (onStage) {
+        if (!modalBody.contains(onStage)) modalBody.append(onStage);
+        onStage.hidden = false;
+        modalTitle.textContent = onStage.querySelector('[id$="-title"]')?.textContent ?? "";
+        wake(onStage);
+        wake(modal);
+        if (!modal.open) modal.showModal();
+      } else if (modal.open) {
+        modal.close();
+      }
       for (const [rowId, row] of resultRows) row.hidden = !visible.has(rowId);
       count.textContent = (root.dataset.countTemplate ?? "").replace("{count}", String(visible.size)).replace("{total}", String(articles.length));
-
-      for (const link of railLinks) {
-        const linkId = link.getAttribute("href")!.slice(1);
-        (link.closest("li") as HTMLElement).hidden = !visible.has(linkId);
-        if (onStage && linkId === onStage.id) link.setAttribute("aria-current", "page");
-        else link.removeAttribute("aria-current");
-      }
-      for (const group of railGroups) group.hidden = !group.querySelector("li:not([hidden])");
 
       for (const box of boxes) {
         const tag = chip(box.name, box.value);
         if (tag) tag.hidden = !box.checked;
       }
-      clear.hidden = !asking();
+      applied.toggleAttribute("data-active", asking());
     };
 
     const write = (keepHash: boolean) => {
@@ -371,6 +799,16 @@ const countTemplate = t("catalog.results.count", { count: "{count}", total: "{to
     for (const box of boxes) box.addEventListener("change", ask);
     root.querySelector('[role="search"]')?.closest("form")?.addEventListener("submit", (event) => event.preventDefault());
 
+    /* Closing the modal (Escape, its button, a click on the backdrop) leaves the example's address for the results': a new history entry, so Back reopens it. */
+    modal.addEventListener("close", () => {
+      if (!articles.some((article) => article.id === decodeURIComponent(location.hash.slice(1)))) return;
+      history.pushState(null, "", location.pathname + location.search);
+      render();
+    });
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) modal.close();
+    });
+
     /* A chip's remove button unchecks its facet value; Tag has no behaviour of its own, the host does the rest. */
     root.addEventListener("click", (event) => {
       const remove = (event.target as Element).closest(".sk-tag__remove");
@@ -387,10 +825,8 @@ const countTemplate = t("catalog.results.count", { count: "{count}", total: "{to
       ask();
     });
 
-    const follow = () => {
-      render();
-      window.scrollTo({ top: 0 });
-    };
+    /* No scroll to the top: the results keep their place under the modal. */
+    const follow = () => render();
     window.addEventListener("hashchange", follow);
     window.addEventListener("popstate", follow);
     /* The docs' own anchor handling moves the hash with pushState, which fires neither event: a click on a `#id` link is the signal. */

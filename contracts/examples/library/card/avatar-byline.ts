@@ -26,6 +26,7 @@ export const avatarByline: PatternModule<Content> = {
       intent: "content/attribution/byline",
       title: { en: "Byline", es: "Autoría" },
       purpose: { en: "Who did something and when, beside their avatar.", es: "Quién hizo algo y cuándo, junto a su avatar." },
+      catalog: false,
       content: { person: { name: "Marta Ruiz", initials: "MR" }, meta: { en: "Editor · October 3", es: "Editora · 3 de octubre" } },
     }),
   ],

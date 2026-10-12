@@ -9,7 +9,8 @@
     "dist",
     "scripts",
     "src",
-    "contrast-pairs.json"
+    "contrast-pairs.json",
+    "install-manifest.json"
   ],
   "exports": {
     "./contract": {
@@ -79,14 +80,6 @@
     "./avatar": {
       "types": "./src/avatar.ts",
       "default": "./src/avatar.ts"
-    },
-    "./pixel-portrait": {
-      "types": "./src/pixel-portrait.ts",
-      "default": "./src/pixel-portrait.ts"
-    },
-    "./pixel-portrait-sprite": {
-      "types": "./src/pixel-portrait-sprite.ts",
-      "default": "./src/pixel-portrait-sprite.ts"
     },
     "./tag": {
       "types": "./src/tag.ts",
@@ -207,6 +200,10 @@
     "./paused": {
       "types": "./src/paused.ts",
       "default": "./src/paused.ts"
+    },
+    "./reduced-motion": {
+      "types": "./src/reduced-motion.ts",
+      "default": "./src/reduced-motion.ts"
     },
     "./stat": {
       "types": "./src/stat.ts",
@@ -674,7 +671,6 @@
     "./primitives.scss": "./css/primitives.scss",
     "./semantic.scss": "./css/semantic.scss",
     "./breakpoints": "./css/semantic/_breakpoints.scss",
-    "./modes/hc.css": "./dist/modes/hc.css",
     "./modes/*": "./css/modes/*",
     "./dimensions/radius.css": "./dist/dimensions/radius.css",
     "./dimensions/press-scale.css": "./dist/dimensions/press-scale.css",
@@ -718,12 +714,13 @@
     "./user-select": {
       "types": "./src/user-select.ts",
       "default": "./src/user-select.ts"
-    }
+    },
+    "./install-manifest.json": "./install-manifest.json"
   },
   "scripts": {
-    "build": "node scripts/build-css.ts && tsc -p tsconfig.json",
+    "build": "node scripts/build-css.ts && tsc -p tsconfig.json && node scripts/generate-install-manifest.ts",
     "build:css": "node scripts/build-css.ts",
-    "check": "node scripts/lint.ts && node --test scripts/*.test.ts && vitest run && tsc -p tsconfig.json --noEmit && tsc -p tsconfig.scripts.json"
+    "check": "node scripts/lint.ts && node scripts/mirror-motion.ts --check && node --test scripts/*.test.ts && vitest run && tsc -p tsconfig.json --noEmit && tsc -p tsconfig.scripts.json"
   },
   "devDependencies": {
     "@types/node": "catalog:",
@@ -760,5 +757,8 @@
     "@zag-js/tree-view": "^1.43.3",
     "cropperjs": "2.2.0",
     "qrcode": "^1.5.4"
-  }
+  },
+  "sideEffects": [
+    "**/*.css"
+  ]
 }

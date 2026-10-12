@@ -10,7 +10,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/scroll-stack";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Layout/Scroll Stack", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Scroll Stack", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.scrollStackAnatomyTree);
 export const Default: StoryObj = treeStory(demos.scrollStackTree);
@@ -18,9 +18,3 @@ export const Product: StoryObj = treeStory(demos.scrollStackProductTree);
 export const Cards: StoryObj = treeStory(demos.scrollStackCardsTree);
 export const Five: StoryObj = treeStory(demos.scrollStackFiveTree);
 export const Offset: StoryObj = treeStory(demos.scrollStackOffsetTree);
-export const DoOpaque: StoryObj = treeStory(demos.scrollStackDoOpaqueTree);
-export const DontOpaque: StoryObj = treeStory(demos.scrollStackDontOpaqueTree);
-export const DoFit: StoryObj = treeStory(demos.scrollStackDoFitTree);
-export const DontFit: StoryObj = treeStory(demos.scrollStackDontFitTree);
-export const DoOffset: StoryObj = treeStory(demos.scrollStackDoOffsetTree);
-export const DontOffset: StoryObj = treeStory(demos.scrollStackDontOffsetTree);

@@ -10,7 +10,7 @@ import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/tour";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Overlays/Tour", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Tour", tags: ["autodocs"] } satisfies Meta;
 
 export const Basic: StoryObj = treeStory(demos.tourBasicTree);
 export const Missing: StoryObj = treeStory(demos.tourMissingTree);

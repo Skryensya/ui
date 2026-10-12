@@ -46,7 +46,7 @@ const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
 
 const install = `pnpm add @skryensya/core @skryensya/react`;
-const storybookTitle = "Components/Data/Charts";
+const storybookTitle = "Components/Charts";
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`chartsPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 const installLine = `pnpm add @skryensya/charts`;
@@ -70,8 +70,7 @@ const tanstackSource = `import { TanStackChart } from "@skryensya/charts/react/t
       description={t("chartsPage.prop.tone.body")}
       explain={explain("tone", ["accent", "success", "warning", "danger", "info", "neutral"])}
       storybookTitle={storybookTitle}
-      storybookStory="Bar"
-    />
+      storybookStory="Bar" />
     <UsagePreview
       tree={chartsValuesTree(t)}
       optionName="format"
@@ -79,8 +78,7 @@ const tanstackSource = `import { TanStackChart } from "@skryensya/charts/react/t
       description={t("chartsPage.prop.format.body")}
       explain={explain("format", ["number", "compact", "percent", "currency"])}
       storybookTitle={storybookTitle}
-      storybookStory="Values"
-    />
+      storybookStory="Values" />
 
     <h3>{t("component.examplesTitle")}</h3>
     <h3 id="cards">{t("chartsPage.cardsTitle")}</h3>
@@ -88,57 +86,57 @@ const tanstackSource = `import { TanStackChart } from "@skryensya/charts/react/t
 
     <h3 id="analitica">{t("chartsPage.analyticsTitle")}</h3>
     <p set:html={t("chartsPage.analyticsBody")} />
-    <UsagePreview tree={chartAnalyticsCardTree(t)} label={t("chartsPage.analyticsLabel")} caption={t("chartsPage.analyticsNote")} stageMinBlockSize="26rem" />
+    <UsagePreview tree={chartAnalyticsCardTree(t)} label={t("chartsPage.analyticsLabel")} caption={t("chartsPage.analyticsNote")} stageMinBlockSize="26rem" storybookTitle="Components/Charts" storybookStory="ChartAnalyticsCard" />
 
     <h3 id="historial">{t("chartsPage.historyTitle")}</h3>
     <p set:html={t("chartsPage.historyBody")} />
-    <UsagePreview tree={chartHistoryCardTree(t)} />
+    <UsagePreview tree={chartHistoryCardTree(t)} storybookTitle="Components/Charts" storybookStory="ChartHistoryCard" />
 
     <h3 id="consumo">{t("chartsPage.usageTitle")}</h3>
     <p set:html={t("chartsPage.usageBody")} />
-    <UsagePreview tree={chartUsageCardTree(t)} />
+    <UsagePreview tree={chartUsageCardTree(t)} storybookTitle="Components/Charts" storybookStory="ChartUsageCard" />
 
     <h3 id="chart">{t("chartsPage.pieceTitle")}</h3>
     <p set:html={t("chartsPage.pieceBody")} />
 
     <h3 id="barras">{t("chartsPage.barTitle")}</h3>
     <p set:html={t("chartsPage.barBody")} />
-    <UsagePreview tree={chartsBarTree(t)} />
+    <UsagePreview tree={chartsBarTree(t)} storybookTitle="Components/Charts" storybookStory="Bar" />
 
     <h3 id="linea">{t("chartsPage.lineTitle")}</h3>
     <p set:html={t("chartsPage.lineBody")} />
-    <UsagePreview tree={chartsLineTree(t)} label={t("chartsPage.lineLabel")} caption={t("chartsPage.lineNote")} measure="40rem" stageMinBlockSize="22rem" />
+    <UsagePreview tree={chartsLineTree(t)} label={t("chartsPage.lineLabel")} caption={t("chartsPage.lineNote")} measure="40rem" stageMinBlockSize="22rem" storybookTitle="Components/Charts" storybookStory="Line" />
 
     <h3 id="area">{t("chartsPage.areaTitle")}</h3>
     <p set:html={t("chartsPage.areaBody")} />
-    <UsagePreview tree={chartsAreaTree(t)} label={t("chartsPage.areaLabel")} caption={t("chartsPage.areaNote")} measure="40rem" stageMinBlockSize="22rem" />
+    <UsagePreview tree={chartsAreaTree(t)} label={t("chartsPage.areaLabel")} caption={t("chartsPage.areaNote")} measure="40rem" stageMinBlockSize="22rem" storybookTitle="Components/Charts" storybookStory="Area" />
 
     <h3 id="integraciones">{t("chartsPage.integrationsTitle")}</h3>
     <p set:html={t("chartsPage.integrationsBody")} />
 
     <h4 id="tabla">{t("chartsPage.tableTitle")}</h4>
     <p set:html={t("chartsPage.tableBody")} />
-    <UsagePreview tree={chartTableCardTree(t)} />
+    <UsagePreview tree={chartTableCardTree(t)} storybookTitle="Components/Charts" storybookStory="ChartTableCard" />
 
     <h4 id="detalle">{t("chartsPage.detailTitle")}</h4>
     <p set:html={t("chartsPage.detailBody")} />
-    <UsagePreview tree={chartPointDetailTree(t)} />
+    <UsagePreview tree={chartPointDetailTree(t)} storybookTitle="Components/Charts" storybookStory="ChartPointDetail" />
 
     <h4 id="galeria">{t("chartsPage.galleryTitle")}</h4>
     <p set:html={t("chartsPage.galleryBody")} />
-    <UsagePreview tree={chartGalleryTree(t)} label={t("chartsPage.galleryLabel")} caption={t("chartsPage.galleryNote")} stageMinBlockSize="32rem" />
+    <UsagePreview tree={chartGalleryTree(t)} label={t("chartsPage.galleryLabel")} caption={t("chartsPage.galleryNote")} stageMinBlockSize="32rem" storybookTitle="Components/Charts" storybookStory="ChartGallery" />
 
     <h4 id="metricas">{t("chartsPage.metricTabsTitle")}</h4>
     <p set:html={t("chartsPage.metricTabsBody")} />
-    <UsagePreview tree={chartMetricTabsTree(t)} />
+    <UsagePreview tree={chartMetricTabsTree(t)} storybookTitle="Components/Charts" storybookStory="ChartMetricTabs" />
 
     <h4 id="leyenda">{t("chartsPage.legendTitle")}</h4>
     <p set:html={t("chartsPage.legendBody")} />
-    <UsagePreview tree={chartLegendCardTree(t)} />
+    <UsagePreview tree={chartLegendCardTree(t)} storybookTitle="Components/Charts" storybookStory="ChartLegendCard" />
 
     <h4 id="comparacion">{t("chartsPage.comparisonTitle")}</h4>
     <p set:html={t("chartsPage.comparisonBody")} />
-    <UsagePreview tree={chartComparisonTree(t)} label={t("chartsPage.comparisonLabel")} caption={t("chartsPage.comparisonNote")} stageMinBlockSize="26rem" />
+    <UsagePreview tree={chartComparisonTree(t)} label={t("chartsPage.comparisonLabel")} caption={t("chartsPage.comparisonNote")} stageMinBlockSize="26rem" storybookTitle="Components/Charts" storybookStory="ChartComparison" />
 
     <h3 id="tanstack">{t("chartsPage.tanstackTitle")}</h3>
     <p set:html={t("chartsPage.tanstackBody")} />

@@ -71,11 +71,13 @@ const explain = (option: string, values: readonly string[]) =>
       description={t("footer.prop.surface.body")}
       explain={explain("surface", ["none", "sunken", "surface", "raised"])}
       stageMinBlockSize="14rem"
+      storybookTitle="Components/Box - Layout"
+      storybookStory="FooterColumns"
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={footerSiteTree} title={t("footer.patternSiteTitle")} description={t("footer.patternSiteDescription")} />
-    <UsagePreview tree={footerOneLineTree} title={t("footer.patternCreditTitle")} description={t("footer.patternCreditDescription")} />
+    <UsagePreview tree={footerSiteTree} title={t("footer.patternSiteTitle")} description={t("footer.patternSiteDescription")} storybookTitle="Components/Box - Layout" storybookStory="FooterColumns" />
+    <UsagePreview tree={footerOneLineTree} title={t("footer.patternCreditTitle")} description={t("footer.patternCreditDescription")} storybookTitle="Components/Box - Layout" storybookStory="FooterCredit" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

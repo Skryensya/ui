@@ -8,7 +8,7 @@ import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/skip-link";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Navigation/SkipLink", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/SkipLink", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.skipLinkAnatomyTree);
 export const Default: StoryObj = treeStory(demos.skipLinkTree);

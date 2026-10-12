@@ -8,11 +8,10 @@ import "@skryensya/core/patterns/anchored.css";
 import * as demos from "@docs/demos/time-field";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Forms/TimeField", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/TimeField", tags: ["autodocs"] } satisfies Meta;
 
 export const Default: StoryObj = treeStory(demos.timeFieldTree);
 export const Forced24: StoryObj = treeStory(demos.timeFieldForced24Tree);
 export const QuarterHour: StoryObj = treeStory(demos.timeFieldQuarterHourTree);
 export const Native: StoryObj = treeStory(demos.timeFieldNativeTree);
-export const DontCycle: StoryObj = treeStory(demos.timeFieldDontCycleTree);
 export const DoCycle: StoryObj = treeStory(demos.timeFieldDoCycleTree);

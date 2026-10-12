@@ -8,7 +8,7 @@ import "@skryensya/core/components/typography.css";
 import * as demos from "@docs/demos/comparison-table";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Data/ComparisonTable", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/ComparisonTable", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.comparisonTableAnatomyTree);
 export const Default: StoryObj = treeStory(demos.comparisonTableTree);
@@ -16,8 +16,4 @@ export const Three: StoryObj = treeStory(demos.comparisonTableThreeTree);
 export const Caption: StoryObj = treeStory(demos.comparisonTableCaptionTree);
 export const Density: StoryObj = treeStory(demos.comparisonTableDensityTree);
 export const Links: StoryObj = treeStory(demos.comparisonTableLinksTree);
-export const DoShort: StoryObj = treeStory(demos.comparisonTableDoShortTree);
-export const DontLong: StoryObj = treeStory(demos.comparisonTableDontLongTree);
-export const DoAspect: StoryObj = treeStory(demos.comparisonTableDoAspectTree);
-export const DontAspect: StoryObj = treeStory(demos.comparisonTableDontAspectTree);
 export const Versus: StoryObj = treeStory(demos.comparisonTableVersusTree);

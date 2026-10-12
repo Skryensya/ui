@@ -5,7 +5,6 @@ import "@skryensya/core/components/avatar.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/feed.css";
-import "@skryensya/core/components/list.css";
 import "@skryensya/core/components/loader.css";
 import "@skryensya/core/components/placeholder.css";
 import "@skryensya/core/components/tag.css";
@@ -15,7 +14,7 @@ import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/feed";
 import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
-export default { title: "Components/Surfaces & Collections/Feed", tags: ["autodocs"] } satisfies Meta;
+export default { title: "Components/Feed", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.feedAnatomyTree);
 export const Default: StoryObj = treeStory(demos.feedTree);
@@ -23,9 +22,3 @@ export const Activity: StoryObj = treeStory(demos.feedActivityTree);
 export const Busy: StoryObj = treeStory(demos.feedBusyTree);
 export const Infinite: StoryObj = treeStory(demos.feedInfiniteTree);
 export const Comments: StoryObj = treeStory(demos.feedCommentsTree);
-export const DontGenericLabels: StoryObj = treeStory(demos.feedDontGenericLabelsTree);
-export const DontMixedOrder: StoryObj = treeStory(demos.feedDontMixedOrderTree);
-export const Guide: StoryObj = treeStory((t) => demos.feedGuideTree(t, "#"));
-export const DontFixedList: StoryObj = treeStory(demos.feedDontFixedListTree);
-export const FixedList: StoryObj = treeStory(demos.feedFixedListTree);
-export const DontSpinner: StoryObj = treeStory(demos.feedDontSpinnerTree);

@@ -53,27 +53,18 @@
     --motion-exit-easing: var(--scale-easing-exit);
     --motion-exit-distance: var(--motion-distance-sm);
 
-    /* reveal / dismiss, inline transient content (tooltip, popover) */
+    /* reveal, inline transient content (tooltip, popover) */
     --motion-reveal-duration: var(--scale-duration-fast);
     --motion-reveal-easing: var(--scale-easing-enter);
     --motion-reveal-distance: var(--motion-distance-sm);
-    --motion-dismiss-duration: var(--scale-duration-fast);
-    --motion-dismiss-easing: var(--scale-easing-exit);
-    --motion-dismiss-distance: var(--motion-distance-sm);
 
-    /* expand / collapse, height changes (accordion, disclosure). No translate distance. A panel is a
-     * larger surface than a toggle, so it earns the slow tempo (moderate felt rushed). Collapse MATCHES
-     * expand on purpose: in a single-select accordion one item closes while another opens, and if the two
+    /* expand (and collapse: ONE intent), height changes (accordion, disclosure). No translate distance. A panel is a
+     * larger surface than a toggle, so it earns the slow tempo (moderate felt rushed). Collapse IS
+     * expand, on purpose: in a single-select accordion one item closes while another opens, and if the two
      * ran at different speeds the shared frame's height would dip or overshoot mid-swap and jolt whatever
      * sits below it. Same duration + easing keeps that height monotonic, a swap reads as one motion. */
     --motion-expand-duration: var(--scale-duration-slow);
     --motion-expand-easing: var(--scale-easing-standard);
-    --motion-collapse-duration: var(--scale-duration-slow);
-    --motion-collapse-easing: var(--scale-easing-standard);
-
-    /* reorder, FLIP position moves (drag list, table rows). Position only. */
-    --motion-reorder-duration: var(--scale-duration-moderate);
-    --motion-reorder-easing: var(--scale-easing-standard);
 
     /* navigate, page / tab / drill-down: larger spatial move carries direction & depth */
     --motion-navigate-duration: var(--scale-duration-moderate);
@@ -87,7 +78,6 @@
     /* count, a numeric value settling into place (stat count-up). Enter easing, deliberate
      * tempo so the digits stay readable; decorative under reduced motion (jumps to the end). */
     --motion-count-duration: var(--scale-duration-deliberate);
-    --motion-count-easing: var(--scale-easing-enter);
 
     /* loading, continuous: rotating / stepping marks stay linear, while oscillating marks use a
      * reversible curve so bars can change direction without snapping at either extreme. */

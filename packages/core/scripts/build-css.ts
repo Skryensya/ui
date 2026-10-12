@@ -46,12 +46,15 @@ function writeDist(relPath: string, css: string, filename: string) {
 // stays opt-in per dimension; the bundle is batteries-included by definition, and an unused
 // `[data-press-scale]` block costs one declaration.
 const ENTRY = `
+@use "layers";
 @use "primitives";
 @use "semantic";
 @use "modes/hc";
 @use "dimensions/radius";
 @use "dimensions/press-scale";
+@use "mixins";
 @layer primitives, semantic, components, overrides;
+@include mixins.forced-colors;
 `;
 
 const tokensCss = compileString(ENTRY, { loadPaths: [CSS], style: "expanded" }).css;
@@ -118,9 +121,13 @@ results.push([
 // file's own header. Are inlined here rather than `@import`-ed: their source `@import
 // url("./patterns/…")` is only valid relative to css/, and this file is published from dist/.
 const TOKENS_ENTRY = `
+@use "layers";
 @use "primitives";
 @use "semantic";
+@use "modes/hc";
+@use "mixins";
 @layer primitives, semantic, components, overrides;
+@include mixins.forced-colors;
 `;
 const BASE_PATTERNS = ["state-layer.css", "visually-hidden.css", "icon.css", "query-container.css"];
 const tokensOnlyCss = compileString(TOKENS_ENTRY, { loadPaths: [CSS], style: "expanded" }).css;
@@ -133,11 +140,10 @@ const tokensOut =
 results.push([
   "tokens.css",
   writeDist("tokens.css", tokensOut, "tokens.css"),
-  "primitives + semantic + the always-on patterns",
+  "primitives + semantic + high contrast + forced colors + the always-on patterns",
 ]);
 
 for (const [rel, label] of [
-  ["modes/hc.scss", "modes/hc.css"],
   ["dimensions/radius.scss", "dimensions/radius.css"],
   ["dimensions/press-scale.scss", "dimensions/press-scale.css"],
 ]) {
