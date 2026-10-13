@@ -3,6 +3,15 @@
 Connects skryensya/ui to a project. It never copies component source: it writes one managed
 stylesheet and installs the packages, the same two things you would do by hand.
 
+## Install
+
+The CLI is a GitHub Release asset like the rest of the kit, and it versions with it: `skryensya --version` is the
+release it belongs to, and `add` installs the packages of that same release.
+
+```bash
+npx https://github.com/Skryensya/ui/releases/download/v0.0.2/skryensya-cli-0.0.2.tgz add button
+```
+
 ```
 skryensya list [--category <name>] [--json]    the catalog
 skryensya info <name>                           CSS, imports and extra packages of one entry

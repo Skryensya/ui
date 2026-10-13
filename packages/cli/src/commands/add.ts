@@ -3,6 +3,7 @@ import { readIds, renderCss } from "../css.js";
 import { resolveAdapter } from "../frameworks/index.js";
 import { catalog, suggest, type Binding, type Entry } from "../manifest.js";
 import { addCommand, Project } from "../project.js";
+import { packageTarget, withCompanions } from "../release.js";
 
 export type AddOptions = {
   binding?: Binding;
@@ -73,7 +74,11 @@ export function add(ids: string[], options: AddOptions, ctx: Context): number {
   // The binding is the only system package a project installs: it brings core, and re-exports the
   // stylesheets the managed file imports. A component with no behaviour still needs it for its CSS.
   const wanted = unique([`@skryensya/${binding}`, ...entries.flatMap((entry) => entry.peers)]);
-  const packages = wanted.filter((name) => !project.has(name));
+  // The kit is distributed as release tarballs, so the binding's own dependencies (core, the icon set)
+  // are tarballs too and have to be named: a registry would not find them. Once the binding is in the
+  // project those came with it.
+  const absent = wanted.filter((name) => !project.has(name));
+  const packages = withCompanions(absent, ctx.release).filter((name) => !project.has(name)).map((name) => packageTarget(name, ctx.release));
   const manager = project.packageManager();
 
   ctx.log(`${adapter.label} · ${binding} · ${manager}${options.dryRun ? " · dry run" : ""}`);

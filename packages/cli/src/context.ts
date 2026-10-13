@@ -7,6 +7,8 @@ export type Context = {
   error: (line: string) => void;
   /** Runs a command and returns its exit code. */
   run: (command: string, args: string[], cwd: string) => number;
+  /** The release the system's packages are installed from. Defaults to this CLI's own (`release.ts`). */
+  release?: string;
 };
 
 export const defaultContext = (cwd: string): Context => ({

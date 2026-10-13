@@ -1,6 +1,6 @@
 {
   "name": "@skryensya/cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "type": "module",
   "description": "Wires skryensya/ui into a project: list the catalog, inspect a component, add it (its CSS, its packages) through a per-framework adapter. It never copies component source.",
@@ -10,9 +10,6 @@
   "files": [
     "dist"
   ],
-  "exports": {
-    ".": "./src/index.ts"
-  },
   "scripts": {
     "build": "node scripts/build.ts",
     "check": "tsc --noEmit && vitest run",
@@ -24,5 +21,8 @@
     "esbuild": "^0.28.1",
     "typescript": "^5.9.3",
     "vitest": "^4.1.11"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

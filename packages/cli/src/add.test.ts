@@ -255,3 +255,30 @@ describe("main", () => {
     expect(run.out()).toContain("skryensya add");
   });
 });
+
+describe("add, from a release", () => {
+  it("installs the release's tarballs: the binding and the packages it depends on, at the CLI's version", () => {
+    const dir = makeProject({ "package.json": pkg({ next: "15" }), "app/page.tsx": "" });
+    const run = capture(dir);
+    expect(add(["button"], { framework: "next" }, { ...run.ctx, release: "0.0.2" })).toBe(0);
+    const base = "https://github.com/Skryensya/ui/releases/download/v0.0.2";
+    expect(run.runs).toEqual([
+      `npm install ${base}/skryensya-core-0.0.2.tgz ${base}/skryensya-icons-lucide-0.0.2.tgz ${base}/skryensya-react-0.0.2.tgz`,
+    ]);
+  });
+
+  it("leaves third-party peers as plain names", () => {
+    const dir = makeProject({ "package.json": pkg({ next: "15" }), "app/page.tsx": "" });
+    const run = capture(dir);
+    add(["data-table"], { framework: "next" }, { ...run.ctx, release: "0.0.2" });
+    expect(run.runs[0]).toContain("@tanstack/react-table");
+    expect(run.runs[0]).not.toContain("releases/download/v0.0.2/@tanstack");
+  });
+
+  it("installs nothing of the system when the binding is already there", () => {
+    const dir = makeProject({ "package.json": pkg({ next: "15", "@skryensya/react": "0.0.2" }), "app/page.tsx": "" });
+    const run = capture(dir);
+    add(["button"], { framework: "next" }, { ...run.ctx, release: "0.0.2" });
+    expect(run.runs).toEqual([]);
+  });
+});

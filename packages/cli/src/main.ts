@@ -5,6 +5,7 @@ import { list } from "./commands/list.js";
 import type { Context } from "./context.js";
 import { adapters } from "./frameworks/index.js";
 import type { Binding } from "./manifest.js";
+import { version } from "./release.js";
 
 const help = () => `skryensya, wire skryensya/ui into your project
 
@@ -20,6 +21,7 @@ Options for add
   --dry-run                  show what would change, change nothing
   --no-install               write the stylesheet, print the install line
   --cwd <dir>                run as if from another directory
+  --version                  the release this CLI belongs to (add installs that release)
 
 It never copies component source: it connects the packages to your project.`;
 
@@ -33,6 +35,10 @@ export function main(argv: string[], ctx: Context): number {
     return 1;
   }
   const { values, positionals } = parsed;
+  if (values.version) {
+    ctx.log(version);
+    return 0;
+  }
   const [command, ...rest] = positionals;
 
   if (values.help || !command || command === "help") {
@@ -72,6 +78,7 @@ function parse(argv: string[]) {
       "dry-run": { type: "boolean" },
       "no-install": { type: "boolean" },
       help: { type: "boolean", short: "h" },
+      version: { type: "boolean", short: "v" },
     },
   });
 }
