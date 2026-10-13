@@ -25,6 +25,10 @@
       "types": "./src/button-playground.ts",
       "default": "./src/button-playground.ts"
     },
+    "./command-palette-playground": {
+      "types": "./src/command-palette-playground.ts",
+      "default": "./src/command-palette-playground.ts"
+    },
     "./controls": {
       "types": "./src/controls.ts",
       "default": "./src/controls.ts"

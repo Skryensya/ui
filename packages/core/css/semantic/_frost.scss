@@ -20,7 +20,37 @@
  * a browser that cannot blur, or a reader who asked for less transparency, gets the opaque surface
  * without anybody having to remember a branch.
  */
+/*
+ * THE MATERIAL, one place. How much of the face a frosted surface keeps (its alpha) and how it blurs
+ * what is behind it are decided here by the surface's ROLE, not component by component:
+ *
+ *   field    a typed value sits on it: input, select, combobox, date, time, number, password, tags
+ *   control  a small control with no text of its own: checkbox, radio, switch (and a tile's well)
+ *   chrome   the page's frame, nothing secondary to read on it: navbar, sidebar, toolbar, footer, hero,
+ *            pagination, back to top
+ *   card     a surface that carries body text and secondary text: box, tile, accordion, details,
+ *            folder, segmented, code preview
+ *   overlay  floating over everything: dialog, vaul, popover, tour
+ *   tint     a face that carries a TONE (callout), kept dense so the tone still reads
+ *
+ * The numbers are the most transparent each role can be while its text stays at 4.5:1 over solid black
+ * and solid white (`packages/ai-gates/src/frosted-contrast.spec.ts` is the gate: change a tier and run
+ * it). Button keeps its own per-variant floors (`button.css`) because each variant's label has a
+ * different margin. The blur steps are the radii the components already used; the odd ones (8px, 12px, a 140% saturate) were snapped to the nearest step.
+ */
 @mixin tokens {
+  --frost-alpha-field: 59%;
+  --frost-alpha-control: 55%;
+  --frost-alpha-chrome: 66%;
+  --frost-alpha-card: 72%;
+  --frost-alpha-overlay: 77%;
+  --frost-alpha-tint: 92%;
+  --frost-blur-xs: 6px;
+  --frost-blur-sm: 10px;
+  --frost-blur-md: 16px;
+  --frost-blur-lg: 20px;
+  --frost-blur-xl: 24px;
+  --frost-saturate: 150%;
   --frost-on: initial;
   /* The lit top rim of the sheet: the page's surface in light, a trace of the primary ink in dark.
    * Mixed from colours high contrast re-declares, so `hc-tokens` (css/_mixins.scss) re-declares it too. */

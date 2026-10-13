@@ -9,7 +9,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: "Una línea corta de texto en el borde superior de una aplicación: sus menús y su estado."
+      body: "La barra del borde superior de una aplicación de escritorio: menús de solo acciones, con submenús, y una zona de estado a la derecha que puede abrir su propio menú."
     en:
       title: First release
-      body: "One short line of text on an application's top edge: its menus and its state."
+      body: "The bar along an application's top edge, as on a desktop: menus of actions only, with submenus, and a status area on the trailing side that can open its own menu."

@@ -77,8 +77,10 @@
     color: var(--color-text-tertiary);
   }
 
-  /* Close sits in the search row and tucks into the top-end corner. Its end padding still contains
-   * the expanded hit target; the start margin keeps that target clear of the input. */
+  /* Close sits in the search row and tucks into the top-end corner. It is ONE real touch target: the button
+   * itself is `--size-touch-target`, not a small face with a larger `::after` reaching out around it. That reach
+   * answered unevenly (its corners fell through to the row behind it), so in practice only the small face worked;
+   * a button that is the whole target has no reach to get wrong, and nothing to keep clear of the input. */
   .sk-command-palette__search > form:has(.sk-command-palette__close) {
     flex: none;
     margin: 0;
@@ -92,8 +94,17 @@
     --sk-button-shadow: none;
 
     flex: none;
-    margin-inline-start: calc((var(--size-touch-target) - var(--size-control-sm)) * 0.5);
-    margin-inline-end: 0;
+    margin: 0;
+  }
+
+  /* The size is Button's own height hook, which an icon-only button squares (its width and its block-size both follow it).
+   * One more attribute than the `[data-size="sm"]` rule that would otherwise set it, so file order cannot decide. */
+  .sk-command-palette__close.sk-button[data-size][data-icon-only] {
+    --sk-button-height: var(--size-touch-target);
+  }
+
+  .sk-command-palette__close.sk-button::after {
+    content: none;
   }
 
   .sk-command-palette__list {
@@ -145,7 +156,9 @@
     gap: var(--space-inline-md);
     padding: var(--space-inset-sm);
     border-radius: var(--radius-control);
+    color: inherit;
     cursor: pointer;
+    text-decoration: none;
     transition: background-color var(--motion-feedback-duration) var(--motion-feedback-easing);
   }
 

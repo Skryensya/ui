@@ -500,10 +500,10 @@
   }
 
   .sk-tour[data-appearance="frosted"] .sk-tour__popover {
-    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-tour-bg) 80%, transparent);
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-tour-bg) var(--frost-alpha-overlay), transparent);
     background: var(--frost-glass, var(--sk-tour-bg));
-    -webkit-backdrop-filter: var(--frost-on) blur(20px) saturate(150%);
-    backdrop-filter: var(--frost-on) blur(20px) saturate(150%);
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-lg)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-lg)) saturate(var(--frost-saturate));
   }
 
   /* Forced colors keep neither construction: the system surface and its boundary. */

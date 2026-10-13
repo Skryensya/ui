@@ -1,6 +1,6 @@
 import { colorPickerAttrs, colorPickerParts, colorPickerPanelParts, colorPickerEvents } from "@skryensya/core/color-picker";
 import { colorPickerContract } from "@skryensya/core/color-picker";
-import { oklchToRgb, rgbToOklch, type RgbColor } from "@skryensya/core/color";
+import { normalizeHex } from "@skryensya/core/color";
 import { colorPicker } from "@skryensya/core/machines";
 import { normalizeProps, Portal, useMachine, type PropTypes } from "@zag-js/react";
 import { useId, useRef, useState, type RefObject } from "react";
@@ -88,6 +88,7 @@ function ColorPickerField({
   label,
   resolvedId,
   rootRef,
+  showValue = true,
   swatches,
   triggerLabel,
 }: {
@@ -97,6 +98,8 @@ function ColorPickerField({
   label?: string;
   resolvedId: string;
   rootRef: RefObject<HTMLDivElement | null>;
+  /** `false` is `ColorPicker.swatch`: the trigger is the preview square alone. */
+  showValue?: boolean;
   swatches?: readonly string[];
   triggerLabel?: string;
 }) {
@@ -138,7 +141,7 @@ function ColorPickerField({
           type="button"
         >
           <span className={colorPickerParts.swatch} />
-          <span className={colorPickerParts.value}>{api.valueAsString}</span>
+          {showValue ? <span className={colorPickerParts.value}>{api.valueAsString}</span> : null}
         </button>
       </div>
       <Portal container={container}>
@@ -182,16 +185,23 @@ export function CompactColorPicker(props: ColorPickerProps) {
   );
 }
 
+export function SwatchColorPicker(props: ColorPickerProps) {
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const { api, resolvedId } = useColorPicker({ ...props, rootRef });
+  return (
+    <ColorPickerField
+      anatomy="compact"
+      api={api}
+      resolvedId={resolvedId}
+      rootRef={rootRef}
+      {...props}
+      showValue={false}
+      swatches={asSwatches(props.swatches)}
+    />
+  );
+}
+
 const P = colorPickerPanelParts;
-
-type ColorFormat = "hex" | "rgb" | "hsl" | "oklch";
-
-const COLOR_FORMATS: readonly { id: ColorFormat; label: string }[] = [
-  { id: "hex", label: "Hex" },
-  { id: "rgb", label: "RGB" },
-  { id: "hsl", label: "HSL" },
-  { id: "oklch", label: "OKLCH" },
-];
 
 /*
  * THE PANEL BODY: area, hue/alpha rails, channel-input rows, presets, eyedropper. Entirely
@@ -207,31 +217,7 @@ function ColorPickerPanelBody({
   anatomy: "full" | "compact";
   swatches?: readonly string[];
 }) {
-  const [format, setFormat] = useState<ColorFormat>("hex");
   const hasEyeDropper = typeof window !== "undefined" && "EyeDropper" in window;
-
-  const rgbOf = (): RgbColor => {
-    const rgba = api.value.toFormat("rgba");
-    return {
-      r: rgba.getChannelValue("red"),
-      g: rgba.getChannelValue("green"),
-      b: rgba.getChannelValue("blue"),
-      alpha: rgba.getChannelValue("alpha"),
-    };
-  };
-
-  // OKLCH is not one of Zag's own formats (see `@skryensya/core/color`'s own doc): this row reads
-  // the machine's real color through our conversion on every render, and writes back through the
-  // SAME `api.value` Zag already exposes, never a parallel OKLCH-typed piece of state.
-  const oklch = rgbToOklch(rgbOf());
-
-  function commitOklchChannel(channel: "l" | "c" | "h", raw: string) {
-    const parsed = Number.parseFloat(raw);
-    if (Number.isNaN(parsed)) return;
-    const next = { ...oklch, [channel]: channel === "l" ? parsed / 100 : parsed };
-    const rgb = oklchToRgb(next);
-    api.setValue(colorPicker.parse(`rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${rgb.alpha ?? 1})`));
-  }
 
   return (
     <>
@@ -255,70 +241,8 @@ function ColorPickerPanelBody({
             </div>
           </div>
 
-          <div className={P.formatSwitch} role="group" aria-label="Color format">
-            {COLOR_FORMATS.map((item) => (
-              <button
-                className={P.formatOption}
-                data-state={format === item.id ? "checked" : undefined}
-                key={item.id}
-                onClick={() => setFormat(item.id)}
-                type="button"
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-
           <div className={P.channels}>
-            {format === "hex" ? (
-              <div className={P.channelRow} style={{ "--sk-color-picker-channel-count": 1 } as React.CSSProperties}>
-                <span className={P.channelLabel}>Hex</span>
-                <input className={P.channelInput} {...api.getChannelInputProps({ channel: "hex" })} />
-              </div>
-            ) : null}
-            {format === "rgb" ? (
-              <div className={P.channelRow} style={{ "--sk-color-picker-channel-count": 3 } as React.CSSProperties}>
-                <span className={P.channelLabel}>RGB</span>
-                <input className={P.channelInput} {...api.getChannelInputProps({ channel: "red" })} />
-                <input className={P.channelInput} {...api.getChannelInputProps({ channel: "green" })} />
-                <input className={P.channelInput} {...api.getChannelInputProps({ channel: "blue" })} />
-              </div>
-            ) : null}
-            {format === "hsl" ? (
-              <div className={P.channelRow} style={{ "--sk-color-picker-channel-count": 3 } as React.CSSProperties}>
-                <span className={P.channelLabel}>HSL</span>
-                <input className={P.channelInput} {...api.getChannelInputProps({ channel: "hue" })} />
-                <input className={P.channelInput} {...api.getChannelInputProps({ channel: "saturation" })} />
-                <input className={P.channelInput} {...api.getChannelInputProps({ channel: "lightness" })} />
-              </div>
-            ) : null}
-            {format === "oklch" ? (
-              <div className={P.channelRow} style={{ "--sk-color-picker-channel-count": 3 } as React.CSSProperties}>
-                <span className={P.channelLabel}>OKLCH</span>
-                <input
-                  className={P.channelInput}
-                  type="number"
-                  aria-label="oklch lightness"
-                  defaultValue={Math.round(oklch.l * 1000) / 10}
-                  onChange={(event) => commitOklchChannel("l", event.currentTarget.value)}
-                />
-                <input
-                  className={P.channelInput}
-                  type="number"
-                  step="0.001"
-                  aria-label="oklch chroma"
-                  defaultValue={Math.round(oklch.c * 1000) / 1000}
-                  onChange={(event) => commitOklchChannel("c", event.currentTarget.value)}
-                />
-                <input
-                  className={P.channelInput}
-                  type="number"
-                  aria-label="oklch hue"
-                  defaultValue={Math.round(oklch.h)}
-                  onChange={(event) => commitOklchChannel("h", event.currentTarget.value)}
-                />
-              </div>
-            ) : null}
+            <input className={P.channelInput} {...api.getChannelInputProps({ channel: "hex" })} />
           </div>
         </>
       ) : null}
@@ -386,9 +310,12 @@ export type NativeColorPickerProps = {
 export function NativeColorPicker({ defaultValue, id, label, name, value }: NativeColorPickerProps) {
   const generatedId = useId();
   const inputId = id ?? generatedId;
+  const [picked, setPicked] = useState(defaultValue ?? "#000000");
+  const [draft, setDraft] = useState<string | null>(null);
+  const current = value ?? picked;
 
   return (
-    <div className={colorPickerParts.root}>
+    <div className={colorPickerParts.root} {...{ [colorPickerAttrs.native]: "" }}>
       {/* Named through `aria-labelledby` rather than `for`/`id`: same reason `NativeDatePicker`
           gives  -  the two bindings render into one document in the symmetry gate, and a literal
           id would collide across them. */}
@@ -399,10 +326,30 @@ export function NativeColorPicker({ defaultValue, id, label, name, value }: Nati
         <input
           aria-labelledby={`${inputId}-label`}
           className={colorPickerParts.trigger}
-          defaultValue={value === undefined ? defaultValue : undefined}
           name={name}
+          onChange={(event) => {
+            setPicked(event.target.value);
+            setDraft(null);
+          }}
           type="color"
-          value={value}
+          value={current}
+        />
+        {/* The hex, typed or read: a draft while it is not a color yet, the committed color after. */}
+        <input
+          aria-labelledby={`${inputId}-label`}
+          autoComplete="off"
+          className={colorPickerParts.nativeValue}
+          inputMode="text"
+          maxLength={7}
+          onBlur={() => setDraft(null)}
+          onChange={(event) => {
+            setDraft(event.target.value);
+            const hex = normalizeHex(event.target.value);
+            if (hex) setPicked(hex);
+          }}
+          spellCheck={false}
+          type="text"
+          value={draft ?? current}
         />
       </div>
     </div>

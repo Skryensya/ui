@@ -102,7 +102,7 @@ test("brutalist: a hard offset the disc travels into, mirrored in RTL", async ({
 test("frosted: see-through over the page, opaque under reduced transparency", async ({ page }) => {
   await mount(page, control("plain", "plain") + control("probe", "frosted"));
   const frosted = await read(page, "#probe");
-  expect(frosted.backdrop).toMatch(/blur\(12px\)/);
+  expect(frosted.backdrop).toMatch(/blur\(10px\)/);
   expect(frosted.alpha).toBeLessThan(1);
   const cdp = await page.context().newCDPSession(page);
   await cdp.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-transparency", value: "reduce" }] });

@@ -5,6 +5,7 @@ import { lucideIcons } from "@skryensya/icons-lucide";
 import { mountComponentsWithIcons } from "@skryensya/vanilla/auto";
 import type { Translate } from "@docs/i18n";
 import { isLocale, translator } from "@skryensya/storybook-kit/translate";
+import { wireCommandPaletteDemo } from "@skryensya/storybook-kit/command-palette-playground";
 import { rootControls, withRootOptions } from "@skryensya/storybook-kit/controls";
 
 /*
@@ -72,6 +73,8 @@ function controlsOf(factory: TreeFactory) {
 export function treeStory(factory: TreeFactory, story: StoryObj = {}): StoryObj {
   const { args, argTypes } = controlsOf(factory);
   return {
+    /* A demo whose trigger the docs wire with a script (a palette's "open") gets it wired here. */
+    play: ({ canvasElement }: { canvasElement: HTMLElement }) => wireCommandPaletteDemo(canvasElement),
     ...story,
     args: { ...args, ...story.args },
     argTypes: { ...argTypes, ...story.argTypes },
@@ -89,6 +92,7 @@ export function treeStory(factory: TreeFactory, story: StoryObj = {}): StoryObj 
 /** A story whose tree is built from its args (a playground). */
 export function argsStory<Args>(build: (args: Args) => UsageTree, story: StoryObj<Args>): StoryObj<Args> {
   return {
+    play: ({ canvasElement }: { canvasElement: HTMLElement }) => wireCommandPaletteDemo(canvasElement),
     ...story,
     render: (args: unknown) => render(build(args as Args)),
     parameters: {

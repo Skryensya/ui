@@ -69,7 +69,7 @@ test("brutalist: a black-edged track with a hard offset, mirrored in RTL, and a 
 
 test("frosted: a see-through track over a blurred backdrop, opaque under high contrast", async ({ page }) => {
   await mount(page, control("f", "frosted"), {}, "background: repeating-linear-gradient(45deg,#000 0 6px,#fff 6px 12px)");
-  expect((await read(page, "f")).backdrop).toMatch(/blur\(12px\)/);
+  expect((await read(page, "f")).backdrop).toMatch(/blur\(10px\)/);
   await mount(page, control("h", "frosted"), { "data-contrast": "high" });
   expect((await read(page, "h")).backdrop).toBe("none");
 });

@@ -224,7 +224,7 @@ const registrations: readonly Registration[] = [
     load: async () => (await import("../components/date-picker.js")).mountDatePicker,
   },
   {
-    selector: "[data-sk-color-picker]",
+    selector: "[data-sk-color-picker], [data-sk-color-picker-native]",
     load: async () => (await import("../components/color-picker.js")).mountColorPicker,
   },
   {

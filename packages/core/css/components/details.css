@@ -294,14 +294,14 @@
   :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="frosted"] {
     --frost-glass: var(--frost-on)
       linear-gradient(to bottom, color-mix(in oklab, var(--frost-highlight) 60%, transparent), transparent 12rem),
-      color-mix(in oklab, var(--color-bg-surface) 82%, transparent);
+      color-mix(in oklab, var(--color-bg-surface) var(--frost-alpha-card), transparent);
     background: var(--frost-glass, var(--color-bg-surface));
-    -webkit-backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
-    backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
   }
 
   :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="frosted"] .sk-details__content {
-    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface-sunken) 72%, transparent);
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface-sunken) var(--frost-alpha-card), transparent);
     --sk-details-content-bg: var(--frost-glass, var(--color-bg-surface-sunken));
   }
 

@@ -183,17 +183,17 @@
   .sk-callout[data-appearance="frosted"] {
     /* A contrast floor, not taste: a toned callout's ink sits close to its subtle fill, and measured it
      * only clears 4.5:1 over the worst backdrop from about 92%. Neutral has the headroom to show more. */
-    --frost-opacity: 94%;
+    --frost-opacity: var(--frost-alpha-tint);
     --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-callout-bg) var(--frost-opacity), transparent);
     border-color: color-mix(in oklab, currentColor 18%, transparent);
     box-shadow: inset 0 1px 0 var(--frost-highlight), 0 1px 2px var(--shadow-sm);
     background: var(--frost-glass, var(--sk-callout-bg));
-    -webkit-backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
-    backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
   }
 
   .sk-callout[data-appearance="frosted"][data-tone="neutral"] {
-    --frost-opacity: 72%;
+    --frost-opacity: var(--frost-alpha-card);
   }
 
   /* Forced colors keep neither construction: the system surface and its boundary. */

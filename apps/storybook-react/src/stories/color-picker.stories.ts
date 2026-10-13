@@ -10,6 +10,7 @@ export default { title: "Components/ColorPicker", tags: ["autodocs"] } satisfies
 
 export const Default: StoryObj = treeStory(demos.colorPickerTree);
 export const CompactColorPicker: StoryObj = treeStory(demos.compactColorPickerTree);
+export const SwatchColorPicker: StoryObj = treeStory(demos.swatchColorPickerTree);
 export const PresetsColorPicker: StoryObj = treeStory(demos.presetsColorPickerTree);
 export const DisabledColorPicker: StoryObj = treeStory(demos.disabledColorPickerTree);
 export const NativeColorPicker: StoryObj = treeStory(demos.nativeColorPickerTree);

@@ -4,6 +4,16 @@ import { GLOBALS_UPDATED } from "storybook/internal/core-events";
 import { create } from "storybook/theming";
 import { Button } from "storybook/internal/components";
 
+/* The launch glyph (an arrow leaving a box), drawn inline: it says the click leaves this Storybook for a new tab. */
+const launchIcon = () =>
+  createElement(
+    "svg",
+    { width: 14, height: 14, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": true },
+    createElement("path", { d: "M14 4h6v6" }),
+    createElement("path", { d: "M20 4 10 14" }),
+    createElement("path", { d: "M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" }),
+  );
+
 /*
  * THE LINK TO THE OTHER BINDING'S STORYBOOK, a toolbar button. The two Storybooks are separate apps that share
  * their story ids (the same generator writes both), so the same story is one query string away: the click opens
@@ -26,6 +36,7 @@ export function registerSiblingLink({ label, port }: { label: string; port: numb
             variant: "outline",
           },
           label,
+          launchIcon(),
         ),
     });
   });

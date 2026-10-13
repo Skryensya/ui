@@ -957,10 +957,10 @@
   }
 
   .sk-folder[data-appearance="frosted"]:is(:focus-within, [data-active]) .sk-folder__shape {
-    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface) 72%, transparent);
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface) var(--frost-alpha-card), transparent);
     background: var(--frost-glass, var(--sk-folder-ground));
-    -webkit-backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
-    backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
     /* The blur leaks past `clip-path` (see `folderMaskImage`); the same outline as a mask holds it. */
     -webkit-mask: var(--frost-on) var(--sk-folder-mask) 0 0 / 100% 100% no-repeat;
     mask: var(--frost-on) var(--sk-folder-mask) 0 0 / 100% 100% no-repeat;
@@ -992,10 +992,10 @@
     }
 
     .sk-folder[data-appearance="frosted"]:hover .sk-folder__shape {
-      --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface) 72%, transparent);
+      --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface) var(--frost-alpha-card), transparent);
       background: var(--frost-glass, var(--sk-folder-ground));
-      -webkit-backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
-      backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
+      -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
+      backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
       /* The blur leaks past `clip-path` (see `folderMaskImage`); the same outline as a mask holds it. */
       -webkit-mask: var(--frost-on) var(--sk-folder-mask) 0 0 / 100% 100% no-repeat;
       mask: var(--frost-on) var(--sk-folder-mask) 0 0 / 100% 100% no-repeat;

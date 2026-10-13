@@ -91,7 +91,7 @@ describe("CommandPalette", () => {
     // section + group joins with the separator; an explicit context wins over both.
     expect(contexts).toEqual(["Componentes › Acciones", "Componentes", "Fundamentos"]);
     expect(
-      ui.container.querySelector("[role='option']")?.getAttribute("data-href"),
+      ui.container.querySelector("[role='option']")?.getAttribute("href"),
     ).toBe("/componentes/boton");
   });
 
@@ -218,6 +218,22 @@ describe("CommandPalette", () => {
     expect(close.getAttribute("value")).toBe("cancel");
 
     expect(dialog.querySelector(".sk-command-palette__footer")?.textContent).toBe("↵ para abrir");
+  });
+
+  it("closes on a click outside the panel, and not on one inside it", () => {
+    const ui = render(<CommandPalette id="cmd" items={items} label="Buscar" />);
+    const dialog = ui.container.querySelector("dialog")!;
+    /* jsdom implements neither showModal nor close; the spy is the only thing that proves the call. */
+    const close = vi.fn();
+    dialog.close = close;
+
+    /* A click inside lands on a child, never on the <dialog> itself. */
+    fireEvent.click(dialog.querySelector(".sk-command-palette__input")!);
+    expect(close).not.toHaveBeenCalled();
+
+    /* The backdrop belongs to the <dialog>: a click on it is the dialog's own. */
+    fireEvent.click(dialog);
+    expect(close).toHaveBeenCalledTimes(1);
   });
 });
 

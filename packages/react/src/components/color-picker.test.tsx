@@ -1,6 +1,6 @@
 import { fireEvent, render, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { ColorPicker, CompactColorPicker, NativeColorPicker } from "./color-picker.js";
+import { ColorPicker, CompactColorPicker, NativeColorPicker, SwatchColorPicker } from "./color-picker.js";
 
 describe("ColorPicker", () => {
   it("opens the panel from the trigger and renders the full anatomy", async () => {
@@ -11,9 +11,9 @@ describe("ColorPicker", () => {
 
     await waitFor(() => expect(ui.getByRole("dialog", { hidden: true })).toBeTruthy());
     expect(ui.getByDisplayValue("#3366FF")).toBeTruthy();
-    expect(ui.queryByLabelText("oklch lightness")).toBeNull();
-    fireEvent.click(document.querySelectorAll<HTMLButtonElement>(".sk-color-picker__format-option")[3]!);
-    expect(ui.getByLabelText("oklch lightness")).toBeTruthy();
+    // One hex field and nothing else to switch between.
+    expect(document.querySelectorAll(".sk-color-picker__channel-input")).toHaveLength(1);
+    expect(document.querySelector(".sk-color-picker__format-switch")).toBeNull();
   });
 
   it("commits a typed hex value and updates the swatch", async () => {
@@ -113,5 +113,29 @@ describe("NativeColorPicker", () => {
     expect(input.getAttribute("name")).toBe("bg");
     const labelId = input.getAttribute("aria-labelledby");
     expect(ui.container.querySelector(`#${labelId}`)?.textContent).toBe("Fondo");
+  });
+
+  it("shows the hex beside the swatch and keeps the two in step", () => {
+    const ui = render(<NativeColorPicker defaultValue="#3366ff" label="Fondo" name="bg" />);
+    const swatch = ui.container.querySelector<HTMLInputElement>('input[type="color"]')!;
+    const hex = ui.container.querySelector<HTMLInputElement>('input[type="text"]')!;
+    expect(hex.value).toBe("#3366ff");
+    expect(hex.hasAttribute("name")).toBe(false);
+
+    fireEvent.change(hex, { target: { value: "F80" } });
+    expect(swatch.value).toBe("#ff8800");
+
+    fireEvent.change(swatch, { target: { value: "#00ff00" } });
+    expect(hex.value).toBe("#00ff00");
+  });
+});
+
+describe("SwatchColorPicker", () => {
+  it("renders the preview square with no value text, still named", () => {
+    const ui = render(<SwatchColorPicker defaultValue="#22aabb" label="Acento" triggerLabel="Elegir color" />);
+    const trigger = ui.container.querySelector(".sk-color-picker__trigger")!;
+    expect(trigger.querySelector(".sk-color-picker__swatch")).toBeTruthy();
+    expect(trigger.querySelector(".sk-color-picker__value")).toBeNull();
+    expect(trigger.getAttribute("aria-label")).toBe("Elegir color");
   });
 });

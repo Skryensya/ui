@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "fcebe841ac1e1917"
+surface: "da414f0cda4c1464"
 entries:
   - date: 2026-10-01
     kind: feature
@@ -13,3 +13,27 @@ entries:
     en:
       title: First release
       body: Picks a color with an area, rails, editable channels and presets, or the native picker.
+  - date: 2026-10-13
+    kind: feature
+    es:
+      title: El picker nativo se lee como un input de texto
+      body: El swatch queda dentro del campo y el hex se escribe a su lado, en sincronía con el color.
+    en:
+      title: The native picker reads as a text input
+      body: The swatch sits inside the field and the hex is typed beside it, kept in step with the color.
+  - date: 2026-10-13
+    kind: feature
+    es:
+      title: Una versión que es solo el color
+      body: ColorPicker.swatch muestra únicamente el cuadrado de vista previa, sin el valor al lado.
+    en:
+      title: A version that is just the color
+      body: ColorPicker.swatch shows only the preview square, with no value text beside it.
+  - date: 2026-10-13
+    kind: breaking
+    es:
+      title: Un panel más simple
+      body: El panel completo ya no tiene selector de formato ni filas RGB, HSL y OKLCH; queda un solo campo hex.
+    en:
+      title: A simpler panel
+      body: The full panel no longer has a format switch or RGB, HSL and OKLCH rows; one hex field remains.

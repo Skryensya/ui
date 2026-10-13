@@ -436,6 +436,7 @@
       "names": [
         "ColorPicker",
         "CompactColorPicker",
+        "SwatchColorPicker",
         "NativeColorPicker"
       ]
     },
@@ -443,7 +444,7 @@
       "entry": "@skryensya/vanilla/color-picker",
       "mount": "mountColorPicker",
       "selectors": [
-        "[data-sk-color-picker]"
+        "[data-sk-color-picker], [data-sk-color-picker-native]"
       ],
       "auto": true
     }

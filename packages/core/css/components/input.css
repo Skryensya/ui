@@ -258,10 +258,10 @@
   }
 
   .sk-input:where([data-appearance="frosted"]) {
-    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-input-bg) 60%, transparent);
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-input-bg) var(--frost-alpha-field), transparent);
     background: var(--frost-glass, var(--sk-input-bg));
-    -webkit-backdrop-filter: var(--frost-on) blur(10px) saturate(150%);
-    backdrop-filter: var(--frost-on) blur(10px) saturate(150%);
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-sm)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-sm)) saturate(var(--frost-saturate));
   }
 
   @media (forced-colors: active) {

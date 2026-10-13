@@ -163,3 +163,15 @@ function round(value: number, decimals: number): number {
   const factor = 10 ** decimals;
   return Math.round(value * factor) / factor;
 }
+
+/**
+ * A typed hex as the `#rrggbb` an `<input type="color">` accepts, or `null` when it is not one yet.
+ * The `#` is optional and `#rgb` expands, so a reader can type `3366ff` or `#36f` and get a color.
+ */
+export function normalizeHex(raw: string): string | null {
+  const body = raw.trim().replace(/^#/, "");
+  if (/^[0-9a-f]{3}$/i.test(body)) {
+    return `#${body.replace(/./g, (digit) => digit + digit).toLowerCase()}`;
+  }
+  return /^[0-9a-f]{6}$/i.test(body) ? `#${body.toLowerCase()}` : null;
+}

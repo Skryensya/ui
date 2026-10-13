@@ -92,7 +92,6 @@ export const codePreviewContract = {
     "--sk-code-preview-brutalist-offset",
     "--sk-code-preview-collapsed-padding-block",
     "--sk-code-preview-copy-scroll-inset",
-    "--sk-code-preview-copy-sticky-top",
     "--sk-code-preview-count-fg",
     "--sk-code-preview-fg",
     "--sk-code-preview-font-size",

@@ -68,8 +68,12 @@ export function majorLinesFromLedger(ledger: {
   readonly releases: readonly { readonly version: string }[];
 }): readonly DocsMajorLine[] {
   const tip = tipFromLedger(ledger);
-  const versions = new Set<string>([tip, `${ledger.working}-dev`]);
+  /* The working tree's `-dev` number is a row only while it is not just the next patch of what is published:
+     with nothing shipped, or once a NEW major opens, it is a line a reader can switch to. Inside the major the
+     tip already names, the selector says what can be installed and the next number is not a version anyone can pin. */
+  const versions = new Set<string>([tip]);
   for (const release of ledger.releases) versions.add(release.version);
+  if (ledger.releases.length === 0 || majorOf(ledger.working) !== majorOf(tip)) versions.add(`${ledger.working}-dev`);
 
   const latestByMajor = new Map<string, string>();
   for (const version of versions) {

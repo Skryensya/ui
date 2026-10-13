@@ -154,10 +154,10 @@
   }
 
   .sk-footer[data-appearance="frosted"] {
-    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-footer-bg) 70%, transparent);
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-footer-bg) var(--frost-alpha-chrome), transparent);
     background: var(--frost-glass, var(--sk-footer-bg));
-    -webkit-backdrop-filter: var(--frost-on) blur(20px) saturate(150%);
-    backdrop-filter: var(--frost-on) blur(20px) saturate(150%);
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-lg)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-lg)) saturate(var(--frost-saturate));
   }
 
   /* Forced colors keep neither construction: the system surface and its boundary. */

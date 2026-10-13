@@ -229,10 +229,10 @@
   }
 
   :is(.sk-radio[data-appearance="frosted"], .sk-radio-group[data-appearance="frosted"] .sk-radio) .sk-radio__control::before {
-    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface) 55%, transparent);
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface) var(--frost-alpha-control), transparent);
     background: var(--frost-glass, var(--color-bg-surface));
-    -webkit-backdrop-filter: var(--frost-on) blur(6px) saturate(150%);
-    backdrop-filter: var(--frost-on) blur(6px) saturate(150%);
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-xs)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-xs)) saturate(var(--frost-saturate));
   }
 
   /* Forced colors keep none of it: the system ring, no ledge, offset, glass or travel. */

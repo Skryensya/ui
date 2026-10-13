@@ -112,7 +112,7 @@ describe("CommandPalette Vanilla contracts", () => {
     ).map((node) => node.textContent);
     // section + group joins with the separator; an explicit context wins over both.
     expect(contexts).toEqual(["Componentes › Acciones", "Componentes", "Fundamentos"]);
-    expect(options()[0].dataset.href).toBe("/componentes/boton");
+    expect(options()[0].getAttribute("href")).toBe("/componentes/boton");
   });
 
   it("walks the list with the keyboard and stops at both ends", () => {
@@ -181,7 +181,7 @@ describe("CommandPalette Vanilla contracts", () => {
     fireEvent.input(input());
     expect(options()).toHaveLength(1);
     expect(options()[0].dataset.command).toBe("tour");
-    expect(options()[0].hasAttribute("data-href")).toBe(false);
+    expect(options()[0].hasAttribute("href")).toBe(false);
 
     fireEvent.keyDown(input(), { key: "Enter" });
     expect(fired).toEqual(["tour"]);

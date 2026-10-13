@@ -60,7 +60,7 @@ test("brutalist: black edges and a hard-offset thumb, mirrored in RTL", async ({
 
 test("frosted: a see-through track, opaque under high contrast", async ({ page }) => {
   await mount(page, sw("f", "frosted"));
-  expect((await read(page, "f")).backdrop).toMatch(/blur\(8px\)/);
+  expect((await read(page, "f")).backdrop).toMatch(/blur\(6px\)/);
   await mount(page, sw("h", "frosted"), { "data-contrast": "high" });
   expect((await read(page, "h")).backdrop).toBe("none");
 });

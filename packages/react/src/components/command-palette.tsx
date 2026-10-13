@@ -219,6 +219,13 @@ export function CommandPalette({
       data-part={vaul ? vaulDataParts.root : undefined}
       data-scope={vaul ? vaulScope : undefined}
       id={id}
+      /* LIGHT DISMISS, matching `connectCommandPalette`'s `onDialogClick`: a click on the backdrop lands
+         on the <dialog> element itself (its children cover the panel), so `target === currentTarget`
+         is "outside the panel". Without it the Vanilla palette closed on an outside click and this one
+         did not. */
+      onClick={(event) => {
+        if (event.target === event.currentTarget) event.currentTarget.close();
+      }}
       open={open}
       ref={dialog}
       {...{ [commandPaletteAttrs.root]: "" }}
@@ -291,21 +298,42 @@ export function CommandPalette({
         {results.map((entry, i) => {
           const context = commandPaletteOptionContext(entry);
           return (
-            <li
-              aria-selected={i === active}
-              className={commandPaletteParts.option}
-              data-command={entry.command}
-              data-href={entry.href}
-              id={optionId(i)}
-              key={entry.command === undefined ? entry.href : `command:${entry.command}`}
-              /* A row is activated on the pointer too, the same as the enhancer's own list click.
-               * `onMouseDown` is not the handler: the field must keep focus, and a click that has
-               * already closed the dialog never needs the option to have been focused at all. */
-              onClick={() => choose(entry)}
-              role="option"
-            >
-              <span className={commandPaletteParts.optionLabel}>{entry.label}</span>
-              {context ? <span className={commandPaletteParts.optionContext}>{context}</span> : null}
+            <li key={entry.command === undefined ? entry.href : `command:${entry.command}`} role="presentation">
+              {/* A destination is a real link wearing the option role (ARIA allows `option` on
+                  `a[href]`), so the middle button, Ctrl/Cmd-click and "open in new tab" work without
+                  nesting an interactive element inside an option. Not tabbable: the field keeps
+                  focus and `aria-activedescendant` points at the row. */}
+              {entry.command === undefined ? (
+                <a
+                  aria-selected={i === active}
+                  className={commandPaletteParts.option}
+                  href={entry.href}
+                  id={optionId(i)}
+                  onClick={(event) => {
+                    /* A modified click is the browser's to open elsewhere; the palette stays put. */
+                    if (event.ctrlKey || event.metaKey || event.shiftKey) return;
+                    event.preventDefault();
+                    choose(entry);
+                  }}
+                  role="option"
+                  tabIndex={-1}
+                >
+                  <span className={commandPaletteParts.optionLabel}>{entry.label}</span>
+                  {context ? <span className={commandPaletteParts.optionContext}>{context}</span> : null}
+                </a>
+              ) : (
+                <div
+                  aria-selected={i === active}
+                  className={commandPaletteParts.option}
+                  data-command={entry.command}
+                  id={optionId(i)}
+                  onClick={() => choose(entry)}
+                  role="option"
+                >
+                  <span className={commandPaletteParts.optionLabel}>{entry.label}</span>
+                  {context ? <span className={commandPaletteParts.optionContext}>{context}</span> : null}
+                </div>
+              )}
             </li>
           );
         })}

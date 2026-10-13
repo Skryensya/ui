@@ -99,10 +99,10 @@
   }
 
   .sk-toolbar[data-appearance="frosted"] {
-    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-toolbar-bg) 70%, transparent);
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-toolbar-bg) var(--frost-alpha-chrome), transparent);
     background: var(--frost-glass, var(--sk-toolbar-bg));
-    -webkit-backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
-    backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
   }
 
   @media (forced-colors: active) {

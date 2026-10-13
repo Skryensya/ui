@@ -511,10 +511,10 @@
   }
 
   .sk-vaul[data-appearance="frosted"] {
-    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-vaul-bg) 78%, transparent);
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-vaul-bg) var(--frost-alpha-overlay), transparent);
     background: var(--frost-glass, var(--sk-vaul-bg));
-    -webkit-backdrop-filter: var(--frost-on) blur(24px) saturate(150%);
-    backdrop-filter: var(--frost-on) blur(24px) saturate(150%);
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-xl)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-xl)) saturate(var(--frost-saturate));
   }
 
   /* Forced colors keep neither construction: the system surface and its boundary. */

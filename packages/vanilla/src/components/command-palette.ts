@@ -153,15 +153,15 @@ export function connectCommandPalette(root: HTMLElement): Cleanup {
       .map((entry, i) => {
         const context = commandPaletteOptionContext(entry);
         return (
-          `<li class="${commandPaletteParts.option}" id="${optionId(i)}" role="option" aria-selected="false" ${
-            entry.command === undefined
-              ? `data-href="${escapeAttr(entry.href)}"`
-              : `data-command="${escapeAttr(entry.command)}"`
-          }>` +
+          `<li role="presentation">` +
+          (entry.command === undefined
+            ? `<a class="${commandPaletteParts.option}" id="${optionId(i)}" role="option" aria-selected="false" href="${escapeAttr(entry.href)}" tabindex="-1">`
+            : `<div class="${commandPaletteParts.option}" id="${optionId(i)}" role="option" aria-selected="false" data-command="${escapeAttr(entry.command)}">`) +
           `<span class="${commandPaletteParts.optionLabel}">${escapeAttr(entry.label)}</span>` +
           (context
             ? `<span class="${commandPaletteParts.optionContext}">${escapeAttr(context)}</span>`
             : "") +
+          (entry.command === undefined ? `</a>` : `</div>`) +
           `</li>`
         );
       })
@@ -243,7 +243,13 @@ export function connectCommandPalette(root: HTMLElement): Cleanup {
     const option = (event.target as HTMLElement).closest<HTMLElement>(
       `.${commandPaletteParts.option}`,
     );
-    if (option) go([...list.children].indexOf(option));
+    if (!option) return;
+    if (option instanceof HTMLAnchorElement) {
+      /* A modified click is the browser's to open elsewhere; the palette stays put. */
+      if (event.ctrlKey || event.metaKey || event.shiftKey) return;
+      event.preventDefault();
+    }
+    go([...list.querySelectorAll(`.${commandPaletteParts.option}`)].indexOf(option));
   };
 
   const onDialogClick = (event: MouseEvent) => {

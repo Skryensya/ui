@@ -15,16 +15,17 @@
   .sk-color-picker {
     --sk-color-picker-gap: var(--space-stack-xs);
     --sk-color-picker-label-color: var(--color-text-secondary);
-    --sk-color-picker-trigger-size: var(--size-control-md);
+    --sk-color-picker-trigger-size: max(var(--size-control-md), var(--size-touch-target));
     --sk-color-picker-trigger-inline-size: 13.5rem;
     --sk-color-picker-field-padding: 0.25rem;
-    --sk-color-picker-swatch-size: calc(var(--sk-color-picker-trigger-size) - 0.6rem);
+    /* The preview is a 1:1 square of the field's inner height (its height less the 1px borders). */
+    --sk-color-picker-swatch-size: calc(var(--sk-color-picker-trigger-size) - 2px);
     --sk-color-picker-swatch-border-color: var(--color-border-default);
 
     --sk-color-picker-content-bg: var(--color-bg-surface-overlay);
     --sk-color-picker-content-border-color: var(--color-border-subtle);
     --sk-color-picker-content-radius: var(--radius-surface);
-    --sk-color-picker-content-inline-size: 15.5rem;
+    --sk-color-picker-content-inline-size: 16rem;
     --sk-color-picker-content-padding: var(--space-inset-sm);
     --sk-color-picker-content-gap: var(--space-stack-xs);
     --sk-color-picker-content-shadow: var(--elevation-overlay);
@@ -61,47 +62,101 @@
     --sk-button-bg: var(--color-bg-surface-sunken);
     --sk-button-border-color: var(--color-border-default);
     --sk-button-radius: var(--radius-control);
-    --sk-button-padding-x: var(--sk-color-picker-field-padding);
+    --sk-button-padding-x: 0;
     --sk-button-width: min(100%, var(--sk-color-picker-trigger-inline-size));
 
     display: grid;
     grid-template-columns: var(--sk-color-picker-swatch-size) minmax(0, 1fr);
-    gap: var(--space-inline-xs);
-    align-items: center;
+    gap: var(--space-inline-sm);
+    align-items: stretch;
+    overflow: hidden;
     justify-content: start;
     inline-size: var(--sk-button-width);
     min-inline-size: min(100%, 10rem);
     block-size: var(--sk-color-picker-trigger-size);
-    padding-block: var(--sk-color-picker-field-padding);
+    padding-block: 0;
+    padding-inline-end: var(--space-inset-sm);
     text-align: start;
+  }
+  /* `ColorPicker.swatch`: no value text, so the trigger is the preview square and nothing else. */
+  .sk-color-picker__trigger.sk-button:not(:has(.sk-color-picker__value)) {
+    grid-template-columns: var(--sk-color-picker-swatch-size);
+    inline-size: var(--sk-color-picker-trigger-size);
+    min-inline-size: 0;
+    padding-inline: 0;
+  }
+  .sk-color-picker__trigger .sk-color-picker__value {
+    align-self: center;
+  }
+  /* The native field is one box built from the same tokens as `.sk-input` (height, padding, sunken
+   * well, border, radius, type size), so it sits next to a text field and reads as the same
+   * control: the OS swatch is a chip inside it at the start, the hex is borderless text beside
+   * it, and the focus ring follows focus on either. */
+  .sk-color-picker__control:has(> .sk-color-picker__native-value) {
+    box-sizing: border-box;
+    align-items: center;
+    gap: var(--space-inline-sm);
+    inline-size: min(100%, var(--sk-color-picker-trigger-inline-size));
+    min-inline-size: min(100%, 10rem);
+    block-size: var(--sk-color-picker-trigger-size);
+    padding-inline: 0 var(--space-inset-sm);
+    overflow: hidden;
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-control);
+    background: var(--elevation-wash-sunken) var(--color-bg-surface-sunken);
+    box-shadow: var(--elevation-sunken);
+    cursor: text;
+  }
+  .sk-color-picker__control:has(> .sk-color-picker__native-value):focus-within {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
   }
   .sk-color-picker__trigger[type="color"] {
     box-sizing: border-box;
-    inline-size: calc(var(--sk-color-picker-trigger-size) * 1.25);
-    block-size: var(--sk-color-picker-trigger-size);
-    padding: 4px;
-    border: 1px solid var(--sk-color-picker-swatch-border-color);
-    border-radius: var(--radius-control);
-    background: var(--color-bg-surface);
-    box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 16%),
-      0 1px 2px rgb(0 0 0 / 18%);
+    flex: none;
+    inline-size: var(--sk-color-picker-swatch-size);
+    block-size: var(--sk-color-picker-swatch-size);
+    aspect-ratio: 1 / 1;
+    padding: 0;
+    border: 0;
+    border-inline-end: 1px solid color-mix(in oklch, var(--color-border-default) 70%, black 30%);
+    border-radius: 0;
+    background: transparent;
     cursor: pointer;
+  }
+  .sk-color-picker__trigger[type="color"]:focus-visible {
+    outline: none;
+  }
+  .sk-color-picker__native-value {
+    flex: 1;
+    min-inline-size: 0;
+    block-size: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-text-primary);
+    font: inherit;
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-body);
+    font-variant-numeric: tabular-nums;
+    text-transform: lowercase;
+  }
+  .sk-color-picker__native-value::placeholder {
+    color: var(--color-text-tertiary);
+  }
+  .sk-color-picker__native-value:focus {
+    outline: none;
   }
   .sk-color-picker__trigger[type="color"]::-webkit-color-swatch-wrapper {
     padding: 0;
   }
   .sk-color-picker__trigger[type="color"]::-webkit-color-swatch {
     border: 0;
-    border-radius: calc(var(--radius-control) - 4px);
+    border-radius: 0;
   }
   .sk-color-picker__trigger[type="color"]::-moz-color-swatch {
     border: 0;
-    border-radius: calc(var(--radius-control) - 4px);
-  }
-  .sk-color-picker__trigger[type="color"]:focus-visible {
-    outline: var(--focus-ring-width) solid var(--focus-ring-color);
-    outline-offset: var(--focus-ring-offset);
+    border-radius: 0;
   }
 
   /* The current color, painted over a checkerboard so alpha is visible at a glance. `--value`
@@ -119,10 +174,14 @@
    */
   .sk-color-picker__swatch {
     display: block;
+    box-sizing: border-box;
+    /* Always the field's inner height, square, against the start edge: the same size whatever the value. */
     inline-size: var(--sk-color-picker-swatch-size);
     block-size: var(--sk-color-picker-swatch-size);
-    border: 1px solid color-mix(in oklch, var(--color-border-default) 70%, black 30%);
-    border-radius: calc(var(--radius-control) - 3px);
+    aspect-ratio: 1 / 1;
+    border: 0;
+    border-inline-end: 1px solid color-mix(in oklch, var(--color-border-default) 70%, black 30%);
+    border-radius: 0;
     background-image: linear-gradient(var(--value, #000), var(--value, #000)), conic-gradient(#ddd 0 25%, transparent 0 50%, #ddd 0 75%, transparent 0);
     background-size:
       100% 100%,
@@ -135,7 +194,7 @@
     overflow: hidden;
     color: var(--color-text-primary);
     font-family: var(--font-family-mono);
-    font-size: var(--font-size-body-sm);
+    font-size: var(--font-size-body);
     font-variant-numeric: tabular-nums;
     line-height: 1;
     text-overflow: ellipsis;
@@ -148,7 +207,7 @@
     --sk-color-picker-content-bg: var(--color-bg-surface-overlay);
     --sk-color-picker-content-border-color: var(--color-border-subtle);
     --sk-color-picker-content-radius: var(--radius-surface);
-    --sk-color-picker-content-inline-size: 15.5rem;
+    --sk-color-picker-content-inline-size: 16rem;
     --sk-color-picker-content-padding: var(--space-inset-sm);
     --sk-color-picker-content-gap: var(--space-stack-xs);
     --sk-color-picker-content-shadow: var(--elevation-overlay);
@@ -264,76 +323,20 @@
     outline-offset: var(--focus-ring-offset);
   }
 
-  /* ── CHANNEL FORMAT + INPUT ROW: show one editable model at a time. Compact drops the whole
-   * editor area, not just its spacing, per the anatomy split `color-picker.ts` documents. ── */
-  .sk-color-picker__format-switch {
-    order: 4;
-    display: inline-flex;
-    justify-self: start;
-    gap: 2px;
-    padding: 2px;
-    border: 1px solid var(--color-border-subtle);
-    border-radius: var(--radius-pill);
-    background: color-mix(in oklch, var(--color-bg-surface-sunken) 72%, transparent);
-  }
-  .sk-color-picker__format-option {
-    min-block-size: 1.4rem;
-    padding-inline: var(--space-inset-xs);
-    border: 0;
-    border-radius: var(--radius-pill);
-    background: transparent;
-    color: var(--color-text-secondary);
-    cursor: pointer;
-    font: inherit;
-    font-size: var(--font-size-caption);
-    font-weight: var(--font-weight-label);
-    letter-spacing: 0.02em;
-  }
-  .sk-color-picker__format-option:is(:hover, :focus-visible) {
-    color: var(--color-text-primary);
-    background: color-mix(in oklch, var(--color-bg-surface-sunken) 52%, transparent);
-  }
-  .sk-color-picker__format-option:focus-visible {
-    outline: var(--focus-ring-width) solid var(--focus-ring-color);
-    outline-offset: var(--focus-ring-offset);
-  }
-  .sk-color-picker__format-option[data-state="checked"] {
-    color: var(--color-text-primary);
-    background: var(--color-bg-surface-raised);
-    box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--color-action-accent) 30%, transparent);
-  }
+  /* ── HEX FIELD: the one editable value in the panel. Compact drops it with the alpha rail. ── */
   .sk-color-picker__channels {
     order: 3;
     display: grid;
-    gap: var(--space-stack-2xs);
   }
   [data-anatomy="compact"] .sk-color-picker__channels {
     display: none;
   }
-  .sk-color-picker__channel-row {
-    display: grid;
-    grid-template-columns: minmax(2.75rem, 0.55fr) repeat(var(--sk-color-picker-channel-count, 3), 1fr);
-    gap: var(--space-inline-2xs);
-    align-items: center;
-  }
-  .sk-color-picker__channel-label {
-    align-self: stretch;
-    display: grid;
-    align-items: center;
-    padding-inline: var(--space-inset-xs);
-    border-radius: var(--radius-control);
-    background: var(--color-bg-surface-sunken);
-    color: var(--sk-color-picker-label-color);
-    font-size: var(--font-size-caption);
-    font-weight: var(--font-weight-label);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
   .sk-color-picker__channel-input {
     box-sizing: border-box;
     inline-size: 100%;
-    min-block-size: 1.9rem;
-    padding: 0 var(--space-inset-2xs);
+    min-inline-size: 0;
+    min-block-size: 2.25rem;
+    padding: 0 var(--space-inset-sm);
     border: 0;
     border-radius: var(--radius-control);
     /* A field, `sunken` like Input/Select/Combobox elsewhere (see /elevacion): the real token now,
@@ -344,11 +347,22 @@
     background: var(--elevation-wash-sunken), var(--color-bg-surface-sunken);
     color: var(--color-text-primary);
     font: inherit;
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-body);
     font-variant-numeric: tabular-nums;
-    text-align: center;
+    text-align: start;
+    text-overflow: ellipsis;
+    appearance: textfield;
+    -moz-appearance: textfield;
     box-shadow:
       inset 0 0 0 1px color-mix(in oklch, var(--color-border-subtle) 70%, transparent),
       var(--elevation-sunken);
+  }
+  /* The steppers took ~1rem of a column that has to fit "0.123" or "100%"; arrow keys still step. */
+  .sk-color-picker__channel-input::-webkit-inner-spin-button,
+  .sk-color-picker__channel-input::-webkit-outer-spin-button {
+    margin: 0;
+    appearance: none;
   }
   .sk-color-picker__channel-input:focus-visible {
     outline: var(--focus-ring-width) solid var(--focus-ring-color);
@@ -406,6 +420,10 @@
   @media (forced-colors: active) {
     :is(.sk-color-picker__trigger, .sk-color-picker__content, .sk-color-picker__channel-input) {
       border-color: CanvasText;
+    }
+    .sk-color-picker__control:has(> .sk-color-picker__native-value) {
+      border-color: CanvasText;
+      background: Canvas;
     }
   }
 

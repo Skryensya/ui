@@ -333,10 +333,10 @@
   }
 
   :is(.sk-checkbox[data-appearance="frosted"], .sk-checkbox-group[data-appearance="frosted"] .sk-checkbox) .sk-checkbox__control {
-    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-checkbox-bg) 60%, transparent);
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-checkbox-bg) var(--frost-alpha-control), transparent);
     background: var(--frost-glass, var(--sk-checkbox-bg));
-    -webkit-backdrop-filter: var(--frost-on) blur(6px) saturate(150%);
-    backdrop-filter: var(--frost-on) blur(6px) saturate(150%);
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-xs)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-xs)) saturate(var(--frost-saturate));
   }
 
   /* Forced colors keep none of it: the system box, no ledge, offset, glass or travel. */

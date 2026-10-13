@@ -176,15 +176,15 @@
   /* The material, behind the system switch (semantic/_frost.scss); off, the frame keeps its own
    * opaque surface and sunken bodies. */
   .sk-accordion[data-appearance="frosted"] {
-    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface) 82%, transparent);
-    --frost-glass-open: var(--frost-on) color-mix(in oklab, var(--color-bg-surface-sunken) 72%, transparent);
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface) var(--frost-alpha-card), transparent);
+    --frost-glass-open: var(--frost-on) color-mix(in oklab, var(--color-bg-surface-sunken) var(--frost-alpha-card), transparent);
     --frost-lit: var(--frost-on)
       linear-gradient(to bottom, color-mix(in oklab, var(--frost-highlight) 60%, transparent), transparent 12rem),;
     --sk-accordion-bg: var(--frost-glass, var(--color-bg-surface));
     --sk-accordion-open-bg: var(--frost-glass-open, var(--color-bg-surface-sunken));
     background: var(--frost-lit,) var(--sk-accordion-bg);
-    -webkit-backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
-    backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
   }
 
   @media (forced-colors: active) {

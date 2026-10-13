@@ -65,11 +65,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "One short line of text on an application's top edge: its menus and its state.",
+              "body": "The bar along an application's top edge, as on a desktop: menus of actions only, with submenus, and a status area on the trailing side that can open its own menu.",
               "title": "First release"
             },
             "es": {
-              "body": "Una línea corta de texto en el borde superior de una aplicación: sus menús y su estado.",
+              "body": "La barra del borde superior de una aplicación de escritorio: menús de solo acciones, con submenús, y una zona de estado a la derecha que puede abrir su propio menú.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -529,6 +529,24 @@
     ],
     "code-preview": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-13",
+            "en": {
+              "body": "The code fills the container and the button is absolutely placed in the corner. The --sk-code-preview-copy-sticky-top hook is gone.",
+              "title": "The copy button floats over the code"
+            },
+            "es": {
+              "body": "El código ocupa todo el contenedor y el botón es absoluto en la esquina. Se va el gancho --sk-code-preview-copy-sticky-top.",
+              "title": "El botón de copiar flota sobre el código"
+            },
+            "kind": "breaking"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-12",
         "entries": [
           {
@@ -567,6 +585,48 @@
       }
     ],
     "color-picker": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-13",
+            "en": {
+              "body": "The swatch sits inside the field and the hex is typed beside it, kept in step with the color.",
+              "title": "The native picker reads as a text input"
+            },
+            "es": {
+              "body": "El swatch queda dentro del campo y el hex se escribe a su lado, en sincronía con el color.",
+              "title": "El picker nativo se lee como un input de texto"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-10-13",
+            "en": {
+              "body": "ColorPicker.swatch shows only the preview square, with no value text beside it.",
+              "title": "A version that is just the color"
+            },
+            "es": {
+              "body": "ColorPicker.swatch muestra únicamente el cuadrado de vista previa, sin el valor al lado.",
+              "title": "Una versión que es solo el color"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-10-13",
+            "en": {
+              "body": "The full panel no longer has a format switch or RGB, HSL and OKLCH rows; one hex field remains.",
+              "title": "A simpler panel"
+            },
+            "es": {
+              "body": "El panel completo ya no tiene selector de formato ni filas RGB, HSL y OKLCH; queda un solo campo hex.",
+              "title": "Un panel más simple"
+            },
+            "kind": "breaking"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -12109,12 +12169,6 @@
           "part": "root",
           "sheet": "@skryensya/core/components/code-preview.css"
         },
-        "--sk-code-preview-copy-sticky-top": {
-          "default": "0px",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/code-preview.css"
-        },
         "--sk-code-preview-count-fg": {
           "default": "var(--color-text-tertiary)",
           "output": false,
@@ -12176,7 +12230,6 @@
         "--sk-code-preview-brutalist-offset",
         "--sk-code-preview-collapsed-padding-block",
         "--sk-code-preview-copy-scroll-inset",
-        "--sk-code-preview-copy-sticky-top",
         "--sk-code-preview-count-fg",
         "--sk-code-preview-fg",
         "--sk-code-preview-font-size",
@@ -12664,10 +12717,16 @@
           "react": "@skryensya/react/color-picker#CompactColorPicker"
         },
         "ColorPicker.native": {
-          "enhancer": null,
+          "enhancer": "data-sk-color-picker-native",
           "markup": true,
           "portals": false,
           "react": "@skryensya/react/color-picker#NativeColorPicker"
+        },
+        "ColorPicker.swatch": {
+          "enhancer": "data-sk-color-picker",
+          "markup": true,
+          "portals": true,
+          "react": "@skryensya/react/color-picker#SwatchColorPicker"
         }
       },
       "category": "forms",
@@ -12789,7 +12848,7 @@
           "sheet": "@skryensya/core/components/color-picker.css"
         },
         "--sk-color-picker-content-inline-size": {
-          "default": "15.5rem",
+          "default": "16rem",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/color-picker.css"
@@ -12861,7 +12920,7 @@
           "sheet": "@skryensya/core/components/color-picker.css"
         },
         "--sk-color-picker-swatch-size": {
-          "default": "calc(var(--sk-color-picker-trigger-size) - 0.6rem)",
+          "default": "calc(var(--sk-color-picker-trigger-size) - 2px)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/color-picker.css"
@@ -12891,7 +12950,7 @@
           "sheet": "@skryensya/core/components/color-picker.css"
         },
         "--sk-color-picker-trigger-size": {
-          "default": "var(--size-control-md)",
+          "default": "max(var(--size-control-md), var(--size-touch-target))",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/color-picker.css"
@@ -12997,19 +13056,16 @@
         "areaBackground": "sk-color-picker__area-background",
         "areaThumb": "sk-color-picker__area-thumb",
         "channelInput": "sk-color-picker__channel-input",
-        "channelLabel": "sk-color-picker__channel-label",
-        "channelRow": "sk-color-picker__channel-row",
         "channels": "sk-color-picker__channels",
         "content": "sk-color-picker__content",
         "control": "sk-color-picker__control",
         "eyedropper": "sk-color-picker__eyedropper",
-        "formatOption": "sk-color-picker__format-option",
-        "formatSwitch": "sk-color-picker__format-switch",
         "hiddenInput": "sk-color-picker__hidden-input",
         "hueSlider": "sk-color-picker__hue-slider",
         "hueThumb": "sk-color-picker__hue-thumb",
         "hueTrack": "sk-color-picker__hue-track",
         "label": "sk-color-picker__label",
+        "nativeValue": "sk-color-picker__native-value",
         "positioner": "sk-color-picker__positioner",
         "root": "sk-color-picker",
         "swatch": "sk-color-picker__swatch",
@@ -13023,6 +13079,7 @@
         "ColorPicker": {
           "alternatives": [
             "ColorPicker.compact",
+            "ColorPicker.swatch",
             "ColorPicker.native"
           ],
           "avoidWhen": [
@@ -13039,11 +13096,11 @@
             "ColorPicker"
           ],
           "avoidWhen": [
-            "an exact value has to be typed (hex, RGB, HSL or OKLCH): that is ColorPicker"
+            "an exact hex value has to be typed: that is ColorPicker"
           ],
           "useWhen": [
             "the swatch lives in a toolbar or another tight place",
-            "the reader only needs the area, the hue and presets, not every channel separately"
+            "the reader only needs the area, the hue and presets, not transparency or a typed value"
           ]
         },
         "ColorPicker.native": {
@@ -13052,11 +13109,25 @@
             "ColorPicker.compact"
           ],
           "avoidWhen": [
-            "OKLCH, presets or seeing the channels while adjusting are needed: that is ColorPicker"
+            "presets, transparency or seeing the area and hue while adjusting are needed: that is ColorPicker"
           ],
           "useWhen": [
             "an ordinary color inside a form, with no presets or channels of its own",
             "the operating system's picker and the submission should belong to the browser"
+          ]
+        },
+        "ColorPicker.swatch": {
+          "alternatives": [
+            "ColorPicker.compact",
+            "ColorPicker"
+          ],
+          "avoidWhen": [
+            "the reader should see or copy the value without opening the panel: that is ColorPicker.compact",
+            "an exact hex value has to be typed: that is ColorPicker"
+          ],
+          "useWhen": [
+            "only the color itself is shown, as a square preview with no value text beside it",
+            "the swatch lives in a toolbar, a table row or a tight spot where the hex adds noise"
           ]
         }
       },
@@ -13296,6 +13367,7 @@
             "form-field",
             "no-javascript"
           ],
+          "mount": "data-sk-color-picker-native",
           "options": [
             "name",
             "value"
@@ -13334,6 +13406,131 @@
                       "value"
                     ],
                     "part": "trigger"
+                  },
+                  {
+                    "attrs": {
+                      "autocomplete": "off",
+                      "inputmode": "text",
+                      "maxlength": "7",
+                      "spellcheck": "false",
+                      "type": "text"
+                    },
+                    "element": "input",
+                    "labelledBySlot": "label",
+                    "optionAttrs": {
+                      "value": "value"
+                    },
+                    "options": [
+                      "value"
+                    ],
+                    "part": "nativeValue"
+                  }
+                ],
+                "element": "div",
+                "part": "control"
+              }
+            ],
+            "element": "div",
+            "host": true,
+            "part": "root"
+          }
+        },
+        "ColorPicker.swatch": {
+          "compose": [
+            {
+              "of": "button",
+              "sheets": [
+                "@skryensya/core/components/button.css"
+              ],
+              "systemOwned": true
+            }
+          ],
+          "forward": [
+            "id",
+            "aria-*"
+          ],
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "color-swatch-only",
+            "toolbar-color-swatch",
+            "color-without-value-text"
+          ],
+          "mount": "data-sk-color-picker",
+          "options": [
+            "name",
+            "value",
+            "disabled",
+            "readOnly",
+            "required",
+            "invalid",
+            "triggerLabel",
+            "swatches"
+          ],
+          "portals": {
+            "container": true
+          },
+          "react": {
+            "from": "@skryensya/react/color-picker",
+            "name": "SwatchColorPicker"
+          },
+          "slots": {
+            "label": {
+              "accepts": "text"
+            }
+          },
+          "template": {
+            "attrs": {
+              "data-anatomy": "compact"
+            },
+            "children": [
+              {
+                "element": "label",
+                "part": "label",
+                "slot": "label",
+                "whenGiven": "label"
+              },
+              {
+                "attrs": {
+                  "aria-hidden": "true",
+                  "style": "border:0;clip:rect(0 0 0 0);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;white-space:nowrap;word-wrap:normal;",
+                  "tabindex": "-1"
+                },
+                "element": "input",
+                "mount": "data-sk-color-picker-hidden-input",
+                "optionAttrs": {
+                  "name": "name"
+                },
+                "options": [
+                  "name"
+                ],
+                "part": "hiddenInput"
+              },
+              {
+                "also": [
+                  "sk-anchor"
+                ],
+                "children": [
+                  {
+                    "also": [
+                      "sk-button",
+                      "sk-interactive"
+                    ],
+                    "attrs": {
+                      "type": "button"
+                    },
+                    "children": [
+                      {
+                        "element": "span",
+                        "part": "swatch"
+                      }
+                    ],
+                    "element": "button",
+                    "options": [
+                      "triggerLabel"
+                    ],
+                    "part": "trigger"
                   }
                 ],
                 "element": "div",
@@ -13356,11 +13553,7 @@
         "alphaSlider",
         "alphaTrack",
         "alphaThumb",
-        "formatSwitch",
-        "formatOption",
         "channels",
-        "channelRow",
-        "channelLabel",
         "channelInput",
         "swatchGroup",
         "swatchTrigger",
@@ -52095,7 +52288,7 @@
     "working": "0.0.3"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "a55737daf97e6575",
+  "sourceHash": "19f4c38fb39e1821",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

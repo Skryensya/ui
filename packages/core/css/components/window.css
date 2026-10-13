@@ -211,8 +211,8 @@
     --frost-edge: var(--frost-on) color-mix(in oklab, currentColor 16%, transparent);
     --sk-window-border-color: var(--frost-edge, var(--color-border-subtle));
     --frost-glass: var(--frost-on) light-dark(
-      color-mix(in oklab, var(--sk-window-bg) 68%, transparent),
-      color-mix(in oklab, var(--sk-window-bg) 76%, transparent)
+      color-mix(in oklab, var(--sk-window-bg) var(--frost-alpha-chrome), transparent),
+      color-mix(in oklab, var(--sk-window-bg) var(--frost-alpha-card), transparent)
     );
     --frost-sheen: var(--frost-on) linear-gradient(
       to bottom,
@@ -223,8 +223,8 @@
       inset 0 0 0 1px color-mix(in oklab, var(--frost-highlight) 32%, transparent);
     background: var(--frost-sheen, none) var(--frost-glass, var(--sk-window-bg));
     box-shadow: var(--frost-rim, 0 0 0 transparent), var(--sk-window-shadow);
-    -webkit-backdrop-filter: var(--frost-on) blur(24px) saturate(140%);
-    backdrop-filter: var(--frost-on) blur(24px) saturate(140%);
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-xl)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-xl)) saturate(var(--frost-saturate));
   }
 
   .sk-window__content[data-appearance="frosted"][data-behind] {

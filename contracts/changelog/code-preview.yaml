@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "625f7eceb8e1bd35"
+surface: "aa5a5e50beb061b0"
 entries:
   - date: 2026-10-03
     kind: chore
@@ -22,3 +22,11 @@ entries:
     en:
       title: First release
       body: Displays readable, highlighted, and copyable code blocks.
+  - date: 2026-10-13
+    kind: breaking
+    es:
+      title: El botón de copiar flota sobre el código
+      body: El código ocupa todo el contenedor y el botón es absoluto en la esquina. Se va el gancho --sk-code-preview-copy-sticky-top.
+    en:
+      title: The copy button floats over the code
+      body: The code fills the container and the button is absolutely placed in the corner. The --sk-code-preview-copy-sticky-top hook is gone.

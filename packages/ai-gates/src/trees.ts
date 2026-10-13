@@ -4074,6 +4074,16 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    name: "color-picker/swatch",
+    enhanced: true,
+    tree: {
+      contract: "color-picker",
+      signature: "ColorPicker.swatch",
+      options: { name: "accent", value: "#22aabb" },
+      slots: { label: "Acento" },
+    },
+  },
+  {
     name: "color-picker/native",
     enhanced: true,
     tree: {

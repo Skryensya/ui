@@ -40,15 +40,6 @@
      */
     --sk-code-preview-collapsed-padding-block: var(--space-inset-md);
     /*
-     * The hook lives HERE, not on the copy button itself: a consumer's override
-     * (`.shell .sk-code-preview { --sk-code-preview-copy-sticky-top: … }`) targets this same
-     * element, so the two just compete in the normal cascade. Declaring it directly on
-     * `.sk-copy-button` instead would give that inner rule its own fresh assignment for the
-     * property, which always wins over whatever an ANCESTOR says, inherited or not, and the
-     * consumer's override would never reach it. Same shape as `.sk-toc`'s `--sk-toc-sticky-top`.
-     */
-    --sk-code-preview-copy-sticky-top: 0px;
-    /*
      * The room the copy button leaves for a scrollbar. Applied ONLY in the scrolling states (see the
      * rule beside the button below), so a block with no scrollbar keeps the inset it has always had
      * and nothing moves for it.
@@ -154,15 +145,12 @@
   }
 
   /*
-   * A GRID, not `position: relative` alone: the copy button now STICKS to the viewport's top
-   * while the preview scrolls past underneath it, and `position: sticky` is still a normal-flow
-   * position: it takes up space where it sits, same as static. Stacking the button and the code
-   * viewport(s) in the same cell (`grid-area: 1 / 1`) is what keeps the button from pushing the
-   * code down or reserving a row of its own; `absolute` used to buy that for free, at the cost of
-   * unpinning from the viewport the moment its container scrolled out from under it.
+   * The copy button is ABSOLUTE in this box's corner: it is not a column and not a grid cell, so the
+   * code takes the whole width of the container and the button floats over its corner. The box is
+   * the positioning context, and nothing else about the code's layout knows the button exists.
    */
   .sk-code-preview__preview {
-    display: grid;
+    position: relative;
   }
 
   /*
@@ -183,7 +171,6 @@
    * both keeps square corners on purpose: there is nothing round to clip against there.
    */
   .sk-code-preview__preview > .sk-code-preview__viewport {
-    grid-area: 1 / 1;
     overflow: hidden;
   }
 
@@ -214,17 +201,12 @@
   }
 
   .sk-code-preview__preview > .sk-copy-button {
-    position: sticky;
+    position: absolute;
     z-index: 1;
-    grid-area: 1 / 1;
-    align-self: start;
-    justify-self: end;
-    /* Reads the hook `.sk-code-preview` declares (see above); never redeclared here, or a
-       consumer's override on the ancestor would have nothing left to reach. The reader can still
-       be scrolled a little past the container's own top edge and reach it, the whole point of
-       trading `absolute` for `sticky`. */
-    inset-block-start: calc(var(--sk-code-preview-copy-sticky-top) + var(--space-inset-xs));
+    inset-block-start: 0;
+    inset-inline-end: 0;
     margin: var(--space-inset-xs);
+    background: color-mix(in oklch, var(--sk-code-preview-bg) 88%, transparent);
   }
 
   /*
@@ -252,19 +234,14 @@
   }
 
   /*
-   * WITHOUT A LABEL, the copy button is the only thing on the block's top edge, and it sits on the
-   * code itself rather than under a header strip. Two things follow, both for a block that is often
-   * a single command (an install line):
+   * WITHOUT A LABEL, the copy button is the only thing on the block's top edge and floats over the
+   * code itself. It is centred on the FIRST line rather than pinned to the top with the label's small
+   * inset (which sat above the line it copies and read as misaligned): that line's middle is the
+   * `pre`'s top padding plus half a line box, and the button's top is that minus half its own height.
+   * Same arithmetic for one line or fifty.
    *
-   *   - The first line's text would run underneath the button: on a phone, a command longer than the
-   *     box went straight under it (measured). The code's SCROLLER ends before the button, so a long
-   *     line is cut at that edge and scrolls, instead of hiding behind it. A margin, not padding:
-   *     end padding in a scroll container only adds room to scroll into; text that overflows is
-   *     still painted across it until the reader scrolls (measured too, the first attempt).
-   *   - Pinned to the top with the label's small inset, the button sat above the line it copies and
-   *     read as misaligned. It is centred on the FIRST line instead: that line's middle is the
-   *     `pre`'s top padding plus half a line box, and the button's top is that minus half its own
-   *     height. Same arithmetic for one line or fifty, so a long block still reads the same way.
+   * The code does not make room for it: it takes the whole container and a long first line runs
+   * under the button. The button paints its own surface (below) so it stays legible over it.
    *
    * With a label none of this applies: the header strip holds the top edge, and the button keeps
    * the inset it always had.
@@ -274,17 +251,6 @@
      pushed against it. Written out where it is used rather than held in a custom property: an
      `--sk-code-preview-*` property declared here would be a public styling hook, and this is a
      measurement, not something to retune. */
-  .sk-code-preview:not(:has(> .sk-code-preview__label)) pre {
-    margin-inline-end: calc(var(--size-control-sm) + max(
-      var(--space-inset-xs),
-      calc(
-        var(--space-inset-md) + var(--sk-code-preview-font-size) * var(--sk-code-preview-line-height) / 2 -
-          var(--size-control-sm) / 2
-      )
-    ) * 2);
-    padding-inline-end: var(--space-inset-xs);
-  }
-
   .sk-code-preview:not(:has(> .sk-code-preview__label)) .sk-code-preview__preview > .sk-copy-button {
     margin-block-start: max(
       var(--space-inset-xs),
@@ -473,10 +439,10 @@
   }
 
   .sk-code-preview[data-appearance="frosted"] {
-    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-code-preview-bg) 80%, transparent);
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-code-preview-bg) var(--frost-alpha-card), transparent);
     background: var(--frost-glass, var(--sk-code-preview-bg));
-    -webkit-backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
-    backdrop-filter: var(--frost-on) blur(16px) saturate(150%);
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
   }
 
   /* Forced colors keep neither construction: the system surface and its boundary. */

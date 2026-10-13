@@ -137,8 +137,8 @@ test("frosted uses a denser glass tint in dark mode", async ({ page }) => {
   const light = await read(page, "#glass");
   await page.locator("#window-host").evaluate(el => { el.style.colorScheme = "dark"; });
   const dark = await read(page, "#glass");
-  expect(light.bgAlpha).toBeCloseTo(0.68, 2);
-  expect(dark.bgAlpha).toBeCloseTo(0.76, 2);
+  expect(light.bgAlpha).toBeCloseTo(0.66, 2);
+  expect(dark.bgAlpha).toBeCloseTo(0.72, 2);
   expect(dark.headerBgAlpha).toBeLessThan(0.1);
 });
 

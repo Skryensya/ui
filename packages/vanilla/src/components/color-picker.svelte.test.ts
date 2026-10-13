@@ -66,7 +66,7 @@ describe("ColorPicker Vanilla contracts", () => {
     expect(document.querySelector(".sk-color-picker__value")?.textContent).toBe("rgba(51, 102, 255, 1)");
   });
 
-  it("commits a typed hex value and only shows the selected channel format", async () => {
+  it("commits a typed hex value", async () => {
     const root = markup('data-value="#000000"');
     const onChange = vi.fn();
     root.addEventListener("sk:colorpickervaluechange", onChange);
@@ -81,11 +81,6 @@ describe("ColorPicker Vanilla contracts", () => {
     await waitFor(() => expect(root.style.getPropertyValue("--value")).toBe("rgba(51, 102, 255, 1)"));
     expect(onChange).toHaveBeenCalled();
     expect(document.querySelector('[data-channel="red"]')).toBeNull();
-
-    fireEvent.click(document.querySelector<HTMLButtonElement>(".sk-color-picker__format-option:nth-child(2)")!);
-    await waitFor(() => expect(document.querySelector('[data-channel="red"]')).toBeTruthy());
-    const red = document.querySelector<HTMLInputElement>('[data-channel="red"]')!;
-    expect(red.value).toBe("51");
   });
 
   it("selects a preset swatch and updates the current color", async () => {
@@ -115,19 +110,14 @@ describe("ColorPicker Vanilla contracts", () => {
     expect(content().querySelector(".sk-color-picker__hue-slider")).toBeTruthy();
   });
 
-  it("the full anatomy renders one editable channel format at a time", async () => {
+  it("the full anatomy renders a single hex field and no format switch", async () => {
     markup();
     fireEvent.click(trigger());
     await waitFor(() => expect(content().hidden).toBe(false));
     expect(channels()).toBeTruthy();
-    expect(document.querySelectorAll(".sk-color-picker__channel-row")).toHaveLength(1);
+    expect(document.querySelectorAll(".sk-color-picker__channel-input")).toHaveLength(1);
     expect(document.querySelector('[data-channel="hex"]')).toBeTruthy();
-    expect(document.querySelector('[aria-label="oklch lightness"]')).toBeNull();
-
-    fireEvent.click(document.querySelector<HTMLButtonElement>(".sk-color-picker__format-option:nth-child(4)")!);
-    await waitFor(() => expect(document.querySelector('[aria-label="oklch lightness"]')).toBeTruthy());
-    expect(document.querySelectorAll(".sk-color-picker__channel-row")).toHaveLength(1);
-    expect(document.querySelector('[data-channel="hex"]')).toBeNull();
+    expect(document.querySelector(".sk-color-picker__format-switch")).toBeNull();
   });
 
   it("respects the authored disabled, readOnly, required and invalid flags", () => {
@@ -155,5 +145,26 @@ describe("ColorPicker Vanilla contracts", () => {
      * trigger for assistive tech, not just what the attribute happens to read.
      */
     expect(trigger().getAttribute("aria-labelledby")).toBeNull();
+  });
+});
+
+describe("ColorPicker.native Vanilla contracts", () => {
+  it("keeps the swatch and the typed hex in step", () => {
+    document.body.innerHTML = `<div class="sk-color-picker" data-sk-color-picker-native>
+      <div class="sk-color-picker__control">
+        <input class="sk-color-picker__trigger" type="color" name="bg" value="#3366ff" />
+        <input class="sk-color-picker__native-value" type="text" />
+      </div>
+    </div>`;
+    expect(mountColorPicker(document)).toBe(1);
+    const swatch = document.querySelector<HTMLInputElement>('input[type="color"]')!;
+    const hex = document.querySelector<HTMLInputElement>('input[type="text"]')!;
+    expect(hex.value).toBe("#3366ff");
+
+    fireEvent.input(hex, { target: { value: "F80" } });
+    expect(swatch.value).toBe("#ff8800");
+
+    fireEvent.input(swatch, { target: { value: "#00ff00" } });
+    expect(hex.value).toBe("#00ff00");
   });
 });

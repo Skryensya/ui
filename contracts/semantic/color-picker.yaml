@@ -9,14 +9,15 @@ ColorPicker:
     - "space is minimal or the color is secondary to the rest of the form"
   alternatives:
     - ColorPicker.compact
+    - ColorPicker.swatch
     - ColorPicker.native
 
 ColorPicker.compact:
   useWhen:
     - "the swatch lives in a toolbar or another tight place"
-    - "the reader only needs the area, the hue and presets, not every channel separately"
+    - "the reader only needs the area, the hue and presets, not transparency or a typed value"
   avoidWhen:
-    - "an exact value has to be typed (hex, RGB, HSL or OKLCH): that is ColorPicker"
+    - "an exact hex value has to be typed: that is ColorPicker"
   alternatives:
     - ColorPicker
 
@@ -25,7 +26,18 @@ ColorPicker.native:
     - "an ordinary color inside a form, with no presets or channels of its own"
     - "the operating system's picker and the submission should belong to the browser"
   avoidWhen:
-    - "OKLCH, presets or seeing the channels while adjusting are needed: that is ColorPicker"
+    - "presets, transparency or seeing the area and hue while adjusting are needed: that is ColorPicker"
   alternatives:
     - ColorPicker
     - ColorPicker.compact
+
+ColorPicker.swatch:
+  useWhen:
+    - "only the color itself is shown, as a square preview with no value text beside it"
+    - "the swatch lives in a toolbar, a table row or a tight spot where the hex adds noise"
+  avoidWhen:
+    - "the reader should see or copy the value without opening the panel: that is ColorPicker.compact"
+    - "an exact hex value has to be typed: that is ColorPicker"
+  alternatives:
+    - ColorPicker.compact
+    - ColorPicker

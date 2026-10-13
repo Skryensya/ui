@@ -31,6 +31,7 @@ export const colorPickerParts = {
   swatch: "sk-color-picker__swatch",
   value: "sk-color-picker__value",
   hiddenInput: "sk-color-picker__hidden-input",
+  nativeValue: "sk-color-picker__native-value",
   positioner: "sk-color-picker__positioner",
   content: "sk-color-picker__content",
 } as const;
@@ -41,6 +42,7 @@ export const colorPickerAttrs = {
   control: "data-sk-color-picker-control",
   trigger: "data-sk-color-picker-trigger",
   hiddenInput: "data-sk-color-picker-hidden-input",
+  native: "data-sk-color-picker-native",
   positioner: "data-sk-color-picker-positioner",
   content: "data-sk-color-picker-content",
 } as const;
@@ -64,11 +66,7 @@ export const colorPickerPanelParts = {
   alphaSlider: "sk-color-picker__alpha-slider",
   alphaTrack: "sk-color-picker__alpha-track",
   alphaThumb: "sk-color-picker__alpha-thumb",
-  formatSwitch: "sk-color-picker__format-switch",
-  formatOption: "sk-color-picker__format-option",
   channels: "sk-color-picker__channels",
-  channelRow: "sk-color-picker__channel-row",
-  channelLabel: "sk-color-picker__channel-label",
   channelInput: "sk-color-picker__channel-input",
   swatchGroup: "sk-color-picker__swatch-group",
   swatchTrigger: "sk-color-picker__swatch-trigger",
@@ -101,11 +99,7 @@ export const colorPickerContract = {
     "alphaSlider",
     "alphaTrack",
     "alphaThumb",
-    "formatSwitch",
-    "formatOption",
     "channels",
-    "channelRow",
-    "channelLabel",
     "channelInput",
     "swatchGroup",
     "swatchTrigger",
@@ -336,6 +330,80 @@ export const colorPickerContract = {
     },
 
     /*
+     * THE SWATCH-ONLY COLOR: `.compact`'s panel behind a trigger that is just the preview square.
+     *
+     * Its own signature rather than an option, for the reason `.compact` is one: the trigger's
+     * markup differs (no value text node at all), not merely its styling. The value is still
+     * reachable: the panel carries it, and the trigger's accessible name is `triggerLabel`, so an
+     * icon-sized control never goes unnamed.
+     */
+    "ColorPicker.swatch": {
+      intent: ["color-swatch-only", "toolbar-color-swatch", "color-without-value-text"],
+      host: { element: "div" },
+      mount: colorPickerAttrs.root,
+      options: ["name", "value", "disabled", "readOnly", "required", "invalid", "triggerLabel", "swatches"],
+      /*
+       * UNDECLARED UNTIL NOW, and the gap was silent because nothing had ever compared this
+       * signature's two bindings: `ColorPicker` had zero canonical-tree coverage before
+       * `ai-gates/src/trees.ts` gained one, and the first real comparison (G2, symmetry.spec.ts)
+       * failed on both this and `.compact` for the reason `Tooltip`'s own comment on this field
+       * states - the React binding already portals (`<Portal container={container}>`,
+       * `react/components/color-picker.tsx`), but with no `portals: true` here `render-tree.tsx`
+       * never hands it a scoped `container`, so every ColorPicker instance on a page with more than
+       * one (this stage has two: `ColorPicker` and `.compact`) portals into the SAME
+       * `document.body`, and the gate cannot tell which instance's floating content belongs to
+       * which case. `ColorPicker.native` (below) has no popover and correctly has none of this.
+       */
+      /** Host id / a11y; control state stays options. */
+      forward: ["id", "aria-*"],
+      portals: { container: true },
+      compose: [
+        { of: "button", sheets: ["@skryensya/core/components/button.css"], systemOwned: true },
+      ],
+      slots: {
+        label: { accepts: "text" },
+      },
+      template: {
+        element: "div",
+        part: "root",
+        host: true,
+        attrs: { "data-anatomy": "compact" },
+        children: [
+          { element: "label", part: "label", slot: "label", whenGiven: "label" },
+          {
+            element: "input",
+            part: "hiddenInput",
+            mount: colorPickerAttrs.hiddenInput,
+            attrs: {
+              "aria-hidden": "true",
+              tabindex: "-1",
+              style:
+                "border:0;clip:rect(0 0 0 0);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;white-space:nowrap;word-wrap:normal;",
+            },
+            options: ["name"],
+            optionAttrs: { name: "name" },
+          },
+          {
+            element: "div",
+            part: "control",
+            also: ["sk-anchor"],
+            children: [
+              {
+                element: "button",
+                part: "trigger",
+                also: ["sk-button", "sk-interactive"],
+                options: ["triggerLabel"],
+                attrs: { type: "button" },
+                children: [{ element: "span", part: "swatch" }],
+              },
+            ],
+          },
+        ],
+      },
+      react: { from: "@skryensya/react/color-picker", name: "SwatchColorPicker" },
+    },
+
+    /*
      * THE NATIVE COLOR FIELD: the layer that works with no script at all.
      *
      * A real `<input type="color">` inside the same field chrome, so the enhanced control and
@@ -344,6 +412,10 @@ export const colorPickerContract = {
      * contributes the label wiring and the box. No RGB/HSL/OKLCH rows, no presets, no anatomy
      * choice: `type="color"` is one flat sRGB hex value, always.
      *
+     * It reads as a text input: the native swatch sits inside the field at its start and the hex is
+     * a text box beside it, kept in step with the swatch by the bindings (one line of sync, no
+     * machine). The text box has no `name`: the color input stays the one that submits.
+     *
      * Its own signature rather than an option, for the reason `Select.native` and
      * `DatePicker.native` are: choosing between them is choosing who owns the behaviour, and no
      * flag should be able to stand in for that decision.
@@ -351,6 +423,7 @@ export const colorPickerContract = {
     "ColorPicker.native": {
       intent: ["a-standard-color-field", "form-field", "no-javascript"],
       host: { element: "div" },
+      mount: colorPickerAttrs.native,
       options: ["name", "value"],
       /** Host id / a11y; control state stays options. */
       forward: ["id", "aria-*"],
@@ -379,6 +452,20 @@ export const colorPickerContract = {
                  * own comment gives: `for`/`id` needs an AUTHORED id, and both bindings render
                  * into one document in the symmetry gate, so a literal id collides across them.
                  */
+                labelledBySlot: "label",
+              },
+              {
+                element: "input",
+                part: "nativeValue",
+                attrs: {
+                  type: "text",
+                  autocomplete: "off",
+                  spellcheck: "false",
+                  maxlength: "7",
+                  inputmode: "text",
+                },
+                options: ["value"],
+                optionAttrs: { value: "value" },
                 labelledBySlot: "label",
               },
             ],

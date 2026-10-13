@@ -204,13 +204,13 @@
 
   /* The material, behind the system switch (semantic/_frost.scss). */
   .sk-pagination[data-appearance="frosted"] {
-    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface-raised) 70%, transparent);
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface-raised) var(--frost-alpha-chrome), transparent);
     --sk-pagination-current-bg: var(--frost-glass, var(--color-bg-surface-raised));
   }
 
   .sk-pagination[data-appearance="frosted"] .sk-pagination__item[aria-current="page"] {
-    -webkit-backdrop-filter: var(--frost-on) blur(10px) saturate(150%);
-    backdrop-filter: var(--frost-on) blur(10px) saturate(150%);
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-sm)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-sm)) saturate(var(--frost-saturate));
   }
 
   @media (forced-colors: active) {

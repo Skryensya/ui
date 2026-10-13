@@ -244,10 +244,10 @@
 
   /* The track's own fill (whichever state set `--sk-switch-bg`), thinned into a sheet. */
   .sk-switch[data-appearance="frosted"] .sk-switch__control {
-    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-switch-bg) 55%, transparent);
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-switch-bg) var(--frost-alpha-control), transparent);
     background: var(--frost-glass, var(--sk-switch-bg));
-    -webkit-backdrop-filter: var(--frost-on) blur(8px) saturate(150%);
-    backdrop-filter: var(--frost-on) blur(8px) saturate(150%);
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-xs)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-xs)) saturate(var(--frost-saturate));
   }
 
   @media (forced-colors: active) {

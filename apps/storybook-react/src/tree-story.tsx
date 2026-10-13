@@ -4,6 +4,7 @@ import type { UsageTree } from "@skryensya/core/usage-tree";
 import { loadTree, renderTree } from "@skryensya/react/render-tree";
 import type { Translate } from "@docs/i18n";
 import { isLocale, translator } from "@skryensya/storybook-kit/translate";
+import { wireCommandPaletteDemo } from "@skryensya/storybook-kit/command-palette-playground";
 import { rootControls, withRootOptions } from "@skryensya/storybook-kit/controls";
 
 /*
@@ -45,6 +46,8 @@ function controlsOf(factory: TreeFactory) {
 export function treeStory(factory: TreeFactory, story: StoryObj = {}): StoryObj {
   const { args, argTypes } = controlsOf(factory);
   return {
+    /* A demo whose trigger the docs wire with a script (a palette's "open") gets it wired here. */
+    play: ({ canvasElement }: { canvasElement: HTMLElement }) => wireCommandPaletteDemo(canvasElement),
     ...story,
     args: { ...args, ...story.args },
     argTypes: { ...argTypes, ...story.argTypes },
@@ -72,6 +75,7 @@ export function treeStory(factory: TreeFactory, story: StoryObj = {}): StoryObj 
  */
 export function argsStory<Args>(build: (args: Args) => UsageTree, story: StoryObj<Args>): StoryObj<Args> {
   return {
+    play: ({ canvasElement }: { canvasElement: HTMLElement }) => wireCommandPaletteDemo(canvasElement),
     ...story,
     loaders: [
       async ({ args }: { args: unknown }) => {

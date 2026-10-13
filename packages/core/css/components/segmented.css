@@ -313,16 +313,16 @@
   .sk-segmented[data-appearance="frosted"] {
     /* 72%: the unselected options are secondary ink, and measured they clear 4.5:1 over the worst
      * backdrop only from about 70%. */
-    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface-sunken) 72%, transparent);
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface-sunken) var(--frost-alpha-card), transparent);
     --frost-glass-selected: var(--frost-on)
-      color-mix(in oklab, color-mix(in oklab, var(--color-bg-accent-subtle) 55%, var(--color-bg-surface-raised)) 82%, transparent);
+      color-mix(in oklab, color-mix(in oklab, var(--color-bg-accent-subtle) 55%, var(--color-bg-surface-raised)) var(--frost-alpha-card), transparent);
     --sk-segmented-bg: var(--frost-glass, var(--color-bg-surface-sunken));
     --sk-segmented-selected-bg: var(
       --frost-glass-selected,
       color-mix(in oklab, var(--color-bg-accent-subtle) 55%, var(--color-bg-surface-raised))
     );
-    -webkit-backdrop-filter: var(--frost-on) blur(12px) saturate(150%);
-    backdrop-filter: var(--frost-on) blur(12px) saturate(150%);
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-sm)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-sm)) saturate(var(--frost-saturate));
   }
 
   @media (forced-colors: active) {
