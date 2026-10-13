@@ -29,7 +29,7 @@ export const FrostedShapes: StoryObj = treeStory(demos.buttonFrostedShapesTree);
 export const FrostedBackdrops: StoryObj = treeStory(demos.buttonFrostedBackdropsTree);
 export const DestructivePair: StoryObj = treeStory(demos.buttonDestructivePairTree);
 export const Sizes: StoryObj = treeStory(demos.buttonSizesTree);
-export const Icon: StoryObj = treeStory(demos.buttonIconTree);
+export const IconSlot: StoryObj = treeStory((t) => demos.buttonIconSlotTree(t, "#"));
 export const IconOnly: StoryObj = treeStory(demos.buttonIconOnlyTree);
 export const AsLink: StoryObj = treeStory(demos.buttonAsLinkTree);
 export const FirstComponentButtons: StoryObj = treeStory(demos.firstComponentButtonsTree);

@@ -381,31 +381,6 @@ export const buttonIconTree = (t: Translate): UsageTree => ({
   children: t("demo.button.download"),
 });
 
-/**
- * Both icon slots side by side: `pre` before the text (the action's own glyph) and `post` after it (where it leads).
- * Each button fills only the slot it needs, and an empty slot is not drawn.
- */
-export const buttonIconSlotsTree = (t: Translate): UsageTree => ({
-  contract: "layout",
-  signature: "Inline",
-  options: { gap: "sm" },
-  children: [
-    {
-      contract: "button",
-      signature: "Button.action",
-      options: { tone: "accent" },
-      slots: { pre: { contract: "icon", signature: "Icon", options: { name: "download" } } },
-      children: t("demo.button.download"),
-    },
-    {
-      contract: "button",
-      signature: "Button.action",
-      slots: { post: { contract: "icon", signature: "Icon", options: { name: "arrow-right" } } },
-      children: t("demo.button.continue"),
-    },
-  ],
-});
-
 /** One Button with its icon in one slot, for the page's slot playground: `pre` leads the text, `post` follows it. */
 export const buttonIconSlotTree = (t: Translate, slot: "pre" | "post"): UsageTree =>
   slot === "pre"
