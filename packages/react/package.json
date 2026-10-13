@@ -6,7 +6,8 @@
   "description": "React components that render skryensya/ui's shared markup contracts.",
   "files": [
     "dist",
-    "src"
+    "src",
+    "css"
   ],
   "exports": {
     ".": {
@@ -544,11 +545,14 @@
     "./hook-form": {
       "types": "./src/integrations/hook-form.tsx",
       "default": "./src/integrations/hook-form.tsx"
-    }
+    },
+    "./css/*": "./css/*"
   },
   "scripts": {
-    "build": "node ../../scripts/build-library.ts",
-    "check": "node ../../scripts/build-library.ts && node ../../scripts/verify-library.ts && tsc -p tsconfig.json --noEmit && vitest run"
+    "build": "node ../../scripts/generate-css-reexports.ts . && node ../../scripts/build-library.ts",
+    "prepack": "node ../../scripts/generate-css-reexports.ts .",
+    "css": "node ../../scripts/generate-css-reexports.ts .",
+    "check": "node ../../scripts/generate-css-reexports.ts . && node ../../scripts/build-library.ts && node ../../scripts/verify-library.ts && tsc -p tsconfig.json --noEmit && vitest run"
   },
   "dependencies": {
     "@skryensya/core": "workspace:*",

@@ -5,13 +5,13 @@ import UsagePreview from "../../components/UsagePreview.astro";
 import { installUsageTree } from "../../demos/installation";
 import { getLocale, useTranslations } from "../../i18n";
 
-const install = `pnpm add @skryensya/core @skryensya/vanilla`;
+const install = `pnpm add @skryensya/vanilla   # o @skryensya/react`;
 
 const imports = `/* Base: ramps, escala, semánticos y state layer. */
-@import "@skryensya/core/tokens.scss";
+@import "@skryensya/vanilla/css/tokens.css";
 
 /* Opt-in: import only the components you ship. */
-@import "@skryensya/core/components/button.css";`;
+@import "@skryensya/vanilla/css/components/button.css";`;
 
 const t = useTranslations(getLocale(Astro.url));
 ---
@@ -29,6 +29,12 @@ const t = useTranslations(getLocale(Astro.url));
 
   <h2>Instalar</h2>
   <CodeBlock code={install} label="terminal" />
+  <p>
+    Instala un binding y nada más: trae el core consigo y re-exporta sus hojas de estilo bajo
+    <code>css/</code>, así que nunca instalas ni importas <code>@skryensya/core</code> tú mismo. Para
+    compilar los tokens con tu propio Sass, instala <code>@skryensya/core</code> e importa
+    <code>tokens.scss</code> desde él.
+  </p>
 
   <h2>Importar</h2>
   <p>
