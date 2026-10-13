@@ -5,37 +5,11 @@
 # hash nuevo.
 surface: "97b92a8002c9bcbb"
 entries:
-  - date: 2026-09-26
+  - date: 2026-10-01
     kind: feature
-    target: appearance
     es:
-      title: Tour suma appearance plain, brutalist y frosted
-      body: >-
-        <code>brutalist</code> dibuja cada paso con borde negro y una sombra dura en lugar de la elevación
-        suave; <code>frosted</code> lo hace translúcido, opaco donde el material no es fiable. Sin
-        <code>tactile</code>.
+      title: Primera versión
+      body: Recorre la interfaz paso a paso, resaltando un elemento a la vez sin bloquear la página.
     en:
-      title: Tour adds plain, brutalist and frosted appearances
-      body: >-
-        <code>brutalist</code> draws each step with a black edge and a hard offset in place of the soft
-        elevation; <code>frosted</code> makes it see-through, opaque wherever the material cannot be trusted. No
-        <code>tactile</code>.
-  - date: 2026-09-25
-    kind: feature
-    target: Tour
-    es:
-      title: Un recorrido guiado que no bloquea la página
-      body: >-
-        Nuevo contrato <code>Tour</code>: un aro alrededor de un elemento y un diálogo no modal que lo explica, paso a paso. Sin fondo, sin
-        <code>inert</code> ni <code>aria-modal</code>, y un clic fuera no hace nada. Sólo empieza cuando alguien lo pide (<code>Tour.Trigger</code>
-        o <code>start()</code>), nunca avanza solo, y un paso cuyo objetivo no está o está oculto se omite. El foco va a Continuar en cada cambio de
-        paso (un <code>aria-live</code> anuncia el paso nuevo) y vuelve al disparador al cerrar; <kbd>Esc</kbd> cede ante menús y diálogos abiertos. Recuerda si se completó u omitió, y el
-        disparador puede decir «Repetir tour».
-    en:
-      title: A guided tour that never blocks the page
-      body: >-
-        New <code>Tour</code> contract: a ring around one element and a non-modal dialog that explains it, step by step. No backdrop, no
-        <code>inert</code> or <code>aria-modal</code>, and a click outside does nothing. It starts only when someone asks (<code>Tour.Trigger</code>
-        or <code>start()</code>), never advances on its own, and a step whose target is missing or hidden is skipped. Focus goes to Continue on
-        every step change (an <code>aria-live</code> region announces the new step) and back to the trigger on close; <kbd>Esc</kbd> yields to open menus and dialogs. It remembers whether it was
-        completed or skipped, and the trigger can read "Repeat tour".
+      title: First release
+      body: Walks through an interface step by step, highlighting one element at a time without blocking the page.

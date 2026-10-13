@@ -21,34 +21,11 @@ entries:
     en:
       title: Copy confirmation no longer covers the copied value
       body: The Copied message appears above the button instead of over the adjacent field or command. The confirmation icon and accessible announcement remain unchanged.
-  - date: 2026-09-26
-    kind: feature
-    target: appearance
-    es:
-      title: CopyButton y Clipboard suman appearance
-      body: >-
-        El botón de copiar acepta el eje <code>appearance</code> de Button (<code>plain</code>, <code>tactile</code>,
-        <code>brutalist</code>, <code>frosted</code>), escrito en el disparador y pintado por la hoja de Button.
-    en:
-      title: CopyButton and Clipboard add appearance
-      body: >-
-        The copy button takes Button's <code>appearance</code> axis (<code>plain</code>, <code>tactile</code>,
-        <code>brutalist</code>, <code>frosted</code>), written on the trigger and painted by Button's sheet.
-  - date: 2026-09-25
+  - date: 2026-10-01
     kind: feature
     es:
-      title: Copiar al portapapeles, sobre la máquina de Zag
-      body: >-
-        Nuevo contrato <code>clipboard</code> sobre <code>@zag-js/clipboard</code>, la misma máquina en las dos
-        capas. <code>CopyButton</code> es el botón solo: copia <code>value</code> o, al momento del clic, el
-        texto del elemento que nombra <code>target</code>. <code>Clipboard</code> suma una etiqueta y un campo
-        de solo lectura con el valor. Si el navegador rechaza la escritura, el botón lo dice
-        (<code>data-error</code>, «No se pudo copiar») en vez de mostrar «Copiado» igual.
+      title: Primera versión
+      body: Copia un valor, o el texto de otro elemento, con un clic, y avisa si el navegador lo rechazó.
     en:
-      title: Copy to the clipboard, on Zag's machine
-      body: >-
-        New <code>clipboard</code> contract on <code>@zag-js/clipboard</code>, the same machine in both
-        bindings. <code>CopyButton</code> is the button alone: it copies <code>value</code> or, at the moment
-        of the click, the text of the element <code>target</code> names. <code>Clipboard</code> adds a label
-        and a read-only field showing the value. If the browser refuses the write, the button says so
-        (<code>data-error</code>, "Copy failed") instead of showing "Copied" anyway.
+      title: First release
+      body: Copies a value, or another element's text, in one click, and says so when the browser refuses.

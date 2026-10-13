@@ -9,137 +9,15 @@ entries:
     kind: rework
     es:
       title: El brillo cruza todas las formas como una sola banda, más lento
-      body: >-
-        Antes cada barra barría su propio ancho, así que una columna de anchos distintos nunca
-        brillaba a la vez. Ahora el brillo es una banda anclada al viewport y todas las formas
-        muestran el mismo trozo de ella. Dentro de una región <code>aria-busy="true"</code> el
-        barrido lo marca un solo reloj, <code>--sk-placeholder-phase</code>, así que lo montado en
-        momentos distintos tampoco se desfasa. Dura 1,75 veces el token de carga y se ajusta con
-        <code>--sk-placeholder-sweep-duration</code> y <code>--sk-placeholder-sweep-size</code>.
+      body: Antes cada barra barría su propio ancho, así que una columna de anchos distintos nunca brillaba a la vez. Ahora el brillo es una banda anclada al viewport y todas las formas muestran el mismo trozo de ella.
     en:
       title: The shimmer crosses every shape as one band, and slower
-      body: >-
-        Each bar used to sweep its own width, so a column of different widths never lit up
-        together. The shimmer is now a band anchored to the viewport and every shape shows the same
-        slice of it. Inside an <code>aria-busy="true"</code> region one clock,
-        <code>--sk-placeholder-phase</code>, drives the sweep, so skeletons mounted at different
-        moments no longer drift apart. It lasts 1.75 times the loading token and is tuned with
-        <code>--sk-placeholder-sweep-duration</code> and <code>--sk-placeholder-sweep-size</code>.
-  - date: 2026-09-17
-    kind: bugfix
-    target: lines
-    es:
-      title: lines queda acotado al tope que ya aplicaban los bindings
-      body: >-
-        <code>lines</code> es un entero de 1 a 12 (<code>PLACEHOLDER_MAX_LINES</code>). Un valor fuera de rango deja de
-        validar en vez de llegar al binding y ser recortado en silencio.
-    en:
-      title: lines is capped at the ceiling the bindings already applied
-      body: >-
-        <code>lines</code> is a whole number from 1 to 12 (<code>PLACEHOLDER_MAX_LINES</code>). A value out of range stops
-        validating instead of reaching the binding and being clamped in silence.
-  - date: 2026-09-12
-    kind: feature
-    target: shimmer
-    es:
-      title: El brillo del skeleton se puede apagar
-      body: >-
-        Nueva opción <code>shimmer</code> en las cuatro signatures, prendida por defecto: el barrido
-        es lo que dice que el contenido viene en camino, y una caja gris quieta sólo dice que es
-        gris. <code>shimmer: false</code> es para el skeleton que <em>no</em> está esperando nada:
-        decoración, una captura de pantalla, el dibujo de un estado de carga. En el markup se
-        escribe <code>data-shimmer="false"</code> y nada cuando está prendido, así que todo skeleton
-        ya publicado queda igual. <code>prefers-reduced-motion</code> sigue mandando por encima de
-        las dos: es una preferencia de quien lee, no de quien compone.
-    en:
-      title: A skeleton's shimmer can be turned off
-      body: >-
-        A new <code>shimmer</code> option on all four signatures, on by default: the sweep is what
-        says the content is on its way, and a still grey box says only that it is grey.
-        <code>shimmer: false</code> is for the skeleton that is <em>not</em> waiting for anything:
-        decoration, a screenshot, a drawing of a loading state. It writes
-        <code>data-shimmer="false"</code> in the markup and nothing at all when on, so every
-        skeleton already published is unchanged. <code>prefers-reduced-motion</code> still wins over
-        either: it is the reader's preference, not the author's.
-  - date: 2026-08-11
+      body: Each bar used to sweep its own width, so a column of different widths never lit up together. The shimmer is now a band anchored to the viewport and every shape shows the same slice of it.
+  - date: 2026-10-01
     kind: feature
     es:
-      title: Placeholder se publica como contrato, con una signature
-      body: >-
-        Entra al catálogo con <code>Placeholder</code>: los dos bindings lo realizan, y la referencia de
-        esta página sale del contrato compilado en vez de prosa escrita al lado. No tiene enhancer: el
-        markup está completo por sí solo, así que las dos bindings son el mismo markup dos veces.
-        Opciones: <code>shape</code>. La hoja es <code>components/placeholder.css</code>.
+      title: Primera versión
+      body: Reserva la estructura mientras el contenido termina de cargar.
     en:
-      title: Placeholder is published as a contract, with one signature
-      body: >-
-        It joins the catalogue with <code>Placeholder</code>: both bindings realize it, and this page's
-        reference is rendered from the compiled contract rather than from prose written beside it. There
-        is no enhancer: the markup is complete on its own, so both bindings are the same markup twice.
-        Options: <code>shape</code>. Its stylesheet is <code>components/placeholder.css</code>.
-  - date: 2026-09-07
-    kind: rework
-    es:
-      title: Placeholder pasa a ser el primitivo para componer skeletons específicos
-      body: >-
-        <code>shape</code> se reemplaza por cuatro signatures, cada una con sólo las opciones que le
-        corresponden: <code>Placeholder</code> (una línea), <code>Placeholder.paragraph</code>,
-        <code>Placeholder.block</code> y <code>Placeholder.circle</code>. Un círculo ya no acepta un
-        rol tipográfico ni un párrafo acepta <code>fill</code>, y eso ahora lo dice el sistema de
-        tipos. <strong>Es un cambio que rompe</strong>: <code>&lt;Placeholder shape="circle" /&gt;</code>
-        pasa a ser <code>&lt;PlaceholderCircle /&gt;</code>.
-        La razón es que <code>shape</code> nombraba geometría y nunca lo que la geometría reemplaza, así
-        que cada consumidor traducía sentido a píxeles a mano: nueve clases propias en la hoja de los
-        docs y estilos crudos en el demo de comment-thread, todos adivinando medidas que el sistema ya
-        conocía (<code>1.5rem</code> para una línea de h3, cuya caja real mide 27px). Ahora se nombra el
-        rol: <code>text="h3"</code> resuelve al mismo par de tokens que lee <code>Heading</code>,
-        <code>size="sm"</code> a la misma escala que lee <code>Avatar</code>, y <code>fill</code> toma
-        la caja y la esquina del contenedor recortado. <code>lines</code> dibuja líneas reales con la
-        última corta, acotadas igual en los dos bindings.
-    en:
-      title: Placeholder becomes the primitive for composing specific skeletons
-      body: >-
-        <code>shape</code> is replaced by four signatures, each carrying only the options that apply to
-        it: <code>Placeholder</code> (one line), <code>Placeholder.paragraph</code>,
-        <code>Placeholder.block</code> and <code>Placeholder.circle</code>. A circle no longer accepts a
-        type role and a paragraph no longer accepts <code>fill</code>, and the type system now says so.
-        <strong>This is a breaking change</strong>: <code>&lt;Placeholder shape="circle" /&gt;</code>
-        becomes <code>&lt;PlaceholderCircle /&gt;</code>.
-        The reason is that <code>shape</code> named geometry and never what the geometry stands in for,
-        so every consumer translated meaning into pixels by hand: nine bespoke classes in the docs'
-        own stylesheet and raw styles in the comment-thread demo, all guessing at measurements the
-        system already knew (<code>1.5rem</code> for a line of h3, whose real line box is 27px). The
-        role is named instead: <code>text="h3"</code> resolves to the same token pair
-        <code>Heading</code> reads, <code>size="sm"</code> to the same scale <code>Avatar</code> reads,
-        and <code>fill</code> takes a clipped container's box and corner. <code>lines</code> draws real
-        lines with a short last one, clamped identically in both bindings.
-  - date: 2026-09-12
-    kind: feature
-    es:
-      title: Los styling hooks de placeholder quedan declarados en el contrato
-      body: >-
-        El contrato ahora publica los <code>11</code> styling hooks de este componente. Nada
-        de lo que hayas escrito cambia: son los mismos hooks, con los mismos nombres, y la hoja de
-        estilos no se tocó. Lo nuevo es que el contrato los declara, así que el compilador falla si
-        la hoja declara uno que el contrato no publica, o si el contrato promete uno que la hoja no
-        declara. Esa segunda mitad es la que importa: hasta ahora, redeclarar un hook que ya no
-        existía no daba error, daba silencio.
-    en:
-      title: placeholder's styling hooks are now declared in the contract
-      body: >-
-        The contract now publishes this component's <code>11</code> styling hooks. Nothing you
-        wrote changes: the same hooks, under the same names, and the stylesheet was not touched.
-        What is new is that the contract declares them, so the compiler fails when the stylesheet
-        declares one the contract does not publish, or the contract promises one the stylesheet
-        never declares. That second half is the one that matters: until now, re-declaring a hook
-        that no longer existed was not an error, it was silence.
-  - date: 2026-09-17
-    kind: bugfix
-    es:
-      title: El contrato declara el rango de sus números
-      body: >-
-        <code>lines</code> es un entero desde 1. Un valor fuera de rango deja de validar en vez de llegar al binding.
-    en:
-      title: The contract declares the range of its numbers
-      body: >-
-        <code>lines</code> is a whole number from 1. A value out of range stops validating instead of reaching the binding.
+      title: First release
+      body: Preserves layout while content finishes loading.

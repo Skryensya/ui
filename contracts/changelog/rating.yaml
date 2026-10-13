@@ -10,75 +10,15 @@ entries:
     target: Rating
     es:
       title: Rating se ve más limpio en modo claro
-      body: >-
-        La estrella encendida deja el marrón del texto de advertencia y toma el ámbar del borde de
-        advertencia, que mantiene 3:1 sobre una superficie clara. La apagada pasa a un gris a media
-        intensidad, para que no compita con la encendida. El modo oscuro no cambia. Los hooks
-        <code>--sk-rating-on-color</code> y <code>--sk-rating-off-color</code> siguen mandando.
+      body: La estrella encendida deja el marrón del texto de advertencia y toma el ámbar del borde de advertencia, que mantiene 3:1 sobre una superficie clara.
     en:
       title: Rating looks cleaner in light mode
-      body: >-
-        The filled symbol drops the warning text brown and takes the warning border amber, which holds
-        3:1 on a light surface. The empty one becomes a half-strength grey so it does not compete with
-        the filled one. Dark mode is unchanged. The <code>--sk-rating-on-color</code> and
-        <code>--sk-rating-off-color</code> hooks still win.
-  - date: 2026-09-20
+      body: The filled symbol drops the warning text brown and takes the warning border amber, which holds 3:1 on a light surface. The empty one becomes a half-strength grey so it does not compete with the filled one.
+  - date: 2026-10-01
     kind: feature
     es:
-      title: Rating, como input y como display
-      body: >-
-        <code>Rating</code> es un radiogroup de pasos enteros, con teclado y nombre accesible;
-        <code>RatingDisplay</code> reporta un promedio con decimales y rellena la fraccion exacta
-        (4,3 de 5 corta al 86%). El simbolo es una mascara CSS detras de
-        <code>--sk-rating-symbol</code>, no un rol del vocabulario de iconos, asi que cambiarlo por
-        un corazon es una sola declaracion. <code>Meter</code> cede el intent de rating.
+      title: Primera versión
+      body: "Una puntuación en una escala corta: el control con que se elige y la lectura del promedio."
     en:
-      title: Rating, as an input and as a display
-      body: >-
-        <code>Rating</code> is a radiogroup of whole steps, with keyboard support and an accessible
-        name; <code>RatingDisplay</code> reports a fractional average and fills the exact fraction
-        (4.3 of 5 stops at 86%). The symbol is a CSS mask behind <code>--sk-rating-symbol</code>,
-        not an icon vocabulary role, so swapping it for a heart is one declaration.
-        <code>Meter</code> hands over the rating intent.
-
-  - date: 2026-09-20
-    kind: bugfix
-    es:
-      title: la tira dibujaba un simbolo de mas
-      body: >-
-        <code>RatingDisplay</code> repetia la mascara cada simbolo y no cada casilla, asi que en una
-        tira de cinco entraban 5,8: una escala de 5 mostraba SEIS estrellas, la ultima cortada.
-        Ahora la mascara mide la casilla completa y hay exactamente <code>max</code> simbolos. Con
-        eso a la vista, el corte de color tambien estaba mal: era un porcentaje de la tira, que
-        incluye los espacios, asi que 3,8 y 4,3 dibujaban lo mismo. Lo calcula la hoja de estilo
-        desde <code>--sk-rating-value</code>, en simbolos: el emisor ya no escribe
-        <code>--sk-rating-fill</code> y quien lo lea desde afuera tiene que leer el valor.
-    en:
-      title: the strip drew one symbol too many
-      body: >-
-        <code>RatingDisplay</code> repeated its mask every SYMBOL instead of every tile, so 5.8 of
-        them fit a five-symbol strip: a scale of 5 painted SIX stars, the last one clipped. The mask
-        is now a whole tile wide, so a strip carries exactly <code>max</code> symbols. With that
-        visible, the colour stop was wrong too: a percentage of the strip counts the gaps, so 3.8
-        and 4.3 drew the same picture. The stylesheet now computes it from
-        <code>--sk-rating-value</code> in symbol space, and neither binding writes
-        <code>--sk-rating-fill</code> any more.
-
-  - date: 2026-09-20
-    kind: breaking
-    es:
-      title: cada paso del input es el boton de icono del kit
-      body: >-
-        Los pasos de <code>Rating</code> llevan <code>sk-button</code> con
-        <code>data-icon-only</code>, <code>data-size="sm"</code> y <code>data-variant="ghost"</code>:
-        la cara cuadrada, el radio y la capa de estado salen de <code>button.css</code>, que ahora
-        hay que importar junto a <code>rating.css</code>. Antes el paso era una caja de 20px sin
-        radio y la capa de estado pintaba un cuadrado gris del tamano de la estrella.
-    en:
-      title: every step of the input is the kit's icon button
-      body: >-
-        <code>Rating</code>'s steps now carry <code>sk-button</code> with
-        <code>data-icon-only</code>, <code>data-size="sm"</code> and <code>data-variant="ghost"</code>:
-        the square face, its radius and the state layer all come from <code>button.css</code>, which
-        a consumer now imports alongside <code>rating.css</code>. Before, a step was a 20px box with
-        no radius and the state layer painted a grey square the size of the star.
+      title: First release
+      body: "A score on a short scale: the control that sets one and the reading of the average."

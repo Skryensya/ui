@@ -5,97 +5,11 @@
 # hash.
 surface: "bbfd4ccb15c83e7a"
 entries:
-  - date: 2026-09-17
+  - date: 2026-10-01
     kind: feature
     es:
-      title: Firmas interactivas declaran forward
-      body: >-
-        Las firmas host interactivas o de formulario publican <code>forward</code>
-        (<code>id</code>/<code>aria-*</code> y attrs de enlace o formulario cuando aplica).
-        Un attr fuera de la lista es <code>unknown-attr</code>.
+      title: Primera versión
+      body: Rotula un control y le adjunta ayuda y mensaje de validación.
     en:
-      title: Interactive signatures declare forward
-      body: >-
-        Interactive or form host signatures publish <code>forward</code>
-        (<code>id</code>/<code>aria-*</code> and link or form attrs where relevant).
-        An attr outside the list is <code>unknown-attr</code>.
-  - date: 2026-09-05
-    kind: feature
-    es:
-      title: FormField gana labelHidden
-      body: >-
-        Recorta el label a una caja de solo-nombre en vez de sacarlo: el control sigue teniendo
-        label, la conexión `for` sigue apuntando ahí y un lector de pantalla lo sigue leyendo; lo
-        único que cambia es que el ojo no. Para un campo al que la composición de alrededor ya
-        nombró, como la caja de respuesta debajo del comentario que contesta, donde repetir la
-        palabra es ruido que hay que saltar. No es "sin label": el slot sigue siendo obligatorio,
-        porque un campo sin él es un control que nada anuncia. La misma distinción que ya hacen
-        `SkipLink` y cualquier Button icon-only.
-    en:
-      title: FormField gains labelHidden
-      body: >-
-        Clips the label to a name-only box rather than dropping it: the control still has a label,
-        the `for` wiring still points at it, and a screen reader still reads it; what changes is
-        that the eye does not. For a field the surrounding composition already named, like the
-        reply box under the comment it answers, where repeating the word is noise to skip. Not "no
-        label": the slot stays required, because a field without one is a control nothing
-        announces. The same distinction `SkipLink` and every icon-only Button already make.
-  - date: 2026-08-14
-    kind: breaking
-    es:
-      title: Field pasa a llamarse FormField
-      body: >-
-        El contrato es <code>form-field</code>, la signature es <code>FormField</code> y la clase raíz es
-        <code>sk-form-field</code>, con sus partes y sus custom properties
-        (<code>--sk-form-field-error-fg</code> y compañía) renombradas igual. En React se importa desde
-        <code>@skryensya/react/form-field</code>, su propio módulo: la separación deja de ser sólo un
-        nombre y pasa a ser un archivo, un test y una página aparte de Input. «Field» a secas es una
-        palabra que todo modelo de dominio ya usa para otra cosa; el nombre largo dice cuál de todas es.
-        La hoja pasa a ser <code>components/form-field.css</code>.
-    en:
-      title: Field is renamed to FormField
-      body: >-
-        The contract is <code>form-field</code>, the signature is <code>FormField</code>, and the root
-        class is <code>sk-form-field</code>, with its parts and custom properties
-        (<code>--sk-form-field-error-fg</code> and friends) renamed to match. In React it is imported
-        from <code>@skryensya/react/form-field</code>, its own module: the separation stops being only a
-        name and becomes a file, a test and a page apart from Input. A bare "field" is a word every
-        domain model already uses for something else; the longer name says which one this is. Its
-        stylesheet is now <code>components/form-field.css</code>.
-  - date: 2026-08-11
-    kind: feature
-    es:
-      title: Field se publica como contrato, con una signature
-      body: >-
-        Entra al catálogo con <code>Field</code>: los dos bindings lo realizan, y la referencia de esta
-        página sale del contrato compilado en vez de prosa escrita al lado. No tiene enhancer: el markup
-        está completo por sí solo, así que las dos bindings son el mismo markup dos veces. Opciones:
-        <code>required</code>, <code>disabled</code>. La hoja es <code>components/field.css</code>.
-    en:
-      title: Field is published as a contract, with one signature
-      body: >-
-        It joins the catalogue with <code>Field</code>: both bindings realize it, and this page's
-        reference is rendered from the compiled contract rather than from prose written beside it. There
-        is no enhancer: the markup is complete on its own, so both bindings are the same markup twice.
-        Options: <code>required</code>, <code>disabled</code>. Its stylesheet is
-        <code>components/field.css</code>.
-  - date: 2026-09-12
-    kind: feature
-    es:
-      title: Los styling hooks de form-field quedan declarados en el contrato
-      body: >-
-        El contrato ahora publica los <code>13</code> styling hooks de este componente. Nada
-        de lo que hayas escrito cambia: son los mismos hooks, con los mismos nombres, y la hoja de
-        estilos no se tocó. Lo nuevo es que el contrato los declara, así que el compilador falla si
-        la hoja declara uno que el contrato no publica, o si el contrato promete uno que la hoja no
-        declara. Esa segunda mitad es la que importa: hasta ahora, redeclarar un hook que ya no
-        existía no daba error, daba silencio.
-    en:
-      title: form-field's styling hooks are now declared in the contract
-      body: >-
-        The contract now publishes this component's <code>13</code> styling hooks. Nothing you
-        wrote changes: the same hooks, under the same names, and the stylesheet was not touched.
-        What is new is that the contract declares them, so the compiler fails when the stylesheet
-        declares one the contract does not publish, or the contract promises one the stylesheet
-        never declares. That second half is the one that matters: until now, re-declaring a hook
-        that no longer existed was not an error, it was silence.
+      title: First release
+      body: Labels a control and attaches its guidance and validation message.

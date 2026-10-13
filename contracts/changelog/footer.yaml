@@ -8,78 +8,16 @@ entries:
   - date: 2026-10-06
     kind: bugfix
     es:
-      title: "Footer aplica su superficie por defecto sin atributo"
-      body: >-
-        La regla de <code>surface="sunken"</code> sólo valía con el atributo escrito. Ahora también cuando falta.
+      title: Footer aplica su superficie por defecto sin atributo
+      body: La regla de <code>surface="sunken"</code> sólo valía con el atributo escrito. Ahora también cuando falta.
     en:
-      title: "Footer applies its default surface without the attribute"
-      body: >-
-        The <code>surface="sunken"</code> rule only held with the attribute written. It now also holds when it is absent.
-  - date: 2026-09-27
-    kind: feature
-    target: paddingExpanded
-    es:
-      title: Footer declara su padding para pantallas amplias con paddingExpanded
-      body: >-
-        <code>paddingExpanded</code> reemplaza a <code>padding</code> desde el breakpoint <code>desktop</code> (52rem). Si se declara, la reducción automática de <code>lg</code> y <code>xl</code> en teléfonos deja de aplicarse: manda lo declarado.
-    en:
-      title: Footer declares its padding for expanded screens with paddingExpanded
-      body: >-
-        <code>paddingExpanded</code> replaces <code>padding</code> from the <code>desktop</code> breakpoint (52rem) up. Once declared, the automatic phone step-down of <code>lg</code> and <code>xl</code> no longer applies: the declaration wins.
-  - date: 2026-09-26
-    kind: feature
-    target: appearance
-    es:
-      title: Footer suma appearance plain, brutalist y frosted
-      body: >-
-        <code>brutalist</code> dibuja la banda con un divisor negro y una sombra dura; <code>frosted</code> la
-        hace translúcida, opaca donde el material no es fiable. Sin <code>tactile</code>.
-    en:
-      title: Footer adds plain, brutalist and frosted appearances
-      body: >-
-        <code>brutalist</code> draws the band with a black divider and a hard offset; <code>frosted</code> makes
-        it see-through, opaque wherever the material cannot be trusted. No <code>tactile</code>.
-  - date: 2026-09-17
-    kind: bugfix
-    es:
-      title: Footer escribe data-divider="false" al apagar el borde
-      body: >-
-        <code>divider</code> ahora declara <code>falseValue: "false"</code>, igual que React ya
-        escribía. Sin eso, el emit omitía el atributo al optar por no, y la hoja seguía pintando
-        la raya superior.
-    en:
-      title: Footer writes data-divider="false" when the hairline is off
-      body: >-
-        <code>divider</code> now declares <code>falseValue: "false"</code>, matching what React
-        already wrote. Without it, emit omitted the attribute on opt-out and the stylesheet kept
-        painting the top rule.
-  - date: 2026-09-12
+      title: Footer applies its default surface without the attribute
+      body: The <code>surface="sunken"</code> rule only held with the attribute written. It now also holds when it is absent.
+  - date: 2026-10-01
     kind: feature
     es:
-      title: Los styling hooks de footer quedan declarados en el contrato
-      body: >-
-        El contrato ahora publica los <code>7</code> styling hooks de este componente. Nada
-        de lo que hayas escrito cambia: son los mismos hooks, con los mismos nombres, y la hoja de
-        estilos no se tocó. Lo nuevo es que el contrato los declara, así que el compilador falla si
-        la hoja declara uno que el contrato no publica, o si el contrato promete uno que la hoja no
-        declara. Esa segunda mitad es la que importa: hasta ahora, redeclarar un hook que ya no
-        existía no daba error, daba silencio.
+      title: Primera versión
+      body: "Cierra la página con una banda propia: navegación secundaria, aviso legal o crédito."
     en:
-      title: footer's styling hooks are now declared in the contract
-      body: >-
-        The contract now publishes this component's <code>7</code> styling hooks. Nothing you
-        wrote changes: the same hooks, under the same names, and the stylesheet was not touched.
-        What is new is that the contract declares them, so the compiler fails when the stylesheet
-        declares one the contract does not publish, or the contract promises one the stylesheet
-        never declares. That second half is the one that matters: until now, re-declaring a hook
-        that no longer existed was not an error, it was silence.
-  - date: 2026-09-17
-    kind: feature
-    es:
-      title: Footer elige su elemento desde el árbol
-      body: >-
-        <code>footerElement</code> acepta <code>footer</code> o <code>div</code>, lo mismo que React ya permitía con <code>as</code>.
-    en:
-      title: Footer chooses its element from the tree
-      body: >-
-        <code>footerElement</code> takes <code>footer</code> or <code>div</code>, what React already allowed through <code>as</code>.
+      title: First release
+      body: "Closes the page with a band of its own: secondary navigation, a legal line, or a credit."

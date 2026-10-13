@@ -9,137 +9,16 @@ entries:
     kind: bugfix
     target: ListItem
     es:
-      title: "Las filas con varios datos al final ya no aplastan el título"
-      body: >-
-        El contenido de la fila parte de base 0 con un piso de <code>min(8rem, 40%)</code> y el slot <code>trailing</code> toma su ancho natural y envuelve alineado a la derecha, en vez de montarse sobre el título. El contenido de <code>ListItemPlain</code> ocupa la fila, y título y descripción usan los tokens de interlineado que existen (<code>--font-line-height-heading</code>, <code>--font-line-height-body</code>), no los que no existían.
+      title: Las filas con varios datos al final ya no aplastan el título
+      body: El contenido de la fila parte de base 0 con un piso de <code>min(8rem, 40%)</code> y el slot <code>trailing</code> toma su ancho natural y envuelve alineado a la derecha, en vez de montarse sobre el título.
     en:
-      title: "Rows with several things at the end no longer crush the title"
-      body: >-
-        The row's content starts from basis 0 with a floor of <code>min(8rem, 40%)</code> and the <code>trailing</code> slot takes its natural width and wraps right-aligned, instead of running over the title. <code>ListItemPlain</code>'s content fills the row, and title and description use the line-height tokens that exist (<code>--font-line-height-heading</code>, <code>--font-line-height-body</code>), not ones that did not.
-  - date: 2026-09-17
+      title: Rows with several things at the end no longer crush the title
+      body: The row's content starts from basis 0 with a floor of <code>min(8rem, 40%)</code> and the <code>trailing</code> slot takes its natural width and wraps right-aligned, instead of running over the title.
+  - date: 2026-10-01
     kind: feature
     es:
-      title: Firmas interactivas declaran forward
-      body: >-
-        Las firmas host interactivas o de formulario publican <code>forward</code>
-        (<code>id</code>/<code>aria-*</code> y attrs de enlace o formulario cuando aplica).
-        Un attr fuera de la lista es <code>unknown-attr</code>.
+      title: Primera versión
+      body: Organiza elementos relacionados en filas claras y escaneables.
     en:
-      title: Interactive signatures declare forward
-      body: >-
-        Interactive or form host signatures publish <code>forward</code>
-        (<code>id</code>/<code>aria-*</code> and link or form attrs where relevant).
-        An attr outside the list is <code>unknown-attr</code>.
-  - date: 2026-09-17
-    kind: feature
-    target: ListItemButton
-    es:
-      title: ListItemButton declara forward para attrs de formulario
-      body: >-
-        Publica <code>forward</code> con <code>id</code>/<code>name</code>/<code>form</code> y
-        <code>aria-*</code> (par de <code>Button.action</code>). <code>disabled</code> sigue
-        siendo opción.
-    en:
-      title: ListItemButton declares forward for form attrs
-      body: >-
-        Publishes <code>forward</code> with <code>id</code>/<code>name</code>/<code>form</code>
-        and <code>aria-*</code> (Button.action peer). <code>disabled</code> remains an option.
-  - date: 2026-09-17
-    kind: feature
-    target: ListItemButton
-    es:
-      title: ListItemButton expone disabled nativo en el árbol
-      body: >-
-        La misma opción <code>disabled</code> de las filas inertes se remapea en el host
-        <code>&lt;button&gt;</code> a <code>disabled</code> + <code>aria-disabled</code> (la hoja ya
-        estilizaba <code>:disabled</code>). Las filas <code>ListItem</code> /
-        <code>ListItemPlain</code> siguen con <code>data-disabled</code> en el <code>&lt;li&gt;</code>.
-    en:
-      title: ListItemButton exposes native disabled in the tree
-      body: >-
-        The same <code>disabled</code> option inert rows use is remapped on the
-        <code>&lt;button&gt;</code> host to <code>disabled</code> + <code>aria-disabled</code>
-        (the stylesheet already styled <code>:disabled</code>). <code>ListItem</code> /
-        <code>ListItemPlain</code> rows keep <code>data-disabled</code> on the <code>&lt;li&gt;</code>.
-  - date: 2026-09-17
-    kind: feature
-    target: ListItemButton
-    es:
-      title: List publica ListItemButton y deja de reclamar sk-interactive
-      body: >-
-        <code>ListItemButton</code> entra al contrato (ya existía en React): la fila entera es un
-        <code>&lt;button type="button"&gt;</code> con <code>sk-interactive</code>, el par de
-        <code>ListItemLink</code> para acciones sin URL. <code>List</code> y
-        <code>OrderedList</code> lo aceptan en <code>children</code>. La parte
-        <code>interactive</code> deja de publicarse: <code>sk-interactive</code> se compone vía
-        <code>also</code>, no es anatomía de list.
-    en:
-      title: List publishes ListItemButton and stops claiming sk-interactive
-      body: >-
-        <code>ListItemButton</code> joins the contract (it already existed in React): the whole row
-        is a <code>&lt;button type="button"&gt;</code> with <code>sk-interactive</code>, the
-        <code>ListItemLink</code> peer for actions without a URL. <code>List</code> and
-        <code>OrderedList</code> accept it in <code>children</code>. The <code>interactive</code>
-        part is no longer published: <code>sk-interactive</code> is composed via <code>also</code>,
-        not list anatomy.
-  - date: 2026-08-11
-    kind: feature
-    es:
-      title: List se publica como contrato, con 5 signatures
-      body: >-
-        Entra al catálogo con <code>List</code>, <code>OrderedList</code>, <code>ListItemPlain</code>,
-        <code>ListItem</code>, <code>ListItemLink</code>: los dos bindings lo realizan, y la referencia
-        de esta página sale del contrato compilado en vez de prosa escrita al lado. No tiene enhancer:
-        el markup está completo por sí solo, así que las dos bindings son el mismo markup dos veces.
-        Opciones: <code>density</code>, <code>dividers</code>, <code>href</code>, <code>disabled</code>.
-        La hoja es <code>components/list.css</code>.
-    en:
-      title: List is published as a contract, with 5 signatures
-      body: >-
-        It joins the catalogue with <code>List</code>, <code>OrderedList</code>,
-        <code>ListItemPlain</code>, <code>ListItem</code>, <code>ListItemLink</code>: both bindings
-        realize it, and this page's reference is rendered from the compiled contract rather than from
-        prose written beside it. There is no enhancer: the markup is complete on its own, so both
-        bindings are the same markup twice. Options: <code>density</code>, <code>dividers</code>,
-        <code>href</code>, <code>disabled</code>. Its stylesheet is <code>components/list.css</code>.
-
-  - date: 2026-09-09
-    kind: feature
-    es:
-      title: dividers deja de ser inalcanzable desde un usage tree
-      body: >-
-        <code>dividers</code> estaba declarada en el contrato, la hoja la leía y el binding React ya
-        la tomaba como prop, pero ninguna signature la exponía y no tenía <code>falseValue</code>:
-        un árbol podía pedir <code>dividers: false</code> y el emisor no escribía nada, así que las
-        líneas seguían ahí. Ahora <code>List</code> y <code>OrderedList</code> la declaran y
-        <code>false</code> emite <code>data-dividers="none"</code>, que es lo que la hoja siempre
-        esperó. Nada nuevo se publica: la opción deja de estar escondida.
-    en:
-      title: dividers stops being unreachable from a usage tree
-      body: >-
-        <code>dividers</code> was declared on the contract, read by the stylesheet and already taken
-        as a prop by the React binding, but no signature exposed it and it had no
-        <code>falseValue</code>: a tree could ask for <code>dividers: false</code> and the emitter
-        wrote nothing, so the rules stayed on. <code>List</code> and <code>OrderedList</code> declare
-        it now, and <code>false</code> emits <code>data-dividers="none"</code>, which is what the
-        stylesheet always expected. Nothing new is published; the option stops being hidden.
-  - date: 2026-09-12
-    kind: feature
-    es:
-      title: Los styling hooks de list quedan declarados en el contrato
-      body: >-
-        El contrato ahora publica los <code>15</code> styling hooks de este componente. Nada
-        de lo que hayas escrito cambia: son los mismos hooks, con los mismos nombres, y la hoja de
-        estilos no se tocó. Lo nuevo es que el contrato los declara, así que el compilador falla si
-        la hoja declara uno que el contrato no publica, o si el contrato promete uno que la hoja no
-        declara. Esa segunda mitad es la que importa: hasta ahora, redeclarar un hook que ya no
-        existía no daba error, daba silencio.
-    en:
-      title: list's styling hooks are now declared in the contract
-      body: >-
-        The contract now publishes this component's <code>15</code> styling hooks. Nothing you
-        wrote changes: the same hooks, under the same names, and the stylesheet was not touched.
-        What is new is that the contract declares them, so the compiler fails when the stylesheet
-        declares one the contract does not publish, or the contract promises one the stylesheet
-        never declares. That second half is the one that matters: until now, re-declaring a hook
-        that no longer existed was not an error, it was silence.
+      title: First release
+      body: Organizes related items into clear, scannable rows.

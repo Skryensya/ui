@@ -10,97 +10,15 @@ entries:
     target: Navbar
     es:
       title: Navbar acepta un Inline como hijo
-      body: >-
-        Un <code>Inline</code> agrupa ítems de la barra que comparten destino, casi siempre <code>show</code>: los links del sitio en uno con <code>show="expanded"</code> y el <code>Vaul.Trigger</code> del drawer en otro con <code>show="compact"</code>.
+      body: 'Un <code>Inline</code> agrupa ítems de la barra que comparten destino, casi siempre <code>show</code>: los links del sitio en uno con <code>show="expanded"</code> y el <code>Vaul.Trigger</code> del drawer en otro con <code>show="compact"</code>.'
     en:
       title: Navbar takes an Inline as a child
-      body: >-
-        An <code>Inline</code> groups bar items that share a fate, almost always <code>show</code>: the site's links in one with <code>show="expanded"</code> and the drawer's <code>Vaul.Trigger</code> in another with <code>show="compact"</code>.
-  - date: 2026-09-26
-    kind: feature
-    target: appearance
-    es:
-      title: Navbar suma appearance plain, brutalist y frosted
-      body: >-
-        <code>brutalist</code> dibuja la barra con una línea negra y una sombra dura debajo;
-        <code>frosted</code> la hace translúcida sobre el contenido que pasa por debajo, opaca donde el material
-        no es fiable. Sin <code>tactile</code>: una barra no se presiona.
-    en:
-      title: Navbar adds plain, brutalist and frosted appearances
-      body: >-
-        <code>brutalist</code> draws the bar with a black rule and a hard offset beneath it;
-        <code>frosted</code> makes it see-through over the content scrolling underneath, opaque wherever the
-        material cannot be trusted. No <code>tactile</code>: a bar is never pressed.
-  - date: 2026-09-17
-    kind: chore
-    es:
-      title: Auditoría de contrato. Navbar ya era sólido como shell
-      body: >-
-        Sin cambio de superficie: tres signatures (<code>Navbar</code>/<code>NavbarBrand</code>/
-        <code>NavbarActions</code>), invitados <code>NavList</code> y <code>Megamenu</code>,
-        <code>13</code> hooks propios, sin enhancer ni eventos. La semántica ahora apunta a
-        <code>Sidebar</code> y <code>Megamenu</code> como alternativas; el comentario de la hoja
-        aclara que el host es <code>&lt;header&gt;</code>, no un segundo <code>&lt;nav&gt;</code>.
-    en:
-      title: Contract audit. Navbar was already solid as a shell
-      body: >-
-        No surface change: three signatures (<code>Navbar</code>/<code>NavbarBrand</code>/
-        <code>NavbarActions</code>), <code>NavList</code> and <code>Megamenu</code> guests,
-        <code>13</code> own hooks, no enhancer or events. Semantics now point at
-        <code>Sidebar</code> and <code>Megamenu</code> as alternatives; the stylesheet comment
-        clarifies the host is <code>&lt;header&gt;</code>, not a second <code>&lt;nav&gt;</code>.
-  - date: 2026-08-20
+      body: "An <code>Inline</code> groups bar items that share a fate, almost always <code>show</code>: the site's links in one with <code>show=\"expanded\"</code> and the drawer's <code>Vaul.Trigger</code> in another with <code>show=\"compact\"</code>."
+  - date: 2026-10-01
     kind: feature
     es:
-      title: Navbar acepta Megamenu como invitado, junto a NavList
-      body: >-
-        El slot <code>children</code> de <code>Navbar</code> ahora también acepta
-        <code>Megamenu</code>: otro invitado con sus propios destinos de navegación, la misma
-        relación que ya tiene con <code>NavList</code>. Nada del rol de Navbar como SHELL cambia:
-        sigue sin máquina propia y sin ajustar el markup de su invitado, sólo redeclara sus estilos.
+      title: Primera versión
+      body: Reúne marca, navegación y acciones globales en la cabecera.
     en:
-      title: Navbar accepts Megamenu as a guest, alongside NavList
-      body: >-
-        <code>Navbar</code>'s own <code>children</code> slot now also accepts <code>Megamenu</code>:
-        another guest with its own navigation destinations, the same relationship it already has
-        with <code>NavList</code>. Nothing about Navbar's own role as a SHELL changes: still no
-        machine of its own, still never reaching into its guest's markup, only re-declaring its own
-        styling hooks.
-  - date: 2026-08-11
-    kind: feature
-    es:
-      title: Navbar se publica como contrato, con 3 signatures
-      body: >-
-        Entra al catálogo con <code>Navbar</code>, <code>NavbarBrand</code>, <code>NavbarActions</code>:
-        los dos bindings lo realizan, y la referencia de esta página sale del contrato compilado en vez
-        de prosa escrita al lado. No tiene enhancer: el markup está completo por sí solo, así que las
-        dos bindings son el mismo markup dos veces. No tiene opciones: el elemento ES el significado. La
-        hoja es <code>components/navbar.css</code>.
-    en:
-      title: Navbar is published as a contract, with 3 signatures
-      body: >-
-        It joins the catalogue with <code>Navbar</code>, <code>NavbarBrand</code>,
-        <code>NavbarActions</code>: both bindings realize it, and this page's reference is rendered from
-        the compiled contract rather than from prose written beside it. There is no enhancer: the markup
-        is complete on its own, so both bindings are the same markup twice. It has no options: the
-        element IS the meaning. Its stylesheet is <code>components/navbar.css</code>.
-  - date: 2026-09-12
-    kind: feature
-    es:
-      title: Los styling hooks de navbar quedan declarados en el contrato
-      body: >-
-        El contrato ahora publica los <code>13</code> styling hooks de este componente. Nada
-        de lo que hayas escrito cambia: son los mismos hooks, con los mismos nombres, y la hoja de
-        estilos no se tocó. Lo nuevo es que el contrato los declara, así que el compilador falla si
-        la hoja declara uno que el contrato no publica, o si el contrato promete uno que la hoja no
-        declara. Esa segunda mitad es la que importa: hasta ahora, redeclarar un hook que ya no
-        existía no daba error, daba silencio.
-    en:
-      title: navbar's styling hooks are now declared in the contract
-      body: >-
-        The contract now publishes this component's <code>13</code> styling hooks. Nothing you
-        wrote changes: the same hooks, under the same names, and the stylesheet was not touched.
-        What is new is that the contract declares them, so the compiler fails when the stylesheet
-        declares one the contract does not publish, or the contract promises one the stylesheet
-        never declares. That second half is the one that matters: until now, re-declaring a hook
-        that no longer existed was not an error, it was silence.
+      title: First release
+      body: Collects brand, global navigation, and actions in the header.

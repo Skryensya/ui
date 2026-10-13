@@ -10,171 +10,24 @@ entries:
     target: show
     es:
       title: Box existe de un solo lado de la línea expandida con show
-      body: >-
-        <code>show</code> (<code>compact</code> o <code>expanded</code>) oculta la caja del otro lado de 52rem de su contenedor. <code>paddingExpanded</code> también responde ahora al contenedor y no a la ventana.
+      body: <code>show</code> (<code>compact</code> o <code>expanded</code>) oculta la caja del otro lado de 52rem de su contenedor. <code>paddingExpanded</code> también responde ahora al contenedor y no a la ventana.
     en:
       title: Box exists on one side of the expanded line with show
-      body: >-
-        <code>show</code> (<code>compact</code> or <code>expanded</code>) hides the box on the other side of its 52rem container. <code>paddingExpanded</code> also answers to the container now, not the window.
-  - date: 2026-09-27
-    kind: feature
-    target: measure
-    es:
-      title: Box limita su ancho con measure
-      body: >-
-        <code>measure</code> (<code>sm</code>, <code>md</code>, <code>lg</code>) pone un techo de ancho desde la misma escala que Wrapper, sin centrar y sin gutter: el Box conserva su lugar en el flujo. Cuenta como decisión visual para <code>atLeastOneOf</code>.
-    en:
-      title: Box caps its width with measure
-      body: >-
-        <code>measure</code> (<code>sm</code>, <code>md</code>, <code>lg</code>) sets a width ceiling from the same scale as Wrapper, neither centred nor guttered: the Box keeps its place in the flow. It counts toward <code>atLeastOneOf</code>.
-  - date: 2026-09-27
-    kind: feature
-    target: paddingExpanded
-    es:
-      title: Box declara su padding para pantallas amplias con paddingExpanded
-      body: >-
-        <code>padding</code> es el valor desde la pantalla más chica; <code>paddingExpanded</code> lo reemplaza desde el breakpoint <code>desktop</code> (52rem). Sin declararlo no cambia nada: el markup existente se ve igual.
-    en:
-      title: Box declares its padding for expanded screens with paddingExpanded
-      body: >-
-        <code>padding</code> is the value from the smallest screen up; <code>paddingExpanded</code> replaces it from the <code>desktop</code> breakpoint (52rem) up. Left out, nothing changes: existing markup renders as before.
-  - date: 2026-09-26
-    kind: feature
-    target: appearance
-    es:
-      title: Box suma appearance plain, brutalist y frosted
-      body: >-
-        <code>Box</code> acepta <code>appearance</code>, el mismo eje de Button y Tile. <code>brutalist</code>
-        dibuja la caja con borde negro y una sombra dura desplazada; <code>frosted</code> hace la superficie
-        un material translúcido sobre el fondo difuminado, opaco donde el material no es fiable. Sin
-        <code>tactile</code>: una caja no se presiona. Hooks nuevos <code>--sk-box-brutalist-*</code> y
-        <code>--sk-box-frost-*</code>.
-    en:
-      title: Box adds plain, brutalist and frosted appearances
-      body: >-
-        <code>Box</code> accepts <code>appearance</code>, the same axis as Button and Tile. <code>brutalist</code>
-        draws the box with a black edge and a hard offset shadow; <code>frosted</code> makes the surface a
-        translucent material over the blurred backdrop, opaque wherever the material cannot be trusted. No
-        <code>tactile</code>: a box is never pressed. New hooks <code>--sk-box-brutalist-*</code> and
-        <code>--sk-box-frost-*</code>.
-  - date: 2026-09-16
-    kind: bugfix
-    es:
-      title: Box publica solo sk-box y deja de cargar wrapper.css
-      body: >-
-        El contrato deja de compartir <code>layoutParts</code> y de reclamar los hooks de
-        <code>wrapper.css</code>. Un árbol con <code>Box</code> carga sólo
-        <code>patterns/box.css</code>; la medida de columna sigue siendo de Wrapper.
-    en:
-      title: Box publishes only sk-box and stops loading wrapper.css
-      body: >-
-        The contract no longer shares <code>layoutParts</code> or claims
-        <code>wrapper.css</code> hooks. A tree with <code>Box</code> loads only
-        <code>patterns/box.css</code>; page-column measure stays Wrapper's.
-  - date: 2026-08-11
-    kind: feature
-    es:
-      title: Box se publica como contrato, con una signature
-      body: >-
-        Entra al catálogo con <code>Box</code>: los dos bindings lo realizan, y la referencia de esta
-        página sale del contrato compilado en vez de prosa escrita al lado. No tiene enhancer: el markup
-        está completo por sí solo, así que las dos bindings son el mismo markup dos veces. Opciones:
-        <code>padding</code>, <code>surface</code>, <code>border</code>. La hoja es
-        <code>patterns/box.css</code>.
-    en:
-      title: Box is published as a contract, with one signature
-      body: >-
-        It joins the catalogue with <code>Box</code>: both bindings realize it, and this page's
-        reference is rendered from the compiled contract rather than from prose written beside it. There
-        is no enhancer: the markup is complete on its own, so both bindings are the same markup twice.
-        Options: <code>padding</code>, <code>surface</code>, <code>border</code>. Its stylesheet is
-        <code>patterns/box.css</code>.
-  - date: 2026-09-12
-    kind: feature
-    es:
-      title: Los styling hooks de box quedan declarados en el contrato
-      body: >-
-        El contrato ahora publica los <code>7</code> styling hooks de este componente. Nada
-        de lo que hayas escrito cambia: son los mismos hooks, con los mismos nombres, y la hoja de
-        estilos no se tocó. Lo nuevo es que el contrato los declara, así que el compilador falla si
-        la hoja declara uno que el contrato no publica, o si el contrato promete uno que la hoja no
-        declara. Esa segunda mitad es la que importa: hasta ahora, redeclarar un hook que ya no
-        existía no daba error, daba silencio.
-    en:
-      title: box's styling hooks are now declared in the contract
-      body: >-
-        The contract now publishes this component's <code>7</code> styling hooks. Nothing you
-        wrote changes: the same hooks, under the same names, and the stylesheet was not touched.
-        What is new is that the contract declares them, so the compiler fails when the stylesheet
-        declares one the contract does not publish, or the contract promises one the stylesheet
-        never declares. That second half is the one that matters: until now, re-declaring a hook
-        that no longer existed was not an error, it was silence.
-  - date: 2026-09-12
-    kind: feature
-    es:
-      title: El contrato declara las otras hojas donde vive su estilo
-      body: >-
-        Este componente se pinta desde mas de una hoja, asi que el contrato ahora las nombra con
-        <code>hookSheets</code> y su lista de <code>hooks</code> cubre todas. Antes solo se podia
-        reconciliar contra la hoja de <code>css</code>, asi que los hooks de las otras eran
-        superficie publica que nadie documentaba ni verificaba. No cambia ningun estilo: cambia que
-        ahora estan declarados y el compilador los chequea.
-    en:
-      title: The contract declares the other stylesheets its styling lives in
-      body: >-
-        This component paints from more than one stylesheet, so the contract now names them with
-        <code>hookSheets</code> and its <code>hooks</code> list covers all of them. Before, only the
-        sheet <code>css</code> names could be reconciled, so the hooks in the others were public
-        surface nobody documented and nothing checked. No styling changes: what changes is that they
-        are declared now, and the compiler checks them.
-  - date: 2026-09-16
-    kind: breaking
-    es:
-      title: Un Box sin padding, surface ni border ya no valida
-      body: >-
-        Box es su estilo visual: con las tres opciones en <code>none</code> no pinta nada y queda un
-        <code>div</code> haciendose pasar por una decision. El contrato ahora exige al menos una de
-        <code>padding</code>, <code>surface</code> o <code>border</code> con un valor distinto del
-        default, y escribir <code>padding="none"</code> no cuenta: esta presente y sigue sin pintar.
-        Para agrupar sin pintar estan <code>Stack</code>, <code>Inline</code> y <code>Grid</code>, que
-        es a lo que se migraron los 18 arboles que hacian esto en este repo. La regla es una
-        constraint nueva del contrato, <code>atLeastOneOf</code>, que el validador reporta como
-        <code>missing-at-least-one</code>.
-    en:
-      title: A Box with no padding, surface or border no longer validates
-      body: >-
-        A Box IS its visual style: with all three options at <code>none</code> it paints nothing and
-        is a bare <code>div</code> standing in for a decision. The contract now demands at least one
-        of <code>padding</code>, <code>surface</code> or <code>border</code> set to something other
-        than its default, and writing <code>padding="none"</code> does not count: it is present and
-        still invisible. Grouping without paint is <code>Stack</code>, <code>Inline</code> and
-        <code>Grid</code>, which is where the 18 trees in this repo that did it have moved. The rule
-        is a new contract constraint, <code>atLeastOneOf</code>, reported by the validator as
-        <code>missing-at-least-one</code>.
-  - date: 2026-09-17
-    kind: feature
-    es:
-      title: Box elige su elemento desde el árbol
-      body: >-
-        <code>boxElement</code> acepta <code>div</code>, <code>section</code>, <code>article</code>,
-        <code>aside</code>, <code>header</code>, <code>footer</code>, <code>nav</code> y
-        <code>main</code>. React ya lo permitía con <code>as</code>, pero un árbol sólo podía emitir
-        un <code>div</code>, así que una región o un landmark no tenía forma de escribirse.
-    en:
-      title: Box choose their element from the tree
-      body: >-
-        <code>boxElement</code> takes <code>div</code>, <code>section</code>, <code>article</code>,
-        <code>aside</code>, <code>header</code>, <code>footer</code>, <code>nav</code> and
-        <code>main</code>. React already allowed it through <code>as</code>, but a tree could only
-        emit a <code>div</code>, so a region or a landmark had no way to be written.
+      body: <code>show</code> (<code>compact</code> or <code>expanded</code>) hides the box on the other side of its 52rem container. <code>paddingExpanded</code> also answers to the container now, not the window.
   - date: 2026-10-04
     kind: feature
     target: radius
     es:
       title: Box elige sus esquinas con radius
-      body: >-
-        <code>radius</code> (<code>none</code>, <code>control</code>, <code>surface</code>) cambia la curvatura de las esquinas. Sin él, el Box conserva el radio de superficie de siempre. <code>none</code> es para una banda que corre de borde a borde de la pantalla (la cabecera de una página con fondo): redondeada, parece un rectángulo recortado.
+      body: <code>radius</code> (<code>none</code>, <code>control</code>, <code>surface</code>) cambia la curvatura de las esquinas. Sin él, el Box conserva el radio de superficie de siempre.
     en:
       title: Box chooses its corners with radius
-      body: >-
-        <code>radius</code> (<code>none</code>, <code>control</code>, <code>surface</code>) sets how round the corners are. Without it the Box keeps the surface radius it always had. <code>none</code> is for a band that runs edge to edge (a page header with a background): rounded, it reads as a clipped rectangle.
+      body: <code>radius</code> (<code>none</code>, <code>control</code>, <code>surface</code>) sets how round the corners are. Without it the Box keeps the surface radius it always had.
+  - date: 2026-10-01
+    kind: feature
+    es:
+      title: Primera versión
+      body: Añade superficie, borde y espacio interior alrededor de un grupo.
+    en:
+      title: First release
+      body: Adds surface, border, and inner spacing around a group.

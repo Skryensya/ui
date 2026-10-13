@@ -5,277 +5,38 @@
 # hash.
 surface: "756fcd30528d81c6"
 entries:
-  - date: 2026-09-26
-    kind: feature
-    target: name
-    es:
-      title: El vocabulario estable gana appearance
-      body: >-
-        <code>appearance</code> nombra los controles que cambian la presentación visual de una superficie. Lucide,
-        Phosphor y Material lo dibujan como una paleta, y los tres sets del repo ya lo traen.
-    en:
-      title: The stable vocabulary gains appearance
-      body: >-
-        <code>appearance</code> names controls that change a surface's visual presentation. Lucide, Phosphor and
-        Material draw it as a palette, and all three sets in this repo ship it.
-  - date: 2026-09-25
-    kind: feature
-    target: name
-    es:
-      title: El vocabulario estable gana minimize, maximize y restore
-      body: >-
-        Las tres etapas de una ventana, para los controles de <code>Window</code>. <code>restore</code> es la vuelta desde cualquiera de las otras
-        dos, por eso es un solo rol. Lucide <code>Minus</code>, <code>Maximize2</code> y <code>Minimize2</code>, Phosphor <code>minus</code>,
-        <code>arrows-out-simple</code> y <code>arrows-in-simple</code>, Material <code>minimize</code>, <code>open_in_full</code> y
-        <code>close_fullscreen</code>; los tres sets del repo ya los traen.
-    en:
-      title: The stable vocabulary gains minimize, maximize and restore
-      body: >-
-        The three stages of a window, for <code>Window</code>'s controls. <code>restore</code> is the way back from either of the other two,
-        which is why it is one role. Lucide <code>Minus</code>, <code>Maximize2</code> and <code>Minimize2</code>, Phosphor <code>minus</code>,
-        <code>arrows-out-simple</code> and <code>arrows-in-simple</code>, Material <code>minimize</code>, <code>open_in_full</code> and
-        <code>close_fullscreen</code>; all three sets in this repo ship them.
-  - date: 2026-09-23
-    kind: feature
-    target: name
-    es:
-      title: El vocabulario estable gana zoom-in y fit
-      body: >-
-        <code>zoom-in</code>, el par de <code>zoom-out</code>, y <code>fit</code>, "mostrar todo en la vista": el primero no nombra una lupa y el
-        segundo no es <code>maximize</code>, que habla de la ventana. Los consume la barra de zoom de <code>Canvas</code>. Lucide <code>ZoomIn</code> y
-        <code>Scan</code>, Phosphor <code>magnifying-glass-plus</code> y <code>corners-out</code>, Material <code>zoom_in</code> y
-        <code>fit_screen</code>; los tres sets del repo ya los traen.
-    en:
-      title: The stable vocabulary gains zoom-in and fit
-      body: >-
-        <code>zoom-in</code>, the pair of <code>zoom-out</code>, and <code>fit</code>, "show all of it in the view": the first names no magnifying glass
-        and the second is not <code>maximize</code>, which is about the window. <code>Canvas</code>'s zoom bar consumes them. Lucide <code>ZoomIn</code>
-        and <code>Scan</code>, Phosphor <code>magnifying-glass-plus</code> and <code>corners-out</code>, Material <code>zoom_in</code> and
-        <code>fit_screen</code>; all three sets in this repo ship them.
-  - date: 2026-09-21
-    kind: feature
-    target: name
-    es:
-      title: El vocabulario estable gana placeholder
-      body: >-
-        Un rol para el icono que todavía no se eligió: el hueco donde va un glifo. Los tres sets lo
-        dibujan como una caja vacía punteada (Lucide <code>SquareDashed</code>, Phosphor
-        <code>rectangle-dashed</code>, Material <code>select</code>), y ese vacío es todo el dibujo,
-        así que el nombre sobrevive al cambio de set más fácil que cualquier otro de la lista. Es el
-        gemelo del primitive <code>placeholder</code>: los dos son la forma de algo que no está. Lo
-        consumen los diagramas de anatomía de la documentación, donde el sujeto no tiene que decir
-        nada propio. Como <code>IconSet</code> es completo, agregar un rol es aditivo para quien
-        consume y trabajo nuevo para quien dibuja un set; los tres del repo ya lo traen.
-    en:
-      title: The stable vocabulary gains placeholder
-      body: >-
-        A role for the icon that has not been chosen: the hole a glyph goes in. All three sets draw
-        it as an empty dashed box (Lucide <code>SquareDashed</code>, Phosphor
-        <code>rectangle-dashed</code>, Material <code>select</code>), and that emptiness is the whole
-        drawing, so the name survives a change of set more easily than any other on the list. It is
-        the twin of the <code>placeholder</code> primitive: both are the shape of something that is
-        not there. The docs anatomy diagrams consume it, where the subject must not say anything of
-        its own. Because <code>IconSet</code> is complete, adding a role is additive for a consumer
-        and new work for whoever draws a set; all three in this repo already ship it.
-  - date: 2026-09-14
-    kind: feature
-    target: name
-    es:
-      title: El vocabulario estable gana code
-      body: >-
-        Un rol para "esto es código fuente", que los tres sets publicados ya cubren. Es un ROL y no un
-        dibujo, que es lo que esta lista pide: Lucide lo ocupa con dos chevrones enfrentados, Phosphor
-        con corchetes angulares y Material con su propio glifo, y las tres dicen lo mismo. Por eso el
-        nombre no es `brackets`: ese nombra el dibujo de UN set, y dejaría a los otros dos publicando
-        un icono llamado como algo que no dibujan. Como `IconSet` es completo, agregar un rol es
-        aditivo para quien consume y trabajo nuevo para quien dibuja un set; los tres del repo ya lo
-        traen.
-    en:
-      title: The stable vocabulary gains code
-      body: >-
-        A role for "this is source", already covered by all three published sets. It is a ROLE and not
-        a drawing, which is what this list asks for: Lucide fills it with two facing chevrons,
-        Phosphor with angle brackets and Material with its own glyph, and all three say the same
-        thing. That is why the name is not `brackets`: that is what ONE set calls the drawing, and it
-        would leave the other two publishing an icon named after something they do not draw. Because
-        `IconSet` is complete, adding a role is additive for a consumer and new work for whoever draws
-        a set; all three in this repo already ship it.
-  - date: 2026-09-05
-    kind: feature
-    es:
-      title: El vocabulario estable gana vote-up y vote-down
-      body: >-
-        Dos roles nuevos para la acción de votar, que ya cubren los tres sets publicados. Son ROLES y
-        no dibujos, que es lo que esta lista pide: Lucide ocupa el rol con `ArrowBigUp`, Phosphor con
-        `arrow-fat-up` y Material ni siquiera dibuja una flecha, dibuja un pulgar. Tres dibujos
-        distintos para una sola intención es exactamente el caso que el vocabulario existe para
-        resolver, y por eso el nombre no es `arrow-big-up`: ese es el nombre que UN set le da al
-        dibujo, y dejaría a los otros dos publicando un icono que se llama como algo que no dibujan.
-        Como `IconSet` es completo, agregar un rol es aditivo para quien consume y trabajo nuevo para
-        quien dibuja un set: los tres del repo ya lo traen.
-    en:
-      title: The stable vocabulary gains vote-up and vote-down
-      body: >-
-        Two new roles for the act of voting, already covered by all three published sets. They are
-        ROLES and not drawings, which is what this list asks for: Lucide fills the role with
-        `ArrowBigUp`, Phosphor with `arrow-fat-up`, and Material does not draw an arrow at all, it
-        draws a thumb. Three different drawings for one intention is exactly the case the vocabulary
-        exists to resolve, and it is why the name is not `arrow-big-up`: that is what ONE set calls
-        the drawing, and it would leave the other two publishing an icon named after something they
-        do not draw. Because `IconSet` is complete, adding a role is additive for a consumer and new
-        work for whoever draws a set; all three in this repo already ship it.
-  - date: 2026-09-02
-    kind: feature
-    target: name
-    es:
-      title: El rol language se enlaza en todos los sets
-      body: >-
-        <code>language</code> nombra elegir el idioma de una app, no un dibujo: lo cubren los tres
-        sets publicados (Lucide lo dibuja como dos trazos de escritura, Phosphor y Material como un
-        par <code>A文</code>).
-    en:
-      title: The language role is linked by every icon set
-      body: >-
-        <code>language</code> names picking an app's language, not a drawing: all three published
-        sets cover it (Lucide draws it as two script strokes, Phosphor and Material as an
-        <code>A文</code> pair).
-  - date: 2026-08-21
-    kind: feature
-    target: name
-    es:
-      title: El rol zoom-out se enlaza en todos los sets
-      body: >-
-        <code>zoom-out</code> nombra alejar la vista, no una lupa. Los tres sets publicados lo
-        cubren.
-    en:
-      title: The zoom-out role is linked by every icon set
-      body: >-
-        <code>zoom-out</code> names pulling the view back, not a magnifying glass. All three
-        published sets cover it.
-  - date: 2026-08-05
-    kind: feature
-    target: name
-    es:
-      title: Los roles file y folder se enlazan en todos los sets
-      body: >-
-        <code>file</code> y <code>folder</code> nombran la estructura de un explorador sin clasificar
-        cada extensión. Los tres sets publicados los cubren.
-    en:
-      title: File and folder roles are linked by every icon set
-      body: >-
-        <code>file</code> and <code>folder</code> name file-browser structure without classifying
-        every extension. All three published sets cover them.
-  - date: 2026-09-12
-    kind: feature
-    es:
-      title: Los styling hooks de icon quedan declarados en el contrato
-      body: >-
-        El contrato ahora publica los <code>1</code> styling hooks de este componente. Nada
-        de lo que hayas escrito cambia: son los mismos hooks, con los mismos nombres, y la hoja de
-        estilos no se tocó. Lo nuevo es que el contrato los declara, así que el compilador falla si
-        la hoja declara uno que el contrato no publica, o si el contrato promete uno que la hoja no
-        declara. Esa segunda mitad es la que importa: hasta ahora, redeclarar un hook que ya no
-        existía no daba error, daba silencio.
-    en:
-      title: icon's styling hooks are now declared in the contract
-      body: >-
-        The contract now publishes this component's <code>1</code> styling hooks. Nothing you
-        wrote changes: the same hooks, under the same names, and the stylesheet was not touched.
-        What is new is that the contract declares them, so the compiler fails when the stylesheet
-        declares one the contract does not publish, or the contract promises one the stylesheet
-        never declares. That second half is the one that matters: until now, re-declaring a hook
-        that no longer existed was not an error, it was silence.
-  - date: 2026-09-14
-    kind: breaking
-    es:
-      title: El set por defecto de React pasa a ser Lucide
-      body: >-
-        <code>&lt;Icon name="…" /&gt;</code> sin <code>IconSetProvider</code> dibujaba con Phosphor,
-        que era el set que viajaba dentro de <code>@skryensya/react</code>. Ahora viaja Lucide, y
-        Phosphor pasa a ser opt-in como Material: se instala y se envuelve la app una vez. El cambio
-        no toca ningún call site ni ningún nombre estable, que es justo lo que el vocabulario
-        compra; lo que cambia es el dibujo que sale cuando nadie eligió. Motivo: todas las
-        superficies de este repo ya dibujaban Lucide, así que el default tiraba para el otro lado y
-        cada una lo tenía que desactivar envolviendo el árbol. Si quieres Phosphor:
-        <code>pnpm add @skryensya/icons-phosphor</code> y
-        <code>&lt;IconSetProvider set={phosphorIcons}&gt;</code>.
-    en:
-      title: React's default icon set is now Lucide
-      body: >-
-        <code>&lt;Icon name="…" /&gt;</code> with no <code>IconSetProvider</code> used to draw with
-        Phosphor, the set that travelled inside <code>@skryensya/react</code>. Lucide travels now,
-        and Phosphor becomes opt-in the way Material already was: install it and wrap the app once.
-        No call site and no stable name moves, which is exactly what the vocabulary buys; what
-        changes is the drawing you get when nobody chose. Why: every surface in this repo already
-        drew Lucide, so the default pulled the other way and each one had to talk it out of Phosphor
-        by wrapping its tree. For Phosphor: <code>pnpm add @skryensya/icons-phosphor</code> and
-        <code>&lt;IconSetProvider set={phosphorIcons}&gt;</code>.
-  - date: 2026-09-26
-    kind: feature
-    target: Icon
-    es:
-      title: Dos nombres estables nuevos, like y dislike, y el voto de Material deja de ser un pulgar
-      body: >-
-        <code>like</code> y <code>dislike</code> nombran reaccionar, que no es votar: un voto ordena,
-        un like reacciona. Los tres sets los dibujan como pulgares (Lucide <code>ThumbsUp</code>,
-        Phosphor <code>thumbs-up</code>, Material <code>thumb_up</code>). Por eso Material ya no puede
-        dibujar un pulgar para <code>vote-up</code>/<code>vote-down</code>: las dos caras de un mismo
-        CommentVote tienen que verse distintas en todos los sets, así que su voto pasa a la flecha
-        gruesa (<code>arrow_upward_alt</code>). Si usas Material y <code>vote-up</code>, el dibujo
-        cambia; el nombre no.
-    en:
-      title: Two new stable names, like and dislike, and Material's vote stops being a thumb
-      body: >-
-        <code>like</code> and <code>dislike</code> name reacting, which is not voting: a vote ranks,
-        a like reacts. All three sets draw them as thumbs (Lucide <code>ThumbsUp</code>, Phosphor
-        <code>thumbs-up</code>, Material <code>thumb_up</code>). That is why Material can no longer
-        draw a thumb for <code>vote-up</code>/<code>vote-down</code>: the two faces of one
-        CommentVote have to look different in every set, so its vote moves to the heavy arrow
-        (<code>arrow_upward_alt</code>). If you use Material and <code>vote-up</code>, the drawing
-        changes; the name does not.
   - date: 2026-10-02
     kind: feature
     target: name
     es:
       title: Nuevo rol de icono mask
-      body: >-
-        <code>mask</code> es el símbolo que ocupa el lugar de un carácter oculto: lo dibuja
-        <code>OtpInput</code> sobre cada casilla llena cuando el código está enmascarado. Nombra el
-        rol, no el dibujo: Lucide y Phosphor ponen un asterisco, Material el suyo. Los tres sets lo
-        dibujan.
+      body: "<code>mask</code> es el símbolo que ocupa el lugar de un carácter oculto: lo dibuja <code>OtpInput</code> sobre cada casilla llena cuando el código está enmascarado."
     en:
       title: New icon role mask
-      body: >-
-        <code>mask</code> is the symbol that stands in for a hidden character: <code>OtpInput</code>
-        draws it over each filled box when the code is masked. It names the role, not the drawing:
-        Lucide and Phosphor draw an asterisk, Material its own. All three sets draw it.
+      body: "<code>mask</code> is the symbol that stands in for a hidden character: <code>OtpInput</code> draws it over each filled box when the code is masked."
   - date: 2026-10-09
     kind: feature
     target: name
     es:
       title: Ocho roles de icono para los controles de un reproductor
-      body: >-
-        Nuevos roles <code>play</code>, <code>pause</code>, <code>replay</code>, <code>volume</code>,
-        <code>volume-muted</code>, <code>captions</code>, <code>fullscreen</code> y <code>fullscreen-exit</code>.
-        Nombran lo que hace el control, no el dibujo, y <code>fullscreen</code> no es <code>maximize</code>: ese es el
-        de una ventana dentro de la página. Los tres sets los dibujan.
+      body: Nuevos roles <code>play</code>, <code>pause</code>, <code>replay</code>, <code>volume</code>, <code>volume-muted</code>, <code>captions</code>, <code>fullscreen</code> y <code>fullscreen-exit</code>.
     en:
       title: Eight icon roles for a player's controls
-      body: >-
-        New roles <code>play</code>, <code>pause</code>, <code>replay</code>, <code>volume</code>,
-        <code>volume-muted</code>, <code>captions</code>, <code>fullscreen</code> and <code>fullscreen-exit</code>.
-        They name what the control does, not the drawing, and <code>fullscreen</code> is not <code>maximize</code>:
-        that one is a window inside the page. All three sets draw them.
+      body: New roles <code>play</code>, <code>pause</code>, <code>replay</code>, <code>volume</code>, <code>volume-muted</code>, <code>captions</code>, <code>fullscreen</code> and <code>fullscreen-exit</code>.
   - date: 2026-10-09
     kind: feature
     target: name
     es:
       title: Dos roles de icono para moverse por una lista de pistas
-      body: >-
-        Nuevos roles <code>track-previous</code> y <code>track-next</code>: la pista anterior y la siguiente de un reproductor.
-        No son <code>chevron-left</code> ni <code>chevron-right</code>, que nombran una dirección en la página. Los tres sets los dibujan.
+      body: "Nuevos roles <code>track-previous</code> y <code>track-next</code>: la pista anterior y la siguiente de un reproductor."
     en:
       title: Two icon roles for moving along a list of tracks
-      body: >-
-        New roles <code>track-previous</code> and <code>track-next</code>: the track before and after the current one in a player.
-        They are not <code>chevron-left</code> or <code>chevron-right</code>, which name a direction on a page. All three sets draw them.
+      body: "New roles <code>track-previous</code> and <code>track-next</code>: the track before and after the current one in a player."
+  - date: 2026-10-01
+    kind: feature
+    es:
+      title: Primera versión
+      body: Representa acciones y conceptos con iconografía consistente.
+    en:
+      title: First release
+      body: Represents actions and concepts with consistent iconography.

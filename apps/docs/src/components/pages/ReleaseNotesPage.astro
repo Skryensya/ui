@@ -10,12 +10,14 @@ import Base from "../../layouts/Base.astro";
 import "@skryensya/core/components/changelog.css";
 import { badgeParts } from "@skryensya/core/badge";
 import { changeKindTones, changelogParts } from "@skryensya/core/changelog";
-import { entryText, kitReleaseNotes } from "../../lib/contract-reference";
+import { entryText, kitReleaseNotes, summarizeRelease } from "../../lib/contract-reference";
 import { getLocale, hasTranslation, localizePath, useTranslations, type UIKey } from "../../i18n";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
 const releases = kitReleaseNotes();
+/* The release each one follows: the list is newest first, so it is the next one down. */
+const previousOf = (index: number) => releases[index + 1]?.version;
 const dateFormat = new Intl.DateTimeFormat(locale, { dateStyle: "long", timeZone: "UTC" });
 
 const surfaceLabel = (id: string) =>
@@ -41,7 +43,7 @@ const surfaceHref = (id: string) => {
       <p>{t("releaseNotes.empty")}</p>
     ) : (
       <ol class={changelogParts.root} reversed>
-        {releases.map((release) => (
+        {releases.map((release, index) => (
           <li class={changelogParts.release} data-unreleased={release.date === null ? "" : undefined}>
             <span class={changelogParts.marker} aria-hidden="true" />
             <span class={changelogParts.version}>{release.version}</span>
@@ -59,9 +61,26 @@ const surfaceHref = (id: string) => {
               over `grid-row: 2`. The body owns that cell; each surface's entry list is ordinary flow.
             */}
             <div class="release-notes__body">
-              <p class="release-notes__count">
-                {t("releaseNotes.surfaceCount", { count: String(release.surfaces.length) })}
-              </p>
+              {(() => {
+                const summary = summarizeRelease(release);
+                const previous = previousOf(index);
+                const link = (id: string) => {
+                  const href = surfaceHref(id);
+                  const name = surfaceLabel(id);
+                  return href ? `<a class="sk-link" href="${href}">${name}</a>` : name;
+                };
+                const lines: string[] = [];
+                if (summary.added.length) lines.push(t(previous ? "releaseNotes.summaryAdded" : "releaseNotes.summaryFirst", { count: String(summary.added.length), list: summary.added.map(link).join(", ") }));
+                if (summary.breaking.length) lines.push(t("releaseNotes.summaryBreaking", { count: String(summary.breaking.length), list: summary.breaking.map(link).join(", ") }));
+                const rest = summary.features + summary.fixes + summary.other;
+                if (rest) lines.push(t("releaseNotes.summaryChanges", { features: String(summary.features), fixes: String(summary.fixes), other: String(summary.other) }));
+                return (
+                  <div class="release-notes__summary">
+                    {previous && <p class="release-notes__since">{t("releaseNotes.since", { previous })}</p>}
+                    <ul>{lines.map((line) => <li set:html={line} />)}</ul>
+                  </div>
+                );
+              })()}
 
               {release.surfaces.map((surface) => {
                 const name = surfaceLabel(surface.id);
@@ -113,6 +132,18 @@ const surfaceHref = (id: string) => {
     display: grid;
     gap: var(--space-stack-md);
     min-inline-size: 0;
+  }
+
+  .release-notes__since {
+    margin: 0 0 var(--space-stack-xs);
+    font-weight: var(--font-weight-label);
+  }
+
+  .release-notes__summary ul {
+    margin: 0;
+    padding-inline-start: var(--space-inset-lg);
+    display: grid;
+    gap: var(--space-stack-xs);
   }
 
   .release-notes__count {

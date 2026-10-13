@@ -10,150 +10,15 @@ entries:
     target: CodePreview
     es:
       title: CodePreview documenta el hook de interlineado
-      body: >-
-        <code>--sk-code-preview-line-height</code> ya existía en el CSS y ahora está declarado en el
-        contrato, así que aparece en la referencia y se puede ajustar como cualquier otro hook.
+      body: <code>--sk-code-preview-line-height</code> ya existía en el CSS y ahora está declarado en el contrato, así que aparece en la referencia y se puede ajustar como cualquier otro hook.
     en:
       title: CodePreview documents its line-height hook
-      body: >-
-        <code>--sk-code-preview-line-height</code> was already in the CSS and is now declared in the
-        contract, so it shows in the reference and can be tuned like any other hook.
-  - date: 2026-09-26
-    kind: feature
-    target: appearance
-    es:
-      title: CodePreview suma appearance plain, brutalist y frosted
-      body: >-
-        <code>brutalist</code> dibuja el panel con borde y divisores negros y una sombra dura;
-        <code>frosted</code> lo hace translúcido, opaco donde el material no es fiable. Sin
-        <code>tactile</code>.
-    en:
-      title: CodePreview adds plain, brutalist and frosted appearances
-      body: >-
-        <code>brutalist</code> draws the panel with a black edge and dividers and a hard offset;
-        <code>frosted</code> makes it see-through, opaque wherever the material cannot be trusted. No
-        <code>tactile</code>.
-  - date: 2026-09-21
+      body: <code>--sk-code-preview-line-height</code> was already in the CSS and is now declared in the contract, so it shows in the reference and can be tuned like any other hook.
+  - date: 2026-10-01
     kind: feature
     es:
-      title: La fila de la etiqueta tiene su propio fondo
-      body: >-
-        <code>--sk-code-preview-label-bg</code> ya es un styling hook declarado: la etiqueta se pinta
-        como una región hundida aparte y el cuerpo del bloque queda sobre la superficie normal.
-        Antes ese valor existía en la hoja y ningún contrato lo nombraba, así que sobrescribirlo no
-        estaba documentado en ninguna parte.
+      title: Primera versión
+      body: Presenta bloques de código legibles, resaltados y copiables.
     en:
-      title: The label row has a ground of its own
-      body: >-
-        <code>--sk-code-preview-label-bg</code> is now a declared styling hook: the label paints as
-        its own sunken region while the body of the block sits on the ordinary surface. That value
-        existed in the stylesheet and no contract named it, so overriding it was documented nowhere.
-  - date: 2026-09-17
-    kind: chore
-    es:
-      title: El hash de superficie mide la promesa pública
-      body: >-
-        El hash de superficie ahora proyecta opciones por lista blanca (sin <code>machineInput</code>), incluye <code>eventDetails</code>, y sigue excluyendo la plantilla (<code>also</code>, attrs efímeros). Este contrato no cambió su API; sólo cambió lo que el hash mide.
-    en:
-      title: Surface hash measures the public promise
-      body: >-
-        The surface hash now projects options through a whitelist (no <code>machineInput</code>), includes <code>eventDetails</code>, and still excludes the template (<code>also</code>, ephemeral attrs). This contract's API did not change; only what the hash measures did.
-  - date: 2026-09-17
-    kind: feature
-    es:
-      title: CodePreview declara compose de Button, Icon y Switch
-      body: >-
-        <code>compose</code> documenta toggle/density vía <code>also</code>/<code>hookSheets</code> (<code>systemOwned</code>).
-    en:
-      title: CodePreview declares compose of Button, Icon, and Switch
-      body: >-
-        <code>compose</code> documents toggle/density via <code>also</code>/<code>hookSheets</code> (<code>systemOwned</code>).
-  - date: 2026-09-17
-    kind: bugfix
-    es:
-      title: CodePreview tipifica líneas, cablea lessLabel y declara switch.css
-      body: >-
-        <code>lines</code> y <code>previewLines</code> pasan a <code>number</code>.
-        <code>moreLabel</code> deja de inventar <code>data-more-label</code> (es texto del toggle) y
-        <code>lessLabel</code> se escribe en el botón. Density declara
-        <code>hookSheets</code> con <code>switch.css</code> porque <code>sk-switch</code> no tiene
-        dueño único.
-    en:
-      title: CodePreview types line counts, wires lessLabel, and names switch.css
-      body: >-
-        <code>lines</code> and <code>previewLines</code> become <code>number</code>.
-        <code>moreLabel</code> no longer invents <code>data-more-label</code> (it is toggle text) and
-        <code>lessLabel</code> lands on the button. Density declares <code>hookSheets</code> with
-        <code>switch.css</code> because <code>sk-switch</code> has no unique owner.
-  - date: 2026-08-11
-    kind: feature
-    es:
-      title: CodePreview se publica como contrato, con 2 signatures
-      body: >-
-        Entra al catálogo con <code>CodePreview</code>, <code>CodePreview.density</code>: los dos
-        bindings lo realizan, y la referencia de esta página sale del contrato compilado en vez de prosa
-        escrita al lado. El binding Vanilla monta sobre <code>data-sk-code-preview</code>: el markup se
-        autora y el enhancer lo hidrata, así que lo que no necesita JavaScript funciona antes de que
-        corra ninguno. Opciones: <code>collapsible</code>, <code>lines</code>,
-        <code>previewLines</code>, <code>moreLabel</code>, <code>lessLabel</code>,
-        <code>switchLabel</code>. La hoja es <code>components/code-preview.css</code>.
-    en:
-      title: CodePreview is published as a contract, with 2 signatures
-      body: >-
-        It joins the catalogue with <code>CodePreview</code>, <code>CodePreview.density</code>: both
-        bindings realize it, and this page's reference is rendered from the compiled contract rather
-        than from prose written beside it. The Vanilla binding mounts on
-        <code>data-sk-code-preview</code>: the markup is authored and the enhancer hydrates it, so
-        whatever needs no JavaScript works before any runs. Options: <code>collapsible</code>,
-        <code>lines</code>, <code>previewLines</code>, <code>moreLabel</code>, <code>lessLabel</code>,
-        <code>switchLabel</code>. Its stylesheet is <code>components/code-preview.css</code>.
-  - date: 2026-09-12
-    kind: feature
-    es:
-      title: Los styling hooks de code-preview quedan declarados en el contrato
-      body: >-
-        El contrato ahora publica los <code>12</code> styling hooks de este componente. Nada
-        de lo que hayas escrito cambia: son los mismos hooks, con los mismos nombres, y la hoja de
-        estilos no se tocó. Lo nuevo es que el contrato los declara, así que el compilador falla si
-        la hoja declara uno que el contrato no publica, o si el contrato promete uno que la hoja no
-        declara. Esa segunda mitad es la que importa: hasta ahora, redeclarar un hook que ya no
-        existía no daba error, daba silencio.
-    en:
-      title: code-preview's styling hooks are now declared in the contract
-      body: >-
-        The contract now publishes this component's <code>12</code> styling hooks. Nothing you
-        wrote changes: the same hooks, under the same names, and the stylesheet was not touched.
-        What is new is that the contract declares them, so the compiler fails when the stylesheet
-        declares one the contract does not publish, or the contract promises one the stylesheet
-        never declares. That second half is the one that matters: until now, re-declaring a hook
-        that no longer existed was not an error, it was silence.
-  - date: 2026-09-17
-    kind: breaking
-    es:
-      title: Los textos por defecto pasan a inglés
-      body: >-
-        El kit es una librería en inglés y sus defaults estaban en español: <code>moreLabel</code> Expand, <code>lessLabel</code> Collapse, <code>switchLabel</code> Show the full version. Una interfaz en
-        otro idioma pasa sus propios textos, y el <code>locale</code> que corresponda.
-    en:
-      title: Default texts move to English
-      body: >-
-        The kit is an English library and its defaults were Spanish: <code>moreLabel</code> Expand, <code>lessLabel</code> Collapse, <code>switchLabel</code> Show the full version. An interface in another
-        language passes its own texts, and the <code>locale</code> it needs.
-  - date: 2026-09-28
-    kind: bugfix
-    es:
-      title: Sin etiqueta, el botón de copiar se alinea con la primera línea y no tapa el código
-      body: >-
-        Un bloque sin <code>label</code> (un comando de instalación, casi siempre) ponía el botón de
-        copiar arriba con el margen de la cabecera que no tiene, desalineado con la línea que copia,
-        y en pantallas angostas el texto pasaba por debajo del botón. Ahora el botón se centra en la
-        primera línea y el área que desplaza el código termina antes del botón, así una línea larga
-        se corta ahí y se desplaza. Con etiqueta nada cambia.
-    en:
-      title: Without a label, the copy button lines up with the first line and never covers the code
-      body: >-
-        A block with no <code>label</code> (an install command, nearly always) set the copy button at
-        the top with the inset of a header it does not have, out of line with the line it copies,
-        and on narrow screens the text ran underneath it. The button is now centred on the first
-        line, and the code's scrolling area ends before the button, so a long line is cut there and
-        scrolls. With a label nothing changes.
+      title: First release
+      body: Displays readable, highlighted, and copyable code blocks.

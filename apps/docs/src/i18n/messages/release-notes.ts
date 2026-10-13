@@ -7,6 +7,11 @@ export const releaseNotesMessages = {
     "releaseNotes.empty": "Todavía no hay entradas registradas.",
     "releaseNotes.unreleased": "Sin publicar",
     "releaseNotes.surfaceCount": "{count} contratos",
+    "releaseNotes.since": "Qué cambió desde {previous}",
+    "releaseNotes.summaryFirst": "Primera versión del kit: {count} componentes.",
+    "releaseNotes.summaryAdded": "{count} componentes nuevos: {list}.",
+    "releaseNotes.summaryBreaking": "Cambios que obligan a actuar en {count} componentes que ya existían: {list}.",
+    "releaseNotes.summaryChanges": "En lo que ya existía: {features} mejoras, {fixes} arreglos y {other} ajustes internos.",
   },
   en: {
     "releaseNotes.title": "Release notes",
@@ -16,5 +21,10 @@ export const releaseNotesMessages = {
     "releaseNotes.empty": "Nothing recorded yet.",
     "releaseNotes.unreleased": "Unreleased",
     "releaseNotes.surfaceCount": "{count} contracts",
+    "releaseNotes.since": "What changed since {previous}",
+    "releaseNotes.summaryFirst": "The kit's first release: {count} components.",
+    "releaseNotes.summaryAdded": "{count} new components: {list}.",
+    "releaseNotes.summaryBreaking": "Changes that need action in {count} components that already existed: {list}.",
+    "releaseNotes.summaryChanges": "In what already existed: {features} improvements, {fixes} fixes and {other} internal adjustments.",
   },
 } as const;

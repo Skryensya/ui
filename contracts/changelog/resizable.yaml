@@ -3,79 +3,9 @@ surface: "0bbb2d79cad26062"
 entries:
   - date: 2026-10-07
     kind: feature
-    target: collapsible
     es:
-      title: Un panel puede cerrarse del todo, con la barra a la vista para reabrirlo
-      body: >-
-        <code>collapsible</code> deja que un panel baje de su <code>minSize</code> hasta cerrarse: pasada la
-        mitad salta a cerrado, y al sacarlo de vuelta se abre hasta su piso. <code>collapsedSize</code> deja un
-        riel en vez de cero. La barra se queda, más marcada, y Home y End junto a un panel colapsable lo cierran.
-        Se reabre arrastrando, con doble clic o Enter (que reinician), con Ctrl o Cmd + Enter (que alterna), con
-        <code>apiRef</code> en React o con el evento <code>sk:resizablecommand</code>. Un panel cerrado a cero
-        marca <code>data-collapsed</code> y queda <code>inert</code>. Sin <code>collapsible</code> nada cambia:
-        el piso se mantiene y el panel nunca desaparece.
+      title: Componente nuevo
+      body: Reparte una caja entre paneles y deja arrastrar la barra que hay entre cada par.
     en:
-      title: A panel can close all the way, with its bar in view to reopen it
-      body: >-
-        <code>collapsible</code> lets a panel go below its <code>minSize</code> until it closes: past the halfway
-        point it snaps shut, and dragged back out it opens to its floor. <code>collapsedSize</code> leaves a rail
-        instead of zero. The bar stays, more marked, and Home and End beside a collapsible panel close it. It
-        reopens by dragging, a double click or Enter (which reset), Ctrl or Cmd + Enter (which toggles),
-        <code>apiRef</code> in React or the <code>sk:resizablecommand</code> event. A panel closed to zero sets
-        <code>data-collapsed</code> and becomes <code>inert</code>. Without <code>collapsible</code> nothing
-        changes: the floor holds and the panel never disappears.
-  - date: 2026-10-07
-    kind: rework
-    es:
-      title: Los paneles miden su porcentaje exacto, con o sin padding
-      body: >-
-        El tamaño de un panel pasa a ser un porcentaje del grupo con <code>border-box</code>, en vez de un
-        peso de flex sobre base cero. Antes el padding se descontaba primero y los pesos repartían el
-        resto, así que un panel con padding no ocupaba su porcentaje y el arrastre iba por detrás del
-        puntero. La barra ya no ocupa espacio: se dibuja sobre el límite, y el hook
-        <code>--sk-resizable-gap</code> desaparece. <code>--sk-resizable-handle-line</code> ahora vale
-        <code>1px</code> por defecto.
-    en:
-      title: Panels measure their exact percentage, padded or not
-      body: >-
-        A panel's size is now a percentage of the group under <code>border-box</code>, instead of a flex
-        weight over a zero basis. Before, padding was paid first and the weights split what was left, so
-        a padded panel did not occupy its percentage and a drag trailed the pointer. The bar no longer
-        takes room: it is drawn on the boundary, and the <code>--sk-resizable-gap</code> hook is gone.
-        <code>--sk-resizable-handle-line</code> now defaults to <code>1px</code>.
-  - date: 2026-10-07
-    kind: feature
-    es:
-      title: Resizable se publica como componente
-      body: >-
-        Entra al catálogo con <code>Resizable</code>, <code>Resizable.Panel</code> y
-        <code>Resizable.Handle</code>: paneles que comparten una caja, con una barra entre cada par que
-        mueve el límite. Los tamaños son porcentajes del grupo y siempre suman 100; una barra
-        redistribuye sólo el par que separa, así que el resto de los paneles no se mueve.
-        <code>size</code>, <code>minSize</code> y <code>maxSize</code> van en cada panel y
-        <code>direction</code> elige si se apilan o van lado a lado. Cada barra es un
-        <code>separator</code> enfocable (flechas, Mayús para saltar más, Inicio/Fin y Enter para
-        restablecer) y exige <code>label</code>. Hasta ahora este comportamiento sólo vivía dentro de
-        Sidebar, Treegrid y Table.
-    en:
-      title: Resizable ships as a component
-      body: >-
-        It joins the catalogue as <code>Resizable</code>, <code>Resizable.Panel</code> and
-        <code>Resizable.Handle</code>: panels that share one box, with a bar between each pair that
-        moves the boundary. Sizes are percentages of the group and always add up to 100; a bar
-        redistributes only the pair it separates, so every other panel stays put.
-        <code>size</code>, <code>minSize</code> and <code>maxSize</code> go on each panel and
-        <code>direction</code> chooses whether they stack or sit side by side. Every bar is a
-        focusable <code>separator</code> (arrows, Shift to jump further, Home/End and Enter to reset)
-        and requires a <code>label</code>. Until now this behaviour only lived inside Sidebar,
-        Treegrid and Table.
-  - date: 2026-10-08
-    kind: feature
-    es:
-      title: Un thumb con seis puntos en el centro de cada barra
-      body: >-
-        Cada barra lleva en el centro un pequeño contenedor con seis puntos, dibujado con CSS, que dice «esto se mueve». No está en pantalla en reposo: sube con el puntero, el foco del teclado y el arrastre, y se queda en la barra junto a un panel cerrado. En una barra horizontal se gira un cuarto. Es un <code>span</code> con <code>aria-hidden</code> dentro de la barra: la barra sigue tomando el puntero y las teclas.
-    en:
-      title: A six-dot thumb in the middle of every bar
-      body: >-
-        Every bar now carries a small container with six dots in its middle, drawn in CSS, that says “this moves”. It is not on screen at rest: it comes up with the pointer, the keyboard focus and the drag, and stays on a bar beside a closed panel. On a horizontal bar it is turned a quarter. It is an <code>aria-hidden</code> <code>span</code> inside the bar: the bar still takes the pointer and the keys.
+      title: New component
+      body: Shares one box between panels and lets you drag the bar between each pair.

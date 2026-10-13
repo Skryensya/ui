@@ -201,3 +201,39 @@ export function contractJson(contract: ContractDoc): string {
     2,
   );
 }
+
+/** The titles the homogenized changelogs give an entry that only says "this component arrived". */
+const ARRIVAL_TITLES = new Set(["New component", "Componente nuevo", "First release", "Primera versión"]);
+
+export type KitReleaseSummary = {
+  /** Contracts that arrived in this release (their one entry is the arrival). */
+  readonly added: readonly string[];
+  /** Contracts that already existed and had a breaking change. */
+  readonly breaking: readonly string[];
+  /** How many entries on contracts that already existed, by kind. */
+  readonly features: number;
+  readonly fixes: number;
+  readonly other: number;
+};
+
+/** What a release changed, counted from its own entries so the overview cannot drift from the list under it. */
+export function summarizeRelease(release: KitRelease): KitReleaseSummary {
+  const added: string[] = [];
+  const breaking: string[] = [];
+  let features = 0;
+  let fixes = 0;
+  let other = 0;
+  for (const surface of release.surfaces) {
+    if (surface.entries.some((entry) => ARRIVAL_TITLES.has(entry.en.title))) {
+      added.push(surface.id);
+      continue;
+    }
+    if (surface.entries.some((entry) => entry.kind === "breaking")) breaking.push(surface.id);
+    for (const entry of surface.entries) {
+      if (entry.kind === "feature") features++;
+      else if (entry.kind === "bugfix") fixes++;
+      else other++;
+    }
+  }
+  return { added, breaking, features, fixes, other };
+}

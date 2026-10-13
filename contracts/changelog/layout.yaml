@@ -8,469 +8,115 @@ entries:
   - date: 2026-10-06
     kind: bugfix
     es:
-      title: "Inline <code>sizing=\"fit\"</code>, piso en <code>equal</code> y texto centrado en Stack"
-      body: >-
-        <code>sizing="fit"</code> estaba en el contrato y no en el CSS: ahora el hijo conserva su ancho y no se encoge. Los hijos de un <code>Inline</code> con <code>equal</code> tienen como piso su palabra más larga (<code>min-inline-size: min-content</code>), así que la fila envuelve antes de partir palabras. Un <code>Stack</code> con <code>align</code> en <code>center</code> o <code>end</code> alinea también su texto de varias líneas.
+      title: Inline <code>sizing="fit"</code>, piso en <code>equal</code> y texto centrado…
+      body: '<code>sizing="fit"</code> estaba en el contrato y no en el CSS: ahora el hijo conserva su ancho y no se encoge.'
     en:
-      title: "Inline <code>sizing=\"fit\"</code>, a floor on <code>equal</code>, and centred text in Stack"
-      body: >-
-        <code>sizing="fit"</code> was in the contract and not in the CSS: the child now keeps its width and never shrinks. The children of an <code>equal</code> <code>Inline</code> floor at their longest word (<code>min-inline-size: min-content</code>), so the row wraps before breaking words. A <code>Stack</code> with <code>align</code> set to <code>center</code> or <code>end</code> now aligns its multi-line text too.
+      title: Inline <code>sizing="fit"</code>, a floor on <code>equal</code>, and centred…
+      body: '<code>sizing="fit"</code> was in the contract and not in the CSS: the child now keeps its width and never shrinks.'
   - date: 2026-10-06
     kind: breaking
     target: AppShell
     es:
       title: AppShell es de una sola columna bajo la línea expandida y no dibuja sus rieles
-      body: >-
-        Bajo 52rem del contenedor, el shell apila header, main y footer y no dibuja ningún Sidebar: un teléfono no tiene espacio para una columna al lado del trabajo. Lo que el riel lleva llega en un <code>Vaul.drawer</code> hijo del shell, que abre un <code>Vaul.Trigger</code> del header; <code>review_ui</code> marca como error un shell con riel y sin ese drawer.
+      body: "Bajo 52rem del contenedor, el shell apila header, main y footer y no dibuja ningún Sidebar: un teléfono no tiene espacio para una columna al lado del trabajo."
     en:
       title: AppShell is one column below the expanded line and draws no rail
-      body: >-
-        Below a 52rem container the shell stacks header, main and footer and draws no Sidebar: a phone has no room for a column beside the work. What the rail carries reaches it in a <code>Vaul.drawer</code> child of the shell, opened by a <code>Vaul.Trigger</code> in the header; <code>review_ui</code> fails a shell with a rail and no such drawer.
+      body: "Below a 52rem container the shell stacks header, main and footer and draws no Sidebar: a phone has no room for a column beside the work."
   - date: 2026-10-06
     kind: feature
     target: scroll
     es:
       title: AppShell decide dónde vive el scroll, y acepta un riel al final
-      body: >-
-        <code>scroll</code> (<code>page</code> o <code>regions</code>): con <code>regions</code> el shell mide una pantalla y cada región hace scroll propio, así que el header y los rieles quedan quietos. <code>stickyHeader</code> fija el header en una página que hace scroll. Un Sidebar escrito después del Main es el riel del final.
+      body: "<code>scroll</code> (<code>page</code> o <code>regions</code>): con <code>regions</code> el shell mide una pantalla y cada región hace scroll propio, así que el header y los rieles quedan quietos."
     en:
       title: AppShell decides where the scroll lives, and takes an end rail
-      body: >-
-        <code>scroll</code> (<code>page</code> or <code>regions</code>): with <code>regions</code> the shell is a screen tall and each region scrolls on its own, so the header and the rails stay put. <code>stickyHeader</code> pins the header on a page that scrolls. A Sidebar written after the Main is the end rail.
+      body: "<code>scroll</code> (<code>page</code> or <code>regions</code>): with <code>regions</code> the shell is a screen tall and each region scrolls on its own, so the header and the rails stay put."
   - date: 2026-10-06
     kind: feature
     target: paddingBlock
     es:
       title: Main tiene su espaciado vertical y es un contenedor de consultas
-      body: >-
-        Main publica la parte <code>sk-main</code>, <code>paddingBlock</code> y <code>paddingBlockExpanded</code> (de <code>none</code> a <code>section</code>). Solo el eje vertical: el margen lateral sigue siendo del Wrapper. Un Hero que abre el Main queda pegado al header.
+      body: "Main publica la parte <code>sk-main</code>, <code>paddingBlock</code> y <code>paddingBlockExpanded</code> (de <code>none</code> a <code>section</code>). Solo el eje vertical: el margen lateral sigue siendo del Wrapper."
     en:
       title: Main owns its block inset and is a query container
-      body: >-
-        Main publishes the <code>sk-main</code> part, <code>paddingBlock</code> and <code>paddingBlockExpanded</code> (<code>none</code> to <code>section</code>). Block axis only: the inline gutter stays the Wrapper's. A Hero that opens the Main sits flush under the header.
+      body: "Main publishes the <code>sk-main</code> part, <code>paddingBlock</code> and <code>paddingBlockExpanded</code> (<code>none</code> to <code>section</code>). Block axis only: the inline gutter stays the Wrapper's."
   - date: 2026-10-06
     kind: breaking
     target: Grid
     es:
       title: El layout responde a su contenedor, no a la ventana
-      body: >-
-        Las columnas de <code>responsive</code> y <code>multicol</code>, <code>gapExpanded</code>, el riel de LayoutGrid y el breakout <code>flush</code> preguntan al contenedor de consultas más cercano: un Main, un Sidebar o el documento. Un Grid al lado de un riel cuenta el espacio del área de trabajo.
+      body: "Las columnas de <code>responsive</code> y <code>multicol</code>, <code>gapExpanded</code>, el riel de LayoutGrid y el breakout <code>flush</code> preguntan al contenedor de consultas más cercano: un Main, un Sidebar o el documento."
     en:
       title: Layout answers to its container, not the window
-      body: >-
-        The <code>responsive</code> and <code>multicol</code> lanes, <code>gapExpanded</code>, the LayoutGrid rail and the <code>flush</code> breakout ask the nearest query container: a Main, a Sidebar or the document. A Grid beside a rail counts the room the work area has.
+      body: "The <code>responsive</code> and <code>multicol</code> lanes, <code>gapExpanded</code>, the LayoutGrid rail and the <code>flush</code> breakout ask the nearest query container: a Main, a Sidebar or the document."
   - date: 2026-10-06
     kind: breaking
     target: Grid
     es:
       title: Grid publica span y align, y pierde fill
-      body: >-
-        Un hijo pide carriles con <code>data-span</code> (de 2 a 5) también en un Grid de columnas fijas: dos tercios y un tercio es <code>columns="3"</code> con un hijo de span 2. <code>align</code> ubica las celdas en su fila. <code>fill</code>, <code>--sk-grid-fill</code> y <code>--sk-grid-template</code> se eliminan.
+      body: 'Un hijo pide carriles con <code>data-span</code> (de 2 a 5) también en un Grid de columnas fijas: dos tercios y un tercio es <code>columns="3"</code> con un hijo de span 2. <code>align</code> ubica las celdas en su fila.'
     en:
       title: Grid publishes span and align, and drops fill
-      body: >-
-        A child asks for lanes with <code>data-span</code> (2 to 5) in a fixed-column Grid too: two thirds and one third is <code>columns="3"</code> with a child spanning 2. <code>align</code> places cells in their row. <code>fill</code>, <code>--sk-grid-fill</code> and <code>--sk-grid-template</code> are removed.
+      body: 'A child asks for lanes with <code>data-span</code> (2 to 5) in a fixed-column Grid too: two thirds and one third is <code>columns="3"</code> with a child spanning 2. <code>align</code> places cells in their row.'
   - date: 2026-10-06
     kind: feature
     target: show
     es:
       title: Stack, Inline y Grid existen de un solo lado de la línea expandida con show
-      body: >-
-        <code>show</code> (<code>compact</code> o <code>expanded</code>) oculta el elemento del otro lado de 52rem del contenedor, y con él lo saca del árbol de accesibilidad. Es lo que deja que los links de un header den paso al botón del drawer en un teléfono.
+      body: <code>show</code> (<code>compact</code> o <code>expanded</code>) oculta el elemento del otro lado de 52rem del contenedor, y con él lo saca del árbol de accesibilidad.
     en:
       title: Stack, Inline and Grid exist on one side of the expanded line with show
-      body: >-
-        <code>show</code> (<code>compact</code> or <code>expanded</code>) hides the element on the other side of a 52rem container, and takes it out of the accessibility tree with it. It is what lets a header's links give way to the drawer's button on a phone.
+      body: <code>show</code> (<code>compact</code> or <code>expanded</code>) hides the element on the other side of a 52rem container, and takes it out of the accessibility tree with it.
   - date: 2026-10-06
     kind: feature
     target: stackJustify
     es:
       title: Stack gasta la altura que le dan con justify
-      body: >-
-        <code>justify</code> (<code>start</code>, <code>center</code>, <code>end</code>, <code>between</code>) hace que el Stack tome la altura de su padre y reparta lo que sobra: un formulario centrado en el área de trabajo, o el último hijo al fondo de una tarjeta. Sin declararlo, el Stack mide su contenido como siempre.
+      body: "<code>justify</code> (<code>start</code>, <code>center</code>, <code>end</code>, <code>between</code>) hace que el Stack tome la altura de su padre y reparta lo que sobra: un formulario centrado en el área de trabajo, o el último hijo al fondo de una tarjeta."
     en:
       title: Stack spends the height it is given with justify
-      body: >-
-        <code>justify</code> (<code>start</code>, <code>center</code>, <code>end</code>, <code>between</code>) makes the Stack take its parent's height and spend the leftover: a form centred in the work area, or the last child on a card's floor. Left out, the Stack is as tall as its content, as before.
+      body: "<code>justify</code> (<code>start</code>, <code>center</code>, <code>end</code>, <code>between</code>) makes the Stack take its parent's height and spend the leftover: a form centred in the work area, or the last child on a card's floor."
   - date: 2026-10-06
     kind: feature
     target: gap
     es:
       title: El gap llega a section
-      body: >-
-        <code>gap</code> y <code>gapExpanded</code> aceptan <code>section</code> (<code>--space-section</code>), la distancia entre las bandas de una página.
+      body: <code>gap</code> y <code>gapExpanded</code> aceptan <code>section</code> (<code>--space-section</code>), la distancia entre las bandas de una página.
     en:
       title: The gap reaches section
-      body: >-
-        <code>gap</code> and <code>gapExpanded</code> take <code>section</code> (<code>--space-section</code>), the distance between the bands of a page.
+      body: <code>gap</code> and <code>gapExpanded</code> take <code>section</code> (<code>--space-section</code>), the distance between the bands of a page.
   - date: 2026-10-06
     kind: feature
     target: LayoutGrid
     es:
       title: El breakout flush de LayoutGrid es un atributo publicado
-      body: >-
-        <code>data-breakout="flush"</code> en un hijo <code>breakout</code> lo lleva de borde a borde bajo la línea expandida, y ahora el validador lo conoce.
+      body: <code>data-breakout="flush"</code> en un hijo <code>breakout</code> lo lleva de borde a borde bajo la línea expandida, y ahora el validador lo conoce.
     en:
       title: LayoutGrid's flush breakout is a published attribute
-      body: >-
-        <code>data-breakout="flush"</code> on a <code>breakout</code> child runs it edge to edge below the expanded line, and the validator now knows it.
+      body: <code>data-breakout="flush"</code> on a <code>breakout</code> child runs it edge to edge below the expanded line, and the validator now knows it.
   - date: 2026-10-06
     kind: feature
     target: shellHeight
     es:
       title: AppShell puede ser tan alto como su contenido
-      body: >-
-        <code>height</code> (<code>screen</code> o <code>fit</code>) decide la altura. Sin valor, el shell sigue ocupando al menos una
-        pantalla; con <code>fit</code> mide lo que mide su contenido, para un shell que es una parte de una página y no la página.
+      body: <code>height</code> (<code>screen</code> o <code>fit</code>) decide la altura.
     en:
       title: AppShell can be as tall as its content
-      body: >-
-        <code>height</code> (<code>screen</code> or <code>fit</code>) sets the height. Unset, the shell still fills at least a screen; with
-        <code>fit</code> it is as tall as its content, for a shell that is one part of a page and not the page.
-  - date: 2026-09-27
-    kind: feature
-    target: minColumn
-    es:
-      title: Grid encuentra su número de columnas con minColumn
-      body: >-
-        <code>minColumn</code> (<code>sm</code>, <code>md</code>, <code>lg</code>) fija el ancho mínimo de cada columna y el propio ancho del Grid decide cuántas caben, sin breakpoints. Excluye <code>columns</code>, <code>responsive</code>, <code>multicol</code> y <code>fill</code>.
-    en:
-      title: Grid finds its own column count with minColumn
-      body: >-
-        <code>minColumn</code> (<code>sm</code>, <code>md</code>, <code>lg</code>) sets the narrowest a column may get, and the Grid's own width decides how many fit, with no breakpoint. It excludes <code>columns</code>, <code>responsive</code>, <code>multicol</code> and <code>fill</code>.
-  - date: 2026-09-27
-    kind: feature
-    target: Inline
-    es:
-      title: Un hijo de Inline puede ocupar el espacio que sobra con data-sizing
-      body: >-
-        Inline publica <code>sizing</code> (<code>fit</code>, <code>fill</code>) como atributo del hijo, escrito en sus <code>attrs</code> como <code>data-sizing</code>. <code>fill</code> parte del tamaño de su contenido y toma lo que la fila deja; la fila sigue haciendo wrap antes de apretarlo.
-    en:
-      title: An Inline child can take the leftover space with data-sizing
-      body: >-
-        Inline publishes <code>sizing</code> (<code>fit</code>, <code>fill</code>) as a child attribute, authored in the child's <code>attrs</code> as <code>data-sizing</code>. <code>fill</code> starts from its content size and takes what the row leaves; the row still wraps before squeezing it.
-  - date: 2026-09-27
-    kind: feature
-    target: gapExpanded
-    es:
-      title: Stack, Inline y Grid declaran su gap para pantallas amplias con gapExpanded
-      body: >-
-        <code>gap</code> es el valor desde la pantalla más chica; <code>gapExpanded</code> lo reemplaza desde el breakpoint <code>desktop</code> (52rem). Sin declararlo no cambia nada.
-    en:
-      title: Stack, Inline and Grid declare their gap for expanded screens with gapExpanded
-      body: >-
-        <code>gap</code> is the value from the smallest screen up; <code>gapExpanded</code> replaces it from the <code>desktop</code> breakpoint (52rem) up. Left out, nothing changes.
-  - date: 2026-09-17
-    kind: feature
-    target: LayoutGrid
-    es:
-      title: data-width de LayoutGrid se autoría en attrs del hijo
-      body: >-
-        El canal UsageTree de <code>childAttrs.width</code> es el <code>attrs</code> del hijo
-        (<code>data-width</code>). El validador rechaza valores fuera del enum
-        (<code>invalid-attr-value</code>).
-    en:
-      title: LayoutGrid data-width is authored on the child attrs
-      body: >-
-        The UsageTree channel for <code>childAttrs.width</code> is the child's <code>attrs</code>
-        (<code>data-width</code>). The validator rejects values outside the enum
-        (<code>invalid-attr-value</code>).
-  - date: 2026-09-17
-    kind: feature
-    target: LayoutGrid
-    es:
-      title: LayoutGrid declara data-width en childAttrs
-      body: >-
-        El slot <code>children</code> de <code>LayoutGrid</code> publica
-        <code>childAttrs.width</code> (<code>data-width</code>: narrow/content/breakout/full-width/rail/rail-start).
-        Todavía no hay canal en UsageTree para autorarlo; el manifiesto ya nombra el vocabulario.
-    en:
-      title: LayoutGrid declares data-width on childAttrs
-      body: >-
-        <code>LayoutGrid</code>'s <code>children</code> slot publishes
-        <code>childAttrs.width</code> (<code>data-width</code>: narrow/content/breakout/full-width/rail/rail-start).
-        There is still no UsageTree authoring channel; the manifest now names the vocabulary.
-  - date: 2026-09-17
-    kind: breaking
-    es:
-      title: Layout deja de reclamar Box y Wrapper
-      body: >-
-        El contrato ya no publica las partes <code>sk-box</code>/<code>sk-wrapper</code> ni sus
-        hooks, ni nombra <code>box.css</code>/<code>wrapper.css</code> en <code>hookSheets</code>.
-        Un árbol de Stack/Inline/Grid/LayoutGrid solo carga <code>layout.css</code>. La hoja sigue
-        importando box/wrapper/image-frame como atajo CSS; eso no es una promesa del contrato.
-        Grid gana la opción <code>fill</code> (<code>data-fill</code>) para el piso de columnas
-        responsive.
-    en:
-      title: Layout stops claiming Box and Wrapper
-      body: >-
-        The contract no longer publishes the <code>sk-box</code>/<code>sk-wrapper</code> parts or
-        their hooks, and no longer names <code>box.css</code>/<code>wrapper.css</code> in
-        <code>hookSheets</code>. A Stack/Inline/Grid/LayoutGrid tree only loads
-        <code>layout.css</code>. The stylesheet still imports box/wrapper/image-frame as a CSS
-        convenience; that is not a contract promise. Grid gains the <code>fill</code> option
-        (<code>data-fill</code>) for the responsive column floor.
-  - date: 2026-09-10
-    kind: feature
-    target: blockStart
-    es:
-      title: Inline gana blockStart, incluido auto para el piso de una card
-      body: >-
-        La opción nueva <code>blockStart</code> (<code>data-block-start</code>) pone aire encima
-        de la fila: los mismos pasos de la escala de stack, más <code>auto</code>. El default es
-        <code>none</code>, así un Inline de rótulo y valor no crece un hueco que nadie pidió.
-        <code>auto</code> es el caso del piso de una card: la altura que sobra en la columna queda
-        ARRIBA de la fila, y un Box cuya última hija es esa Inline se vuelve una columna flex que
-        llena su celda. No hay un componente <code>ButtonWrapper</code>; la fila de botones ya era
-        el intent <code>button-row</code> de Inline.
-    en:
-      title: Inline gains blockStart, including auto for a card's floor
-      body: >-
-        The new <code>blockStart</code> option (<code>data-block-start</code>) puts space above the
-        row: the same steps as the stack scale, plus <code>auto</code>. The default is
-        <code>none</code>, so a label-and-value Inline does not grow a gap nobody asked for.
-        <code>auto</code> is the card-floor case: leftover height in the column sits ABOVE the row,
-        and a Box whose last child is that Inline becomes a flex column that fills its cell. There
-        is no <code>ButtonWrapper</code> component; the button row was already Inline's
-        <code>button-row</code> intent.
-  - date: 2026-09-04
-    kind: breaking
-    es:
-      title: DensityScope se retira del contrato
-      body: >-
-        El signature <code>DensityScope</code> y la opción <code>densityFactor</code> de
-        <code>layout</code> ya no existen; con ellos se va también el componente React
-        <code>&lt;DensityScope&gt;</code>. El motor que quedaba debajo NO se tocó:
-        <code>--sk-density</code>, <code>--sk-density-factor</code> y el atributo
-        <code>data-sk-density-scope</code> siguen siendo el mismo mecanismo semántico
-        (<code>semantic/_density.scss</code>), autorable a mano en cualquier elemento - es
-        exactamente como ya lo usan <code>CopyButton</code> y la galería de presets, ninguno de los
-        dos pasaba por este signature. Lo que se retira es sólo la envoltura de árbol de uso que
-        escribía ese atributo por ti; una migración cambia un nodo
-        <code>{ contract: "layout", signature: "DensityScope", options: { densityFactor } }</code>
-        por un <code>Box</code>/<code>Stack</code> con
-        <code>attrs: { "data-sk-density-scope": "", style: "--sk-density-factor: …" }</code>.
-    en:
-      title: DensityScope leaves the contract
-      body: >-
-        The <code>DensityScope</code> signature and <code>layout</code>'s <code>densityFactor</code>
-        option are gone, and with them the React <code>&lt;DensityScope&gt;</code> component. The engine
-        underneath was NOT touched: <code>--sk-density</code>, <code>--sk-density-factor</code> and
-        the <code>data-sk-density-scope</code> attribute stay exactly the same semantic mechanism
-        (<code>semantic/_density.scss</code>), hand-authorable on any element - it's exactly how
-        <code>CopyButton</code> and the presets gallery already use it, neither ever went through
-        this signature. What leaves is only the usage-tree wrapper that wrote that attribute for
-        you; a migration swaps a node
-        <code>{ contract: "layout", signature: "DensityScope", options: { densityFactor } }</code>
-        for a <code>Box</code>/<code>Stack</code> carrying
-        <code>attrs: { "data-sk-density-scope": "", style: "--sk-density-factor: …" }</code>.
-  - date: 2026-09-02
-    kind: rework
-    es:
-      title: Inline alinea sus items al borde inferior por defecto, no al centro
-      body: >-
-        El default de <code>inlineAlign</code> (la opción de <code>Inline</code>, <code>data-align</code>
-        en el markup) pasa de <code>"center"</code> a <code>"end"</code>: una fila que mezcla, por
-        ejemplo, una etiqueta y un control de distinta altura ahora asienta sus items sobre un borde
-        inferior compartido en vez de flotar cada uno en su propio centro vertical, que se lee como una
-        sola línea. Una composición que dependía del centrado vuelve a él con
-        <code>inlineAlign: "center"</code> (<code>data-align="center"</code>), un valor que antes no
-        hacía falta declarar y ahora sí. <code>patterns/layout.css</code> acompaña el cambio
-        (<code>.sk-inline</code> arranca en <code>align-items: flex-end</code>).
-    en:
-      title: Inline aligns its items to the bottom edge by default, not the center
-      body: >-
-        The default for <code>inlineAlign</code> (<code>Inline</code>'s option, <code>data-align</code>
-        in markup) moves from <code>"center"</code> to <code>"end"</code>: a row mixing, say, a label
-        and a control of different heights now sits its items on a shared bottom edge rather than each
-        floating at its own vertical center, so it reads as one line. A composition that relied on
-        centering gets it back with <code>inlineAlign: "center"</code> (<code>data-align="center"</code>),
-        a value that did not need declaring before and now does. <code>patterns/layout.css</code>
-        matches the change (<code>.sk-inline</code> starts at <code>align-items: flex-end</code>).
-  - date: 2026-08-26
-    kind: feature
-    es:
-      title: Grid agrega una quinta columna y un modo responsive con celdas destacadas
-      body: >-
-        <code>columns</code> acepta <code>"5"</code>, y la opción nueva <code>responsive</code>
-        (<code>data-responsive</code>) hace que el número declarado sea el TECHO y no el ancho fijo:
-        la grilla arranca en una sola columna y va sumando carriles en 36rem, 52rem, 72rem y 90rem
-        hasta llegar al que se pidió. A diferencia de <code>multicol</code>, son filas reales de CSS
-        Grid, así que un hijo directo puede pedir más de un carril con <code>data-span</code>, acotado
-        a los carriles que existan en ese momento. La regla para elegir: <code>multicol</code> cuando
-        cada card deba conservar su propia altura estilo Pinterest, <code>responsive</code> cuando
-        importe más tener una celda destacada ancha que evitar huecos bajo las vecinas más bajas.
-    en:
-      title: Grid grows a fifth column and a responsive mode with featured cells
-      body: >-
-        <code>columns</code> accepts <code>"5"</code>, and the new <code>responsive</code> option
-        (<code>data-responsive</code>) makes the declared number a CEILING rather than a fixed width:
-        the grid starts at one column and adds lanes at 36rem, 52rem, 72rem and 90rem until it reaches
-        the one that was asked for. Unlike <code>multicol</code>, these are real CSS Grid rows, so a
-        direct child can request more than one lane with <code>data-span</code>, capped to however many
-        lanes exist at that moment. The rule for choosing: <code>multicol</code> when every card should
-        keep its own Pinterest-style height, <code>responsive</code> when one wide featured cell matters
-        more than avoiding gaps under its shorter neighbours.
-  - date: 2026-08-21
-    kind: feature
-    es:
-      title: El rail de LayoutGrid va antes, después, o en ambos lados
-      body: >-
-        <code>data-width="rail"</code> sigue sentándose después del contenido;
-        <code>data-width="rail-start"</code> lo pone antes; la misma
-        <code>sk-layout-grid</code> puede llevar los dos a la vez. El aire entre
-        rail y contenido es <code>--sk-layout-rail-gap</code> (un paso de
-        <code>space-inline</code>, no el track de breakout, que dejaba un hueco
-        de lectura entre la prosa y su índice).
-    en:
-      title: LayoutGrid's rail can sit before, after, or on both sides
-      body: >-
-        <code>data-width="rail"</code> still sits after the content;
-        <code>data-width="rail-start"</code> puts it before; the same
-        <code>sk-layout-grid</code> can carry both at once. The air between rail
-        and content is <code>--sk-layout-rail-gap</code> (one
-        <code>space-inline</code> step, not the breakout track, which left a
-        reading-measure gap between the prose and its index).
-  - date: 2026-08-21
-    kind: feature
-    es:
-      title: LayoutGrid publica una columna de rail
-      body: >-
-        <code>data-width="rail"</code> reserva una columna aparte del flujo principal, junto a él -
-        no un span de contenido como <code>narrow</code>/<code>breakout</code>, sino un hijo directo
-        de otro tipo, para un TOC, navegación contextual o cualquier otro elemento de apoyo. Fijo en
-        ancho (<code>--sk-layout-rail-inline-size</code>, 14rem por defecto) y colapsa a una fila
-        propia sobre el contenido por debajo de <code>wide</code> (72rem); <code>--sk-layout-rail-row-span</code>
-        lo estira para acompañar tantas filas del contenido como declare quien lo compone. No tiene
-        enhancer: <code>patterns/layout.css</code> resuelve todo.
-    en:
-      title: LayoutGrid publishes a rail column
-      body: >-
-        <code>data-width="rail"</code> reserves a column of its own beside the main flow: not a
-        content span like <code>narrow</code>/<code>breakout</code>, but a direct child of a
-        different kind, for a TOC, contextual navigation, or any other supporting element. Fixed in
-        width (<code>--sk-layout-rail-inline-size</code>, 14rem by default) and collapses to its own
-        row above the content below <code>wide</code> (72rem); <code>--sk-layout-rail-row-span</code>
-        stretches it to match however many rows of content whoever composes it declares. No enhancer:
-        <code>patterns/layout.css</code> resolves all of it.
-  - date: 2026-08-20
-    kind: feature
-    es:
-      title: Main se publica como landmark de layout
-      body: >-
-        <code>Main</code> entra al catálogo como el landmark <code>&lt;main&gt;</code> de la página: una
-        región de shell, no un componente de contenido, así que sus hijos quedan opcionales para que una
-        plantilla pueda mostrar el chrome antes de que la aplicación decida qué va ahí. No tiene enhancer.
-    en:
-      title: Main is published as the layout landmark
-      body: >-
-        <code>Main</code> joins the catalogue as the page's <code>&lt;main&gt;</code> landmark: a shell
-        region, not a content component, so its children stay optional so a template can show chrome
-        before an application decides what belongs there. It has no enhancer.
-  - date: 2026-08-11
-    kind: feature
-    es:
-      title: Layout se publica como contrato, con 4 signatures
-      body: >-
-        Entra al catálogo con <code>Stack</code>, <code>Inline</code>, <code>Grid</code>,
-        <code>DensityScope</code>: los dos bindings lo realizan, y la referencia de esta página sale del
-        contrato compilado en vez de prosa escrita al lado. No tiene enhancer: el markup está completo
-        por sí solo, así que las dos bindings son el mismo markup dos veces. Opciones: <code>gap</code>,
-        <code>align</code>, <code>inlineAlign</code>, <code>justify</code>, <code>equal</code>,
-        <code>wrap</code>, <code>columns</code>, <code>multicol</code>, <code>densityFactor</code>. La
-        hoja es <code>patterns/layout.css</code>.
-    en:
-      title: Layout is published as a contract, with 4 signatures
-      body: >-
-        It joins the catalogue with <code>Stack</code>, <code>Inline</code>, <code>Grid</code>,
-        <code>DensityScope</code>: both bindings realize it, and this page's reference is rendered from
-        the compiled contract rather than from prose written beside it. There is no enhancer: the markup
-        is complete on its own, so both bindings are the same markup twice. Options: <code>gap</code>,
-        <code>align</code>, <code>inlineAlign</code>, <code>justify</code>, <code>equal</code>,
-        <code>wrap</code>, <code>columns</code>, <code>multicol</code>, <code>densityFactor</code>. Its
-        stylesheet is <code>patterns/layout.css</code>.
-  - date: 2026-08-11
-    kind: feature
-    es:
-      title: LayoutGrid agrega medidas de contenido y full bleed
-      body: >-
-        <code>LayoutGrid</code> suma una grilla de página con columnas <code>narrow</code>,
-        <code>content</code>, <code>breakout</code> y <code>full-width</code>. Cada hijo directo queda
-        en content por defecto y puede elegir otra columna con <code>data-width</code>; un hijo full-width
-        hereda la grilla para que su contenido vuelva a content automáticamente. No tiene enhancer:
-        <code>@skryensya/core/patterns/layout.css</code> resuelve todo el comportamiento y React sólo
-        imprime la misma clase.
-    en:
-      title: LayoutGrid adds content measures and full bleed
-      body: >-
-        <code>LayoutGrid</code> adds a page grid with <code>narrow</code>, <code>content</code>,
-        <code>breakout</code>, and <code>full-width</code> columns. Every direct child defaults to
-        content and can choose another column with <code>data-width</code>; a full-width child inherits
-        the grid so its content returns to content automatically. It has no enhancer:
-        <code>@skryensya/core/patterns/layout.css</code> supplies all behavior and React only renders the
-        same class.
-  - date: 2026-09-12
-    kind: feature
-    es:
-      title: Los styling hooks de layout quedan declarados en el contrato
-      body: >-
-        El contrato ahora publica los <code>14</code> styling hooks de este componente. Nada
-        de lo que hayas escrito cambia: son los mismos hooks, con los mismos nombres, y la hoja de
-        estilos no se tocó. Lo nuevo es que el contrato los declara, así que el compilador falla si
-        la hoja declara uno que el contrato no publica, o si el contrato promete uno que la hoja no
-        declara. Esa segunda mitad es la que importa: hasta ahora, redeclarar un hook que ya no
-        existía no daba error, daba silencio.
-    en:
-      title: layout's styling hooks are now declared in the contract
-      body: >-
-        The contract now publishes this component's <code>14</code> styling hooks. Nothing you
-        wrote changes: the same hooks, under the same names, and the stylesheet was not touched.
-        What is new is that the contract declares them, so the compiler fails when the stylesheet
-        declares one the contract does not publish, or the contract promises one the stylesheet
-        never declares. That second half is the one that matters: until now, re-declaring a hook
-        that no longer existed was not an error, it was silence.
-  - date: 2026-09-12
-    kind: feature
-    es:
-      title: El contrato declara las otras hojas donde vive su estilo
-      body: >-
-        Este componente se pinta desde mas de una hoja, asi que el contrato ahora las nombra con
-        <code>hookSheets</code> y su lista de <code>hooks</code> cubre todas. Antes solo se podia
-        reconciliar contra la hoja de <code>css</code>, asi que los hooks de las otras eran
-        superficie publica que nadie documentaba ni verificaba. No cambia ningun estilo: cambia que
-        ahora estan declarados y el compilador los chequea.
-    en:
-      title: The contract declares the other stylesheets its styling lives in
-      body: >-
-        This component paints from more than one stylesheet, so the contract now names them with
-        <code>hookSheets</code> and its <code>hooks</code> list covers all of them. Before, only the
-        sheet <code>css</code> names could be reconciled, so the hooks in the others were public
-        surface nobody documented and nothing checked. No styling changes: what changes is that they
-        are declared now, and the compiler checks them.
-  - date: 2026-09-17
-    kind: feature
-    es:
-      title: Stack, Inline, Grid y LayoutGrid elige su elemento desde el árbol
-      body: >-
-        <code>layoutElement</code> acepta <code>div</code>, <code>section</code>, <code>article</code>,
-        <code>aside</code>, <code>header</code>, <code>footer</code>, <code>nav</code> y
-        <code>main</code>. React ya lo permitía con <code>as</code>, pero un árbol sólo podía emitir
-        un <code>div</code>, así que una región o un landmark no tenía forma de escribirse.
-    en:
-      title: Stack, Inline, Grid and LayoutGrid choose their element from the tree
-      body: >-
-        <code>layoutElement</code> takes <code>div</code>, <code>section</code>, <code>article</code>,
-        <code>aside</code>, <code>header</code>, <code>footer</code>, <code>nav</code> and
-        <code>main</code>. React already allowed it through <code>as</code>, but a tree could only
-        emit a <code>div</code>, so a region or a landmark had no way to be written.
+      body: <code>height</code> (<code>screen</code> or <code>fit</code>) sets the height.
   - date: 2026-10-04
     kind: feature
     target: AppShell
     es:
       title: AppShell arma el marco de una aplicación
-      body: >-
-        <code>AppShell</code> coloca una cabecera arriba, un rail (<code>Sidebar</code>) a un lado, el área de trabajo (<code>Main</code>) llenando el resto y un pie opcional. Los hijos se ubican por lo que son, sin opciones: el rail llega hasta abajo y <code>Main</code> ocupa el ancho que sobra. Antes, <code>Inline</code> con un <code>Sidebar</code> y un <code>Main</code> validaba y se veía mal (el <code>Main</code> no llenaba la fila y el rail se quedaba a mitad de página), así que cada aplicación escribía su propia clase. Publica dos hooks, <code>--sk-app-shell-gap</code> y <code>--sk-app-shell-min-block-size</code>.
+      body: <code>AppShell</code> coloca una cabecera arriba, un rail (<code>Sidebar</code>) a un lado, el área de trabajo (<code>Main</code>) llenando el resto y un pie opcional.
     en:
       title: AppShell builds an application's frame
-      body: >-
-        <code>AppShell</code> places a header across the top, a rail (<code>Sidebar</code>) down the side, the work area (<code>Main</code>) filling the rest and an optional footer. Children are placed by what they are, with no options: the rail reaches the bottom and <code>Main</code> takes the width that is left. Before, <code>Inline</code> holding a <code>Sidebar</code> and a <code>Main</code> validated and looked wrong (the <code>Main</code> did not fill the row and the rail stopped halfway down), so every application wrote its own class. It publishes two hooks, <code>--sk-app-shell-gap</code> and <code>--sk-app-shell-min-block-size</code>.
+      body: <code>AppShell</code> places a header across the top, a rail (<code>Sidebar</code>) down the side, the work area (<code>Main</code>) filling the rest and an optional footer.
+  - date: 2026-10-01
+    kind: feature
+    es:
+      title: Primera versión
+      body: Parte del kit desde la primera versión.
+    en:
+      title: First release
+      body: Part of the kit since the first release.

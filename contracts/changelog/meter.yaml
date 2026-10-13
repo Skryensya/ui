@@ -5,90 +5,11 @@
 # hash.
 surface: "e40223e5b0b9520d"
 entries:
-  - date: 2026-09-17
+  - date: 2026-10-01
     kind: feature
     es:
-      title: Firmas interactivas declaran forward
-      body: >-
-        Las firmas host interactivas o de formulario publican <code>forward</code>
-        (<code>id</code>/<code>aria-*</code> y attrs de enlace o formulario cuando aplica).
-        Un attr fuera de la lista es <code>unknown-attr</code>.
+      title: Primera versión
+      body: Muestra una medición dentro de un rango conocido, no el avance de una tarea.
     en:
-      title: Interactive signatures declare forward
-      body: >-
-        Interactive or form host signatures publish <code>forward</code>
-        (<code>id</code>/<code>aria-*</code> and link or form attrs where relevant).
-        An attr outside the list is <code>unknown-attr</code>.
-  - date: 2026-08-16
-    kind: feature
-    target: Meter
-    es:
-      title: Meter se publica como contrato, una medición dentro de un rango conocido
-      body: >-
-        Entra al catálogo con una sola signature, <code>Meter</code>: <code>role="meter"</code> en
-        un <code>&lt;div&gt;</code> con estilo, la misma elección que ya hizo <code>Progress</code>
-        sobre el <code>&lt;meter&gt;</code> nativo (sus pseudo-elementos <code>::-webkit-meter-*</code>
-        son tan inconsistentes entre navegadores como los de <code>&lt;progress&gt;</code>). La
-        distinción con <code>Progress</code> es la razón de ser de este contrato aparte:
-        <code>Progress</code> reporta cuánto de una TAREA de duración conocida terminó (siempre
-        arranca en 0, a veces indeterminada); <code>Meter</code> reporta una MEDICIÓN que ya tiene
-        un valor ahora mismo (uso de disco, nivel de batería, una calificación sobre cinco) y nunca
-        es indeterminada: WAI-ARIA les da roles distintos (<code>meter</code> vs
-        <code>progressbar</code>) por esta misma razón. Pintado distinto de <code>Progress</code> a
-        propósito: agrega una fila de encabezado con <code>label</code> y <code>valueText</code>
-        pintados (no solo anunciados), siguiendo el precedente de la industria (Adobe Spectrum
-        <code>sp-meter</code>) de mostrar siempre etiqueta y valor junto a la barra. Opciones:
-        <code>value</code>, <code>min</code>, <code>max</code>, <code>valueText</code>,
-        <code>tone</code> (<code>accent</code>/<code>success</code>/<code>warning</code>/<code>danger</code>),
-        <code>label</code> (requerida: un medidor sin nombre anuncia un número sobre nada). La hoja
-        es <code>components/meter.css</code>.
-    en:
-      title: Meter is published as a contract, a measurement within a known range
-      body: >-
-        It joins the catalogue with one signature, <code>Meter</code>: <code>role="meter"</code> on
-        a styled <code>&lt;div&gt;</code>, the same choice <code>Progress</code> already made over
-        the native <code>&lt;meter&gt;</code> element (its <code>::-webkit-meter-*</code>
-        pseudo-elements are as inconsistent cross-browser as <code>&lt;progress&gt;</code>'s own).
-        The distinction from <code>Progress</code> is the whole reason this is a separate contract:
-        <code>Progress</code> reports how much of a known-length TASK has finished (always starting
-        at 0, sometimes indeterminate); <code>Meter</code> reports a MEASUREMENT that already has a
-        value right now (disk usage, battery level, a rating out of five) and is never
-        indeterminate: WAI-ARIA gives them different roles (<code>meter</code> vs
-        <code>progressbar</code>) for exactly this reason. Painted differently from
-        <code>Progress</code> on purpose: it grows a header row with <code>label</code> and
-        <code>valueText</code> painted, not just announced, following industry precedent (Adobe
-        Spectrum's <code>sp-meter</code>) of always showing a visible label and value beside the
-        bar. Options: <code>value</code>, <code>min</code>, <code>max</code>, <code>valueText</code>,
-        <code>tone</code> (<code>accent</code>/<code>success</code>/<code>warning</code>/<code>danger</code>),
-        <code>label</code> (required: an unnamed meter announces a number about nothing). Its
-        stylesheet is <code>components/meter.css</code>.
-  - date: 2026-09-12
-    kind: feature
-    es:
-      title: Los styling hooks de meter quedan declarados en el contrato
-      body: >-
-        El contrato ahora publica los <code>2</code> styling hooks de este componente. Nada
-        de lo que hayas escrito cambia: son los mismos hooks, con los mismos nombres, y la hoja de
-        estilos no se tocó. Lo nuevo es que el contrato los declara, así que el compilador falla si
-        la hoja declara uno que el contrato no publica, o si el contrato promete uno que la hoja no
-        declara. Esa segunda mitad es la que importa: hasta ahora, redeclarar un hook que ya no
-        existía no daba error, daba silencio.
-    en:
-      title: meter's styling hooks are now declared in the contract
-      body: >-
-        The contract now publishes this component's <code>2</code> styling hooks. Nothing you
-        wrote changes: the same hooks, under the same names, and the stylesheet was not touched.
-        What is new is that the contract declares them, so the compiler fails when the stylesheet
-        declares one the contract does not publish, or the contract promises one the stylesheet
-        never declares. That second half is the one that matters: until now, re-declaring a hook
-        that no longer existed was not an error, it was silence.
-  - date: 2026-09-17
-    kind: bugfix
-    es:
-      title: value cae entre min y max
-      body: >-
-        Un valor fuera del rango del propio medidor deja de validar.
-    en:
-      title: value falls between min and max
-      body: >-
-        A value outside the meter range stops validating.
+      title: First release
+      body: Shows a measurement within a known range, not a task's progress.

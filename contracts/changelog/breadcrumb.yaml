@@ -5,108 +5,11 @@
 # hash.
 surface: "068affdb24a8dacf"
 entries:
-  - date: 2026-09-17
+  - date: 2026-10-01
     kind: feature
     es:
-      title: Breadcrumb declara compose del Menu de colapso
-      body: >-
-        <code>compose</code> nombra el <code>Menu</code> inyectado en sendas estrechas
-        (<code>systemOwned</code>) junto a las mismas hojas que ya cargaba
-        <code>hookSheets</code>.
+      title: Primera versión
+      body: Muestra la ruta jerárquica y permite volver a niveles superiores.
     en:
-      title: Breadcrumb declares compose of the collapse Menu
-      body: >-
-        <code>compose</code> names the injected collapse <code>Menu</code>
-        (<code>systemOwned</code>) alongside the same sheets <code>hookSheets</code> already
-        loaded.
-  - date: 2026-09-16
-    kind: bugfix
-    es:
-      title: Breadcrumb carga menu.css y anchored.css via hookSheets
-      body: >-
-        Una senda estrecha colapsa migas intermedias en un <code>Menu</code> real. Esas clases no
-        tienen dueño en las parts de Breadcrumb, así que <code>sheetsForTree</code> no descubría
-        las hojas. <code>hookSheets</code> nombra <code>components/menu.css</code> y
-        <code>patterns/anchored.css</code>, y el contrato publica también los hooks de esas hojas
-        (como Tooltip con anchored).
-    en:
-      title: Breadcrumb loads menu.css and anchored.css via hookSheets
-      body: >-
-        A narrow trail collapses middle crumbs into a real <code>Menu</code>. Those classes have no
-        owner on Breadcrumb's parts, so <code>sheetsForTree</code> could not discover the sheets.
-        <code>hookSheets</code> names <code>components/menu.css</code> and
-        <code>patterns/anchored.css</code>, and the contract also publishes those sheets' hooks
-        (same shape as Tooltip with anchored).
-  - date: 2026-08-19
-    kind: feature
-    es:
-      title: Breadcrumb colapsa los niveles intermedios en un Menu real cuando el ancho no alcanza
-      body: >-
-        Un enhancer nuevo (los dos bindings) mide si la senda entra en una sola línea; cuando no,
-        esconde los niveles ancestro. Nunca el primero ni la página actual. Detrás de un
-        disclosure «…» que abre un <a href="/componentes/menu">Menu</a> real con esos mismos
-        niveles: el patrón de teclado ARIA de un menú (flechas, Home/End, typeahead), no una lista
-        plana. La machine, el posicionamiento y el estilo del panel son los de Menu, compuestos
-        junto al propio trigger de Breadcrumb, el mismo movimiento que ya hace el dropdown de cada
-        <code>MenubarItem</code>. Nueva opción <code>collapsedLabel</code>, nueva part
-        <code>collapseTrigger</code>. Sin JS (o con menos de cuatro niveles) el markup sigue
-        completo por sí solo, como antes.
-    en:
-      title: Breadcrumb collapses ancestor levels into a real Menu when the width does not fit
-      body: >-
-        A new enhancer (both bindings) measures whether the trail fits on one line; when it does
-        not, it hides the ancestor levels: never the first one or the current page. Behind a
-        "…" disclosure that opens a real <a href="/en/components/menu">Menu</a> holding those same
-        levels: an ARIA menu's own keyboard pattern (arrow keys, Home/End, typeahead), not a plain
-        list. The machine, positioning and panel styling are Menu's, composed beside Breadcrumb's
-        own trigger: the same move every <code>MenubarItem</code>'s dropdown already makes. New
-        option <code>collapsedLabel</code>, new part <code>collapseTrigger</code>. Without JS (or
-        under four levels) the markup is still complete on its own, as before.
-  - date: 2026-08-11
-    kind: feature
-    es:
-      title: Breadcrumb se publica como contrato, con una signature
-      body: >-
-        Entra al catálogo con <code>Breadcrumb</code>: los dos bindings lo realizan, y la referencia de
-        esta página sale del contrato compilado en vez de prosa escrita al lado. No tiene enhancer: el
-        markup está completo por sí solo, así que las dos bindings son el mismo markup dos veces.
-        Opciones: <code>label</code>. La hoja es <code>components/breadcrumb.css</code>.
-    en:
-      title: Breadcrumb is published as a contract, with one signature
-      body: >-
-        It joins the catalogue with <code>Breadcrumb</code>: both bindings realize it, and this page's
-        reference is rendered from the compiled contract rather than from prose written beside it. There
-        is no enhancer: the markup is complete on its own, so both bindings are the same markup twice.
-        Options: <code>label</code>. Its stylesheet is <code>components/breadcrumb.css</code>.
-  - date: 2026-09-12
-    kind: feature
-    es:
-      title: Los styling hooks de breadcrumb quedan declarados en el contrato
-      body: >-
-        El contrato ahora publica los <code>7</code> styling hooks de este componente. Nada
-        de lo que hayas escrito cambia: son los mismos hooks, con los mismos nombres, y la hoja de
-        estilos no se tocó. Lo nuevo es que el contrato los declara, así que el compilador falla si
-        la hoja declara uno que el contrato no publica, o si el contrato promete uno que la hoja no
-        declara. Esa segunda mitad es la que importa: hasta ahora, redeclarar un hook que ya no
-        existía no daba error, daba silencio.
-    en:
-      title: breadcrumb's styling hooks are now declared in the contract
-      body: >-
-        The contract now publishes this component's <code>7</code> styling hooks. Nothing you
-        wrote changes: the same hooks, under the same names, and the stylesheet was not touched.
-        What is new is that the contract declares them, so the compiler fails when the stylesheet
-        declares one the contract does not publish, or the contract promises one the stylesheet
-        never declares. That second half is the one that matters: until now, re-declaring a hook
-        that no longer existed was not an error, it was silence.
-  - date: 2026-09-17
-    kind: breaking
-    es:
-      title: Los textos por defecto pasan a inglés
-      body: >-
-        El kit es una librería en inglés y sus defaults estaban en español: <code>label</code> Breadcrumb, <code>collapsedLabel</code> Show hidden levels. Una interfaz en
-        otro idioma pasa sus propios textos, y el <code>locale</code> que corresponda.
-    en:
-      title: Default texts move to English
-      body: >-
-        The kit is an English library and its defaults were Spanish: <code>label</code> Breadcrumb, <code>collapsedLabel</code> Show hidden levels. An interface in another
-        language passes its own texts, and the <code>locale</code> it needs.
+      title: First release
+      body: Shows the hierarchical path and links back to higher levels.

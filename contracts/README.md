@@ -61,8 +61,17 @@ que nadie anunció.
 
 Una entrada **no** dice su versión. `changelog/releases.yaml` es el único lugar que decide eso: una
 entrada cae en el release más viejo cuya fecha la alcanza, y lo que quedó después del último release
-se muestra bajo la versión de trabajo (hoy `0.0.1-dev`).
+se muestra bajo la versión de trabajo (hoy `0.0.3-dev`).
 
 Cortar una versión es una línea ahí. Por eso el ledger existe en vez de un campo `version:` por
 entrada: con el campo habría que abrir los 65 changelogs y sellar a mano cada entrada suelta, que es
 un trabajo que nadie hace dos veces y que ningún gate puede exigir.
+
+## Qué tan largo escribir
+
+Una entrada se escanea, no se lee. **Título**: una línea, hasta ~80 caracteres, sin punto final. **Cuerpo**: una o dos
+frases, ~220 caracteres: qué cambió y qué hacer, no cómo se llegó. El detalle de diseño va en el commit o en un ADR.
+
+Al cortar una versión se **homologa** el historial: lo que pasó antes de la primera versión se resume en una sola entrada
+("Primera versión", con lo que el componente es), y un componente que nació dentro de una versión lleva una sola entrada
+("Componente nuevo"): nadie vio las iteraciones intermedias, así que no se cuentan.

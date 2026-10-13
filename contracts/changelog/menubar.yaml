@@ -5,183 +5,27 @@
 # hash.
 surface: "2baeb926e4fcd024"
 entries:
-  - date: 2026-09-17
-    kind: feature
-    es:
-      title: Firmas interactivas declaran forward
-      body: >-
-        Las firmas host interactivas o de formulario publican <code>forward</code>
-        (<code>id</code>/<code>aria-*</code> y attrs de enlace o formulario cuando aplica).
-        Un attr fuera de la lista es <code>unknown-attr</code>.
-    en:
-      title: Interactive signatures declare forward
-      body: >-
-        Interactive or form host signatures publish <code>forward</code>
-        (<code>id</code>/<code>aria-*</code> and link or form attrs where relevant).
-        An attr outside the list is <code>unknown-attr</code>.
-  - date: 2026-09-17
-    kind: feature
-    es:
-      title: portals declara container de React
-      body: >-
-        <code>portals: { container: true }</code> documenta el ref React-only que acota el portal (por defecto <code>document.body</code>). El markup sigue anclado en el subárbol.
-    en:
-      title: portals declares the React container
-      body: >-
-        <code>portals: { container: true }</code> documents the React-only ref that scopes the portal (default <code>document.body</code>). Markup stays in the subtree.
-  - date: 2026-09-17
-    kind: feature
-    target: MenubarItem
-    es:
-      title: MenubarItem declara compose de Menu, Button y NavList
-      body: >-
-        <code>compose</code> documenta popup Menu (<code>systemOwned</code>), trigger Button y estilo nav-list.
-    en:
-      title: MenubarItem declares compose of Menu, Button, and NavList
-      body: >-
-        <code>compose</code> documents Menu popup (<code>systemOwned</code>), Button trigger, and nav-list styling.
-  - date: 2026-09-17
-    kind: bugfix
-    es:
-      title: Menubar declara anchored.css y sus hooks para los desplegables Menu
-      body: >-
-        Cada <code>MenubarItem</code> con <code>items</code> embebe el popup portable de
-        <code>Menu</code> (<code>sk-anchor</code>/<code>sk-anchored</code>). Esas clases no tienen
-        dueño único en <code>parts</code>, así que el contrato ahora publica
-        <code>hookSheets</code> hacia <code>anchored.css</code> y los <code>9</code> hooks
-        <code>--sk-anchored-*</code> junto a <code>--sk-menubar-gap</code>, el mismo patrón que
-        <code>Menu</code>/<code>Megamenu</code>. React estampa los mounts
-        (<code>data-sk-menubar</code>/<code>data-sk-menubar-item</code>/<code>data-sk-menu</code>)
-        y reenvía los eventos DOM de Menu desde el wrapper del ítem.
-    en:
-      title: Menubar declares anchored.css and its hooks for Menu dropdowns
-      body: >-
-        Every <code>MenubarItem</code> with <code>items</code> embeds <code>Menu</code>'s portable
-        popup (<code>sk-anchor</code>/<code>sk-anchored</code>). Those classes have no unique owner
-        in <code>parts</code>, so the contract now publishes <code>hookSheets</code> for
-        <code>anchored.css</code> and the <code>9</code> <code>--sk-anchored-*</code> hooks beside
-        <code>--sk-menubar-gap</code>, the same shape as <code>Menu</code>/<code>Megamenu</code>.
-        React stamps the mounts
-        (<code>data-sk-menubar</code>/<code>data-sk-menubar-item</code>/<code>data-sk-menu</code>)
-        and forwards Menu's DOM events from the item wrapper.
-  - date: 2026-08-19
-    kind: feature
-    es:
-      title: Nueva opción nav en MenubarItem. El trigger puede ser el link real de nav-list
-      body: >-
-        Se agrega <code>nav</code> (booleana) a <code>MenubarItem</code>: cuando está presente, el
-        trigger renderiza con las clases propias de <code>nav-list</code>
-        (<code>sk-nav-list__link</code>/<code>__label</code>) en vez de <code>Button</code>
-        (<code>sk-button</code>). Nada del comportamiento de Menubar cambia: mismo <code>role</code>,
-        mismo roving tabindex, mismo manejo de apertura/cierre de desplegables. Sólo el elemento y
-        las clases que pinta el trigger. Pensada junto con la nueva opción de ítem <code>href</code>
-        de <code>Menu</code> para el caso <code>menubar-navigation</code> de WAI-ARIA: una barra que
-        es de verdad navegación, construida con los elementos de <code>nav-list</code>, no una barra
-        de comandos con los colores de nav-list prestados.
-    en:
-      title: New nav option on MenubarItem. The trigger can be nav-list's own real link
-      body: >-
-        Adds <code>nav</code> (boolean) to <code>MenubarItem</code>: when given, the trigger renders
-        with <code>nav-list</code>'s own classes (<code>sk-nav-list__link</code>/<code>__label</code>)
-        instead of <code>Button</code>'s (<code>sk-button</code>). Nothing about Menubar's own
-        behavior changes: same <code>role</code>, same roving tabindex, same dropdown open/close
-        handling: only the trigger's element and classes. Built together with <code>Menu</code>'s
-        new <code>href</code> item option for WAI-ARIA's own <code>menubar-navigation</code> case: a
-        bar that is genuinely navigation, built from <code>nav-list</code>'s own elements, not a
-        command bar wearing nav-list's borrowed colors.
-  - date: 2026-08-19
-    kind: breaking
-    es:
-      title: El desplegable de MenubarItem pasa a ser un Menu real
-      body: >-
-        <code>MenubarMenu</code> y <code>MenubarMenuItem</code> se retiran del catálogo.
-        <code>MenubarItem</code> gana un slot <code>items</code> con la misma forma que ya tiene
-        <code>Menu</code> (comandos, checkbox, radio, separadores, submenús anidados sin límite),
-        porque su desplegable ahora ES un <code>Menu</code>, no una segunda descripción más pobre de
-        uno. La navegación de la barra (flechas entre items de primer nivel, el cierre de un
-        desplegable al moverse al adyacente) sigue siendo propia de Menubar, sin cambios.
-    en:
-      title: MenubarItem's dropdown becomes a real Menu
-      body: >-
-        <code>MenubarMenu</code> and <code>MenubarMenuItem</code> are retired from the catalogue.
-        <code>MenubarItem</code> gains an <code>items</code> slot shaped exactly like <code>Menu</code>'s
-        own (commands, checkbox, radio, separators, arbitrarily nested submenus), because its dropdown
-        now IS a <code>Menu</code>, not a second, poorer description of one. The bar's own navigation
-        (arrows between top-level items, closing one dropdown when moving to the adjacent one) stays
-        Menubar's own, unchanged.
-  - date: 2026-09-12
-    kind: feature
-    es:
-      title: Los styling hooks de menubar quedan declarados en el contrato
-      body: >-
-        El contrato ahora publica los <code>5</code> styling hooks de este componente. Nada
-        de lo que hayas escrito cambia: son los mismos hooks, con los mismos nombres, y la hoja de
-        estilos no se tocó. Lo nuevo es que el contrato los declara, así que el compilador falla si
-        la hoja declara uno que el contrato no publica, o si el contrato promete uno que la hoja no
-        declara. Esa segunda mitad es la que importa: hasta ahora, redeclarar un hook que ya no
-        existía no daba error, daba silencio.
-    en:
-      title: menubar's styling hooks are now declared in the contract
-      body: >-
-        The contract now publishes this component's <code>5</code> styling hooks. Nothing you
-        wrote changes: the same hooks, under the same names, and the stylesheet was not touched.
-        What is new is that the contract declares them, so the compiler fails when the stylesheet
-        declares one the contract does not publish, or the contract promises one the stylesheet
-        never declares. That second half is the one that matters: until now, re-declaring a hook
-        that no longer existed was not an error, it was silence.
-  - date: 2026-09-12
-    kind: feature
-    target: group
-    es:
-      title: Los items de radio de Menubar publican group
-      body: >-
-        Un item ahora acepta <code>group</code>, que autoría <code>data-group</code> y dice a qué
-        conjunto de radios pertenece, para que dos grupos independientes convivan en un mismo menú
-        sin que uno limpie al otro. Las dos bindings ya lo implementaban y el tipo
-        <code>MenuItem</code> de Core ya lo declaraba; lo único que faltaba era publicarlo en el
-        contrato, así que una composición que las bindings resolvían bien la rechazaba el validador.
-    en:
-      title: Menubar's radio items publish group
-      body: >-
-        An item now accepts <code>group</code>, which authors <code>data-group</code> and says which
-        radio set it belongs to, so two independent groups can live in one menu without one clearing
-        the other. Both bindings already implemented it and Core's own <code>MenuItem</code> type
-        already declared it; only the contract did not, so a composition the bindings handled
-        correctly was rejected by the validator.
   - date: 2026-10-02
     kind: breaking
     es:
       title: Se elimina la opción nav de MenubarItem
-      body: >-
-        <code>MenubarItem</code> ya no acepta <code>nav</code>: el trigger es siempre un
-        <code>Button</code> <code>ghost</code>. Dibujar la barra como enlaces de
-        <code>nav-list</code> duplicaba lo que ya hace <code>Megamenu</code> para la navegación de
-        un sitio y contradecía el propósito de la barra, que es llevar comandos. Un árbol con
-        <code>nav</code> ahora es inválido; para navegar entre páginas usa
-        <code>Megamenu</code> o <code>NavList</code>.
+      body: "<code>MenubarItem</code> ya no acepta <code>nav</code>: el trigger es siempre un <code>Button</code> <code>ghost</code>."
     en:
       title: MenubarItem's nav option is removed
-      body: >-
-        <code>MenubarItem</code> no longer accepts <code>nav</code>: the trigger is always a
-        <code>ghost</code> <code>Button</code>. Drawing the bar as <code>nav-list</code> links
-        duplicated what <code>Megamenu</code> already does for site navigation and contradicted the
-        bar's purpose, which is to carry commands. A tree with <code>nav</code> is now invalid; to
-        move between pages use <code>Megamenu</code> or <code>NavList</code>.
+      body: "<code>MenubarItem</code> no longer accepts <code>nav</code>: the trigger is always a <code>ghost</code> <code>Button</code>."
   - date: 2026-10-02
     kind: bugfix
     es:
       title: El submenú de un desplegable de Menubar se coloca junto a su ítem
-      body: >-
-        Un desplegable con submenús (<code>Exportar</code> → PDF, CSV) abría el submenú lejos de su
-        ítem, en la esquina de la página. El desplegable de nivel superior usaba el anclaje nativo del
-        navegador mientras el submenú lo colocaba la máquina, y mezclar los dos motores desfasa las
-        coordenadas. Ahora <code>MenubarItem</code> retira el anclaje nativo cuando algún nivel de su
-        desplegable tiene un submenú, igual que <code>Menu</code>. La superficie del contrato no cambia.
+      body: Un desplegable con submenús (<code>Exportar</code> → PDF, CSV) abría el submenú lejos de su ítem, en la esquina de la página.
     en:
       title: A Menubar dropdown's submenu is placed beside its item
-      body: >-
-        A dropdown with submenus (<code>Export</code> → PDF, CSV) opened the submenu far from its item,
-        in the corner of the page. The top-level dropdown used the browser's native anchoring while the
-        machine placed the submenu, and mixing the two engines throws the coordinates off. Now
-        <code>MenubarItem</code> withholds native anchoring when any level of its dropdown has a
-        submenu, as <code>Menu</code> does. The contract's surface does not change.
+      body: A dropdown with submenus (<code>Export</code> → PDF, CSV) opened the submenu far from its item, in the corner of the page.
+  - date: 2026-10-01
+    kind: feature
+    es:
+      title: Primera versión
+      body: Barra horizontal persistente de comandos, algunos con desplegable.
+    en:
+      title: First release
+      body: A persistent horizontal bar of commands, some opening a dropdown.

@@ -9,119 +9,16 @@ entries:
     kind: bugfix
     target: Stat
     es:
-      title: "El valor de Stat se lee como cifra, no como código"
-      body: >-
-        <code>.sk-stat__value</code> usaba la fuente de código y el tamaño <code>h2</code>. Ahora usa la fuente del cuerpo con números tabulares y el tamaño <code>h1</code>, así que una cifra clave se ve como parte de la página.
+      title: El valor de Stat se lee como cifra, no como código
+      body: <code>.sk-stat__value</code> usaba la fuente de código y el tamaño <code>h2</code>. Ahora usa la fuente del cuerpo con números tabulares y el tamaño <code>h1</code>, así que una cifra clave se ve como parte de la página.
     en:
-      title: "Stat's value reads as a figure, not as code"
-      body: >-
-        <code>.sk-stat__value</code> used the code font at the <code>h2</code> size. It now uses the body font with tabular numbers at the <code>h1</code> size, so a key figure reads as part of the page.
-  - date: 2026-09-27
-    kind: bugfix
-    target: Stat
-    es:
-      title: La cuenta animada de Stat termina en el value escrito
-      body: >-
-        Con <code>count</code> y <code>animate</code>, React ignoraba <code>value</code> y mostraba el número formateado en el idioma del navegador, empezando en 0. Ahora muestra <code>value</code> hasta que la cuenta arranca y termina en él, como el enhancer.
-    en:
-      title: "Stat's animated count lands on the authored value"
-      body: >-
-        With <code>count</code> and <code>animate</code>, React ignored <code>value</code> and showed the number formatted in the browser locale, starting at 0. It now shows <code>value</code> until the count starts and ends on it, as the enhancer does.
-  - date: 2026-09-17
-    kind: chore
-    es:
-      title: El hash de superficie mide la promesa pública
-      body: >-
-        El hash de superficie ahora proyecta opciones por lista blanca (sin <code>machineInput</code>), incluye <code>eventDetails</code>, y sigue excluyendo la plantilla (<code>also</code>, attrs efímeros). Este contrato no cambió su API; sólo cambió lo que el hash mide.
-    en:
-      title: Surface hash measures the public promise
-      body: >-
-        The surface hash now projects options through a whitelist (no <code>machineInput</code>), includes <code>eventDetails</code>, and still excludes the template (<code>also</code>, ephemeral attrs). This contract's API did not change; only what the hash measures did.
-  - date: 2026-09-17
-    kind: bugfix
-    es:
-      title: React tipa label y value como texto
-      body: >-
-        <code>label</code> es <code>string</code> y <code>value</code> es
-        <code>string | number</code> (el path animado), igual que los slots de texto del contrato.
-    en:
-      title: React types label and value as text
-      body: >-
-        <code>label</code> is <code>string</code> and <code>value</code> is
-        <code>string | number</code> (the animated path), matching the contract text slots.
-  - date: 2026-08-11
+      title: Stat's value reads as a figure, not as code
+      body: <code>.sk-stat__value</code> used the code font at the <code>h2</code> size. It now uses the body font with tabular numbers at the <code>h1</code> size, so a key figure reads as part of the page.
+  - date: 2026-10-01
     kind: feature
     es:
-      title: Stat se publica como contrato, con una signature
-      body: >-
-        Entra al catálogo con <code>Stat</code>: los dos bindings lo realizan, y la referencia de esta
-        página sale del contrato compilado en vez de prosa escrita al lado. El binding Vanilla monta
-        sobre <code>data-sk-stat</code>: el markup se autora y el enhancer lo hidrata, así que lo que no
-        necesita JavaScript funciona antes de que corra ninguno. Opciones: <code>trend</code>,
-        <code>animate</code>, <code>count</code>, <code>locale</code>, <code>suffix</code>,
-        <code>fractionDigits</code>. La hoja es <code>components/stat.css</code>.
+      title: Primera versión
+      body: Destaca una métrica con su etiqueta y contexto.
     en:
-      title: Stat is published as a contract, with one signature
-      body: >-
-        It joins the catalogue with <code>Stat</code>: both bindings realize it, and this page's
-        reference is rendered from the compiled contract rather than from prose written beside it. The
-        Vanilla binding mounts on <code>data-sk-stat</code>: the markup is authored and the enhancer
-        hydrates it, so whatever needs no JavaScript works before any runs. Options: <code>trend</code>,
-        <code>animate</code>, <code>count</code>, <code>locale</code>, <code>suffix</code>,
-        <code>fractionDigits</code>. Its stylesheet is <code>components/stat.css</code>.
-  - date: 2026-09-12
-    kind: feature
-    es:
-      title: Los styling hooks de stat quedan declarados en el contrato
-      body: >-
-        El contrato ahora publica los <code>3</code> styling hooks de este componente. Nada
-        de lo que hayas escrito cambia: son los mismos hooks, con los mismos nombres, y la hoja de
-        estilos no se tocó. Lo nuevo es que el contrato los declara, así que el compilador falla si
-        la hoja declara uno que el contrato no publica, o si el contrato promete uno que la hoja no
-        declara. Esa segunda mitad es la que importa: hasta ahora, redeclarar un hook que ya no
-        existía no daba error, daba silencio.
-    en:
-      title: stat's styling hooks are now declared in the contract
-      body: >-
-        The contract now publishes this component's <code>3</code> styling hooks. Nothing you
-        wrote changes: the same hooks, under the same names, and the stylesheet was not touched.
-        What is new is that the contract declares them, so the compiler fails when the stylesheet
-        declares one the contract does not publish, or the contract promises one the stylesheet
-        never declares. That second half is the one that matters: until now, re-declaring a hook
-        that no longer existed was not an error, it was silence.
-  - date: 2026-09-17
-    kind: bugfix
-    es:
-      title: El contrato declara el rango de sus números
-      body: >-
-        <code>fractionDigits</code> es un entero de 0 a 100, el rango de <code>Intl.NumberFormat</code>. Un valor fuera de rango deja de validar en vez de llegar al binding.
-    en:
-      title: The contract declares the range of its numbers
-      body: >-
-        <code>fractionDigits</code> is a whole number from 0 to 100, the range of <code>Intl.NumberFormat</code>. A value out of range stops validating instead of reaching the binding.
-  - date: 2026-09-17
-    kind: bugfix
-    es:
-      title: Un count-up necesita count y una tendencia necesita change
-      body: >-
-        <code>animate</code> sin <code>count</code> validaba y el enhancer lanzaba un error al montar;
-        <code>trend</code> sin el slot <code>change</code> no tenía dónde pintarse. Los dos dejan de
-        validar (nueva regla <code>implies</code>). <code>trend</code> toma el default
-        <code>neutral</code> que React ya escribía.
-    en:
-      title: A count-up needs count and a trend needs change
-      body: >-
-        <code>animate</code> without <code>count</code> validated and the enhancer threw on mount;
-        <code>trend</code> without the <code>change</code> slot had nowhere to paint. Both stop
-        validating (new <code>implies</code> rule). <code>trend</code> takes the <code>neutral</code>
-        default React already wrote.
-  - date: 2026-09-17
-    kind: chore
-    es:
-      title: El hash de superficie cubre también las restricciones
-      body: >-
-        El hash de superficie ahora incluye las restricciones entre opciones (<code>implies</code>, <code>excludes</code>, <code>notInside</code>, <code>pairs</code>) y <code>outputHooks</code>. Este contrato no cambió; sólo cambió lo que el hash mide.
-    en:
-      title: The surface hash also covers constraints
-      body: >-
-        The surface hash now covers the constraints between options (<code>implies</code>, <code>excludes</code>, <code>notInside</code>, <code>pairs</code>) and <code>outputHooks</code>. This contract did not change; only what the hash measures did.
+      title: First release
+      body: Highlights a metric with its label and context.

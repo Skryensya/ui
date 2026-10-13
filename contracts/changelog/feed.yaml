@@ -5,101 +5,11 @@
 # hash.
 surface: "9feef9ad2f528233"
 entries:
-  - date: 2026-09-19
-    kind: feature
-    target: Feed
-    es:
-      title: Feed suma el modelo de teclado que el patrón recomienda, opcional
-      body: >-
-        Con <code>keyboard</code>, cada artículo entra en la secuencia de Tab
-        (<code>tabindex="0"</code> en todos, como en el ejemplo de WAI, no un foco móvil 0/-1),
-        Page Down y Page Up se mueven de artículo en artículo, y Ctrl+Inicio y Ctrl+Fin SALEN del
-        feed al primer enfocable antes o después: no van al primer o último artículo, que es lo
-        que dice el patrón y lo que este equipo había anotado al revés. Viene apagado, así que
-        nada de lo escrito hasta hoy cambia un byte. En los extremos la tecla no se consume, para
-        que Page Down en el último artículo siga haciendo scroll.
-    en:
-      title: Feed gains the keyboard model the pattern recommends, opt-in
-      body: >-
-        With <code>keyboard</code>, every article joins the Tab sequence
-        (<code>tabindex="0"</code> on each, as WAI's example does, not a roving 0/-1), Page Down
-        and Page Up step article to article, and Ctrl+Home and Ctrl+End LEAVE the feed for the
-        first focusable element before or after it: they do not go to the first or last article,
-        which is what the pattern says and what we had written down backwards. It ships off, so
-        nothing written before today changes by a byte. At either end the key is not consumed, so
-        Page Down on the last article still scrolls.
-  - date: 2026-08-18
-    kind: bugfix
-    target: Feed
-    es:
-      title: Feed.busy ahora escribe aria-busy="false" en vez de omitirlo
-      body: >-
-        El binding React siempre escribe <code>aria-busy={busy}</code>, la lectura tri-state que
-        WAI-ARIA pide ("aria-busy se pone en true antes de un cambio... en false inmediatamente
-        después"); la opción del contrato no tenía <code>falseValue</code>, así que markup escrito a mano
-        con <code>busy</code> en falso omitía el atributo por completo en vez de escribirlo como
-        <code>"false"</code>. Invisible hasta que un árbol canónico existió para comparar los dos
-        bindings.
-    en:
-      title: Feed.busy now writes aria-busy="false" instead of omitting it
-      body: >-
-        The React binding always writes <code>aria-busy={busy}</code>, the tri-state reading
-        WAI-ARIA asks for ("aria-busy is set to true before a DOM change... set to false
-        immediately after"); the contract's option had no <code>falseValue</code>, so authored
-        markup with <code>busy</code> false omitted the attribute entirely instead of writing
-        <code>"false"</code>. Invisible until a canonical tree existed to compare the two bindings.
-  - date: 2026-09-12
+  - date: 2026-10-01
     kind: feature
     es:
-      title: Los styling hooks de feed quedan declarados en el contrato
-      body: >-
-        El contrato ahora publica los <code>3</code> styling hooks de este componente. Nada
-        de lo que hayas escrito cambia: son los mismos hooks, con los mismos nombres, y la hoja de
-        estilos no se tocó. Lo nuevo es que el contrato los declara, así que el compilador falla si
-        la hoja declara uno que el contrato no publica, o si el contrato promete uno que la hoja no
-        declara. Esa segunda mitad es la que importa: hasta ahora, redeclarar un hook que ya no
-        existía no daba error, daba silencio.
+      title: Primera versión
+      body: Stream de publicaciones independientes, cada una con su posición anunciada.
     en:
-      title: feed's styling hooks are now declared in the contract
-      body: >-
-        The contract now publishes this component's <code>3</code> styling hooks. Nothing you
-        wrote changes: the same hooks, under the same names, and the stylesheet was not touched.
-        What is new is that the contract declares them, so the compiler fails when the stylesheet
-        declares one the contract does not publish, or the contract promises one the stylesheet
-        never declares. That second half is the one that matters: until now, re-declaring a hook
-        that no longer existed was not an error, it was silence.
-  - date: 2026-09-17
-    kind: bugfix
-    es:
-      title: El contrato declara el rango de sus números
-      body: >-
-        <code>posInset</code> es un entero desde 1 y <code>setSize</code> un entero desde -1, el valor que WAI reserva para un total desconocido. Un valor fuera de rango deja de validar en vez de llegar al binding.
-    en:
-      title: The contract declares the range of its numbers
-      body: >-
-        <code>posInset</code> is a whole number from 1 and <code>setSize</code> a whole number from -1, the value WAI reserves for an unknown total. A value out of range stops validating instead of reaching the binding.
-  - date: 2026-09-17
-    kind: feature
-    target: Feed
-    es:
-      title: Feed declara a11y para su nombre accesible
-      body: >-
-        <code>role="feed"</code> no trae nombre implícito. El contrato ahora publica la regla de
-        <code>a11y</code> que exige <code>label</code>, con el mismo <code>because</code> que ya
-        tenía <code>requires</code>, para que un agente lea el porqué y no sólo el rechazo.
-    en:
-      title: Feed declares a11y for its accessible name
-      body: >-
-        <code>role="feed"</code> carries no implicit name. The contract now publishes the
-        <code>a11y</code> rule that requires <code>label</code>, with the same <code>because</code>
-        <code>requires</code> already enforced, so an agent reads the why and not only the rejection.
-  - date: 2026-09-17
-    kind: bugfix
-    es:
-      title: Los artículos concuerdan en su posición
-      body: >-
-        Todos los <code>FeedArticle</code> declaran el mismo <code>setSize</code> y ningún <code>posInset</code> se repite ni lo supera (salvo <code>-1</code>, total desconocido).
-    en:
-      title: Articles agree on their position
-      body: >-
-        Every <code>FeedArticle</code> states the same <code>setSize</code>, and no <code>posInset</code> repeats or passes it (except <code>-1</code>, unknown total).
+      title: First release
+      body: A stream of independent posts, each announced with its own position.

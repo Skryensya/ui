@@ -9,78 +9,15 @@ entries:
     kind: bugfix
     es:
       title: Kbd publica el hook de sus iconos estrechos
-      body: >-
-        El contrato ahora declara <code>--sk-kbd-icon</code>, el hook interno que alimenta los
-        glifos de flechas y Enter. La hoja ya lo usaba; esta entrada alinea la referencia con el CSS
-        para que el compilador no deje un hook sin documentar.
+      body: El contrato ahora declara <code>--sk-kbd-icon</code>, el hook interno que alimenta los glifos de flechas y Enter.
     en:
       title: Kbd publishes the hook for its narrow icons
-      body: >-
-        The contract now declares <code>--sk-kbd-icon</code>, the internal hook that feeds the arrow
-        and Enter glyphs. The stylesheet already used it; this entry aligns the reference with the CSS
-        so the compiler does not leave a hook undocumented.
-  - date: 2026-09-26
-    kind: feature
-    target: appearance
-    es:
-      title: Kbd suma appearance plain y brutalist
-      body: >-
-        <code>brutalist</code> dibuja la tecla con borde negro y una sombra dura pequeña en lugar de la
-        profundidad suave de la tecla. Sin <code>tactile</code> ni <code>frosted</code>.
-    en:
-      title: Kbd adds plain and brutalist appearances
-      body: >-
-        <code>brutalist</code> draws the key with a black edge and a small hard offset in place of the keycap's
-        soft depth. No <code>tactile</code> and no <code>frosted</code>.
-  - date: 2026-08-22
-    kind: feature
-    target: tone
-    es:
-      title: Tono accent opt-in; el default es una tecla física
-      body: >-
-        <code>tone</code> tiene dos valores, <code>neutral</code> (default) y <code>accent</code>.
-        El reposo deja de ser el chip azul: superficie raised, bisel y peldaño. Accent es el mismo
-        capuchón con la marca. Apretada, neutral se hunde; accent además toma el color de acción.
-    en:
-      title: Accent tone is opt-in; the default is a physical key
-      body: >-
-        <code>tone</code> has two values, <code>neutral</code> (the default) and <code>accent</code>.
-        Rest is no longer the blue chip: a raised surface, a bevel and a ledge. Accent is the same
-        cap with the brand. Pressed, neutral sinks; accent also takes the action colour.
-  - date: 2026-08-11
+      body: The contract now declares <code>--sk-kbd-icon</code>, the internal hook that feeds the arrow and Enter glyphs.
+  - date: 2026-10-01
     kind: feature
     es:
-      title: Kbd se publica como contrato, con una signature
-      body: >-
-        Entra al catálogo con <code>Kbd</code>: los dos bindings lo realizan, y la referencia de esta
-        página sale del contrato compilado en vez de prosa escrita al lado. No tiene enhancer: el markup
-        está completo por sí solo, así que las dos bindings son el mismo markup dos veces. No tiene
-        opciones: el elemento ES el significado. La hoja es <code>components/kbd.css</code>.
+      title: Primera versión
+      body: Representa teclas y combinaciones de teclado dentro del contenido.
     en:
-      title: Kbd is published as a contract, with one signature
-      body: >-
-        It joins the catalogue with <code>Kbd</code>: both bindings realize it, and this page's
-        reference is rendered from the compiled contract rather than from prose written beside it. There
-        is no enhancer: the markup is complete on its own, so both bindings are the same markup twice.
-        It has no options: the element IS the meaning. Its stylesheet is
-        <code>components/kbd.css</code>.
-  - date: 2026-09-12
-    kind: feature
-    es:
-      title: Los styling hooks de kbd quedan declarados en el contrato
-      body: >-
-        El contrato ahora publica los <code>12</code> styling hooks de este componente. Nada
-        de lo que hayas escrito cambia: son los mismos hooks, con los mismos nombres, y la hoja de
-        estilos no se tocó. Lo nuevo es que el contrato los declara, así que el compilador falla si
-        la hoja declara uno que el contrato no publica, o si el contrato promete uno que la hoja no
-        declara. Esa segunda mitad es la que importa: hasta ahora, redeclarar un hook que ya no
-        existía no daba error, daba silencio.
-    en:
-      title: kbd's styling hooks are now declared in the contract
-      body: >-
-        The contract now publishes this component's <code>12</code> styling hooks. Nothing you
-        wrote changes: the same hooks, under the same names, and the stylesheet was not touched.
-        What is new is that the contract declares them, so the compiler fails when the stylesheet
-        declares one the contract does not publish, or the contract promises one the stylesheet
-        never declares. That second half is the one that matters: until now, re-declaring a hook
-        that no longer existed was not an error, it was silence.
+      title: First release
+      body: Represents keys and keyboard combinations inside content.
