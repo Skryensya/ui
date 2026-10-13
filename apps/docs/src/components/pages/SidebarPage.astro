@@ -8,7 +8,6 @@ import "@skryensya/core/components/sidebar.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -25,14 +24,6 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
-const install = `pnpm add @skryensya/core @skryensya/vanilla`;
-
-const css = `@import "@skryensya/core/tokens.scss";
-@import "@skryensya/core/components/sidebar.css";
-@import "@skryensya/core/patterns/nav-list.css";
-@import "@skryensya/core/patterns/icon.css";
-@import "@skryensya/core/patterns/state-layer.css";`;
-
 const js = `import { initComponents } from "@skryensya/vanilla/auto";
 import { mountIcons } from "@skryensya/vanilla/icon";
 import { lucideIcons } from "@skryensya/icons-lucide";
@@ -45,11 +36,16 @@ import { sidebarDoTree, sidebarDontTree, sidebarNamesDoTree, sidebarNamesDontTre
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: sidebarTree(t, { home: "/", reports: "/reportes" }) }}
   title="Sidebar"
   description={t("sidebarPage.description")}
   contractId="sidebar"
   appearanceTargetSelector=".sk-sidebar"
   testFiles={["packages/react/src/components/sidebar.test.tsx", "packages/vanilla/src/components/sidebar.test.ts"]}
+  extraSheets={["@skryensya/core/patterns/nav-list.css", "@skryensya/core/patterns/icon.css", "@skryensya/core/patterns/state-layer.css"]}
+  vanillaInstallSteps={[
+    { title: t("sidebarPage.vanillaInitTitle"), blocks: [{ kind: "code", code: js, lang: "ts", label: "JavaScript" }] },
+  ]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
@@ -115,13 +111,5 @@ import { sidebarDoTree, sidebarDontTree, sidebarNamesDoTree, sidebarNamesDontTre
         { keys: ["Enter"], action: t("sidebarPage.key.reset") },
       ]}
     />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={css} label="CSS" />
-
-    <h3>{t("sidebarPage.vanillaInitTitle")}</h3>
-    <CodeBlock code={js} label="JavaScript" />
   </Fragment>
 </ComponentPageShell>

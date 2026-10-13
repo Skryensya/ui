@@ -28,16 +28,18 @@ interface Props {
   /** The contract id, as `packages/core` declares it and the manifest keys it. */
   id: string;
   heading?: string;
+  /** Sits under a "Reference" h2 the page already wrote: this one becomes an h3 titled "Contract". */
+  nested?: boolean;
 }
 
-const { id, heading } = Astro.props;
+const { id, heading, nested = false } = Astro.props;
 const t = useTranslations(getLocale(Astro.url));
 
 const contract = contractDoc(id);
 const sourceUrl = contractSourceUrl(id);
 ---
 
-<h2>{heading ?? t("contract.title")}</h2>
+{nested ? <h3>{heading ?? t("contract.jsonTitle")}</h3> : <h2>{heading ?? t("contract.title")}</h2>}
 <p><a class="sk-link" href={sourceUrl} target="_blank" rel="noopener noreferrer">{t("contract.sourceLink")}</a></p>
 
 {/* `open`, because here the code IS the page. Disclosure earns its place when a long block would

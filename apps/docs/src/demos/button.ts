@@ -16,7 +16,7 @@ export const buttonDefaultTree = (t: Translate): UsageTree => ({
 
 /**
  * `variant` and `tone` are independent axes, so the reference shows every pairing, LABELLED: rows are
- * the emphasis, columns the tone, and an empty corner cell sits the tone labels over their columns.
+ * the emphasis, columns the tone, the labels hung outside the grid so the buttons alone are centred.
  * Every cell carries the same neutral word so the only thing varying is the pairing; the destructive
  * example below is where a real destructive label belongs.
  */
@@ -24,23 +24,41 @@ const EMPHASES = ["solid", "soft", "ghost"] as const;
 const TONES = ["neutral", "accent", "danger"] as const;
 
 /** A row or column header: caption-sized and secondary, scaffolding rather than content. */
-const axisLabel = (text: string): UsageTree => ({
+const axisLabel = (text: string, style?: string): UsageTree => ({
   contract: "typography",
   signature: "Text",
   options: { size: "caption", tone: "secondary", weight: "label" },
+  ...(style ? { attrs: { style } } : {}),
   children: text,
 });
+
+/*
+ * THE LABELS HANG OFF THE GRID, they are not part of it. The grid is only the nine buttons, so the stage centres THEM; a
+ * label cell in the flow made the block lopsided (the labels' row and column counted as content). An absolutely
+ * positioned grid item takes the grid AREA named by its `grid-row`/`grid-column` as its containing block, so each label
+ * is anchored to the first row (tones) or the first column (emphases) and sits just outside it. Both lines of the area are
+ * written (`1 / 2`): a lone `1` leaves the end at the grid's own edge, so the area would run on past the row.
+ */
+/* The same distance on both axes, and room enough that the labels read as headings of the grid, not as part of it. */
+const AXIS_GAP = "var(--space-inset-lg)";
+const toneLabel = (tone: string, column: number) =>
+  axisLabel(tone, `position: absolute; white-space: nowrap; grid-row: 1 / 2; grid-column: ${column} / ${column + 1}; inset-block-end: calc(100% + ${AXIS_GAP});`);
+const emphasisLabel = (variant: string, row: number) =>
+  axisLabel(
+    variant,
+    `position: absolute; white-space: nowrap; grid-row: ${row} / ${row + 1}; grid-column: 1 / 2; inset-inline-end: calc(100% + ${AXIS_GAP}); inset-block-start: 50%; translate: 0 -50%;`,
+  );
 
 const variantMatrix = (t: Translate, appearance?: "brutalist" | "frosted", backdrop = ""): UsageTree => ({
   contract: "layout",
   signature: "Grid",
-  options: { columns: "4", gap: "md" },
-  attrs: { style: `align-items: center; justify-items: start;${backdrop}` },
+  options: { columns: "3", gap: "md" },
+  /* `relative`: an absolutely positioned grid item takes its grid AREA as containing block only when the grid itself is positioned. */
+  attrs: { style: `position: relative; align-items: center; justify-items: start;${backdrop}` },
   children: [
-    { contract: "typography", signature: "Text", options: { size: "caption" }, children: "" },
-    ...TONES.map((tone) => axisLabel(tone)),
-    ...EMPHASES.flatMap((variant) => [
-      axisLabel(variant),
+    ...TONES.map((tone, column) => toneLabel(tone, column + 1)),
+    ...EMPHASES.flatMap((variant, row) => [
+      emphasisLabel(variant, row + 1),
       ...TONES.map(
         (tone): UsageTree => ({
           contract: "button",
@@ -69,7 +87,7 @@ export const buttonBrutalistMatrixTree = (t: Translate): UsageTree => variantMat
  * surface, a chromatic sweep built from the action tokens, and a local photograph (the lightbox
  * demo's, served from `public/`, no remote dependency).
  */
-const FROST_PHOTO = "/demos/lightbox/street-small.jpg";
+const FROST_PHOTO = "/demos/lightbox/fjord.jpg";
 const FROST_BACKDROPS = {
   surface: "background: var(--color-bg-surface);",
   chromatic: "background: linear-gradient(135deg, var(--color-action-accent), var(--color-action-danger));",
@@ -362,6 +380,49 @@ export const buttonIconTree = (t: Translate): UsageTree => ({
   slots: { pre: { contract: "icon", signature: "Icon", options: { name: "download" } } },
   children: t("demo.button.download"),
 });
+
+/**
+ * Both icon slots side by side: `pre` before the text (the action's own glyph) and `post` after it (where it leads).
+ * Each button fills only the slot it needs, and an empty slot is not drawn.
+ */
+export const buttonIconSlotsTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Inline",
+  options: { gap: "sm" },
+  children: [
+    {
+      contract: "button",
+      signature: "Button.action",
+      options: { tone: "accent" },
+      slots: { pre: { contract: "icon", signature: "Icon", options: { name: "download" } } },
+      children: t("demo.button.download"),
+    },
+    {
+      contract: "button",
+      signature: "Button.action",
+      slots: { post: { contract: "icon", signature: "Icon", options: { name: "arrow-right" } } },
+      children: t("demo.button.continue"),
+    },
+  ],
+});
+
+/** One Button with its icon in one slot, for the page's slot playground: `pre` leads the text, `post` follows it. */
+export const buttonIconSlotTree = (t: Translate, slot: "pre" | "post"): UsageTree =>
+  slot === "pre"
+    ? {
+        contract: "button",
+        signature: "Button.action",
+        options: { tone: "accent" },
+        slots: { pre: { contract: "icon", signature: "Icon", options: { name: "download" } } },
+        children: t("demo.button.download"),
+      }
+    : {
+        contract: "button",
+        signature: "Button.action",
+        options: { tone: "accent" },
+        slots: { post: { contract: "icon", signature: "Icon", options: { name: "arrow-right" } } },
+        children: t("demo.button.continue"),
+      };
 
 /** An icon-only Button must name itself on its host. */
 export const buttonIconOnlyTree = (t: Translate): UsageTree => ({

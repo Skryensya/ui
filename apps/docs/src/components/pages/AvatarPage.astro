@@ -34,7 +34,6 @@ const t = useTranslations(getLocale(Astro.url));
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`avatar.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
-const install = `pnpm add @skryensya/core @skryensya/react`;
 const storybookTitle = "Components/Avatar";
 
 /*
@@ -54,6 +53,7 @@ const groupMax = `import { Avatar, AvatarGroup } from "@skryensya/react/avatar";
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: avatarSingleTree(), fit: true }}
   title="Avatar"
   description={t("avatar.description")}
   contractId="avatar"
@@ -157,11 +157,6 @@ const groupMax = `import { Avatar, AvatarGroup } from "@skryensya/react/avatar";
     />
     <ContentRules items={tList(t, "avatar.content")} />
   </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-  </Fragment>
-
   <Fragment slot="a11y">
     <A11yNotes intro={t("avatar.a11yIntro")} does={tList(t, "avatar.a11yDoes")} yours={tList(t, "avatar.a11yYours")} />
   </Fragment>

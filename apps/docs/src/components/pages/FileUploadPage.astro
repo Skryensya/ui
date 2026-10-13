@@ -28,6 +28,7 @@ const t = useTranslations(getLocale(Astro.url));
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: fileUploadTree(t) }}
   title="Drop zone"
   description={t("fileUploadPage.description")}
   contractId="file-upload"

@@ -6,7 +6,6 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/tag.css";
 import "@skryensya/core/components/typography.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -35,8 +34,6 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 const storybookTitle = "Components/DescriptionList";
-const install = `pnpm add @skryensya/core @skryensya/react`;
-const styles = `@import "@skryensya/core/components/description-list.css";`;
 
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
 const explain = (option: string, values: readonly string[]) =>
@@ -44,6 +41,7 @@ const explain = (option: string, values: readonly string[]) =>
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: descriptionListTree(t) }}
   title="DescriptionList"
   description={t("descriptionListPage.description")}
   contractId="description-list"
@@ -130,11 +128,6 @@ const explain = (option: string, values: readonly string[]) =>
       dont={{ tree: descriptionListDontLinkedValueTree(t), caption: t("descriptionListPage.dd.links.dont") }}
     />
     <ContentRules items={tList(t, "descriptionListPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" />
   </Fragment>
 
   <Fragment slot="a11y">

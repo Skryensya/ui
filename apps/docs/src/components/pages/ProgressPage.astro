@@ -6,7 +6,6 @@ import "@skryensya/core/patterns/layout.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -34,7 +33,6 @@ import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
-const install = `pnpm add @skryensya/core @skryensya/react`;
 
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
 const valueVariants = [
@@ -59,6 +57,7 @@ const explain = (option: string, values: readonly string[]) =>
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: progressMostTree(t) }}
   title="Progress"
   description={t("progressPage.description")}
   contractId="progress"
@@ -145,9 +144,6 @@ const explain = (option: string, values: readonly string[]) =>
     <ContentRules items={tList(t, "progressPage.content")} />
   </Fragment>
 
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-  </Fragment>
   <Fragment slot="a11y">
     <A11yNotes intro={t("progressPage.a11yIntro")} does={tList(t, "progressPage.a11yDoes")} yours={tList(t, "progressPage.a11yYours")} />
   </Fragment>

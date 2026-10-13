@@ -97,6 +97,8 @@ interface Props {
   flush?: boolean;
   /** Let the stage scroll instead of growing to its content. Isolates. */
   scroll?: boolean;
+  /** With a control: draw every value's frame up front and show the chosen one, so a switch is instant instead of a frame reload. For a few values. */
+  keepFrames?: boolean;
   /** App-only TypeScript run in the frame once the example mounts (`demos/scripts/*.ts`). Isolates. */
   script?: string;
   /**
@@ -134,6 +136,7 @@ const {
   script,
   bare = false,
   screen,
+  keepFrames = false,
 } = Astro.props;
 /* Content the page brings itself (a hands-on demo with its own state): drawn in the card's stage as given. */
 const custom = Astro.slots.has("default");
@@ -259,6 +262,13 @@ const codeMenuMarkup = codeMenuTree
       '$1<span data-sk-icon="external-link" data-sk-icon-size="sm"></span>',
     )
   : "";
+/* "Variant: how strong it looks" is a NAME and what it is about. The text is untouched (the id, the contents index and
+   the screen reader all read it whole); only its look is split at the first colon, the name set forward and the
+   rest back, so a column of titles reads as a column of names. */
+const titleParts = (() => {
+  const colon = title?.indexOf(": ") ?? -1;
+  return title && colon > 0 ? { name: title.slice(0, colon), note: title.slice(colon) } : null;
+})();
 const id = title ? `usage-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}` : undefined;
 /* A scope per card, stable across builds: the same tree and css always get the same attribute. */
 /* The frame's settings, when the example renders in one. Its script is COMPILED here: the frame runs
@@ -277,7 +287,11 @@ const scope = css && !asPlayground ? `u${[...(css + JSON.stringify(tree))].reduc
   data-width={width}
   {...(id ? { "aria-labelledby": id } : label ? { "aria-label": label } : {})}
 >
-  {title && <h3 id={id}>{title}</h3>}
+  {title && (
+    <h3 id={id}>
+      {titleParts ? <><span class="sk-preview-section__name">{titleParts.name}</span><span class="sk-preview-section__note">{titleParts.note}</span></> : title}
+    </h3>
+  )}
   {description && <p class="sk-preview-section__description" set:html={description} />}
   {scope && !framedStage && <style is:inline set:html={`[data-usage-scope="${scope}"] { ${css} }`} />}
   {
@@ -320,6 +334,7 @@ const scope = css && !asPlayground ? `u${[...(css + JSON.stringify(tree))].reduc
               controlLabel={variantsLabel ?? title ?? optionName ?? label ?? ""}
               explain={explainByValue}
               remountOnChange={remountOnChange}
+              keepFrames={keepFrames}
               frame={(variants || asPlayground) && screen === "xl"
                 ? { screen: "xl", width: 1200, flush, css, note: t("preview.scaledNote") }
                 : isolate || viewport !== "auto"
@@ -360,11 +375,36 @@ const scope = css && !asPlayground ? `u${[...(css + JSON.stringify(tree))].reduc
 </script>
 
 <style>
+  /* The title's two voices: the name in the heading's own weight, what it is about quieter beside it. */
+  .sk-preview-section__name {
+    color: var(--color-text-primary);
+  }
+
+  .sk-preview-section__note {
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-body, 400);
+  }
+
   /* The card itself is `preview-card.css`; only the optional control and crossfading sentence are
      this component's own. */
   .sk-usage-preview--controlled :global(.sk-property-playground) {
     display: grid;
-    gap: var(--space-stack-lg);
+    gap: var(--space-stack-md);
+  }
+
+  /* The stage's own block padding is gone: the grid's gap alone separates the control, the stage and
+     the sentence, so the sentence under the example is not pushed away by two layers of air. */
+  .sk-usage-preview--controlled :global(.sk-property-playground .sk-preview-card__stage) {
+    padding-block: 0;
+  }
+
+  /* A framed example stands alone in the card, with no panel under it, so it is rounded and edged on every
+     corner like the card around it (the chrome-less frame only rounds the start corners, which is
+     right when a source panel is fused below). */
+  .sk-usage-preview--controlled :global(.sk-property-playground iframe.sk-component-preview__stage) {
+    border: 1px solid var(--color-border-subtle);
+    border-end-start-radius: var(--radius-surface);
+    border-end-end-radius: var(--radius-surface);
   }
 
   /* Where the control will be, before React draws it: the `lg` track's own height. */

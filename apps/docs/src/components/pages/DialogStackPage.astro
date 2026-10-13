@@ -63,7 +63,9 @@ const vanilla = `import { initComponents } from "@skryensya/vanilla/auto";
 await initComponents();`;
 ---
 
-<ComponentPageShell title="Dialog Stack" description={t("dialogStackPage.description")} contractId="dialog-stack" badge="Beta" testFiles={["packages/react/src/components/dialog-stack.test.tsx", "packages/vanilla/src/components/dialog-stack.test.ts"]}>
+<ComponentPageShell
+  hookPlayground={{ tree: dialogStackTree(t) }}
+  title="Dialog Stack" description={t("dialogStackPage.description")} contractId="dialog-stack" badge="Beta" testFiles={["packages/react/src/components/dialog-stack.test.tsx", "packages/vanilla/src/components/dialog-stack.test.ts"]}>
   <Fragment slot="usage">
     <p class="lede">{t("dialogStackPage.lede")}</p>
     <UsagePreview tree={dialogStackTree(t)} title={t("dialogStackPage.example")} viewport="overlay" css=".sk-dialog-stack { inline-size: 100%; min-block-size: calc(100dvh - 2 * var(--sk-component-preview-stage-padding)); display: grid; place-items: center; }" storybookStory="Default" storybookTitle="Components/Dialog Stack" />

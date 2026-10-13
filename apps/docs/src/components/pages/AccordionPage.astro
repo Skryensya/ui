@@ -28,7 +28,6 @@ import "@skryensya/core/components/annotation.css";
    loaded: without this the drawing arrives as an unstyled list of nodes with the edge labels in a
    row underneath it, which is exactly what a reader with no JavaScript gets. */
 import "@skryensya/core/components/diagram.css";
-import CodeBlock from "../CodeBlock.astro";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import UsagePreview from "../UsagePreview.astro";
@@ -36,8 +35,6 @@ import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
-import VanillaMount from "../VanillaMount.astro";
-import { vanillaMounts } from "../../lib/vanilla-mounts";
 import {
   accordionAnatomyCss,
   accordionClosedTree,
@@ -68,10 +65,6 @@ mountIcons(document, lucideIcons);`;
  * Accordion's enhanced surface is a composition: accordion.css owns the frame and tile.css owns
  * each expandable item. Details is its own native, CSS-only path below.
  */
-const enhancedStyles = `@import "@skryensya/core/components/accordion.css";
-@import "@skryensya/core/components/tile.css";`;
-const reactInstall = `pnpm add @skryensya/core @skryensya/react`;
-
 const nativeInstall = `pnpm add @skryensya/core`;
 const nativeStyles = `@import "@skryensya/core/components/details.css";`;
 
@@ -90,6 +83,7 @@ const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: accordionSingleTree(t) }}
   title="Accordion"
   description={t("accordion.description")}
   contractId="accordion"
@@ -99,6 +93,24 @@ const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel
     { file: "components/details.css", probe: "sk-details", title: t("accordion.detailsNativoLabel") },
   ]}
   testFiles={["packages/react/src/components/accordion.test.tsx", "packages/vanilla/src/components/accordion.svelte.test.ts"]}
+  extraSheets={["@skryensya/core/components/tile.css"]}
+  vanillaInstallSteps={[
+    {
+      title: t("accordion.nativeInstallTitle"),
+      blocks: [
+        { kind: "html", html: t("accordion.nativeInstallBody") },
+        { kind: "code", code: nativeInstall, lang: "bash", label: "terminal" },
+        { kind: "code", code: nativeStyles, lang: "css", label: "CSS" },
+      ],
+    },
+    {
+      title: t("install.stepMount"),
+      blocks: [
+        { kind: "html", html: t("accordion.iconsNote") },
+        { kind: "code", code: iconsSetup, lang: "ts", label: "JavaScript" },
+      ],
+    },
+  ]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} />
@@ -257,38 +269,6 @@ const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel
     />
 
     <ContentRules items={tList(t, "accordion.content")} />
-  </Fragment>
-
-  {/*
-    * SPLIT ACROSS THE SHELL'S TWO INSTALL HALVES, because this page had three stories stacked in one
-    * panel and a reader only ever needed one of them. The lede is the same sentence on both sides
-    * (one `t()` call, so the two cannot drift); everything else divides cleanly.
-    *
-    * THE NATIVE `<details>` PATH IS FILED UNDER VANILLA, which is a judgement and worth stating: it
-    * is markup plus a stylesheet and no script at all, so it belongs with the half whose whole claim
-    * is that you write the markup yourself. A React consumer composing `Details` from
-    * `@skryensya/react/details` installs it the React way, which the React half already covers.
-    */}
-  <Fragment slot="install">
-    <p class="lede">{t("accordion.installIntro")}</p>
-
-    <h3>{t("accordion.reactInstallTitle")}</h3>
-    <p>{t("accordion.reactInstallBody")}</p>
-    <CodeBlock code={reactInstall} label="terminal" />
-    <CodeBlock code={enhancedStyles} label="CSS" lang="css" />
-  </Fragment>
-
-  <Fragment slot="installVanilla">
-    <p class="lede">{t("accordion.installIntro")}</p>
-
-    <VanillaMount {...vanillaMounts["/components/accordion"]} headingLevel="h3" />
-    <p set:html={t("accordion.iconsNote")} />
-    <CodeBlock code={iconsSetup} label="JavaScript" />
-
-    <h3>{t("accordion.nativeInstallTitle")}</h3>
-    <p set:html={t("accordion.nativeInstallBody")} />
-    <CodeBlock code={nativeInstall} label="terminal" />
-    <CodeBlock code={nativeStyles} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="a11y">

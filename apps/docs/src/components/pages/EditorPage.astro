@@ -7,7 +7,6 @@ import "@skryensya/core/patterns/anchored.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -23,26 +22,18 @@ const storybookTitle = "Components/Editor";
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`editorPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
-const install = `pnpm add @skryensya/core @skryensya/editor @skryensya/react
-# or, on the Vanilla side:
-pnpm add @skryensya/core @skryensya/editor @skryensya/vanilla`;
-
-const styles = `@import "@skryensya/core/components/editor.css";
-@import "@skryensya/core/components/toolbar.css";
-@import "@skryensya/core/components/input.css";
-@import "@skryensya/core/components/popover.css";
-@import "@skryensya/core/patterns/anchored.css";`;
-
-const js = `import { mountEditor } from "@skryensya/vanilla/editor";
-
-mountEditor();`;
+const installEditor = `pnpm add @skryensya/editor`;
 import { dd2 } from "../../demos/dodont-labels";
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: editorTree(t) }}
   title="Editor"
   description={t("editorPage.description")}
   contractId="editor"
+  extraSheets={["@skryensya/core/components/toolbar.css", "@skryensya/core/components/input.css", "@skryensya/core/components/popover.css", "@skryensya/core/patterns/anchored.css"]}
+  vanillaInstallSteps={[{ title: t("install.stepInstall"), blocks: [{ kind: "code", code: installEditor, lang: "bash", label: "terminal" }] }]}
+  reactInstallSteps={[{ title: t("install.stepInstall"), blocks: [{ kind: "code", code: installEditor, lang: "bash", label: "terminal" }] }]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("editorPage.lede")} />
@@ -90,11 +81,6 @@ import { dd2 } from "../../demos/dodont-labels";
       dont={{ tree: dd2.editor.dont(t), caption: t("dd2.editor.dont") }}
     />
     <ContentRules items={tList(t, "editorPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="a11y">

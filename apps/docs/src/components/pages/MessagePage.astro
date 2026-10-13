@@ -25,8 +25,6 @@ import {
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
-const install = `pnpm add @skryensya/core @skryensya/react`;
-const styles = `@import "@skryensya/core/components/message.css";`;
 const storybookTitle = "Components/Message";
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`messagePage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
@@ -130,6 +128,7 @@ const react = `import {
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: messagePlaygroundTree(t) }}
   title="Message"
   description={t("messagePage.description")}
   contractId="message"
@@ -223,11 +222,6 @@ const react = `import {
       dont={{ html: doActionsBad, caption: t("messagePage.dd.actions.dont") }}
     />
     <ContentRules items={tList(t, "messagePage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" />
   </Fragment>
 
   <Fragment slot="a11y">

@@ -6,7 +6,6 @@ import "@skryensya/core/components/number-field.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -39,15 +38,14 @@ const states = [
   { value: "disabled", options: { disabled: true } },
 ] as const;
 
-const styles = `@import "@skryensya/core/patterns/state-layer.css";
-@import "@skryensya/core/components/button.css";
-@import "@skryensya/core/components/number-field.css";`;
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: numberFieldSingleTree(t), fit: true }}
   title="NumberField"
   description={t("numberFieldPage.description")}
   contractId="number-field"
+  extraSheets={["@skryensya/core/patterns/state-layer.css", "@skryensya/core/components/button.css"]}
   appearanceTargetSelector=".sk-number-field"
   testFiles={["packages/vanilla/src/components/number-field.test.ts", "packages/react/src/components/number-field.test.tsx"]}
 >
@@ -129,10 +127,6 @@ const styles = `@import "@skryensya/core/patterns/state-layer.css";
       dont={{ tree: numberFieldDontLabelTree(t), caption: t("numberFieldPage.dd.label.dont") }}
     />
     <ContentRules items={tList(t, "numberFieldPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={styles} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="a11y">

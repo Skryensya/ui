@@ -10,7 +10,6 @@
 import "@skryensya/core/components/lightbox.css";
 import "@skryensya/core/patterns/image-frame.css";
 import "@skryensya/core/components/table.css";
-import CodeBlock from "../CodeBlock.astro";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
@@ -62,20 +61,14 @@ const cardDemoImages = [
   },
 ];
 
-const install = `pnpm add @skryensya/core @skryensya/react
-# or, for authored HTML
-pnpm add @skryensya/core @skryensya/vanilla`;
-
-const styles = `@import "@skryensya/core/components/lightbox.css";
-@import "@skryensya/core/patterns/scroll-lock.css";
-@import "@skryensya/core/patterns/visually-hidden.css";`;
-
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: lightboxSingleTree(t) }}
   title="Lightbox"
   description={t("lightbox.description")}
   contractId="lightbox"
+  extraSheets={["@skryensya/core/patterns/scroll-lock.css", "@skryensya/core/patterns/visually-hidden.css"]}
   testFiles={[
     "packages/core/src/lightbox.test.ts",
     "packages/vanilla/src/components/lightbox.test.ts",
@@ -189,11 +182,6 @@ const styles = `@import "@skryensya/core/components/lightbox.css";
       dont={{ tree: lightboxDontNoCaptionDdTree(t), caption: t("lightbox.dd.caption.dont") }}
     />
     <ContentRules items={tList(t, "lightbox.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="a11y">

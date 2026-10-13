@@ -4,7 +4,6 @@ import "@skryensya/core/components/table.css";
 import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/treegrid.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -27,9 +26,6 @@ const t = useTranslations(getLocale(Astro.url));
  * all come from `table.css` for free, so a consumer imports BOTH stylesheets, never `treegrid.css`
  * alone.
  */
-const install = `@import "@skryensya/core/components/table.css";
-@import "@skryensya/core/components/treegrid.css";`;
-
 const indentHook = `.sk-treegrid {
   /* One level wider, and a smaller disclosure column. */
   --sk-treegrid-indent: var(--space-inset-xl);
@@ -39,9 +35,13 @@ import { treegridHeadersDoTree, treegridHeadersDontTree } from "../../demos/dodo
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: treegridInboxTree(t), file: "components/treegrid.css", selector: ".sk-treegrid" }}
   title="Treegrid"
   description={t("treegridPage.description")}
   contractId="treegrid"
+  extraSheets={["@skryensya/core/components/table.css"]}
+  vanillaInstallSteps={[{ title: t("install.stepHooks"), blocks: [{ kind: "html", html: t("treegridPage.hooksBody") }, { kind: "code", code: indentHook, lang: "css", label: "CSS" }] }]}
+  reactInstallSteps={[{ title: t("install.stepHooks"), blocks: [{ kind: "html", html: t("treegridPage.hooksBody") }, { kind: "code", code: indentHook, lang: "css", label: "CSS" }] }]}
   styleGroups={[
     { file: "components/table.css", probe: "sk-table", title: "Heredados de Table" },
     { file: "components/treegrid.css", probe: "sk-treegrid", title: "Treegrid" },
@@ -86,12 +86,6 @@ import { treegridHeadersDoTree, treegridHeadersDontTree } from "../../demos/dodo
       dont={{ tree: treegridHeadersDontTree(t), caption: t("dd3.treegrid.dont") }}
     />
     <ContentRules items={tList(t, "treegridPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="CSS" lang="css" />
-    <p set:html={t("treegridPage.hooksBody")} />
-    <CodeBlock code={indentHook} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="a11y">

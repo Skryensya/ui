@@ -55,20 +55,11 @@ dialog?.addEventListener("close", () => {
   console.log(dialog.returnValue); // "cancel" | "confirm"
 });`;
 
-const install = `pnpm add @skryensya/core`;
-const styles = `@import "@skryensya/core/components/dialog.css";
-@import "@skryensya/core/patterns/scroll-lock.css";`;
-
-const vaulInstall = `pnpm add @skryensya/core @skryensya/vanilla`;
-const vaulStyles = `@import "@skryensya/core/components/dialog.css";
-@import "@skryensya/core/patterns/dialog-vaul.css";
-@import "@skryensya/core/patterns/scroll-lock.css";`;
-const vaulJs = `import { initComponents } from "@skryensya/vanilla/auto";
-
-await initComponents();`;
+const vaulStyles = `@import "@skryensya/core/patterns/dialog-vaul.css";`;
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: dialogConfirmTree(t) }}
   title="Dialog"
   description={t("dialog.description")}
   contractId="dialog"
@@ -78,6 +69,10 @@ await initComponents();`;
     { file: "patterns/dialog-vaul.css", probe: "data-sk-dialog-vaul", title: "Dialog Vaul" },
   ]}
   testFiles={["packages/react/src/components/dialog.test.tsx"]}
+  extraSheets={["@skryensya/core/patterns/scroll-lock.css"]}
+  vanillaInstallSteps={[
+    { title: t("dialog.vaulInstallTitle"), blocks: [{ kind: "code", code: vaulStyles, lang: "css", label: "CSS" }] },
+  ]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
@@ -133,16 +128,6 @@ await initComponents();`;
       do={{ tree: dialogRevokeAccessTree(t), caption: t("dialog.dd.interruption.do") }}
       dont={{ tree: dialogNoticeTree(t), caption: t("dialog.dd.interruption.dont") }}
     />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
-
-    <h3>{t("dialog.vaulInstallTitle")}</h3>
-    <CodeBlock code={vaulInstall} label="terminal" />
-    <CodeBlock code={vaulStyles} label="CSS" lang="css" />
-    <CodeBlock code={vaulJs} label="JavaScript" />
   </Fragment>
 
   <Fragment slot="a11y">

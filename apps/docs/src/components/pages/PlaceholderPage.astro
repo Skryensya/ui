@@ -7,7 +7,6 @@ import "@skryensya/core/patterns/visually-hidden.css";
 import "@skryensya/core/patterns/media-overlay.css";
 import "../../examples/placeholder.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -34,16 +33,8 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 
-const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
 const swapScript = publicationSwapScript;
-const styles = `@import "@skryensya/core/components/placeholder.css";
-@import "@skryensya/core/patterns/layout.css";
-@import "@skryensya/core/patterns/visually-hidden.css";
-@import "@skryensya/core/patterns/media-overlay.css";
-@import "@skryensya/core/components/badge.css";
-@import "@skryensya/core/components/avatar.css";
-@import "@skryensya/core/components/typography.css";`;
 
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
 const explain = (option: string, values: readonly string[]) =>
@@ -51,9 +42,11 @@ const explain = (option: string, values: readonly string[]) =>
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: placeholderParagraphTree(), fit: true }}
   title="Placeholder"
   description={t("placeholderPage.description")}
   contractId="placeholder"
+  extraSheets={["@skryensya/core/patterns/layout.css", "@skryensya/core/patterns/visually-hidden.css", "@skryensya/core/patterns/media-overlay.css", "@skryensya/core/components/badge.css", "@skryensya/core/components/avatar.css", "@skryensya/core/components/typography.css"]}
   testFiles={["packages/react/src/components/placeholder.test.tsx"]}
 >
   <Fragment slot="usage">
@@ -118,11 +111,6 @@ const explain = (option: string, values: readonly string[]) =>
       dont={{ tree: placeholderDontAvatarTree(), caption: t("placeholderPage.dd.avatar.dont") }}
     />
     <ContentRules items={tList(t, "placeholderPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="a11y">

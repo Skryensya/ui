@@ -50,10 +50,6 @@ const partRows = partOrder.map((part) => ({
   cells: [t(`compareSliderPage.part.${part}` as Parameters<typeof t>[0])],
 }));
 
-const install = `pnpm add @skryensya/core
-# and, for React,
-pnpm add @skryensya/react`;
-const styles = `@import "@skryensya/core/components/compare-slider.css";`;
 const html = `<div class="sk-compare-slider" data-sk-compare-slider data-position="50">
   <div class="sk-compare-slider__before"><img src="coast-before.jpg" alt="The coast before the edit" /></div>
   <div class="sk-compare-slider__after"><img src="coast-after.jpg" alt="The coast after the edit" /></div>
@@ -80,6 +76,7 @@ const tune = `.sk-compare-slider {
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: compareSliderTree(t) }}
   title="Compare Slider"
   description={t("compareSliderPage.description")}
   contractId="compare-slider"
@@ -87,6 +84,8 @@ const tune = `.sk-compare-slider {
   hookNotes={hookNotes}
   hookNotesLabel={doesColumn}
   testFiles={["packages/react/src/components/compare-slider.test.tsx", "packages/vanilla/src/components/compare-slider.test.ts"]}
+  vanillaInstallSteps={[{ title: "HTML", blocks: [{ kind: "code", code: html, lang: "html", label: "HTML" }] }]}
+  reactInstallSteps={[{ title: "React", blocks: [{ kind: "code", code: react, lang: "tsx", label: "React" }] }]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("compareSliderPage.lede")} />
@@ -148,14 +147,6 @@ const tune = `.sk-compare-slider {
       dont={{ tree: compareSliderDontStartTree(t), caption: t("compareSliderPage.dd.start.dont") }}
     />
     <ContentRules items={tList(t, "compareSliderPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <p set:html={t("compareSliderPage.installBody")} />
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
-    <CodeBlock code={html} label="HTML" lang="html" />
-    <CodeBlock code={react} label="React" lang="tsx" />
   </Fragment>
 
   <Fragment slot="style">

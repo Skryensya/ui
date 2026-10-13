@@ -11,7 +11,6 @@ import "@skryensya/core/components/user-select.css";
 /* The anatomy diagram's own sheets: the specimen is annotated in place. */
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/annotation.css";
-import CodeBlock from "../CodeBlock.astro";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
@@ -30,15 +29,6 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
-
-const install = `pnpm add @skryensya/core @skryensya/react`;
-const vanillaInstall = `pnpm add @skryensya/core @skryensya/vanilla`;
-const styles = `@import "@skryensya/core/patterns/anchored.css";
-@import "@skryensya/core/components/select.css";
-@import "@skryensya/core/components/combobox.css";
-@import "@skryensya/core/components/avatar.css";
-@import "@skryensya/core/components/checkbox.css";
-@import "@skryensya/core/components/user-select.css";`;
 
 const reactSource = `<UserSelect
   users={users}
@@ -61,9 +51,27 @@ import { userSelectEmailDoTree, userSelectEmailDontTree, userSelectNameDoTree, u
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: userSelectTree(t) }}
   title="UserSelect"
   description={t("userSelectPage.description")}
   contractId="user-select"
+  extraSheets={[
+    "@skryensya/core/patterns/anchored.css",
+    "@skryensya/core/components/select.css",
+    "@skryensya/core/components/combobox.css",
+    "@skryensya/core/components/avatar.css",
+    "@skryensya/core/components/checkbox.css",
+  ]}
+  vanillaInstallSteps={[
+    {
+      title: t("install.stepMount"),
+      blocks: [
+        { kind: "html", html: t("userSelectPage.explicitMountNote") },
+        { kind: "code", code: userSelectJs, lang: "ts", label: "JavaScript" },
+      ],
+    },
+    { title: t("userSelectPage.listenTitle"), blocks: [{ kind: "code", code: userSelectListen, lang: "ts", label: "JavaScript" }] },
+  ]}
   styleGroups={[
     { file: "components/user-select.css", probe: "sk-select", title: "UserSelect" },
     { file: "components/select.css", probe: "sk-select", title: "Select" },
@@ -110,21 +118,6 @@ import { userSelectEmailDoTree, userSelectEmailDontTree, userSelectNameDoTree, u
       dont={{ tree: userSelectNameDontTree(t), caption: t("userSelectPage.dd.name.dont") }}
     />
     <ContentRules items={tList(t, "userSelectPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
-  </Fragment>
-
-  <Fragment slot="installVanilla">
-    <p set:html={t("userSelectPage.explicitMountNote")} />
-    <CodeBlock code={vanillaInstall} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
-    <CodeBlock code={userSelectJs} label="JavaScript" />
-
-    <h4>{t("userSelectPage.listenTitle")}</h4>
-    <CodeBlock code={userSelectListen} label="JavaScript" />
   </Fragment>
 
   <Fragment slot="a11y">

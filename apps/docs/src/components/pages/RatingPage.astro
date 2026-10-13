@@ -9,7 +9,6 @@ import "@skryensya/core/patterns/layout.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -36,7 +35,6 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 import { variantsTree } from "../../demos/variants";
 
 const t = useTranslations(getLocale(Astro.url));
-const install = `pnpm add @skryensya/core @skryensya/react`;
 
 const maxVariants = [
   { value: "3", tree: ratingThreeStepsTree },
@@ -55,6 +53,7 @@ const explain = (option: string, values: readonly string[]) =>
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: ratingDisplayTree(t), fit: true }}
   title="Rating"
   description={t("ratingPage.description")}
   contractId="rating"
@@ -148,10 +147,6 @@ const explain = (option: string, values: readonly string[]) =>
       dont={{ tree: ratingDontInputAverageTree(t), caption: t("ratingPage.dd.display.dont") }}
     />
     <ContentRules items={tList(t, "ratingPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
   </Fragment>
 
   <Fragment slot="a11y">

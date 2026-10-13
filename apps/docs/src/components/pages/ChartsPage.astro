@@ -45,7 +45,6 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
 
-const install = `pnpm add @skryensya/core @skryensya/react`;
 const storybookTitle = "Components/Charts";
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`chartsPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
@@ -55,10 +54,20 @@ const tanstackSource = `import { TanStackChart } from "@skryensya/charts/react/t
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: chartsBarTree(t) }}
   title="Charts"
   description={t("chartsPage.description")}
   contractId="chart"
   testFiles={["packages/charts/src/react/chart.test.tsx", "apps/docs/src/components/pages/ChartsPage.test.ts"]}
+  reactInstallSteps={[
+    {
+      title: "@skryensya/charts",
+      blocks: [
+        { kind: "code", code: installLine, lang: "bash", label: "terminal" },
+        { kind: "html", html: t("chartsPage.installLineBody") },
+      ],
+    },
+  ]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("chartsPage.lede")} />
@@ -166,13 +175,6 @@ const tanstackSource = `import { TanStackChart } from "@skryensya/charts/react/t
       dont={{ tree: chartsDontThreeTree(t), caption: t("chartsPage.dd.count.dont") }}
     />
     <ContentRules items={tList(t, "chartsPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <p set:html={t("chartsPage.installBody")} />
-    <CodeBlock code={installLine} label="terminal" />
-    <p set:html={t("chartsPage.installLineBody")} />
   </Fragment>
 
   <Fragment slot="a11y">

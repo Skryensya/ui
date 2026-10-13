@@ -67,7 +67,9 @@ const html = `<div class="sk-dock" data-sk-dock role="group" aria-label="Quick a
 
 <!-- Vanilla springs are opt-in: mountDock(document), or use initComponents(). -->`;
 ---
-<ComponentPageShell title="Dock" description={t("dockPage.description")} contractId="dock" badge="Beta" testFiles={["packages/react/src/components/dock.test.tsx", "packages/vanilla/src/components/dock.test.ts"]}>
+<ComponentPageShell
+  hookPlayground={{ tree: dockTree(t) }}
+  title="Dock" description={t("dockPage.description")} contractId="dock" badge="Beta" testFiles={["packages/react/src/components/dock.test.tsx", "packages/vanilla/src/components/dock.test.ts"]}>
   <Fragment slot="usage">
     <p class="lede" set:html={t("dockPage.usage")} />
     <h3>{t("dockPage.examplesTitle")}</h3>

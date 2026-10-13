@@ -8,7 +8,6 @@ import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/box.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
@@ -91,11 +90,6 @@ const errorRows = errorCodes.map((code) => ({
   cells: [t(`imageCropperPage.error.${code}.when` as Parameters<typeof t>[0])],
 }));
 
-const install = `pnpm add @skryensya/core
-# and, for React,
-pnpm add @skryensya/react`;
-const styles = `@import "@skryensya/core/components/image-cropper.css";`;
-
 /*
  * The join between the three components, and the whole of it. It lives on the page, not in any of them: the file's URL becomes the
  * cropper's src, and the applied crop's file becomes the frame's. Written once, it drives the Vanilla stage and the React one.
@@ -152,6 +146,7 @@ cropper.addEventListener("sk:imagecropperconfirm", async (event) => {
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: imageCropperTree(t) }}
   title="Image Cropper"
   description={t("imageCropperPage.description")}
   contractId="image-cropper"
@@ -163,6 +158,8 @@ cropper.addEventListener("sk:imagecropperconfirm", async (event) => {
     "packages/react/src/components/image-cropper.test.tsx",
     "packages/vanilla/src/components/image-cropper.test.ts",
   ]}
+  vanillaInstallSteps={[{ title: "Cropper.js", blocks: [{ kind: "html", html: t("imageCropperPage.engineBody") }] }]}
+  reactInstallSteps={[{ title: "Cropper.js", blocks: [{ kind: "html", html: t("imageCropperPage.engineBody") }] }]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("imageCropperPage.lede")} />
@@ -227,13 +224,6 @@ cropper.addEventListener("sk:imagecropperconfirm", async (event) => {
     <p class="lede" set:html={t("imageCropperPage.guidelinesLede")} />
     <WhenToUse use={tList(t, "imageCropperPage.when")} avoid={tList(t, "imageCropperPage.whenNot")} />
     <ContentRules items={tList(t, "imageCropperPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <p set:html={t("imageCropperPage.installBody")} />
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
-    <p set:html={t("imageCropperPage.engineBody")} />
   </Fragment>
 
   <Fragment slot="style">

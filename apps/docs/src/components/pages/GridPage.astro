@@ -26,7 +26,6 @@ import { tableTree } from "../../demos/table";
 import { getLocale, tList, useTranslations } from "../../i18n";
 import { variantsTree } from "../../demos/variants";
 
-const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
 
 const multicolCss = `/* data-columns="5": 1 carril → 2 → 3 → 4 → 5,
@@ -182,10 +181,6 @@ const explain = (option: string, values: readonly string[]) =>
       do={{ tree: inlineButtonsTree(t), caption: t("grid.dd.buttons.do") }}
       dont={{ tree: gridDontButtonsTree(t), caption: t("grid.dd.buttons.dont") }}
     />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
   </Fragment>
 
   <Fragment slot="a11y">

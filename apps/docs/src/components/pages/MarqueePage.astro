@@ -1,6 +1,5 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
@@ -24,21 +23,11 @@ import {
   marqueeVerticalTree,
 } from "../../demos/marquee";
 import { annotationDemoCss } from "../../demos/annotation";
-import { emitReactSource } from "@skryensya/ai-compiler/emit";
 import { getLocale, tList, useTranslations } from "../../i18n";
 import "@skryensya/core/components/marquee.css";
 import "@skryensya/core/components/annotation.css";
 
 const t = useTranslations(getLocale(Astro.url));
-
-const install = `pnpm add @skryensya/core @skryensya/vanilla
-# or
-pnpm add @skryensya/core @skryensya/react`;
-const styles = `@import "@skryensya/core/components/marquee.css";`;
-const vanilla = `import "@skryensya/vanilla/auto";`;
-const react = emitReactSource(marqueeAutoplayTree(), {
-  component: "MarqueeExample",
-}).component;
 
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
 const explain = (option: string, values: readonly string[]) =>
@@ -46,9 +35,12 @@ const explain = (option: string, values: readonly string[]) =>
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: marqueeManualTree(t) }}
   title="Marquee"
   description={t("marquee.description")}
   contractId="marquee"
+  vanillaInstallSteps={[{ title: "FadeEdge", blocks: [{ kind: "html", html: t("marquee.installBody") }] }]}
+  reactInstallSteps={[{ title: "FadeEdge", blocks: [{ kind: "html", html: t("marquee.installBody") }] }]}
   testFiles={["packages/react/src/components/marquee.test.tsx", "packages/vanilla/src/components/marquee.test.ts"]}
 >
   <Fragment slot="usage">
@@ -113,14 +105,6 @@ const explain = (option: string, values: readonly string[]) =>
       dont={{ tree: marqueeNoFadeTree(), caption: t("marquee.dd.fade.dont") }}
     />
     <ContentRules items={tList(t, "marquee.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <p set:html={t("marquee.installBody")} />
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
-    <CodeBlock code={vanilla} label="Vanilla" lang="ts" />
-    <CodeBlock code={react} label="React" lang="tsx" />
   </Fragment>
 
   <Fragment slot="a11y">

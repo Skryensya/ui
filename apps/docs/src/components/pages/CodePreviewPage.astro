@@ -22,13 +22,7 @@ const storybookTitle = "Components/CodePreview";
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`codePreview.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
-const install = `pnpm add shiki @skryensya/core @skryensya/vanilla`;
-
-const styles = `@import "@skryensya/core/tokens.scss";
-@import "@skryensya/core/components/button.css";
-@import "@skryensya/core/components/copy-button.css";
-@import "@skryensya/core/components/switch.css";
-@import "@skryensya/core/components/code-preview.css";`;
+const installShiki = `pnpm add shiki`;
 
 const highlight = `import { codeToHtml } from "shiki";
 
@@ -58,9 +52,13 @@ import { codePreviewInlineDoTree, codePreviewInlineDontTree } from "../../demos/
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: codePreviewTree(t) }}
   title="CodePreview"
   description={t("codePreview.description")}
   contractId="code-preview"
+  extraSheets={["@skryensya/core/components/button.css", "@skryensya/core/components/copy-button.css", "@skryensya/core/components/switch.css"]}
+  vanillaInstallSteps={[{ title: t("install.stepInstall"), blocks: [{ kind: "code", code: installShiki, lang: "bash", label: "terminal" }] }]}
+  reactInstallSteps={[{ title: t("install.stepInstall"), blocks: [{ kind: "code", code: installShiki, lang: "bash", label: "terminal" }] }]}
   appearanceTargetSelector=".sk-code-preview"
   testFiles={["packages/vanilla/src/components/code-preview.test.ts"]}
 >
@@ -119,11 +117,6 @@ import { codePreviewInlineDoTree, codePreviewInlineDontTree } from "../../demos/
       dont={{ tree: codePreviewInlineDontTree(t), caption: t("dd3.codePreview.dont") }}
     />
     <ContentRules items={tList(t, "codePreview.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="a11y">

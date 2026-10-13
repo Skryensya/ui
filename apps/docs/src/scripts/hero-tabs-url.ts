@@ -70,6 +70,53 @@ export function initHeroTabsUrl(): void {
     }
   }
 
+  /* The address of one tab, the same one a switch writes: the default tab is the bare page. The hash is
+     left out, it names a heading of whichever panel is open HERE, not of the one being opened. */
+  const tabUrl = (value: string): URL => {
+    const url = new URL(window.location.href);
+    url.hash = "";
+    if (value === authoredDefault) url.searchParams.delete(PARAM);
+    else url.searchParams.set(PARAM, value);
+    return url;
+  };
+
+  /*
+   * A NEW TAB FROM A TAB, WITHOUT TURNING IT INTO A LINK. These stay buttons with `role="tab"`: they
+   * switch a panel of THIS page, which is what the ARIA tabs pattern means, and an `<a>` would be
+   * announced as a link to somewhere else while behaving as a switch. What a link would have bought
+   * is the browser's new-tab gestures, so those are given back by hand: the wheel click and
+   * Ctrl/Cmd+click open `?tab=` in a new tab and leave this one where it is. Everything else (a plain
+   * click, the keyboard) is the machine's, untouched.
+   */
+  const newTabValue = (event: Event): string | null => {
+    const trigger = (event.target as Element | null)?.closest<HTMLElement>("[data-sk-tabs-trigger]");
+    if (!trigger || trigger.closest("[data-sk-tabs]") !== root) return null;
+    const value = trigger.getAttribute("data-value") ?? "";
+    return offered.has(value) ? value : null;
+  };
+  /* The wheel press would otherwise start the browser's autoscroll before the click is even delivered. */
+  root.addEventListener("mousedown", (event) => {
+    if (event.button === 1 && newTabValue(event)) event.preventDefault();
+  });
+  root.addEventListener("auxclick", (event) => {
+    if (event.button !== 1) return;
+    const value = newTabValue(event);
+    if (value) window.open(tabUrl(value), "_blank", "noopener");
+  });
+  /* Capture phase: the machine's own click handler on the trigger must not also switch this tab. */
+  root.addEventListener(
+    "click",
+    (event) => {
+      if (!(event.ctrlKey || event.metaKey)) return;
+      const value = newTabValue(event);
+      if (!value) return;
+      event.preventDefault();
+      event.stopPropagation();
+      window.open(tabUrl(value), "_blank", "noopener");
+    },
+    true,
+  );
+
   root.addEventListener("sk:tabsvaluechange", (event) => {
     /*
      * `sk:tabsvaluechange` BUBBLES, and every ComponentPreview inside these panels is itself a

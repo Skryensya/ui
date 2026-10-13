@@ -17,7 +17,7 @@ export const colorPickerMessages = {
 
     "colorPicker.a11yYours1": "No dependas solo del color que se ve: muestra también su valor en texto.",
 
-    "colorPicker.a11yDoes3": "Los canales son campos de texto: el valor exacto se escribe.",
+    "colorPicker.a11yDoes3": "El hex es un campo de texto: el valor exacto se escribe.",
 
     "colorPicker.a11yDoes2": 'El área y los rieles son <code>role="slider"</code>.',
 
@@ -35,7 +35,7 @@ export const colorPickerMessages = {
 
     "colorPicker.dd.presets.title": "Colores de marca: con presets",
 
-    "colorPicker.whenNot2": "Si hay que escribir un valor exacto en un espacio pequeño: usa la forma completa, no la compacta.",
+    "colorPicker.whenNot2": "Si hay que escribir un hex exacto en un espacio pequeño: usa la forma completa, no la compacta.",
 
     "colorPicker.whenNot1": 'Si el color es siempre uno de unos pocos conocidos: usa <a href="/es/componentes/select">Select</a> o <a href="/es/componentes/segmented">SegmentedControl</a>.',
 
@@ -45,30 +45,31 @@ export const colorPickerMessages = {
 
     "colorPicker.when1": "Para un color cualquiera, no uno de unas pocas opciones: el color de una marca, de una etiqueta, de un fondo.",
 
-    "colorPicker.contract3": "OKLCH se lee y se escribe con una conversión propia (<code>@skryensya/core/color</code>) sobre el mismo color, nunca un estado aparte.",
 
     "colorPicker.contract2": "Un input oculto envía el color con el formulario.",
 
     "colorPicker.contract1": "React ofrece <code>ColorPicker</code>, <code>CompactColorPicker</code> y <code>NativeColorPicker</code>; Vanilla monta el <code>data-sk-color-picker</code> escrito a mano.",
-    "colorPicker.lede": "ColorPicker elige un color cualquiera, no uno de unas pocas opciones fijas, y deja verlo y ajustarlo a mano. Tiene tres formas: la nativa del sistema operativo, sin JavaScript; la completa, con área, rieles de matiz y alfa y los canales en hex, RGB, HSL y OKLCH; y la compacta, para una barra de herramientas.",
-    "colorPicker.anatomyBody": "El control (etiqueta, botón, muestra) y el panel (área, canales, presets, cuentagotas), abierto y congelado.",
+    "colorPicker.lede": "ColorPicker elige un color cualquiera, no uno de unas pocas opciones fijas, y deja verlo y ajustarlo a mano. Tiene tres formas: la nativa del sistema operativo, sin JavaScript; la completa, con área, rieles de matiz y alfa y un campo hex; y la compacta, para una barra de herramientas.",
+    "colorPicker.anatomyBody": "El control (etiqueta, botón, muestra) y el panel (área, hex, presets, cuentagotas), abierto y congelado.",
     "colorPicker.anatomyLabel": "Anatomía de ColorPicker",
     "colorPicker.anatomyPreviewLabel": "ColorPicker, parte por parte",
     "colorPicker.nativeTitle": "Nativo: el picker del sistema",
     "colorPicker.nativeBody": 'Un <code>&lt;input type="color"&gt;</code>: sin JavaScript, sin presets, un solo hex.',
-    "colorPicker.customTitle": "Completo: todos los canales",
-    "colorPicker.customBody": "Área, rieles de matiz y alfa, los cuatro formatos de canal y el cuentagotas donde el navegador lo soporta.",
+    "colorPicker.customTitle": "Completo: con alfa y hex",
+    "colorPicker.customBody": "Área, rieles de matiz y alfa, un campo hex y el cuentagotas donde el navegador lo soporta.",
     "colorPicker.compactTitle": "Compacto: para una barra de herramientas",
-    "colorPicker.compactBody": "Sin las filas de canal: área, riel de matiz y presets.",
+    "colorPicker.compactBody": "Sin alfa ni hex: área, riel de matiz y presets.",
+    "colorPicker.swatchTitle": "Solo el color: sin el valor al lado",
+    "colorPicker.swatchBody": "El disparador es el cuadrado de vista previa y nada más; el panel es el compacto.",
     "colorPicker.presetsTitle": "Con presets: los colores de la marca a mano",
     "colorPicker.presetsBody": "<code>swatches</code> es una lista de colores separados por espacios.",
     "colorPicker.disabledTitle": "Deshabilitado",
     "colorPicker.test1": "Rechaza markup al que le falta una parte que necesita parchar.",
     "colorPicker.test2": "Parcha el control escrito a mano y renderiza el popover alrededor de un panel.",
     "colorPicker.test3": "Muestra el color de partida en la custom property del root.",
-    "colorPicker.test4": "Confirma un hex escrito a mano y llena cada fila de canal desde él.",
+    "colorPicker.test4": "Confirma un hex escrito a mano y actualiza el color.",
     "colorPicker.test5": "Elige un swatch preset y actualiza el color actual.",
-    "colorPicker.test6": "La anatomía compact quita las filas de canal por completo.",
+    "colorPicker.test6": "La anatomía compact quita el campo hex por completo.",
     "colorPicker.test7": "Mantiene el nombre accesible del trigger sin que Zag lo pise.",
     "colorPicker.guidelinesLede": "Empieza por el picker más simple que alcance.",
   },
@@ -90,7 +91,7 @@ export const colorPickerMessages = {
 
     "colorPicker.a11yYours1": "Do not rely on the visible color alone: show its value as text too.",
 
-    "colorPicker.a11yDoes3": "The channels are text fields: the exact value can be typed.",
+    "colorPicker.a11yDoes3": "The hex is a text field: the exact value can be typed.",
 
     "colorPicker.a11yDoes2": 'The area and the rails are <code>role="slider"</code>.',
 
@@ -108,7 +109,7 @@ export const colorPickerMessages = {
 
     "colorPicker.dd.presets.title": "Brand colors: with presets",
 
-    "colorPicker.whenNot2": "If an exact value must be typed in a tight space: use the full form, not the compact one.",
+    "colorPicker.whenNot2": "If an exact hex must be typed in a tight space: use the full form, not the compact one.",
 
     "colorPicker.whenNot1": 'If the color is always one of a few known ones: use <a href="/components/select">Select</a> or <a href="/components/segmented">SegmentedControl</a>.',
 
@@ -118,30 +119,31 @@ export const colorPickerMessages = {
 
     "colorPicker.when1": "For any color, not one of a few options: a brand's color, a tag's, a background's.",
 
-    "colorPicker.contract3": "OKLCH is read and written through its own conversion (<code>@skryensya/core/color</code>) over the same color, never a separate state.",
 
     "colorPicker.contract2": "A hidden input submits the color with the form.",
 
     "colorPicker.contract1": "React offers <code>ColorPicker</code>, <code>CompactColorPicker</code> and <code>NativeColorPicker</code>; Vanilla mounts the hand-written <code>data-sk-color-picker</code>.",
-    "colorPicker.lede": "ColorPicker picks any color, not one of a few fixed options, and lets people see and adjust it by hand. It comes in three forms: the operating system's native one, with no JavaScript; the full one, with an area, hue and alpha rails and the channels in hex, RGB, HSL and OKLCH; and the compact one, for a toolbar.",
-    "colorPicker.anatomyBody": "The control (label, button, swatch) and the panel (area, channels, presets, eyedropper), open and frozen.",
+    "colorPicker.lede": "ColorPicker picks any color, not one of a few fixed options, and lets people see and adjust it by hand. It comes in three forms: the operating system's native one, with no JavaScript; the full one, with an area, hue and alpha rails and a hex field; and the compact one, for a toolbar.",
+    "colorPicker.anatomyBody": "The control (label, button, swatch) and the panel (area, hex, presets, eyedropper), open and frozen.",
     "colorPicker.anatomyLabel": "ColorPicker anatomy",
     "colorPicker.anatomyPreviewLabel": "ColorPicker, part by part",
     "colorPicker.nativeTitle": "Native: the system picker",
     "colorPicker.nativeBody": 'An <code>&lt;input type="color"&gt;</code>: no JavaScript, no presets, one hex.',
-    "colorPicker.customTitle": "Full: every channel",
-    "colorPicker.customBody": "Area, hue and alpha rails, the four channel formats and the eyedropper where the browser supports it.",
+    "colorPicker.customTitle": "Full: with alpha and hex",
+    "colorPicker.customBody": "Area, hue and alpha rails, a hex field and the eyedropper where the browser supports it.",
     "colorPicker.compactTitle": "Compact: for a toolbar",
-    "colorPicker.compactBody": "Without the channel rows: area, hue rail and presets.",
+    "colorPicker.compactBody": "Without alpha or hex: area, hue rail and presets.",
+    "colorPicker.swatchTitle": "Just the color: no value beside it",
+    "colorPicker.swatchBody": "The trigger is the preview square and nothing else; the panel is the compact one.",
     "colorPicker.presetsTitle": "With presets: the brand's colors at hand",
     "colorPicker.presetsBody": "<code>swatches</code> is a space-separated list of colors.",
     "colorPicker.disabledTitle": "Disabled",
     "colorPicker.test1": "Refuses markup that is missing a part it must patch.",
     "colorPicker.test2": "Patches the authored control and renders the popover around a panel.",
     "colorPicker.test3": "Shows the starting color on the root's own custom property.",
-    "colorPicker.test4": "Commits a typed hex value and fills every channel row from it.",
+    "colorPicker.test4": "Commits a typed hex value and updates the color.",
     "colorPicker.test5": "Selects a preset swatch and updates the current color.",
-    "colorPicker.test6": "The compact anatomy drops the channel-input rows entirely.",
+    "colorPicker.test6": "The compact anatomy drops the hex field entirely.",
     "colorPicker.test7": "Keeps the trigger's accessible name intact instead of letting Zag override it.",
     "colorPicker.guidelinesLede": "Start with the simplest picker that does the job.",
   },

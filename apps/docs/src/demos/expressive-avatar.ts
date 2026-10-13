@@ -22,6 +22,9 @@ const row = (gap: string, ...children: UsageTree[]): UsageTree => ({ contract: "
 
 const column = (gap: string, ...children: UsageTree[]): UsageTree => ({ contract: "layout", signature: "Stack", options: { gap }, children });
 
+/** One face on its own. */
+export const expressiveAvatarTree = (_t: Translate): UsageTree => face("base");
+
 /** Three expressions of one face, every image in the same frame: the face changes and does not move. */
 export const expressiveAvatarDoFrameTree = (_t: Translate): UsageTree => row("md", face("base"), face("left"), face("smile"));
 

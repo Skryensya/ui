@@ -5,7 +5,6 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/menu.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -26,15 +25,11 @@ import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
-const styles = `@import "@skryensya/core/patterns/anchored.css";
-@import "@skryensya/core/components/split-button.css";
-@import "@skryensya/core/components/menu.css";
-@import "@skryensya/core/components/button.css";
-@import "@skryensya/core/patterns/layout.css";`;
 import { splitButtonDoTree, splitButtonDontTree, splitButtonSingleDoTree, splitButtonSingleDontTree } from "../../demos/dodont-pairs";
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: splitButtonTree(t), fit: true }}
   title="SplitButton"
   description={t("splitButtonPage.description")}
   contractId="split-button"
@@ -44,6 +39,7 @@ import { splitButtonDoTree, splitButtonDontTree, splitButtonSingleDoTree, splitB
     { file: "patterns/anchored.css", probe: "sk-anchored", title: "Heredados de Anclaje" },
   ]}
   testFiles={["packages/react/src/components/split-button.test.tsx"]}
+  extraSheets={["@skryensya/core/patterns/anchored.css", "@skryensya/core/components/menu.css", "@skryensya/core/components/button.css", "@skryensya/core/patterns/layout.css"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} />
@@ -109,10 +105,6 @@ import { splitButtonDoTree, splitButtonDontTree, splitButtonSingleDoTree, splitB
       dont={{ tree: splitButtonSingleDontTree(t), caption: t("splitButtonPage.dd.single.dont") }}
     />
     <ContentRules items={tList(t, "splitButtonPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={styles} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="a11y">

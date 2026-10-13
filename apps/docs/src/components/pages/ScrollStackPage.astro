@@ -60,10 +60,6 @@ const partRows = partOrder.map((part) => ({
   cells: [t(`scrollStackPage.part.${part}` as Parameters<typeof t>[0])],
 }));
 
-const install = `pnpm add @skryensya/core
-# and, for React,
-pnpm add @skryensya/react`;
-const styles = `@import "@skryensya/core/components/scroll-stack.css";`;
 const html = `<div class="sk-scroll-stack">
   <div class="sk-scroll-stack__back">
     <section><h2>The cover</h2></section>
@@ -96,6 +92,7 @@ const tune = `.sk-scroll-stack {
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: scrollStackTree(t) }}
   title="Scroll Stack"
   description={t("scrollStackPage.description")}
   contractId="scroll-stack"
@@ -169,12 +166,6 @@ const tune = `.sk-scroll-stack {
       dont={{ tree: scrollStackDontOffsetTree(t), caption: t("scrollStackPage.dd.offset.dont") }}
     />
     <ContentRules items={tList(t, "scrollStackPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <p set:html={t("scrollStackPage.installBody")} />
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="style">

@@ -2,7 +2,6 @@
 /* The anatomy diagram at the top of the page is an Annotated frame, so this page needs its sheet. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -11,6 +10,7 @@ import A11yNotes from "../A11yNotes.astro";
 import {
   colorPickerTree,
   compactColorPickerTree,
+  swatchColorPickerTree,
   disabledColorPickerTree,
   nativeColorPickerTree,
   presetsColorPickerTree,
@@ -24,13 +24,11 @@ const t = useTranslations(getLocale(Astro.url));
 
 const storybookTitle = "Components/ColorPicker";
 
-const styles = `@import "@skryensya/core/patterns/anchored.css";
-@import "@skryensya/core/components/button.css";
-@import "@skryensya/core/components/color-picker.css";`;
 import { dd2 } from "../../demos/dodont-labels";
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: colorPickerTree(t) }}
   title="ColorPicker"
   description={t("colorPicker.description")}
   contractId="color-picker"
@@ -48,6 +46,7 @@ import { dd2 } from "../../demos/dodont-labels";
     <UsagePreview tree={nativeColorPickerTree(t)} title={t("colorPicker.nativeTitle")} description={t("colorPicker.nativeBody")} storybookTitle={storybookTitle} storybookStory="NativeColorPicker" />
     <UsagePreview tree={colorPickerTree(t)} title={t("colorPicker.customTitle")} description={t("colorPicker.customBody")} stageMinBlockSize="26rem" storybookTitle={storybookTitle} storybookStory="Default" />
     <UsagePreview tree={compactColorPickerTree(t)} title={t("colorPicker.compactTitle")} description={t("colorPicker.compactBody")} stageMinBlockSize="22rem" storybookTitle={storybookTitle} storybookStory="CompactColorPicker" />
+    <UsagePreview tree={swatchColorPickerTree(t)} title={t("colorPicker.swatchTitle")} description={t("colorPicker.swatchBody")} stageMinBlockSize="22rem" storybookTitle={storybookTitle} storybookStory="SwatchColorPicker" />
     <UsagePreview tree={presetsColorPickerTree(t)} title={t("colorPicker.presetsTitle")} description={t("colorPicker.presetsBody")} stageMinBlockSize="26rem" storybookTitle={storybookTitle} storybookStory="PresetsColorPicker" />
     <UsagePreview tree={disabledColorPickerTree(t)} title={t("colorPicker.disabledTitle")} storybookTitle={storybookTitle} storybookStory="DisabledColorPicker" />
 
@@ -72,10 +71,6 @@ import { dd2 } from "../../demos/dodont-labels";
       dont={{ tree: dd2.colorPicker.dont(t), caption: t("dd2.colorPicker.dont") }}
     />
     <ContentRules items={tList(t, "colorPicker.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={styles} label="CSS" />
   </Fragment>
 
   <Fragment slot="a11y">

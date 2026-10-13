@@ -11,7 +11,6 @@ import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -40,7 +39,6 @@ import {
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
-const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
 
 const hrefs = { home: "/", projects: "/proyectos", reports: "/reportes", team: "/equipo" };
@@ -56,15 +54,14 @@ const appearanceExplain = Object.fromEntries(
   (["plain", "brutalist", "frosted"] as const).map((value) => [value, t(`navbarPage.appearance.${value}` as Parameters<typeof t>[0])]),
 );
 
-const css = `@import "@skryensya/core/tokens.scss";
-@import "@skryensya/core/components/navbar.css";
-@import "@skryensya/core/patterns/nav-list.css";`;
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: navbarLayoutTree(t, hrefs) }}
   title="Navbar"
   description={t("navbarPage.description")}
   contractId="navbar"
+  extraSheets={["@skryensya/core/patterns/nav-list.css"]}
   appearanceTargetSelector=".sk-navbar"
   testFiles={["packages/react/src/components/navbar.test.tsx"]}
 >
@@ -187,10 +184,5 @@ const css = `@import "@skryensya/core/tokens.scss";
 
   <Fragment slot="a11y">
     <A11yNotes intro={t("navbarPage.a11yIntro")} does={tList(t, "navbarPage.a11yDoes")} yours={tList(t, "navbarPage.a11yYours")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={css} label="CSS" />
   </Fragment>
 </ComponentPageShell>

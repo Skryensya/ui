@@ -1,7 +1,6 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
@@ -17,26 +16,23 @@ import {
 import { getLocale, tList, useTranslations } from "../../i18n";
 import "@skryensya/core/components/dialog.css";
 import "@skryensya/core/components/command-palette.css";
+/* The bottom sheet the palette becomes below the desktop breakpoint; a preview frame only copies what this page loaded. */
+import "@skryensya/core/patterns/dialog-vaul.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 
 const t = useTranslations(getLocale(Astro.url));
-
-const install = `pnpm add @skryensya/core @skryensya/vanilla`;
-
-const styles = `@import "@skryensya/core/components/dialog.css";
-@import "@skryensya/core/components/button.css";
-@import "@skryensya/core/components/command-palette.css";
-@import "@skryensya/core/patterns/scroll-lock.css";`;
 
 const hotkeyHint = `<kbd class="sk-kbd" data-sk-command-palette-hint>⌘K</kbd>`;
 const resultExamples = commandPaletteResultsGuideHtml(t);
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: commandPaletteDemoTree(t, { vaul: false }) }}
   title="CommandPalette"
   description={t("commandPalette.description")}
   contractId="command-palette"
+  extraSheets={["@skryensya/core/components/dialog.css", "@skryensya/core/components/button.css", "@skryensya/core/patterns/dialog-vaul.css", "@skryensya/core/patterns/scroll-lock.css"]}
   appearanceTargetSelector=".sk-command-palette"
   testFiles={["packages/react/src/components/command-palette.test.tsx", "packages/vanilla/src/components/command-palette.test.ts"]}
 >
@@ -53,9 +49,15 @@ const resultExamples = commandPaletteResultsGuideHtml(t);
     <h3>{t("commandPalette.exampleTitle")}</h3>
     <p set:html={t("commandPalette.exampleBody")} />
     <UsagePreview
-      tree={commandPaletteDemoTree(t)}
+      tree={commandPaletteDemoTree(t, { vaul: false })}
       script={commandPaletteDemoScript}
       label="CommandPalette"
+      optionName="vaul"
+      keepFrames
+      remountOnChange={false}
+      target={["children", 1]}
+      labels={{ false: t("commandPalette.vaulOff"), true: t("commandPalette.vaulOn") }}
+      explain={{ false: t("commandPalette.vaulOffExplain"), true: t("commandPalette.vaulOnExplain") }}
       viewport="overlay"
       storybookTitle="Components/CommandPalette"
       storybookStory="Demo"
@@ -84,11 +86,6 @@ const resultExamples = commandPaletteResultsGuideHtml(t);
     <ContentRules items={tList(t, "commandPalette.content")} />
   </Fragment>
 
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" />
-  </Fragment>
-
   <Fragment slot="a11y">
     <A11yNotes
       intro={t("commandPalette.a11yIntro")}
@@ -103,3 +100,19 @@ const resultExamples = commandPaletteResultsGuideHtml(t);
     />
   </Fragment>
 </ComponentPageShell>
+
+<style is:global>
+  /* The palette is the tallest overlay in the docs: a list, a field and its footer. Its frame gets a
+     little more room than the 24rem every overlay example starts from. */
+  .sk-preview-section .sk-component-preview__stage[data-sk-component-preview-viewport="overlay"],
+  .sk-preview-section .sk-component-preview__stage[data-sk-component-preview-viewport="overlay"] ~ .sk-component-preview__loading {
+    --sk-component-preview-stage-min-block-size: 28rem;
+  }
+
+  /* The bottom sheet is a phone's: drawn at a phone's width, centred in the card, so it reads as the
+     screen it belongs to and not as a sheet stretched across a desktop-wide frame. */
+  .sk-property-playground [data-sk-playground-frame="true"] .sk-component-preview__stage {
+    inline-size: min(100%, 24rem);
+    margin-inline: auto;
+  }
+</style>

@@ -9,7 +9,7 @@ import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
-import { layoutGridWidthTree, layoutGridRailStartTree, layoutGridRailsBothTree, layoutGridTocTree, type LayoutGridWidth } from "../../demos/layout";
+import { layoutGridTree, layoutGridWidthTree, layoutGridRailStartTree, layoutGridRailsBothTree, layoutGridTocTree, type LayoutGridWidth } from "../../demos/layout";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const locale = getLocale(Astro.url);
@@ -31,7 +31,6 @@ const railVariants = [
   label: t(`layoutGridPage.rail.${entry.value}` as Parameters<typeof t>[0]),
   explain: t(`layoutGridPage.rail.explain.${entry.value}` as Parameters<typeof t>[0]),
 }));
-const install = `pnpm add @skryensya/core @skryensya/react`;
 
 const configurationCss = `.sk-layout-grid {
   --sk-layout-gutter: var(--space-inset-lg);
@@ -189,6 +188,7 @@ const previewCss = `.sk-layout-grid {
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: layoutGridTree(t) }}
   title="Layout Grid"
   description={t("layoutGridPage.description")}
   contractId="layout"
@@ -269,10 +269,6 @@ const previewCss = `.sk-layout-grid {
       dont={{ html: bandDont, caption: t("layoutGridPage.dd.band.dont") }}
     />
     <ContentRules items={tList(t, "layoutGridPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
   </Fragment>
 
   <Fragment slot="a11y">

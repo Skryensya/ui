@@ -60,6 +60,10 @@ export const commandPaletteMessages = {
     "commandPalette.exampleBody": "Abre la paleta, escribe y elige con Enter. Esc o el botón de cerrar la cierran.",
 
     "commandPalette.exampleTitle": "Buscar y abrir: un índice de páginas",
+    "commandPalette.vaulOff": "Escritorio",
+    "commandPalette.vaulOn": "Móvil",
+    "commandPalette.vaulOffExplain": "En un escritorio la paleta es una caja centrada sobre la página.",
+    "commandPalette.vaulOnExplain": "En un teléfono la paleta sube desde el borde inferior, como hoja (Vaul).",
     "commandPalette.anatomyBody": "El campo, el botón de cerrar, la lista, cada opción, el mensaje vacío y el pie, con la paleta abierta.",
     "commandPalette.anatomyLabel": "Anatomía de CommandPalette",
     "commandPalette.anatomyPreviewLabel": "CommandPalette abierta, parte por parte",
@@ -137,6 +141,10 @@ export const commandPaletteMessages = {
     "commandPalette.exampleBody": "Open the palette, type and pick with Enter. Esc or the close button closes it.",
 
     "commandPalette.exampleTitle": "Search and open: an index of pages",
+    "commandPalette.vaulOff": "Desktop",
+    "commandPalette.vaulOn": "Mobile",
+    "commandPalette.vaulOffExplain": "On a desktop the palette is a centred box over the page.",
+    "commandPalette.vaulOnExplain": "On a phone the palette rises from the bottom edge, as a sheet (Vaul).",
     "commandPalette.anatomyBody": "The field, the close button, the list, each option, the empty message and the footer, with the palette open.",
     "commandPalette.anatomyLabel": "CommandPalette anatomy",
     "commandPalette.anatomyPreviewLabel": "An open CommandPalette, part by part",

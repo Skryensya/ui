@@ -53,10 +53,6 @@ const partRows = partOrder.map((part) => ({
   cells: [t(`scrollExpandPage.part.${part}` as Parameters<typeof t>[0])],
 }));
 
-const install = `pnpm add @skryensya/core
-# and, for React,
-pnpm add @skryensya/react`;
-const styles = `@import "@skryensya/core/components/scroll-expand.css";`;
 const html = `<div class="sk-scroll-expand" data-direction="expand">
   <div class="sk-scroll-expand__track">
     <span class="sk-scroll-expand__clock" aria-hidden="true"></span>
@@ -105,6 +101,7 @@ const tune = `.sk-scroll-expand {
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: scrollExpandTree(t) }}
   title="Scroll Expand"
   description={t("scrollExpandPage.description")}
   contractId="scroll-expand"
@@ -174,12 +171,6 @@ const tune = `.sk-scroll-expand {
       dont={{ tree: scrollExpandDontCentreTree(t), caption: t("scrollExpandPage.dd.centre.dont") }}
     />
     <ContentRules items={tList(t, "scrollExpandPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <p set:html={t("scrollExpandPage.installBody")} />
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="style">

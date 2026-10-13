@@ -20,8 +20,6 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
-const import_ = `@import "@skryensya/core/patterns/vaul.css";
-@import "@skryensya/core/patterns/scroll-lock.css";`;
 
 const edges = `
 <dialog class="sk-vaul" data-edge="inline-start">…</dialog>
@@ -54,6 +52,7 @@ import { vaulActionDoTree, vaulActionDontTree, vaulTitleDoTree, vaulTitleDontTre
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: vaulShareTree(t) }}
   title="Vaul"
   description={t("vaulPage.description")}
   contractId="vaul"
@@ -84,6 +83,7 @@ import { vaulActionDoTree, vaulActionDontTree, vaulTitleDoTree, vaulTitleDontTre
       ],
     },
   ]}
+  extraSheets={["@skryensya/core/patterns/scroll-lock.css"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
@@ -174,10 +174,6 @@ import { vaulActionDoTree, vaulActionDontTree, vaulTitleDoTree, vaulTitleDontTre
         { keys: ["Tab", "Shift+Tab"], action: t("vaulPage.key.tab") },
       ]}
     />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={import_} label="CSS" />
   </Fragment>
 </ComponentPageShell>
 

@@ -4,7 +4,6 @@ import "@skryensya/core/components/segmented.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -16,14 +15,11 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
-const install = `pnpm add @skryensya/core @skryensya/vanilla @skryensya/react`;
-const js = `import { initComponents } from "@skryensya/vanilla/auto";
-
-await initComponents();`;
 import { segmentedShapeDoTree, segmentedShapeDontTree } from "../../demos/dodont-labels";
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: segmentedTree(t), fit: true }}
   title="SegmentedControl"
   description={t("segmentedPage.description")}
   contractId="segmented"
@@ -84,12 +80,6 @@ import { segmentedShapeDoTree, segmentedShapeDontTree } from "../../demos/dodont
     <ContentRules items={tList(t, "segmentedPage.content")} />
   </Fragment>
 
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-
-    <h3>{t("segmentedPage.vanillaInitTitle")}</h3>
-    <CodeBlock code={js} label="JavaScript" />
-  </Fragment>
   <Fragment slot="a11y">
     <A11yNotes
       intro={t("segmentedPage.a11yIntro")}

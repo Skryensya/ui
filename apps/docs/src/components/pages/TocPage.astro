@@ -52,6 +52,7 @@ const items = headings.map((h) => ({ href: \`#\${h.id}\`, label: h.label, level:
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: tocPlainTree(t) }}
   title="Toc"
   description={t("tocPage.description")}
   contractId="toc"

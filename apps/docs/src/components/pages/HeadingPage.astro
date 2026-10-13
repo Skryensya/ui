@@ -4,7 +4,6 @@ import "@skryensya/core/components/annotation.css";
 /* The Do/Don't specimens put heading examples on a bordered Box so the hierarchy labels are visible. */
 import "@skryensya/core/patterns/box.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -33,7 +32,6 @@ import {
 import { getLocale, tList, useTranslations } from "../../i18n";
 import { annotationDemoCss } from "../../demos/annotation";
 
-const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
 ---
 
@@ -118,11 +116,6 @@ const t = useTranslations(getLocale(Astro.url));
     />
     <ContentRules items={tList(t, "heading.content")} />
   </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-  </Fragment>
-
   <Fragment slot="a11y">
     <A11yNotes intro={t("heading.a11yIntro")} does={tList(t, "heading.a11yDoes")} yours={tList(t, "heading.a11yYours")} />
   </Fragment>

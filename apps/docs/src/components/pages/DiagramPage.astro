@@ -1,6 +1,5 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -55,9 +54,6 @@ const t = useTranslations(getLocale(Astro.url));
 const storybookTitle = "Components/Diagram";
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`diagram.prop.${option}.${value}` as Parameters<typeof t>[0])]));
-
-const install = `pnpm add @skryensya/core @skryensya/react`;
-const styles = `@import "@skryensya/core/components/diagram.css";`;
 
 const html = `<div
   class="sk-diagram"
@@ -130,10 +126,31 @@ const hooks = `.mi-diagrama {
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: diagramFlowTree(t) }}
   title="Diagram"
   description={t("diagram.description")}
   contractId="diagram"
   testFiles={["packages/core/src/diagram.test.ts", "packages/vanilla/src/components/diagram.test.ts", "packages/react/src/components/diagram.test.tsx"]}
+  vanillaInstallSteps={[
+    { title: "HTML", blocks: [{ kind: "code", code: html, lang: "html", label: "HTML" }] },
+    {
+      title: t("diagram.cssTitle"),
+      blocks: [
+        { kind: "html", html: t("diagram.cssBody") },
+        { kind: "code", code: hooks, lang: "css", label: "CSS" },
+      ],
+    },
+  ]}
+  reactInstallSteps={[
+    { title: "React", blocks: [{ kind: "code", code: react, lang: "tsx", label: "React" }] },
+    {
+      title: t("diagram.cssTitle"),
+      blocks: [
+        { kind: "html", html: t("diagram.cssBody") },
+        { kind: "code", code: hooks, lang: "css", label: "CSS" },
+      ],
+    },
+  ]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("diagram.lede")} />
@@ -189,17 +206,6 @@ const hooks = `.mi-diagrama {
       dont={{ tree: diagramDontLongEdgeTree(t), caption: t("diagram.dd.edges.dont") }}
     />
     <ContentRules items={tList(t, "diagram.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
-    <CodeBlock code={html} label="HTML" lang="html" />
-    <CodeBlock code={react} label="React" lang="tsx" />
-
-    <h4>{t("diagram.cssTitle")}</h4>
-    <p set:html={t("diagram.cssBody")} />
-    <CodeBlock code={hooks} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="a11y">

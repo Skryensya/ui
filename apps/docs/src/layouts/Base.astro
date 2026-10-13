@@ -1423,7 +1423,7 @@ const PALETTE_PRESETS = palettePresets(locale);
                     `button-single-line.test.ts` guards. `aria-describedby` keeps the direction in
                     what a screen reader hears, the name stays the destination.
                   */}
-                  <span class="docs-page-nav__direction" id="docs-page-nav-previous">{t("nav.previous")}</span>
+                  <span class="docs-page-nav__direction" id="docs-page-nav-previous">{t(currentSection.id === "components" ? "nav.previousComponent" : "nav.previous")}</span>
                   <a class="sk-button sk-interactive docs-page-nav__link" data-variant="soft" data-size="lg" href={previousNavItem.href} rel="prev" aria-describedby="docs-page-nav-previous">
                     <Fragment set:html={previousIcon} />
                     <span>{previousNavItem.label}</span>
@@ -1432,7 +1432,7 @@ const PALETTE_PRESETS = palettePresets(locale);
               )}
               {nextNavItem && (
                 <div class="docs-page-nav__item docs-page-nav__item--next">
-                  <span class="docs-page-nav__direction" id="docs-page-nav-next">{t("nav.next")}</span>
+                  <span class="docs-page-nav__direction" id="docs-page-nav-next">{t(currentSection.id === "components" ? "nav.nextComponent" : "nav.next")}</span>
                   <a class="sk-button sk-interactive docs-page-nav__link" data-variant="soft" data-size="lg" href={nextNavItem.href} rel="next" aria-describedby="docs-page-nav-next">
                     <span>{nextNavItem.label}</span>
                     <Fragment set:html={nextIcon} />
@@ -1490,7 +1490,7 @@ const PALETTE_PRESETS = palettePresets(locale);
           var list = tocRoot.querySelector("ul");
           if (!list) return;
 
-          var headings = Array.prototype.slice.call(panel.querySelectorAll(":scope > h3, :scope > h4"));
+          var headings = Array.prototype.slice.call(panel.querySelectorAll(":scope > h3, :scope > h4, :scope > .sk-preview-section > h3"));
           headings = headings.concat(Array.prototype.slice.call(document.querySelectorAll(".docs-related-components > h2")));
           if (headings.length < 1) {
             tocRoot.setAttribute("data-empty", "");
@@ -1499,8 +1499,10 @@ const PALETTE_PRESETS = palettePresets(locale);
           }
 
           var frag = document.createDocumentFragment();
+          var sawHeading = false;
           for (var i = 0; i < headings.length; i++) {
             var heading = headings[i];
+            var isPreviewTitle = !!heading.parentElement && heading.parentElement.classList.contains("sk-preview-section");
             if (!heading.id) {
               var base =
                 (heading.textContent || "")
@@ -1516,7 +1518,8 @@ const PALETTE_PRESETS = palettePresets(locale);
             }
             var item = document.createElement("li");
             item.className = "sk-toc__item";
-            item.setAttribute("data-level", heading.tagName === "H4" ? "h3" : "h2");
+            item.setAttribute("data-level", isPreviewTitle ? (sawHeading ? "h3" : "h2") : heading.tagName === "H4" ? "h3" : "h2");
+            if (!isPreviewTitle) sawHeading = true;
             var link = document.createElement("a");
             link.className = "sk-toc__link sk-interactive";
             link.href = "#" + heading.id;

@@ -5,7 +5,6 @@ import "@skryensya/core/patterns/state-layer.css";
 /* Structure diagram: the Annotated specimen is drawn by Annotation's own sheet. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import MenubarVsAppBar from "../MenubarVsAppBar.astro";
@@ -28,8 +27,6 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
-const install = `@import "@skryensya/core/components/menubar.css";
-@import "@skryensya/core/patterns/state-layer.css";`;
 const js = `import { mountIcons } from "@skryensya/vanilla/icon";
 import { lucideIcons } from "@skryensya/icons-lucide";
 import { initComponents } from "@skryensya/vanilla/auto";
@@ -39,9 +36,11 @@ initComponents();`;
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: menubarTree(t) }}
   title="Menubar"
   description={t("menubarPage.description")}
   contractId="menubar"
+  extraSheets={["@skryensya/core/patterns/state-layer.css"]}
   styleGroups={[
     { file: "components/menubar.css", probe: "sk-menubar", title: "Menubar" },
     { file: "patterns/state-layer.css", probe: "sk-interactive", title: "Heredados de State layer" },
@@ -110,10 +109,6 @@ initComponents();`;
       dont={{ html: menubarDontDestinationsHtml(t), caption: t("menubarPage.dd.commands.dont") }}
     />
     <ContentRules items={tList(t, "menubarPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="a11y">

@@ -41,15 +41,6 @@ import "@skryensya/core/components/annotation.css";
 
 const t = useTranslations(getLocale(Astro.url));
 
-const install = `pnpm add @skryensya/core @skryensya/react`;
-/* Three sheets, not one: the thread's own controls ARE `sk-button`s carrying `sk-icon` glyphs
-   (`comment-thread.ts`'s template), so a consumer importing only the first gets the structure with
-   unstyled buttons and unsized icons. Same failure the List page shipped once by omitting its own. */
-const styles = `@import "@skryensya/core/components/comment-thread.css";
-@import "@skryensya/core/components/button.css";
-@import "@skryensya/core/patterns/icon.css";
-@import "@skryensya/core/patterns/box.css";`;
-
 /* The full set, trimmed. Every piece here is also valid on its own: the `<article>` with nothing
    after its body IS the simplest `Comment`, and the `<form>` at the top IS a standalone composer. */
 const html = `<div class="sk-comment-thread" data-sk-comment-thread aria-label="Comentarios">
@@ -182,6 +173,7 @@ thread.addEventListener(commentThreadEvents.reply, async (event) => {
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: commentAloneTree(t) }}
   title="CommentThread"
   description={t("commentThread.description")}
   contractId="comment-thread"
@@ -190,6 +182,17 @@ thread.addEventListener(commentThreadEvents.reply, async (event) => {
     { file: "components/comment-thread.css", probe: "sk-comment", title: "Comment" },
   ]}
   testFiles={["packages/react/src/components/comment-thread.test.tsx", "packages/vanilla/src/components/comment-thread.test.ts"]}
+  extraSheets={["@skryensya/core/components/button.css", "@skryensya/core/patterns/icon.css", "@skryensya/core/patterns/box.css"]}
+  vanillaInstallSteps={[
+    {
+      title: t("commentThread.htmlTitle"),
+      blocks: [
+        { kind: "html", html: t("commentThread.htmlBody") },
+        { kind: "code", code: html, lang: "html", label: "HTML" },
+      ],
+    },
+  ]}
+  reactInstallSteps={[{ title: t("commentThread.reactTitle"), blocks: [{ kind: "code", code: react, lang: "tsx", label: "React" }] }]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("commentThread.lede")} />
@@ -301,18 +304,6 @@ thread.addEventListener(commentThreadEvents.reply, async (event) => {
       dont={{ tree: commentActionsTree(t), caption: t("commentThread.dd.actions.dont") }}
     />
     <ContentRules items={tList(t, "commentThread.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
-
-    <h4>{t("commentThread.htmlTitle")}</h4>
-    <p set:html={t("commentThread.htmlBody")} />
-    <CodeBlock code={html} label="HTML" lang="html" />
-
-    <h4>{t("commentThread.reactTitle")}</h4>
-    <CodeBlock code={react} label="React" lang="tsx" />
   </Fragment>
 
   <Fragment slot="a11y">

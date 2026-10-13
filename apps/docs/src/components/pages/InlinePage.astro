@@ -4,7 +4,6 @@ import "@skryensya/core/components/annotation.css";
 import { annotationDemoCss } from "../../demos/annotation";
 import { inlineAnatomyTree } from "../../demos/layout-anatomy";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -25,7 +24,6 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`inlinePage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
-const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
 ---
 
@@ -114,10 +112,6 @@ const t = useTranslations(getLocale(Astro.url));
       do={{ tree: inlineDoBetweenTree(t), caption: t("inlinePage.dd.between.do") }}
       dont={{ tree: inlineDontBetweenTree(t), caption: t("inlinePage.dd.between.dont") }}
     />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
   </Fragment>
 
   <Fragment slot="a11y">

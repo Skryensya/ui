@@ -19,6 +19,16 @@
 
 /* One container, one rhythm: whatever sits inside is separated by `gap` alone, no divider lines. */
 .sk-preview-card {
+  /* THE CARD'S TWO CORNER TOOLS (appearance, view code) are each ONE real 44px target. They used to be 32px buttons with a
+     44px `::after` reaching out around them: the stage that follows them in the card painted over the reach of the first,
+     so only the 32px face answered there, and the two reaches overlapped each other by 8px. Now the button IS the target,
+     and everything that places or reserves room for them comes from this one measure. */
+  --docs-card-tool-size: var(--size-touch-target);
+  /* The icon keeps the place its 32px face had: the target is centred on it, so it starts that much closer to the corner. */
+  --docs-card-tool-inset: calc(var(--space-inset-md) - (var(--docs-card-tool-size) - 2rem) / 2);
+  /* The strip a static stage reserves at its top, so the example starts below the tools. */
+  --docs-card-tool-strip: calc(var(--docs-card-tool-inset) + var(--docs-card-tool-size) - var(--space-inset-md) + var(--space-stack-sm));
+
   position: relative;
   display: grid;
   gap: var(--space-stack-lg);
@@ -31,19 +41,19 @@
 /* Reserve the code tool's own row: the isolated document never overlaps it. Raising the
    iframe's z-index cannot extend its native top layer beyond the iframe boundary. */
 .sk-preview-section--overlay-stage .sk-preview-card:has(> :is(.sk-preview-card__code-link, .sk-preview-card__code-menu)) {
-  padding-block-start: calc(var(--space-inset-md) + 2rem + var(--space-stack-sm));
+  padding-block-start: calc(var(--space-inset-md) + var(--docs-card-tool-strip));
 }
 
 /* The playground control and Storybook link share the first row. Reserve the link's
    inline space even when a long segmented control needs horizontal scrolling. */
 .sk-usage-preview--controlled .sk-preview-card:has(> :is(.sk-preview-card__code-link, .sk-preview-card__code-menu)) .sk-property-playground__control,
 .sk-usage-preview--controlled .sk-preview-card:has(> :is(.sk-preview-card__code-link, .sk-preview-card__code-menu)) .sk-property-playground__control-slot {
-  max-inline-size: calc(100% - 2rem - var(--space-inline-md));
+  max-inline-size: calc(100% - var(--docs-card-tool-size) - var(--space-inline-md));
   min-inline-size: 0;
 }
 
 .sk-usage-preview--controlled .sk-preview-card > :is(.sk-preview-card__code-link, .sk-preview-card__code-menu) {
-  inset-block-start: calc(var(--space-inset-md) + (var(--size-control-lg) - 2rem) / 2);
+  inset-block-start: calc(var(--space-inset-md) + (var(--size-control-lg) - var(--docs-card-tool-size)) / 2);
 }
 
 /* Two classes: the site's own link colour (a single-class rule on every `a` in content) must not
@@ -52,8 +62,22 @@
 .sk-preview-card .sk-preview-card__code-menu {
   position: absolute;
   z-index: 1;
-  inset-block-start: var(--space-inset-md);
-  inset-inline-end: var(--space-inset-md);
+  inset-block-start: var(--docs-card-tool-inset);
+  inset-inline-end: var(--docs-card-tool-inset);
+}
+
+/* The two tools' own buttons: the whole 44px is the button, and the reach it no longer needs is switched off. */
+.sk-preview-card__code-menu .sk-menu__trigger,
+.docs-card-appearance .sk-menu__trigger,
+.docs-hook-modal__switches .sk-menu__trigger {
+  inline-size: var(--size-touch-target);
+  block-size: var(--size-touch-target);
+}
+
+.sk-preview-card__code-menu .sk-menu__trigger::after,
+.docs-card-appearance .sk-menu__trigger::after,
+.docs-hook-modal__switches .sk-menu__trigger::after {
+  content: none;
 }
 
 /* The code button sits in the card's top-right corner, so its menu opens below it and grows toward the left, with its
@@ -70,7 +94,9 @@
 }
 
 /* "View code" names the button; once its menu is open the menu is the answer, and the hint must not open over it. */
-.sk-preview-card__code-menu .sk-tooltip:has([aria-expanded="true"]) .sk-tooltip__positioner {
+.sk-preview-card__code-menu .sk-tooltip:has([aria-expanded="true"]) .sk-tooltip__positioner,
+.docs-card-appearance .sk-tooltip:has([aria-expanded="true"]) .sk-tooltip__positioner,
+.docs-hook-modal__switches .sk-tooltip:has([aria-expanded="true"]) .sk-tooltip__positioner {
   display: none;
 }
 
@@ -79,13 +105,15 @@
    starts below the link's row instead of relying on each one being small or centred; the stage is already centred, so the
    cost is a little air above. */
 .sk-preview-section:not(.sk-usage-preview--controlled) .sk-preview-card:has(> :is(.sk-preview-card__code-link, .sk-preview-card__code-menu)) .sk-preview-card__stage {
-  padding-block-start: calc(2rem + var(--space-stack-sm));
+  --docs-stage-strip: var(--docs-card-tool-strip);
+
+  padding-block-start: var(--docs-stage-strip);
 }
 
 /* A canvas fills the stage edge to edge, so its zoom bar lands in the very corner the link sits in.
    Only then does the stage give the link its own row. */
 .sk-preview-section:not(.sk-usage-preview--controlled) .sk-preview-card:has(> :is(.sk-preview-card__code-link, .sk-preview-card__code-menu)) .sk-preview-card__stage:has(.sk-canvas) {
-  padding-block-start: calc(2rem + var(--space-inset-md));
+  padding-block-start: calc(var(--docs-card-tool-size) + var(--space-inset-md));
 }
 
 /* The example is what is centred; room enough that a small one does not look lost or cramped. */
@@ -122,26 +150,59 @@
 .sk-preview-card > .docs-card-appearance {
   position: absolute;
   z-index: 1;
-  inset-block-start: var(--space-inset-md);
-  inset-inline-end: var(--space-inset-md);
+  inset-block-start: var(--docs-card-tool-inset);
+  inset-inline-end: var(--docs-card-tool-inset);
 }
 
 .sk-preview-card:has(> :is(.sk-preview-card__code-link, .sk-preview-card__code-menu)) > .docs-card-appearance {
-  inset-inline-end: calc(var(--space-inset-md) + 2rem + var(--space-inline-xs));
+  inset-inline-end: calc(var(--docs-card-tool-inset) + var(--docs-card-tool-size));
 }
 
 .sk-usage-preview--controlled .sk-preview-card > .docs-card-appearance {
-  inset-block-start: calc(var(--space-inset-md) + (var(--size-control-lg) - var(--size-control-sm)) / 2);
+  inset-block-start: calc(var(--space-inset-md) + (var(--size-control-lg) - var(--docs-card-tool-size)) / 2);
 }
 
 .sk-usage-preview--controlled .sk-preview-card:has(> .docs-card-appearance) :is(.sk-property-playground__control, .sk-property-playground__control-slot) {
-  max-inline-size: calc(100% - 4.5rem - var(--space-inline-md));
+  max-inline-size: calc(100% - 2 * var(--docs-card-tool-size) - var(--space-inline-md));
 }
 
 .sk-preview-section:not(.sk-usage-preview--controlled) .sk-preview-card:has(> .docs-card-appearance) .sk-preview-card__stage {
-  padding-block-start: calc(2rem + var(--space-stack-sm));
+  --docs-stage-strip: var(--docs-card-tool-strip);
+
+  padding-block-start: var(--docs-stage-strip);
 }
 
 .sk-preview-section--overlay-stage .sk-preview-card:has(> .docs-card-appearance) {
-  padding-block-start: calc(var(--space-inset-md) + 2rem + var(--space-stack-sm));
+  padding-block-start: calc(var(--space-inset-md) + var(--docs-card-tool-strip));
+}
+
+/* AN EXAMPLE SET TO FROSTED GETS THE PHOTOGRAPH BEHIND IT, in a rounded window of its own. The stage's top padding is the
+   strip the card's tools float in, so the picture is not the stage's background (it would run under them and its corners
+   would be square): it is a layer inset by that strip, with the card's own radius, behind the example. An isolated example's
+   frame is transparent, so the same photograph shows through it. Cards that COMPARE appearances opt out of the scope and
+   bring their own backdrops. */
+.sk-preview-card[data-docs-appearance="frosted"] .sk-preview-card__stage {
+  position: relative;
+  isolation: isolate;
+}
+
+.sk-preview-card[data-docs-appearance="frosted"] .sk-preview-card__stage::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: var(--docs-stage-strip, 0px) 0 0 0;
+  border-radius: var(--radius-surface);
+  background: center / cover var(--docs-frost-photo);
+}
+
+.sk-preview-card[data-docs-appearance="frosted"] iframe.sk-component-preview__stage {
+  border-radius: var(--radius-surface);
+  background: center / cover var(--docs-frost-photo);
+}
+
+/* THE STAGE IS THIS TALL FROM THE START, whatever the appearance: the strip the tools take is part of its height, so
+   choosing Frosted (and its photograph) never makes the card grow. A property playground's stage sits below its own control
+   row, so it needs none of this. */
+.sk-preview-section:not(.sk-usage-preview--controlled) .sk-preview-card:has(> .docs-card-appearance) .sk-preview-card__stage {
+  min-block-size: calc(var(--sk-preview-card-stage-min-block-size, 7rem) + var(--docs-stage-strip));
 }

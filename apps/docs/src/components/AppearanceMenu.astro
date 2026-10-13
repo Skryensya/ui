@@ -1,4 +1,6 @@
 ---
+import { emitMarkup } from "@skryensya/ai-compiler/emit";
+import type { UsageTree } from "@skryensya/core/usage-tree";
 import { iconMarkup } from "../icons";
 import { getLocale, useTranslations } from "../i18n";
 
@@ -33,7 +35,16 @@ const descriptions: Record<Appearance, string> = {
 const disabledAttr: Record<string, string> = { disabled: "disabled" };
 /* The canonical order, so a disabled entry sits where it does on every other page. */
 const items = ALL.filter((value) => values.includes(value) || value in unavailable);
-const appearanceIcon = iconMarkup("appearance");
+/* The icon of the card's corner button: `visibility`, the eye, "how this looks". The role named
+   `appearance` stays with the preferences sheet; here the button sits beside "view code", and two
+   glyphs of the same weight read as two tools, not as one repeated. */
+const appearanceIcon = iconMarkup("visibility");
+/* The same hint over the same kind of button as "view code": a Tooltip around an icon-only ghost
+   trigger. The compiler emits the Tooltip's own markup (what its enhancer expects), and the menu,
+   whose radio items no contract describes, is written between the two halves of it. */
+const MENU = "@@docs-appearance-menu@@";
+const hintTree: UsageTree = { contract: "tooltip", signature: "Tooltip", slots: { content: label ?? "" }, children: MENU };
+const [hintBefore = "", hintAfter = ""] = emitMarkup(hintTree, { fillDefaults: false }).split(MENU);
 ---
 
 {
@@ -53,11 +64,13 @@ const appearanceIcon = iconMarkup("appearance");
       <span class="docs-prefs-tile__value" data-docs-appearance-label>Plain</span>
     </button>
   ) : (
+    <Fragment>
+    <Fragment set:html={hintBefore} />
     <div class="sk-menu docs-appearance-menu" data-sk-menu aria-label={label} data-docs-appearance-values={values.join(" ")}>
       <button
-        class="sk-menu__trigger sk-button sk-interactive sk-anchor dimensions__appearance-trigger"
+        class="sk-menu__trigger sk-button sk-interactive sk-anchor"
         data-sk-menu-trigger
-        data-variant="soft"
+        data-variant="ghost"
         data-size="sm"
         data-icon-only
         type="button"
@@ -98,5 +111,7 @@ const appearanceIcon = iconMarkup("appearance");
         </div>
       </div>
     </div>
+    <Fragment set:html={hintAfter} />
+    </Fragment>
   )
 }

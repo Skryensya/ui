@@ -40,7 +40,6 @@ const positionVariants = ([1, 6, 12] as const).map((value) => ({
   tree: paginationPositionCase(t, value),
   explain: t(`paginationPage.positionExplain.${value}` as Parameters<typeof t>[0]),
 }));
-const install = `pnpm add @skryensya/core @skryensya/react`;
 
 const rangeExample = `import { paginationRange } from "@skryensya/core/pagination";
 
@@ -49,6 +48,7 @@ paginationRange(5, 20);
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: paginationTree(t), fit: true }}
   title="Pagination"
   description={t("paginationPage.description")}
   contractId="pagination"
@@ -140,9 +140,6 @@ paginationRange(5, 20);
     <ContentRules items={tList(t, "paginationPage.content")} />
   </Fragment>
 
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-  </Fragment>
   <Fragment slot="a11y">
     <A11yNotes
       intro={t("paginationPage.a11yIntro")}

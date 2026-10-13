@@ -285,10 +285,12 @@ export const procedureDeployTree = (t: Translate): UsageTree => ({
               options: { tone: "accent" },
               children: t("demo.procedure.deploy.publish.cta"),
             },
+            /* A button too, one rung quieter: the pair reads as a primary action and its alternative, the
+               same size and shape, instead of a button with a stray text link hanging off its side. */
             {
-              contract: "typography",
-              signature: "Link",
-              options: { href: "/components/procedure" },
+              contract: "button",
+              signature: "Button.navigation",
+              options: { variant: "soft", href: "/components/procedure" },
               children: t("demo.procedure.docs"),
             },
           ],

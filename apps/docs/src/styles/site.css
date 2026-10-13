@@ -553,6 +553,13 @@ html:has(dialog:modal) .sk-toc {
    * else-branch, so a browser that has never heard of anchoring still gets a placed button.
    */
   inset-inline-end: var(--space-inset-lg);
+  /* The site's button also carries `.sk-button`, whose padded rectangle would otherwise beat the
+     component's own round disc; unlayered here, so the disc wins. */
+  inline-size: var(--size-control-md);
+  block-size: var(--size-control-md);
+  min-block-size: 0;
+  padding: 0;
+  border-radius: var(--radius-pill);
 }
 
 /* The home has no toc rail to anchor to, so it would sit in the viewport corner, on top of the
@@ -1936,26 +1943,6 @@ main[data-document-layout="grid"]
   grid-column: content-start / content-end;
 }
 
-/*
- * A code preview's sticky copy button (`packages/core/css/components/code-preview.css`) has to
- * clear THIS SHELL's own stacked sticky chrome (the navbar always, and the hero tabs bar too on
- * the pilot page that has one), or it sticks to the viewport's very top edge and ends up hidden
- * under whichever of those is opaque there. `--docs-hero-tabs-h` is unset (and so 0px) on every
- * page without a `.docs-component-hero-tabs`, which is what lets one rule cover both cases instead
- * of a page-specific override.
- *
- * `--sk-fx-collapse-bar-height` is the third box in that stack and follows the same idiom: it is
- * declared only inside the `@supports`/reduced-motion pair that makes the hero collapse into a
- * pinned bar, so it is 0px wherever that bar does not exist. Including a browser with no
- * scroll-driven animations, where the hero is not sticky at all.
- */
-.shell .sk-code-preview {
-  --sk-code-preview-copy-sticky-top: calc(
-    var(--docs-navbar-h, var(--docs-header-block-size)) + var(--sk-fx-collapse-bar-height, 0px) +
-      var(--docs-hero-tabs-h, 0px)
-  );
-}
-
 /* The width-driven shell switches (toc at `wide`, sidebar↔drawer↔navbar at `desktop`) moved to
    shell.scss so they can call the shared breakpoint mixins. This lone tweak stays: it is a one-off,
    not one of the system's shared lines. */
@@ -2019,7 +2006,8 @@ main {
 }
 
 .docs-page-nav__direction {
-  padding-inline: var(--space-inset-md);
+  /* Flush with the button's outer edge, so each side lines up on the column's own edge. */
+  padding-inline: 0;
   color: var(--color-text-secondary);
   font-size: var(--font-size-body-sm);
 }
@@ -2086,6 +2074,12 @@ main :where(h3):not([class], [data-flush]) {
 
 main :where(h4):not([class], [data-flush]) {
   margin-block-start: var(--space-stack-md);
+}
+
+/* The first heading of a tab's panel opens it: the tab list above already separates it from the header,
+   so the section air would only stack on the panel's own padding. */
+main .sk-tabs__content > :where(h2, h3):first-child:not([class], [data-flush]) {
+  margin-block-start: 0;
 }
 
 /* Same unlayered-beats-`@layer components` fact as the headings above, and the same fix: this is
@@ -2208,6 +2202,11 @@ main .lede {
   --docs-hero-pin-top: calc(
     var(--docs-navbar-h, var(--docs-header-block-size)) - var(--docs-hero-navbar-overlap)
   );
+  /* HOW FAR THE PINNED HEADER'S CANVAS-COLOURED BACKING REACHES past the masthead and tab strip: out to each side, so the
+     shadow a card scrolling underneath throws sideways does not show beside the header; and up, under the masthead's
+     rounded bottom corners, so the curve does not leave a gap. One measure for the band's backing and the strip below it. */
+  --docs-hero-bleed-inline: var(--space-inset-lg);
+  --docs-hero-bleed-up: var(--space-inset-sm);
   /* Inline padding used to be a constant 24px whether the band was full-height or a small pinned
      bar, which at the collapsed end read as generous side margins around type that had nowhere
      near that much air above or below it. Animated on the SAME `--sk-fx-collapse-progress` (the `collapse-header` effect, ADR-20) as
@@ -2488,6 +2487,74 @@ main .lede {
   overflow-x: auto;
   overflow-y: clip;
   overscroll-behavior-inline: contain;
+}
+
+/* THE BACKING REACHES OUT ONLY AS THE HEADER PINS. Every reach below is multiplied by `--docs-hero-bleed` (0 at rest, 1 once
+   the band is a pinned bar): at rest the masthead, its strip and the page are one container, and a canvas-coloured edge past it
+   would cut into the band's corner and show against the page's own backdrop. It grows in with the scroll instead.
+
+   The band's own `--sk-fx-collapse-progress` cannot be read here: the effect animates it on the band alone, so the strip and
+   the plate (its siblings) never see it. They run the same scroll timeline over the same range on a property of their own. */
+@property --docs-hero-bleed {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@keyframes docs-hero-bleed {
+  from {
+    --docs-hero-bleed: 0;
+  }
+
+  to {
+    --docs-hero-bleed: 1;
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    :where(:root:not([data-motion="reduced"])) .docs-component-shell :is(.docs-component-hero-tabs, .docs-component-hero__backing) {
+      /* Longhands, never the shorthand: see the collapse effect's own note on `animation-timeline`. */
+      animation-name: docs-hero-bleed;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 var(--sk-fx-collapse-range);
+    }
+  }
+}
+
+/* The JS-fallback twin: the script walks `--sk-fx-collapse-progress` on the shell, so the bleed simply follows it. */
+[data-sk-fx-collapse-js] .docs-component-shell {
+  --docs-hero-bleed: var(--sk-fx-collapse-progress);
+}
+
+/* THE STRIP'S REACH. The strip is opaque so the panels can scroll under it, but a card's shadow spreads sideways past
+   the strip's own edges and showed there, beside the header. A `::before` cannot help here (the strip scrolls on its own
+   axis, which would clip it), so the reach is the strip's own box-shadow: its shape repeated, in the canvas colour with no
+   blur, a little to each side (growing with the scroll) and a little above.
+
+   THE UPWARD PART IS CONSTANT, not animated, and that is the point of it. It lies under the masthead band (which is above the
+   strip), so all that ever shows of it is what the band's rounded bottom corners leave open: the gap this reach is for. An
+   earlier version animated it with the scroll and put it on the plate over the spacer; scrolling UP, the animation (main
+   thread) trailed the pinned band (compositor) by a few frames, and the plate's extra pixels sat over the spacer coming back
+   into view as a white line across the green. Something that is always under the band cannot do that. */
+.docs-component-hero-tabs {
+  box-shadow:
+    calc(-1 * var(--docs-hero-bleed-inline) * var(--docs-hero-bleed)) 0 0 0 var(--color-bg-canvas),
+    calc(var(--docs-hero-bleed-inline) * var(--docs-hero-bleed)) 0 0 0 var(--color-bg-canvas),
+    0 calc(-1 * var(--docs-hero-bleed-up)) 0 0 var(--color-bg-canvas);
+}
+
+/* The masthead's own backing plate, reaching out SIDEWAYS only: a pseudo-element, since the plate is positioned and does not
+   scroll. It sits in the plate's own stacking order (below the band, above the panels) and has no vertical reach, because any
+   pixel above the band's top lies over the spacer that finishes the band. */
+.docs-component-shell .docs-component-hero__backing::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline: calc(-1 * var(--docs-hero-bleed-inline) * var(--docs-hero-bleed));
+  background: var(--color-bg-canvas);
 }
 
 /*
@@ -3193,6 +3260,10 @@ main a:not(
   margin-block-start: 0;
 }
 
+.docs-install__switch {
+  margin-block-end: var(--space-stack-md);
+}
+
 html[data-sk-component-preview-pref="react"] [data-sk-install-binding="vanilla"],
 html[data-sk-component-preview-pref="vanilla"] [data-sk-install-binding="react"] {
   display: none;
@@ -3205,12 +3276,6 @@ html[data-sk-component-preview-pref="vanilla"] [data-sk-install-binding="react"]
 .docs-appearance-menu {
   --sk-anchored-name: --docs-appearance-menu-anchor;
   position: relative;
-}
-
-.dimensions__appearance-trigger {
-  --sk-button-bg: var(--color-bg-surface-raised);
-  --sk-button-border-color: var(--color-border-default);
-  --sk-button-shadow: var(--elevation-flat);
 }
 
 .docs-appearance-menu .sk-menu__positioner {
@@ -3736,4 +3801,315 @@ html[data-sk-component-preview-pref="vanilla"] [data-sk-install-binding="react"]
   box-shadow:
     0 1px 2px light-dark(oklch(0% 0 0 / 0.12), transparent),
     0 12px 28px -16px light-dark(oklch(0% 0 0 / 0.22), transparent);
+}
+
+/* ── hook playground modal ────────────────────────────────────────────────── */
+/*
+ * `HookPlaygroundModal.astro`: a modal with the live example on the left and a flat list of the
+ * component's hooks on the right. Title, list, two buttons; nothing else. Below the Dialog Vaul
+ * breakpoint the dialog is a bottom sheet and the two halves stack, the example first.
+ */
+.docs-hook-modal {
+  --sk-dialog-inline-size: min(60rem, calc(100% - 2rem));
+}
+
+@media (min-width: 52rem) {
+  .docs-hook-modal {
+    block-size: min(36rem, calc(100dvh - 2rem));
+    max-block-size: none;
+  }
+}
+
+@media (max-width: 52rem) {
+  .docs-hook-modal {
+    --sk-vaul-block-size: 90dvh;
+
+    block-size: 90dvh;
+  }
+}
+
+.docs-hook-modal[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.docs-hook-modal .sk-dialog__header {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  z-index: 2;
+  padding: var(--space-inset-sm);
+  border: 0;
+}
+
+/* The title the contract draws stays for assistive technology; the column carries the visible one. */
+.docs-hook-modal .sk-dialog__title {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.docs-hook-modal .sk-dialog__body {
+  flex: 1;
+  min-block-size: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  overflow: hidden;
+  padding: 0;
+}
+
+.docs-hook-modal [id$="-slot"] {
+  display: grid;
+  inline-size: 100%;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  grid-template-rows: minmax(0, 1fr);
+  min-block-size: 0;
+  block-size: 100%;
+  gap: 0;
+}
+
+.docs-hook-modal__stage {
+  display: grid;
+  min-block-size: 0;
+  border-inline-end: 1px solid var(--color-border-subtle);
+}
+
+.docs-hook-modal__stage {
+  position: relative;
+}
+
+/* The options of the example, over its top-right corner, opposite the title. */
+.docs-hook-modal__switches {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  z-index: 1;
+  display: flex;
+  gap: var(--space-inline-sm);
+  padding: var(--space-inset-xs) var(--space-inset-md);
+}
+
+/* A button, not a bar: the example is as wide as its content, whatever the window is. */
+.docs-hook-modal__canvas--fit {
+  justify-items: center;
+}
+
+/* Frosted blurs what is behind it, and a flat canvas has nothing to blur: give it the docs' photograph to work on. */
+.docs-hook-modal__stage[data-docs-appearance="frosted"] .docs-hook-modal__canvas {
+  background: center / cover var(--docs-frost-photo);
+}
+
+/* The example sits in the middle with the same room above and below: its menus open into it. */
+.docs-hook-modal__canvas {
+  display: grid;
+  align-content: center;
+  min-block-size: 0;
+  overflow-y: auto;
+  padding-inline: var(--space-inset-lg);
+  background: var(--color-bg-canvas);
+  border-radius: var(--radius-dialog, var(--radius-surface)) 0 0 var(--radius-dialog, var(--radius-surface));
+}
+
+.docs-hook-modal__record {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  min-block-size: 0;
+}
+
+/* One line, laid OVER the top-left of the example rather than above it, so the example keeps the whole
+   height of its window: the title and, beside it, whose hooks these are. */
+.docs-hook-modal .docs-hook-modal__record-head {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: var(--space-inline-sm);
+  max-inline-size: 100%;
+  padding: var(--space-inset-sm) var(--space-inset-lg);
+  pointer-events: none;
+}
+
+.docs-hook-modal .docs-hook-modal__title {
+  margin: 0;
+  font-size: var(--font-size-body);
+}
+
+.docs-hook-modal__component {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body-sm);
+}
+
+.docs-hook-modal__hooks {
+  display: grid;
+  align-content: start;
+  gap: var(--space-stack-md);
+  min-block-size: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  /* The top inset clears the close button that floats in the corner. */
+  padding: calc(var(--size-control-sm) + var(--space-inset-md)) var(--space-inset-lg) var(--space-inset-md);
+}
+
+/* The reveal scrollbar reserves its gutter (`patterns/scrollbar.css`), so the end padding gives that
+   width back and the fields stay as far from the edge as they are on the start side. */
+@media (hover: hover) {
+  .docs-hook-modal__hooks {
+    padding-inline-end: calc(var(--space-inset-lg) - 0.75rem);
+  }
+}
+
+.docs-hook-modal__hook {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.docs-hook-modal__hook-name {
+  overflow: hidden;
+  color: var(--color-text-secondary);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-body-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.docs-hook-modal__hook-field {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-inline-xs);
+  min-inline-size: 0;
+}
+
+.docs-hook-modal__hook-field > [hidden] {
+  display: none;
+}
+
+.docs-hook-modal__hook-field > .sk-button {
+  flex: none;
+}
+
+.docs-hook-modal__hook-select {
+  --sk-select-height: var(--size-control-sm);
+  --sk-select-padding-x: var(--space-inset-xs);
+  --sk-select-font-size: var(--font-size-body-sm);
+
+  flex: 1 1 0;
+  inline-size: 0;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The library's colour field, sized like the selects beside it, its label set like the other hooks' names. */
+.docs-hook-modal .sk-color-picker {
+  --sk-color-picker-trigger-size: var(--size-control-sm);
+  --sk-color-picker-trigger-inline-size: 100%;
+
+  flex: 1 1 8rem;
+  min-inline-size: 0;
+}
+
+.docs-hook-modal .sk-color-picker__label {
+  color: var(--color-text-secondary);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-body-sm);
+  font-weight: inherit;
+}
+
+/* The picker brings its own label above the field, so the reset sits level with the field, not the label. */
+.docs-hook-modal__hook[data-control="picker"] .docs-hook-modal__hook-field {
+  align-items: end;
+}
+
+/* The prefix recedes and the part that tells the hook apart is bold; a changed hook turns that part accent. */
+.docs-hook-modal__hook-prefix {
+  font-weight: var(--font-weight-body, 400);
+}
+
+.docs-hook-modal__hook-key {
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-emphasis, 600);
+}
+
+.docs-hook-modal__hook[data-changed] .docs-hook-modal__hook-key {
+  color: var(--color-text-accent);
+}
+
+.docs-hook-modal .sk-color-picker__native-value {
+  font-size: var(--font-size-body-sm);
+}
+
+.docs-hook-modal__hook-input {
+  --sk-input-height: var(--size-control-sm);
+
+  flex: 1 1 100%;
+  min-inline-size: 0;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-body-sm);
+}
+
+.docs-hook-modal__foot {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-inline-sm);
+  padding: var(--space-inset-xs) var(--space-inset-lg);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+@media (max-width: 52rem) {
+  .docs-hook-modal .sk-dialog__body {
+    grid-template-rows: none;
+    overflow-y: auto;
+  }
+
+  /* Stacked, nothing is a fixed-height region: the body scrolls and every part takes its content's height. */
+  .docs-hook-modal [id$="-slot"] {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    align-content: start;
+    block-size: auto;
+  }
+
+  .docs-hook-modal__stage {
+    min-block-size: auto;
+    border-inline-end: 0;
+    border-block-end: 1px solid var(--color-border-subtle);
+  }
+
+  .docs-hook-modal__canvas {
+    min-block-size: 16rem;
+    border-radius: 0;
+  }
+
+  .docs-hook-modal__record {
+    grid-template-rows: none;
+    min-block-size: auto;
+  }
+
+  .docs-hook-modal__hooks {
+    min-block-size: auto;
+    overflow: visible;
+  }
+}
+
+/* The one action for a component's hooks, under its tables at the trailing edge. */
+.docs-styling-hooks__action {
+  display: flex;
+  justify-content: flex-end;
+  margin-block-start: var(--space-stack-sm);
+}
+
+/* THE BACKDROP FROSTED NEEDS, for every example that has the appearance menu: a frosted material over a blank stage
+   has nothing to process. It is the photograph the Button page's frosted matrix already sits on (`public/demos/`,
+   no remote dependency), shared as one value so the cards and the hook playground cannot drift. */
+:root {
+  --docs-frost-photo: url("/demos/lightbox/fjord.jpg");
 }

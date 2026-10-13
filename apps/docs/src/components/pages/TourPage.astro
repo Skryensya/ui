@@ -25,11 +25,7 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
-const install = `pnpm add @skryensya/core @skryensya/react
-# or, for authored HTML
-pnpm add @skryensya/core @skryensya/vanilla`;
 
-const styles = `@import "@skryensya/core/components/tour.css";`;
 
 const reactSteps = `import { useRef } from "react";
 import { Tour, type TourHandle, type TourStep } from "@skryensya/react/tour";
@@ -98,6 +94,7 @@ import { tourTitleDoTree, tourTitleDontTree, tourLengthDoTree, tourLengthDontTre
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: tourBasicTree(t) }}
   title="Tour"
   description={t("tour.description")}
   contractId="tour"
@@ -149,11 +146,6 @@ import { tourTitleDoTree, tourTitleDontTree, tourLengthDoTree, tourLengthDontTre
       dont={{ tree: tourLengthDontTree(t), caption: t("tour.dd.length.dont") }}
     />
     <ContentRules items={tList(t, "tour.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="a11y">

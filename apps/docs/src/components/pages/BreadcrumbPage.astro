@@ -4,7 +4,6 @@ import "@skryensya/core/components/breadcrumb.css";
    the same way Accordion's and Button's do. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -28,12 +27,11 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
-const install = `pnpm add @skryensya/core @skryensya/react`;
-const styles = `@import "@skryensya/core/components/breadcrumb.css";`;
 const storybookTitle = "Components/Breadcrumb";
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: breadcrumbTwoTree(t) }}
   title="Breadcrumb"
   description={t("breadcrumb.description")}
   contractId="breadcrumb"
@@ -103,11 +101,6 @@ const storybookTitle = "Components/Breadcrumb";
       dont={{ tree: breadcrumbMissingCurrentTree(t), caption: t("breadcrumb.dd.current.dont") }}
     />
     <ContentRules items={tList(t, "breadcrumb.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="a11y">

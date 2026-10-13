@@ -53,25 +53,37 @@ interface Props {
   notes?: Readonly<Record<string, string>>;
   /** The notes column's header. */
   notesLabel?: string;
+  /** Sits under a "Reference" h2 the page already wrote: heading becomes h3, per-sheet titles h4. */
+  nested?: boolean;
 }
 
-const { groups, heading = "Styling hooks", notes, notesLabel = "" } = Astro.props;
+const { groups, heading = "Styling hooks", notes, notesLabel = "", nested = false } = Astro.props;
+const Heading = nested ? "h3" : "h2";
+const SubHeading = nested ? "h4" : "h3";
 const t = useTranslations(getLocale(Astro.url));
-const resolvedGroups = groups.map((group) => ({
-  ...group,
-  hooks: tokens.filter((token) => token.file === group.file),
-}));
+/* A sheet that publishes no hook of its own (State layer's are page-wide tokens, not element-scoped
+   ones) would render as a header over nothing, so it is not a group at all. */
+const resolvedGroups = groups
+  .map((group) => ({
+    ...group,
+    hooks: tokens.filter((token) => token.file === group.file),
+  }))
+  .filter((group) => group.hooks.length > 0);
 ---
 
-<h2>{heading}</h2>
-<p>
-  {t("hooks.intro")}
-</p>
+{resolvedGroups.length > 0 && (
+  <>
+    <Heading>{heading}</Heading>
+    <p>
+      {t("hooks.intro")}
+    </p>
+  </>
+)}
 
 {
   resolvedGroups.map((group) => (
     <>
-      {resolvedGroups.length > 1 && <h3>{group.title ?? group.probe}</h3>}
+      {resolvedGroups.length > 1 && <SubHeading>{group.title ?? group.probe}</SubHeading>}
       <div class="sk-table-scroll">
         <table class="sk-table">
           <thead class="sk-table__head">
@@ -98,3 +110,6 @@ const resolvedGroups = groups.map((group) => ({
     </>
   ))
 }
+
+{/* A page's one action for these hooks (a playground), under the tables at the trailing edge. */}
+{resolvedGroups.length > 0 && Astro.slots.has("default") && <div class="docs-styling-hooks__action"><slot /></div>}

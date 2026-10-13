@@ -27,6 +27,7 @@ const t = useTranslations(getLocale(Astro.url));
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: emptyStateTree(t) }}
   title="EmptyState"
   description={t("emptyState.description")}
   contractId="empty-state"

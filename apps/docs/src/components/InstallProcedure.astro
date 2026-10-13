@@ -1,0 +1,17 @@
+---
+import "@skryensya/core/components/procedure.css";
+import "@skryensya/core/components/typography.css";
+import "@skryensya/core/patterns/layout.css";
+import CodeBlock from "./CodeBlock.astro";
+import { installProcedure, type InstallStep } from "../lib/install-procedure";
+
+interface Props {
+  steps: InstallStep[];
+  label: string;
+}
+
+const { steps, label } = Astro.props;
+const chunks = installProcedure(steps, label);
+---
+
+{chunks.map((chunk) => ("html" in chunk ? <Fragment set:html={chunk.html} /> : <CodeBlock code={chunk.code} lang={chunk.lang} label={chunk.label} />))}

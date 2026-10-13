@@ -1,7 +1,6 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -23,9 +22,6 @@ import "@skryensya/core/components/back-to-top.css";
 import "@skryensya/core/components/annotation.css";
 
 const t = useTranslations(getLocale(Astro.url));
-
-const install = `pnpm add @skryensya/core @skryensya/react`;
-const styles = `@import "@skryensya/core/components/back-to-top.css";`;
 
 const html = `<button class="sk-back-to-top sk-button sk-interactive" data-variant="soft" type="button" data-sk-back-to-top hidden>
   <span class="sk-back-to-top__icon" aria-hidden="true">
@@ -76,11 +72,39 @@ import { backToTopLengthDoTree, backToTopLengthDontTree } from "../../demos/dodo
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: backToTopTree(t), fit: true }}
   title="BackToTop"
   description={t("backToTop.description")}
   contractId="back-to-top"
   appearanceTargetSelector=".sk-back-to-top"
   testFiles={["packages/react/src/components/back-to-top.test.tsx", "packages/vanilla/src/components/back-to-top.test.ts"]}
+  vanillaInstallSteps={[
+    { title: t("backToTop.htmlTitle"), blocks: [{ kind: "code", code: html, lang: "html", label: "HTML" }] },
+    {
+      title: t("backToTop.targetTitle"),
+      blocks: [
+        { kind: "html", html: t("backToTop.targetBody") },
+        { kind: "code", code: htmlTarget, lang: "html", label: "HTML" },
+      ],
+    },
+    {
+      title: t("backToTop.pillTitle"),
+      blocks: [
+        { kind: "html", html: t("backToTop.pillBody") },
+        { kind: "code", code: pill, lang: "css", label: "CSS" },
+      ],
+    },
+  ]}
+  reactInstallSteps={[
+    { title: "React", blocks: [{ kind: "code", code: react, lang: "tsx", label: "React" }] },
+    {
+      title: t("backToTop.pillTitle"),
+      blocks: [
+        { kind: "html", html: t("backToTop.pillBody") },
+        { kind: "code", code: pill, lang: "css", label: "CSS" },
+      ],
+    },
+  ]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} />
@@ -153,23 +177,6 @@ import { backToTopLengthDoTree, backToTopLengthDontTree } from "../../demos/dodo
       dont={{ tree: backToTopLengthDontTree(t), caption: t("dd3.backToTop.dont") }}
     />
     <ContentRules items={tList(t, "backToTop.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
-
-    <h4>{t("backToTop.htmlTitle")}</h4>
-    <CodeBlock code={html} label="HTML" lang="html" />
-
-    <h4>{t("backToTop.targetTitle")}</h4>
-    <p set:html={t("backToTop.targetBody")} />
-    <CodeBlock code={htmlTarget} label="HTML" lang="html" />
-    <CodeBlock code={react} label="React" lang="tsx" />
-
-    <h4>{t("backToTop.pillTitle")}</h4>
-    <p set:html={t("backToTop.pillBody")} />
-    <CodeBlock code={pill} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="a11y">

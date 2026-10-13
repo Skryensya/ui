@@ -25,7 +25,6 @@ import { linkAnatomyTree, linkSingleTree, linkTree, tileLinkTree } from "../../d
 import { getLocale, tList, useTranslations } from "../../i18n";
 import { annotationDemoCss } from "../../demos/annotation";
 
-const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`linkPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
@@ -37,6 +36,7 @@ link.textContent = "Usage details";`;
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: linkSingleTree(t, "/components/link"), fit: true }}
   title="Link"
   description={t("linkPage.description")}
   contractId="typography"
@@ -120,9 +120,6 @@ link.textContent = "Usage details";`;
     <ContentRules items={tList(t, "linkPage.content")} />
   </Fragment>
 
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-  </Fragment>
   <Fragment slot="a11y">
     <A11yNotes
       intro={t("linkPage.a11yIntro")}

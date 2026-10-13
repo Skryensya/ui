@@ -32,8 +32,6 @@ const explain = (option: string, values: readonly string[]) =>
 const storybookTitle = "Components/MediaOverlay";
 /* A card at the width a card is used at: stretched to the stage, the photo would crowd the page. */
 const cardWidthCss = `.sk-box { inline-size: min(100%, 24rem); margin-inline: auto; }`;
-const styles = `@import "@skryensya/core/patterns/image-frame.css";
-@import "@skryensya/core/patterns/media-overlay.css";`;
 const tint = `.hero-media .sk-media-overlay-shade {
   --sk-media-overlay-shade-mix: 48%;
   --sk-media-overlay-shade-opacity: 88%;
@@ -41,9 +39,11 @@ const tint = `.hero-media .sk-media-overlay-shade {
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: mediaOverlayCardTree(t) }}
   title="MediaOverlay"
   description={t("mediaOverlay.description")}
   contractId="media-overlay"
+  extraSheets={["@skryensya/core/patterns/image-frame.css"]}
   testFiles={["packages/react/src/components/media-overlay.test.tsx"]}
 >
   <Fragment slot="usage">
@@ -111,10 +111,6 @@ const tint = `.hero-media .sk-media-overlay-shade {
       dont={{ tree: mediaOverlayDontStrengthTree(t), caption: t("mediaOverlay.dd.strength.dont") }}
     />
     <ContentRules items={tList(t, "mediaOverlay.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={styles} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="a11y">

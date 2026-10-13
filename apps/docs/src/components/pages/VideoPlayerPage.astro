@@ -83,10 +83,6 @@ const keyRows = [
   cells: [t(`videoPlayerPage.key.${key}` as Parameters<typeof t>[0])],
 }));
 
-const install = `pnpm add @skryensya/core
-# and, for React,
-pnpm add @skryensya/react`;
-const styles = `@import "@skryensya/core/components/video-player.css";`;
 const html = `<div class="sk-video-player" data-sk-video-player role="group" aria-label="Sintel, the trailer">
   <div class="sk-video-player__stage">
     <video src="sintel-trailer.mp4" poster="sintel-poster.jpg">
@@ -121,9 +117,20 @@ const tune = `.sk-video-player {
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: videoPlayerTree(t) }}
   title="Video Player"
   description={t("videoPlayerPage.description")}
   contractId="video-player"
+  vanillaInstallSteps={[
+    {
+      title: t("install.stepMount"),
+      blocks: [
+        { kind: "html", html: t("videoPlayerPage.installBody") },
+        { kind: "code", code: html, lang: "html", label: "HTML" },
+      ],
+    },
+  ]}
+  reactInstallSteps={[{ title: t("install.stepImport"), blocks: [{ kind: "code", code: react, lang: "tsx", label: "React" }] }]}
   badge="Beta"
   hookNotes={hookNotes}
   hookNotesLabel={doesColumn}
@@ -192,14 +199,6 @@ const tune = `.sk-video-player {
       dont={{ tree: videoPlayerDontRoomTree(t), caption: t("videoPlayerPage.dd.room.dont") }}
     />
     <ContentRules items={tList(t, "videoPlayerPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <p set:html={t("videoPlayerPage.installBody")} />
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
-    <CodeBlock code={html} label="HTML" lang="html" />
-    <CodeBlock code={react} label="React" lang="tsx" />
   </Fragment>
 
   <Fragment slot="style">

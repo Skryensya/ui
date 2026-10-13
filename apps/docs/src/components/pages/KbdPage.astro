@@ -2,7 +2,6 @@
 /* The skin is already global (Base.astro imports it for the ⌘K badge), so this page needs no import. */
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -27,7 +26,6 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/patterns/box.css";
 
 const t = useTranslations(getLocale(Astro.url));
-const install = `pnpm add @skryensya/core @skryensya/react`;
 const storybookTitle = "Components/Kbd";
 
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
@@ -36,6 +34,7 @@ const explain = (option: string, values: readonly string[]) =>
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: kbdSingleTree, fit: true }}
   title="Kbd"
   description={t("kbdPage.description")}
   contractId="kbd"
@@ -133,9 +132,6 @@ const explain = (option: string, values: readonly string[]) =>
     <ContentRules items={tList(t, "kbdPage.content")} />
   </Fragment>
 
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-  </Fragment>
   <Fragment slot="a11y">
     <A11yNotes intro={t("kbdPage.a11yIntro")} does={tList(t, "kbdPage.a11yDoes")} yours={tList(t, "kbdPage.a11yYours")} />
   </Fragment>

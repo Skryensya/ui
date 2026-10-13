@@ -31,6 +31,8 @@ import Base from "../../layouts/Base.astro";
 import ContractChangelog from "../ContractChangelog.astro";
 import ContractReference from "../ContractReference.astro";
 import StylingHooks, { type HookGroup } from "../StylingHooks.astro";
+import HookPlaygroundModal from "../HookPlaygroundModal.astro";
+import type { UsageTree } from "@skryensya/core/usage-tree";
 import { getContract } from "@skryensya/core/registry";
 import TestCoverage, { type TestGroup } from "../TestCoverage.astro";
 import { changelogFor } from "../../lib/contract-reference";
@@ -40,6 +42,9 @@ import { getNavigation } from "../../lib/navigation";
 import { relatedComponents as chosenRelated } from "../../lib/related-components";
 import { canonicalPath, getLocale, useTranslations } from "../../i18n";
 import CodeBlock from "../CodeBlock.astro";
+import InstallProcedure from "../InstallProcedure.astro";
+import InstallBindingSwitch from "../InstallBindingSwitch.astro";
+import type { InstallStep } from "../../lib/install-procedure";
 import { vanillaMountFor } from "../../lib/vanilla-mounts";
 import { installFor } from "../../lib/install-manifest";
 import { localizePath } from "../../i18n";
@@ -51,6 +56,12 @@ interface Props {
    *  surveys several contracts at once or documents a pattern with none of its own: Referencia and
    *  Cambios drop out rather than reading a contract that does not describe the page. */
   contractId?: string;
+  /** Steps a component adds after the generated Vanilla ones (Button's icon set), drawn inside the same Procedure. */
+  vanillaInstallSteps?: InstallStep[];
+  /** The same for the React half (an extra package the component needs, say). */
+  reactInstallSteps?: InstallStep[];
+  /** Core sheets the component needs beyond the manifest's (`@skryensya/core/patterns/anchored.css`); added to both halves' style imports. */
+  extraSheets?: string[];
   styleGroups?: readonly HookGroup[];
   /** What each styling hook is for, by hook name, as HTML: Referencia's hooks table gains a column. */
   hookNotes?: Readonly<Record<string, string>>;
@@ -77,12 +88,31 @@ interface Props {
    * a strip saying "terminal" above it. Off by default while pages move over one at a time.
    */
   untitledCode?: boolean;
+  /**
+   * A live example whose styling hooks the reader can change, opened from a button under the hooks table.
+   * Only the example is the page's to say: the sheet, its root selector and the appearances the component
+   * publishes come from the contract, and the hooks listed are the ones named for the component.
+   */
+  hookPlayground?: {
+    /** The smallest example worth tuning: one component, no scaffolding. */
+    tree: UsageTree;
+    /** The example is as wide as its content (a button) rather than the whole window (a bar). */
+    fit?: boolean;
+    /** Replaces the default list when the sheet carries more than should be handed over, in order; `{ name, value }` supplies a public hook the corpus does not attribute to this sheet. */
+    hooks?: readonly (string | { name: string; value: string })[];
+    /** Overrides the sheet / root class taken from the first style group (a page that documents several surfaces). */
+    file?: string;
+    selector?: string;
+  };
 }
 
 const {
   title,
   description,
   contractId,
+  vanillaInstallSteps = [],
+  reactInstallSteps = [],
+  extraSheets = [],
   styleGroups = [],
   hookNotes,
   hookNotesLabel,
@@ -92,6 +122,7 @@ const {
   badge,
   appearanceTargetSelector,
   untitledCode = false,
+  hookPlayground,
 } = Astro.props;
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
@@ -121,6 +152,19 @@ const derivedStyleGroups: readonly HookGroup[] = (() => {
   if (!contract || !probe) return styleGroups;
   return [{ file: contract.css.replace(/^@skryensya\/core\//, ""), probe }];
 })();
+
+/* The hook playground's own props: the sheet and root class from the first style group, and the appearances the
+   contract publishes (an `appearance` option), which is what the eye-icon menu in the example lists. */
+const playgroundGroup = derivedStyleGroups[0];
+const playground = hookPlayground && playgroundGroup
+  ? {
+      ...hookPlayground,
+      id: `${contractId ?? title.toLowerCase()}-hook-playground`,
+      file: hookPlayground.file ?? playgroundGroup.file,
+      selector: hookPlayground.selector ?? `.${playgroundGroup.probe}`,
+      appearances: ((contractId ? (getContract(contractId) as { options?: Record<string, { values?: readonly string[] }> } | undefined)?.options?.appearance?.values : undefined) ?? []) as readonly ("plain" | "tactile" | "brutalist" | "frosted")[],
+    }
+  : undefined;
 
 /*
  * INSTALLATION IS ONE PANEL WITH TWO HALVES, and the reader picks which one they are reading.
@@ -158,11 +202,14 @@ const mountFact = install?.vanilla
       return route ? { ...route, auto: true } : undefined;
     })();
 const vanillaMount = mountFact;
-const vanillaInstallCommand = "pnpm add @skryensya/core @skryensya/vanilla";
+/* Each binding package re-exports core's stylesheets under its own `css/`, so a project installs the
+   binding and nothing else (`scripts/generate-css-reexports.ts`); core is never named. */
+const vanillaInstallCommand = "pnpm add @skryensya/vanilla";
+const viaBinding = (binding: "react" | "vanilla", sheet: string) => sheet.replace("@skryensya/core/", `@skryensya/${binding}/css/`);
 const sheets = install?.css.files ?? derivedStyleGroups.map((group) => `@skryensya/core/${group.file}`);
 /** The stylesheet the component names; the others load through its own `@import`s. */
 const ownSheet = install?.css.entry ?? sheets.at(-1);
-const vanillaStyleImports = ownSheet ? `@import "@skryensya/core/tokens.css";\n@import "${ownSheet.replace(/^@skryensya\/core\//, "@skryensya/core/")}";` : "";
+const vanillaStyleImports = ownSheet ? [`@import "${viaBinding("vanilla", "@skryensya/core/tokens.css")}";`, `@import "${viaBinding("vanilla", ownSheet)}";`, ...extraSheets.map((sheet) => `@import "${viaBinding("vanilla", sheet)}";`)].join("\n") : "";
 const alsoLoads = sheets.filter((sheet) => sheet !== ownSheet);
 const autoSnippet = `import { initComponents } from "@skryensya/vanilla/auto";
 
@@ -175,9 +222,53 @@ const vanillaMountSnippet = vanillaMount
   ? `import { ${vanillaMount.mount} } from "${vanillaMount.entrypoint}";\n\n// ${t("install.mountAll")}\n${vanillaMount.mount}();\n\n// ${t("install.mountOne")}\n${vanillaMount.mount}(document.querySelector("${vanillaMount.selector}"));`
   : null;
 const reactSnippet = install?.react
-  ? `import { ${install.react.names.join(", ")} } from "${install.react.entry}";\nimport "${ownSheet}";`
+  ? `import { ${install.react.names.join(", ")} } from "${install.react.entry}";\nimport "${viaBinding("react", ownSheet!)}";${extraSheets.map((sheet) => `\nimport "${viaBinding("react", sheet)}";`).join("")}`
   : null;
 const autoLink = `<a href="${localizePath("/automatic-mounting", locale)}">${t("vanilla.autoLinkLabel")}</a>`;
+
+/* The Installation steps, as data: `InstallProcedure` draws them with the design system's Procedure. */
+const tsCode = (code: string) => ({ kind: "code" as const, code, lang: "ts" as const, label: untitledCode ? undefined : "TypeScript" });
+const reactSteps: InstallStep[] = [
+  { title: t("install.stepInstall"), blocks: [{ kind: "code", code: "pnpm add @skryensya/react", lang: "bash", label: untitledCode ? undefined : "terminal" }] },
+  {
+    title: t("install.stepImport"),
+    blocks: reactSnippet
+      ? [{ kind: "html", html: t("install.reactOnly", { name: title }) }, { kind: "code", code: reactSnippet, lang: "tsx", label: untitledCode ? undefined : "TypeScript" }]
+      : [{ kind: "html", html: t("install.reactNone", { name: title }) }, ...(ownSheet ? [tsCode([ownSheet, ...extraSheets].map((sheet) => `import "${viaBinding("react", sheet)}";`).join("\n"))] : [])],
+  },
+  ...(install?.react && install.vanilla ? [{ title: t("install.stepMount"), blocks: [{ kind: "html" as const, html: t("install.reactMount", { name: title }) }] }] : []),
+  ...reactInstallSteps,
+];
+const vanillaSteps: InstallStep[] = [
+  { title: t("install.stepInstall"), blocks: [{ kind: "code", code: vanillaInstallCommand, lang: "bash", label: untitledCode ? undefined : "terminal" }] },
+  ...(vanillaStyleImports.length > 0
+    ? [{
+        title: t("install.stepStyles"),
+        blocks: [
+          { kind: "html" as const, html: t("install.sheetOnly", { name: title }) },
+          { kind: "code" as const, code: vanillaStyleImports, lang: "css" as const, label: untitledCode ? undefined : "CSS" },
+          ...(alsoLoads.length > 0 ? [{ kind: "html" as const, html: t("install.sheetAlso", { sheets: alsoLoads.map((sheet) => `<code>${sheet.replace("@skryensya/core/", "")}</code>`).join(", ") }) }] : []),
+        ],
+      }]
+    : []),
+  {
+    title: t("install.stepMount"),
+    blocks: vanillaMount
+      ? [
+          ...(vanillaMount.auto
+            ? [
+                { kind: "html" as const, html: t("install.autoWhen", { selector: vanillaMount.selector, name: title }) },
+                { kind: "code" as const, code: autoSnippet, lang: "ts" as const, label: untitledCode ? undefined : "JavaScript" },
+                { kind: "html" as const, html: t("install.autoLater", { autoLink }) },
+              ]
+            : [{ kind: "html" as const, html: t("install.notAuto", { name: title, mount: vanillaMount.mount }) }]),
+          { kind: "html" as const, html: t("install.vanillaMount", { name: title }) },
+          { kind: "code" as const, code: vanillaMountSnippet!, lang: "ts" as const, label: untitledCode ? undefined : "JavaScript" },
+        ]
+      : [{ kind: "html", html: t("install.vanillaNoMount") }],
+  },
+  ...vanillaInstallSteps,
+];
 
 /* Nothing to switch between when the page has no React half to begin with. */
 const canToggleInstall = hasInstall && (hasVanillaInstall || vanillaStyleImports.length > 0 || vanillaMountSnippet);
@@ -413,6 +504,8 @@ const relatedComponents = chosen
               */}
             <h3>{t("component.tabInstall")}</h3>
 
+            {canToggleInstall && <InstallBindingSwitch />}
+
             {/*
               * Both halves are always in the document; `site.css` shows the one the preference names,
               * so switching costs no request and the hidden half stays findable by in-page search.
@@ -427,28 +520,7 @@ const relatedComponents = chosen
               {Astro.slots.has("install") ? (
                 <slot name="install" />
               ) : (
-                <>
-                  <h4>{t("install.stepInstall")}</h4>
-                  <CodeBlock code="pnpm add @skryensya/core @skryensya/react" label={untitledCode ? undefined : "terminal"} lang="bash" />
-                  <h4>{t("install.stepImport")}</h4>
-                  {reactSnippet ? (
-                    <>
-                      <p>{t("install.reactOnly", { name: title })}</p>
-                      <CodeBlock code={reactSnippet} label={untitledCode ? undefined : "TypeScript"} lang="tsx" />
-                    </>
-                  ) : (
-                    <>
-                      <p>{t("install.reactNone", { name: title })}</p>
-                      {ownSheet && <CodeBlock code={`import "${ownSheet}";`} label={untitledCode ? undefined : "TypeScript"} lang="ts" />}
-                    </>
-                  )}
-                  {install?.react && install.vanilla && (
-                    <>
-                      <h4>{t("install.stepMount")}</h4>
-                      <p set:html={t("install.reactMount", { name: title })} />
-                    </>
-                  )}
-                </>
+                <InstallProcedure steps={reactSteps} label={t("component.tabInstall")} />
               )}
             </div>
 
@@ -457,39 +529,7 @@ const relatedComponents = chosen
               {hasVanillaInstall ? (
                 <slot name="installVanilla" />
               ) : (
-                <>
-                  <h4>{t("install.stepInstall")}</h4>
-                  <CodeBlock code={vanillaInstallCommand} label={untitledCode ? undefined : "terminal"} lang="bash" />
-                  {vanillaStyleImports.length > 0 && (
-                    <>
-                      <h4>{t("install.stepStyles")}</h4>
-                      <p>{t("install.sheetOnly", { name: title })}</p>
-                      <CodeBlock code={vanillaStyleImports} label={untitledCode ? undefined : "CSS"} lang="css" />
-                      {alsoLoads.length > 0 && (
-                        <p set:html={t("install.sheetAlso", { sheets: alsoLoads.map((sheet) => `<code>${sheet.replace("@skryensya/core/", "")}</code>`).join(", ") })} />
-                      )}
-                    </>
-                  )}
-                  <h4>{t("install.stepMount")}</h4>
-                  {vanillaMount ? (
-                    <>
-                      {/* WHEN each strategy mounts is the question this block answers, so each says so first. */}
-                      {vanillaMount.auto ? (
-                        <>
-                          <p set:html={t("install.autoWhen", { selector: vanillaMount.selector, name: title })} />
-                          <CodeBlock code={autoSnippet} label={untitledCode ? undefined : "JavaScript"} lang="ts" />
-                          <p set:html={t("install.autoLater", { autoLink })} />
-                        </>
-                      ) : (
-                        <p set:html={t("install.notAuto", { name: title, mount: vanillaMount.mount })} />
-                      )}
-                      <p set:html={t("install.vanillaMount", { name: title })} />
-                      <CodeBlock code={vanillaMountSnippet!} label={untitledCode ? undefined : "JavaScript"} lang="ts" />
-                    </>
-                  ) : (
-                    <p>{t("install.vanillaNoMount")}</p>
-                  )}
-                </>
+                <InstallProcedure steps={vanillaSteps} label={t("component.tabInstall")} />
               )}
             </div>
             )}
@@ -497,6 +537,35 @@ const relatedComponents = chosen
             </>
           )
         }
+
+        {/* Only in Overview: the other tabs are about this component, not its neighbours. */}
+        {relatedComponents.length > 0 && (
+          <section class="docs-related-components" aria-labelledby="docs-related-components-title" data-toc-transparent>
+            <h2 id="docs-related-components-title">{t("component.relatedTitle")}</h2>
+            <ul class="sk-list" role="list">
+              {relatedComponents.map((item) => {
+                const useCase = getComponentDescription(item.href, locale);
+
+                return (
+                  <li class="sk-list__item">
+                    <a href={item.href} class="sk-list__action sk-interactive">
+                      <span class="sk-list__leading" set:html={componentIconMarkup(item.href)} />
+                      <span class="sk-list__content">
+                        <span class="sk-list__title">{item.label}</span>
+                        <span class="sk-list__description">{t("component.relatedUseCase", { useCase })}</span>
+                      </span>
+                      {item.trailing && (
+                        <span class="sk-list__trailing">
+                          <span class="sk-badge" data-size="sm" data-tone="warning">{item.trailing}</span>
+                        </span>
+                      )}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        )}
       </div>
 
       {
@@ -537,13 +606,17 @@ const relatedComponents = chosen
                 <slot name="anatomy" />
               </>
             )}
-            <ContractReference id={contractId} />
+            {/* Reference opens the tab, then its two halves in the order a reader needs them: the
+                hooks they can override, then the contract itself. */}
+            <h2>{t("contract.title")}</h2>
+            <p>{t("contract.lede")}</p>
             {hasStyle && (
               <>
-                {derivedStyleGroups.length > 0 && <StylingHooks groups={derivedStyleGroups} notes={hookNotes} notesLabel={hookNotesLabel} />}
+                {derivedStyleGroups.length > 0 && <StylingHooks nested groups={derivedStyleGroups} notes={hookNotes} notesLabel={hookNotesLabel}>{playground && <HookPlaygroundModal id={playground.id} name={title} tree={playground.tree} file={playground.file} selector={playground.selector} hooks={playground.hooks} appearances={playground.appearances} fit={playground.fit} />}</StylingHooks>}
                 <slot name="style" />
               </>
             )}
+            <ContractReference nested id={contractId} />
           </div>
         )
       }
@@ -551,7 +624,7 @@ const relatedComponents = chosen
       {
         hasStandaloneStyle && (
           <div class="sk-tabs__content sk-layout-grid" data-sk-tabs-content data-value="style">
-            {derivedStyleGroups.length > 0 && <StylingHooks groups={derivedStyleGroups} notes={hookNotes} notesLabel={hookNotesLabel} />}
+            {derivedStyleGroups.length > 0 && <StylingHooks groups={derivedStyleGroups} notes={hookNotes} notesLabel={hookNotesLabel}>{playground && <HookPlaygroundModal id={playground.id} name={title} tree={playground.tree} file={playground.file} selector={playground.selector} hooks={playground.hooks} appearances={playground.appearances} fit={playground.fit} />}</StylingHooks>}
             <slot name="style" />
           </div>
         )
@@ -584,31 +657,4 @@ const relatedComponents = chosen
     </div>
   </div>
 
-  {relatedComponents.length > 0 && (
-    <section class="docs-related-components sk-layout-grid" aria-labelledby="docs-related-components-title" data-toc-transparent>
-      <h2 id="docs-related-components-title">{t("component.relatedTitle")}</h2>
-      <ul class="sk-list" role="list">
-        {relatedComponents.map((item) => {
-          const useCase = getComponentDescription(item.href, locale);
-
-          return (
-            <li class="sk-list__item">
-              <a href={item.href} class="sk-list__action sk-interactive">
-                <span class="sk-list__leading" set:html={componentIconMarkup(item.href)} />
-                <span class="sk-list__content">
-                  <span class="sk-list__title">{item.label}</span>
-                  <span class="sk-list__description">{t("component.relatedUseCase", { useCase })}</span>
-                </span>
-                {item.trailing && (
-                  <span class="sk-list__trailing">
-                    <span class="sk-badge" data-size="sm" data-tone="warning">{item.trailing}</span>
-                  </span>
-                )}
-              </a>
-            </li>
-          );
-        })}
-      </ul>
-    </section>
-  )}
 </Base>

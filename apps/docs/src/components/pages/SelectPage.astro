@@ -19,10 +19,9 @@ import {
 } from "../../demos/select";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
-const install = `pnpm add @skryensya/core @skryensya/vanilla`;
 const t = useTranslations(getLocale(Astro.url));
 
-const styles = `@import "@skryensya/core/patterns/anchored.css";
+const nativeStyles = `@import "@skryensya/core/patterns/anchored.css";
 @import "@skryensya/core/components/select.css";`;
 
 const nativeInstall = `pnpm add @skryensya/core`;
@@ -62,6 +61,7 @@ import { dd2 } from "../../demos/dodont-labels";
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: selectSingleTree(t) }}
   title="Select"
   description={t("selectPage.description")}
   contractId="select"
@@ -72,6 +72,18 @@ import { dd2 } from "../../demos/dodont-labels";
     { file: "components/select.css", probe: "sk-select-native" },
   ]}
   testFiles={["packages/react/src/components/select.test.tsx", "packages/vanilla/src/components/select.test.ts"]}
+  extraSheets={["@skryensya/core/patterns/anchored.css"]}
+  vanillaInstallSteps={[
+    { title: t("selectPage.vanillaInitTitle"), blocks: [{ kind: "code", code: js, lang: "ts", label: "JavaScript" }] },
+    { title: t("selectPage.listenTitle"), blocks: [{ kind: "code", code: listen, lang: "ts", label: "JavaScript" }] },
+    {
+      title: t("selectPage.nativeInstallTitle"),
+      blocks: [
+        { kind: "code", code: nativeInstall, lang: "bash", label: "terminal" },
+        { kind: "code", code: nativeStyles, lang: "css", label: "CSS" },
+      ],
+    },
+  ]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
@@ -121,20 +133,6 @@ import { dd2 } from "../../demos/dodont-labels";
     <ContentRules items={tList(t, "selectPage.content")} />
   </Fragment>
 
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
-
-    <h3>{t("selectPage.vanillaInitTitle")}</h3>
-    <CodeBlock code={js} label="JavaScript" />
-
-    <h3>{t("selectPage.listenTitle")}</h3>
-    <CodeBlock code={listen} label="JavaScript" />
-
-    <h3>{t("selectPage.nativeInstallTitle")}</h3>
-    <CodeBlock code={nativeInstall} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
-  </Fragment>
   <Fragment slot="a11y">
     <A11yNotes
       intro={t("selectPage.a11yIntro")}

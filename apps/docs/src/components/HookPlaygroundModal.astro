@@ -1,0 +1,241 @@
+---
+/*
+ * A STYLING-HOOK PLAYGROUND IN A MODAL: the live component on the left, every hook its stylesheet
+ * publishes on the right, one text field each. The modal is the catalogue's (`CatalogPage.astro`):
+ * nearly the whole viewport, the example as a window onto a canvas, the record in a third column.
+ *
+ * THE HOOKS ARE NOT LISTED BY HAND. They are the same corpus `StylingHooks` prints (`tokens`, by
+ * stylesheet), so a hook added to the CSS shows up here with its shipped value and a hook that is
+ * removed cannot linger as a dead field. A text field rather than a slider per hook, because the
+ * values are not one kind: a length, a `color-mix()`, a `var()` of a token, `0`. Any of them is a
+ * valid custom-property value and the browser is the one that judges it.
+ *
+ * Still one authored TREE (`emitMarkup`), woken with the library's own enhancer when first opened.
+ * The stage is built from a `<template>` at that moment, so a page that never opens the modal pays
+ * for none of it. `HookPlayground.astro` stays the lighter widget for a component with a handful of
+ * well-behaved numeric hooks.
+ */
+import { emitMarkup } from "@skryensya/ai-compiler/emit";
+import type { UsageTree } from "@skryensya/core/usage-tree";
+import "@skryensya/core/components/dialog.css";
+import "@skryensya/core/patterns/dialog-vaul.css";
+import "@skryensya/core/components/select.css";
+import "@skryensya/core/components/color-picker.css";
+import "@skryensya/core/components/input.css";
+import "@skryensya/core/components/tabs.css";
+import "@skryensya/core/patterns/scrollbar.css";
+import { tokens } from "../lib/tokens";
+import AppearanceMenu from "./AppearanceMenu.astro";
+import { getLocale, useTranslations } from "../i18n";
+
+interface Props {
+  /** Unique on the page: the dialog's id and the prefix of everything inside it. */
+  id: string;
+  /** The component's name, for the modal's title. */
+  name: string;
+  tree: UsageTree;
+  /** The stylesheet whose hooks are listed, as `tokens` keys it (`"components/app-bar.css"`). */
+  file: string;
+  /** The root class the hooks belong to; only used to write the CSS the playground shows back. */
+  selector: string;
+  /**
+   * The hooks to list, in order, when the stylesheet declares more than a person should be handed: a
+   * sheet also carries per-variant plumbing (`--brutalist-*`, `--frost-*`, derived math) that is not
+   * a knob. A name is looked up in the sheet; `{ name, value }` supplies the shipped value for a
+   * public hook the corpus does not attribute to this sheet. Omit it to list every hook the sheet has.
+   */
+  hooks?: readonly (string | { name: string; value: string })[];
+  /**
+   * The appearances the component publishes, when it publishes more than one: the example gets the eye-icon
+   * menu the page's own example cards have (`AppearanceMenu`), and the stage is an appearance scope, so the
+   * site's appearance script writes `data-appearance` onto the component's root. The first is the default.
+   */
+  appearances?: readonly ("plain" | "tactile" | "brutalist" | "frosted")[];
+  /** The example is as wide as its content, centred, instead of filling the window (a button, not a bar). */
+  fit?: boolean;
+}
+
+const { id, name, tree, file, selector, hooks: listed, appearances = [], fit = false } = Astro.props;
+const t = useTranslations(getLocale(Astro.url));
+const inSheet = tokens.filter((token) => token.file === file);
+/* Unlisted, a sheet's hooks are the ones named for the component (`--sk-app-bar-*`): the rest of what it
+   declares is shared plumbing (`--sk-anchored-offset`) or per-variant math. A sheet with none keeps all. */
+const ownPrefix = `--sk-${file.replace(/^.*\//, "").replace(/\.css$/, "")}-`;
+const own = inSheet.filter((token) => token.name.startsWith(ownPrefix));
+const hooks = listed
+  ? listed.flatMap((entry) => {
+      if (typeof entry !== "string") return [{ name: entry.name, value: entry.value }];
+      const found = inSheet.find((token) => token.name === entry);
+      return found ? [{ name: found.name, value: found.value }] : [];
+    })
+  : own.length > 0
+    ? own
+    : inSheet;
+
+/*
+ * ONE CONTROL PER KIND OF HOOK. A scale (a size, a space, a radius, a font size) is a select of round
+ * pixel values with the system's own tokens in a group at the end, and "Custom" for anything else. A
+ * colour is a colour picker, because a list of colours is never the one you wanted. A hook whose kind
+ * the name and the shipped value do not give away is a plain text field, never a wrong list.
+ */
+type Preset = { value: string; label: string };
+type Group = { label: string; presets: Preset[] };
+type Kind = "color" | "size" | "space" | "radius" | "fontSize" | "weight" | "shadow";
+const known = new Set(tokens.map((token) => token.name));
+const fromTokens = (names: readonly string[]): Preset[] => names.filter((name) => known.has(name)).map((name) => ({ value: `var(${name})`, label: name }));
+const literal = (values: readonly string[]): Preset[] => values.map((value) => ({ value, label: value }));
+const px = (values: readonly number[]): Preset[] => values.map((n) => ({ value: n === 0 ? "0" : `${n}px`, label: n === 0 ? "0" : `${n}px` }));
+const presetsByKind: Record<Exclude<Kind, "color">, Group[]> = {
+  size: [
+    { label: "Length", presets: px([12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 56, 64, 80]) },
+    { label: "Tokens", presets: fromTokens(["--size-control-xs", "--size-control-sm", "--size-control-md", "--size-control-lg"]) },
+  ],
+  space: [
+    { label: "Length", presets: px([0, 1, 2, 4, 6, 8, 10, 12, 16, 20, 24, 32, 40, 48]) },
+    { label: "Tokens", presets: fromTokens(["--space-inline-xs", "--space-inline-sm", "--space-inline-md", "--space-inline-lg", "--space-inset-xs", "--space-inset-sm", "--space-inset-md", "--space-inset-lg"]) },
+  ],
+  radius: [
+    { label: "Radius", presets: [...px([0, 2, 4, 6, 8, 12, 16, 24, 32]), { value: "9999px", label: "Pill · 9999px" }] },
+    { label: "Tokens", presets: fromTokens(["--radius-control", "--radius-surface", "--radius-pill"]) },
+  ],
+  weight: [
+    { label: "Weight", presets: literal(["300", "400", "500", "600", "700", "800"]) },
+    { label: "Tokens", presets: fromTokens(["--font-weight-body", "--font-weight-label", "--font-weight-emphasis", "--font-weight-heading"]) },
+  ],
+  shadow: [
+    { label: "Elevation", presets: [{ value: "none", label: "none" }, ...fromTokens(["--elevation-flat", "--elevation-raised", "--elevation-sunken", "--elevation-overlay", "--elevation-modal"])] },
+  ],
+  fontSize: [
+    { label: "Font size", presets: px([10, 11, 12, 13, 14, 15, 16, 18, 20, 24, 28, 32]) },
+    { label: "Tokens", presets: fromTokens(["--font-size-body-sm", "--font-size-body", "--font-size-body-lg"]) },
+  ],
+};
+const kindOf = (name: string, value: string): Kind | undefined => {
+  if (/font-size$/.test(name) || value.includes("--font-size")) return "fontSize";
+  if (/font-weight$/.test(name) || value.includes("--font-weight")) return "weight";
+  if (/(^|-)shadow$/.test(name) || value.includes("--elevation-") && !/wash/.test(name)) return "shadow";
+  if (/radius$/.test(name) || value.includes("--radius")) return "radius";
+  if (/(block|inline)-size$/.test(name) || value.includes("--size-control")) return "size";
+  if (/(bg|fg|color|indicator)$/.test(name) || /--color-|color-mix/.test(value)) return "color";
+  if (/(gap|padding[a-z-]*|offset[a-z-]*|border-width|depth)$/.test(name) || value.includes("--space-")) return "space";
+  return undefined;
+};
+/* The control a hook gets: a select only for a SCALE (sizes, spaces, radii, font sizes), a colour
+   picker for a colour, and a plain text field for anything the kind does not name. */
+const fieldFor = (name: string, value: string) => {
+  const kind = kindOf(name, value);
+  if (!kind) return { kind: "other" as const, control: "text" as const, groups: [] as Group[] };
+  if (kind === "color") return { kind, control: "picker" as const, groups: [] as Group[] };
+  return {
+    kind,
+    control: "select" as const,
+    groups: presetsByKind[kind]
+      .map((group) => ({ ...group, presets: group.presets.filter((preset) => preset.value !== value) }))
+      .filter((group) => group.presets.length > 0),
+  };
+};
+const fields = hooks.map((hook) => ({ hook, ...fieldFor(hook.name, hook.value) }));
+/* A hook's name with the component's own prefix (`--sk-app-bar-`) left plain and what tells the hook apart
+   in bold; the bold part takes the accent while the hook is changed. */
+const prefix = `--sk-${file.replace(/^.*\//, "").replace(/\.css$/, "")}-`;
+const nameMarkup = (name: string) =>
+  name.startsWith(prefix)
+    ? `<span class="docs-hook-modal__hook-prefix">${prefix}</span><strong class="docs-hook-modal__hook-key">${name.slice(prefix.length)}</strong>`
+    : `<strong class="docs-hook-modal__hook-key">${name}</strong>`;
+/* A colour is the library's own native colour field: the swatch inside the field, the hex typed beside
+   it. Its label is the hook's name, and the starting colour is read from the stage when the modal opens. */
+const colorField = (hook: string) =>
+  emitMarkup({ contract: "color-picker", signature: "ColorPicker.native", options: { value: "#808080" }, slots: { label: hook } } as UsageTree, { fillDefaults: false }).replace(new RegExp(`(<label[^>]*>\\s*)${hook}(\\s*</label>)`), (_, open, close) => `${open}${nameMarkup(hook)}${close}`);
+const shown = (value: string) => value.replace(/^var\((--[^)]+)\)$/, "$1");
+const markup = emitMarkup(tree, { fillDefaults: false });
+
+const dialog = emitMarkup(
+  {
+    contract: "dialog",
+    signature: "Dialog",
+    options: { closeLabel: t("hookPlayground.close"), vaul: true },
+    attrs: { id, class: "docs-hook-modal", "data-sk-hpm": "", "data-sk-hpm-selector": selector },
+    slots: { title: `${t("hookPlayground.title")}: ${name}` },
+    children: { contract: "layout", signature: "Stack", options: {}, attrs: { id: `${id}-slot` }, children: [] },
+  } as UsageTree,
+  { fillDefaults: false },
+);
+---
+
+{
+  hooks.length > 0 && (
+    <>
+      <button class="sk-button sk-interactive docs-hook-modal__open" data-variant="soft" data-size="sm" type="button" data-sk-hpm-open={id}>
+        {t("hookPlayground.open")}
+      </button>
+      <Fragment set:html={dialog} />
+      <template data-sk-hpm-template={id}>
+        <section class="docs-hook-modal__stage" aria-label={t("hookPlayground.stageLabel", { name })} data-docs-appearance-scope={appearances.length > 1 ? "" : undefined} data-docs-appearance-target={appearances.length > 1 ? selector : undefined}>
+          <header class="docs-hook-modal__record-head">
+            <h2 class="docs-hook-modal__title">{t("hookPlayground.title")}</h2>
+            <p class="docs-hook-modal__component">{name}</p>
+          </header>
+          {appearances.length > 1 && (
+            <div class="docs-hook-modal__switches">
+              <AppearanceMenu label={t("prefs.appearance")} values={appearances} />
+            </div>
+          )}
+          <div class={`docs-hook-modal__canvas sk-scrollbar sk-scrollbar--reveal${fit ? " docs-hook-modal__canvas--fit" : ""}`} data-sk-hpm-stage set:html={markup} />
+        </section>
+        <aside class="docs-hook-modal__record">
+          <div class="docs-hook-modal__hooks sk-scrollbar sk-scrollbar--reveal">
+            {fields.map((field) => {
+              const { hook } = field;
+              return (
+              <div class="docs-hook-modal__hook" data-sk-hpm-hook={hook.name} data-default={hook.value} data-control={field.control}>
+                {field.control !== "picker" && <label class="docs-hook-modal__hook-name" for={`${id}-${hook.name}`} set:html={nameMarkup(hook.name)} />}
+                <div class="docs-hook-modal__hook-field">
+                  {field.control === "select" && (
+                    <select class="sk-select-native docs-hook-modal__hook-select" id={`${id}-${hook.name}`} data-sk-hpm-select>
+                      <option value={hook.value} selected>{shown(hook.value).length > 28 ? t("hookPlayground.defaultOnly") : t("hookPlayground.default", { value: shown(hook.value) })}</option>
+                      {field.groups.map((group) => (
+                        <optgroup label={group.label || undefined}>
+                          {group.presets.map((preset) => <option value={preset.value}>{preset.label}</option>)}
+                        </optgroup>
+                      ))}
+                      <option value="__custom">{t("hookPlayground.custom")}</option>
+                    </select>
+                  )}
+                  {field.control === "picker" && <Fragment set:html={colorField(hook.name)} />}
+                  <input
+                    class="sk-input docs-hook-modal__hook-input"
+                    type="text"
+                    value={hook.value}
+                    id={field.control === "text" ? `${id}-${hook.name}` : undefined}
+                    aria-label={t("hookPlayground.customValue", { hook: hook.name })}
+                    spellcheck="false"
+                    autocomplete="off"
+                    hidden={field.control !== "text"}
+                    data-sk-hpm-input
+                  />
+                  <button class="sk-button sk-interactive" data-variant="ghost" data-size="sm" type="button" data-sk-hpm-reset hidden>
+                    {t("hookPlayground.reset")}
+                  </button>
+                </div>
+              </div>
+              );
+            })}
+          </div>
+          <footer class="docs-hook-modal__foot">
+            <button class="sk-button sk-interactive" data-variant="ghost" data-size="sm" type="button" data-sk-hpm-reset-all disabled>
+              {t("hookPlayground.resetAll")}
+            </button>
+            <button class="sk-button sk-interactive" data-variant="soft" data-size="sm" type="button" data-sk-hpm-copy data-copied={t("hookPlayground.copied")} disabled>
+              {t("hookPlayground.copy")}
+            </button>
+          </footer>
+        </aside>
+      </template>
+    </>
+  )
+}
+
+<script>
+  import { initHookPlaygroundModal } from "../scripts/hook-playground-modal";
+  initHookPlaygroundModal();
+</script>

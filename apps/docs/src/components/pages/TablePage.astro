@@ -4,7 +4,6 @@ import "@skryensya/core/components/table.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -24,11 +23,11 @@ import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
-const install = `pnpm add @skryensya/core @skryensya/react`;
 import { tableHeadersDoTree, tableHeadersDontTree } from "../../demos/dodont-more";
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: tableTree(t) }}
   title="Table"
   description={t("tablePage.description")}
   contractId="table"
@@ -74,9 +73,6 @@ import { tableHeadersDoTree, tableHeadersDontTree } from "../../demos/dodont-mor
     <ContentRules items={tList(t, "tablePage.content")} />
   </Fragment>
 
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-  </Fragment>
   <Fragment slot="a11y">
     <A11yNotes
       intro={t("tablePage.a11yIntro")}

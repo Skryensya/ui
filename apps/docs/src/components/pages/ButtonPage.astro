@@ -13,21 +13,11 @@ import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
 import {
   buttonAnatomyTree,
-  buttonAppearanceTree,
   buttonAsLinkTree,
-  buttonBrutalistMatrixTree,
-  buttonBrutalistRadiusTree,
-  buttonBrutalistShapesTree,
-  buttonBrutalistStatesCss,
-  buttonBrutalistStatesTree,
-  buttonFrostedBackdropsTree,
-  buttonFrostedMatrixTree,
-  buttonFrostedRadiusTree,
-  buttonFrostedShapesTree,
-  buttonFrostedStatesTree,
   buttonDefaultTree,
   buttonDestructivePairTree,
   buttonIconOnlyTree,
+  buttonIconSlotTree,
   buttonIconTree,
   buttonVariantTree,
   tileButtonTree,
@@ -66,10 +56,31 @@ button.addEventListener("click", runDeployment);`;
 ---
 
 <ComponentPageShell
+  hookPlayground={{
+    tree: buttonDefaultTree(t),
+    fit: true,
+    hooks: [
+        "--sk-button-bg",
+        "--sk-button-fg",
+        "--sk-button-border-color",
+        "--sk-button-border-width",
+        { name: "--sk-button-radius", value: "var(--radius-control)" },
+        "--sk-button-height",
+        "--sk-button-padding-x",
+        "--sk-button-gap",
+        "--sk-button-font-size",
+        "--sk-button-font-weight",
+        "--sk-button-shadow",
+        "--sk-button-depth",
+        "--sk-button-brutalist-offset-inline",
+        "--sk-button-brutalist-offset-block",
+    ],
+  }}
   title="Button"
   description={t("button.description")}
   contractId="button"
-  appearanceTargetSelector="[data-sk-button], .sk-tile--interactive[data-appearance]"
+  vanillaInstallSteps={[{ title: t("button.vanillaInitTitle"), blocks: [{ kind: "code", code: iconsSnippet, lang: "ts", label: "JavaScript" }] }]}
+  appearanceTargetSelector="[data-sk-button], .sk-tile--interactive"
   testFiles={["packages/react/src/components/button.test.tsx", "packages/vanilla/src/components/button.test.ts"]}
 >
   <Fragment slot="appearance">
@@ -117,7 +128,14 @@ button.addEventListener("click", runDeployment);`;
       storybookTitle={storybookTitle}
       storybookStory="Default" />
     <UsagePreview
-      tree={buttonIconTree(t)}
+      tree={buttonIconSlotTree(t, "pre")}
+      variants={(["pre", "post"] as const).map((slot) => ({
+        value: slot,
+        label: t(`button.iconSlot.${slot}` as Parameters<typeof t>[0]),
+        tree: buttonIconSlotTree(t, slot),
+        explain: t(`button.iconSlot.${slot}.explain` as Parameters<typeof t>[0]),
+      }))}
+      variantsLabel={t("button.iconSlot.label")}
       title={t("button.iconTitle")}
       description={t("button.iconBody")}
       storybookTitle={storybookTitle}
@@ -148,61 +166,6 @@ button.addEventListener("click", runDeployment);`;
       storybookStory="AsLink" />
     <UsagePreview tree={tileButtonTree(t)} title={t("button.tileTitle")} description={t("button.tileBody")} storybookTitle={storybookTitle} storybookStory="TileButton" />
     <CodeBlock code={tileButtonVanilla} label="JavaScript" />
-
-    {/* Comparisons of appearances: the page-wide appearance switch must not repaint them. */}
-    <div data-docs-appearance-fixed>
-    <UsagePreview
-      tree={buttonAppearanceTree(t)}
-      storybookTitle={storybookTitle}
-      storybookStory="Appearance"
-      title={t("button.appearanceTitle")}
-      description={t("button.appearanceBody")} />
-    <UsagePreview
-      tree={buttonBrutalistMatrixTree(t)}
-      storybookTitle={storybookTitle}
-      storybookStory="BrutalistMatrix"
-      title={t("button.brutalistMatrixTitle")}
-      description={t("button.brutalistMatrixBody")} />
-    <UsagePreview
-      tree={buttonBrutalistRadiusTree(t)}
-      storybookTitle={storybookTitle}
-      storybookStory="BrutalistRadius"
-      title={t("button.brutalistRadiusTitle")}
-      description={t("button.brutalistRadiusBody")} />
-    <UsagePreview
-      tree={buttonBrutalistStatesTree(t)}
-      storybookTitle={storybookTitle}
-      storybookStory="BrutalistStates"
-      title={t("button.brutalistStatesTitle")}
-      description={t("button.brutalistStatesBody")}
-      css={buttonBrutalistStatesCss} />
-    <UsagePreview
-      tree={buttonBrutalistShapesTree(t, LINK_HREF)}
-      storybookTitle={storybookTitle}
-      storybookStory="BrutalistShapes"
-      title={t("button.brutalistShapesTitle")}
-      description={t("button.brutalistShapesBody")} />
-    <UsagePreview
-      tree={buttonFrostedBackdropsTree(t)}
-      storybookTitle={storybookTitle}
-      storybookStory="FrostedBackdrops"
-      title={t("button.frostedTitle")}
-      description={t("button.frostedBody")} />
-    <UsagePreview
-      tree={buttonFrostedMatrixTree(t)}
-      storybookTitle={storybookTitle}
-      storybookStory="FrostedMatrix"
-      title={t("button.frostedMatrixTitle")}
-      description={t("button.frostedMatrixBody")} />
-    <UsagePreview
-      tree={buttonFrostedRadiusTree(t)}
-      storybookTitle={storybookTitle}
-      storybookStory="FrostedRadius"
-      title={t("button.frostedDetailsTitle")}
-      description={t("button.frostedDetailsBody")} />
-    <UsagePreview tree={buttonFrostedStatesTree(t)} storybookTitle={storybookTitle} storybookStory="FrostedStates" />
-    <UsagePreview tree={buttonFrostedShapesTree(t, LINK_HREF)} storybookTitle={storybookTitle} storybookStory="FrostedShapes" />
-    </div>
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
@@ -243,11 +206,6 @@ button.addEventListener("click", runDeployment);`;
       dont={{ tree: buttonDontPrimaryFirstTree(t), caption: t("button.dd.order.dont") }}
     />
     <ContentRules items={tList(t, "button.content")} />
-  </Fragment>
-
-  <Fragment slot="installNote">
-    <h4>{t("button.vanillaInitTitle")}</h4>
-    <CodeBlock code={iconsSnippet} label="JavaScript" />
   </Fragment>
 
   <Fragment slot="a11y">

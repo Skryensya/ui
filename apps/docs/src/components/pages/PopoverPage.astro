@@ -8,7 +8,6 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/checkbox.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -45,8 +44,6 @@ const prop = (option: string) => ({
   description: t(`popoverPage.prop.${option}.body` as Parameters<typeof t>[0]),
 });
 
-const styles = `@import "@skryensya/core/patterns/anchored.css";
-@import "@skryensya/core/components/popover.css";`;
 const js = `import { mountIcons } from "@skryensya/vanilla/icon";
 import { lucideIcons } from "@skryensya/icons-lucide";
 
@@ -54,9 +51,11 @@ mountIcons(document, lucideIcons);`;
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: popoverTree(t) }}
   title="Popover"
   description={t("popoverPage.description")}
   contractId="popover"
+  extraSheets={["@skryensya/core/patterns/anchored.css"]}
   appearanceTargetSelector=".sk-popover"
   styleGroups={[
     { file: "components/popover.css", probe: "sk-popover", title: "Popover" },
@@ -154,10 +153,6 @@ mountIcons(document, lucideIcons);`;
       dont={{ tree: popoverDontDecisionTree(t), caption: t("popoverPage.dd.decision.dont") }}
     />
     <ContentRules items={tList(t, "popoverPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={styles} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="a11y">

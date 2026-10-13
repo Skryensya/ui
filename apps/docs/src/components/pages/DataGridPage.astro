@@ -6,7 +6,6 @@ import "@skryensya/core/patterns/state-layer.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/patterns/icon.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -18,16 +17,16 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
-const install = `@import "@skryensya/core/components/data-grid.css";
-@import "@skryensya/core/patterns/state-layer.css";`;
 const storybookTitle = "Components/DataGrid";
 import { dataGridHierarchyDoTree, dataGridHierarchyDontTree } from "../../demos/dodont-more";
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: dataGridScoresTree(t) }}
   title="Data Grid"
   description={t("dataGridPage.description")}
   contractId="data-grid"
+  extraSheets={["@skryensya/core/patterns/state-layer.css"]}
   styleGroups={[
     { file: "components/data-grid.css", probe: "sk-data-grid", title: "Data Grid" },
     { file: "patterns/state-layer.css", probe: "sk-interactive", title: "Heredados de State layer" },
@@ -70,10 +69,6 @@ import { dataGridHierarchyDoTree, dataGridHierarchyDontTree } from "../../demos/
       dont={{ tree: dataGridHierarchyDontTree(t), caption: t("dd3.dataGrid.dont") }}
     />
     <ContentRules items={tList(t, "dataGridPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="a11y">

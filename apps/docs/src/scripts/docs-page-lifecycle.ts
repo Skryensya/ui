@@ -69,6 +69,10 @@ async function initRouteDocument(): Promise<void> {
     const { initHookPlayground } = await import("./hook-playground");
     initHookPlayground();
   }
+  if (document.querySelector("[data-sk-hpm-open]")) {
+    const { initHookPlaygroundModal } = await import("./hook-playground-modal");
+    initHookPlaygroundModal();
+  }
   if (document.querySelector("[data-key], [data-hotkey]")) {
     const { initKeyEcho } = await import("./key-echo");
     initKeyEcho();

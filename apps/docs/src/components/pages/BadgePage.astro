@@ -1,6 +1,5 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -31,7 +30,6 @@ import "@skryensya/core/components/annotation.css";
 
 const t = useTranslations(getLocale(Astro.url));
 
-const install = `pnpm add @skryensya/core @skryensya/react`;
 
 /*
  * PILOT (see ADR/plan on delegating per-example source to Storybook): every "kind" below is exactly
@@ -50,6 +48,7 @@ const explain = (option: string, values: readonly string[]) =>
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: badgeLabelTree(t), fit: true }}
   title="Badge"
   description={t("badge.description")}
   contractId="badge"
@@ -170,11 +169,6 @@ const explain = (option: string, values: readonly string[]) =>
     />
     <ContentRules items={tList(t, "badge.content")} />
   </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} lang="bash" />
-  </Fragment>
-
   <Fragment slot="a11y">
     <A11yNotes intro={t("badge.a11yIntro")} does={tList(t, "badge.a11yDoes")} yours={tList(t, "badge.a11yYours")} />
   </Fragment>

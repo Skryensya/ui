@@ -7,7 +7,6 @@ import "@skryensya/core/components/badge.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -41,8 +40,6 @@ const measured = <T extends { attrs?: Record<string, unknown> }>(tree: T): T => 
 const LINK_HREFS = ["/prerequisites", "/first-component", "/presets", "/reference", "/tiers"];
 const TEAM_HREFS = ["/equipo/john-doe", "/equipo/jane-doe", "/equipo/richard-roe", "/equipo/mary-major"];
 
-const install = `pnpm add @skryensya/core @skryensya/vanilla`;
-const styles = `@import "@skryensya/core/components/list.css";`;
 
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
 const explain = (option: string, values: readonly string[]) =>
@@ -50,6 +47,7 @@ const explain = (option: string, values: readonly string[]) =>
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: listPlainTree(t) }}
   title="List"
   description={t("listPage.description")}
   contractId="list"
@@ -110,10 +108,6 @@ const explain = (option: string, values: readonly string[]) =>
     <ContentRules items={tList(t, "listPage.content")} />
   </Fragment>
 
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" />
-  </Fragment>
   <Fragment slot="a11y">
     <A11yNotes
       intro={t("listPage.a11yIntro")}

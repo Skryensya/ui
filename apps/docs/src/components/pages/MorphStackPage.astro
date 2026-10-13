@@ -56,10 +56,6 @@ const partRows = partOrder.map((part) => ({
   cells: [t(`morphStackPage.part.${part}` as Parameters<typeof t>[0])],
 }));
 
-const install = `pnpm add @skryensya/core
-# and, for React,
-pnpm add @skryensya/react`;
-const styles = `@import "@skryensya/core/components/morph-stack.css";`;
 const tune = `.sk-morph-stack {
   --sk-morph-stack-rotate-x: 48deg;  /* lean back less */
   --sk-morph-stack-front-z: 3rem;    /* and keep the plates closer */
@@ -68,6 +64,7 @@ const tune = `.sk-morph-stack {
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: morphStackTree(t) }}
   title="Morph Stack"
   description={t("morphStackPage.description")}
   contractId="morph-stack"
@@ -171,12 +168,6 @@ const tune = `.sk-morph-stack {
     <p class="lede" set:html={t("morphStackPage.guidelinesLede")} />
     <WhenToUse use={tList(t, "morphStackPage.when")} avoid={tList(t, "morphStackPage.whenNot")} />
     <ContentRules items={tList(t, "morphStackPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <p set:html={t("morphStackPage.installBody")} />
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="style">

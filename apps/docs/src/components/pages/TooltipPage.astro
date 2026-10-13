@@ -8,7 +8,6 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/patterns/anchored.css";
 import "@skryensya/core/components/button.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -23,10 +22,10 @@ import {
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
-const install = `pnpm add @skryensya/core @skryensya/vanilla @skryensya/react`;
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: tooltipTree(t), fit: true }}
   title="Tooltip"
   description={t("tooltipPage.description")}
   contractId="tooltip"
@@ -64,9 +63,6 @@ const install = `pnpm add @skryensya/core @skryensya/vanilla @skryensya/react`;
     <ContentRules items={tList(t, "tooltipPage.content")} />
   </Fragment>
 
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-  </Fragment>
   <Fragment slot="a11y">
     <A11yNotes
       intro={t("tooltipPage.a11yIntro")}

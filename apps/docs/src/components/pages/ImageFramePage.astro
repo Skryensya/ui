@@ -1,7 +1,6 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -23,9 +22,7 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/patterns/image-frame.css";
 import "@skryensya/core/patterns/media-overlay.css";
 
-const install = `pnpm add @skryensya/core @skryensya/react`;
-const styles = `@import "@skryensya/core/patterns/image-frame.css";
-/* or patterns/layout.css, which already includes it */`;
+const stylesNote = `/* or patterns/layout.css, which already includes it */`;
 
 const t = useTranslations(getLocale(Astro.url));
 
@@ -79,9 +76,11 @@ const explain = (option: string, values: readonly string[]) =>
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: imageFrameSingleTree(t) }}
   title="ImageFrame"
   description={t("imageFrame.description")}
   contractId="image-frame"
+  reactInstallSteps={[{ title: t("install.stepStyles"), blocks: [{ kind: "code", code: stylesNote, lang: "css", label: "CSS" }] }]}
   appearanceTargetSelector=".sk-image-frame"
   testFiles={["packages/react/src/components/image-frame.test.tsx"]}
 >
@@ -170,11 +169,6 @@ const explain = (option: string, values: readonly string[]) =>
       dont={{ html: screenshotFrame("none"), caption: t("imageFrame.dd.border.dont") }}
     />
     <ContentRules items={tList(t, "imageFrame.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" />
   </Fragment>
 
   <Fragment slot="a11y">

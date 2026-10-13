@@ -20,6 +20,7 @@ import {
   expandableTileTree,
   tileAnatomyTree,
   tileAppearanceTree,
+  tileButtonDemoTree,
   tileButtonGroupTree,
   tileCheckboxTree,
   tileLinkGridTree,
@@ -39,6 +40,7 @@ import { tileDoTree, tileDontTree, tileDisabledDoTree, tileDisabledDontTree } fr
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: tileButtonDemoTree(t) }}
   title="Tile"
   description={t("tilePage.description")}
   contractId="tile"

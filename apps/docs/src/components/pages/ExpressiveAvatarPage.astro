@@ -20,6 +20,7 @@ import {
   expressiveAvatarDontCharacterTree,
   expressiveAvatarDontFrameTree,
   expressiveAvatarDontStateTree,
+  expressiveAvatarTree,
 } from "../../demos/expressive-avatar";
 import { getLocale, useTranslations } from "../../i18n";
 
@@ -250,10 +251,10 @@ const customUsage = `const images = {
 };
 
 <ExpressiveAvatar name="Ada" images={images} expression="astonished" />`;
-const install = `pnpm add @skryensya/core @skryensya/react`;
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: expressiveAvatarTree(t), fit: true }}
   title="Expressive Avatar"
   description={copy.description}
   contractId="expressive-avatar"
@@ -360,10 +361,6 @@ const install = `pnpm add @skryensya/core @skryensya/react`;
     <UsagePreview label={copy.checkTitle}>
       <ExpressiveAvatarCheck client:visible copy={copy.check} />
     </UsagePreview>
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
   </Fragment>
 
   <Fragment slot="a11y">

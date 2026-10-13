@@ -8,9 +8,11 @@ import { iconMarkup } from "../icons";
  * `command-palette`: the tree can emit the trigger AND the dialog, it just cannot emit the CALL that
  * opens one. `commandPaletteDemoScript` supplies exactly that call, nothing else.
  */
-export const commandPaletteDemoTree = (t: Translate): UsageTree => ({
+export const commandPaletteDemoTree = (t: Translate, { vaul }: { vaul?: boolean } = {}): UsageTree => ({
+  /* An Inline, not a Stack: a Stack stretches its children across the cross axis, and a lone trigger
+     drawn full width is a bar, not a button. The palette itself is out of flow (a modal dialog). */
   contract: "layout",
-  signature: "Stack",
+  signature: "Inline",
   options: { gap: "sm" },
   children: [
     {
@@ -36,6 +38,7 @@ export const commandPaletteDemoTree = (t: Translate): UsageTree => ({
         emptyLabel: t("kit.noResults"),
         label: t("demo.commandPalette.label"),
         paletteId: "demo-cmdk-tree",
+        ...(vaul === undefined ? {} : { vaul }),
         entries: JSON.stringify([
           { label: t("demo.commandPalette.button"), href: "/components/button", section: t("demo.commandPalette.section") },
           { label: t("demo.commandPalette.dialog"), href: "/components/dialog", section: t("demo.commandPalette.section") },

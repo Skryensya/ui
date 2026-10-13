@@ -28,7 +28,7 @@ describe("majorLinesFromLedger", () => {
     ]);
   });
 
-  it("keeps one row per major and picks that major's newest tip", () => {
+  it("keeps one row per major and picks that major's newest PUBLISHED version, not the working tree's next patch", () => {
     const lines = majorLinesFromLedger({
       working: "1.1.0",
       releases: [
@@ -38,7 +38,7 @@ describe("majorLinesFromLedger", () => {
       ],
     });
     expect(lines).toEqual([
-      { major: "1", latest: "1.1.0-dev", isCurrent: true },
+      { major: "1", latest: "1.0.0", isCurrent: true },
       { major: "0", latest: "0.2.0", isCurrent: false },
     ]);
   });

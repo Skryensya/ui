@@ -26,7 +26,6 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
-const install = `pnpm add @skryensya/core @skryensya/vanilla @skryensya/react`;
 
 const vanilla = `import {
   initComponents,
@@ -42,6 +41,7 @@ import { toastDoTree, toastDontTree, toastFailDoTree, toastFailDontTree } from "
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: toastSimpleTree(t), fit: true }}
   title="Toast"
   description={t("toastPage.description")}
   contractId="content"
@@ -95,9 +95,5 @@ import { toastDoTree, toastDontTree, toastFailDoTree, toastFailDontTree } from "
       yours={tList(t, "toastPage.a11yYours")}
       keys={[{ keys: ["Enter", t("component.key.space")], action: t("toastPage.key.dismiss") }]}
     />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
   </Fragment>
 </ComponentPageShell>

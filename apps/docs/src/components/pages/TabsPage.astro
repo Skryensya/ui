@@ -3,7 +3,6 @@ import "@skryensya/core/components/tabs.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -21,13 +20,6 @@ import {
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
-const install = `pnpm add @skryensya/core @skryensya/vanilla`;
-
-const css = `@import "@skryensya/core/tokens.scss";
-@import "@skryensya/core/components/tabs.css";
-@import "@skryensya/core/patterns/state-layer.css";
-@import "@skryensya/core/patterns/layout.css";`;
-
 const vanillaJs = `import { initComponents } from "@skryensya/vanilla/auto";
 import { mountIcons } from "@skryensya/vanilla/icon";
 import { lucideIcons } from "@skryensya/icons-lucide";
@@ -43,10 +35,21 @@ const explain = (option: string, values: readonly string[]) =>
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: tabsBasicTree(t) }}
   title="Tabs"
   description={t("tabsPage.description")}
   contractId="tabs"
   testFiles={["packages/react/src/components/tabs.test.tsx"]}
+  extraSheets={["@skryensya/core/patterns/state-layer.css", "@skryensya/core/patterns/layout.css"]}
+  vanillaInstallSteps={[
+    {
+      title: t("tabsPage.vanillaInitTitle"),
+      blocks: [
+        { kind: "html", html: t("tabsPage.vanillaInitBody") },
+        { kind: "code", code: vanillaJs, lang: "ts", label: "JavaScript" },
+      ],
+    },
+  ]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("tabsPage.lede")} />
@@ -118,14 +121,6 @@ const explain = (option: string, values: readonly string[]) =>
     <ContentRules items={tList(t, "tabsPage.content")} />
   </Fragment>
 
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={css} label="CSS" lang="css" />
-
-    <h3>{t("tabsPage.vanillaInitTitle")}</h3>
-    <p set:html={t("tabsPage.vanillaInitBody")} />
-    <CodeBlock code={vanillaJs} label="JavaScript" />
-  </Fragment>
   <Fragment slot="a11y">
     <A11yNotes
       intro={t("tabsPage.a11yIntro")}

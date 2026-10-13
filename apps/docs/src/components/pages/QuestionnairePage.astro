@@ -25,7 +25,6 @@ import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/layout.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import ComparisonTable from "../ComparisonTable.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -54,7 +53,6 @@ import {
 } from "../../demos/questionnaire";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
-const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
 /* A key as it is pressed: "Ctrl+Enter" is two keys joined by "+", several that do the same are separate. */
 const keysHtml = (combos: readonly string[]) =>
@@ -79,6 +77,7 @@ const explain = (option: string, values: readonly string[]) =>
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: questionnaireTree(t) }}
   title="Questionnaire"
   description={t("questionnairePage.description")}
   contractId="questionnaire"
@@ -183,9 +182,5 @@ const explain = (option: string, values: readonly string[]) =>
     />
     <p>{t("questionnairePage.keysNoteShort")}</p>
     <UsagePreview tree={questionnaireShortcutsTree(t)} title={t("questionnairePage.keyboardTitle")} description={t("questionnairePage.keyboardBody")} storybookTitle="Components/Questionnaire" storybookStory="Shortcuts" />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
   </Fragment>
 </ComponentPageShell>

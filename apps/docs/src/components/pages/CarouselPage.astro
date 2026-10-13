@@ -29,13 +29,7 @@ const storybookTitle = "Components/Carousel";
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`carousel.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
-const install = `pnpm add @skryensya/core @skryensya/vanilla \\
-  @skryensya/icons-lucide`;
-
-const styles = `@import "@skryensya/core/components/carousel.css";
-@import "@skryensya/icons-lucide/carousel.css";
-@import "@skryensya/core/patterns/image-frame.css";
-@import "@skryensya/core/patterns/media-overlay.css";`;
+const installIcons = `pnpm add @skryensya/icons-lucide`;
 
 const bootstrap = `import { initComponents } from "@skryensya/vanilla/auto";
 import { mountIcons } from "@skryensya/vanilla/icon";
@@ -77,9 +71,16 @@ import { carouselTitlesDoTree, carouselTitlesDontTree } from "../../demos/dodont
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: carouselCardsTree(t) }}
   title="Carousel"
   description={t("carousel.description")}
   contractId="carousel"
+  extraSheets={["@skryensya/icons-lucide/carousel.css", "@skryensya/core/patterns/image-frame.css", "@skryensya/core/patterns/media-overlay.css"]}
+  vanillaInstallSteps={[
+    { title: t("install.stepInstall"), blocks: [{ kind: "code", code: installIcons, lang: "bash", label: "terminal" }] },
+    { title: t("install.stepMount"), blocks: [{ kind: "code", code: bootstrap, lang: "ts", label: "JavaScript" }] },
+  ]}
+  reactInstallSteps={[{ title: t("install.stepInstall"), blocks: [{ kind: "code", code: installIcons, lang: "bash", label: "terminal" }] }]}
   testFiles={["packages/react/src/components/carousel.test.tsx", "packages/vanilla/src/components/carousel.svelte.test.ts"]}
 >
   <Fragment slot="usage">
@@ -142,12 +143,6 @@ import { carouselTitlesDoTree, carouselTitlesDontTree } from "../../demos/dodont
       dont={{ tree: carouselTitlesDontTree(t), caption: t("dd3.carousel.dont") }}
     />
     <ContentRules items={tList(t, "carousel.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" />
-    <CodeBlock code={bootstrap} label="JavaScript" lang="ts" />
   </Fragment>
 
   <Fragment slot="a11y">

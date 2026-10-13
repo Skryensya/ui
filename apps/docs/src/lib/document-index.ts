@@ -385,6 +385,12 @@ export function indexHeroTabPanel(source: string, value: string): { html: string
 
   let depth = 0;
   let i = 0;
+  /* The title of an example (`UsagePreview`'s `<section class="sk-preview-section"><h3>`) is a section of the page
+     too, one level down from the panel. `inPreview` is true while such a section is open at the top level, and
+     `sawHeading` records an authored heading before it: the titles that follow one are nested under it, the ones
+     before any (the properties above "Examples") stand at the top level. */
+  let inPreview = false;
+  let sawHeading = false;
 
   while (i < inner.length) {
     const lt = inner.indexOf("<", i);
@@ -403,6 +409,7 @@ export function indexHeroTabPanel(source: string, value: string): { html: string
 
     if (inner.startsWith("</", lt)) {
       depth = Math.max(0, depth - 1);
+      if (depth === 0) inPreview = false;
       i = tagEnd(inner, lt + 2);
       continue;
     }
@@ -419,7 +426,12 @@ export function indexHeroTabPanel(source: string, value: string): { html: string
     const tag = inner.slice(lt, end);
     const closes = VOID_ELEMENTS.has(element) || /\/\s*>$/.test(tag);
 
-    if (depth === 0 && (element === "h3" || element === "h4")) {
+    if (depth === 0 && element === "section" && !closes && /class\s*=\s*["'][^"']*\bsk-preview-section\b/.test(tag)) {
+      inPreview = true;
+    }
+
+    const isPreviewTitle = inPreview && depth === 1 && element === "h3";
+    if ((depth === 0 || isPreviewTitle) && (element === "h3" || element === "h4")) {
       const close = inner.indexOf(`</${element}`, end);
       const label = textOf(inner.slice(end, close < 0 ? inner.length : close));
       const authored = ID_ATTR.exec(tag);
@@ -433,7 +445,8 @@ export function indexHeroTabPanel(source: string, value: string): { html: string
       }
 
       taken.add(id);
-      headings.push({ id, label, level: element === "h3" ? "h2" : "h3" });
+      headings.push({ id, label, level: isPreviewTitle ? (sawHeading ? "h3" : "h2") : element === "h3" ? "h2" : "h3" });
+      if (!isPreviewTitle) sawHeading = true;
     }
 
     if (RAW_TEXT_ELEMENTS.has(element) && !closes) {

@@ -10,6 +10,8 @@ export const navMessages = {
     /* The small line above each pager link's page name: which way the link goes. */
     "nav.previous": "Anterior",
     "nav.next": "Siguiente",
+    "nav.previousComponent": "Componente anterior",
+    "nav.nextComponent": "Componente siguiente",
     "nav.notWritten": "Todavía no escrita",
     "nav.home": "Skryensya/ui",
     "nav.foundations": "Fundamentos",
@@ -39,6 +41,8 @@ export const navMessages = {
     "nav.between": "Document navigation",
     "nav.previous": "Previous",
     "nav.next": "Next",
+    "nav.previousComponent": "Previous component",
+    "nav.nextComponent": "Next component",
     "nav.notWritten": "Not written yet",
     "nav.home": "Skryensya/ui",
     "nav.foundations": "Foundations",

@@ -81,10 +81,6 @@ const keyRows = [
   cells: [t(`audioPlayerPage.key.${key}` as Parameters<typeof t>[0])],
 }));
 
-const install = `pnpm add @skryensya/core
-# and, for React,
-pnpm add @skryensya/react`;
-const styles = `@import "@skryensya/core/components/audio-player.css";`;
 const html = `<div class="sk-audio-player" data-sk-audio-player role="group" aria-label="Morning Light">
   <audio src="morning-light.mp3"></audio>
   <img class="sk-audio-player__cover" src="morning-light.jpg" alt="" />
@@ -124,6 +120,7 @@ const tune = `.sk-audio-player {
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: audioPlayerTree(t) }}
   title="Audio Player"
   description={t("audioPlayerPage.description")}
   contractId="audio-player"
@@ -131,6 +128,8 @@ const tune = `.sk-audio-player {
   hookNotes={hookNotes}
   hookNotesLabel={doesColumn}
   testFiles={["packages/core/src/audio-player.test.ts", "packages/react/src/components/audio-player.test.tsx"]}
+  vanillaInstallSteps={[{ title: "HTML", blocks: [{ kind: "code", code: html, lang: "html", label: "HTML" }] }]}
+  reactInstallSteps={[{ title: "React", blocks: [{ kind: "code", code: react, lang: "tsx", label: "React" }] }]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("audioPlayerPage.lede")} />
@@ -195,14 +194,6 @@ const tune = `.sk-audio-player {
       dont={{ tree: audioPlayerDontRoomTree(t), caption: t("audioPlayerPage.dd.room.dont") }}
     />
     <ContentRules items={tList(t, "audioPlayerPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <p set:html={t("audioPlayerPage.installBody")} />
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
-    <CodeBlock code={html} label="HTML" lang="html" />
-    <CodeBlock code={react} label="React" lang="tsx" />
   </Fragment>
 
   <Fragment slot="style">

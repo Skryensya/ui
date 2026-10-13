@@ -4,7 +4,6 @@ import "@skryensya/core/components/menu.css";
    only ever copies the styles ITS page loaded, so it has to land here too. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import WhenToUse from "../WhenToUse.astro";
 import DoDont from "../DoDont.astro";
@@ -35,15 +34,14 @@ const prop = (option: string) => ({
   description: t(`menuPage.prop.${option}.body` as Parameters<typeof t>[0]),
 });
 
-const styles = `@import "@skryensya/core/patterns/anchored.css";
-@import "@skryensya/core/components/menu.css";`;
-
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: menuTree(t) }}
   title="Menu"
   description={t("menuPage.description")}
   contractId="menu"
+  extraSheets={["@skryensya/core/patterns/anchored.css"]}
   styleGroups={[
     { file: "components/menu.css", probe: "sk-menu", title: "Menu" },
     { file: "patterns/anchored.css", probe: "sk-anchored", title: "Heredados de Anclaje" },
@@ -135,10 +133,6 @@ const styles = `@import "@skryensya/core/patterns/anchored.css";
       dont={{ html: menuDontAppBarHtml(t), caption: t("menuPage.dd.appbar.dont") }}
     />
     <ContentRules items={tList(t, "menuPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={styles} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="a11y">

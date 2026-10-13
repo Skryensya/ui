@@ -1,7 +1,6 @@
 ---
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -25,16 +24,15 @@ const storybookTitle = "Components/DatePicker";
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`datePicker.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
-const styles = `@import "@skryensya/core/patterns/anchored.css";
-@import "@skryensya/core/components/button.css";
-@import "@skryensya/core/components/date-picker.css";`;
 import { dd2 } from "../../demos/dodont-labels";
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: datePickerTree(t) }}
   title="DatePicker"
   description={t("datePicker.description")}
   contractId="date-picker"
+  extraSheets={["@skryensya/core/patterns/anchored.css"]}
   appearanceTargetSelector=".sk-date-picker"
   styleGroups={[
     { file: "components/date-picker.css", probe: "sk-date-picker", title: "DatePicker" },
@@ -87,10 +85,6 @@ import { dd2 } from "../../demos/dodont-labels";
       dont={{ tree: dd2.datePicker.dont(t), caption: t("dd2.datePicker.dont") }}
     />
     <ContentRules items={tList(t, "datePicker.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={styles} label="CSS" />
   </Fragment>
 
   <Fragment slot="a11y">

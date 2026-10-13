@@ -32,6 +32,18 @@ export const compactColorPickerTree = (t: Translate): UsageTree => ({
   slots: { label: t("demo.colorPicker.compactLabel") },
 });
 
+export const swatchColorPickerTree = (t: Translate): UsageTree => ({
+  contract: "color-picker",
+  signature: "ColorPicker.swatch",
+  options: {
+    triggerLabel: t("kit.chooseColor"),
+    name: "accent",
+    value: "#22aabb",
+    swatches: "#22aabb #3366ff #22c55e #f59e0b",
+  },
+  slots: { label: t("demo.colorPicker.compactLabel") },
+});
+
 export const presetsColorPickerTree = (t: Translate): UsageTree => ({
   contract: "color-picker",
   signature: "ColorPicker",

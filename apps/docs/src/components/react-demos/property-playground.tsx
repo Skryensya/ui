@@ -52,9 +52,16 @@ export interface PropertyPlaygroundProps {
   frame?: { screen?: "xl"; width?: number; flush?: boolean; css?: string; note?: string; viewport?: "auto" | "menu" | "overlay" | "menu-deep"; minHeight?: string };
   /** Keep modal top layers inside the specimen's document, outside the control row. */
   isolatedFrame?: FramedOverrides;
+  /**
+   * With `isolatedFrame`: draw one frame per value up front and only show the chosen one, instead of
+   * rebuilding the frame on every change. A frame is a whole document (its own React, its own styles),
+   * so a switch that remounts it takes as long as a page load; keeping them makes the switch a
+   * `hidden` toggle. For a control with a FEW values (a boolean); every value costs a frame at load.
+   */
+  keepFrames?: boolean;
 }
 
-export function PropertyPlayground({ tree, optionName, trees, measure, toggleLabel, target = [], values, boolean, onValue, defaultValue, labels, controlLabel, explain, remountOnChange = true, frame, isolatedFrame }: PropertyPlaygroundProps) {
+export function PropertyPlayground({ tree, optionName, trees, measure, toggleLabel, target = [], values, boolean, onValue, defaultValue, labels, controlLabel, explain, remountOnChange = true, frame, isolatedFrame, keepFrames = false }: PropertyPlaygroundProps) {
   const [value, setValue] = useState(defaultValue);
   const [present, setPresent] = useState(true);
   const render = useRenderedTree(trees ? Object.values(trees) : tree);
@@ -69,14 +76,17 @@ export function PropertyPlayground({ tree, optionName, trees, measure, toggleLab
   const [hydrated, setHydrated] = useState(false);
   useEffect(() => setHydrated(true), []);
 
-  const chosen: UsageTree =
-    trees?.[value] ??
-    (!optionName
-      ? tree
-      : onValue
-      ? withOptionAt(tree, target, optionName!, value === "true" ? onValue : undefined)
-      : withOptionAt(tree, target, optionName!, boolean ? value === "true" : value));
-  const liveTree: UsageTree = toggleLabel ? withOptionAt(chosen, [], "present", present) : chosen;
+  const treeFor = (choice: string): UsageTree => {
+    const chosenTree: UsageTree =
+      trees?.[choice] ??
+      (!optionName
+        ? tree
+        : onValue
+        ? withOptionAt(tree, target, optionName!, choice === "true" ? onValue : undefined)
+        : withOptionAt(tree, target, optionName!, boolean ? choice === "true" : choice));
+    return toggleLabel ? withOptionAt(chosenTree, [], "present", present) : chosenTree;
+  };
+  const liveTree: UsageTree = treeFor(value);
   const explanation = explain?.[value];
   /* A frame that arrives after the page's own stage pass (every variant but the first) is not found by it, so it is started here:
      the doc the frame was built with becomes its `srcdoc`, and the frame's own runtime sizes it. */
@@ -106,7 +116,7 @@ export function PropertyPlayground({ tree, optionName, trees, measure, toggleLab
   }, [frame]);
 
   return (
-    <div className="sk-property-playground">
+    <div className="sk-property-playground" data-sk-playground-value={value}>
       {values.length === 0 ? null : hydrated ? (
         <SegmentedControl
           className="sk-property-playground__control"
@@ -132,7 +142,15 @@ export function PropertyPlayground({ tree, optionName, trees, measure, toggleLab
         )}
         {isolatedFrame ? (
           hydrated && <div className="sk-component-preview" data-sk-component-preview="" data-sk-component-preview-chrome="false" data-sk-component-preview-surface="none" data-sk-component-preview-screen-local={isolatedFrame.screen} style={{ width: "100%" }}>
-            <TreeDemo key={value} tree={liveTree} measure={measure} frameOptions={isolatedFrame} />
+            {keepFrames ? (
+              values.map((choice) => (
+                <div key={choice} data-sk-playground-frame={choice} hidden={choice !== value}>
+                  <TreeDemo tree={treeFor(choice)} measure={measure} frameOptions={isolatedFrame} />
+                </div>
+              ))
+            ) : (
+              <TreeDemo key={value} tree={liveTree} measure={measure} frameOptions={isolatedFrame} />
+            )}
           </div>
         ) : frame ? (
           /* The shell around the card (`UsagePreview`) is what the enhancer zooms; this is the fixed screen inside it. */

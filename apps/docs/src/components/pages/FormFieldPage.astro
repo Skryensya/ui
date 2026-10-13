@@ -7,7 +7,6 @@ import "@skryensya/core/components/select.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -40,11 +39,7 @@ import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 
-const install = `pnpm add @skryensya/core @skryensya/react`;
 const t = useTranslations(getLocale(Astro.url));
-
-const css = `@import "@skryensya/core/tokens.scss";
-@import "@skryensya/core/components/form-field.css";`;
 
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
 const explain = (option: string, values: readonly string[]) =>
@@ -60,6 +55,7 @@ const ddField = (tree: UsageTree): UsageTree => ({
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: formFieldTree(t) }}
   title={t("formFieldPage.title")}
   description={t("formFieldPage.description")}
   contractId="form-field"
@@ -149,11 +145,6 @@ const ddField = (tree: UsageTree): UsageTree => ({
       dont={{ tree: ddField(formFieldDontOptionalTree(t)), caption: t("formFieldPage.dd.optional.dont") }}
     />
     <ContentRules items={tList(t, "formFieldPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={css} label="CSS" />
   </Fragment>
 
   <Fragment slot="a11y">

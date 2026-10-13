@@ -35,7 +35,6 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 import loadMoreScript from "../../demos/scripts/feed-load-more.ts?raw";
 
 const t = useTranslations(getLocale(Astro.url));
-const install = `pnpm add @skryensya/core @skryensya/react`;
 
 /* The keyboard model is the one part of this component that is not markup, so it gets the one
    code sample: the same option in both bindings, side by side. */
@@ -60,6 +59,7 @@ const keyboardReact = `import { Feed, FeedArticle } from "@skryensya/react/feed"
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: feedTree(t) }}
   title="Feed"
   description={t("feedPage.description")}
   contractId="feed"
@@ -122,10 +122,6 @@ const keyboardReact = `import { Feed, FeedArticle } from "@skryensya/react/feed"
       dont={{ tree: feedGuideTree(t, feedDontMixedOrderTree(t)), caption: t("feedPage.dd.order.dont") }}
     />
     <ContentRules items={tList(t, "feedPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
   </Fragment>
 
   <Fragment slot="a11y">

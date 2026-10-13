@@ -19,8 +19,6 @@ import "@skryensya/core/components/annotation.css";
 
 const t = useTranslations(getLocale(Astro.url));
 
-const install = `pnpm add @skryensya/core @skryensya/react`;
-const styles = `@import "@skryensya/core/components/skip-link.css";`;
 
 /* The destination, which is the half nobody remembers and the half that decides whether the link
  * works at all. Shown as markup rather than described, because "make it focusable" is the sentence
@@ -48,6 +46,7 @@ import { skipLinkDoTree, skipLinkDontTree, skipLinkOrderDoTree, skipLinkOrderDon
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: skipLinkTree(t), fit: true }}
   title="SkipLink"
   description={t("skipLink.description")}
   contractId="skip-link"
@@ -94,11 +93,6 @@ import { skipLinkDoTree, skipLinkDontTree, skipLinkOrderDoTree, skipLinkOrderDon
       dont={{ tree: skipLinkOrderDontTree(t), caption: t("skipLink.dd.order.dont") }}
     />
     <ContentRules items={tList(t, "skipLink.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="a11y">

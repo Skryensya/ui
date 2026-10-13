@@ -82,8 +82,30 @@ function writeFrame(frame: HTMLIFrameElement, value: Appearance): void {
   }
 }
 
+/*
+ * A SCOPE KEEPS ITS APPEARANCE WHEN ITS EXAMPLE IS REDRAWN. A property playground swaps its example every
+ * time the reader picks another option of its segmented control (variant, tone...), and the new elements are
+ * fresh markup that never saw the attribute `apply` wrote on the old ones. Without this the reader would have
+ * to choose the appearance again after every option. Only `childList` is watched: setting an attribute does
+ * not wake it, so there is no loop.
+ */
+const watched = new WeakSet<HTMLElement>();
+function keepAppearance(scope: HTMLElement): void {
+  if (watched.has(scope)) return;
+  watched.add(scope);
+  new MutationObserver(() => {
+    const value = current(scope);
+    scope.querySelectorAll<HTMLElement>(targetSelector(scope)).forEach((element) => {
+      if (!element.closest(fixedSelector) && element.getAttribute("data-appearance") !== value) {
+        element.setAttribute("data-appearance", value);
+      }
+    });
+  }).observe(scope, { childList: true, subtree: true });
+}
+
 function apply(scope: HTMLElement, preferred: Appearance): void {
   const value = effectiveIn(scope, preferred);
+  keepAppearance(scope);
   scope.setAttribute("data-docs-appearance", value);
   scope.querySelectorAll<HTMLElement>(targetSelector(scope)).forEach((element) => {
     if (!element.closest(fixedSelector)) element.setAttribute("data-appearance", value);

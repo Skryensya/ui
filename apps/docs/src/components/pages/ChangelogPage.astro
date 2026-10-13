@@ -4,7 +4,6 @@ import "@skryensya/core/components/changelog.css";
 import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/badge.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -17,8 +16,6 @@ import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
-
-const install = `pnpm add @skryensya/core`;
 
 /* The five kinds, written ONCE in core and read here: the legend cannot drift from what the component paints. */
 const kindRows = changeKinds.map((kind) => ({
@@ -35,11 +32,11 @@ const partRows = partOrder.map((part) => ({
   labelHtml: `<code>${changelogParts[part]}</code>`,
   cells: [t(`changelogPage.part.${part}`)],
 }));
-const styles = `@import "@skryensya/core/components/changelog.css";`;
 import { changelogBreakingDoTree, changelogBreakingDontTree } from "../../demos/dodont-more";
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: changelogTree(t) }}
   title="Changelog"
   description={t("changelogPage.description")}
   contractId="changelog"
@@ -105,11 +102,6 @@ import { changelogBreakingDoTree, changelogBreakingDontTree } from "../../demos/
       dont={{ tree: changelogBreakingDontTree(t), caption: t("dd3.changelog.dont") }}
     />
     <ContentRules items={tList(t, "changelogPage.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-    <CodeBlock code={styles} label="CSS" lang="css" />
   </Fragment>
 
   <Fragment slot="a11y">

@@ -3,7 +3,6 @@ import "@skryensya/core/components/stat.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -23,7 +22,6 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
-const install = `pnpm add @skryensya/core @skryensya/react`;
 
 /* What each value of a property is for, read from this page's messages. Same model Badge uses. */
 const explain = (option: string, values: readonly string[]) =>
@@ -31,6 +29,7 @@ const explain = (option: string, values: readonly string[]) =>
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: statSingleTree(t), fit: true }}
   title="Stat"
   description={t("statPage.description")}
   contractId="stat"
@@ -84,9 +83,6 @@ const explain = (option: string, values: readonly string[]) =>
     <ContentRules items={tList(t, "statPage.content")} />
   </Fragment>
 
-  <Fragment slot="install">
-    <CodeBlock code={install} label="terminal" />
-  </Fragment>
   <Fragment slot="a11y">
     <A11yNotes intro={t("statPage.a11yIntro")} does={tList(t, "statPage.a11yDoes")} yours={tList(t, "statPage.a11yYours")} />
   </Fragment>

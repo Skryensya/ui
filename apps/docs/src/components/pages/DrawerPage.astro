@@ -18,10 +18,6 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 
-const import_ = `/* ${t("drawer.compositionComment")} */
-@import "@skryensya/core/patterns/vaul.css";
-@import "@skryensya/core/patterns/scroll-lock.css";`;
-
 const composition = `/* El drawer no declara panel, borde, slide ni
    backdrop: los re-declara desde sus hooks. */
 .sk-drawer {
@@ -39,9 +35,11 @@ const tuning = `.mi-drawer {
 ---
 
 <ComponentPageShell
+  hookPlayground={{ tree: drawerTree(t) }}
   title="Drawer"
   description={t("drawer.description")}
   contractId="vaul"
+  extraSheets={["@skryensya/core/patterns/scroll-lock.css"]}
   appearanceTargetSelector=".sk-vaul"
   styleGroups={[
     { file: "patterns/vaul.css", probe: "sk-vaul", title: "Heredados de Vaul" },
@@ -102,10 +100,6 @@ const tuning = `.mi-drawer {
       dont={{ html: drawerDecisionGuideHtml(t, true), caption: t("drawer.dd.decision.dont") }}
     />
     <ContentRules items={tList(t, "drawer.content")} />
-  </Fragment>
-
-  <Fragment slot="install">
-    <CodeBlock code={import_} label="CSS" />
   </Fragment>
 
   <Fragment slot="a11y">

@@ -1,0 +1,46 @@
+---
+/*
+ * THE REACT | VANILLA CHOICE, at the top of Installation, where the reader is deciding.
+ *
+ * A Segmented from the design system, emitted from a tree. `data-sk-page-binding-tabs` is the hook
+ * `scripts/page-binding.ts` listens on: it writes the ONE binding preference (`<html
+ * data-sk-component-preview-pref>`) that `site.css` reads to show the matching half of this section
+ * and of every preview on the page. Nothing here keeps state of its own.
+ */
+import "@skryensya/core/components/segmented.css";
+import { emitMarkup } from "@skryensya/ai-compiler/emit";
+import type { UsageTree } from "@skryensya/core/usage-tree";
+import { getLocale, useTranslations } from "../i18n";
+
+const t = useTranslations(getLocale(Astro.url));
+
+const tree: UsageTree = {
+  contract: "segmented",
+  signature: "Segmented",
+  options: { value: "vanilla", label: t("install.bindingGroup") },
+  attrs: { "data-sk-page-binding-tabs": "" },
+  slots: {
+    items: [
+      { options: { value: "vanilla" }, slots: { label: "Vanilla" } },
+      { options: { value: "react" }, slots: { label: "React" } },
+    ],
+  },
+};
+const markup = emitMarkup(tree, { fillDefaults: false });
+---
+
+<div class="docs-install__switch" set:html={markup} />
+
+{/* The preference was already written on <html> before first paint; this only stops the pill from
+    flipping Vanilla -> React once the Segmented enhancer arrives. */}
+<script is:inline>
+  (function () {
+    var pref = document.documentElement.getAttribute("data-sk-component-preview-pref") || "vanilla";
+    var tabs = document.querySelector("[data-sk-page-binding-tabs]");
+    if (!tabs) return;
+    tabs.setAttribute("data-value", pref);
+    tabs.querySelectorAll("[data-sk-segmented-option]").forEach(function (option) {
+      option.setAttribute("aria-checked", option.getAttribute("data-value") === pref ? "true" : "false");
+    });
+  })();
+</script>
