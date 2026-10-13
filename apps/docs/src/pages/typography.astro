@@ -32,12 +32,29 @@ const weights = [
 
 const install = `/* Once, at the app root, before the tokens */
 @import "@skryensya/core/fonts/hanken-grotesk.css";
+@import "@skryensya/core/fonts/jetbrains-mono.css";
 @import "@skryensya/core/tokens.scss";`;
 
 const swap = `/* Another family: skip hanken-grotesk.css and redefine the primitive */
 :root {
   --scale-font-family-sans: "My Family", system-ui, sans-serif;
 }`;
+
+const pair = `/* Titles in their own face, body and code untouched */
+@import "@fontsource-variable/fraunces";
+:root {
+  --font-family-heading: "Fraunces Variable", Georgia, serif;
+}`;
+
+const families = [
+  { name: "Inter", role: "Sans", note: "111.1px at 12px · 185.0px at 60px/700" },
+  { name: "Geist", role: "Sans", note: "107.2px at 12px · 197.7px at 60px/700" },
+  { name: "Instrument Sans", role: "Sans", note: "110.4px at 12px · 197.5px at 60px/700" },
+  { name: "IBM Plex Sans", role: "Sans", note: "105.4px at 12px · 190.8px at 60px/700 · tabular figures by default" },
+  { name: "Public Sans", role: "Sans", note: "108.4px at 12px · 193.8px at 60px/700" },
+  { name: "Archivo", role: "Sans", note: "105.6px at 12px · 193.4px at 60px/700" },
+  { name: "Work Sans", role: "Sans", note: "113.3px at 12px · 201.5px at 60px/700" },
+];
 
 const usage = `<!-- Document level and visual size are separate -->
 <h2 class="sk-heading" data-size="h3">Regions ready</h2>
@@ -97,6 +114,11 @@ const usage = `<!-- Document level and visual size are separate -->
           <td class="sk-table__cell mono">--scale-font-family-mono</td>
           <td class="sk-table__cell mono"><Used token="--font-family-code" /></td>
         </tr>
+        <tr class="sk-table__row">
+          <td class="sk-table__cell mono">--font-family-heading</td>
+          <td class="sk-table__cell mono">--font-family-body</td>
+          <td class="sk-table__cell mono"><Used token="--font-family-heading" /></td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -108,6 +130,47 @@ const usage = `<!-- Document level and visual size are separate -->
   </p>
   <CodeBlock code={install} label="CSS" />
   <CodeBlock code={swap} label="CSS" note="swapping the family" />
+
+  <h2>Several families</h2>
+  <p>
+    The system has three font roles: <code>--font-family-body</code> for text,
+    <code>--font-family-code</code> for code and <code>--font-family-heading</code> for headings and
+    displays. The third <strong>starts equal to the body</strong>: an app that sets one family never
+    touches it, and one that wants titles in another face redefines that token alone.
+  </p>
+  <CodeBlock code={pair} label="CSS" note="titles in their own face" />
+  <p>
+    Any family works if it carries the four weights the system uses (400, 500, 600 and 700) and tabular
+    figures, which eight sheets ask for. These seven come from the measured comparison in decision 0023,
+    and install from npm as <code>@fontsource-variable/&lt;name&gt;</code>, so they travel with your app
+    and are never requested from a CDN.
+  </p>
+  <div class="sk-table-scroll">
+    <table class="sk-table">
+      <thead class="sk-table__head">
+        <tr class="sk-table__row">
+          <th class="sk-table__header">Family</th>
+          <th class="sk-table__header">Role</th>
+          <th class="sk-table__header">Measured (Hanken: 105px · 182px)</th>
+        </tr>
+      </thead>
+      <tbody class="sk-table__body">
+        {
+          families.map((family) => (
+            <tr class="sk-table__row">
+              <td class="sk-table__cell"><strong>{family.name}</strong></td>
+              <td class="sk-table__cell">{family.role}</td>
+              <td class="sk-table__cell">{family.note}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+  <p>
+    A serif for titles (Fraunces, Lora) is not in that comparison: it looks right in the preset, but it
+    was not measured against this system's densities.
+  </p>
 
   <h2>The scale: size and line-height come in pairs</h2>
   <p>

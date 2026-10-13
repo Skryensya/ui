@@ -33,12 +33,29 @@ const weights = [
 
 const install = `/* Una vez, en la raíz de la app, antes de los tokens */
 @import "@skryensya/core/fonts/hanken-grotesk.css";
+@import "@skryensya/core/fonts/jetbrains-mono.css";
 @import "@skryensya/core/tokens.scss";`;
 
 const swap = `/* Otra familia: no importes hanken-grotesk.css y redefine el primitivo */
 :root {
   --scale-font-family-sans: "Mi Familia", system-ui, sans-serif;
 }`;
+
+const pair = `/* Titles in their own face, body and code untouched */
+@import "@fontsource-variable/fraunces";
+:root {
+  --font-family-heading: "Fraunces Variable", Georgia, serif;
+}`;
+
+const families = [
+  { name: "Inter", role: "Sans", note: "111.1px a 12px · 185.0px a 60px/700" },
+  { name: "Geist", role: "Sans", note: "107.2px a 12px · 197.7px a 60px/700" },
+  { name: "Instrument Sans", role: "Sans", note: "110.4px a 12px · 197.5px a 60px/700" },
+  { name: "IBM Plex Sans", role: "Sans", note: "105.4px a 12px · 190.8px a 60px/700 · cifras tabulares por defecto" },
+  { name: "Public Sans", role: "Sans", note: "108.4px a 12px · 193.8px a 60px/700" },
+  { name: "Archivo", role: "Sans", note: "105.6px a 12px · 193.4px a 60px/700" },
+  { name: "Work Sans", role: "Sans", note: "113.3px a 12px · 201.5px a 60px/700" },
+];
 
 const usage = `<!-- Nivel del documento y tamaño visual van por separado -->
 <h2 class="sk-heading" data-size="h3">Regiones listas</h2>
@@ -98,6 +115,11 @@ const usage = `<!-- Nivel del documento y tamaño visual van por separado -->
           <td class="sk-table__cell mono">--scale-font-family-mono</td>
           <td class="sk-table__cell mono"><Used token="--font-family-code" /></td>
         </tr>
+        <tr class="sk-table__row">
+          <td class="sk-table__cell mono">--font-family-heading</td>
+          <td class="sk-table__cell mono">--font-family-body</td>
+          <td class="sk-table__cell mono"><Used token="--font-family-heading" /></td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -109,6 +131,47 @@ const usage = `<!-- Nivel del documento y tamaño visual van por separado -->
   </p>
   <CodeBlock code={install} label="CSS" />
   <CodeBlock code={swap} label="CSS" note="cambiar de familia" />
+
+  <h2>Varias familias</h2>
+  <p>
+    El sistema tiene tres papeles de fuente: <code>--font-family-body</code> para el texto,
+    <code>--font-family-code</code> para el código y <code>--font-family-heading</code> para los
+    encabezados y displays. El tercero <strong>empieza igual al cuerpo</strong>: quien define una sola
+    familia no tiene que tocarlo, y quien quiere títulos con otra cara redefine solo ese token.
+  </p>
+  <CodeBlock code={pair} label="CSS" note="títulos con su propia fuente" />
+  <p>
+    Cualquier familia propia funciona si trae los cuatro pesos que el sistema usa (400, 500, 600 y 700) y
+    cifras tabulares, que ocho hojas piden. Estas siete salen de la comparación medida de la decisión 0023,
+    y se instalan desde npm como <code>@fontsource-variable/&lt;nombre&gt;</code>, así que viajan con tu
+    aplicación y no se piden a ningún CDN.
+  </p>
+  <div class="sk-table-scroll">
+    <table class="sk-table">
+      <thead class="sk-table__head">
+        <tr class="sk-table__row">
+          <th class="sk-table__header">Familia</th>
+          <th class="sk-table__header">Papel</th>
+          <th class="sk-table__header">Medido (Hanken: 105px · 182px)</th>
+        </tr>
+      </thead>
+      <tbody class="sk-table__body">
+        {
+          families.map((family) => (
+            <tr class="sk-table__row">
+              <td class="sk-table__cell"><strong>{family.name}</strong></td>
+              <td class="sk-table__cell">{family.role}</td>
+              <td class="sk-table__cell">{family.note}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Una serif para títulos (Fraunces, Lora) no está en esa comparación: se ve bien en el preset, pero
+    no está medida contra las densidades de este sistema.
+  </p>
 
   <h2>La escala: tamaño e interlineado van en pares</h2>
   <p>

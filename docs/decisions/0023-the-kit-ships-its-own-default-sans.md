@@ -19,7 +19,7 @@ was being made against a face the system never chose.
 
 `packages/core/css/primitives/_type.scss` read `--scale-font-family-sans: Inter, system-ui, sans-serif`,
 and there was no `@font-face` and no font file anywhere in the repo. Naming a family is not shipping it.
-The same held for `--scale-font-family-mono` and `JetBrains Mono`, which this ADR does not resolve.
+The same held for `--scale-font-family-mono` and `JetBrains Mono`, which this ADR did not resolve; `css/fonts/jetbrains-mono.css` now ships it (variable weight, upright, latin and latin-ext). `--font-family-heading` (aliasing the body) lets titles take a third face.
 
 ## How the face was chosen
 

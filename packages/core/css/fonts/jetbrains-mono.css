@@ -1,0 +1,37 @@
+/*
+ * THE SYSTEM'S DEFAULT MONO, SHIPPED WITH IT, for the same reason as the sans (see hanken-grotesk.css
+ * and ADR 0023): `--scale-font-family-mono` NAMES "JetBrains Mono", and naming a face is not shipping
+ * it. Without this sheet, code fell through to `ui-monospace`, which is a different face on every OS.
+ *
+ * One variable weight axis (100-800), latin and latin-ext as separate faces with their own
+ * `unicode-range`, so the second is only downloaded by a page that types a character from it. UPRIGHT
+ * ONLY: code is read in the upright, and an italic face would add ~55KB for comments alone. The
+ * browser slants the upright where `<em>` lands in code, which is the one place a synthesised italic
+ * does no harm. Licence: `OFL-jetbrains-mono.txt`, beside this file and inside this package.
+ *
+ * IMPORT IT ONCE, at the app's root, before the token sheet. An app that wants another mono sets
+ * `--scale-font-family-mono` and never imports this file.
+ */
+
+/* latin */
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("./files/jetbrains-mono-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin-ext */
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("./files/jetbrains-mono-latin-ext-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308,
+    U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
+    U+2C60-2C7F, U+A720-A7FF;
+}

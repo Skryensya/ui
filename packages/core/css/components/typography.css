@@ -93,6 +93,7 @@
 
     margin: 0;
     color: var(--sk-heading-fg);
+    font-family: var(--font-family-heading);
     font-size: var(--sk-heading-font-size);
     font-weight: var(--sk-heading-font-weight);
     line-height: var(--sk-heading-line-height);

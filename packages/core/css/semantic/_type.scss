@@ -2,6 +2,9 @@
     /* ── type: density- and brand-invariant except family ── */
     --font-family-body: var(--scale-font-family-sans);
     --font-family-code: var(--scale-font-family-mono);
+    /* Headings and displays. It ALIASES the body family, so a system that sets only one family keeps
+     * working; set it alone to give titles a face of their own (a serif over a sans body). */
+    --font-family-heading: var(--font-family-body);
 
     /* ── size ↔ line-height PAIRS ───────────────────────────────────────────────
      * Every size role has a line-height paired to it, and the leading tightens as the size grows, 
