@@ -65,3 +65,6 @@ apps/docs/public/catalog/thumbs/
 # (on build, check and prepack), never edited by hand.
 packages/react/css/
 packages/vanilla/css/
+
+# Output of `node scripts/release.ts pack`.
+/release/

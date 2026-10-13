@@ -216,6 +216,23 @@ Keep scratch specs out of `packages/ai-gates/src/`. The runner picks up anything
 a debug spec pointing at a different server once starved the worker pool and took five unrelated
 gates down with it.
 
+## Cutting a release
+
+A release is a version tag. The `release` workflow builds, packs and publishes it as GitHub Release assets
+(one npm-compatible tarball per shipped package, plus `SHA256SUMS`); nothing goes to a registry.
+
+```bash
+node scripts/release.ts bump 0.0.2      # versions of the shipped packages, and the README's install URLs
+# write docs/releases/v0.0.2.md          # the release notes; without the file they are generated from commits
+git commit -am "chore(release): 0.0.2" && git push
+git tag v0.0.2 && git push origin v0.0.2
+```
+
+Rehearse it first with the same commands the workflow runs: `node scripts/release.ts build`, then `pack`,
+then `verify` (output in `release/`, ignored by git). From the Actions tab, running `release` by hand is a
+dry run: it builds and verifies and uploads the tarballs as an artifact without creating a release.
+A tag that is not the packages' version (`v0.0.3` on `0.0.2`) fails the pack step.
+
 ## Dependencies
 
 New versions wait **30 days** before they can be installed (`minimumReleaseAge` in

@@ -49,18 +49,18 @@ pnpm check
 That is what `pre-push` AND CI run, and it skips the browser gates. `pnpm check:gates` runs those
 alone (about 19 minutes, worth it for anything visual) and `pnpm check:all` runs both.
 
-## Consuming 0.0.1
+## Consuming 0.0.2
 
-`0.0.1` is cut as a GitHub Release, not published to npm yet. The release assets are npm-compatible
+`0.0.2` is cut as a GitHub Release, not published to npm yet. The release assets are npm-compatible
 tarballs, so install the Skryensya packages you need from the release URL.
 
 For React:
 
 ```bash
 pnpm add react react-dom \
-  https://github.com/Skryensya/ui/releases/download/v0.0.1/skryensya-core-0.0.1.tgz \
-  https://github.com/Skryensya/ui/releases/download/v0.0.1/skryensya-icons-lucide-0.0.1.tgz \
-  https://github.com/Skryensya/ui/releases/download/v0.0.1/skryensya-react-0.0.1.tgz
+  https://github.com/Skryensya/ui/releases/download/v0.0.2/skryensya-core-0.0.2.tgz \
+  https://github.com/Skryensya/ui/releases/download/v0.0.2/skryensya-icons-lucide-0.0.2.tgz \
+  https://github.com/Skryensya/ui/releases/download/v0.0.2/skryensya-react-0.0.2.tgz
 ```
 
 ```tsx
@@ -72,13 +72,19 @@ export function SaveButton() {
 }
 ```
 
+Or let the CLI do it. It belongs to the release and installs that release's packages (the binding, core and the icon set) for you:
+
+```bash
+npx https://github.com/Skryensya/ui/releases/download/v0.0.2/skryensya-cli-0.0.2.tgz add button
+```
+
 For authored HTML plus progressive enhancement:
 
 ```bash
 pnpm add \
-  https://github.com/Skryensya/ui/releases/download/v0.0.1/skryensya-core-0.0.1.tgz \
-  https://github.com/Skryensya/ui/releases/download/v0.0.1/skryensya-icons-lucide-0.0.1.tgz \
-  https://github.com/Skryensya/ui/releases/download/v0.0.1/skryensya-vanilla-0.0.1.tgz
+  https://github.com/Skryensya/ui/releases/download/v0.0.2/skryensya-core-0.0.2.tgz \
+  https://github.com/Skryensya/ui/releases/download/v0.0.2/skryensya-icons-lucide-0.0.2.tgz \
+  https://github.com/Skryensya/ui/releases/download/v0.0.2/skryensya-vanilla-0.0.2.tgz
 ```
 
 ```ts

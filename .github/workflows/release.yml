@@ -1,0 +1,88 @@
+# Cuts a GitHub Release from a version tag.
+#
+#   1. `node scripts/release.ts bump 0.0.2`, commit, and push the commit.
+#   2. `git tag v0.0.2 && git push origin v0.0.2`: this workflow takes it from there.
+#
+# What it publishes is one npm-compatible tarball per shipped package plus `SHA256SUMS`, as release
+# assets. Nothing goes to a registry: consumers install by URL (README, "Consuming"). The steps are the
+# ones `scripts/release.ts` runs on a laptop, so a release can be rehearsed locally with the same commands.
+#
+# Run by hand (Actions → release → Run workflow) it is a DRY RUN by default: it builds, packs and verifies,
+# and uploads the tarballs as a workflow artifact without creating a release.
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Build and verify only; do not create a release"
+        type: boolean
+        default: true
+
+# One release at a time, and never cancel one halfway: a release with half its assets is worse than a late one.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: build, pack and publish the release
+    runs-on: ubuntu-latest
+    env:
+      # Set only for a tag push; `pack` refuses a tag that is not the packages' version.
+      RELEASE_TAG: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # The same gate as every pull request, on the exact commit being released: a tag on a red commit
+      # does not become a release.
+      - run: pnpm audit:gate
+      - run: pnpm check
+
+      - name: Build the shipped packages
+        run: node scripts/release.ts build
+
+      - name: Pack one tarball per package
+        run: node scripts/release.ts pack release
+
+      # Opens every tarball: versions, and that every file an `exports` entry names is inside it.
+      - name: Verify the tarballs
+        run: node scripts/release.ts verify release
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tarballs
+          path: release/
+          if-no-files-found: error
+
+      - name: Create the GitHub Release
+        if: github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          # Written notes win: `docs/releases/<tag>.md`. Without them the notes are generated from the
+          # commits since the previous tag, which is accurate and unedited.
+          if [ -f "docs/releases/$TAG.md" ]; then
+            notes=(--notes-file "docs/releases/$TAG.md")
+          else
+            notes=(--generate-notes)
+          fi
+          # A pre-release version (0.1.0-rc.1) is marked as one.
+          case "$TAG" in *-*) flags=(--prerelease) ;; *) flags=() ;; esac
+          gh release create "$TAG" release/*.tgz release/SHA256SUMS \
+            --title "$TAG" "${notes[@]}" "${flags[@]}" --verify-tag
