@@ -564,7 +564,9 @@ describe("TagsInput", () => {
   it("holds its tags, each with a remove button, then the field's placeholder", () => {
     const set = manifest.components.find((c): c is ComponentSet => c.kind === "component-set" && c.id === "tags-input/plain")!;
     const [control] = manifest.styles.layers[set.cells[0].layers];
-    expect(control.kind === "frame" && control.layers.map((l) => l.slot)).toEqual(["item", "item 2", "input"]);
+    expect(control.kind === "frame" && control.layers.map((l) => l.slot)).toEqual(["value", "clear"]);
+    const [value] = control.kind === "frame" ? control.layers : [];
+    expect(value.kind === "frame" && value.layers.map((l) => l.slot)).toEqual(["item", "item 2", "input"]);
     expect(JSON.stringify(control)).toContain('"slot":"remove"');
   });
 });
