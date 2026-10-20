@@ -11,6 +11,8 @@ describe("catalog", () => {
 
   it("puts a dependency's stylesheet before the one that needs it", () => {
     expect(catalog.get("calendar")!.css).toEqual([
+      "@skryensya/core/components/loader.css",
+      "@skryensya/core/patterns/a11y-warn.css",
       "@skryensya/core/components/button.css",
       "@skryensya/core/components/calendar.css",
     ]);
