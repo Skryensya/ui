@@ -26,9 +26,15 @@ const CSS = join(ROOT, "css");
 const DIST = join(ROOT, "dist");
 
 /** Minifies compiled CSS. No `targets`: this ships modern syntax (oklch, color-mix, cascade
- * layers, `::scroll-marker`) as-authored rather than downleveling it for older engines. */
+ * layers, `::scroll-marker`) as-authored rather than downleveling it for older engines.
+ * `errorRecovery`: lightningcss's own parser doesn't know every pseudo-element this source uses
+ * yet (`::picker(select)`, `::scroll-button`, both behind `@supports`/progressive enhancement) and
+ * without it ABORTS THE WHOLE BUNDLE on the first one instead of just warning - one component a
+ * browser already renders correctly then fails every OTHER component's build too. With it on,
+ * lightningcss keeps a rule it cannot parse byte-for-byte (so a browser that implements the
+ * pseudo-element still gets it) and only logs a warning for the ones it does not recognize. */
 const minify = (code: string, filename: string) =>
-  transform({ filename, code: Buffer.from(code), minify: true }).code;
+  transform({ filename, code: Buffer.from(code), minify: true, errorRecovery: true }).code;
 
 /** Writes a minified file under `dist/`, creating parent directories as needed. */
 function writeDist(relPath: string, css: string, filename: string) {

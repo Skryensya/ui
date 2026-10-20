@@ -550,6 +550,7 @@
     "react": {
       "entry": "@skryensya/react/comparison-table",
       "names": [
+        "ComparisonTableScroll",
         "ComparisonTable",
         "ComparisonColumn",
         "ComparisonRow",
@@ -892,6 +893,7 @@
     "css": {
       "entry": "@skryensya/core/patterns/icon.css",
       "files": [
+        "@skryensya/core/patterns/a11y-warn.css",
         "@skryensya/core/patterns/icon.css"
       ]
     },
