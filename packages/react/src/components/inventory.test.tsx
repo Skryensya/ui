@@ -127,18 +127,18 @@ describe("expanded component inventory", () => {
     );
     expect(input.getAttribute("aria-errormessage")).toBe(error.id);
     expect(input.getAttribute("aria-invalid")).toBe("true");
-    // The chevron is decorative, not a second control (see combobox.tsx's own note): no
-    // accessible name, `aria-hidden`, and it composes none of Button's contract.
+    // A real button, not a decorative chevron (see combobox.tsx's own note): it opens and
+    // closes the list for a pointer, with its own accessible name and Button's contract.
     const trigger = ui.container.querySelector(".sk-combobox__trigger")!;
-    expect(trigger.tagName).toBe("SPAN");
-    expect(trigger.getAttribute("aria-hidden")).toBe("true");
-    expect(trigger.classList.contains("sk-button")).toBe(false);
+    expect(trigger.tagName).toBe("BUTTON");
+    expect(trigger.getAttribute("aria-label")).toBe("Mostrar opciones");
+    expect(trigger.classList.contains("sk-button")).toBe(true);
     const clear = ui.getByRole("button", { name: "Limpiar selección" });
     expect(clear.tabIndex).toBe(0);
     expect(clear.classList.contains("sk-button")).toBe(true);
     expect(clear.classList.contains("sk-interactive")).toBe(true);
     expect(clear.getAttribute("data-icon-only")).toBe("");
-    expect(clear.getAttribute("data-size")).toBe("sm");
+    expect(clear.getAttribute("data-size")).toBe("xs");
     expect(clear.getAttribute("data-variant")).toBe("ghost");
   });
 

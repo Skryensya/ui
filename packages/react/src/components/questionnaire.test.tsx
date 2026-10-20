@@ -62,8 +62,10 @@ describe("Questionnaire (React)", () => {
     expect(shown(fieldset(ui, "Where should we reach you?"))).toBe(false);
     expect(fieldset(ui, "Where should we reach you?").hasAttribute("inert")).toBe(true);
     expect(ui.getByText("Question 1 of 3")).toBeTruthy();
-    // A hidden button has no accessible name, so it is found by its text.
-    const button = (name: string) => ui.getByText(name, { selector: "button" }) as HTMLButtonElement;
+    // A hidden button has no accessible name, so it is found by its text - now on Button's own
+    // label span (it wraps text to swap in a loader), not the button element itself.
+    const button = (name: string) =>
+      ui.getByText(name, { selector: ".sk-button__label" }).closest("button") as HTMLButtonElement;
     expect(button("Previous").hidden).toBe(true);
     expect(button("Skip").hidden).toBe(true);
     expect(button("Next").hidden).toBe(false);
@@ -308,7 +310,7 @@ describe("Questionnaire (React)", () => {
 
   it("accepts a locale's own label text, not only the kit's English literals", () => {
     const ui = render(<Survey nextLabel="Siguiente" previousLabel="Anterior" />);
-    expect(ui.getByText("Siguiente", { selector: "button" })).toBeTruthy();
+    expect(ui.getByText("Siguiente", { selector: ".sk-button__label" })).toBeTruthy();
   });
 
   it("reports every answer so far through onValuesChange, before any submit", async () => {
