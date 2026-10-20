@@ -162,17 +162,6 @@ export default defineConfig({
      * cleared, not just the process restarted. Do not re-add `server.warmup` to this config without
      * first confirming that specific Vite behavior no longer applies (a version bump, most likely).
      */
-    /*
-     * `@skryensya/charts` is workspace source, same as `@skryensya/react`. Vite's SSR runner
-     * externalizes node_modules packages by default, then tries to load their nested
-     * `@skryensya/core/chart` import as a Node module. That subpath points at TypeScript, so
-     * fetchModule throws `Cannot find module` and the Charts (and Card) islands never hydrate.
-     * `noExternal` keeps the package in Vite's graph so the import is rewritten to an `@fs` URL
-     * the way every other kit binding already is.
-     */
-    ssr: {
-      noExternal: ["@skryensya/charts"],
-    },
     optimizeDeps: {
       include: [
         "react",

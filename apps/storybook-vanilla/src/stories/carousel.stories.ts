@@ -11,11 +11,12 @@ import "@skryensya/core/patterns/image-frame.css";
 import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/media-overlay.css";
 import * as demos from "@docs/demos/carousel";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Carousel", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.carouselAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.carouselAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Cards: StoryObj = treeStory(demos.carouselCardsTree);
 export const Autoplay: StoryObj = treeStory(demos.carouselAutoplayTree);
 export const Focusable: StoryObj = treeStory(demos.carouselFocusableTree);

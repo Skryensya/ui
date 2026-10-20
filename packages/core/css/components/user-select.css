@@ -45,6 +45,65 @@
     overflow: hidden;
   }
 
+  /* The picker's trigger carries an avatar stack, which already reads as inset: a step less side padding
+     than a plain Select's keeps the stack from floating in the box. */
+  [data-sk-user-select] .sk-select__trigger {
+    --sk-select-padding-x: var(--space-inset-sm);
+  }
+
+  /*
+   * THE SEARCH FIELD IS MELTED INTO THE BOX, not a well sitting inside it: it is Input's `ghost` variant (no container of its
+   * own), reaching the content's top and side edges (negative margin = the content's padding, the box's own `overflow: hidden`
+   * rounds its corners), with a single hairline under it to separate it from the rows. Its text starts where the rows' text
+   * does (padding + the row's padding). Its focus ring is drawn inside, since the box would clip an outer one.
+   */
+  .sk-select__content > [data-sk-user-select-search] {
+    --sk-input-padding-x: calc(var(--space-inset-sm) * 2);
+
+    inline-size: auto;
+    flex: none;
+    margin: calc(-1 * var(--space-inset-sm)) calc(-1 * var(--space-inset-sm)) 0;
+    /* Flush with the box's top corners, so it takes the box's own radius there (its focus ring follows). */
+    border-radius: var(--sk-select-radius) var(--sk-select-radius) 0 0;
+    border-width: 0 0 var(--sk-input-border-width);
+    border-color: var(--color-border-subtle);
+    /* Room for the clear button, which sits over the field's end. */
+    padding-inline-end: calc(var(--size-control-xs) + var(--space-inset-sm) * 2);
+  }
+
+  /* The browser's own ✕ is not a control we can name or style: ours replaces it. */
+  .sk-select__content > [data-sk-user-select-search]::-webkit-search-cancel-button {
+    display: none;
+    appearance: none;
+  }
+
+  .sk-select__content:has(> [data-sk-user-select-search-clear]) {
+    position: relative;
+  }
+
+  /* Over the field's end, centred in its height. The field sits flush with the box's top edge, so the
+     content's padding box top is the field's top. */
+  .sk-select__content > [data-sk-user-select-search-clear] {
+    position: absolute;
+    inset-block-start: calc((var(--sk-input-height, var(--size-touch-target)) - var(--size-control-xs)) / 2);
+    inset-inline-end: var(--space-inset-sm);
+    z-index: 1;
+  }
+
+  .sk-select__content > [data-sk-user-select-search-clear][hidden] {
+    display: none;
+  }
+
+  .sk-select__content > [data-sk-user-select-search]:focus-visible {
+    outline-offset: calc(-1 * var(--focus-ring-width));
+  }
+
+  /* Opened with a pointer: the field still has focus (the caret is there), but no ring until a key is
+     pressed. A text field always matches :focus-visible, so the bindings mark this case. */
+  .sk-select__content > [data-sk-user-select-search][data-focus-pointer]:focus-visible {
+    outline: none;
+  }
+
   /*
    * The rail sits in the box's own right padding, not over the rows: the list reaches halfway into
    * that padding (negative margin) and reserves a stable gutter there, so rows keep their width

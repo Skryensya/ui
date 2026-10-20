@@ -9,7 +9,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: "Hilo de comentarios anidados: respuestas, voto y borrado, data-driven y sin backend."
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: "Threaded, nested comments: replies, voting and delete, data-driven with no backend."
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

@@ -36,7 +36,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Un código de un solo uso, con un campo por dígito.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: A one-time code, one field per digit.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

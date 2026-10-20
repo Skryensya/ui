@@ -234,7 +234,14 @@
     color: var(--sk-table-header-fg);
     font-weight: var(--sk-table-header-font-weight);
     border-bottom-color: var(--sk-table-header-border-color);
-    white-space: nowrap;
+    /*
+     * `white-space: nowrap` used to block the one fix a forced-narrow column has: wrapping a
+     * multi-word header onto a second line. `.sk-table-scroll` already gives the table its
+     * horizontal overflow mechanism, so forcing every header to stay on one line added nothing
+     * there and only made an unbroken long label (DataGrid's sibling gap) worse. Normal wrap plus
+     * `overflow-wrap` for the unbroken case, same as the fix suggested for this exact row.
+     */
+    overflow-wrap: anywhere;
   }
 
   .sk-table-scroll[data-sticky-header] .sk-table thead th,
@@ -252,6 +259,54 @@
   .sk-table__body .sk-table__header {
     color: var(--sk-table-fg);
     font-weight: var(--sk-table-header-font-weight);
+  }
+
+  /*
+   * SORTABLE HEADER. The button fills the `<th>` so the whole cell is the hit target, not just the
+   * label's own width; it is unstyled chrome (no fill, no border) because the HEADER already paints
+   * the surface this sits on. The three states are mutually exclusive by elimination, not by one
+   * rule per OFF state: a plain `display: none` default plus three ON rules would need as many OFF
+   * rules as there are states the moment a fourth one joins (`other`); hiding every `[data-state]`
+   * once and then showing exactly the one `aria-sort` names keeps that one-to-one no matter how many
+   * states there turn out to be.
+   */
+  .sk-table__sort-button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-inline-xs);
+    inline-size: 100%;
+    background: none;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    text-align: inherit;
+    cursor: pointer;
+  }
+
+  .sk-table__sort-indicator {
+    display: inline-flex;
+    flex: none;
+  }
+
+  .sk-table__sort-indicator > [data-state] {
+    display: none;
+  }
+
+  th[aria-sort="ascending"] .sk-table__sort-indicator > [data-state="ascending"] {
+    display: inline-flex;
+  }
+
+  th[aria-sort="descending"] .sk-table__sort-indicator > [data-state="descending"] {
+    display: inline-flex;
+  }
+
+  /* The sortABLE-but-unsorted hint: dimmer, since nothing has been asked for yet. Covers both
+     aria-sort="none" and no aria-sort at all, as long as the column is sortable. */
+  th[data-sortable]:not([aria-sort="ascending"]):not([aria-sort="descending"]) .sk-table__sort-indicator > [data-state="none"] {
+    display: inline-flex;
+    opacity: 0.4;
   }
 
   /* A faint row ruler helps the eye return to the same record after horizontal scrolling. */

@@ -2,15 +2,6 @@ import { describe, expect, it } from "vitest";
 import { contractSourceUrl } from "./contract-source";
 import { contractDoc, summarizeRelease } from "./contract-reference";
 
-describe("published Dock documentation", () => {
-  it("resolves Dock and DockItem from the generated manifest", () => {
-    const contract = contractDoc("dock");
-    expect(contract.id).toBe("dock");
-    expect(contract.signatures).toHaveProperty("Dock");
-    expect(contract.signatures).toHaveProperty("DockItem");
-  });
-});
-
 describe("contractSourceUrl", () => {
   it("links an independently declared contract to its Core source", () => {
     expect(contractSourceUrl("separator")).toBe(
@@ -39,11 +30,11 @@ describe("summarizeRelease", () => {
       version: "0.0.2",
       date: "2026-10-12",
       surfaces: [
-        { id: "dock", entries: [entry("feature", "New component")] },
+        { id: "toolbar", entries: [entry("feature", "New component")] },
         { id: "button", entries: [entry("breaking", "A"), entry("feature", "B"), entry("bugfix", "C")] },
         { id: "badge", entries: [entry("chore", "D")] },
       ],
     });
-    expect(summary).toEqual({ added: ["dock"], breaking: ["button"], features: 1, fixes: 1, other: 2 });
+    expect(summary).toEqual({ added: ["toolbar"], breaking: ["button"], features: 1, fixes: 1, other: 2 });
   });
 });

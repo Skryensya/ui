@@ -25,11 +25,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Groups long sections that open one at a time.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Agrupa secciones extensas que se abren una a la vez.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -45,11 +45,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Names the parts of something already drawn, with labels in the margins and a leader line to each piece.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Nombra las partes de algo ya dibujado, con etiquetas en los márgenes y una línea guía a cada pieza.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -65,11 +65,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "The bar along an application's top edge, as on a desktop: menus of actions only, with submenus, and a status area on the trailing side that can open its own menu.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "La barra del borde superior de una aplicación de escritorio: menús de solo acciones, con submenús, y una zona de estado a la derecha que puede abrir su propio menú.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -85,11 +85,11 @@
           {
             "date": "2026-10-09",
             "en": {
-              "body": "An audio player with the system's controls, with a cover, a waveform and a list of tracks.",
+              "body": "Added to the library, with its contract, a React binding and a Vanilla mount.",
               "title": "New component"
             },
             "es": {
-              "body": "Un reproductor de audio con los controles del sistema, con portada, forma de onda y una lista de pistas.",
+              "body": "Se suma a la librería, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Componente nuevo"
             },
             "kind": "feature"
@@ -123,11 +123,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Represents a person's identity with a photo or initials.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Representa la identidad de una persona con foto o iniciales.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -161,11 +161,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Returns to the top of a long page with a floating control.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Devuelve al inicio de una página larga con un control flotante.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -200,11 +200,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Marks short statuses, counts, or labels next to another element.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Señala estados, conteos o etiquetas breves junto a otro elemento.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -252,11 +252,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Adds surface, border, and inner spacing around a group.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Añade superficie, borde y espacio interior alrededor de un grupo.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -272,11 +272,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Shows the hierarchical path and links back to higher levels.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Muestra la ruta jerárquica y permite volver a niveles superiores.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -292,11 +292,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Runs actions or emphasizes navigation to a destination.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Ejecuta acciones o lleva a un destino con énfasis visual.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -312,11 +312,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Explores and selects dates in an always-visible grid.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Permite explorar y elegir fechas en una cuadrícula siempre visible.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -332,11 +332,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Highlights an inline message. Error, confirmation, warning, or note. That stays visible.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Destaca un mensaje inline -error, confirmación, advertencia o nota- que permanece visible.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -352,11 +352,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Shows a drawing bigger than the screen, fitted to the view, with zoom and pan.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Muestra un dibujo más grande que la pantalla, ajustado a la vista, con zoom y desplazamiento.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -367,16 +367,34 @@
     ],
     "carousel": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-14",
+            "en": {
+              "body": "New options align, slidesPerMove, snap=\"proximity\" and edgePadding: a centred slide, moving several at a time and a drag that can rest between slides.",
+              "title": "Alignment, step, soft snap and edge padding"
+            },
+            "es": {
+              "body": "Nuevas opciones align, slidesPerMove, snap=\"proximity\" y edgePadding: slide centrado, avance de varios en varios y arrastre que puede quedar entre slides.",
+              "title": "Alineación, paso, snap suave y aire en los bordes"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Browses visual collections horizontally in discrete steps.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Recorre colecciones visuales horizontales mediante pasos definidos.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -424,31 +442,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Tells what changed and when, on a dated rail.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Cuenta qué cambió y cuándo, en un riel fechado.",
-              "title": "Primera versión"
-            },
-            "kind": "feature"
-          }
-        ],
-        "version": "0.0.1"
-      }
-    ],
-    "chart": [
-      {
-        "date": "2026-10-01",
-        "entries": [
-          {
-            "date": "2026-10-01",
-            "en": {
-              "body": "Part of the kit since the first release.",
-              "title": "First release"
-            },
-            "es": {
-              "body": "Parte del kit desde la primera versión.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -464,11 +462,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Lets people select one or more independent form choices.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Permite marcar una o varias opciones independientes en un formulario.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -514,11 +512,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Copies a value, or another element's text, in one click, and says so when the browser refuses.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Copia un valor, o el texto de otro elemento, con un clic, y avisa si el navegador lo rechazó.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -571,11 +569,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Displays readable, highlighted, and copyable code blocks.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Presenta bloques de código legibles, resaltados y copiables.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -633,11 +631,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Picks a color with an area, rails, editable channels and presets, or the native picker.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Elige un color con área, rieles, canales editables y presets, o el picker nativo.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -653,11 +651,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Searches and selects an option through editable input.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Busca y selecciona una opción mediante una entrada editable.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -673,11 +671,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Finds destinations and runs commands from the keyboard.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Encuentra destinos y ejecuta comandos desde el teclado.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -693,11 +691,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Threaded, nested comments: replies, voting and delete, data-driven with no backend.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Hilo de comentarios anidados: respuestas, voto y borrado, data-driven y sin backend.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -713,11 +711,11 @@
           {
             "date": "2026-10-08",
             "en": {
-              "body": "Two layers of the same size and a divider you drag to reveal one over the other.",
+              "body": "Added to the library, with its contract, a React binding and a Vanilla mount.",
               "title": "New component"
             },
             "es": {
-              "body": "Dos capas del mismo tamaño y un divisor que se arrastra para revelar una sobre la otra.",
+              "body": "Se suma a la librería, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Componente nuevo"
             },
             "kind": "feature"
@@ -733,11 +731,11 @@
           {
             "date": "2026-10-02",
             "en": {
-              "body": "Sets the same aspects side by side for two to four things, when you have to choose.",
+              "body": "Added to the library, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "New component"
             },
             "es": {
-              "body": "Pone los mismos aspectos lado a lado para dos a cuatro cosas, cuando hay que elegir.",
+              "body": "Se suma a la librería, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Componente nuevo"
             },
             "kind": "feature"
@@ -753,11 +751,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Part of the kit since the first release.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Parte del kit desde la primera versión.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -773,11 +771,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "2D cell navigation: tabular data or grouped widgets.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Navegación 2D por celdas: datos tabulares o widgets agrupados.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -793,11 +791,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Captures a date with a field and a popup calendar.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Captura una fecha con un campo y un calendario emergente.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -813,11 +811,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Shows one record's details as name-and-value pairs.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Muestra los datos de un registro como pares de nombre y valor.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -833,11 +831,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Explains how several things relate: nodes in a grid, and edges the runtime draws.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Explica una relación entre varias cosas: nodos en una grilla y aristas que el runtime traza.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -853,11 +851,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Interrupts the current task to request attention or a decision.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Interrumpe la tarea actual para pedir atención o una decisión.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -873,31 +871,11 @@
           {
             "date": "2026-10-08",
             "en": {
-              "body": "Guides a short task through steps inside a dialog with stacked cards.",
+              "body": "Added to the library, with its contract, a React binding and a Vanilla mount.",
               "title": "New component"
             },
             "es": {
-              "body": "Guía una tarea corta por pasos dentro de un diálogo con tarjetas apiladas.",
-              "title": "Componente nuevo"
-            },
-            "kind": "feature"
-          }
-        ],
-        "version": "0.0.2"
-      }
-    ],
-    "dock": [
-      {
-        "date": "2026-10-12",
-        "entries": [
-          {
-            "date": "2026-10-08",
-            "en": {
-              "body": "A compact group of icon actions with accessible names.",
-              "title": "New component"
-            },
-            "es": {
-              "body": "Un grupo compacto de acciones con iconos y nombres accesibles.",
+              "body": "Se suma a la librería, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Componente nuevo"
             },
             "kind": "feature"
@@ -913,11 +891,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Rich text with a formatting bar, built on ProseMirror.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Texto enriquecido con una barra de formato, construido sobre ProseMirror.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -933,11 +911,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Explains why content is absent and points to the next step.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Explica por qué no hay contenido y orienta el siguiente paso.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -953,11 +931,11 @@
           {
             "date": "2026-10-07",
             "en": {
-              "body": "Reactive avatar that looks, blinks and talks, with one whole image per expression.",
+              "body": "Added to the library, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "New component"
             },
             "es": {
-              "body": "Avatar reactivo que mira, parpadea y habla, con una imagen entera por cada expresión.",
+              "body": "Se suma a la librería, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Componente nuevo"
             },
             "kind": "feature"
@@ -991,11 +969,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Smoothly fades content at an edge to hide overflow without hard clipping.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Desvanece el contenido suavemente en un borde para ocultar overflow sin cortes duros.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1011,11 +989,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "A stream of independent posts, each announced with its own position.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Stream de publicaciones independientes, cada una con su posición anunciada.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1031,31 +1009,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Part of the kit since the first release.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Parte del kit desde la primera versión.",
-              "title": "Primera versión"
-            },
-            "kind": "feature"
-          }
-        ],
-        "version": "0.0.1"
-      }
-    ],
-    "folder": [
-      {
-        "date": "2026-10-01",
-        "entries": [
-          {
-            "date": "2026-10-01",
-            "en": {
-              "body": "A surface with a tab, drawn as one silhouette; it can appear only on interaction.",
-              "title": "First release"
-            },
-            "es": {
-              "body": "Una superficie con pestaña, dibujada como una silueta sola; puede aparecer sólo al interactuar.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1089,11 +1047,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Closes the page with a band of its own: secondary navigation, a legal line, or a credit.",
+              "body": "Published for the first time, with its contract and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Cierra la página con una banda propia: navegación secundaria, aviso legal o crédito.",
+              "body": "Se publica por primera vez, con su contrato y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1109,11 +1067,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Labels a control and attaches its guidance and validation message.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Rotula un control y le adjunta ayuda y mensaje de validación.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1147,11 +1105,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Opens a page with a surface of its own and generous room.",
+              "body": "Published for the first time, with its contract and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Abre una página con superficie propia y espacio generoso.",
+              "body": "Se publica por primera vez, con su contrato y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1212,11 +1170,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Represents actions and concepts with consistent iconography.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Representa acciones y conceptos con iconografía consistente.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1232,11 +1190,11 @@
           {
             "date": "2026-10-08",
             "en": {
-              "body": "A crop window over an image, with zoom, rotation, aspect ratios and an exact export, including the transparent circle.",
+              "body": "Added to the library, with its contract, a React binding and a Vanilla mount.",
               "title": "New component"
             },
             "es": {
-              "body": "Una ventana de recorte sobre una imagen, con zoom, rotación, proporciones y exportación exacta, incluido el círculo transparente.",
+              "body": "Se suma a la librería, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Componente nuevo"
             },
             "kind": "feature"
@@ -1270,11 +1228,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Crops and positions images at a controlled aspect ratio.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Recorta y posiciona imágenes con una proporción controlada.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1285,16 +1243,34 @@
     ],
     "input": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-14",
+            "en": {
+              "body": "Input, Textarea and NativeInput take variant=\"ghost\": the field with no visible container, for use inside a surface that already frames it.",
+              "title": "Ghost variant"
+            },
+            "es": {
+              "body": "Input, Textarea y NativeInput aceptan variant=\"ghost\": el campo sin contenedor visible, para usarlo dentro de una superficie que ya lo enmarca.",
+              "title": "Variante ghost"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Captures a line of text with the browser's native control.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Captura una línea de texto con el control nativo del navegador.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1328,11 +1304,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Represents keys and keyboard combinations inside content.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Representa teclas y combinaciones de teclado dentro del contenido.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1509,11 +1485,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Part of the kit since the first release.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Parte del kit desde la primera versión.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1524,16 +1500,46 @@
     ],
     "lightbox": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-13",
+            "en": {
+              "body": "A link to an .mp4, .webm, .mov, .m4v or .ogv plays in the same viewer, with its own controls, arrows, counter and caption. No zoom or drag. New trigger options: `video` and `videoLoop`.",
+              "title": "Plays video"
+            },
+            "es": {
+              "body": "Un enlace a un .mp4, .webm, .mov, .m4v u .ogv se reproduce en el mismo visor, con sus propios controles, flechas, contador y pie. Sin zoom ni arrastre. Nuevas opciones del enlace: `video` y `videoLoop`.",
+              "title": "Muestra videos"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-10-13",
+            "en": {
+              "body": "New `video` slot: a VideoPlayer authored in the page, with its words in its own language. The viewer loads each video's file into it and shows it in the photo's place. With no slot, the video uses the browser's own controls.",
+              "title": "Videos play in the VideoPlayer"
+            },
+            "es": {
+              "body": "Nuevo slot `video`: un VideoPlayer escrito en la página, con sus palabras en su idioma. El visor carga en él el archivo de cada video y lo muestra en lugar de la foto. Sin slot, el video usa los controles del navegador.",
+              "title": "Los videos se reproducen en el VideoPlayer"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Shows an image or a gallery large, with zoom, in a modal dialog.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Muestra una imagen o una galería en grande, con zoom, en un diálogo modal.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1568,11 +1574,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Organizes related items into clear, scannable rows.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Organiza elementos relacionados en filas claras y escaneables.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1588,11 +1594,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Shows every option at once to choose one or several in place.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Muestra todas las opciones a la vez para elegir una o varias en el lugar.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1608,11 +1614,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Indicates that a short operation is still running.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Indica que una operación breve sigue en curso.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1628,11 +1634,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Repeats an inert strip with requested motion or always-pausable autoplay.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Repite una franja inerte con movimiento pedido o autoplay siempre pausable.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1691,11 +1697,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "A wash the size of the text, so it reads over a photo.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Un wash del tamaño del texto para que se lea sobre una foto.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1711,11 +1717,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Opens an edge-to-edge panel with several columns of navigation links.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Despliega un panel borde a borde con varias columnas de enlaces de navegación.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1731,11 +1737,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Presents a compact list of contextual actions.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Presenta una lista compacta de acciones contextuales.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1781,11 +1787,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "A persistent horizontal bar of commands, some opening a dropdown.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Barra horizontal persistente de comandos, algunos con desplegable.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1801,11 +1807,11 @@
           {
             "date": "2026-10-02",
             "en": {
-              "body": "Lays out one conversation row with avatar, alignment, content, and metadata.",
+              "body": "Added to the library, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "New component"
             },
             "es": {
-              "body": "Ordena una fila de conversación con avatar, alineación, contenido y metadatos.",
+              "body": "Se suma a la librería, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Componente nuevo"
             },
             "kind": "feature"
@@ -1821,11 +1827,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Shows a measurement within a known range, not a task's progress.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Muestra una medición dentro de un rango conocido, no el avance de una tarea.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1841,11 +1847,11 @@
           {
             "date": "2026-10-08",
             "en": {
-              "body": "Three plates that fan out into an isometric stack under the pointer or by state.",
+              "body": "Added to the library, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "New component"
             },
             "es": {
-              "body": "Tres placas apiladas que se abren en una pila isométrica al pasar el puntero o por estado.",
+              "body": "Se suma a la librería, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Componente nuevo"
             },
             "kind": "feature"
@@ -1879,11 +1885,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Part of the kit since the first release.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Parte del kit desde la primera versión.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1918,11 +1924,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Collects brand, global navigation, and actions in the header.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Reúne marca, navegación y acciones globales en la cabecera.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1956,11 +1962,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Captures quantities with limits and step controls.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Captura cantidades con límites y controles incrementales.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2021,11 +2027,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "A one-time code, one field per digit.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Un código de un solo uso, con un campo por dígito.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2041,11 +2047,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Splits long collections into navigable pages.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Divide colecciones extensas en páginas navegables.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2061,11 +2067,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "A password field with a button to show what was typed.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Un campo de contraseña con un botón para mostrar lo que se escribió.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2099,11 +2105,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Preserves layout while content finishes loading.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Reserva la estructura mientras el contenido termina de cargar.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2138,11 +2144,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Shows rich contextual content without blocking the page, with or without chrome (the bare surface is Popup).",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Muestra contenido contextual rico sin bloquear la página, con o sin chrome (la superficie desnuda es Popup).",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2158,11 +2164,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Shows and hides content with an animated exit, and in React waits for it to finish before unmounting.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Muestra y oculta contenido con una salida animada, y en React espera a que termine antes de desmontarlo.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2196,11 +2202,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Explains ordered procedures with steps and supporting details.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Explica procedimientos ordenados con pasos y detalles.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2216,11 +2222,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Shows how much of a task with known duration is complete.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Muestra cuánto avanzó una tarea con duración conocida.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2236,11 +2242,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Turns a short string into a scannable symbol, drawn as a single SVG path.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Convierte un texto corto en un símbolo escaneable, dibujado como un solo path SVG.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2275,11 +2281,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Asks one question at a time, validates before moving on and shows progress.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Pregunta de a una, valida antes de avanzar y muestra el progreso.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2314,11 +2320,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Shows somebody else's words, with who said them and the work they appeared in.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Muestra palabras de otro, con quién las dijo y en qué obra aparecieron.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2334,11 +2340,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Lets people choose exactly one option from a set.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Permite elegir una sola opción dentro de un conjunto.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2373,11 +2379,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "A score on a short scale: the control that sets one and the reading of the average.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Una puntuación en una escala corta: el control con que se elige y la lectura del promedio.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2393,11 +2399,11 @@
           {
             "date": "2026-10-07",
             "en": {
-              "body": "Shares one box between panels and lets you drag the bar between each pair.",
+              "body": "Added to the library, with its contract, a React binding and a Vanilla mount.",
               "title": "New component"
             },
             "es": {
-              "body": "Reparte una caja entre paneles y deja arrastrar la barra que hay entre cada par.",
+              "body": "Se suma a la librería, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Componente nuevo"
             },
             "kind": "feature"
@@ -2413,11 +2419,11 @@
           {
             "date": "2026-10-08",
             "en": {
-              "body": "A container that opens from a small window to fill the box as you scroll, or the other way round.",
+              "body": "Added to the library, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "New component"
             },
             "es": {
-              "body": "Un contenedor que se abre desde una ventana pequeña hasta llenar la caja al hacer scroll, o al revés.",
+              "body": "Se suma a la librería, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Componente nuevo"
             },
             "kind": "feature"
@@ -2433,11 +2439,11 @@
           {
             "date": "2026-10-08",
             "en": {
-              "body": "New in this release.",
+              "body": "Added to the library, with its contract, a React binding and a Vanilla mount.",
               "title": "New component"
             },
             "es": {
-              "body": "Nuevo en esta versión.",
+              "body": "Se suma a la librería, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Componente nuevo"
             },
             "kind": "feature"
@@ -2453,11 +2459,11 @@
           {
             "date": "2026-10-07",
             "en": {
-              "body": "Two sections where the second one rises over the first as you scroll, with a subtle gesture.",
+              "body": "Added to the library, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "New component"
             },
             "es": {
-              "body": "Dos secciones donde la segunda sube y cubre a la primera al hacer scroll, con un gesto sutil.",
+              "body": "Se suma a la librería, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Componente nuevo"
             },
             "kind": "feature"
@@ -2473,11 +2479,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Switches between a few equivalent views or options.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Cambia entre pocas vistas u opciones equivalentes.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2493,11 +2499,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Chooses one value from a compact list of options.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Elige un valor de una lista compacta de opciones.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2532,11 +2538,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Draws the rule between two things, with or without a word in the middle.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Dibuja la regla entre dos cosas, con o sin una palabra al medio.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2552,11 +2558,11 @@
           {
             "date": "2026-10-10",
             "en": {
-              "body": "New in this release.",
+              "body": "Added to the library, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "New component"
             },
             "es": {
-              "body": "Nuevo en esta versión.",
+              "body": "Se suma a la librería, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Componente nuevo"
             },
             "kind": "feature"
@@ -2603,11 +2609,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Holds persistent navigation or tools beside the content.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Aloja navegación o herramientas persistentes junto al contenido.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2623,11 +2629,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Bypasses the repeated chrome: the first link, invisible until it is focused.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Salta el chrome repetido: el primer enlace, invisible hasta que recibe el foco.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2643,11 +2649,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Adjusts a continuous value within a range.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Ajusta un valor continuo dentro de un rango.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2681,11 +2687,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Pairs one accent action with related alternatives.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Combina una acción principal con alternativas relacionadas.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2720,11 +2726,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Highlights a metric with its label and context.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Destaca una métrica con su etiqueta y contexto.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2782,11 +2788,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Shows one of several actions or states through a single icon button.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Muestra una de varias acciones o estados mediante un único botón de ícono.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2802,31 +2808,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Orients people within a multi-stage process.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Orienta al usuario dentro de un proceso de varias etapas.",
-              "title": "Primera versión"
-            },
-            "kind": "feature"
-          }
-        ],
-        "version": "0.0.1"
-      }
-    ],
-    "sticker": [
-      {
-        "date": "2026-10-01",
-        "entries": [
-          {
-            "date": "2026-10-01",
-            "en": {
-              "body": "Turns artwork into a die-cut sticker that peels and applies.",
-              "title": "First release"
-            },
-            "es": {
-              "body": "Convierte una ilustración en un sticker troquelado que se despega y se pega.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2842,11 +2828,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Turns a preference on or off with immediate effect.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Activa o desactiva una preferencia con efecto inmediato.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2862,11 +2848,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Compares structured data across rows and columns.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Compara datos estructurados en filas y columnas.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2882,11 +2868,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Pages a table's rows on the client, with an optional page size.",
+              "body": "Published for the first time, with its contract and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Pagina en el cliente las filas de una tabla, con tamaño de página opcional.",
+              "body": "Se publica por primera vez, con su contrato y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2902,11 +2888,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Switches related views within the same space.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Alterna vistas relacionadas dentro del mismo espacio.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2922,11 +2908,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Labels content and may support selection or removal.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Etiqueta contenido y puede admitir selección o eliminación.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2942,11 +2928,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Collects several values typed into one field, as chips.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Recoge varios valores escritos en un mismo campo, como chips.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -2980,11 +2966,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "A surface with one interactive intent: navigate, act, choose, or disclose.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Superficie con una sola intención interactiva: navegar, actuar, elegir o divulgar.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -3000,11 +2986,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Captures time in locale-aware editable segments.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Captura horas por segmentos según el formato local.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -3020,11 +3006,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Shows events that already happened on a dated rail.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Muestra eventos que ya ocurrieron en un riel fechado.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -3040,11 +3026,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Navigates a long document and marks the current section.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Navega un documento largo y señala la sección actual.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -3060,11 +3046,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Groups many controls and optimizes keyboard navigation.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Agrupa muchos controles y optimiza su navegación por teclado.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -3080,11 +3066,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Adds a short explanation on hover or keyboard focus.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Añade una explicación corta al hover o foco de un control.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -3100,11 +3086,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Walks through an interface step by step, highlighting one element at a time without blocking the page.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Recorre la interfaz paso a paso, resaltando un elemento a la vez sin bloquear la página.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -3120,11 +3106,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Explores nested hierarchies through expandable branches.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Explora jerarquías anidadas mediante ramas expandibles.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -3140,11 +3126,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Combines hierarchy and columns: expandable rows, each with several values.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Combina jerarquía y columnas: filas expandibles con varios valores cada una.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -3160,11 +3146,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Part of the kit since the first release.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Parte del kit desde la primera versión.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -3180,11 +3166,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Selects one or more people from a list, with avatars and search.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Selecciona una o varias personas de una lista, con avatars y búsqueda.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -3218,11 +3204,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Part of the kit since the first release.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Parte del kit desde la primera versión.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -3238,11 +3224,11 @@
           {
             "date": "2026-10-09",
             "en": {
-              "body": "A video player with the system's controls over a real video, runnable from the keyboard.",
+              "body": "Added to the library, with its contract, a React binding and a Vanilla mount.",
               "title": "New component"
             },
             "es": {
-              "body": "Un reproductor de video con los controles del sistema sobre un video real, manejable con el teclado.",
+              "body": "Se suma a la librería, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Componente nuevo"
             },
             "kind": "feature"
@@ -3277,11 +3263,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Opens a non-modal panel that moves, resizes, minimizes and maximizes.",
+              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
               "title": "First release"
             },
             "es": {
-              "body": "Abre un panel no modal que se mueve, cambia de tamaño, se minimiza y se maximiza.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -3297,11 +3283,11 @@
           {
             "date": "2026-10-01",
             "en": {
-              "body": "Centers content and caps its readable width.",
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
               "title": "First release"
             },
             "es": {
-              "body": "Centra el contenido y limita su ancho de lectura.",
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -9878,6 +9864,12 @@
           "part": "root",
           "sheet": "@skryensya/core/components/carousel.css"
         },
+        "--sk-carousel-edge-padding": {
+          "default": "0px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/carousel.css"
+        },
         "--sk-carousel-gap": {
           "default": "var(--space-inline-md)",
           "output": false,
@@ -9937,6 +9929,7 @@
         "--sk-carousel-dot-color",
         "--sk-carousel-dot-gap",
         "--sk-carousel-dot-size",
+        "--sk-carousel-edge-padding",
         "--sk-carousel-gap",
         "--sk-carousel-motion-duration",
         "--sk-carousel-motion-easing",
@@ -9948,6 +9941,15 @@
       ],
       "id": "carousel",
       "options": {
+        "align": {
+          "attr": "data-align",
+          "type": "enum",
+          "values": [
+            "start",
+            "center",
+            "end"
+          ]
+        },
         "autoplay": {
           "attr": "data-autoplay",
           "default": false,
@@ -9967,6 +9969,10 @@
             "auto",
             "none"
           ]
+        },
+        "edgePadding": {
+          "styleProperty": "--sk-carousel-edge-padding",
+          "type": "string"
         },
         "loop": {
           "attr": "data-loop",
@@ -9999,6 +10005,19 @@
         "slideSize": {
           "styleProperty": "--sk-carousel-slide-size",
           "type": "string"
+        },
+        "slidesPerMove": {
+          "attr": "data-slides-per-move",
+          "min": 1,
+          "type": "number"
+        },
+        "snap": {
+          "attr": "data-snap",
+          "type": "enum",
+          "values": [
+            "mandatory",
+            "proximity"
+          ]
         }
       },
       "parts": {
@@ -10056,7 +10075,11 @@
             "slideSize",
             "orientation",
             "controls",
-            "mouseDrag"
+            "mouseDrag",
+            "align",
+            "slidesPerMove",
+            "snap",
+            "edgePadding"
           ],
           "react": {
             "from": "@skryensya/react/carousel",
@@ -10635,345 +10658,6 @@
             "element": "li",
             "host": true,
             "part": "release"
-          }
-        }
-      }
-    },
-    "chart": {
-      "a11y": [
-        {
-          "because": "A chart's series is announced entry by entry, but nothing in the list says what the numbers measure. Without a name, a screen reader reads six numbers about nothing.",
-          "requiresOneOf": [
-            "label"
-          ],
-          "when": {
-            "label": "absent"
-          }
-        }
-      ],
-      "bindings": {
-        "Chart": {
-          "enhancer": "data-sk-chart",
-          "markup": true,
-          "portals": false,
-          "react": "@skryensya/react/chart#Chart"
-        }
-      },
-      "category": "data",
-      "css": "@skryensya/core/components/chart.css",
-      "hookDetails": {
-        "--sk-chart-color": {
-          "default": "var(--color-action-accent)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/chart.css"
-        },
-        "--sk-chart-gap": {
-          "default": "var(--space-inline-xs)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/chart.css"
-        },
-        "--sk-chart-max": {
-          "default": "1",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/chart.css"
-        },
-        "--sk-chart-plot-size": {
-          "default": "6rem",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/chart.css"
-        },
-        "--sk-chart-radius": {
-          "default": "var(--radius-control)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/chart.css"
-        },
-        "--sk-chart-value": {
-          "default": "0",
-          "output": false,
-          "part": "point",
-          "sheet": "@skryensya/core/components/chart.css"
-        }
-      },
-      "hooks": [
-        "--sk-chart-color",
-        "--sk-chart-gap",
-        "--sk-chart-max",
-        "--sk-chart-plot-size",
-        "--sk-chart-radius",
-        "--sk-chart-value"
-      ],
-      "id": "chart",
-      "options": {
-        "currency": {
-          "attr": "data-currency",
-          "machineInput": true,
-          "pattern": {
-            "example": "USD",
-            "source": "^[A-Z]{3}$"
-          },
-          "type": "string"
-        },
-        "description": {
-          "attr": "data-description",
-          "type": "string"
-        },
-        "flush": {
-          "attr": "data-flush",
-          "default": false,
-          "trueValue": "",
-          "type": "boolean"
-        },
-        "format": {
-          "attr": "data-format",
-          "default": "number",
-          "type": "enum",
-          "values": [
-            "number",
-            "compact",
-            "percent",
-            "currency"
-          ]
-        },
-        "grid": {
-          "attr": "data-grid",
-          "default": false,
-          "trueValue": "",
-          "type": "boolean"
-        },
-        "height": {
-          "attr": "data-height",
-          "default": "md",
-          "type": "enum",
-          "values": [
-            "sm",
-            "md",
-            "lg"
-          ]
-        },
-        "kind": {
-          "attr": "data-kind",
-          "default": "bar",
-          "type": "enum",
-          "values": [
-            "bar",
-            "line",
-            "area"
-          ]
-        },
-        "label": {
-          "attr": "aria-label",
-          "type": "string"
-        },
-        "labels": {
-          "attr": "data-labels",
-          "default": true,
-          "falseValue": "false",
-          "type": "boolean"
-        },
-        "locale": {
-          "attr": "data-locale",
-          "machineInput": true,
-          "type": "string"
-        },
-        "tone": {
-          "attr": "data-tone",
-          "default": "accent",
-          "type": "enum",
-          "values": [
-            "accent",
-            "success",
-            "warning",
-            "danger",
-            "info",
-            "neutral"
-          ]
-        },
-        "values": {
-          "attr": "data-values",
-          "default": false,
-          "trueValue": "",
-          "type": "boolean"
-        }
-      },
-      "parts": {
-        "bar": "sk-chart__bar",
-        "caption": "sk-chart__caption",
-        "label": "sk-chart__label",
-        "overlay": "sk-chart__overlay",
-        "overlayArea": "sk-chart__area",
-        "overlayLine": "sk-chart__line",
-        "overlaySvg": "sk-chart__svg",
-        "plot": "sk-chart__plot",
-        "point": "sk-chart__point",
-        "root": "sk-chart",
-        "series": "sk-chart__series",
-        "value": "sk-chart__value"
-      },
-      "semantics": {
-        "Chart": {
-          "alternatives": [
-            "Meter",
-            "Progress",
-            "Table",
-            "Stat"
-          ],
-          "avoidWhen": [
-            "it is ONE measurement within a known range, not a series; that is Meter",
-            "it is the progress of a task; that is Progress",
-            "the values have to be read precisely, compared row by row or sorted; that is a Table, and a five-bar chart is a worse table",
-            "the series has dozens of entries: bars become one-pixel lines and the labels overlap; group the data before drawing it"
-          ],
-          "useWhen": [
-            "there is a SERIES of named values and its shape needs to be seen: a total per month, per hour, per version",
-            "the number of a metric is already stated in text and the chart adds the trend, it does not replace it"
-          ]
-        }
-      },
-      "signatures": {
-        "Chart": {
-          "host": {
-            "element": "figure"
-          },
-          "implies": {
-            "format=currency": [
-              "currency"
-            ]
-          },
-          "intent": [
-            "series-of-labelled-values",
-            "trend-over-time",
-            "bar-chart",
-            "sparkline",
-            "dashboard-graph"
-          ],
-          "mount": "data-sk-chart",
-          "options": [
-            "kind",
-            "tone",
-            "height",
-            "labels",
-            "values",
-            "grid",
-            "flush",
-            "format",
-            "currency",
-            "locale",
-            "label",
-            "description"
-          ],
-          "react": {
-            "from": "@skryensya/react/chart",
-            "name": "Chart"
-          },
-          "requires": [
-            "label"
-          ],
-          "slots": {
-            "items": {
-              "accepts": "items",
-              "item": {
-                "options": {
-                  "tone": {
-                    "attr": "data-tone",
-                    "type": "enum",
-                    "values": [
-                      "accent",
-                      "success",
-                      "warning",
-                      "danger",
-                      "info",
-                      "neutral"
-                    ]
-                  },
-                  "value": {
-                    "attr": "data-value",
-                    "type": "number"
-                  }
-                },
-                "requires": [
-                  "value"
-                ],
-                "slots": {
-                  "label": {
-                    "accepts": "text",
-                    "required": true
-                  },
-                  "text": {
-                    "accepts": "text"
-                  }
-                }
-              },
-              "prop": "points",
-              "required": true
-            }
-          },
-          "template": {
-            "children": [
-              {
-                "element": "figcaption",
-                "part": "caption",
-                "textFromOption": "label",
-                "whenGiven": "label"
-              },
-              {
-                "children": [
-                  {
-                    "attrs": {
-                      "aria-hidden": "true"
-                    },
-                    "element": "div",
-                    "part": "overlay"
-                  },
-                  {
-                    "attrs": {
-                      "role": "list"
-                    },
-                    "children": [
-                      {
-                        "children": [
-                          {
-                            "attrs": {
-                              "aria-hidden": "true"
-                            },
-                            "element": "span",
-                            "part": "bar"
-                          },
-                          {
-                            "element": "span",
-                            "itemSlot": "label",
-                            "part": "label"
-                          },
-                          {
-                            "element": "span",
-                            "itemSlot": "text",
-                            "part": "value"
-                          }
-                        ],
-                        "element": "li",
-                        "itemOptions": [
-                          "value",
-                          "tone"
-                        ],
-                        "part": "point",
-                        "repeat": "items"
-                      }
-                    ],
-                    "element": "ul",
-                    "part": "series"
-                  }
-                ],
-                "element": "div",
-                "part": "plot"
-              }
-            ],
-            "element": "figure",
-            "host": true,
-            "part": "root"
           }
         }
       }
@@ -18381,7 +18065,7 @@
           "avoidWhen": [
             "what has to be named are the parts of one thing already drawn: that is Annotation, which anchors each label to a selector inside the subject and does not draw a graph",
             "the content is a sequence with no branches and no loops: that is Procedure if they are instructions, or Steps if progress is primary; a single-column diagram with no forks is a list with extra lines",
-            "the hierarchy is containment and not flow (folders, a file tree): that is TreeView or Folder, where what matters is what is inside what",
+            "the hierarchy is containment and not flow (folders, a file tree): that is TreeView, where what matters is what is inside what",
             "the graph is large, comes from data, or has to be explored or have its nodes dragged: this does not do layout, it draws small hand-written diagrams. Wrapping it in a Canvas is enough to zoom and pan the view",
             "full UML notation, swimlanes or box types by convention (cylinder, parallelogram, hexagon) are needed: those are conventions the reader has to be taught, and of the prose shapes only the three understood without a legend live here. Logic gates are the exception and pass the same test from the other side: they are not a box that means AND, they are the symbol the standard assigns to conjunction, and anyone who reads the notation reads it without a legend",
             "a real schematic is needed: this draws the seven gates and nothing else. There are no flip-flops, buses, multiplexers, components with numbered pins, junction nodes or netlist; a gate holds nothing inside either, so a visible designator (`U1`) has nowhere to go",
@@ -19791,253 +19475,6 @@
             "host": true,
             "part": "trigger",
             "slot": "children"
-          }
-        }
-      }
-    },
-    "dock": {
-      "bindings": {
-        "Dock": {
-          "enhancer": "data-sk-dock",
-          "markup": true,
-          "portals": false,
-          "react": "@skryensya/react/dock#Dock"
-        },
-        "DockItem": {
-          "enhancer": null,
-          "markup": true,
-          "portals": false,
-          "react": "@skryensya/react/dock#DockItem"
-        }
-      },
-      "category": "actions",
-      "css": "@skryensya/core/components/dock.css",
-      "hookDetails": {
-        "--sk-dock-bg": {
-          "default": "color-mix(in oklab, var(--color-bg-surface) 84%, transparent)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/dock.css"
-        },
-        "--sk-dock-border-color": {
-          "default": "color-mix(in oklab, currentColor 12%, transparent)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/dock.css"
-        },
-        "--sk-dock-fg": {
-          "default": "var(--color-text-primary)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/dock.css"
-        },
-        "--sk-dock-gap": {
-          "default": "var(--space-inline-xs)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/dock.css"
-        },
-        "--sk-dock-item-bg": {
-          "default": "var(--color-bg-surface)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/dock.css"
-        },
-        "--sk-dock-item-radius": {
-          "default": "var(--radius-control)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/dock.css"
-        },
-        "--sk-dock-lift": {
-          "default": "var(--motion-distance-lg)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/dock.css"
-        },
-        "--sk-dock-magnification": {
-          "default": "1.3",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/dock.css"
-        },
-        "--sk-dock-padding": {
-          "default": "var(--space-inset-xs)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/dock.css"
-        },
-        "--sk-dock-radius": {
-          "default": "var(--radius-surface)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/dock.css"
-        },
-        "--sk-dock-shadow": {
-          "default": "var(--elevation-overlay)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/dock.css"
-        },
-        "--sk-dock-size": {
-          "default": "max(var(--size-control-lg), var(--size-touch-target))",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/dock.css"
-        }
-      },
-      "hooks": [
-        "--sk-dock-bg",
-        "--sk-dock-border-color",
-        "--sk-dock-fg",
-        "--sk-dock-gap",
-        "--sk-dock-item-radius",
-        "--sk-dock-padding",
-        "--sk-dock-radius",
-        "--sk-dock-shadow",
-        "--sk-dock-size",
-        "--sk-dock-magnification",
-        "--sk-dock-lift",
-        "--sk-dock-item-bg"
-      ],
-      "id": "dock",
-      "options": {
-        "disabled": {
-          "attr": "disabled",
-          "default": false,
-          "trueValue": "",
-          "type": "boolean"
-        },
-        "label": {
-          "attr": "aria-label",
-          "type": "string"
-        }
-      },
-      "parts": {
-        "icon": "sk-dock__icon",
-        "item": "sk-dock__item",
-        "root": "sk-dock"
-      },
-      "semantics": {
-        "Dock": {
-          "alternatives": [
-            "Toolbar",
-            "NavList"
-          ],
-          "avoidWhen": [
-            "The controls form a dense editor toolbar that needs roving keyboard focus.",
-            "The items are site destinations rather than actions."
-          ],
-          "useWhen": [
-            "A small set of frequent application actions needs an icon-based launcher.",
-            "The actions are the application's own, always one press away, and a name on hover or focus is enough to tell the icons apart."
-          ]
-        },
-        "DockItem": {
-          "alternatives": [
-            "Button.action",
-            "Button.navigation"
-          ],
-          "avoidWhen": [
-            "The control navigates to a page or represents a persistent toggle."
-          ],
-          "useWhen": [
-            "A named icon button runs one action in a Dock."
-          ]
-        }
-      },
-      "signatures": {
-        "Dock": {
-          "forward": [
-            "id",
-            "aria-*"
-          ],
-          "host": {
-            "element": "div"
-          },
-          "intent": [
-            "dock",
-            "compact-action-launcher",
-            "icon-action-group"
-          ],
-          "mount": "data-sk-dock",
-          "options": [
-            "label"
-          ],
-          "react": {
-            "from": "@skryensya/react/dock",
-            "name": "Dock"
-          },
-          "requires": [
-            "label"
-          ],
-          "slots": {
-            "children": {
-              "accepts": "node",
-              "required": true
-            }
-          },
-          "template": {
-            "attrs": {
-              "role": "group"
-            },
-            "element": "div",
-            "host": true,
-            "part": "root",
-            "slot": "children"
-          }
-        },
-        "DockItem": {
-          "forward": [
-            "id",
-            "aria-*"
-          ],
-          "host": {
-            "element": "button"
-          },
-          "intent": [
-            "dock-action"
-          ],
-          "options": [
-            "label",
-            "disabled"
-          ],
-          "parents": [
-            "Dock"
-          ],
-          "react": {
-            "from": "@skryensya/react/dock",
-            "name": "DockItem"
-          },
-          "requires": [
-            "label"
-          ],
-          "slots": {
-            "children": {
-              "accepts": "node",
-              "required": true
-            }
-          },
-          "template": {
-            "also": [
-              "sk-interactive"
-            ],
-            "attrs": {
-              "type": "button"
-            },
-            "children": [
-              {
-                "attrs": {
-                  "aria-hidden": "true"
-                },
-                "element": "span",
-                "part": "icon",
-                "slot": "children"
-              }
-            ],
-            "element": "button",
-            "host": true,
-            "part": "item"
           }
         }
       }
@@ -21673,729 +21110,6 @@
             "element": "div",
             "host": true,
             "part": "root"
-          }
-        }
-      }
-    },
-    "folder": {
-      "bindings": {
-        "Folder": {
-          "enhancer": "data-sk-folder",
-          "markup": true,
-          "portals": false,
-          "react": "@skryensya/react/folder#Folder"
-        },
-        "FolderLink": {
-          "enhancer": "data-sk-folder",
-          "markup": true,
-          "portals": false,
-          "react": "@skryensya/react/folder#FolderLink"
-        },
-        "FolderPreview": {
-          "enhancer": null,
-          "markup": true,
-          "portals": false,
-          "react": "@skryensya/react/folder#FolderPreview"
-        },
-        "FolderStack": {
-          "enhancer": null,
-          "markup": true,
-          "portals": false,
-          "react": "@skryensya/react/folder#FolderStack"
-        }
-      },
-      "category": "content",
-      "css": "@skryensya/core/components/folder.css",
-      "hookDetails": {
-        "--sk-folder-brutalist-edge": {
-          "default": "oklch(from var(--shadow-lg) l c h / 1)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-brutalist-offset-block": {
-          "default": "6px",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-brutalist-offset-inline": {
-          "default": "6px",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-brutalist-shadow": {
-          "default": "var(--sk-folder-brutalist-edge)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-clip": {
-          "default": "none",
-          "output": true,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-content-gap": {
-          "default": "var(--space-stack-xs)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-depth": {
-          "default": "5px",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-fan-clip": {
-          "default": "none",
-          "output": true,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-fg": {
-          "default": "var(--color-text-primary)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-fill": {
-          "default": "var(--color-bg-surface)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-fill-active": {
-          "default": "light-dark(\n      color-mix(in oklab, var(--color-text-primary) 10%, var(--color-bg-surface-raised)),\n      var(--color-bg-surface-raised)\n    )",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-fold-lift": {
-          "default": "14px",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-ground": {
-          "default": "var(--color-bg-canvas)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-inset-x": {
-          "default": "var(--space-inset-lg)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-inset-y": {
-          "default": "var(--space-inset-lg)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-label-gap": {
-          "default": "var(--space-inset-xs)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-label-offset": {
-          "default": "var(--space-inset-md)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-label-size": {
-          "default": "var(--font-size-heading-h2)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-lift": {
-          "default": "8px",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-mask": {
-          "default": "none",
-          "output": true,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-max-inline-size": {
-          "default": "var(--size-wrapper-sm)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-min-height": {
-          "default": "240px",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-perspective": {
-          "default": "700px",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-preview-border": {
-          "default": "0 0 0 var(--sk-folder-preview-mat) var(--color-bg-surface),\n      0 0 0 calc(var(--sk-folder-preview-mat) + 1px) color-mix(in oklab, var(--color-text-primary) 14%, transparent)",
-          "output": false,
-          "part": "stack",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-preview-mat": {
-          "default": "2px",
-          "output": false,
-          "part": "stack",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-preview-recede": {
-          "default": "0.9",
-          "output": false,
-          "part": "stack",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-preview-rest-scale": {
-          "default": "0.86",
-          "output": false,
-          "part": "stack",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-preview-rise": {
-          "default": "92px",
-          "output": false,
-          "part": "stack",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-preview-scale": {
-          "default": "1",
-          "output": false,
-          "part": "preview",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-preview-shadow": {
-          "default": "0 10px 24px color-mix(in oklab, var(--color-text-primary) 20%, transparent),\n      0 2px 6px color-mix(in oklab, var(--color-text-primary) 14%, transparent)",
-          "output": false,
-          "part": "stack",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-preview-size": {
-          "default": "26%",
-          "output": false,
-          "part": "stack",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-preview-spread": {
-          "default": "34%",
-          "output": false,
-          "part": "stack",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-preview-tilt": {
-          "default": "8deg",
-          "output": false,
-          "part": "stack",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-preview-x": {
-          "default": "0px",
-          "output": false,
-          "part": "preview",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-preview-y": {
-          "default": "var(--sk-folder-preview-rise)",
-          "output": false,
-          "part": "preview",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-radius": {
-          "default": "10px",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-shadow-active-filter": {
-          "default": "drop-shadow(0 -14px 26px color-mix(in oklab, var(--color-text-primary) 4%, transparent))\n      drop-shadow(0 -5px 10px color-mix(in oklab, var(--color-text-primary) 2%, transparent))",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-shadow-filter": {
-          "default": "none",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-shoulder": {
-          "default": "96px",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-stack-overlap": {
-          "default": "100px",
-          "output": false,
-          "part": "stack",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-tab-height": {
-          "default": "40px",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-tab-min": {
-          "default": "168px",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-tab-radius": {
-          "default": "26px",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-tail": {
-          "default": "0px",
-          "output": true,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-tilt": {
-          "default": "-4deg",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        },
-        "--sk-folder-top-radius": {
-          "default": "18px",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/folder.css"
-        }
-      },
-      "hooks": [
-        "--sk-folder-brutalist-edge",
-        "--sk-folder-brutalist-offset-block",
-        "--sk-folder-brutalist-offset-inline",
-        "--sk-folder-brutalist-shadow",
-        "--sk-folder-clip",
-        "--sk-folder-content-gap",
-        "--sk-folder-depth",
-        "--sk-folder-fan-clip",
-        "--sk-folder-fg",
-        "--sk-folder-fill",
-        "--sk-folder-fill-active",
-        "--sk-folder-fold-lift",
-        "--sk-folder-ground",
-        "--sk-folder-inset-x",
-        "--sk-folder-inset-y",
-        "--sk-folder-label-gap",
-        "--sk-folder-label-offset",
-        "--sk-folder-label-size",
-        "--sk-folder-lift",
-        "--sk-folder-mask",
-        "--sk-folder-max-inline-size",
-        "--sk-folder-min-height",
-        "--sk-folder-perspective",
-        "--sk-folder-preview-border",
-        "--sk-folder-preview-mat",
-        "--sk-folder-preview-recede",
-        "--sk-folder-preview-rest-scale",
-        "--sk-folder-preview-rise",
-        "--sk-folder-preview-scale",
-        "--sk-folder-preview-shadow",
-        "--sk-folder-preview-size",
-        "--sk-folder-preview-spread",
-        "--sk-folder-preview-tilt",
-        "--sk-folder-preview-x",
-        "--sk-folder-preview-y",
-        "--sk-folder-radius",
-        "--sk-folder-shadow-active-filter",
-        "--sk-folder-shadow-filter",
-        "--sk-folder-shoulder",
-        "--sk-folder-stack-overlap",
-        "--sk-folder-tab-height",
-        "--sk-folder-tab-min",
-        "--sk-folder-tab-radius",
-        "--sk-folder-tail",
-        "--sk-folder-tilt",
-        "--sk-folder-top-radius"
-      ],
-      "id": "folder",
-      "options": {
-        "active": {
-          "attr": "data-active",
-          "default": false,
-          "trueValue": "",
-          "type": "boolean"
-        },
-        "appearance": {
-          "attr": "data-appearance",
-          "default": "plain",
-          "type": "enum",
-          "values": [
-            "plain",
-            "tactile",
-            "brutalist",
-            "frosted"
-          ]
-        },
-        "href": {
-          "attr": "href",
-          "type": "string"
-        },
-        "overlap": {
-          "styleProperty": "--sk-folder-stack-overlap",
-          "type": "string"
-        }
-      },
-      "outputHooks": [
-        "--sk-folder-clip",
-        "--sk-folder-fan-clip",
-        "--sk-folder-mask",
-        "--sk-folder-tail"
-      ],
-      "parts": {
-        "content": "sk-folder__content",
-        "path": "sk-folder__shape-path",
-        "preview": "sk-folder__preview",
-        "previews": "sk-folder__previews",
-        "root": "sk-folder",
-        "shape": "sk-folder__shape",
-        "stack": "sk-folder-stack",
-        "tab": "sk-folder__tab"
-      },
-      "semantics": {
-        "Folder": {
-          "alternatives": [
-            "Box",
-            "TileLink",
-            "Accordion"
-          ],
-          "avoidWhen": [
-            "it is a surface with no label of its own; that is a Box, which draws nothing",
-            "the whole surface is a control; that is a TileLink or a TileButton, which already bring a control's state and focus",
-            "the content opens and closes; that is an Accordion or a Details"
-          ],
-          "useWhen": [
-            "a block of content needs to say what it is about BEFORE it is read: the tab is a label, not one more heading",
-            "there is a collection of things of the same kind and each should read as a separate object",
-            "at rest it should read as clean text: a folder is never seen until it is touched"
-          ]
-        },
-        "FolderLink": {
-          "alternatives": [
-            "Folder",
-            "TileLink"
-          ],
-          "avoidWhen": [
-            "the folder does something on the page instead of navigating; that is a TileButton",
-            "there is more than one destination inside; nested links do not exist, put the links in the body of a Folder"
-          ],
-          "useWhen": [
-            "the whole folder goes somewhere: the complete rectangle is the destination",
-            "the reveal has to respond to the keyboard without depending on what is inside"
-          ]
-        },
-        "FolderPreview": {
-          "alternatives": [
-            "ImageFrame",
-            "Folder"
-          ],
-          "avoidWhen": [
-            "the image is the folder's content and not a preview; that goes in the body, where it can be reached",
-            "it is outside a Folder: alone it means nothing"
-          ],
-          "useWhen": [
-            "it goes in the previews slot of a Folder or a FolderLink: it is the box of ONE image of the fan",
-            "the image needs its own mat and shadow, which the image alone cannot carry"
-          ]
-        },
-        "FolderStack": {
-          "alternatives": [
-            "Grid",
-            "Folder"
-          ],
-          "avoidWhen": [
-            "each folder needs to be seen whole; that is a Grid or an Inline of Folders",
-            "the set is a list with semantics of its own (results, steps); whoever contains it names that, not this"
-          ],
-          "useWhen": [
-            "the folders read as a stack: each shows its tab and a strip of body",
-            "the overlap itself is the information, that there is more below and there is an order"
-          ]
-        }
-      },
-      "signatures": {
-        "Folder": {
-          "hitTesting": {
-            "childrenNone": [
-              "FolderPreview"
-            ]
-          },
-          "host": {
-            "element": "div"
-          },
-          "intent": [
-            "folder",
-            "tabbed-surface",
-            "labelled-card",
-            "file-folder"
-          ],
-          "mount": "data-sk-folder",
-          "options": [
-            "active",
-            "appearance"
-          ],
-          "react": {
-            "from": "@skryensya/react/folder",
-            "name": "Folder"
-          },
-          "slots": {
-            "children": {
-              "accepts": "node",
-              "required": true
-            },
-            "label": {
-              "accepts": "node",
-              "required": true
-            },
-            "previews": {
-              "accepts": "signature",
-              "of": [
-                "FolderPreview"
-              ]
-            }
-          },
-          "template": {
-            "children": [
-              {
-                "attrs": {
-                  "aria-hidden": "true",
-                  "focusable": "false",
-                  "preserveAspectRatio": "none"
-                },
-                "children": [
-                  {
-                    "element": "path",
-                    "mount": "data-sk-folder-path",
-                    "part": "path"
-                  }
-                ],
-                "element": "svg",
-                "mount": "data-sk-folder-shape",
-                "part": "shape"
-              },
-              {
-                "element": "div",
-                "mount": "data-sk-folder-tab",
-                "part": "tab",
-                "slot": "label"
-              },
-              {
-                "element": "div",
-                "part": "content",
-                "slot": "children"
-              },
-              {
-                "attrs": {
-                  "aria-hidden": "true"
-                },
-                "element": "div",
-                "part": "previews",
-                "slot": "previews",
-                "whenGiven": "previews"
-              }
-            ],
-            "element": "div",
-            "host": true,
-            "part": "root"
-          }
-        },
-        "FolderLink": {
-          "forward": [
-            "id",
-            "target",
-            "rel",
-            "download",
-            "aria-*"
-          ],
-          "hitTesting": {
-            "childrenNone": [
-              "FolderPreview"
-            ]
-          },
-          "host": {
-            "element": "a"
-          },
-          "intent": [
-            "folder-link",
-            "clickable-folder",
-            "folder-that-goes-somewhere"
-          ],
-          "mount": "data-sk-folder",
-          "options": [
-            "active",
-            "appearance",
-            "href"
-          ],
-          "react": {
-            "from": "@skryensya/react/folder",
-            "name": "FolderLink"
-          },
-          "requires": [
-            "href"
-          ],
-          "slots": {
-            "children": {
-              "accepts": "node",
-              "required": true
-            },
-            "label": {
-              "accepts": "node",
-              "required": true
-            },
-            "previews": {
-              "accepts": "signature",
-              "of": [
-                "FolderPreview"
-              ]
-            }
-          },
-          "template": {
-            "also": [
-              "sk-interactive"
-            ],
-            "children": [
-              {
-                "attrs": {
-                  "aria-hidden": "true",
-                  "focusable": "false",
-                  "preserveAspectRatio": "none"
-                },
-                "children": [
-                  {
-                    "element": "path",
-                    "mount": "data-sk-folder-path",
-                    "part": "path"
-                  }
-                ],
-                "element": "svg",
-                "mount": "data-sk-folder-shape",
-                "part": "shape"
-              },
-              {
-                "element": "div",
-                "mount": "data-sk-folder-tab",
-                "part": "tab",
-                "slot": "label"
-              },
-              {
-                "element": "div",
-                "part": "content",
-                "slot": "children"
-              },
-              {
-                "attrs": {
-                  "aria-hidden": "true"
-                },
-                "element": "div",
-                "part": "previews",
-                "slot": "previews",
-                "whenGiven": "previews"
-              }
-            ],
-            "element": "a",
-            "host": true,
-            "options": [
-              "href"
-            ],
-            "part": "root"
-          }
-        },
-        "FolderPreview": {
-          "compose": [
-            {
-              "of": "image-frame",
-              "sheets": [
-                "@skryensya/core/patterns/image-frame.css"
-              ]
-            }
-          ],
-          "host": {
-            "element": "div"
-          },
-          "intent": [
-            "folder-preview",
-            "one-card-in-a-folder-fan"
-          ],
-          "options": [],
-          "parents": [
-            "Folder",
-            "FolderLink"
-          ],
-          "react": {
-            "from": "@skryensya/react/folder",
-            "name": "FolderPreview"
-          },
-          "slots": {
-            "children": {
-              "accepts": "node",
-              "required": true
-            }
-          },
-          "template": {
-            "element": "div",
-            "host": true,
-            "part": "preview",
-            "slot": "children"
-          }
-        },
-        "FolderStack": {
-          "host": {
-            "element": "div"
-          },
-          "intent": [
-            "folder-stack",
-            "overlapping-cards",
-            "drawer-of-folders"
-          ],
-          "options": [
-            "overlap"
-          ],
-          "react": {
-            "from": "@skryensya/react/folder",
-            "name": "FolderStack"
-          },
-          "slots": {
-            "children": {
-              "accepts": "signature",
-              "of": [
-                "Folder",
-                "FolderLink"
-              ],
-              "required": true
-            }
-          },
-          "template": {
-            "element": "div",
-            "host": true,
-            "options": [
-              "overlap"
-            ],
-            "part": "stack",
-            "slot": "children"
           }
         }
       }
@@ -24412,6 +23126,13 @@
           "attr": "type",
           "default": "text",
           "type": "string"
+        },
+        "variant": {
+          "attr": "data-variant",
+          "type": "enum",
+          "values": [
+            "ghost"
+          ]
         }
       },
       "parts": {
@@ -24500,7 +23221,8 @@
             "format",
             "country",
             "errorLabel",
-            "appearance"
+            "appearance",
+            "variant"
           ],
           "parents": [
             "FormField"
@@ -24544,7 +23266,8 @@
             "type",
             "name",
             "disabled",
-            "appearance"
+            "appearance",
+            "variant"
           ],
           "react": {
             "from": "@skryensya/react/input",
@@ -24587,7 +23310,8 @@
             "name",
             "placeholder",
             "disabled",
-            "appearance"
+            "appearance",
+            "variant"
           ],
           "parents": [
             "FormField"
@@ -25778,6 +24502,20 @@
           "prop": "title",
           "type": "string"
         },
+        "triggerVideo": {
+          "attr": "data-lightbox-type",
+          "default": false,
+          "prop": "video",
+          "trueValue": "video",
+          "type": "boolean"
+        },
+        "triggerVideoLoop": {
+          "attr": "data-lightbox-video-loop",
+          "default": false,
+          "prop": "videoLoop",
+          "trueValue": "",
+          "type": "boolean"
+        },
         "triggerWidth": {
           "attr": "data-lightbox-width",
           "integer": true,
@@ -25823,6 +24561,7 @@
         "title": "sk-lightbox__title",
         "toolbar": "sk-lightbox__toolbar",
         "trigger": "sk-lightbox__trigger",
+        "video": "sk-lightbox__video",
         "zoom": "sk-lightbox__zoom"
       },
       "semantics": {
@@ -25919,7 +24658,11 @@
             "from": "@skryensya/react/lightbox",
             "name": "Lightbox"
           },
-          "slots": {},
+          "slots": {
+            "video": {
+              "accepts": "node"
+            }
+          },
           "template": {
             "children": [
               {
@@ -25972,6 +24715,9 @@
                 "children": [
                   {
                     "children": [
+                      {
+                        "slot": "video"
+                      },
                       {
                         "also": [
                           "sk-loader"
@@ -26214,7 +24960,9 @@
             "triggerCredit",
             "triggerWidth",
             "triggerHeight",
-            "triggerThumbnail"
+            "triggerThumbnail",
+            "triggerVideo",
+            "triggerVideoLoop"
           ],
           "react": {
             "from": "@skryensya/react/lightbox",
@@ -26243,6 +24991,7 @@
       },
       "systemOwned": [
         "image",
+        "video",
         "placeholder"
       ]
     },
@@ -30396,12 +29145,11 @@
       "semantics": {
         "MorphStack": {
           "alternatives": [
-            "Sticker",
             "ScrollStack",
             "Carousel"
           ],
           "avoidWhen": [
-            "there are fewer than three plates or more than five; two layers is a peel and Sticker fits it, and a longer series is Carousel or Procedure",
+            "there are fewer than three plates or more than five; a longer series is Carousel or Procedure",
             "the layers carry the information a reader needs (a chart and its legend): it is hidden at rest and absent on touch screens, so it would not be found",
             "the page should open it on a tap; hover is not trusted on a touch screen, so write state yourself from your own control"
           ],
@@ -41600,207 +40348,6 @@
         }
       }
     },
-    "sticker": {
-      "a11y": [
-        {
-          "because": "An authored image needs an alt, empty when the sticker is decoration. The sticker never invents one, and its state is not announced.",
-          "requiresOneOf": [
-            "alt"
-          ],
-          "when": {
-            "src": "present"
-          }
-        }
-      ],
-      "bindings": {
-        "Sticker": {
-          "enhancer": null,
-          "markup": true,
-          "portals": false,
-          "react": "@skryensya/react/sticker#Sticker"
-        }
-      },
-      "category": "content",
-      "css": "@skryensya/core/components/sticker.css",
-      "hookDetails": {
-        "--sk-sticker-edge-color": {
-          "default": "var(--color-text-on-media)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/sticker.css"
-        },
-        "--sk-sticker-edge-width": {
-          "default": "0.375rem",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/sticker.css"
-        },
-        "--sk-sticker-peel-size": {
-          "default": "0.5",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/sticker.css"
-        },
-        "--sk-sticker-rotate": {
-          "default": "-3deg",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/sticker.css"
-        }
-      },
-      "hooks": [
-        "--sk-sticker-edge-color",
-        "--sk-sticker-edge-width",
-        "--sk-sticker-peel-size",
-        "--sk-sticker-rotate"
-      ],
-      "id": "sticker",
-      "options": {
-        "alt": {
-          "attr": "alt",
-          "type": "string"
-        },
-        "peelOrigin": {
-          "attr": "data-peel-origin",
-          "default": "block-end-inline-end",
-          "type": "enum",
-          "values": [
-            "block-start-inline-start",
-            "block-start-inline-end",
-            "block-end-inline-start",
-            "block-end-inline-end"
-          ]
-        },
-        "src": {
-          "attr": "src",
-          "type": "string"
-        },
-        "state": {
-          "attr": "data-state",
-          "default": "idle",
-          "type": "enum",
-          "values": [
-            "idle",
-            "peeled",
-            "applied"
-          ]
-        }
-      },
-      "parts": {
-        "art": "sk-sticker__art",
-        "flap": "sk-sticker__flap",
-        "root": "sk-sticker"
-      },
-      "semantics": {
-        "Sticker": {
-          "alternatives": [
-            "ImageFrame",
-            "Avatar.image",
-            "Badge"
-          ],
-          "avoidWhen": [
-            "the media needs a rectangular crop, a fixed aspect ratio or object-fit: that is an ImageFrame",
-            "the image only has to be shown; a plain img carries no material treatment and costs nothing",
-            "the motion is a generic entrance or a call for attention; that is an effect such as sk-fx-reveal or sk-fx-pulse, not a peel",
-            "it is a person's identity: that is an Avatar, whatever shape the photo has",
-            "it is a count or a status next to something else; that is a Badge or a Tag, which are text, not artwork",
-            "clicking it is supposed to do something; a sticker is not a control, so put it inside a Button or give the product its own control"
-          ],
-          "useWhen": [
-            "a graphic needs a die-cut edge that follows its own silhouette, not the rectangle around it",
-            "artwork has to read as a physical, adhesive object on the page: a badge earned, a mark placed, a decal",
-            "the product has a state for the graphic's placement (not yet applied, lifting off, stuck down) and it should be seen"
-          ]
-        }
-      },
-      "signatures": {
-        "Sticker": {
-          "exactlyOneOf": [
-            [
-              "src",
-              "children"
-            ]
-          ],
-          "host": {
-            "element": "span"
-          },
-          "intent": [
-            "sticker",
-            "die-cut-sticker",
-            "peelable-sticker",
-            "silhouette-outline",
-            "badge-sticker"
-          ],
-          "options": [
-            "state",
-            "peelOrigin",
-            "src",
-            "alt"
-          ],
-          "react": {
-            "from": "@skryensya/react/sticker",
-            "name": "Sticker"
-          },
-          "slots": {
-            "children": {
-              "accepts": "node"
-            }
-          },
-          "template": {
-            "children": [
-              {
-                "children": [
-                  {
-                    "element": "img",
-                    "options": [
-                      "src",
-                      "alt"
-                    ],
-                    "whenGiven": "src"
-                  },
-                  {
-                    "slot": "children"
-                  }
-                ],
-                "element": "span",
-                "part": "art"
-              },
-              {
-                "attrs": {
-                  "aria-hidden": "true"
-                },
-                "children": [
-                  {
-                    "children": [
-                      {
-                        "attrs": {
-                          "alt": ""
-                        },
-                        "element": "img",
-                        "options": [
-                          "src"
-                        ],
-                        "whenGiven": "src"
-                      },
-                      {
-                        "slot": "children"
-                      }
-                    ],
-                    "element": "span",
-                    "part": "art"
-                  }
-                ],
-                "element": "span",
-                "part": "flap"
-              }
-            ],
-            "element": "span",
-            "host": true,
-            "part": "root"
-          }
-        }
-      }
-    },
     "switch": {
       "a11y": [
         {
@@ -49803,6 +48350,7 @@
                         ],
                         "attrs": {
                           "data-size": "sm",
+                          "data-variant": "ghost",
                           "type": "search"
                         },
                         "element": "input",
@@ -52288,7 +50836,7 @@
     "working": "0.0.3"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "19f4c38fb39e1821",
+  "sourceHash": "85af09bba37eccc7",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

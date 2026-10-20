@@ -44,7 +44,7 @@ export const linkMessages = {
 
     "linkPage.whenNot4": 'Para la navegación de un sitio: usa <a href="/es/componentes/navbar">Navbar</a> o <a href="/es/nav-list">NavList</a>.',
 
-    "linkPage.whenNot3": 'Para una tarjeta entera que lleva a un lugar: usa <a href="/es/componentes/tile">TileLink</a>.',
+    "linkPage.whenNot3": 'Para una tarjeta entera que lleva a un lugar: usa <a href="/es/componentes/tile-link">TileLink</a>.',
 
     "linkPage.whenNot2": "Para un enlace que debe verse como botón: usa <code>Button.navigation</code>.",
 
@@ -134,7 +134,7 @@ export const linkMessages = {
 
     "linkPage.whenNot4": 'For a site\'s navigation: use <a href="/components/navbar">Navbar</a> or <a href="/nav-list">NavList</a>.',
 
-    "linkPage.whenNot3": 'For a whole card that leads somewhere: use <a href="/components/tile">TileLink</a>.',
+    "linkPage.whenNot3": 'For a whole card that leads somewhere: use <a href="/components/tile-link">TileLink</a>.',
 
     "linkPage.whenNot2": "For a link that must look like a button: use <code>Button.navigation</code>.",
 

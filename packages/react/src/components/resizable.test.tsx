@@ -150,6 +150,18 @@ describe("Resizable", () => {
     expect(ref.current!.className).toBe("sk-resizable extra");
     expect((panelsOf(container)[0] as HTMLElement).style.background).toBe("red");
   });
+
+  it("writes an absolute floor as a style property, on top of the percentage minSize", () => {
+    const { container } = render(
+      <Resizable>
+        <Resizable.Panel minInlineSize="22rem">One</Resizable.Panel>
+        <Resizable.Handle label="x" />
+        <Resizable.Panel>Two</Resizable.Panel>
+      </Resizable>,
+    );
+    const panel = panelsOf(container)[0] as HTMLElement;
+    expect(panel.style.getPropertyValue("--sk-resizable-panel-min-inline-size")).toBe("22rem");
+  });
 });
 
 describe("Resizable, collapsible panels", () => {

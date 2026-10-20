@@ -21,10 +21,13 @@ import {
 import { useFormFieldControl } from "./form-field.js";
 
 /* Derived, never restated: the default lives in the contract. */
-const { appearance: appearanceOption, type: typeOption } = inputContract.options;
+const { appearance: appearanceOption, type: typeOption, variant: variantOption } = inputContract.options;
 
 /** How a field is drawn: `plain`, `brutalist` or `frosted`. Absent means plain. */
 type InputAppearance = (typeof appearanceOption.values)[number];
+
+/** `ghost`: the field with no visible container. Absent means the ordinary boxed field. */
+type InputVariant = (typeof variantOption.values)[number];
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
@@ -33,6 +36,7 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   /** Control height. Named `controlSize` because `size` is already a native input attribute. */
   controlSize?: InputSize;
   appearance?: InputAppearance;
+  variant?: InputVariant;
   /**
    * Validation the control owns, for values the platform has no check for: a RUT's check digit, a
    * Chilean numbering plan, a URL that actually resolves somewhere. See the contract's own option.
@@ -53,7 +57,7 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 };
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
-  { appearance, className, controlSize, country, errorLabel, format, onBlur, onChange, onValidate, type = typeOption.default, ...props },
+  { appearance, className, controlSize, variant, country, errorLabel, format, onBlur, onChange, onValidate, type = typeOption.default, ...props },
   ref,
 ) {
   const control = useFormFieldControl(props);
@@ -153,6 +157,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       data-country={country}
       data-format={format}
       data-appearance={appearance}
+      data-variant={variant}
       data-size={controlSize}
       disabled={control.disabled}
       id={control.id}
@@ -170,6 +175,7 @@ export type NativeInputProps = InputHTMLAttributes<HTMLInputElement> & {
   /** Control height. Named `controlSize` because `size` is already a native input attribute. */
   controlSize?: InputSize;
   appearance?: InputAppearance;
+  variant?: InputVariant;
 };
 
 /*
@@ -178,7 +184,7 @@ export type NativeInputProps = InputHTMLAttributes<HTMLInputElement> & {
  * aria-label; inside one it inherits id / describedBy / invalid / required / disabled.
  */
 export const NativeInput = forwardRef<HTMLInputElement, NativeInputProps>(function NativeInput(
-  { appearance, className, controlSize, ...props },
+  { appearance, className, controlSize, variant, ...props },
   ref,
 ) {
   const control = useFormFieldControl(props);
@@ -190,6 +196,7 @@ export const NativeInput = forwardRef<HTMLInputElement, NativeInputProps>(functi
       aria-invalid={control.invalid ? "true" : undefined}
       className={cx(inputParts.root, className)}
       data-appearance={appearance}
+      data-variant={variant}
       data-size={controlSize}
       disabled={control.disabled}
       id={control.id}
@@ -202,10 +209,14 @@ export const NativeInput = forwardRef<HTMLInputElement, NativeInputProps>(functi
 export type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   controlSize?: InputSize;
   appearance?: InputAppearance;
+  variant?: InputVariant;
+  /** Grows with its content up to `--sk-textarea-autosize-max-block-size` (40vh by default), via
+   * `field-sizing: content`; a browser without it keeps the plain fixed-height box. */
+  autoSize?: boolean;
 };
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea(
-  { appearance, className, controlSize, ...props },
+  { appearance, autoSize, className, controlSize, variant, ...props },
   ref,
 ) {
   const control = useFormFieldControl(props);
@@ -217,6 +228,8 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
       aria-invalid={control.invalid ? "true" : undefined}
       className={cx(inputParts.root, className)}
       data-appearance={appearance}
+      data-auto-size={autoSize ? "" : undefined}
+      data-variant={variant}
       data-size={controlSize}
       disabled={control.disabled}
       id={control.id}

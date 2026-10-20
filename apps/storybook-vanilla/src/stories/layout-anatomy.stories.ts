@@ -10,11 +10,12 @@ import "@skryensya/core/patterns/hero.css";
 import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/wrapper.css";
 import * as demos from "@docs/demos/layout-anatomy";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Box - LayoutAnatomy", tags: ["autodocs"] } satisfies Meta;
 
-export const BoxAnatomy: StoryObj = treeStory(demos.boxAnatomyTree);
+export const BoxAnatomy: StoryObj = treeStory(demos.boxAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const StackAnatomy: StoryObj = treeStory(demos.stackAnatomyTree);
 export const InlineAnatomy: StoryObj = treeStory(demos.inlineAnatomyTree);
 export const GridAnatomy: StoryObj = treeStory(demos.gridAnatomyTree);

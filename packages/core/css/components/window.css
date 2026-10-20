@@ -126,6 +126,7 @@
     min-block-size: 0;
     padding: var(--sk-window-padding);
     overflow: auto;
+    overscroll-behavior: contain;
   }
 
   .sk-window__body[hidden] {

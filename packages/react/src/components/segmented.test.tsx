@@ -94,4 +94,23 @@ describe("SegmentedControl", () => {
     expect(week.getAttribute("aria-checked")).toBe("true");
     expect(week.getAttribute("tabindex")).toBe("0");
   });
+
+  it("follows the visual direction, not array order, under dir=\"rtl\"", () => {
+    /* Found as a real bug, not just unverified: the keydown handler never read `dir` at all, so
+       ArrowRight always moved to the next array entry even when that entry sits to the LEFT on
+       screen under RTL. */
+    const ui = render(
+      <SegmentedControl defaultValue="day" dir="rtl" label="Range" options={options} />,
+    );
+    const day = ui.getByRole("radio", { name: "Day" });
+    const week = ui.getByRole("radio", { name: "Week" });
+
+    day.focus();
+    fireEvent.keyDown(day, { key: "ArrowRight" });
+
+    // Day is visually rightmost under RTL; ArrowRight must move toward the start (Week comes after
+    // Day in document order, but visually to its LEFT) - so ArrowRight should NOT land on Week.
+    expect(document.activeElement).not.toBe(week);
+    expect(week.getAttribute("aria-checked")).toBe("false");
+  });
 });

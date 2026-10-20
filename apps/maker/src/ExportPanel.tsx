@@ -111,7 +111,7 @@ export function ExportPanel({ maker, onClose }: { maker: Maker; onClose: () => v
             { value: "site-react", label: "All pages" },
           ]}
         />
-        <FormField label="Exported code" labelHidden><Textarea className="maker-export__code" readOnly value={output.text} spellCheck={false} /></FormField>
+        <FormField label="Exported code" labelVisuallyHidden><Textarea className="maker-export__code" readOnly value={output.text} spellCheck={false} /></FormField>
         <Inline gap="sm">
           <Button variant="solid" size="sm" pre={<Icon name="download" />} onClick={download} disabled={!output.file}>
             Download {output.file ?? ""}

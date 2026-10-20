@@ -3,13 +3,21 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "ca80ed96b5a6d35c"
+surface: "64358acd2450218b"
 entries:
   - date: 2026-10-01
     kind: feature
     es:
       title: Primera versión
-      body: Agrupa muchos controles y optimiza su navegación por teclado.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Groups many controls and optimizes keyboard navigation.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."
+  - date: 2026-10-17
+    kind: feature
+    es:
+      title: "Reparto del espacio con justify, y ya no se aplasta en un contenedor angosto"
+      body: "Nueva opción justify (start/center/end/between) para repartir los controles en el eje principal. También se corrige que la barra no se encogía como ítem flex dentro de un contenedor angosto, así que flex-wrap nunca llegaba a envolver."
+    en:
+      title: "Spacing the bar's controls with justify, and it no longer refuses to shrink"
+      body: "New justify option (start/center/end/between) to spread the bar's controls along its main axis. Also fixes the bar not shrinking as a flex item inside a narrow container, so flex-wrap never got the chance to wrap."

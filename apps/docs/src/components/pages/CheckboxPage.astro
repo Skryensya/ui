@@ -9,7 +9,6 @@ import "@skryensya/core/patterns/wrapper.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -25,7 +24,6 @@ import {
   checkboxPositiveLabelTree,
   checkboxScaleTree,
   checkboxTree,
-  tileCheckboxTree,
 } from "../../demos/checkbox";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
@@ -37,35 +35,17 @@ const storybookTitle = "Components/Checkbox";
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`checkbox.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
-const tileCheckboxVanilla = `import { initComponents } from "@skryensya/vanilla/auto";
-import { mountIcons } from "@skryensya/vanilla/icon";
-import { lucideIcons } from "@skryensya/icons-lucide";
-
-// ${t("checkbox.iconsComment1")}
-// ${t("checkbox.iconsComment2")}
-mountIcons(document, lucideIcons);
-
-// ${t("checkbox.iconsComment3").split("\n").join("\n// ")}
-// ${t("checkbox.iconsComment4")}
-await initComponents();
-
-for (const root of document.querySelectorAll(
-  "[data-sk-tile-checkbox]",
-)) {
-  root.addEventListener("sk:tilecheckedchange", (event) => {
-    console.log(root.dataset.value, event.detail.checked);
-  });
-}`;
 ---
 
 <ComponentPageShell
+  breakHarness="/debug/checkbox-break"
   hookPlayground={{ tree: checkboxTree(t), fit: true }}
   title="Checkbox"
   description={t("checkbox.description")}
   contractId="checkbox"
   appearanceTargetSelector=".sk-checkbox"
   styleGroups={[{ file: "components/checkbox.css", probe: "sk-checkbox" }]}
-  testFiles={["packages/vanilla/src/components/checkbox-group.svelte.test.ts", "packages/vanilla/src/components/tile-checkbox.svelte.test.ts"]}
+  testFiles={["packages/vanilla/src/components/checkbox-group.svelte.test.ts"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} />
@@ -87,9 +67,6 @@ for (const root of document.querySelectorAll(
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview tree={checkboxTree(t)} title={t("checkbox.singleTitle")} description={t("checkbox.singleBody")} storybookTitle={storybookTitle} storybookStory="Default" />
     <UsagePreview tree={checkboxGroupTree(t)} title={t("checkbox.groupTitle")} description={t("checkbox.groupBody1")} storybookTitle={storybookTitle} storybookStory="Group" />
-    <UsagePreview tree={tileCheckboxTree(t)} title={t("checkbox.tileTitle")} description={t("checkbox.tileBody1")} storybookTitle="Components/Checkbox" storybookStory="TileCheckbox" />
-    <p set:html={t("checkbox.tileBody2")} />
-    <CodeBlock code={tileCheckboxVanilla} label="JavaScript" />
     <UsagePreview tree={checkboxScaleTree(t)} title={t("checkboxPage.scaleTitle")} description={t("checkboxPage.scaleBody")} storybookTitle={storybookTitle} storybookStory="Scale" />
 
     <h3>{t("component.contractNotesTitle")}</h3>

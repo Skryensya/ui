@@ -1,11 +1,5 @@
 <script lang="ts">
-  import {
-    anchoredParts,
-    anchorNameFor,
-    bindAnchor,
-    stripPositioningStyle,
-    supportsAnchorPositioning,
-  } from "@skryensya/core/anchored";
+  import { anchoredParts, anchoredPositioning } from "@skryensya/core/anchored";
   import { datePicker } from "@skryensya/core/machines";
   import {
     defaultDayLabel,
@@ -18,7 +12,7 @@
   import { datePickerContract, datePickerEvents, datePickerParts, defaultContentLabel, defaultTriggerLabel } from "@skryensya/core/date-picker";
   import { calendarParts } from "@skryensya/core/calendar";
   import { normalizeProps, useMachine } from "@zag-js/svelte";
-  import { onDestroy, onMount } from "svelte";
+  import { onMount } from "svelte";
   import { bindParts, type PartBinding } from "../runtime/bind-part.svelte";
   import { getRoot, uniqueId } from "../runtime/svelte-hydrate";
   import { remountIcons } from "../icon.js";
@@ -58,6 +52,7 @@
   let positioner: HTMLElement | undefined = $state();
 
   const service = useMachine(datePicker.machine, () => ({
+    positioning: { placement: "bottom-start" as const, ...anchoredPositioning },
     id: root.id,
     name: root.dataset.name || input.name || undefined,
     // Explicit date, never an ambiguous locale string: locale and time zone are authored or fall back to es/UTC.
@@ -97,19 +92,6 @@
 
   const api = $derived(datePicker.connect(service, normalizeProps));
 
-  /*
-   * Anchor positioning, now via the Anchoring pattern (ADR-25). Where the browser has the API it places
-   * the calendar itself and we do NOT pass Zag the inline `style`, so two engines do not fight. Without
-   * the API, Zag's `style` passes through untouched and it positions (the fallback).
-   *
-   * This used to stamp `--sk-date-picker-anchor` on the root and date-picker.css read it on the
-   * positioner, but NOTHING ever put an `anchor-name` on the control: half the wiring was missing, so
-   * the `@supports` block placed nothing and Zag ended up positioning every time.
-   */
-  const anchored = supportsAnchorPositioning();
-  let unbindAnchor: (() => void) | undefined;
-  /** Generic, so the template spread below needs no cast either: `stripPositioningStyle` takes any object. */
-  const positionerProps = <T extends object>(props: T) => (anchored ? stripPositioningStyle(props) : props);
 
   /*
    * The calendar's own triggers (prev/next/view/day) are rendered by CalendarView with their handlers
@@ -150,17 +132,14 @@
   bindParts(bindings);
 
   onMount(() => {
-    // The anchor-to-popup wiring, after the first render: the positioner comes from the template below.
-    if (anchored) unbindAnchor = bindAnchor(control, positioner, anchorNameFor(root.id));
     // The chevrons are authored as `data-sk-icon` placeholders and hydrated by the already-registered set.
     remountIcons(root);
   });
-  onDestroy(() => unbindAnchor?.());
 </script>
 
 <div
   bind:this={positioner}
-  {...positionerProps(api.getPositionerProps())}
+  {...api.getPositionerProps()}
   class="{datePickerParts.positioner} {anchoredParts.positioner}"
 >
   <div {...api.getContentProps()} class="{datePickerParts.content} {calendarParts.root}">

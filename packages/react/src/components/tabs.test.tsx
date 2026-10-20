@@ -125,4 +125,17 @@ describe("Tabs", () => {
       "manual",
     );
   });
+
+  it("renders no panel and no aria-controls for an item with no children (the selector shape)", () => {
+    const selectorItems = [
+      { value: "deserticion", label: "Deserción" },
+      { value: "salud", label: "Salud mental" },
+    ];
+    const ui = render(<Tabs defaultValue="deserticion" id="instrument" items={selectorItems} />);
+
+    expect(ui.queryByRole("tabpanel")).toBeNull();
+    for (const name of ["Deserción", "Salud mental"]) {
+      expect(ui.getByRole("tab", { name }).hasAttribute("aria-controls")).toBe(false);
+    }
+  });
 });

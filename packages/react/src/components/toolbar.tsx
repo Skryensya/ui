@@ -2,9 +2,15 @@ import { resolveToolbarKey, toolbarContract, toolbarParts } from "@skryensya/cor
 import { applyToolbarTabStop, toolbarStopOf, toolbarStops } from "@skryensya/core/toolbar-dom";
 import type { OptionValue } from "@skryensya/core/contract";
 import { useEffect, useRef, type FocusEvent, type HTMLAttributes, type KeyboardEvent, type ReactNode } from "react";
+import { getDirection } from "../direction.js";
 
 /* Derived, never restated: the default lives in the contract. */
-const { appearance: appearanceOption, loopFocus: loopFocusOption, orientation: orientationOption } = toolbarContract.options;
+const {
+  appearance: appearanceOption,
+  justify: justifyOption,
+  loopFocus: loopFocusOption,
+  orientation: orientationOption,
+} = toolbarContract.options;
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
@@ -21,11 +27,14 @@ export type ToolbarProps = Omit<HTMLAttributes<HTMLDivElement>, "role"> & {
   /** How the bar's frame is drawn: `plain`, `tactile`, `brutalist` or `frosted`. */
   appearance?: OptionValue<typeof toolbarContract.options.appearance>;
   loopFocus?: boolean;
+  /** How the bar's own controls share its main axis: `start` (default), `center`, `end`, `between`. */
+  justify?: OptionValue<typeof toolbarContract.options.justify>;
 };
 
 export function Toolbar({
   children,
   className,
+  justify = justifyOption.default,
   label,
   loopFocus = loopFocusOption.default,
   orientation = orientationOption.default,
@@ -66,6 +75,7 @@ export function Toolbar({
       itemCount: stops.length,
       orientation,
       loopFocus,
+      dir: getDirection(rest.dir, ref.current),
     });
     if (action.kind === "none") return;
     event.preventDefault();
@@ -82,6 +92,7 @@ export function Toolbar({
       aria-orientation={orientation}
       className={cx(toolbarParts.root, className)}
       data-appearance={appearance}
+      data-justify={justify}
       data-orientation={orientation}
       data-sk-toolbar=""
       onFocus={onFocus}

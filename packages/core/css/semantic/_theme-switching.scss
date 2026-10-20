@@ -1,0 +1,11 @@
+// `applyColorMode`/`applyAppearance` (theme-toggle.ts) stamp `data-theme-switching` on the root for
+// the two frames a scheme flip takes to resolve every `light-dark()` in the document. Every
+// component's own hover/focus transition on a color property fires right along with that flip, so
+// without this a mode switch is not instant, it is a cross-fade staggered by however many elements
+// happen to be transitioning: `*` and `!important` are both deliberate, the one moment this needs to
+// beat EVERY component's own transition rule, not join a specificity fight with each of them.
+@mixin tokens {
+  :where(:root[data-theme-switching]) * {
+    transition: none !important;
+  }
+}

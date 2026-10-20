@@ -36,6 +36,9 @@
     isolation: isolate;
     color: var(--sk-media-overlay-fg);
     pointer-events: auto;
+    /* The side bands below cap their width (`max-inline-size`), but a cap doesn't give an unbroken
+       caption word (a URL, an email) anywhere to break - it still ran past the band without this. */
+    overflow-wrap: anywhere;
   }
 
   .sk-media-overlay[data-edge="bottom"],

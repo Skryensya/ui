@@ -78,6 +78,13 @@
     --sk-button-shadow: none;
     --sk-button-fg: var(--sk-calendar-affordance-color);
   }
+
+  /* `chevron-left`/`chevron-right` are hardcoded icon names (`calendar.tsx`), which do not follow
+     `dir` on their own: found as a real bug, same class as Lightbox's own chevrons. */
+  .sk-calendar__previous .sk-icon:dir(rtl),
+  .sk-calendar__next .sk-icon:dir(rtl) {
+    transform: scaleX(-1);
+  }
   .sk-calendar__table-header th {
     padding: calc(var(--space-inset-xs) * 0.5) 0;
     font-weight: var(--font-weight-label);

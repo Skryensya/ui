@@ -1,7 +1,25 @@
 import { stateButtonAttrs, stateButtonParts, type IconStateFace } from "@skryensya/core/state-button";
 import { iconToggleAttrs, iconToggleParts } from "@skryensya/core/icon-toggle";
-import { forwardRef, type ButtonHTMLAttributes } from "react";
+import { forwardRef, useEffect, type ButtonHTMLAttributes } from "react";
+import { a11yWarnRef, dev, devTicket } from "../dev-warning.js";
 import { Icon } from "./icon.js";
+
+/*
+ * The contract's own a11y rule (`requiresOneOf: ["aria-label", "aria-labelledby"]`) is checked by
+ * `validate_ui` for a tree built through the contract tooling, but every face here is `data-icon-
+ * only=""` with no text of its own - a consumer who hand-writes `<StateButton faces={...} />`
+ * outside that tooling gets no runtime signal at all, unlike Slider/Rating's own
+ * `warnMissing*Name`. Same posture, here.
+ */
+function warnMissingStateButtonName(ariaLabel: unknown, ariaLabelledBy: unknown): void {
+  if (!dev || ariaLabel || ariaLabelledBy) return;
+  console.error(
+    ...devTicket("<StateButton>", {
+      issue: "no accessible name.",
+      fix: "Give it `aria-label` or `aria-labelledby` - every face is icon-only, so nothing else names it.",
+    }),
+  );
+}
 
 /*
  * ICON STATE BUTTON, the React half (decision 33, reversed: this is the signature now, not a
@@ -25,12 +43,22 @@ export const StateButton = forwardRef<HTMLButtonElement, StateButtonProps>(funct
   { className, current, faces, ...props },
   ref,
 ) {
+  const missingName = !props["aria-label"] && !props["aria-labelledby"];
+  useEffect(
+    () => warnMissingStateButtonName(props["aria-label"], props["aria-labelledby"]),
+    [props["aria-label"], props["aria-labelledby"]],
+  );
+
   return (
     <button
       {...props}
       className={classes(stateButtonParts.root, iconToggleParts.root, "sk-button", "sk-interactive", className)}
       data-icon-only=""
-      ref={ref}
+      ref={(el) => {
+        a11yWarnRef(missingName)(el);
+        if (typeof ref === "function") ref(el);
+        else if (ref) ref.current = el;
+      }}
       type="button"
       {...{ [stateButtonAttrs.current]: current }}
     >

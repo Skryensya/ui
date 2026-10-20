@@ -379,7 +379,7 @@ describe("a slotted control", () => {
         </button>
       </div>
       <div class="sk-select__positioner" data-sk-select-positioner>
-        <ul class="sk-select__content" data-sk-select-content>
+        <ul class="sk-select__content sk-scrollbar" data-sk-select-content>
           ${items.map((i) => `<li class="sk-select__item sk-interactive" data-sk-select-item data-value="${i.value}"><span class="sk-select__item-text" data-sk-select-item-text>${i.label}</span></li>`).join("")}
         </ul>
       </div>

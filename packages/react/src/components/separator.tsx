@@ -82,21 +82,30 @@ export function LabelledSeparator({
   ...props
 }: LabelledSeparatorProps) {
   const labelId = useId();
+  // An empty label (a computed string that resolved to "") would still wire aria-labelledby to an
+  // empty span, which gives an explicit, empty accessible name - worse than the nameless fallback
+  // ("separator") this component exists to replace a label WITH. Omitting the id there lets that
+  // same fallback take back over.
+  const hasLabel = children.trim().length > 0;
 
   return (
     <div
       {...props}
-      aria-labelledby={labelId}
+      aria-labelledby={hasLabel ? labelId : undefined}
       className={cx(separatorParts.root, className)}
       data-spacing={spacing}
       data-tone={tone}
       role="separator"
     >
       <span aria-hidden="true" className={separatorParts.rule} />
-      <span className={separatorParts.label} id={labelId}>
-        {children}
-      </span>
-      <span aria-hidden="true" className={separatorParts.rule} />
+      {hasLabel ? (
+        <>
+          <span className={separatorParts.label} id={labelId} title={children}>
+            {children}
+          </span>
+          <span aria-hidden="true" className={separatorParts.rule} />
+        </>
+      ) : null}
     </div>
   );
 }

@@ -1,7 +1,20 @@
 import { fireEvent, render, waitFor } from "@testing-library/react";
 import { useState } from "react";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { UserSelect, type UserSelectProps, type UserSelectUser } from "./user-select.js";
+
+// jsdom does no real layout - every element's `offsetHeight` is 0, and the list is now
+// virtualized (`@tanstack/virtual-core`, which reads exactly that property). See
+// `select.test.tsx`'s identical setup for the full reasoning.
+let offsetHeight: PropertyDescriptor | undefined;
+beforeEach(() => {
+  offsetHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "offsetHeight");
+  Object.defineProperty(HTMLElement.prototype, "offsetHeight", { configurable: true, get: () => 60 });
+});
+afterEach(() => {
+  if (offsetHeight) Object.defineProperty(HTMLElement.prototype, "offsetHeight", offsetHeight);
+  else delete (HTMLElement.prototype as { offsetHeight?: unknown }).offsetHeight;
+});
 
 const users: UserSelectUser[] = [
   { id: "jane", name: "Jane Cooper", email: "jane@company.com" },

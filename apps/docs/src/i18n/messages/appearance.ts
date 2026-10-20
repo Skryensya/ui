@@ -37,15 +37,13 @@ export const appearanceMessages = {
     "appearancePage.ruleSurface":
       "<strong>Va en la superficie que se expresa.</strong> En Accordion va en la raíz, porque el marco es la superficie; en TileRadioGroup se pone en el grupo y se pinta en cada opción; en DetailsGroup, en su marco.",
     "appearancePage.ruleNoTravel":
-      "<strong>Solo el control viaja.</strong> Un ExpandableTile, el marco de un Accordion o un Folder llevan la apariencia sin moverse: su control es el trigger que tienen adentro.",
+      "<strong>Solo el control viaja.</strong> Un ExpandableTile, el marco de un Accordion llevan la apariencia sin moverse: su control es el trigger que tienen adentro.",
     "appearancePage.ruleSelection":
       "<strong>La selección no es presión.</strong> Un toggle encendido o un tile seleccionado conservan su profundidad de reposo y se distinguen por la pintura; al presionarlos otra vez, vuelven a viajar.",
     "appearancePage.ruleBlack":
       "<strong>Brutalist dibuja con negro en ambos modos.</strong> Es el color de sombra del sistema a opacidad total: una sombra es oscura sea cual sea la página. El borde conserva el grosor de plain, así que cambiar de apariencia nunca cambia el tamaño.",
     "appearancePage.ruleFrosted":
       '<strong>Frosted parte de una base opaca.</strong> La lámina translúcida solo aparece donde hay <code>backdrop-filter</code> y nadie pidió menos transparencia; con alto contraste vuelve a la superficie opaca. Ver <a href="/es/transparencias">Transparencia</a>.',
-    "appearancePage.ruleReveal":
-      "<strong>Folder solo la muestra revelado.</strong> En reposo un folder es del color de su fondo, y una apariencia visible ahí lo delataría.",
     "appearancePage.ruleDisabled":
       "<strong>Deshabilitado manda.</strong> La construcción se encoge y se apaga, pero sigue reconocible; un control deshabilitado nunca parece presionable.",
     "appearancePage.ruleForced":
@@ -116,15 +114,13 @@ export const appearanceMessages = {
     "appearancePage.ruleSurface":
       "<strong>It goes on the surface being expressed.</strong> On Accordion it goes on the root, because the frame is the surface; on TileRadioGroup it is set on the group and painted on each option; on DetailsGroup, on its frame.",
     "appearancePage.ruleNoTravel":
-      "<strong>Only a control travels.</strong> An ExpandableTile, an Accordion's frame or a Folder wear the appearance without moving: their control is the trigger inside them.",
+      "<strong>Only a control travels.</strong> An ExpandableTile, an Accordion's frame wear the appearance without moving: their control is the trigger inside them.",
     "appearancePage.ruleSelection":
       "<strong>Selection is not press.</strong> A toggle that is on, or a selected tile, keeps its rest depth and is told apart by its paint; pressed again, it travels again.",
     "appearancePage.ruleBlack":
       "<strong>Brutalist draws in black in both modes.</strong> It is the system's shadow colour at full opacity: a shadow is dark whatever the page is. The edge keeps plain's width, so switching appearance never changes a size.",
     "appearancePage.ruleFrosted":
       '<strong>Frosted starts from an opaque baseline.</strong> The see-through sheet only appears where <code>backdrop-filter</code> exists and nobody asked for less transparency; under high contrast it returns to the opaque surface. See <a href="/transparency">Transparency</a>.',
-    "appearancePage.ruleReveal":
-      "<strong>Folder shows it only when revealed.</strong> At rest a folder is the colour of its ground, and a visible appearance there would give it away.",
     "appearancePage.ruleDisabled":
       "<strong>Disabled outranks appearance.</strong> The construction shrinks and fades but stays recognisable; a disabled control never looks pressable.",
     "appearancePage.ruleForced":

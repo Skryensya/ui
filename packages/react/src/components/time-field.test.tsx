@@ -271,6 +271,25 @@ describe("TimeField", () => {
     expect(document.activeElement).toBe(hour);
   });
 
+  it("follows the visual direction under dir=\"rtl\", not the locale's own segment order", () => {
+    /* Found as a real bug, same class as Segmented/Menubar/Toolbar/AppBar: ArrowLeft/ArrowRight
+       were hardcoded to array order (hour before minute) regardless of which way the field reads
+       on screen. */
+    const ui = render(
+      <div dir="rtl">
+        <TimeField defaultValue="09:30" hourLabel="Hour" locale="en-US" label="Hora" minuteLabel="Minute" />
+      </div>,
+    );
+    const hour = segment(ui, "Hour");
+    hour.focus();
+
+    fireEvent.keyDown(hour, { key: "ArrowRight" });
+    expect(document.activeElement).not.toBe(segment(ui, "Minute"));
+
+    fireEvent.keyDown(hour, { key: "ArrowLeft" });
+    expect(document.activeElement).toBe(segment(ui, "Minute"));
+  });
+
   it("submits the canonical HH:mm through a hidden input, regardless of the display locale", () => {
     const ui = render(
       <form data-testid="form">

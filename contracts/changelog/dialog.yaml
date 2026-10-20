@@ -3,13 +3,21 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "939989f89f19f82c"
+surface: "1279a0648d1623b6"
 entries:
+  - date: 2026-10-17
+    kind: feature
+    es:
+      title: "--sk-dialog-exit-duration: cerrar sin animación, en una línea"
+      body: "Nuevo par de hooks (duration/easing) que la transición de salida lee en vez de la compartida --motion-exit-duration. En 0s, un diálogo que se cierra porque la página detrás ya navegó no se demora esperando su propia salida."
+    en:
+      title: "--sk-dialog-exit-duration: closing with no animation, in one line"
+      body: "New pair of hooks (duration/easing) the exit transition reads instead of the shared --motion-exit-duration. At 0s, a dialog closing because the page behind it already navigated does not linger waiting on its own exit."
   - date: 2026-10-01
     kind: feature
     es:
       title: Primera versión
-      body: Interrumpe la tarea actual para pedir atención o una decisión.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Interrupts the current task to request attention or a decision.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

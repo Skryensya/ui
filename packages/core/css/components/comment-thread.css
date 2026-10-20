@@ -187,6 +187,9 @@
     gap: var(--sk-comment-gap);
     min-inline-size: 0;
     max-inline-size: var(--sk-comment-measure);
+    /* Shrinkable (`min-inline-size: 0`) is not the same as wrappable: an email or URL in the body
+       still has no break point of its own without this. */
+    overflow-wrap: anywhere;
   }
 
   .sk-comment__gutter {
@@ -407,6 +410,10 @@
 
   .sk-comment__author {
     font-weight: var(--font-weight-label);
+    /* The name column is `auto` by design (see the comment on `.sk-comment__self` above), so it
+       never shrinks - but an unbroken long name still has nowhere to break and ran past the row.
+       Wrapping it keeps the deliberate `auto` sizing and only stops the overflow. */
+    overflow-wrap: anywhere;
   }
 
   .sk-comment__timestamp {

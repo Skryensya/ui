@@ -1,0 +1,14 @@
+---
+/* Dev-only stress harness for Listbox labels, selection states and collection size. */
+if (import.meta.env.PROD) return new Response(null, { status: 404 });
+import "@skryensya/core/components/listbox.css";
+import "../../styles/site.css";
+import { ListboxBreak } from "../../components/react-demos/debug-listbox-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+<DebugShell title="Listbox" docsHref="/components/listbox">
+  <ListboxBreak client:only="react" />
+</DebugShell>
+<style is:global>
+  .break-listbox-viewport { max-block-size: min(70vh, 42rem); overflow: auto; }
+</style>

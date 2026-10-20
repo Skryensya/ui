@@ -322,8 +322,8 @@ export function LayoutGrid<Element extends ElementType = "div">({
 /**
  * The application shell: header across the top, rails down the sides, the work area filling the rest, an
  * optional footer. Its children are placed by what they are and where they stand (a Sidebar after the Main is
- * the end rail). Below the expanded line it is one column and the rails are not drawn. See `AppShell` in
- * `@skryensya/core/layout`.
+ * the end rail). Below the expanded line it is one column and the rails are not drawn, unless
+ * `sidebarPersistent`. See `AppShell` in `@skryensya/core/layout`.
  */
 export type AppShellProps = ComponentPropsWithoutRef<"div"> & {
   /** `screen` (the default, at least a screen tall) or `fit` (as tall as its content). */
@@ -332,15 +332,19 @@ export type AppShellProps = ComponentPropsWithoutRef<"div"> & {
   scroll?: AppShellScroll;
   /** The header stays at the top while the page scrolls under it. */
   stickyHeader?: boolean;
+  /** Keeps the sidebar (and `regions` scroll) at any width: a desktop-in-the-browser app's rail,
+   * not a responsive site's that gives way to a phone layout below the expanded line. */
+  sidebarPersistent?: boolean;
 };
 
-export function AppShell({ className, height, scroll, stickyHeader = false, ...props }: AppShellProps) {
+export function AppShell({ className, height, scroll, sidebarPersistent = false, stickyHeader = false, ...props }: AppShellProps) {
   return (
     <div
       {...props}
       className={classes(layoutGridParts.appShell, className)}
       data-height={height}
       data-scroll={scroll}
+      data-sidebar-persistent={sidebarPersistent ? "" : undefined}
       data-sticky-header={stickyHeader ? "" : undefined}
     />
   );

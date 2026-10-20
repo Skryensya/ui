@@ -78,7 +78,10 @@ const MAP = {
   upload: "Upload",
   download: "Download",
   file: "File",
+  "file-text": "FileText",
   folder: "Folder",
+  "folder-open": "FolderOpen",
+  home: "House",
   settings: "Settings",
   user: "User",
   language: "Languages",
@@ -117,11 +120,15 @@ const toBody = (nodes: (typeof icons)[keyof typeof icons]) =>
     .map(([tag, attrs]) => `<${tag} ${Object.entries(attrs).map(([k, v]) => `${k}="${v}"`).join(" ")} />`)
     .join("");
 
+/** Transport marks are solid: a filled triangle and two filled bars read as "play" and "pause" at 20px, an outline
+ *  of either looks like a placeholder. Lucide draws both as outlines, so the set fills them. */
+const FILLED = new Set(["play", "pause"]);
+
 /** Lucide's adapter: the geometry is data, and the library's viewBox is always `0 0 24 24`. */
 const resolve = (name: string, role: string) => {
   const nodes = icons[name as keyof typeof icons];
   if (!nodes) throw new Error(`Lucide no tiene "${name}" (rol "${role}"), ¿se renombró en un upgrade?`);
-  return { viewBox: "0 0 24 24", body: toBody(nodes) };
+  return { viewBox: "0 0 24 24", body: toBody(nodes), ...(FILLED.has(role) ? { attrs: { fill: "currentColor" } } : {}) };
 };
 
 generateIconSet({ dir: import.meta.dirname, label: "lucide", map: MAP, attrs: ATTRS, header: HEADER, resolve });

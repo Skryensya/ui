@@ -12,6 +12,7 @@ import A11yNotes from "../A11yNotes.astro";
 import {
   stateButtonAnatomyTree,
   stateButtonBasicTree,
+  stateButtonPlaygroundTree,
   stateButtonCopyTree,
   stateButtonDemoScript,
   stateButtonThemeToggleTree,
@@ -24,7 +25,7 @@ import { stateButtonDoTree, stateButtonDontTree, stateButtonSwitchDoTree, stateB
 ---
 
 <ComponentPageShell
-  hookPlayground={{ tree: stateButtonBasicTree(t), fit: true }}
+  hookPlayground={{ tree: stateButtonPlaygroundTree(t), fit: true }}
   title="StateButton"
   description={t("stateButtonPage.description")}
   contractId="state-button"

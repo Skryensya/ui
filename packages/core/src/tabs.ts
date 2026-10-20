@@ -131,7 +131,13 @@ export const tabsContract = {
             },
             slots: {
               label: { accepts: "node", required: true },
-              children: { accepts: "node", required: true },
+              /*
+               * Optional, not required: a "selector" shape - tabs that choose what a single shared
+               * content area shows, rather than each owning its own panel - has nothing to put
+               * here. An item that gives it still gets a panel; one that does not gets none, so a
+               * selector-only `Tabs` emits no empty panel markup at all.
+               */
+              children: { accepts: "node" },
             },
           },
         },
@@ -169,6 +175,7 @@ export const tabsContract = {
             repeat: "items",
             itemOptions: ["value"],
             itemSlot: "children",
+            whenItemSlotGiven: "children",
           },
         ],
       },

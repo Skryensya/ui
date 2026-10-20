@@ -11,6 +11,7 @@ import {
   emptyStateSearchDontGuideTree,
   emptyStateSearchTree,
   emptyStateTree,
+  emptyStatePageTree,
   emptyStateFirstDoGuideTree,
   emptyStateFirstDontGuideTree,
   emptyStateLoadingDoTree,
@@ -27,6 +28,7 @@ const t = useTranslations(getLocale(Astro.url));
 ---
 
 <ComponentPageShell
+  breakHarness="/debug/empty-state-break"
   hookPlayground={{ tree: emptyStateTree(t) }}
   title="EmptyState"
   description={t("emptyState.description")}
@@ -39,6 +41,8 @@ const t = useTranslations(getLocale(Astro.url));
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview tree={emptyStateTree(t)} title={t("emptyState.firstTitle")} description={t("emptyState.firstBody")} storybookTitle="Components/EmptyState" storybookStory="Default" />
     <UsagePreview tree={emptyStateSearchTree(t)} title={t("emptyState.searchTitle")} description={t("emptyState.searchBody")} storybookTitle="Components/EmptyState" storybookStory="Search" />
+
+    <UsagePreview tree={emptyStatePageTree(t)} title={t("emptyState.pageTitle")} description={t("emptyState.pageBody")} stageMinBlockSize="22rem" storybookTitle="Components/EmptyState" storybookStory="Default" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

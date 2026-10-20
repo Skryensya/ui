@@ -1,0 +1,7 @@
+---
+if (import.meta.env.PROD) return new Response(null, { status: 404 });
+import "@skryensya/core/components/details.css";
+import { DetailsBreak } from "../../components/react-demos/debug-details-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+<DebugShell title="Details" docsHref="/components/details"><DetailsBreak client:only="react" /></DebugShell>

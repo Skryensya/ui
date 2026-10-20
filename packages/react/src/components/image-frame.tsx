@@ -1,6 +1,6 @@
 import { imageFrameContract, imageFrameParts } from "@skryensya/core/image-frame";
 import type { OptionsOf } from "@skryensya/core/contract";
-import type { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
+import type { ComponentPropsWithoutRef, ElementType, ReactEventHandler, ReactNode } from "react";
 
 type PolymorphicProps<Element extends ElementType, OwnProps> = OwnProps & {
   as?: Element;
@@ -19,6 +19,13 @@ export type ImageFrameProps<Element extends ElementType = "div"> = PolymorphicPr
     caption?: ReactNode;
     children?: ReactNode;
     className?: string;
+    /**
+     * Fires on the `<img>` itself when `src` fails to load. Fallback is the caller's job (ImageFrame
+     * is a frame, not a fetch), but a native `error` event does not bubble, so a plain `onError`
+     * landed on the wrapper this component renders (`...props` spreads there) and silently never
+     * ran - this routes it to the one element that can actually dispatch it.
+     */
+    onError?: ReactEventHandler<HTMLImageElement>;
   } & Omit<OptionsOf<typeof imageFrameContract>, "frameElement">
 >;
 
@@ -39,6 +46,7 @@ export function ImageFrame<Element extends ElementType = "div">({
   src,
   alt = "",
   children,
+  onError,
   ...props
 }: ImageFrameProps<Element>) {
   const Component = as ?? "div";
@@ -55,7 +63,7 @@ export function ImageFrame<Element extends ElementType = "div">({
         [o.appearance.attr]: appearance,
       }}
     >
-      {src != null ? <img className={imageFrameParts.media} src={src} alt={alt} /> : children}
+      {src != null ? <img className={imageFrameParts.media} src={src} alt={alt} onError={onError} /> : children}
       {caption}
     </Component>
   );

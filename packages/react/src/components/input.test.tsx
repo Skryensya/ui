@@ -22,6 +22,32 @@ describe("Input contract", () => {
     expect(ui.getByLabelText("Frosted").getAttribute("data-appearance")).toBe("frosted");
   });
 
+  it("writes data-auto-size only when asked", () => {
+    const ui = render(
+      <>
+        <Textarea aria-label="Fixed" />
+        <Textarea aria-label="Grows" autoSize />
+      </>,
+    );
+    expect(ui.getByLabelText("Fixed").hasAttribute("data-auto-size")).toBe(false);
+    expect(ui.getByLabelText("Grows").getAttribute("data-auto-size")).toBe("");
+  });
+
+  it("writes the ghost variant only when asked, on every field shape", () => {
+    const ui = render(
+      <>
+        <Input aria-label="Plain" />
+        <Input aria-label="Ghost" variant="ghost" />
+        <Textarea aria-label="Ghost area" variant="ghost" />
+        <NativeInput aria-label="Ghost native" type="time" variant="ghost" />
+      </>,
+    );
+    expect(ui.getByLabelText("Plain").hasAttribute("data-variant")).toBe(false);
+    for (const name of ["Ghost", "Ghost area", "Ghost native"]) {
+      expect(ui.getByLabelText(name).getAttribute("data-variant")).toBe("ghost");
+    }
+  });
+
   it("stays a valid control outside a FormField", () => {
     const ui = render(<Input aria-label="Search" name="q" />);
     const input = controlIn(ui).getByRole("textbox", { name: "Search" }) as HTMLInputElement;

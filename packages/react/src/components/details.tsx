@@ -1,4 +1,4 @@
-import { detailsParts, type AccordionAppearance } from "@skryensya/core/accordion";
+import { detailsParts, type AccordionAppearance, type AccordionSize } from "@skryensya/core/accordion";
 import type { HTMLAttributes, ReactNode } from "react";
 import { Icon } from "./icon.js";
 
@@ -17,11 +17,21 @@ import { Icon } from "./icon.js";
  * `<details><summary>…</summary>…</details>` by hand, which is the point of reaching for the
  * platform's own element instead of a machine.
  */
-export type DetailsGroupProps = HTMLAttributes<HTMLElement> & { children?: ReactNode; appearance?: AccordionAppearance };
+export type DetailsGroupProps = HTMLAttributes<HTMLElement> & {
+  children?: ReactNode;
+  appearance?: AccordionAppearance;
+  /** `md` (default) is the generous, card-like density; `sm` tightens every section inside. */
+  size?: AccordionSize;
+};
 
-export function DetailsGroup({ children, className, appearance = "plain", ...props }: DetailsGroupProps) {
+export function DetailsGroup({ children, className, appearance = "plain", size = "md", ...props }: DetailsGroupProps) {
   return (
-    <section {...props} className={className ? `${detailsParts.group} ${className}` : detailsParts.group} data-appearance={appearance}>
+    <section
+      {...props}
+      className={className ? `${detailsParts.group} ${className}` : detailsParts.group}
+      data-appearance={appearance}
+      data-size={size}
+    >
       {children}
     </section>
   );
@@ -33,6 +43,9 @@ export type DetailsProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
   open?: boolean;
   /** Ignored inside a `DetailsGroup`: the group's frame is the surface there. */
   appearance?: AccordionAppearance;
+  /** `md` (default) is the generous, card-like density; `sm` fits a disclosure sitting inside an
+   * already-dense panel. Ignored inside a `DetailsGroup`, which sets it for every section inside. */
+  size?: AccordionSize;
 };
 
 type DetailsComponent = ((props: DetailsProps) => ReactNode) & {
@@ -40,12 +53,13 @@ type DetailsComponent = ((props: DetailsProps) => ReactNode) & {
   Content: typeof DetailsContent;
 };
 
-function DetailsRoot({ children, className, name, open, appearance = "plain", ...props }: DetailsProps) {
+function DetailsRoot({ children, className, name, open, appearance = "plain", size = "md", ...props }: DetailsProps) {
   return (
     <details
       {...props}
       className={className ? `${detailsParts.root} ${className}` : detailsParts.root}
       data-appearance={appearance}
+      data-size={size}
       name={name}
       open={open}
     >

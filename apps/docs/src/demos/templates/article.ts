@@ -1,7 +1,7 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../../i18n";
 import { siteFooter } from "./shared";
-import { blankImage } from "../../examples/card-data";
+import { satin } from "../../lib/satin";
 
 /*
  * EDITORIAL ARTICLE. The reading shape: one long column, measured tighter than any other template
@@ -136,7 +136,7 @@ export const articleTree = (t: Translate): UsageTree => ({
                   signature: "ImageFrame",
                   options: {
                     aspect: "16/9",
-                    src: blankImage(960, 540, "78716c"),
+                    src: satin("slate"),
                     alt: t("demo.article.coverAlt"),
                   },
                 },

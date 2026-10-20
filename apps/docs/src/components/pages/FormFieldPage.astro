@@ -66,12 +66,12 @@ const ddField = (tree: UsageTree): UsageTree => ({
 
     <UsagePreview
       tree={formFieldTree(t)}
-      optionName="labelHidden"
-      title={t("formFieldPage.prop.labelHidden.title")}
-      description={t("formFieldPage.prop.labelHidden.body")}
-      explain={explain("labelHidden", ["false", "true"])}
+      optionName="labelVisuallyHidden"
+      title={t("formFieldPage.prop.labelVisuallyHidden.title")}
+      description={t("formFieldPage.prop.labelVisuallyHidden.body")}
+      explain={explain("labelVisuallyHidden", ["false", "true"])}
       stageMinBlockSize="10rem"
-      labels={{ false: t("formFieldPage.prop.labelHidden.falseLabel"), true: t("formFieldPage.prop.labelHidden.trueLabel") }}
+      labels={{ false: t("formFieldPage.prop.labelVisuallyHidden.falseLabel"), true: t("formFieldPage.prop.labelVisuallyHidden.trueLabel") }}
       storybookTitle="Components/FormField"
       storybookStory="Default"
     />

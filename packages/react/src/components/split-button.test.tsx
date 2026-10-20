@@ -86,6 +86,22 @@ describe("SplitButton (React)", () => {
   });
 
   /*
+   * split-button.ts's own `slotImplies`, applied here by the flat-prop convenience: a loading
+   * action left the trigger free to open a menu of alternatives for the very action already
+   * running (the gap the contract-level rule exists to close on an authored/composed tree).
+   */
+  it("disables the menu trigger when the action is loading, even without disabled", () => {
+    const ui = render(
+      <SplitButton loading menuLabel="Más opciones" menuItems={items}>
+        Guardar
+      </SplitButton>,
+    );
+    expect((ui.getByRole("button", { name: "Más opciones" }) as HTMLButtonElement).disabled).toBe(
+      true,
+    );
+  });
+
+  /*
    * A real, previously-shipped regression (docs/aria-apg-audit.md's own "Menu Button" notes, sixth
    * amendment): the fallback trigger has to PAIR with the action button's own `variant`/`size` and
    * carry the icon-only+welded shape, or the two halves stop reading as one control. The divider

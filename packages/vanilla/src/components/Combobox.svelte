@@ -1,17 +1,14 @@
 <script lang="ts">
-  import {
-    anchorNameFor,
-    bindAnchor,
-    stripPositioningStyle,
-    supportsAnchorPositioning,
-  } from "@skryensya/core/anchored";
+  import { anchoredPositioning } from "@skryensya/core/anchored";
   import { combobox } from "@skryensya/core/machines";
   import { comboboxAttrs, comboboxEvents, comboboxParts, type ComboboxItem } from "@skryensya/core/combobox";
+  import { tagParts } from "@skryensya/core/tag";
   import { normalizeProps, useMachine } from "@zag-js/svelte";
   import { onDestroy, onMount } from "svelte";
   import { applyZagProps, bindZagEvents, type DomProps } from "../runtime/apply";
   import { bindParts, type PartBinding } from "../runtime/bind-part.svelte";
   import { getRoot, uniqueId } from "../runtime/svelte-hydrate";
+  import { remountIcons } from "../icon.js";
   import { selectorsFor } from "@skryensya/core/selectors";
 
   /*
@@ -74,10 +71,6 @@
   // imperative original never mutated `root.id`; this reproduces the same thing.
   const machineId = root.id || uniqueId("sk-combobox");
 
-  /* The Anchoring pattern (ADR-25). The anchor is the whole CONTROL, not the chevron: the list lines up
-   * with the field being typed into. */
-  const anchorName = supportsAnchorPositioning() ? anchorNameFor(machineId) : null;
-  let unbindAnchor: (() => void) | undefined;
 
   let valueArea = root.querySelector<HTMLElement>(selector.value);
   if (ready && input && !valueArea) {
@@ -127,6 +120,7 @@
   ]
     .filter(Boolean)
     .join(" ");
+  const triggerLabel = trigger?.getAttribute("aria-label") || root.dataset.triggerLabel || "Mostrar opciones";
   const clearLabel =
     clear?.getAttribute("aria-label") || root.dataset.clearLabel || (clear ? nameText(clear) : "") || "Limpiar selección";
   const resultText = (count: number) => {
@@ -158,18 +152,34 @@
       indicator: node.querySelector<HTMLElement>(selector.itemIndicator),
     };
   });
-  const makeCollection = (items: ComboboxItem[]) =>
+  /*
+   * `max`'s own tracking, same split Rating and TagsInput already use for state Zag's machine
+   * doesn't carry: it has no concept of a cap on `multiple`, so this reads it and the current
+   * selection separately, read synchronously inside the `$derived` below so both are tracked as
+   * its dependencies (a closure that only READS them when Zag later calls `isItemDisabled` would
+   * not be).
+   */
+  const max = (() => {
+    const raw = root.getAttribute("data-max");
+    return raw === null || raw === "" ? undefined : Number(raw);
+  })();
+  let selectedValues = $state(new Set(root.dataset.value?.split(" ").filter(Boolean) ?? []));
+
+  const makeCollection = (items: ComboboxItem[], atMax: boolean, selected: Set<string>) =>
     combobox.collection<ComboboxItem>({
       items,
       itemToString: (item) => item.label,
       itemToValue: (item) => item.value,
-      isItemDisabled: (item) => Boolean(item.disabled),
+      // Past `max`, every item not already chosen is disabled - it stays visible with its
+      // checkmark if selected, just not pickable - rather than letting a search run into a dead end.
+      isItemDisabled: (item) => Boolean(item.disabled) || (atMax && !selected.has(item.value)),
     });
 
   // `$state.raw`: it is always REPLACED, never mutated element by element, so a deep proxy is not
   // needed.
   let visible = $state.raw(authored);
   const multiple = root.hasAttribute("data-multiple");
+  const atMax = $derived(multiple && max !== undefined && selectedValues.size >= max);
 
   const filterAuthoredItems = (value: string) => {
     const needle = searchKey(value.trim());
@@ -182,9 +192,10 @@
     }
   };
 
-  const collection = $derived(makeCollection(visible.map(({ item }) => item)));
+  const collection = $derived(makeCollection(visible.map(({ item }) => item), atMax, selectedValues));
 
   const service = useMachine(combobox.machine, () => ({
+    positioning: { placement: "bottom-start" as const, ...anchoredPositioning },
     id: machineId,
     collection,
     name: input?.name || undefined,
@@ -196,11 +207,13 @@
     openOnClick: !root.hasAttribute("data-open-on-input"),
     allowCustomValue: root.hasAttribute("data-allow-custom-value"),
     defaultValue: root.dataset.value?.split(" ").filter(Boolean),
-    placeholder: input?.placeholder,
+    // Nothing typed here can go anywhere once `max` is reached, so the placeholder's own
+    // invitation to search is dropped with it rather than left to invite a dead end.
+    placeholder: atMax ? undefined : input?.placeholder,
     // A search that was never resolved into a selection is still the user's work: `preserve` is the
     // only selectionBehavior that keeps it on blur/click-outside/Escape instead of reverting it.
     selectionBehavior: "preserve" as const,
-    translations: { clearTriggerLabel: clearLabel },
+    translations: { clearTriggerLabel: clearLabel, triggerLabel },
     onInputValueChange(details: { reason?: string; inputValue: string }) {
       // Only what the user TYPED is a filter; any non-typed write (a selection's label, the empty
       // string after clear) resets to the full set.
@@ -208,9 +221,10 @@
       root.dispatchEvent(new CustomEvent(comboboxEvents.inputValueChange, { bubbles: true, detail: { inputValue: details.inputValue } }));
     },
     onValueChange(details: { value: string[]; items: ComboboxItem[] }) {
+      selectedValues = new Set(details.value);
       root.dispatchEvent(new CustomEvent(comboboxEvents.valueChange, { bubbles: true, detail: { value: details.value } }));
       // The other half of `selectionBehavior: "preserve"`. Single: the input shows what was chosen.
-      // Multiple: the chip already shows it, so the query is spent.
+      // Multiple: the Tag already shows it, so the query is spent.
       queueMicrotask(() => {
         const next = multiple ? "" : (details.items.at(-1)?.label ?? "");
         if (api.inputValue !== next) api.setInputValue(next, "script");
@@ -229,29 +243,41 @@
     selectedKey = nextKey;
     selectedItemsEl.replaceChildren(
       ...api.selectedItems.map((item) => {
+        const unavailable =
+          root.hasAttribute("data-disabled") || root.hasAttribute("data-readonly") || input?.disabled || input?.readOnly;
         const chip = document.createElement("span");
-        chip.className = comboboxParts.selectedItem;
+        chip.className = `${comboboxParts.selectedItem} ${tagParts.root}`;
         chip.setAttribute("role", "listitem");
+        chip.setAttribute("data-appearance", "plain");
+        chip.setAttribute("data-removable", "");
+        chip.setAttribute("data-tone", "neutral");
+        if (unavailable) chip.setAttribute("aria-disabled", "true");
         const chipLabel = document.createElement("span");
-        chipLabel.className = comboboxParts.selectedItemLabel;
+        chipLabel.className = `${comboboxParts.selectedItemLabel} ${tagParts.label}`;
+        chipLabel.title = item.label;
         chipLabel.textContent = item.label;
         const remove = document.createElement("button");
-        remove.className = `${comboboxParts.removeTrigger} sk-button sk-interactive`;
+        remove.className = `${comboboxParts.removeTrigger} ${tagParts.remove} sk-button sk-interactive`;
         remove.setAttribute("data-sk-combobox-remove-trigger", "");
+        remove.setAttribute("data-appearance", "plain");
         remove.setAttribute("data-icon-only", "");
         remove.setAttribute("data-size", "sm");
+        remove.setAttribute("data-tone", "neutral");
         remove.setAttribute("data-variant", "ghost");
+        remove.setAttribute("data-sk-button", "");
         remove.dataset.value = item.value;
+        remove.disabled = Boolean(unavailable);
         remove.type = "button";
         remove.setAttribute("aria-label", removeText(item));
         const icon = document.createElement("span");
-        icon.setAttribute("aria-hidden", "true");
-        icon.textContent = "×";
+        icon.setAttribute("data-sk-icon", "close");
+        icon.setAttribute("data-sk-icon-size", "md");
         remove.append(icon);
         chip.append(chipLabel, remove);
         return chip;
       }),
     );
+    remountIcons(selectedItemsEl);
   };
 
   /*
@@ -321,12 +347,10 @@
       },
     },
     {
-      // Decorative only (see `combobox.ts`'s own note on `part: "trigger"`): no `getTriggerProps()`,
-      // no wiring. `data-state` alone drives the open/closed chevron swap, so this binding writes
-      // nothing and exists for its `after`.
       part: "trigger",
       node: () => (live() ? trigger : null),
-      props: () => ({}),
+      props: () => api.getTriggerProps(),
+      events: true,
       after: (node) => {
         node.dataset.state = api.open ? "open" : "closed";
       },
@@ -344,13 +368,7 @@
     {
       part: "positioner",
       node: () => (live() ? positioner : null),
-      props: () => {
-        const props = api.getPositionerProps();
-        return anchorName ? stripPositioningStyle(props) : props;
-      },
-      after: (node) => {
-        if (anchorName && control) unbindAnchor = bindAnchor(control, node, anchorName);
-      },
+      props: () => api.getPositionerProps(),
     },
     {
       part: "content",
@@ -441,6 +459,5 @@
   });
   onDestroy(() => {
     for (const cleanup of cleanups) cleanup();
-    unbindAnchor?.();
   });
 </script>

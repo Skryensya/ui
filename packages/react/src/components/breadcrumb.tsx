@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { useAnchored } from "./anchored.js";
+import { anchorProps, positionerProps } from "./anchored.js";
 import { MenuPopup, useMenuMachine } from "./menu.js";
 
 /* Derived, never restated: the default lives in the contract. */
@@ -98,7 +98,6 @@ export function Breadcrumb({
   // dropdown. What is collapsed, real navigation links, opens as a real `Menu`. The ARIA menu
   // pattern's own keyboard model (arrow keys, Home/End, typeahead), not a plain list of `<a>`s.
   const { service: menuService, api: menuApi } = useMenuMachine({ id: menuId, defaultOpen: false });
-  const anchor = useAnchored(menuId, true);
 
   useLayoutEffect(() => {
     const nav = navRef.current;
@@ -174,7 +173,7 @@ export function Breadcrumb({
           <li className={cx(breadcrumbParts.item, "sk-breadcrumb__item--collapse", menuParts.root)}>
             <button
               {...menuApi.getTriggerProps()}
-              {...anchor.anchor(breadcrumbParts.collapseTrigger)}
+              {...anchorProps(breadcrumbParts.collapseTrigger)}
               aria-label={collapsedLabel}
               type="button"
             >
@@ -193,7 +192,7 @@ export function Breadcrumb({
                   href: item.href,
                 }),
               )}
-              positionerProps={anchor.positioner(menuApi.getPositionerProps(), menuParts.positioner)}
+              positionerProps={positionerProps(menuApi.getPositionerProps(), menuParts.positioner)}
               service={menuService}
               setCheckedState={() => {}}
             />

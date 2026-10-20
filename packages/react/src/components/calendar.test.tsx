@@ -71,4 +71,17 @@ describe("Calendar", () => {
     await waitFor(() => expect(onValueChange).toHaveBeenCalled());
     expect(onDom).toHaveBeenCalled();
   });
+
+  it("names the heading after the month actually being viewed, not the grid's leading spillover day", () => {
+    /*
+     * The grid always renders full weeks: June 2026 starts on a Monday, so the first cell is
+     * Sunday, May 31. The heading used to read `api.visibleRange.start` (that first cell) instead
+     * of `api.focusedValue` (the date actually in view), so a June default showed "May 2026" -
+     * reproduced live under a non-UTC timezone too, confirming it was never about time zones.
+     */
+    const ui = render(<Calendar defaultValue="2026-06-17" label="Date" locale="en" />);
+    const heading = ui.container.querySelector(".sk-calendar__view-trigger")!;
+
+    expect(heading.textContent).toBe("June 2026");
+  });
 });

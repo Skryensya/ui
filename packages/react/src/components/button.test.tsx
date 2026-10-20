@@ -176,7 +176,7 @@ describe("Button", () => {
         <svg className="sk-icon" />
       </Button>,
     );
-    expect(spy).toHaveBeenCalledWith(expect.stringMatching(/accessible name/i));
+    expect(spy.mock.calls.at(-1)?.[0]).toMatch(/accessible name/i);
     spy.mockRestore();
   });
 
@@ -208,7 +208,7 @@ describe("Button", () => {
         <svg className="sk-icon" />
       </Button>,
     );
-    expect(spy).toHaveBeenCalledWith(expect.stringMatching(/accessible name/i));
+    expect(spy.mock.calls.at(-1)?.[0]).toMatch(/accessible name/i);
     spy.mockRestore();
   });
 
@@ -268,11 +268,17 @@ describe("Button", () => {
     expect(button.textContent).toBe(""); // the name is the label, not visible text
   });
 
-  it("warns in development when a button renders nothing at all", () => {
+  /*
+   * The same visual signal as a missing accessible name below (`[data-sk-a11y-warn]`, button.css):
+   * before this, the console error was the only cue, so an empty button sat pixel-identical to a
+   * correct one right beside it on the break harness.
+   */
+  it("warns in development when a button renders nothing at all, and marks it visually too", () => {
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
-    render(<Button>{""}</Button>);
+    const ui = render(<Button>{""}</Button>);
 
-    expect(spy).toHaveBeenCalledWith(expect.stringMatching(/renders nothing/i));
+    expect(spy.mock.calls.at(-1)?.[0]).toMatch(/renders nothing/i);
+    expect(ui.container.querySelector("button")!.getAttribute("data-sk-a11y-warn")).toBe("");
     spy.mockRestore();
   });
 
@@ -299,7 +305,7 @@ describe("Button", () => {
     // A name makes it announceable; it still paints nothing for everybody else.
     render(<Button aria-label="Guardar">{""}</Button>);
 
-    expect(spy).toHaveBeenCalledWith(expect.stringMatching(/renders nothing/i));
+    expect(spy.mock.calls.at(-1)?.[0]).toMatch(/renders nothing/i);
     spy.mockRestore();
   });
 
@@ -311,7 +317,7 @@ describe("Button", () => {
       </Button>,
     );
 
-    expect(spy).toHaveBeenCalledWith(expect.stringMatching(/accessible name/i));
+    expect(spy.mock.calls.at(-1)?.[0]).toMatch(/accessible name/i);
     spy.mockRestore();
   });
 
@@ -528,5 +534,101 @@ describe("Button.action pressed", () => {
     expect(ui.getByRole("button", { name: "Plain" }).hasAttribute("aria-pressed")).toBe(false);
     expect(ui.getByRole("button", { name: "Off" }).getAttribute("aria-pressed")).toBe("false");
     expect(ui.getByRole("button", { name: "On" }).getAttribute("aria-pressed")).toBe("true");
+  });
+});
+
+describe("Button.action loading", () => {
+  it("sets aria-busy, disables the button, and discards clicks, keeping the label in the DOM", () => {
+    const onClick = vi.fn();
+    const ui = render(
+      <Button loading onClick={onClick}>
+        Export
+      </Button>,
+    );
+    const button = ui.container.querySelector("button")!;
+    expect(button.getAttribute("data-loading")).toBe("");
+    expect(button.getAttribute("aria-busy")).toBe("true");
+    expect(button.disabled).toBe(true);
+    expect(button.textContent).toContain("Export");
+    fireEvent.click(button);
+    expect(onClick).not.toHaveBeenCalled();
+  });
+
+  it("keeps the plain label visible when loading, with no loadingText given", () => {
+    const ui = render(<Button loading>Save</Button>);
+    const label = ui.container.querySelector(`.${buttonParts.label}`)!;
+    expect(label.textContent).toBe("Save");
+    expect(ui.container.querySelector(`.${buttonParts.loadingLabel}`)).toBeNull();
+  });
+
+  it("swaps the label for loadingText while loading, without losing the original from the DOM", () => {
+    const ui = render(
+      <Button loading loadingText="Guardando…">
+        Save
+      </Button>,
+    );
+    const button = ui.container.querySelector("button")!;
+    expect(button.querySelector(`.${buttonParts.label}`)!.textContent).toBe("Save");
+    expect(button.querySelector(`.${buttonParts.loadingLabel}`)!.textContent).toBe("Guardando…");
+  });
+
+  it("writes data-loading only when asked, and never on the navigation shape", () => {
+    const ui = render(
+      <>
+        <Button>Plain</Button>
+        <Button href="/export">Export</Button>
+      </>,
+    );
+    expect(ui.getByRole("button", { name: "Plain" }).hasAttribute("data-loading")).toBe(false);
+    expect(ui.getByRole("link", { name: "Export" }).hasAttribute("data-loading")).toBe(false);
+  });
+});
+
+describe("Button asChild", () => {
+  it("renders the child's own tag with Button's classes and data attrs, not a <button>/<a> of its own", () => {
+    const ui = render(
+      <Button asChild tone="accent" variant="soft">
+        <a data-testid="router-link" href="/students">
+          Students
+        </a>
+      </Button>,
+    );
+    const link = ui.getByTestId("router-link");
+    expect(link.tagName).toBe("A");
+    expect(link.classList.contains("sk-button")).toBe(true);
+    expect(link.getAttribute("data-variant")).toBe("soft");
+    expect(link.getAttribute("data-tone")).toBe("accent");
+    expect(link.textContent).toBe("Students");
+  });
+
+  it("keeps the child's own className and chains its onClick before Button's, respecting preventDefault", () => {
+    const order: string[] = [];
+    const childClick = vi.fn((event: { preventDefault: () => void }) => {
+      order.push("child");
+      event.preventDefault();
+    });
+    const buttonClick = vi.fn(() => order.push("button"));
+    const ui = render(
+      <Button asChild onClick={buttonClick}>
+        <a className="router-active" href="/students" onClick={childClick}>
+          Students
+        </a>
+      </Button>,
+    );
+    const link = ui.getByText("Students");
+    expect(link.className).toContain("router-active");
+    expect(link.className).toContain("sk-button");
+    fireEvent.click(link);
+    expect(order).toEqual(["child"]);
+    expect(buttonClick).not.toHaveBeenCalled();
+  });
+
+  it("throws when the child is not a single element", () => {
+    const original = console.error;
+    console.error = () => {};
+    expect(() => render(<Button asChild>{"not an element" as never}</Button>)).toThrow(
+      "<Button asChild> requires one element child",
+    );
+    console.error = original;
   });
 });

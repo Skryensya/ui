@@ -102,6 +102,11 @@
    */
   a.sk-skip-link:focus {
     inline-size: auto;
+    /* `auto` has no ceiling of its own: an author-chosen label longer than the usual "Skip to
+       content" can run past a narrow viewport's edge. Capped the same way other floating content
+       in this kit caps itself, with `overflow-wrap` for the unbroken case. */
+    max-inline-size: calc(100vi - 2 * var(--sk-skip-link-padding-inline));
+    overflow-wrap: anywhere;
     block-size: auto;
     overflow: visible;
     clip-path: none;

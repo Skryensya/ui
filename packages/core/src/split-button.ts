@@ -92,6 +92,16 @@ export const splitButtonContract = {
         { a: { slot: "action", option: "tone" }, b: { slot: "menu", option: "triggerTone" } },
         { a: { slot: "action", option: "size" }, b: { slot: "menu", option: "triggerSize" } },
       ],
+      /*
+       * ONE-WAY, not a `pairs` entry: the action going `loading` has to leave the trigger
+       * `disabled` (Menu's own `disabled`, which the Zag machine honors - opening stays blocked,
+       * not merely painted muted), but a `disabled` trigger says nothing about the action. Without
+       * this, a tree can author a busy action beside a trigger that still opens a menu of
+       * alternatives for the very action already underway.
+       */
+      slotImplies: [
+        { when: { slot: "action", option: "loading", equals: "true" }, then: { slot: "menu", option: "disabled", equals: "true" } },
+      ],
       /** Host id / a11y; label stays the option. */
       forward: ["id", "aria-*"],
       slots: {

@@ -5,6 +5,15 @@
 # hash.
 surface: "679f368ed1b20800"
 entries:
+  - date: 2026-10-17
+    kind: feature
+    target: NavListLink
+    es:
+      title: "navListLinkIsCurrent: la comparación de ruta, ya no a mano"
+      body: "Función nueva en @skryensya/core/nav-list. Sin asumir ningún router, decide si un href cuenta como la página actual para el pathname que ya devuelve el router del consumidor: coincidencia exacta, y una ruta anidada también cuenta, salvo que href sea la raíz."
+    en:
+      title: "navListLinkIsCurrent: the path comparison, no longer by hand"
+      body: "New function in @skryensya/core/nav-list. No router assumed, it decides whether an href counts as the current page for the pathname the consumer's own router already returns: exact match, and a nested route counts too, unless href is the root."
   - date: 2026-10-04
     kind: feature
     es:
@@ -17,7 +26,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Parte del kit desde la primera versión.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Part of the kit since the first release.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

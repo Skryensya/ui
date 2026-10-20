@@ -3,8 +3,17 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "cfefe92b0865d968"
+surface: "1796e85d1bffb42c"
 entries:
+  - date: 2026-10-17
+    kind: feature
+    target: AppShell
+    es:
+      title: "sidebarPersistent mantiene el rail a cualquier ancho"
+      body: "El compacto por defecto asume que angosto significa teléfono; una app de escritorio en el navegador puede ser igual de angosta sin dejar de ser de escritorio. sidebarPersistent aplica las reglas de >=52rem (sidebar y regions) a cualquier ancho."
+    en:
+      title: "sidebarPersistent keeps the rail at any width"
+      body: "The compact default assumes narrow means a phone; a desktop-in-the-browser app's window can be just as narrow without stopping being a desktop app. sidebarPersistent applies the >=52rem rules (the sidebar and regions scroll) at any width."
   - date: 2026-10-06
     kind: bugfix
     es:
@@ -116,7 +125,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Parte del kit desde la primera versión.
+      body: "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple."
     en:
       title: First release
-      body: Part of the kit since the first release.
+      body: "Published for the first time, with its contract, a React binding and a stylesheet for plain markup."

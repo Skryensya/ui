@@ -183,6 +183,32 @@ export const tileButtonGroupTree = (t: Translate): UsageTree => ({
   ],
 });
 
+/* One column of actions, the way a settings screen or a sheet lists them: each card is one decision. */
+export const tileButtonListTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "sm" },
+  attrs: { style: "max-inline-size: 24rem; margin-inline: auto;" },
+  children: ["export", "share", "delete"].map((id) => ({
+    contract: "tile",
+    signature: "TileButton",
+    children: tileContent(t(`demo.tile.buttonList.${id}.title`), t(`demo.tile.buttonList.${id}.description`)),
+  })),
+});
+
+/* The same card at the three paddings Tile publishes: the density is the caller's, the anatomy is not. */
+export const tileButtonPaddingTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Grid",
+  options: { columns: "3", gap: "md", responsive: true },
+  children: (["sm", "md", "lg"] as const).map((padding) => ({
+    contract: "tile",
+    signature: "TileButton",
+    options: { padding },
+    children: tileContent(t("demo.tile.button.title"), t(`demo.tile.buttonPadding.${padding}`)),
+  })),
+});
+
 /*
  * THE LINE BETWEEN TILE AND BOX, drawn with the same content twice. One destination: the whole card
  * is the link. Two actions: the card is a Box and the actions are sibling Buttons, because a control
@@ -280,4 +306,43 @@ export const tilePaddingTree = (t: Translate): UsageTree => ({
       },
     ],
   })),
+});
+
+const switchCard = (t: Translate, id: string, options: Record<string, unknown> = {}): UsageTree => ({
+  contract: "tile",
+  signature: "TileSwitch",
+  options: { name: id, ...options },
+  children: tileContent(t(`demo.tile.switch.${id}.title`), t(`demo.tile.switch.${id}.description`)),
+});
+
+/* A settings screen: one preference per card, the way they are read, with a mix of on and off. */
+export const tileSwitchListTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "sm" },
+  attrs: { style: "max-inline-size: 26rem; margin-inline: auto;" },
+  children: [
+    switchCard(t, "alerts", { defaultChecked: true }),
+    switchCard(t, "digest"),
+    switchCard(t, "sounds", { defaultChecked: true }),
+  ],
+});
+
+/* The three states a preference can be in, one card at a time (see the page's `variants`). */
+export const tileSwitchStateTrees = (t: Translate) => ({
+  off: switchCard(t, "alerts"),
+  on: switchCard(t, "alerts", { defaultChecked: true }),
+  disabled: switchCard(t, "alerts", { disabled: true }),
+});
+
+/** Vertical breathing room for a tile example, so it does not sit on the preview stage's edge. */
+export const withPy = (tree: UsageTree): UsageTree => ({
+  ...tree,
+  attrs: { ...tree.attrs, style: `padding-block: var(--space-inset-md);${tree.attrs?.style ? ` ${tree.attrs.style}` : ""}` },
+});
+
+/* Inline room for the same reason: a frosted tile's edge must not sit on the card's own. */
+export const withPx = (tree: UsageTree): UsageTree => ({
+  ...tree,
+  attrs: { ...tree.attrs, style: `padding-inline: var(--space-inset-md);${tree.attrs?.style ? ` ${tree.attrs.style}` : ""}` },
 });

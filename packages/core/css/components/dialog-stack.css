@@ -9,6 +9,17 @@
     --sk-dialog-stack-padding: var(--space-inset-lg);
     --sk-dialog-stack-elevation: var(--elevation-modal);
     --sk-dialog-stack-backdrop-bg: color-mix(in oklch, var(--color-text-primary) 40%, transparent);
+    /*
+     * ONE HOOK FOR "CLOSE INSTANTLY", the single var a consumer sets to 0s instead of fighting
+     * `transition: none !important` across the body, its ::backdrop and whatever else happens to
+     * match at equal specificity. Indirection, not a direct reference to the shared
+     * `--motion-exit-duration`: that token is also every OTHER component's exit (a Menu, a
+     * Popover), so zeroing it here would zero theirs too. Reveal keeps reading the shared token
+     * directly - only the close ever needed a way out, a dialog closing because the page it sat
+     * over already navigated away, not one opening.
+     */
+    --sk-dialog-stack-exit-duration: var(--motion-exit-duration);
+    --sk-dialog-stack-exit-easing: var(--motion-exit-easing);
   }
 
   .sk-dialog-stack__body {
@@ -24,9 +35,9 @@
     isolation: isolate;
     transform: scale(var(--motion-materialize-scale));
     transition:
-      transform var(--motion-reveal-duration) var(--motion-reveal-easing),
-      overlay var(--motion-exit-duration) var(--motion-exit-easing) allow-discrete,
-      display var(--motion-exit-duration) var(--motion-exit-easing) allow-discrete;
+      transform var(--sk-dialog-stack-exit-duration) var(--sk-dialog-stack-exit-easing),
+      overlay var(--sk-dialog-stack-exit-duration) var(--sk-dialog-stack-exit-easing) allow-discrete,
+      display var(--sk-dialog-stack-exit-duration) var(--sk-dialog-stack-exit-easing) allow-discrete;
   }
 
   .sk-dialog-stack__body[open] {
@@ -39,9 +50,9 @@
     background: var(--sk-dialog-stack-backdrop-bg);
     opacity: 0;
     transition:
-      opacity var(--motion-exit-duration) var(--motion-exit-easing),
-      overlay var(--motion-exit-duration) var(--motion-exit-easing) allow-discrete,
-      display var(--motion-exit-duration) var(--motion-exit-easing) allow-discrete;
+      opacity var(--sk-dialog-stack-exit-duration) var(--sk-dialog-stack-exit-easing),
+      overlay var(--sk-dialog-stack-exit-duration) var(--sk-dialog-stack-exit-easing) allow-discrete,
+      display var(--sk-dialog-stack-exit-duration) var(--sk-dialog-stack-exit-easing) allow-discrete;
   }
 
   .sk-dialog-stack__body[open]::backdrop {

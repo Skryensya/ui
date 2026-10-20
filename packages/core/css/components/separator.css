@@ -93,7 +93,12 @@
     color: var(--sk-separator-label-fg);
     font-size: var(--sk-separator-label-font-size);
     line-height: var(--font-line-height-body-sm);
-    /* The word is the point of this variant: it never wraps into two lines between two rules. */
+    /* Keep one line, but let a long computed label yield space to the separator instead of widening
+       the row. The full text remains in the DOM for the accessible name. */
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
   }
 }

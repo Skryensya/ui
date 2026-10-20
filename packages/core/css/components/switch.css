@@ -47,12 +47,25 @@
     /* A muted knob when the control is inert, so disabled never borrows the lit puck of an enabled
      * switch. `--color-text-disabled` sits between the disabled track and its border in both modes. */
     --sk-switch-disabled-thumb-bg: var(--color-text-disabled);
+    /* Internal, not a hook (same `--switch-*`, no `sk-` reasoning as the brutalist offset below):
+     * the checked thumb's slide is a physical `translateX`, which always moves right regardless of
+     * `dir`. This flips the sign in RTL so the dot still travels toward the track's inline-end
+     * instead of sliding to the same physical side as LTR. */
+    --switch-direction: 1;
+  }
+
+  .sk-switch:dir(rtl),
+  .sk-tile:has(> input[type="checkbox"][role="switch"]):dir(rtl) {
+    --switch-direction: -1;
   }
 
   .sk-switch {
     display: inline-flex;
     gap: var(--sk-switch-gap);
-    align-items: center;
+    /* `start`, not `center`: a wrapped multi-line label centred the track against the whole block
+       instead of pinning it to the FIRST line. `--sk-switch-block-size` tracks the icon-size family,
+       close enough to the label's line-height that start-alignment reads level on a single line too. */
+    align-items: start;
     color: var(--sk-switch-fg);
     cursor: pointer;
   }
@@ -90,6 +103,12 @@
      * the thumb sat off-centre. */
     box-sizing: border-box;
     display: flex;
+    /* `flex-shrink: 0`: without it, a long unbroken label next to this fixed-size track made `.sk-
+     * switch`'s flex row shrink the TRACK too, toward its own auto-min, instead of only shrinking the
+     * label (which is what should absorb the squeeze by wrapping). The checked thumb's translateX
+     * above still assumes the track is the full `--sk-switch-inline-size`, so a shrunk track made the
+     * dot slide past its real, narrower right edge. */
+    flex-shrink: 0;
     inline-size: var(--sk-switch-inline-size);
     block-size: var(--sk-switch-block-size);
     padding: var(--sk-switch-padding);
@@ -145,7 +164,7 @@
 
   .sk-switch__input:checked + .sk-switch__control .sk-switch__thumb,
   .sk-tile:has(> input[type="checkbox"][role="switch"]:checked) > .sk-switch__control .sk-switch__thumb {
-    transform: translateX(calc(var(--sk-switch-inline-size) - var(--sk-switch-block-size)));
+    transform: translateX(calc((var(--sk-switch-inline-size) - var(--sk-switch-block-size)) * var(--switch-direction)));
   }
 
   /* Flat knob when the control cannot be operated, matching the :active squeeze guard above. */

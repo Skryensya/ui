@@ -322,6 +322,7 @@
   .sk-file-upload__rejection {
     color: var(--color-text-danger);
     font-size: var(--font-size-body-sm);
+    overflow-wrap: anywhere;
   }
   .sk-file-upload[data-invalid] .sk-file-upload__dropzone {
     border-color: var(--color-border-danger);

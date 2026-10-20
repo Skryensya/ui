@@ -23,8 +23,6 @@ export { Progress } from "./components/progress.js";
 export type { ProgressProps } from "./components/progress.js";
 export { Meter } from "./components/meter.js";
 export type { MeterProps } from "./components/meter.js";
-export { Chart } from "./components/chart.js";
-export type { ChartProps } from "./components/chart.js";
 /*
  * PAUSED: Data Grid is not re-exported here while it sits in `@skryensya/core/paused`. The subpath
  * still resolves (`@skryensya/react/data-grid`), which is what keeps its docs page and its previews
@@ -123,8 +121,6 @@ export { Resizable, ResizableHandle, ResizablePanel } from "./components/resizab
 export type { ResizableApi, ResizableHandleProps, ResizablePanelProps, ResizableProps } from "./components/resizable.js";
 export { ScrollExpand } from "./components/scroll-expand.js";
 export type { ScrollExpandProps } from "./components/scroll-expand.js";
-export { Dock, DockItem } from "./components/dock.js";
-export type { DockProps, DockItemProps, DockAction } from "./components/dock.js";
 export { ScrollStack } from "./components/scroll-stack.js";
 export type { ScrollStackProps } from "./components/scroll-stack.js";
 export { Steps } from "./components/steps.js";
@@ -135,8 +131,8 @@ export { StateButton } from "./components/state-button.js";
 export type { StateButtonProps } from "./components/state-button.js";
 export { Button } from "./components/button.js";
 export type { ButtonProps } from "./components/button.js";
-export { Toast, ToastRegion } from "./components/content.js";
-export type { ToastProps, ToastRegionProps } from "./components/content.js";
+export { Toast, ToastRegion, toastQueue, useToastQueue } from "./components/content.js";
+export type { ToastProps, ToastRegionProps, ToastQueueItem, ToastQueueOptions } from "./components/content.js";
 export { Icon, IconSetProvider } from "./components/icon.js";
 export type { IconProps, IconSetProviderProps } from "./components/icon.js";
 export { useHotkey } from "./components/hotkey.js";
@@ -155,8 +151,6 @@ export type {
   MessageHeaderProps,
   MessageProps,
 } from "./components/message.js";
-export { Folder, FolderLink, FolderPreview, FolderStack } from "./components/folder.js";
-export type { FolderProps, FolderLinkProps, FolderPreviewProps, FolderStackProps } from "./components/folder.js";
 export { FormField } from "./components/form-field.js";
 export type { FormFieldProps } from "./components/form-field.js";
 export { Input, Textarea } from "./components/input.js";
@@ -174,8 +168,6 @@ export type {
 } from "./components/layout.js";
 export { ImageFrame } from "./components/image-frame.js";
 export type { ImageFrameProps } from "./components/image-frame.js";
-export { Sticker } from "./components/sticker.js";
-export type { StickerProps } from "./components/sticker.js";
 export { Lightbox, LightboxProvider, useLightbox, useLightboxState } from "./components/lightbox.js";
 export type {
   LightboxHandle,

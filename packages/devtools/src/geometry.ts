@@ -4,7 +4,7 @@
  * place they had to decide something rather than just measure or paint something, pulled out so
  * the decision has a name and a test.
  *
- * Same split `@skryensya/core/back-to-top` and `@skryensya/charts/geometry` already use: the DOM
+ * Same split `@skryensya/core/back-to-top` already uses: the DOM
  * shell calls a small set of pure functions, and the functions are what a test drives directly.
  */
 
@@ -35,15 +35,6 @@ export function clampPosition(position: Point, size: Size, viewport: Size): Poin
  */
 export function exceedsDragThreshold(dx: number, dy: number, thresholdPx: number): boolean {
   return Math.hypot(dx, dy) >= thresholdPx;
-}
-
-/**
- * Which edge the panel opens from: it opens UPWARD from its toggle by default (the toggle sits at
- * a screen corner, and content growing off-screen reads as broken), and flips to grow downward only
- * when there genuinely is not `minSpace` px of room above the toggle to grow into.
- */
-export function panelEdge(spaceAboveToggle: number, minSpace: number): "top" | "bottom" {
-  return spaceAboveToggle < minSpace ? "bottom" : "top";
 }
 
 /**

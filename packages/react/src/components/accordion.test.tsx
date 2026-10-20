@@ -372,4 +372,30 @@ describe("Accordion React contracts", () => {
     expect(ui.getByRole("button", { name: "Runtime" }).getAttribute("aria-expanded")).toBe("true");
     expect(rollout.getAttribute("aria-expanded")).toBe("false");
   });
+
+  it("warns in development when two Item children share a value, and opens both together", async () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const ui = render(
+      <Accordion>
+        <Accordion.Item value="a"><Accordion.Trigger>First A</Accordion.Trigger><Accordion.Content>One</Accordion.Content></Accordion.Item>
+        <Accordion.Item value="a"><Accordion.Trigger>Second A</Accordion.Trigger><Accordion.Content>Two</Accordion.Content></Accordion.Item>
+      </Accordion>,
+    );
+    expect(spy.mock.calls.at(-1)?.[0]).toMatch(/shar(e|ing) the same value/i);
+
+    const first = ui.getByRole("button", { name: "First A" });
+    const second = ui.getByRole("button", { name: "Second A" });
+    fireEvent.click(first);
+    await waitFor(() => expect(first.getAttribute("aria-expanded")).toBe("true"));
+    expect(second.getAttribute("aria-expanded")).toBe("true");
+    spy.mockRestore();
+  });
+
+  it("does not warn when every Item's value is unique", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    render(<Accordion>{items}</Accordion>);
+
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
 });

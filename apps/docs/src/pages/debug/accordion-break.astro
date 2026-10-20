@@ -1,0 +1,123 @@
+---
+/*
+ * Diagnostic only: a `break` harness for Accordion. One scenario per row, the REAL
+ * `@skryensya/react` Accordion in each, labels and fixed-width containers around it and nothing
+ * else.
+ *
+ * The environment is the site's own: `tokens.scss`, `components/accordion.css`,
+ * `components/tile.css` (each item is an ExpandableTile wearing accordion parts) and
+ * `styles/site.css`, the same ones the docs shell imports. No fonts, colours or token overrides
+ * of this page's own - an accordion observed under those is a different accordion.
+ *
+ * Not linked from the site nav. `noindex`, like `/debug/layout-grid-rail`.
+ *
+ * Dev-only: `astro build` runs with NODE_ENV=production (see astro.config.ts), so this 404s out of
+ * the static build instead of shipping the break-* classes and the AccordionBreak island into dist.
+ */
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
+import "@skryensya/core/tokens.scss";
+import "@skryensya/core/components/accordion.css";
+import "@skryensya/core/components/tile.css";
+import "../../styles/site.css";
+import { AccordionBreak } from "../../components/react-demos/debug-accordion-break";
+
+import DebugShell from "../../components/DebugShell.astro";
+---
+
+<DebugShell title="Accordion">
+<style is:global>
+      .break-page {
+        padding: var(--space-inset-lg);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-stack-xl);
+      }
+      .break-intro {
+        max-inline-size: 60ch;
+        color: var(--color-text-secondary);
+      }
+      .break-group {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-stack-lg);
+        padding-block-start: var(--space-stack-md);
+        border-block-start: 1px solid var(--color-border-subtle);
+      }
+      .break-group__title {
+        margin: 0;
+        font-family: var(--font-family-mono);
+        font-size: var(--font-size-body-sm);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--color-text-secondary);
+      }
+      .break-case {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-stack-xs);
+      }
+      .break-case__label {
+        margin: 0;
+        font-family: var(--font-family-mono);
+        font-size: var(--font-size-caption);
+        color: var(--color-text-primary);
+      }
+      .break-case__note {
+        margin: 0;
+        font-size: var(--font-size-caption);
+        color: var(--color-text-secondary);
+      }
+      .break-case__broke {
+        margin: 0;
+        font-family: var(--font-family-mono);
+        font-size: var(--font-size-caption);
+        color: var(--color-text-danger);
+      }
+      .break-case__fixed {
+        margin: 0;
+        font-family: var(--font-family-mono);
+        font-size: var(--font-size-caption);
+        color: var(--color-text-success);
+      }
+      .break-case__stage {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-stack-sm);
+        inline-size: 100%;
+        max-inline-size: 28rem;
+      }
+      .break-w-320 {
+        inline-size: 320px;
+        outline: 1px dashed var(--color-border-default);
+      }
+      .break-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-inline-md);
+        align-items: flex-start;
+      }
+      .break-rtl {
+        display: flex;
+        gap: var(--space-inline-sm);
+        inline-size: 100%;
+        max-inline-size: 28rem;
+      }
+    </style>
+<div class="break-page" data-toc-transparent>
+  <header>
+    <h1>break: Accordion</h1>
+    <p class="break-intro">
+One scenario per row, the real <code>@skryensya/react</code> Accordion in each. Dashed
+outlines are the container the scenario renders inside, not part of the component. Tab
+through the instances to check focus, and toggle OS dark mode, forced colors, 200% zoom
+and reduced motion while this page is open: those are viewing modes, so the page renders
+nothing for them.
+    </p>
+  </header>
+  <AccordionBreak client:load />
+</div>
+</DebugShell>

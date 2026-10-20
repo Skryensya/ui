@@ -14,12 +14,17 @@ import {
   carouselBareTree,
   carouselCardsTree,
   carouselFocusableTree,
-  carouselNativeTree,
+  carouselStatsTree,
+  carouselQuotesTree,
+  carouselProductsTree,
   carouselDontFewTree,
 } from "../../demos/carousel";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/patterns/state-layer.css";
 import "@skryensya/core/components/carousel.css";
+import "@skryensya/core/components/fade-edge.css";
 import "@skryensya/icons-lucide/carousel.css";
 import "../../examples/carousel.css";
 
@@ -29,6 +34,8 @@ const storybookTitle = "Components/Carousel";
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`carousel.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
+const zoomOut = ".sk-carousel { zoom: 0.8; }";
+
 const installIcons = `pnpm add @skryensya/icons-lucide`;
 
 const bootstrap = `import { initComponents } from "@skryensya/vanilla/auto";
@@ -37,26 +44,6 @@ import { lucideIcons } from "@skryensya/icons-lucide";
 
 mountIcons(document, lucideIcons);
 await initComponents(); // ${t("carousel.bootstrapComment")}`;
-
-const nativeCss = `@import "@skryensya/icons-lucide/carousel.css";
-
-/* ${t("carousel.nativeCssComment1")} */
-.sk-carousel__track { scroll-marker-group: after; }
-.sk-carousel__track::scroll-button(inline-start) {
-  content: var(--sk-carousel-native-previous-icon) / "${t("carousel.nativeCssComment2")}";
-  grid-column: 1;
-}
-.sk-carousel__track::scroll-button(inline-end) {
-  content: var(--sk-carousel-native-next-icon) / "${t("carousel.nativeCssComment3")}";
-  grid-column: 3;
-}
-.sk-carousel__track::scroll-marker-group {
-  grid-column: 2; /* ${t("carousel.nativeCssComment4")} */
-}
-.sk-carousel__slide::scroll-marker { content: ""; }
-.sk-carousel__slide::scroll-marker:target-current { /* activo */ }
-
-/* ${t("carousel.nativeCssComment5")} */`;
 
 const api = `const carousel = document.querySelector("[data-sk-carousel]");
 
@@ -75,7 +62,8 @@ import { carouselTitlesDoTree, carouselTitlesDontTree } from "../../demos/dodont
   title="Carousel"
   description={t("carousel.description")}
   contractId="carousel"
-  extraSheets={["@skryensya/icons-lucide/carousel.css", "@skryensya/core/patterns/image-frame.css", "@skryensya/core/patterns/media-overlay.css"]}
+  badge="Beta"
+  extraSheets={["@skryensya/core/components/button.css", "@skryensya/core/patterns/state-layer.css", "@skryensya/icons-lucide/carousel.css", "@skryensya/core/components/fade-edge.css", "@skryensya/core/patterns/image-frame.css", "@skryensya/core/patterns/media-overlay.css"]}
   vanillaInstallSteps={[
     { title: t("install.stepInstall"), blocks: [{ kind: "code", code: installIcons, lang: "bash", label: "terminal" }] },
     { title: t("install.stepMount"), blocks: [{ kind: "code", code: bootstrap, lang: "ts", label: "JavaScript" }] },
@@ -93,21 +81,28 @@ import { carouselTitlesDoTree, carouselTitlesDontTree } from "../../demos/dodont
       description={t("carousel.prop.controls.body")}
       explain={explain("controls", ["auto", "none"])}
       stageMinBlockSize="24rem"
+      css={zoomOut}
+      storybookTitle={storybookTitle}
+      storybookStory="Cards" />
+    <UsagePreview
+      tree={carouselCardsTree(t)}
+      optionName="indicator"
+      title={t("carousel.prop.indicator.title")}
+      description={t("carousel.prop.indicator.body")}
+      explain={explain("indicator", ["dots", "count"])}
+      stageMinBlockSize="24rem"
+      css={zoomOut}
       storybookTitle={storybookTitle}
       storybookStory="Cards" />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={carouselCardsTree(t)} title={t("carousel.cardsTitle")} description={t("carousel.cardsBody")} storybookTitle={storybookTitle} storybookStory="Cards" />
-    <UsagePreview tree={carouselAutoplayTree(t)} title={t("carousel.multiTitle")} description={t("carousel.multiBody1")} storybookTitle={storybookTitle} storybookStory="Autoplay" />
-    <UsagePreview tree={carouselFocusableTree(t)} title={t("carousel.focusTitle")} description={t("carousel.focusBody1")} storybookTitle={storybookTitle} storybookStory="Focusable" />
-    <UsagePreview tree={carouselBareTree(t)} title={t("carousel.bareTitle")} description={t("carousel.bareBody1")} storybookTitle={storybookTitle} storybookStory="Bare" />
-
-    {/* ComponentPreview, not UsagePreview: this one is the markup WITHOUT the enhancer, which only a
-        Vanilla frame can show; the React stage always mounts the machine. */}
-    <h3>{t("carousel.nativeTitle")}</h3>
-    <p set:html={t("carousel.nativeBody")} />
-    <UsagePreview tree={carouselNativeTree(t)} label={t("carousel.nativeLabel")} caption={t("carousel.nativeNote")} storybookTitle="Components/Carousel" storybookStory="Native" />
-    <CodeBlock code={nativeCss} label={t("carousel.nativeCssLabel")} lang="css" />
+    <UsagePreview css={zoomOut} tree={carouselCardsTree(t)} title={t("carousel.cardsTitle")} description={t("carousel.cardsBody")} storybookTitle={storybookTitle} storybookStory="Cards" />
+    <UsagePreview css={zoomOut} tree={carouselAutoplayTree(t)} title={t("carousel.multiTitle")} description={t("carousel.multiBody1")} storybookTitle={storybookTitle} storybookStory="Autoplay" />
+    <UsagePreview css={zoomOut} tree={carouselFocusableTree(t)} title={t("carousel.focusTitle")} description={t("carousel.focusBody1")} storybookTitle={storybookTitle} storybookStory="Focusable" />
+    <UsagePreview css={zoomOut} tree={carouselStatsTree(t)} title={t("carousel.statsTitle")} description={t("carousel.statsBody")} storybookTitle={storybookTitle} storybookStory="Cards" />
+    <UsagePreview css={zoomOut} tree={carouselQuotesTree(t)} title={t("carousel.quotesTitle")} description={t("carousel.quotesBody")} storybookTitle={storybookTitle} storybookStory="Cards" />
+    <UsagePreview css={zoomOut} tree={carouselProductsTree(t)} title={t("carousel.productsTitle")} description={t("carousel.productsBody")} storybookTitle={storybookTitle} storybookStory="Cards" />
+    <UsagePreview css={zoomOut} tree={carouselBareTree(t)} title={t("carousel.bareTitle")} description={t("carousel.bareBody1")} storybookTitle={storybookTitle} storybookStory="Bare" />
 
     <h3>{t("carousel.apiTitle")}</h3>
     <p set:html={t("carousel.apiBody")} />

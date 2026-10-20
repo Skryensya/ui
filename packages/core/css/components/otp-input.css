@@ -34,6 +34,17 @@
   .sk-otp-input__control {
     display: flex;
     gap: var(--sk-otp-input-gap);
+    /*
+     * Each segment is a fixed touch-target square on purpose (shrinking it would fail the tap
+     * target minimum, worse than the overflow it avoids) - so a 6/8-digit code had no floor to
+     * shrink to and no scroll fallback either, needing 284-396px in a 229px container with the
+     * last segments off-screen. Scroll, not shrink, same convention as Toolbar/Menubar/Tabs.
+     */
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
   }
 
   /* A cell is one box: the input fills it, and the mask symbol (below) sits over it. */

@@ -2,13 +2,16 @@
  * PATTERN, ANCHORING
  *
  * A box placed against ANOTHER ELEMENT, not against the page: it comes out of one side of the
- * anchor, moves to the opposite side when it does not fit, and disappears if the anchor leaves the
- * screen. That is what tooltip, popover, popup, menu and its submenus, select, combobox and date
- * picker do, each with its own paint and all with this geometry.
+ * anchor, moves to the opposite side when it does not fit, and goes away with the anchor. Tooltip,
+ * popover, menu and its submenus, select, combobox, date picker and the copy button's flag do that,
+ * each with its own paint.
  *
- * It is a PATTERN and not a component by the rule from decision 8: could a second component need
- * this exact structure? Here it is not hypothetical, EIGHT already need it. So it ships structure
- * and hooks, not just variables.
+ * ONE ENGINE PLACES THEM: Zag's popper (`@zag-js/popper`, floating-ui underneath), through the
+ * component's own machine or, for the two boxes with none, through `placeAnchored` in
+ * `core/src/anchored.ts`. The popper writes `--x` and `--y` on the box (and `--reference-width`,
+ * `--available-*` and friends); this sheet only turns them into a position. Where the box goes, which
+ * side it flips to and how far it stands off the anchor are the popper's options, set in JS
+ * (`anchoredPositioning`), not hooks here.
  *
  * FLAT CLASSES, not a BEM tree: the anchor is not inside the positioner, and in React the positioner
  * is portaled to the body, so nesting one under the other would name a containment that does not
@@ -16,153 +19,32 @@
  *
  *   <button class="sk-tooltip__trigger sk-anchor">
  *   <div class="sk-tooltip__positioner sk-anchored" data-sk-placement="block-start">
- *     <span class="sk-anchored-arrow" aria-hidden="true">   <!-- optional -->
+ *     <span class="sk-anchored-arrow" data-part="arrow" aria-hidden="true">   <!-- optional -->
  *
- * THE BROWSER IS THE ONE THAT PLACES (decision 25). Where the anchor positioning API exists, the
- * flip is resolved by `position-try-fallbacks` and the lost anchor by `position-visibility`, inside
- * the layout engine, which is where that information already lives: no loop, no measuring on every
- * scroll. Where it does not exist, the `@supports` block does not apply and Zag's machine positions
- * instead, which is the fallback, not an inferior path.
- *
- * THE TWO ENGINES CANNOT RUN AT THE SAME TIME. On the browser path the binding strips from the
- * positioner the inline `style` the machine brings (`stripPositioningStyle`), and that is the reason
- * these declarations can stay without `!important`. It is structural load-bearing, not tidiness:
- * `position-try` can only flip declarations that are NOT `!important`, so one here would turn the
- * flip off.
- *
- * WHAT THIS PATTERN DOES NOT DO: `pointer-events`. A positioner with `span-all` is an invisible box
- * wider than its content, and if it captures clicks it blocks whatever is underneath; but turning
- * events off here would turn them off for a whole menu, and there are components that paint
- * positioner and content on the SAME element. That belongs to the component, the only one that knows
- * which of the two cases it is.
+ * WHAT THIS PATTERN DOES NOT DO: `pointer-events`. A positioner can be a box wider than its content,
+ * and if it captures clicks it blocks whatever is underneath; but turning events off here would turn
+ * them off for a whole menu, and there are components that paint positioner and content on the SAME
+ * element. That belongs to the component, the only one that knows which of the two cases it is.
  */
 @layer components {
-  /* The anchor is not painted here. It is a Button, a Link or whatever the consumer authored; this
-   * pattern only declares it as the point everything is measured against. Painting it would mean
-   * anchoring decided how a button looks. */
-  .sk-anchor {
-    anchor-name: var(--sk-anchored-name);
-  }
-
   /*
-   * THE DEFAULTS GO IN `:where()`, that is, with ZERO specificity, and it is on purpose.
-   *
-   * A component re-declares these hooks from its own part (`.sk-tooltip__positioner`, which comes out
-   * block-start and not block-end), and with a bare `.sk-anchored` the two rules would tie at (0,1,0):
-   * whichever was imported last would win, meaning a tooltip's default would depend on the IMPORT
-   * ORDER of whoever consumes it. With zero specificity any component rule wins, and the
-   * `[data-sk-placement]` rules further down, which are (0,2,0), still beat the component, which is
-   * exactly the order we want: pattern < component < requested placement.
-   */
-  :where(.sk-anchored) {
-    /* The distance to the anchor. A single hook, because the flip changes the SIDE but not the gap. */
-    --sk-anchored-offset: var(--space-stack-xs);
-    /* The width is decided by the content by default. Without `max-content` the box inherits the
-     * width of the anchored region, which near the edge of the screen is narrow, and a six-word
-     * sentence ends up broken across three lines next to an empty gap. Select overrides it with
-     * `anchor-size(width)`, which is its `sameWidth`: the listbox measures what its trigger measures. */
-    --sk-anchored-size: max-content;
-    --sk-anchored-z: var(--z-popover);
-
-    /* The default placement, in logical axes: below the anchor, which is where the menu, the select,
-     * the combobox, the date picker and the popover come out of. The tooltip comes out above and re-declares it. */
-    --sk-anchored-position-area: block-end span-all;
-    --sk-anchored-position-try: flip-block;
-    /* Centering over the anchor is a different alignment depending on which axis is left free: with
-     * the box above or below, the free axis is the inline one (justify); to the sides, the block one (align). */
-    --sk-anchored-justify: anchor-center;
-    --sk-anchored-align: auto;
-  }
-
-  /*
-   * THE CLASS IS ALWAYS AUTHORED, whether the browser has the API or not, and that is why only
-   * declarations that are correct on BOTH PATHS can live here. If the class depended on support it
-   * would have to be added and removed from JS, and the authored markup would stop being readable
-   * exactly as it is written.
-   *
    * `fixed` and not `absolute`: the viewport is the containing block, so overflow is measured against
    * the screen and not against the first positioned ancestor, which in a table or a scrolling panel
-   * would be a tiny box it would never flip against. On the fallback the machine writes its own
-   * inline `position`, which wins, so this declaration does not get in its way.
+   * would be a tiny box it would never flip against.
+   *
+   * The machine's own inline style says the same thing and wins; these declarations are what a box
+   * with no machine (Popover, the copy button's flag) is placed by. Until the popper has run `--x` and
+   * `--y` are unset and the box waits at the origin, which no one sees: it is closed.
    */
   .sk-anchored {
+    --sk-anchored-z: var(--z-popover);
+
     position: fixed;
+    inset: 0 auto auto 0;
+    margin: 0;
+    min-inline-size: max-content;
+    transform: translate3d(var(--x, 0px), var(--y, 0px), 0);
     z-index: var(--sk-anchored-z);
-
-    /* The box NAMES ITSELF, and not in order to place itself: it is the arrow that needs to MEASURE IT
-     * (`anchor-size`) so it has the same footprint and flips at the same threshold, and it cannot read
-     * the size of its own parent any other way. Without `--sk-anchored-box-name` written this is
-     * `none`, which is the default and bothers nobody. */
-    anchor-name: var(--sk-anchored-box-name);
-  }
-
-  @supports (anchor-name: --a) {
-    .sk-anchored {
-      /* The width goes in here and not outside: on the fallback the machine decides it (`--reference-width`
-       * and friends), and a fixed `max-content` would override its `sameWidth`. */
-      inline-size: var(--sk-anchored-size);
-      position-anchor: var(--sk-anchored-name);
-      position-area: var(--sk-anchored-position-area);
-      justify-self: var(--sk-anchored-justify);
-      align-self: var(--sk-anchored-align);
-      margin: var(--sk-anchored-offset);
-      /*
-       * THE FLIP IS DECIDED ONCE, AGAINST THE ROOM THERE WAS AT THAT MOMENT, and it does not come
-       * back when the room does. Measured in Blink on 2026-09-15, on this site's own anchoring
-       * preview and in BOTH bindings: open a `block-end` box with 161px free below it (it goes
-       * below, correctly), shrink its containing block until only 3px are left (it flips above,
-       * correctly), then grow the containing block back to the original height while the box is
-       * still open. It stays above, with those 161px free under it again, and a `resize` event
-       * dispatched by hand does not re-run the selection either.
-       *
-       * WHAT THAT COSTS A CONSUMER: a box whose FIRST evaluation happens while its containing block
-       * is briefly smaller than final keeps the fallback it chose then, and reads as "it ignores the
-       * placement I asked for". The docs' own React previews hit exactly this: an auto-fit frame
-       * mounts at its content height (measured: 151px) and grows to its settled one (368px) four
-       * frames later, so anything evaluated in that window is stuck on the wrong side. It looked
-       * like a React-only bug for a while; it is a timing one, and the vanilla path only escapes it
-       * by rendering with the document instead of after it.
-       *
-       * Nothing here can fix that: re-running `position-try` is the engine's call, not a property.
-       * What a consumer can do is not open an anchored box inside a box that is still growing, or
-       * close and re-open it once the layout settles. `--sk-anchored-position-try: none` is the
-       * other way out, and it is what a specimen that must show the side it names already does.
-       */
-      position-try-fallbacks: var(--sk-anchored-position-try);
-      /* Something anchored whose anchor left the screen lies: it floats over something else and seems to describe it. */
-      position-visibility: anchors-visible;
-    }
-  }
-
-  /* ── The requested placement ─────────────────────────────────────────────────
-   * `data-sk-placement` goes on the POSITIONER and not on the root, because in React the positioner
-   * is portaled to the body and inheritance from the root does not reach there. A binding that lets
-   * it be authored on the root COPIES it here.
-   *
-   * `span-all` and not `center` on the free axis of the block placements: `block-start center`
-   * narrows the region to the part SYMMETRIC with respect to the anchor, that is, `2 × min(space to
-   * the left, space to the right)`, so an anchor near the edge leaves a narrow region and the text
-   * breaks next to an empty gap. `span-all` gives the whole strip and `justify-self: anchor-center`
-   * is what centers, without narrowing anything.
-   *
-   * The fallback always flips on the SAME axis as the requested placement: whoever asks for
-   * `inline-end` wants the box to the side, and landing above would be disobeying, not adapting.
-   *
-   * The names are logical, like the rest of the system, and flip themselves in RTL. The only place
-   * where that does not hold is Zag's JS fallback, whose placements are physical; there the binding
-   * translates with `anchorPlacementToZag`. */
-  .sk-anchored[data-sk-placement="block-start"] {
-    --sk-anchored-position-area: block-start span-all;
-    --sk-anchored-position-try: flip-block;
-    --sk-anchored-justify: anchor-center;
-    --sk-anchored-align: auto;
-  }
-
-  .sk-anchored[data-sk-placement="block-end"] {
-    --sk-anchored-position-area: block-end span-all;
-    --sk-anchored-position-try: flip-block;
-    --sk-anchored-justify: anchor-center;
-    --sk-anchored-align: auto;
   }
 
   /* ── THE ARROW, OPTIONAL ─────────────────────────────────────────────────────
@@ -172,71 +54,34 @@
    * control it is talking about; a menu or a select do not, because there the relationship is already
    * stated by the shared edge.
    *
-   * THE ARROW COMES OUT OF THE ANCHOR, NOT OUT OF THE CENTER OF THE BOX. The difference shows as soon
-   * as the box shifts: `justify-self: anchor-center` centers it over the anchor BUT pushes it back on
-   * screen if it does not fit, so a trigger near the edge leaves the box displaced and an arrow drawn
-   * at its 50% ends up pointing at nothing. So the arrow is not placed against the box: it is ANOTHER
-   * BOX ANCHORED against the same anchor, with the same `position-area` and the same flip.
+   * The popper finds it by `data-part="arrow"` inside the positioner, moves it along the box's edge
+   * so it points at the anchor, and the binding mirrors the side it RESOLVED onto `data-side`, which
+   * is what turns the diamond below.
    *
-   * IT GOES AS A CHILD OF THE POSITIONER, and yet it anchors to the trigger, which would seem
-   * impossible: the spec only lets you use as an anchor something that is a DESCENDANT OF THE
-   * CONTAINING BLOCK of the element, and the trigger does not hang off the positioner. What resolves
-   * it is `position: fixed`: the containing block of a fixed element is the viewport, where the
-   * trigger does live, even though in the DOM the arrow stays inside. With `absolute` the containing
-   * block would be the positioner and `anchor()` and `anchor-center` would be invalid SILENTLY (they
-   * fall back without warning, and `CSS.supports` still says yes).
-   *
-   * Staying inside is not a tidiness detail, it is needed for three things at once:
-   *
-   *   1. THE TOP LAYER. A Popover's box goes there when it opens, and only its children go with it.
-   *      A sibling would paint below the panel and its fill could not cover the border seam.
-   *   2. THE SEAM. As a positioned child of the box, the arrow paints ON TOP of its background and
-   *      its border: the diamond's fill covers the piece of border it enters through and its two
-   *      outer edges continue the box's own, which is what makes the join disappear.
-   *   3. THE FALLBACK. Without the API the machine places, and `@zag-js/popper` looks for the arrow
-   *      INSIDE the floating element (`[data-part=arrow]`). Outside it does not find it.
-   *
-   * And `position-area`, not `anchor()` in the insets: Blink compensates the scroll of anything placed
-   * by `position-area`, but not that of an inset with `anchor()`, which falls behind by a whole
-   * scrollY. That is why there is not a single positioning `anchor()` here; the only anchoring use
-   * that is not `position-area` is `anchor-size()`, and a SIZE does not go stale with scroll.
-   *
-   * COST, STATED: when flipping, `position-try` flips the margins and the `align-self` (which is why
-   * the arrow follows the flip), but not the `rotate`, which is not a property it accepts. The diamond
-   * is symmetric at 180°, so the SHAPE stays the same and only which of its sides carry the border
-   * changes: invisible with `--sk-anchored-arrow-border-color` transparent (tooltip), a line on the
-   * wrong side with a painted border (popover). It is what remains of a cost that used to be the whole
-   * arrow drawn on the wrong edge. */
-  /*
-   * THE DEFAULTS GO IN THE `var()`, NOT IN A DECLARATION OF THEIR OWN. The component declares
-   * `--sk-anchored-arrow-bg` on the POSITIONER and the arrow inherits it, which is what lets a tooltip
-   * paint it with its inverted surface and a popover with its own without the pattern knowing either
-   * of them. Declaring `--sk-anchored-arrow-bg: transparent` here as a "default" would kill that
-   * inheritance: an own value always beats an inherited one, and the arrow would come out invisible
-   * everywhere. The `var()` fallback does the same job without breaking it.
+   * Its fill and border come from `--sk-anchored-arrow-bg` and `--sk-anchored-arrow-border-color`,
+   * written by the component on the POSITIONER and inherited here, so a tooltip paints it with its
+   * inverted surface and a popover with its own. The `var()` fallback does the same job without
+   * breaking that inheritance: an own value always beats an inherited one.
    */
   .sk-anchored-arrow {
+    --arrow-size: var(--sk-anchored-arrow-size, 8px);
+    --arrow-size-half: calc(var(--arrow-size) / 2);
+    --arrow-offset: calc(var(--arrow-size-half) * -1);
+
     position: absolute;
-    inline-size: var(--sk-anchored-arrow-size, 8px);
-    block-size: var(--sk-anchored-arrow-size, 8px);
+    inline-size: var(--arrow-size);
+    block-size: var(--arrow-size);
     rotate: 45deg;
     background: var(--sk-anchored-arrow-bg, transparent);
     /* Only the two sides that end up facing OUTWARD after rotating; the other two fall under the box. */
     border-block-start: 1px solid var(--sk-anchored-arrow-border-color, transparent);
     border-inline-start: 1px solid var(--sk-anchored-arrow-border-color, transparent);
     pointer-events: none;
-
-    /* The bridge to the hook Zag uses to size the arrow from inline styles on it
-     * (`width: var(--arrow-size)`); without it that declaration is invalid and the diamond collapses
-     * to zero. It goes here, unconditionally: the machine MEASURES the arrow in order to place it, so
-     * the size has to be resolved before any attribute saying it placed it exists. On the browser path
-     * nobody reads it. */
-    --arrow-size: var(--sk-anchored-arrow-size, 8px);
     /* CLOSED IS THE DEFAULT, same as for the content. The one that hides itself on close is the
      * CONTENT; the arrow is its sibling inside the positioner, and the positioner stays in the DOM
-     * open or closed, so without this rule a diamond is left floating next to a trigger whose tooltip
-     * is not there. It is tested in the POSITIVE, "visible only if open", because the absence of
-     * `data-state` (not mounted yet, or no JS) also counts as closed. */
+     * open or closed, so without this rule a diamond is left floating next to a trigger whose box is
+     * not there. Tested in the POSITIVE, "visible only if open", because the absence of `data-state`
+     * (not mounted yet, or no JS) also counts as closed. */
     visibility: hidden;
   }
 
@@ -248,153 +93,7 @@
     visibility: visible;
   }
 
-  /* ── The browser path: the arrow is another anchored box ─────────────────────
-   * All of this lives under `@supports` because it IS anchor positioning. Without the API,
-   * `position: fixed` and a `position-area` would place nothing, so the arrow stays `absolute` (rule
-   * above) and the machine moves it, which is the path at the end of the file. */
-  @supports (anchor-name: --a) {
-    .sk-anchored-arrow {
-      /*
-       * Private, because the four placements below are unreadable without them.
-       *
-       * `near`: from the edge of the box facing the anchor to the CENTER of the diamond. Half the
-       * diamond peeks out and the other half tucks under the box, so the center lands right on the
-       * edge: the gap minus half an arrow.
-       *
-       * `edge`: how far inside the box's LATERAL edge the arrow stays, so the diamond never lands on
-       * the rounded corner. It is a margin, so it goes through the same clipping against the viewport
-       * that is already applied to the box: when the box touches the edge of the screen both end up
-       * clipped on the same line, which is what keeps the arrow inside.
-       */
-      --sk-anchored-arrow-near: calc(
-        var(--sk-anchored-offset) - var(--sk-anchored-arrow-size, 8px) / 2
-      );
-      --sk-anchored-arrow-edge: calc(
-        var(--sk-anchored-offset) +
-          var(--sk-anchored-arrow-inset, calc(var(--sk-anchored-arrow-size, 8px) * 1.5)) -
-          var(--sk-anchored-arrow-size, 8px) / 2
-      );
-
-      /* `fixed` is what gives it the viewport as containing block, and with that the trigger as a
-       * reachable anchor. See the long explanation above: with `absolute` no anchoring is possible. */
-      position: fixed;
-      position-anchor: var(--sk-anchored-name);
-      /* Same as the box: an arrow whose anchor left the screen is a diamond pointing at nothing. */
-      position-visibility: anchors-visible;
-    }
-
-    /*
-     * THE FAR MARGIN IS THE HEIGHT OF THE BOX, and that is what makes the two FLIP TOGETHER.
-     *
-     * `position-try` tries the opposite side when the element does not fit, and it decides that per
-     * element: an 8px arrow fits above the trigger in places where the whole box does not, so without
-     * this the box would go below and the arrow would stay above, loose. By giving the arrow the
-     * height of the box as its outer-side margin, its block footprint is the same as the box's and so
-     * is the flip threshold. On flip, `flip-block` swaps both margins, so the far one becomes the near
-     * one and the arrow appears on the other side, hugging the box.
-     *
-     * `anchor-size()` and not a measurement: the size of the box does not depend on where it is, so it
-     * is the only piece of data from the other element that can be read without scroll going stale.
-     */
-    .sk-anchored[data-sk-placement="block-end"] > .sk-anchored-arrow,
-    .sk-anchored:not([data-sk-placement]) > .sk-anchored-arrow {
-      position-area: block-end span-all;
-      /* The SAME hook the box reads (`.sk-anchored` above), not a second hard-coded
-       * `flip-block`: the paragraph above says the arrow and the box have to flip together, and they
-       * only do while both answer to one switch. A consumer that turns the flip off for a box - the
-       * anchoring page's own specimen does, to show the placement it names rather than the fallback -
-       * used to turn it off for the box ALONE, and the arrow went on flipping: a diamond left on the
-       * far side of the trigger, pointing at nothing, while the box sat where it was asked to. */
-      position-try-fallbacks: var(--sk-anchored-position-try, flip-block);
-      justify-self: anchor-center;
-      align-self: start;
-      margin-block-start: var(--sk-anchored-arrow-near);
-      margin-block-end: calc(
-        anchor-size(var(--sk-anchored-box-name) block) + var(--sk-anchored-arrow-near)
-      );
-      margin-inline: var(--sk-anchored-arrow-edge);
-      rotate: 45deg;
-    }
-
-    .sk-anchored[data-sk-placement="block-start"] > .sk-anchored-arrow {
-      position-area: block-start span-all;
-      /* The SAME hook the box reads (`.sk-anchored` above), not a second hard-coded
-       * `flip-block`: the paragraph above says the arrow and the box have to flip together, and they
-       * only do while both answer to one switch. A consumer that turns the flip off for a box - the
-       * anchoring page's own specimen does, to show the placement it names rather than the fallback -
-       * used to turn it off for the box ALONE, and the arrow went on flipping: a diamond left on the
-       * far side of the trigger, pointing at nothing, while the box sat where it was asked to. */
-      position-try-fallbacks: var(--sk-anchored-position-try, flip-block);
-      justify-self: anchor-center;
-      align-self: end;
-      margin-block-start: calc(
-        anchor-size(var(--sk-anchored-box-name) block) + var(--sk-anchored-arrow-near)
-      );
-      margin-block-end: var(--sk-anchored-arrow-near);
-      margin-inline: var(--sk-anchored-arrow-edge);
-      rotate: 225deg;
-    }
-
-    /* To the sides the axes swap: the free one becomes the block axis (`align`) and the one that
-     * measures the box, the inline one. */
-    .sk-anchored[data-sk-placement="inline-start"] > .sk-anchored-arrow {
-      position-area: inline-start;
-      /* Same hook as the block pair above, with this axis's own default: box and arrow flip
-       * together, or they do not flip at all. */
-      position-try-fallbacks: var(--sk-anchored-position-try, flip-inline);
-      align-self: anchor-center;
-      justify-self: end;
-      margin-inline-start: calc(
-        anchor-size(var(--sk-anchored-box-name) inline) + var(--sk-anchored-arrow-near)
-      );
-      margin-inline-end: var(--sk-anchored-arrow-near);
-      margin-block: var(--sk-anchored-arrow-edge);
-      rotate: 135deg;
-    }
-
-    .sk-anchored[data-sk-placement="inline-end"] > .sk-anchored-arrow {
-      position-area: inline-end;
-      /* Same hook as the block pair above, with this axis's own default: box and arrow flip
-       * together, or they do not flip at all. */
-      position-try-fallbacks: var(--sk-anchored-position-try, flip-inline);
-      align-self: anchor-center;
-      justify-self: start;
-      margin-inline-start: var(--sk-anchored-arrow-near);
-      margin-inline-end: calc(
-        anchor-size(var(--sk-anchored-box-name) inline) + var(--sk-anchored-arrow-near)
-      );
-      margin-block: var(--sk-anchored-arrow-edge);
-      rotate: -45deg;
-    }
-  }
-
-  /* ── The fallback: the machine moves the arrow ───────────────────────────────
-   * `data-side` is the RESOLVED side, the one the machine just computed, and it only appears on this
-   * path: the binding mirrors it onto the arrow when it passes it Zag's props. Its existence is the
-   * signal for "THE MACHINE PLACES HERE", and this rule UNDOES everything the block above put on it
-   * so that two engines do not end up with opinions about the same diamond. Zag centers it over the
-   * trigger itself, writing `left` and a main-axis inset.
-   *
-   * EVERYTHING is undone and not just the insets, even though in theory it should not be needed
-   * (without the API the `@supports` does not apply and there is nothing to undo): the margins are what
-   * hurt most if the two paths overlap, because Zag does not touch them, so its computed `left` gets
-   * shifted by the leftover margin and the arrow comes out displaced without anything looking broken.
-   * Cheap, and the rule stays true on its own.
-   *
-   * The rotation we do set ourselves and it follows the resolved side, which here is firm data: on
-   * this path the machine is the only one placing, so there are no two opinions about where the box
-   * ended up. */
-  .sk-anchored > .sk-anchored-arrow[data-side] {
-    position: absolute;
-    inset: auto;
-    translate: none;
-    margin: 0;
-    position-area: none;
-    position-visibility: always;
-    align-self: auto;
-    justify-self: auto;
-  }
-
+  /* The turn follows the side the popper resolved: the diamond's border faces the anchor. */
   .sk-anchored > .sk-anchored-arrow[data-side="top"] {
     rotate: 225deg;
   }
@@ -409,19 +108,5 @@
 
   .sk-anchored > .sk-anchored-arrow[data-side="right"] {
     rotate: -45deg;
-  }
-
-  .sk-anchored[data-sk-placement="inline-start"] {
-    --sk-anchored-position-area: inline-start;
-    --sk-anchored-position-try: flip-inline;
-    --sk-anchored-justify: auto;
-    --sk-anchored-align: anchor-center;
-  }
-
-  .sk-anchored[data-sk-placement="inline-end"] {
-    --sk-anchored-position-area: inline-end;
-    --sk-anchored-position-try: flip-inline;
-    --sk-anchored-justify: auto;
-    --sk-anchored-align: anchor-center;
   }
 }

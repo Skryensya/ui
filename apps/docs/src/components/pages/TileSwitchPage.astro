@@ -1,0 +1,75 @@
+---
+import { tileSwitchListTree, tileSwitchStateTrees, withPx, withPy } from "../../demos/tile";
+import "@skryensya/core/components/tile.css";
+import "@skryensya/core/components/switch.css";
+import { tileSwitchTree } from "../../demos/switch";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import { tileSwitchDoTree, tileSwitchDontTree } from "../../demos/dodont-pairs";
+import { getLocale, tList, useTranslations } from "../../i18n";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const states = tileSwitchStateTrees(t);
+---
+
+<ComponentPageShell
+  hookPlayground={{ tree: tileSwitchTree(t) }}
+  title="TileSwitch"
+  description={t("tileSwitchPage.description")}
+  contractId="tile"
+  importNames={["TileSwitch", "TileContent"]}
+  appearanceTargetSelector=".sk-tile--interactive"
+  testFiles={["packages/vanilla/src/components/tile-switch.svelte.test.ts"]}
+>
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} />
+  </Fragment>
+
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("tileSwitchPage.lede")} />
+
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={withPx(withPy(tileSwitchTree(t)))} title={t("switchPage.tileTitle")} description={t("switchPage.tileBody1")} storybookTitle="Components/Switch" storybookStory="TileSwitch" />
+    <p set:html={t("switchPage.tileBody2")} />
+    <UsagePreview tree={withPx(withPy(tileSwitchListTree(t)))} title={t("tileSwitchPage.listTitle")} description={t("tileSwitchPage.listBody")} storybookTitle="Components/Switch" storybookStory="TileSwitch" />
+    <UsagePreview
+      variants={[
+        { value: "off", label: t("tileSwitchPage.stateOff"), tree: withPx(withPy(states.off)) },
+        { value: "on", label: t("tileSwitchPage.stateOn"), tree: withPx(withPy(states.on)) },
+        { value: "disabled", label: t("component.state.disabled"), tree: withPx(withPy(states.disabled)) },
+      ]}
+      initialVariant="on"
+      variantsLabel={t("tileSwitchPage.statesTitle")}
+      title={t("tileSwitchPage.statesTitle")}
+      description={t("tileSwitchPage.statesBody")}
+      storybookTitle="Components/Switch"
+      storybookStory="TileSwitch"
+    />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "tileSwitchPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("tileSwitchPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "tileSwitchPage.when")} avoid={tList(t, "tileSwitchPage.whenNot")} />
+    <DoDont
+      title={t("tileSwitchPage.dd.title.title")}
+      do={{ tree: tileSwitchDoTree(t), caption: t("tileSwitchPage.dd.title.do") }}
+      dont={{ tree: tileSwitchDontTree(t), caption: t("tileSwitchPage.dd.title.dont") }}
+    />
+    <ContentRules items={tList(t, "tileSwitchPage.content")} />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("tileSwitchPage.a11yIntro")} does={tList(t, "tileSwitchPage.a11yDoes")} yours={tList(t, "tileSwitchPage.a11yYours")} />
+  </Fragment>
+</ComponentPageShell>

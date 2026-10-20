@@ -22,8 +22,6 @@
     --sk-tooltip-max-inline-size: 18rem;
     --sk-tooltip-shadow: var(--elevation-raised);
     --sk-tooltip-wash: var(--elevation-wash-raised);
-    /* The distance to the trigger. A single hook, because the flip changes the SIDE but not the gap. */
-    --sk-tooltip-offset: var(--space-stack-xs);
 
     /* The root exists in order to anchor: it wraps the trigger without altering its layout. `contents`
      * would make the box disappear, but it would also break anchor positioning, which needs a real
@@ -31,31 +29,21 @@
     display: inline-flex;
   }
 
-  /* THE PLACEMENT IS NOT HERE. It belongs to the Anchoring pattern (ADR-11): the trigger also carries
-   * `sk-anchor` and the positioner also `sk-anchored`, and `patterns/anchored.css` sets the sides, the
-   * flip, the `z-index` and the content-based width. This sheet only says what SIZE and what COLOR a
-   * tooltip is, which is the only thing it does not share with the system's other eight anchored boxes. */
-  .sk-tooltip__positioner {
-    /* The pattern's offset, expressed as the tooltip's hook. With a fallback, and not a bare `var()`,
-     * because in React the positioner is portaled to the body: there is no `.sk-tooltip` above it to
-     * inherit from there, so without the default this declaration would be invalid. The arrow, which
-     * hangs off here, inherits it: it needs the same number, which is where the box's edge is. */
-    --sk-anchored-offset: var(--sk-tooltip-offset, var(--space-stack-xs));
-
-    /* A TOOLTIP COMES OUT ABOVE. It is the only anchored one that does not fall downward, because below
-     * is what the pointer just touched and what it is about to touch. The pattern's default is
-     * block-end, so this is the re-declaration that corrects it, and it wins without depending on
-     * import order because the pattern's defaults live in `:where()`. An explicit `data-sk-placement`
-     * beats this, which is what we want. */
-    --sk-anchored-position-area: block-start span-all;
-    --sk-anchored-position-try: flip-block;
-
-    /* The POSITIONER never intercepts the pointer: with `span-all` it is an invisible box much wider
-     * than the text, and if it captured clicks it would block whatever is underneath. The content does
+  /* THE PLACEMENT IS NOT HERE. It belongs to the Anchoring pattern: the trigger also carries
+   * `sk-anchor` and the positioner `sk-anchored`, and the popper places it, above the trigger
+   * (`block-start`, set where the machine is configured: a tooltip comes out above because below is
+   * what the pointer just touched). This sheet only says what SIZE and what COLOR a tooltip is. */
+  .sk-tooltip__positioner.sk-anchored {
+    /* The POSITIONER never intercepts the pointer: if it captured clicks it would block whatever is underneath. The content does
      * receive them (rule further down). The pattern cannot decide this: there are anchored things,
      * like the menu, where turning off the positioner's events would turn off the whole component. */
     pointer-events: none;
-    max-inline-size: var(--sk-tooltip-max-inline-size, 18rem);
+    /* Zag writes `min-width: max-content` inline; this lets the tooltip's max-width cap take effect. */
+    min-inline-size: 0 !important;
+    max-inline-size: min(
+      var(--sk-tooltip-max-inline-size, 18rem),
+      calc(100vi - 2 * var(--space-inset-md))
+    );
 
     /* The arrow is OPTIONAL and authored (`.sk-anchored-arrow` inside the positioner); this only says
      * what color it is when present, and the arrow inherits it. No border: the inverted surface already
@@ -65,8 +53,8 @@
   }
 
   /*
-   * FALLBACKS ON EVERY HOOK HERE, same reason `--sk-anchored-offset` and `--sk-anchored-arrow-bg`
-   * have them above: in React this element is portalled to `document.body` (no `container` passed),
+   * FALLBACKS ON EVERY HOOK HERE, same reason `--sk-anchored-arrow-bg`
+   * has one above: in React this element is portalled to `document.body` (no `container` passed),
    * so it renders outside `.sk-tooltip`'s subtree and cannot inherit the hooks it defines. Without a
    * fallback each `var()` is invalid there and the property drops to its initial value, i.e. an
    * unstyled box. Background, radius and padding all silently gone, only in the one binding that
@@ -85,7 +73,7 @@
     line-height: var(--font-line-height-body);
     box-shadow: var(--sk-tooltip-shadow, var(--elevation-raised));
     /* A tooltip's text is short by definition; wrapping is fine, truncating is not. */
-    overflow-wrap: break-word;
+    overflow-wrap: anywhere;
   }
 
   .sk-tooltip__content[data-state="open"] {
@@ -122,12 +110,9 @@
    * base rule (no `transition`) and the `display: none` from the `[data-state]` rule further up applies
    * at once. The `@starting-style` below still provides the "from" of the first paint.
    *
-   * BOTH CHILDREN ARE ANIMATED and not the positioner: `translate` (even `0 0`) would make it the
-   * containing block of its `fixed` descendants, and the arrow is `fixed` in order to anchor to the
-   * trigger (see the pattern); during the animation the anchor would stop being reachable and the
-   * arrow would jump to the fallback and back. `translate` on the arrow ITSELF is safe: it does not
-   * change its own containing block, only that of its descendants, and it has none. Same timing on
-   * both pieces so they enter together and the diamond is not left loose for an instant before its box. */
+   * BOTH CHILDREN ARE ANIMATED and not the positioner: the positioner carries the `transform` that
+   * places it, and `translate`/`scale` on it would compose with that. Same timing on both pieces so
+   * they enter together and the diamond is not left loose for an instant before its box. */
   .sk-tooltip__positioner > .sk-tooltip__content,
   .sk-tooltip__positioner > .sk-anchored-arrow {
     opacity: 0;

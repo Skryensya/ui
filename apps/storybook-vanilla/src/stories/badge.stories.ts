@@ -8,15 +8,16 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/patterns/icon.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/badge";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+const { badgeAnatomyCss } = demos;
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Badge", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.badgeAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.badgeAnatomyTree, { decorators: [withCss(badgeAnatomyCss)] });
 export const Label: StoryObj = treeStory(demos.badgeLabelTree);
 export const LoneDot: StoryObj = treeStory(demos.badgeLoneDotTree);
 export const Tag: StoryObj = treeStory(demos.badgeTagTree);
+export const Holders: StoryObj = treeStory(demos.badgeHoldersTree);
 export const Dots: StoryObj = treeStory(demos.badgeDotsTree);
 export const Small: StoryObj = treeStory(demos.badgeSmallTree);
 export const Pulse: StoryObj = treeStory(demos.badgePulseTree);
-export const Holders: StoryObj = treeStory(demos.badgeHoldersTree);

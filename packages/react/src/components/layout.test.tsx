@@ -127,6 +127,21 @@ describe("layout primitives", () => {
     expect(ui.getByTestId("page").hasAttribute("data-sticky-header")).toBe(false);
   });
 
+  it("writes data-sidebar-persistent only when asked", () => {
+    const ui = render(
+      <>
+        <AppShell sidebarPersistent data-testid="app">
+          <Main />
+        </AppShell>
+        <AppShell data-testid="page">
+          <Main />
+        </AppShell>
+      </>,
+    );
+    expect(ui.getByTestId("app").getAttribute("data-sidebar-persistent")).toBe("");
+    expect(ui.getByTestId("page").hasAttribute("data-sidebar-persistent")).toBe(false);
+  });
+
   it("renders LayoutGrid while leaving width on its semantic children", () => {
     const ui = render(
       <LayoutGrid as="main" className="document">

@@ -1,0 +1,39 @@
+---
+/* Dev-only stress harness for the content primitives. */
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
+import "@skryensya/core/tokens.scss";
+import "@skryensya/core/components/typography.css";
+import "../../styles/site.css";
+import { ContentBreak } from "../../components/react-demos/debug-content-break";
+import DebugShell from "../../components/DebugShell.astro";
+
+---
+
+<DebugShell title="Text primitives" docsHref="/components/text">
+  <div class="break-page" data-toc-transparent>
+    <header>
+      <h1>break: Text primitives</h1>
+      <p class="break-intro">Everyday and worst-case content for Text, Heading, Link, Strong, Code, and Output.</p>
+    </header>
+    <ContentBreak client:load />
+  </div>
+</DebugShell>
+
+<style is:global>
+  .content-break__narrow {
+    box-sizing: border-box;
+    inline-size: min(100%, 20rem);
+    display: grid;
+    align-content: start;
+    gap: var(--space-stack-sm);
+    min-inline-size: 0;
+    padding: var(--space-inset-md);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-surface);
+    background: var(--color-bg-surface);
+  }
+
+</style>

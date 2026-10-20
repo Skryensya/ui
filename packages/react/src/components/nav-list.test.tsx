@@ -153,4 +153,15 @@ describe("NavList", () => {
     expect(group.querySelector("[data-sk-nav-list-group-trigger]")).not.toBeNull();
     expect(group.querySelector("[data-sk-nav-list-group-list]")).not.toBeNull();
   });
+
+  it("recovers a truncated destination name through title", () => {
+    /* The label ellipsizes at narrow widths with no way to read the full value; `title` restores
+       it without touching the ellipsis itself. */
+    const ui = render(
+      <NavList aria-label="Primary navigation">
+        <NavListLink href="/workspaces/acme/projects/q3">Projects / Acme / Q3 launch</NavListLink>
+      </NavList>,
+    );
+    expect(ui.getByRole("link").getAttribute("title")).toBe("Projects / Acme / Q3 launch");
+  });
 });

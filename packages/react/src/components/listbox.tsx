@@ -98,6 +98,7 @@ export function Listbox({
             data-default-selected={item.defaultSelected ? "" : undefined}
             data-sk-listbox-item=""
             key={item.value}
+            title={item.label}
           >
             <span {...api.getItemTextProps({ item })} className={listboxParts.itemText} data-sk-listbox-item-text="">
               {item.label}

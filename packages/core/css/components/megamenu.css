@@ -13,6 +13,12 @@
     margin: 0;
     padding: var(--space-inset-sm) var(--space-inset-md);
     list-style: none;
+    /* No wrap, no scroll: many categories or long labels had nothing stopping them from forcing
+       the row wider than its container, same gap found on Toolbar/Menubar/Navbar. */
+    min-inline-size: 0;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
   }
 
   .sk-megamenu__item {
@@ -73,23 +79,18 @@
   }
 
   /*
-   * The pattern's own default (`anchored.css`) centers under the anchor, which is exactly right
-   * here too, just at a bigger measure: the panel is a CARD that sits inside the bar's own reading
-   * column, not a sheet that bleeds to its edges. `--sk-anchored-size` caps at `--size-wrapper-md`
-   *. The same token `Wrapper`'s `md` and `LayoutGrid`'s `content` column both already use (see
-   * `patterns/wrapper.css`, `patterns/layout.css`), so the panel lands at the same measure as the
-   * page's own content column by construction, whichever of the two a consumer's page happens to
-   * use, without this component ever having to look outside its own subtree to find out which.
-   * `anchor-size(width) - 2 × gutter`, not bare `anchor-size(width)`, bounds it on the other side: a
-   * bar narrower than the `--size-wrapper-md` cap (a mobile-ish desktop window, a sidebar-shrunk
-   * main column) is exactly when that second term stops being the binding constraint. The FIRST
-   * one has to actually be narrower than the bar, or the panel touches the viewport's own edges
-   * with nothing left to center within.
+   * Centered under the bar, as a CARD that sits inside the bar's own reading column, not a sheet that
+   * bleeds to its edges. The width caps at `--size-wrapper-md`, the same token `Wrapper`'s `md` and
+   * `LayoutGrid`'s `content` column both use (see `patterns/wrapper.css`, `patterns/layout.css`), so
+   * the panel lands at the same measure as the page's own content column by construction.
+   * `--reference-width - 2 × gutter`, written by the popper from the bar, bounds it on the other side: a
+   * bar narrower than the cap (a mobile-ish desktop window, a sidebar-shrunk main column) is exactly
+   * when that second term stops being the binding constraint, and the panel must be narrower than the
+   * bar or it touches the viewport's own edges with nothing left to center within.
    */
   .sk-megamenu__positioner {
-    --sk-anchored-position-area: block-end span-all;
-    --sk-anchored-justify: center;
-    --sk-anchored-offset: var(--space-stack-xs) 0;
+    min-inline-size: 0;
+    inline-size: min(calc(var(--reference-width) - 2 * var(--sk-megamenu-gutter)), var(--size-wrapper-md));
     --sk-megamenu-gutter: var(--space-inset-lg);
     --sk-megamenu-bg: var(--color-bg-surface-overlay);
     --sk-megamenu-fg: var(--color-text-primary);
@@ -99,13 +100,7 @@
     --sk-megamenu-wash: var(--elevation-wash-overlay);
   }
 
-  @supports (anchor-name: --a) {
-    .sk-megamenu__positioner {
-      --sk-anchored-size: min(calc(anchor-size(width) - 2 * var(--sk-megamenu-gutter)), var(--size-wrapper-md));
-    }
-  }
-
-  /*
+    /*
    * `NavListGroup`/`NavListLink`'s entire appearance. Radius, height, padding, colors, the state
    * layer's own `border-radius: inherit`. Reads off `--sk-nav-list-*` custom properties that
    * `nav-list.css` defines ONLY on `.sk-nav-list`'s own root (see that file's own token block): a
@@ -156,6 +151,7 @@
     max-block-size: min(28rem, calc(100vb - 2 * var(--space-inset-md)));
     padding: var(--space-inset-lg);
     overflow: auto;
+    overscroll-behavior: contain;
     border: 1px solid var(--sk-megamenu-border-color);
     border-radius: var(--sk-megamenu-radius);
     background: var(--sk-megamenu-wash) var(--sk-megamenu-bg);
@@ -350,16 +346,15 @@
   @media (max-width: 51.999rem) {
     .sk-megamenu__positioner {
       /* `!important`, not plain specificity: `anchored.css`'s own `.sk-anchored { position: fixed }`
-       * is unconditional and equal specificity (0,1,0), so which one wins this tie depends on import
-       * order rather than this media query matching. Measured breaking in practice at this exact
-       * breakpoint. `position: static` alone is what actually neutralizes anchoring: every other
-       * anchor-relative property (`position-anchor`, `position-area`, `inset`, `margin`) only has an
-       * effect on an absolutely/fixed-positioned box, so forcing this one property to win is enough
-       * to make the rest of `.sk-anchored`'s declarations inert regardless of which of THEM wins. */
+       * is unconditional and equal specificity (0,1,0), and the popper writes its own inline
+       * `position`, so which one wins depends on neither this media query nor import order. `position:
+       * static` alone neutralizes the placement: `inset`, `transform` and `z-index` only matter on a
+       * positioned box, so forcing this one property is enough. */
       position: static !important;
       inset: auto;
       margin: 0;
-      transform: none;
+      inline-size: auto;
+      transform: none !important;
     }
 
     .sk-megamenu__content {

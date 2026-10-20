@@ -46,6 +46,7 @@
       var(--color-border-default)
     );
     --sk-rating-max: 5;
+    --sk-rating-fill-direction: to right;
     /* The reading itself, written by both bindings from the `value` option. Declared here so a
        strip in markup that never set it paints an empty scale instead of an invalid gradient. */
     --sk-rating-value: 0;
@@ -56,6 +57,10 @@
        each one is a button with no margin of its own, so one declaration still spaces both
        signatures the same way. Same value as before (`--space-inline-xs`). */
     gap: var(--sk-rating-gap);
+  }
+
+  :dir(rtl).sk-rating {
+    --sk-rating-fill-direction: to left;
   }
 
   .sk-rating[data-size="sm"] {
@@ -105,7 +110,7 @@
     inline-size: calc(var(--sk-rating-max) * var(--sk-rating-tile) - var(--sk-rating-gap));
     block-size: var(--sk-rating-size);
     background: linear-gradient(
-      to right,
+      var(--sk-rating-fill-direction),
       var(--sk-rating-on-color) 0 var(--sk-rating-fill),
       var(--sk-rating-off-color) var(--sk-rating-fill) 100%
     );

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { clampPosition, exceedsDragThreshold, fpsFromFrameCount, panelEdge } from "./geometry";
+import { clampPosition, exceedsDragThreshold, fpsFromFrameCount } from "./geometry";
 
 describe("clampPosition", () => {
   it("leaves a position that already fits untouched", () => {
@@ -48,21 +48,6 @@ describe("exceedsDragThreshold", () => {
   it("measures straight-line distance, not axis-aligned distance", () => {
     // Either axis alone is under 4, but the diagonal (hypot(3, 3) ≈ 4.24) clears it.
     expect(exceedsDragThreshold(3, 3, 4)).toBe(true);
-  });
-});
-
-describe("panelEdge", () => {
-  it("opens upward when there is room above the toggle", () => {
-    expect(panelEdge(400, 220)).toBe("top");
-  });
-
-  it("flips downward when there is not enough room above", () => {
-    expect(panelEdge(100, 220)).toBe("bottom");
-  });
-
-  it("treats exactly minSpace as enough room, only strictly less flips it", () => {
-    expect(panelEdge(220, 220)).toBe("top");
-    expect(panelEdge(219, 220)).toBe("bottom");
   });
 });
 

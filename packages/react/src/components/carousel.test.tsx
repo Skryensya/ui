@@ -26,6 +26,37 @@ describe("Carousel", () => {
     expect(track.querySelectorAll("div.sk-carousel__slide")).toHaveLength(3);
   });
 
+  it("writes align, step, snap and edge padding on the root and marks the slides that are not stops", () => {
+    const ui = render(
+      <Carousel aria-label="Focused" align="center" edgePadding="2rem" slidesPerMove={2} snap="proximity">
+        <CarouselSlide>Uno</CarouselSlide>
+        <CarouselSlide>Dos</CarouselSlide>
+        <CarouselSlide>Tres</CarouselSlide>
+      </Carousel>,
+    );
+    const region = ui.container.querySelector<HTMLElement>(".sk-carousel")!;
+    expect(region.getAttribute("data-align")).toBe("center");
+    expect(region.getAttribute("data-slides-per-move")).toBe("2");
+    expect(region.getAttribute("data-snap")).toBe("proximity");
+    expect(region.style.getPropertyValue("--sk-carousel-edge-padding")).toBe("2rem");
+
+    const slides = Array.from(region.querySelectorAll<HTMLElement>(".sk-carousel__slide"));
+    expect(slides.map((slide) => slide.hasAttribute("data-no-snap"))).toEqual([false, true, false]);
+    expect(slides[0]!.style.scrollSnapAlign).toBe("center");
+  });
+
+  it("leaves the options off the root when none is asked for", () => {
+    const ui = render(
+      <Carousel aria-label="Plain">
+        <CarouselSlide>Uno</CarouselSlide>
+        <CarouselSlide>Dos</CarouselSlide>
+      </Carousel>,
+    );
+    const region = ui.container.querySelector(".sk-carousel")!;
+    for (const attr of ["data-align", "data-slides-per-move", "data-snap"]) expect(region.hasAttribute(attr)).toBe(false);
+    expect(ui.container.querySelector("[data-no-snap]")).toBeNull();
+  });
+
   it("maps style-backed tree options onto the Carousel host", async () => {
     const tree: UsageTree = {
       contract: "carousel",
@@ -67,5 +98,17 @@ describe("Carousel", () => {
     expect(onGoto).toHaveBeenCalledTimes(1);
     expect((onGoto.mock.calls[0][0] as CustomEvent).detail).toEqual({ index: 1 });
     expect(ref.current?.element).toBe(root);
+  });
+
+  it("falls back to the count display past a reasonable number of slides, regardless of the chosen indicator", () => {
+    /* Found as a real break: one <button> per slide with no cap rendered a ~2,416px control rail
+       for 1,000 slides. The contract's own "count" indicator is the built-in escape hatch for this,
+       so it takes over past the cap even when "dots" was explicitly asked for - a wall of dots
+       stops being navigation long before 1,000. */
+    const slides = Array.from({ length: 30 }, (_, index) => <CarouselSlide key={index}>{index}</CarouselSlide>);
+    const ui = render(<Carousel aria-label="Muchos" indicator="dots">{slides}</Carousel>);
+
+    expect(ui.container.querySelector(".sk-carousel__dots")).toBeNull();
+    expect(ui.container.querySelector(".sk-carousel__count")?.textContent).toBe("1 / 30");
   });
 });

@@ -74,6 +74,7 @@ const slide = (title: string, body: string): UsageTree => ({
 const carousel = (t: Translate, titles: readonly string[]): UsageTree => ({
   contract: "carousel",
   signature: "Carousel",
+  options: { mounted: true },
   attrs: { "aria-label": t("demo.carousel.label") },
   children: titles.map((title, i) => slide(title, t(`dd3.carousel.body${i + 1}` as UIKey))),
 });

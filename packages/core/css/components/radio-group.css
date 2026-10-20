@@ -46,14 +46,21 @@
     cursor: not-allowed;
   }
 
+  /* Flex, not grid: `grid-auto-flow: column` never wraps to a second row, so six real-length labels
+     just kept extending the row past the container. Flex-wrap does what CheckboxGroup's own
+     horizontal mode already does for the same reason. `gap` carries over from the base rule and
+     sets both the row rhythm (between wrapped lines) and the column gap (between items in a line). */
   .sk-radio-group[data-orientation="horizontal"] {
-    grid-auto-flow: column;
-    grid-auto-columns: max-content;
+    display: flex;
+    flex-wrap: wrap;
   }
 
-  /* `spread`: equal steps across the full width, which is what a scale is. Vertical groups ignore it;
-     a column is already as wide as its container. */
+  /* `spread`: equal steps across the full width, which is what a scale is - a fixed set of steps
+     meant to fit on one line, not wrap, so this stays grid. Vertical groups ignore it; a column is
+     already as wide as its container. */
   .sk-radio-group[data-orientation="horizontal"][data-spread] {
+    display: grid;
+    grid-auto-flow: column;
     inline-size: 100%;
     grid-auto-columns: minmax(0, 1fr);
   }
@@ -61,7 +68,7 @@
   .sk-radio {
     display: inline-flex;
     gap: var(--sk-radio-gap, var(--space-inline-xs));
-    align-items: center;
+    align-items: flex-start;
     color: var(--sk-radio-fg, var(--color-text-primary));
     cursor: pointer;
   }

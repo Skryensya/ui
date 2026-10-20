@@ -3,6 +3,17 @@ import { useLayoutEffect, useRef, useState, type HTMLAttributes, type KeyboardEv
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
+/*
+ * ArrowRight/ArrowLeft map to "next"/"previous" by array order, which is backwards once the group
+ * is laid out right-to-left: visually, ArrowRight should move toward the start, not the end. Found
+ * reading the keydown handler directly - it never read `dir` at all, so every RTL layout was wrong,
+ * not just unverified. `dir="auto"` resolves to the computed direction like Slider's own helper.
+ */
+function getDirection(dir: HTMLAttributes<HTMLDivElement>["dir"], root: HTMLElement | null): "ltr" | "rtl" {
+  if (dir === "rtl" || dir === "ltr") return dir;
+  return getComputedStyle(root ?? document.documentElement).direction === "rtl" ? "rtl" : "ltr";
+}
+
 /* Derived, never restated: the values and the default live in the contract. */
 const { appearance: appearanceOption, size: sizeOption } = segmentedContract.options;
 
@@ -80,13 +91,17 @@ export function SegmentedControl({
     const index = enabled.findIndex((option) => option.value === current);
     if (index === -1) return;
 
+    const rtl = getDirection(props.dir, rootRef.current) === "rtl";
+    const forward = rtl ? "ArrowLeft" : "ArrowRight";
+    const backward = rtl ? "ArrowRight" : "ArrowLeft";
+
     const next = event.key === "Home"
       ? enabled[0]
       : event.key === "End"
         ? enabled.at(-1)
-        : event.key === "ArrowLeft" || event.key === "ArrowUp"
+        : event.key === backward || event.key === "ArrowUp"
           ? enabled[(index - 1 + enabled.length) % enabled.length]
-          : event.key === "ArrowRight" || event.key === "ArrowDown"
+          : event.key === forward || event.key === "ArrowDown"
             ? enabled[(index + 1) % enabled.length]
             : undefined;
 

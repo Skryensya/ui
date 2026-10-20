@@ -6,10 +6,11 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/slider.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/slider";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Slider", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.sliderAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.sliderAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(demos.sliderTree);
 export const Range: StoryObj = treeStory(demos.sliderRangeTree);

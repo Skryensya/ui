@@ -8,10 +8,11 @@ import "@skryensya/core/components/input.css";
 import "@skryensya/core/components/select.css";
 import "@skryensya/core/patterns/anchored.css";
 import * as demos from "@docs/demos/form-field";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/FormField", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.formFieldAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.formFieldAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(demos.formFieldTree);
 export const AroundSelect: StoryObj = treeStory(demos.formFieldAroundSelectTree);

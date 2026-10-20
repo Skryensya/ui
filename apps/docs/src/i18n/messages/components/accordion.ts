@@ -47,7 +47,7 @@ export const accordionMessages = {
     "accordion.content3": "No uses “Más información” ni “Ver más” como título: no dice qué hay dentro.",
     "accordion.content2": "Usa la descripción para decir qué hay dentro, en una línea: “Plazos y seguimiento”.",
     "accordion.content1": "Escribe el título como el nombre de la sección, de 1 a 4 palabras: “Entrega”, no “Información sobre la entrega de tu pedido”.",
-    "accordion.whenNot4": 'Para una sola sección plegable, sin grupo: usa el ExpandableTile de <a href="/es/componentes/tile">Tile</a>.',
+    "accordion.whenNot4": 'Para una sola sección plegable, sin grupo: usa el ExpandableTile de <a href="/es/componentes/expandable-tile">ExpandableTile</a>.',
     "accordion.whenNot3": 'Cuando las secciones son vistas alternativas del mismo espacio: usa <a href="/es/componentes/tabs">Tabs</a>.',
     "accordion.whenNot2": "Cuando la persona compara contenido entre secciones: plegarlo la obliga a recordar en vez de mirar. Muéstralo todo a la vista.",
     "accordion.whenNot1": "Cuando son pocas secciones cortas: muéstralas todas, porque se leen más rápido que plegadas.",
@@ -62,7 +62,7 @@ export const accordionMessages = {
     "accordion.reactInstallBody": "Instala el binding de React y carga los estilos del marco y de los ítems. El binding monta la máquina por ti.",
     "accordion.iconsNote": 'Los chevrons son marcadores (<code>&lt;span data-sk-icon="chevron-*"&gt;</code>). Ningún componente monta iconos por ti, así que agrega esta línea.',
     "accordion.oneItemTitle": "Un ítem: cuando el grupo va a crecer",
-    "accordion.oneItemBody": 'Usa un Accordion de un ítem si pronto habrá más secciones. Si la sección siempre estará sola, usa el ExpandableTile de <a href="/es/componentes/tile">Tile</a>.',
+    "accordion.oneItemBody": 'Usa un Accordion de un ítem si pronto habrá más secciones. Si la sección siempre estará sola, usa el ExpandableTile de <a href="/es/componentes/expandable-tile">ExpandableTile</a>.',
     "accordion.multipleTitle": "Varias abiertas: un solo grupo",
     "accordion.multipleBody": 'Con <code>type="multiple"</code> cada sección abre y cierra por su cuenta, y el grupo sigue informando un solo valor.',
     "accordion.prop.type.title": "Type: una abierta o varias",
@@ -195,7 +195,7 @@ export const accordionMessages = {
     "accordion.content1": "Write the title as the section's name, in 1 to 4 words: “Delivery”, not “Information about the delivery of your order”.",
 
 
-    "accordion.whenNot4": 'For a single collapsible section with no group: use <a href="/components/tile">Tile</a>\'s ExpandableTile.',
+    "accordion.whenNot4": 'For a single collapsible section with no group: use <a href="/components/expandable-tile">ExpandableTile</a>\'s ExpandableTile.',
 
     "accordion.whenNot3": 'When the sections are alternative views of the same space: use <a href="/components/tabs">Tabs</a>.',
 
@@ -218,7 +218,7 @@ export const accordionMessages = {
     "accordion.reactInstallBody": "Install the React binding and load the styles for the frame and the items. The binding mounts the machine for you.",
     "accordion.iconsNote": 'The chevrons are placeholders (<code>&lt;span data-sk-icon="chevron-*"&gt;</code>). No component mounts icons for you, so add this line.',
     "accordion.oneItemTitle": "One item: when the group will grow",
-    "accordion.oneItemBody": 'Use a one-item Accordion if more sections are coming. If the section will always stand alone, use <a href="/components/tile">Tile</a>\'s ExpandableTile.',
+    "accordion.oneItemBody": 'Use a one-item Accordion if more sections are coming. If the section will always stand alone, use <a href="/components/expandable-tile">ExpandableTile</a>\'s ExpandableTile.',
     "accordion.multipleTitle": "Several open: still one group",
     "accordion.multipleBody": 'With <code>type="multiple"</code> each section opens and closes on its own, and the group still reports one value.',
     "accordion.prop.type.title": "Type: one open or several",

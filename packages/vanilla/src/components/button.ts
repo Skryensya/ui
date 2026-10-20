@@ -3,6 +3,7 @@ import { applyAttrs } from "../runtime/apply.js";
 import { createConnectMount } from "../runtime/svelte-hydrate.js";
 
 const rootSelector = "[data-sk-button]";
+const dev = (import.meta as ImportMeta & { env?: { DEV?: boolean } }).env?.DEV ?? true;
 
 export const mountButton = createConnectMount({ key: "button", rootSelector, connect: connectButton });
 
@@ -41,6 +42,7 @@ export function connectButton(root: HTMLElement): () => void {
    * `childElementCount` and not a text check alone: an icon-only button's content is an `<svg>` with
    * no text in it, and that is content. This is the narrower question the empty case needs. */
   if (root.childElementCount === 0 && (root.textContent ?? "").trim().length === 0) {
+    if (dev) root.setAttribute("data-sk-a11y-warn", "");
     throw new Error(
       `Button (${rootSelector}) renders nothing: no label, no icon, no slot content. It still takes ` +
         "its full size and stays focusable and clickable. Give it a label, an icon, or do not render it.",
@@ -58,6 +60,7 @@ export function connectButton(root: HTMLElement): () => void {
       root.hasAttribute("aria-labelledby") ||
       (root.textContent ?? "").trim().length > 0;
     if (!named) {
+      if (dev) root.setAttribute("data-sk-a11y-warn", "");
       throw new Error(
         `Icon-only button (${rootSelector}[data-icon-only]) has no accessible name. Add aria-label="…" ` +
           "(or aria-labelledby). The icon is decorative, the name is the button's.",

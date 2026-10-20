@@ -32,6 +32,21 @@ describe("Rating input", () => {
     expect(inside(ui).getAllByRole("radio")).toHaveLength(10);
   });
 
+  it("inherits RTL direction for the group and each Zag radio", async () => {
+    const ui = render(
+      <div dir="rtl">
+        <Rating defaultValue={3} label="التقييم" name="score" />
+      </div>,
+    );
+    const root = ui.container.querySelector<HTMLElement>(".sk-rating")!;
+    const group = inside(ui).getByRole("radiogroup");
+    const radios = inside(ui).getAllByRole("radio");
+
+    await waitFor(() => expect(root.getAttribute("dir")).toBe("rtl"));
+    expect(group.getAttribute("dir")).toBe("rtl");
+    expect(radios.every((radio) => radio.getAttribute("dir") === "rtl")).toBe(true);
+  });
+
   it("checks the step the value sits on, and only that one", () => {
     const ui = render(<Rating defaultValue={3} label="Score" name="score" />);
     const radios = inside(ui).getAllByRole("radio");
@@ -100,6 +115,23 @@ describe("Rating input", () => {
     const ui = render(<Rating defaultValue={3} label="Tu puntuación" name="score" />);
     const results = await axe.run(ui.container);
     expect(results.violations).toEqual([]);
+  });
+
+  it("warns in development when defaultValue is not a whole step, but still submits it as given", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const ui = render(<Rating defaultValue={3.5} label="Score" name="score" />);
+
+    expect(spy.mock.calls.at(-1)?.[0]).toMatch(/non-integer value \(3\.5\)/i);
+    expect(ui.container.querySelector("input")?.getAttribute("value")).toBe("3.5");
+    spy.mockRestore();
+  });
+
+  it("does not warn when defaultValue is a whole step", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    render(<Rating defaultValue={3} label="Score" name="score" />);
+
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
   });
 });
 

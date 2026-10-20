@@ -10,10 +10,10 @@
  * is the Icon Toggle pattern; this file maps `data-copied`/`data-error` onto those faces, owns
  * the live label, and paints the feedback flag.
  *
- * THE FLAG'S PLACEMENT IS NOT HERE. It is the Anclaje pattern (decision 25): the root also carries
- * `sk-anchor`, the flag also carries `sk-anchored` and asks for `block-start`, and the arrow is the
- * pattern's own `sk-anchored-arrow`. Sides, flip, gap, z-index, the lost anchor and the arrow's
- * geometry all live in `patterns/anchored.css`; this file only says what colour and what size.
+ * THE FLAG'S PLACEMENT IS NOT HERE. It is the Anclaje pattern: the root also carries `sk-anchor`, the
+ * flag also carries `sk-anchored` and asks for `block-start`, and the arrow is the pattern's own
+ * `sk-anchored-arrow`. The popper places it (`placeAnchored`, called by the bindings while the flag is
+ * open); this file only says what colour and what size.
  */
 
 @import url("../patterns/icon-toggle.css");
@@ -35,7 +35,9 @@
     --sk-copy-button-feedback-padding: var(--space-inset-xs) var(--space-inset-sm);
     --sk-copy-button-feedback-font-size: var(--font-size-body-sm);
     --sk-copy-button-feedback-shadow: var(--elevation-raised);
-    --sk-copy-button-feedback-wash: var(--elevation-wash-raised);
+    /* None, and on purpose: the arrow is a rotated diamond painted with the flag's fill, and a wash is a gradient laid over
+     * the BOX only. The diamond then read lighter than the flag it points out of, a pale square poking into it. */
+    --sk-copy-button-feedback-wash: none;
   }
 
   /* The host is an anchor for fixed descendants. A press scale/translate changes their containing
@@ -91,17 +93,11 @@
    * that took events would swallow the second click of anyone copying twice.
    */
   .sk-copy-button__feedback {
-    /* The pattern's hooks, said in this component's terms. The gap is the tooltip's, being the same
-     * question: how far a small floating label stands off the control it is talking about. */
-    --sk-anchored-offset: var(--space-stack-xs);
     /* The arrow IS this surface, border and all, so the seam where it meets the box disappears. */
     --sk-anchored-arrow-bg: var(--sk-copy-button-feedback-bg);
     --sk-anchored-arrow-border-color: var(--sk-copy-button-feedback-border-color);
-    /* Smaller than the pattern's default, and so is the clearance it keeps from the corners. A flag
-     * is one line tall: at the default 8px the arrow's two edge margins plus the arrow itself come
-     * to more than the box's own height, and an over-constrained `anchor-center` stops centring. */
-    --sk-anchored-arrow-size: 6px;
-    --sk-anchored-arrow-inset: var(--sk-anchored-arrow-size);
+    /* Smaller than the pattern's default: a flag is one line tall. */
+    --sk-anchored-arrow-size: 8px;
 
     box-sizing: border-box;
     padding: var(--sk-copy-button-feedback-padding);
@@ -112,8 +108,19 @@
     font-size: var(--sk-copy-button-feedback-font-size);
     font-weight: var(--font-weight-label);
     line-height: var(--font-line-height-body);
-    /* Two or three words. Wrapping them would make the flag taller than the button beside it. */
-    white-space: nowrap;
+    /*
+     * Two or three words normally, one line tall - but an error message can legitimately carry a
+     * longer value (a path, a URL), and `nowrap` with no width cap let that case push the flag to
+     * 425-583px wide, off a 320px viewport. Capped the same way Tooltip's own fix caps its content,
+     * with `overflow-wrap` instead of `nowrap` so it only grows to two lines for the worst case; the
+     * common short message still reads as one line, since it never approaches the cap.
+     */
+    /* This element also carries `.sk-anchored` (see the comment above), whose own pattern rule
+       sets `min-inline-size: max-content` - the same conflict Tooltip's fix overrode for its own
+       positioner, here for the same reason: a cap can't win against a min that outgrows it. */
+    min-inline-size: 0 !important;
+    max-inline-size: min(18rem, calc(100vi - 2 * var(--space-inset-md)));
+    overflow-wrap: anywhere;
     box-shadow: var(--sk-copy-button-feedback-shadow);
     pointer-events: none;
 
@@ -123,17 +130,16 @@
      * useful direction, showing at once on the way in and only after the fade on the way out. */
     visibility: hidden;
     opacity: 0;
-    /* Fade only. NOT `translate`, which would make this box the containing block for its own fixed
-     * descendants: the arrow is fixed precisely so it can anchor to the button, and it would lose
-     * the anchor for the length of the animation. `tooltip.css` records the same measurement. */
+    /* Fade only. NOT `translate`, which composes with the `transform` that places the flag. */
     transition-property: opacity, visibility;
     transition-duration: var(--motion-state-change-duration);
     transition-timing-function: var(--motion-state-change-easing);
   }
 
   /* The flag lasts exactly as long as the machine's copied state: both bindings mirror it into
-     `data-state`, which is also what the Anchoring pattern shows the arrow for. */
-  .sk-copy-button__feedback[data-state="open"] {
+     `data-state`, which is also what the Anchoring pattern shows the arrow for. `data-placed` is the
+     popper saying it has measured the flag, so it is never seen at the origin first. */
+  .sk-copy-button__feedback[data-state="open"][data-placed] {
     visibility: visible;
     opacity: 1;
   }
@@ -177,17 +183,4 @@
   }
   /* end data-motion mirror */
 
-  /* ── THE DEGRADED STATE, CHOSEN ──────────────────────────────────────────────
-   * Without anchor positioning nothing here places this flag: it is an anchored box with no
-   * machine, the one thing it shares with Popover, so there is no JS fallback to hand it to. Left
-   * alone it would land at its static position, on top of the button it is describing.
-   *
-   * So it does not render. Nothing is lost that is not said twice already: the icon still swaps to
-   * a check, and `__label` still announces the result to a screen reader. A flag drawn over its own
-   * button would be the only reading that was actually wrong. */
-  @supports not (anchor-name: --a) {
-    .sk-copy-button__feedback {
-      display: none;
-    }
-  }
 }

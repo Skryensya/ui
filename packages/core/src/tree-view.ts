@@ -94,13 +94,25 @@ export const treeViewContract = {
     },
     defaultExpandedValue: { type: "string", attr: "data-expanded-value", machineInput: true, keyOf: { slot: "items", many: true } },
     defaultSelectedValue: { type: "string", attr: "data-selected-value", machineInput: true, keyOf: { slot: "items", many: true } },
+    /**
+     * Every branch stays expanded and the chevron is gone, for an index meant to always show
+     * everything (a table of contents) rather than a file explorer the reader opens and closes.
+     * Written only when OFF (absent means the default), the same reason `Toolbar`'s `loopFocus` is.
+     */
+    collapsible: { type: "boolean", default: true, attr: "data-collapsible", falseValue: "false" },
+    /**
+     * Lets a long label wrap to a second line instead of truncating with an ellipsis. Off by
+     * default: `tree-view.css`'s own note explains why truncating is right for the common case
+     * (filenames, paths), which this does not change, only opts a different content shape out of.
+     */
+    wrap: { type: "boolean", default: false, attr: "data-wrap", trueValue: "" },
   },
 
   signatures: {
     TreeView: {
       intent: ["tree", "file-explorer", "hierarchy", "nested-list", "folder-structure"],
       host: { element: "div" },
-      options: ["label", "selectionMode", "defaultExpandedValue", "defaultSelectedValue"],
+      options: ["label", "selectionMode", "defaultExpandedValue", "defaultSelectedValue", "collapsible", "wrap"],
       requires: ["label"],
       /** Host id / a11y; label stays the option. */
       forward: ["id", "aria-*"],

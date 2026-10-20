@@ -18,6 +18,7 @@ import {
   questionnaireProgress,
   questionnaireStepsWindow,
   questionnaireShortcuts,
+  questionnaireValues,
   resolveQuestionnaireKey,
   type QuestionnaireAnswer,
   type QuestionnaireEffect,
@@ -83,6 +84,16 @@ export type QuestionnaireChoice = {
 export type QuestionnaireItemProps = {
   name: string;
   title: string;
+  /**
+   * The section this question belongs to, read fresh on every question rather than deduplicated
+   * against the one before it: the questionnaire shows one question at a time, so there is no
+   * sibling it would ever repeat BESIDE, only a step's own "Shipping details" surviving a Next the
+   * same way a wizard's own step title does. Two consecutive questions sharing a string is the
+   * author saying so twice, not this component noticing a group.
+   */
+  section?: ReactNode;
+  /** Shown under `section`, once, on every question that names it. */
+  sectionDescription?: ReactNode;
   description?: string;
   required?: boolean;
   multiple?: boolean;
@@ -132,7 +143,9 @@ export type QuestionnaireItemProps = {
   className?: string;
 };
 
-type Labels = typeof questionnaireDefaultLabels;
+/* `string`, not `typeof questionnaireDefaultLabels`: that would type each label as its own English
+ * literal ("Previous", "Next"...), so a locale's own `previousLabel="Anterior"` would not compile. */
+type Labels = { [K in keyof typeof questionnaireDefaultLabels]: string };
 
 export type QuestionnaireProps = Omit<FormHTMLAttributes<HTMLFormElement>, "children"> &
   Partial<Labels> & {
@@ -149,6 +162,15 @@ export type QuestionnaireProps = Omit<FormHTMLAttributes<HTMLFormElement>, "chil
     defaultAnswers?: Readonly<Record<string, Partial<QuestionnaireAnswer>>>;
     /** Every question valid: the answers, as the questionnaire holds them. Called before `onSubmit`. */
     onValuesSubmit?: (details: { values: Readonly<Record<string, string | readonly string[]>> }) => void;
+    /**
+     * Every answer so far, valid or not, called after every change: the one hook a draft that
+     * saves itself needs. Before this, the only answers a consumer could read were the ones
+     * `onValuesSubmit` hands over at a valid submit, so a draft had to listen to the `<form>`'s own
+     * `change`/`input` and re-read `new FormData(form)` by field name - which works only because
+     * every control happens to carry `name`, and leaves the true state in two places (the machine
+     * and the DOM) instead of one.
+     */
+    onValuesChange?: (details: { values: Readonly<Record<string, string | readonly string[]>> }) => void;
   };
 
 type QuestionnaireContextValue = {
@@ -158,6 +180,16 @@ type QuestionnaireContextValue = {
   shortcuts: QuestionnaireShortcutMode;
   positionId: string;
   register: (name: string, element: HTMLFieldSetElement | null) => void;
+  /**
+   * How a `QuestionnaireItem` reaches the store from behind any number of wrapper components -
+   * a wizard step's own `<SurveyQuestion>`, say - that `definitionsOf`'s one-level walk of
+   * `Questionnaire`'s own `children` cannot see through (React does not render a component to
+   * find out what it holds; that is the one thing a wrapper is FOR). Direct children register
+   * too, redundantly with `definitionsOf`'s own read of them: the merge below dedupes by name, so
+   * registering is harmless there and the only path that matters once something is in between.
+   * Returns the unregister, run on unmount or whenever the definition is about to be replaced.
+   */
+  registerDefinition: (definition: QuestionnaireItemDefinition, title: string, stepLabel?: string) => () => void;
 };
 
 type FormSubmitEvent = Parameters<NonNullable<FormHTMLAttributes<HTMLFormElement>["onSubmit"]>>[0];
@@ -219,6 +251,7 @@ export function Questionnaire({
   onKeyDown,
   onReset,
   onSubmit,
+  onValuesChange,
   onValuesSubmit,
   progress = progressOption.default,
   progressOrientation = progressOrientationOption.default,
@@ -241,6 +274,42 @@ export function Questionnaire({
   );
   const state = useSyncExternalStore(store.subscribe, store.getState, store.getState);
 
+  /*
+   * EVERY `QuestionnaireItem` NOT ALREADY FOUND by `definitionsOf`'s shallow walk - one nested
+   * inside a wrapper component the walk cannot see through. Order among the shallow items is
+   * `definitionsOf`'s own (DOM order, exactly as authored); order WITHIN this registry is each
+   * item's own effect firing, which React runs in that same document order for a single commit,
+   * so a run of wrapped items keeps the order they were written in relative to EACH OTHER.
+   * shortcut: a wrapped item interleaved between two direct ones lands after every direct item
+   * instead of between them. Upgrade by dropping `definitionsOf`'s walk and making every item's
+   * own registration the ONLY source of the list, direct or not; this stays additive to it
+   * instead, so the already-tested direct-children path (every consumer there is today) takes
+   * none of that risk.
+   */
+  const registryRef = useRef(new Map<string, { definition: QuestionnaireItemDefinition; title: string; stepLabel?: string }>());
+  const [registryVersion, setRegistryVersion] = useState(0);
+  const registerDefinition = useCallback(
+    (definition: QuestionnaireItemDefinition, title: string, stepLabel?: string) => {
+      registryRef.current.set(definition.name, { definition, title, stepLabel });
+      setRegistryVersion((count) => count + 1);
+      return () => {
+        registryRef.current.delete(definition.name);
+        setRegistryVersion((count) => count + 1);
+      };
+    },
+    [],
+  );
+  const registeredExtras = useMemo(
+    () => [...registryRef.current.values()].filter((entry) => !definitions.some((def) => def.name === entry.definition.name)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [definitionsKey, registryVersion],
+  );
+  const mergedDefinitions = useMemo(
+    () => [...definitions, ...registeredExtras.map((entry) => entry.definition)],
+    [definitions, registeredExtras],
+  );
+  const mergedDefinitionsKey = JSON.stringify(mergedDefinitions);
+
   const formRef = useRef<HTMLFormElement | null>(null);
   const fieldsets = useRef(new Map<string, HTMLFieldSetElement>());
   const pending = useRef<QuestionnaireEffect[]>([]);
@@ -248,6 +317,15 @@ export function Questionnaire({
   const positionId = useId();
   const onItemChangeRef = useRef(onItemChange);
   onItemChangeRef.current = onItemChange;
+
+  // Every change, valid or not: `answers` is a new object per dispatch (the store is immutable),
+  // so this depends on it directly rather than on the whole `state`, which also changes shape for
+  // reasons (the active question, a skip) a draft that only cares about VALUES has no reason to
+  // re-run for.
+  useEffect(() => {
+    onValuesChange?.({ values: questionnaireValues(state) });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.answers]);
 
   const send = useCallback(
     (event: QuestionnaireEvent) => {
@@ -265,13 +343,14 @@ export function Questionnaire({
     else fieldsets.current.delete(name);
   }, []);
 
-  // The children changed shape: a question added, removed or redefined. Compared by value, so a
-  // re-render with the same questions sends nothing.
+  // The children changed shape: a question added, removed or redefined - directly, or (the merged
+  // half) through a wrapper registering/unregistering/updating one behind `registerDefinition`.
+  // Compared by value, so a re-render with the same questions sends nothing.
   useLayoutEffect(() => {
-    if (JSON.stringify(store.getState().items) !== definitionsKey) {
-      send({ type: "items", items: JSON.parse(definitionsKey) as QuestionnaireItemDefinition[] });
+    if (JSON.stringify(store.getState().items) !== mergedDefinitionsKey) {
+      send({ type: "items", items: JSON.parse(mergedDefinitionsKey) as QuestionnaireItemDefinition[] });
     }
-  }, [definitionsKey, send, store]);
+  }, [mergedDefinitionsKey, send, store]);
 
   useEffect(() => {
     if (item !== undefined && item !== store.getState().active) send({ type: "goTo", name: item });
@@ -384,10 +463,11 @@ export function Questionnaire({
   const labelsKey = JSON.stringify(labels);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const context = useMemo(
-    () => ({ state, send, labels, shortcuts, positionId, register }),
-    [state, send, labelsKey, shortcuts, positionId, register],
+    () => ({ state, send, labels, shortcuts, positionId, register, registerDefinition }),
+    [state, send, labelsKey, shortcuts, positionId, register, registerDefinition],
   );
   const titles = new Map(items.map((entry) => [entry.name, entry.stepLabel ?? entry.title]));
+  for (const entry of registeredExtras) titles.set(entry.definition.name, entry.stepLabel ?? entry.title);
 
   /*
    * The mount point, so both bindings ship the same markup, plus the lifecycle marker that says it is
@@ -557,8 +637,10 @@ export function QuestionnaireItem({
   textMax,
   textStep,
   title,
+  section,
+  sectionDescription,
 }: QuestionnaireItemProps) {
-  const { state, send, labels, shortcuts, positionId, register } = useQuestionnaire("QuestionnaireItem");
+  const { state, send, labels, shortcuts, positionId, register, registerDefinition } = useQuestionnaire("QuestionnaireItem");
   const definition = useMemo(
     () => ({
       name,
@@ -571,6 +653,16 @@ export function QuestionnaireItem({
       showWhen: parseQuestionnaireShowWhen(showWhenItem, showWhenAny, showWhenAll, showWhenNone),
     }),
     [choices, disabled, likert, multiple, name, required, showWhenAll, showWhenAny, showWhenItem, showWhenNone, text],
+  );
+  /*
+   * Behind any number of wrapper components, this is the ONLY way `Questionnaire` learns this
+   * item exists at all - its own shallow walk of `children` stops at whatever wraps it. Harmless
+   * when nothing does: the merge there already dedupes by name against what the walk already
+   * found directly.
+   */
+  useLayoutEffect(
+    () => registerDefinition(definition, title, stepLabel),
+    [definition, registerDefinition, stepLabel, title],
   );
   const visible = isQuestionnaireItemVisible(state, definition);
   const descriptionId = useId();
@@ -634,6 +726,12 @@ export function QuestionnaireItem({
       tabIndex={-1}
       {...{ [questionnaireAttrs.item]: "" }}
     >
+      {section ? (
+        <div className={questionnaireParts.section}>
+          <p className={questionnaireParts.sectionTitle}>{section}</p>
+          {sectionDescription ? <p className={questionnaireParts.sectionDescription}>{sectionDescription}</p> : null}
+        </div>
+      ) : null}
       <legend className={questionnaireParts.title}>{title}</legend>
       {description ? (
         <p className={questionnaireParts.description} id={descriptionId}>

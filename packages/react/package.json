@@ -178,10 +178,6 @@
       "types": "./src/components/button.tsx",
       "default": "./src/components/button.tsx"
     },
-    "./folder": {
-      "types": "./src/components/folder.tsx",
-      "default": "./src/components/folder.tsx"
-    },
     "./form-field": {
       "types": "./src/components/form-field.tsx",
       "default": "./src/components/form-field.tsx"
@@ -221,10 +217,6 @@
     "./image-frame": {
       "types": "./src/components/image-frame.tsx",
       "default": "./src/components/image-frame.tsx"
-    },
-    "./sticker": {
-      "types": "./src/components/sticker.tsx",
-      "default": "./src/components/sticker.tsx"
     },
     "./media-overlay": {
       "types": "./src/components/media-overlay.tsx",
@@ -458,10 +450,6 @@
       "types": "./src/components/meter.tsx",
       "default": "./src/components/meter.tsx"
     },
-    "./chart": {
-      "types": "./src/components/chart.tsx",
-      "default": "./src/components/chart.tsx"
-    },
     "./data-grid": {
       "types": "./src/components/data-grid.tsx",
       "default": "./src/components/data-grid.tsx"
@@ -489,10 +477,6 @@
     "./time-field": {
       "types": "./src/components/time-field.tsx",
       "default": "./src/components/time-field.tsx"
-    },
-    "./dock": {
-      "types": "./src/components/dock.tsx",
-      "default": "./src/components/dock.tsx"
     },
     "./toolbar": {
       "types": "./src/components/toolbar.tsx",
@@ -557,6 +541,7 @@
   "dependencies": {
     "@skryensya/core": "workspace:*",
     "@skryensya/icons-lucide": "workspace:*",
+    "@tanstack/virtual-core": "^3.17.11",
     "@zag-js/react": "^1.43.3",
     "motion": "12.23.24"
   },

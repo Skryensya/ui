@@ -9,8 +9,8 @@ import {
 import { tooltip } from "@skryensya/core/machines";
 import { normalizeProps, Portal, useMachine } from "@zag-js/react";
 import { useId, useRef, type ReactNode, type RefObject } from "react";
-import { anchoredParts } from "@skryensya/core/anchored";
-import { useAnchored } from "./anchored.js";
+import { anchoredParts, anchoredPositioning } from "@skryensya/core/anchored";
+import { anchorProps, positionerProps } from "./anchored.js";
 
 const { interactive: interactiveOption } = tooltipContract.options;
 
@@ -54,9 +54,7 @@ export function Tooltip({
   onOpenChangeRef.current = onOpenChange;
   /*
    * The default is RESOLVED rather than left absent. The box copes without it, the arrow does not:
-   * it is an anchored box of its own and the pattern's default side is block-end, while a tooltip's
-   * is block-start, so a tooltip with no placement used to come out with the box above and the arrow
-   * below. Resolving it here makes the box, the arrow and the machine name the same side.
+   * the machine, the stylesheet and the arrow then all name the same side.
    */
   const side = placement ?? tooltipDefaultPlacement;
   const service = useMachine(tooltip.machine, {
@@ -64,8 +62,7 @@ export function Tooltip({
     openDelay,
     closeDelay,
     interactive,
-    // Only matters on the JS fallback: with anchors, position-area already placed it.
-    positioning: { placement: tooltipPlacementToZag[side] },
+    positioning: { placement: tooltipPlacementToZag[side], ...anchoredPositioning },
     disabled,
     open,
     defaultOpen,
@@ -78,29 +75,19 @@ export function Tooltip({
   });
   const api = tooltip.connect(service, normalizeProps);
 
-  const anchor = useAnchored(id ?? generatedId);
   const triggerProps = api.getTriggerProps();
   const contentProps = api.getContentProps();
   /*
-   * On the browser path the arrow gets nothing: the sheet places it against the same anchor and reads
-   * its open state off the content. On the fallback the machine places it, so it gets the machine's
-   * props: they mark it `[data-part=arrow]`, which is how `@zag-js/popper` finds it to move it, plus
-   * `data-side`, the side the machine RESOLVED, which is what the sheet reads to rotate it. That side
-   * is only trustworthy here: on the other path the browser decides where the box landed and the
-   * machine's opinion may differ.
+   * The arrow takes the machine's props: they mark it `[data-part=arrow]`, which is how `@zag-js/popper`
+   * finds it to move it, plus `data-side`, the side the machine RESOLVED, which is what the sheet reads
+   * to turn the diamond.
    */
   const arrowNode = arrow ? (
     <span
       aria-hidden="true"
       className={anchoredParts.arrow}
-      {...(anchor.on
-        ? undefined
-        : {
-            ...api.getArrowProps(),
-            "data-side": (contentProps as Record<string, unknown>)["data-side"] as
-              | string
-              | undefined,
-          })}
+      {...api.getArrowProps()}
+      data-side={(contentProps as Record<string, unknown>)["data-side"] as string | undefined}
     />
   ) : null;
 
@@ -131,7 +118,7 @@ export function Tooltip({
        * the consumer passed rather than a nested <button>: wrapping their control in our own button
        * would put two controls in the tab order for one action.
        */}
-      <span {...triggerProps} {...anchor.anchor(tooltipParts.trigger, triggerProps.style)}>
+      <span {...triggerProps} {...anchorProps(tooltipParts.trigger, triggerProps.style)}>
         {children}
       </span>
       {/*
@@ -142,7 +129,7 @@ export function Tooltip({
        */}
       <Portal container={container}>
         <div
-          {...anchor.positioner(api.getPositionerProps(), tooltipParts.positioner)}
+          {...positionerProps(api.getPositionerProps(), tooltipParts.positioner)}
           data-sk-placement={side}
         >
           {arrowNode}

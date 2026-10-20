@@ -60,7 +60,7 @@ export type ComboboxInputChangeDetails = { inputValue: string };
  *
  * Publishing this one turned up the same class of divergence three times, and it is worth naming
  * because it is structural rather than accidental. React renders the clear control, the empty
- * message and the chip row CONDITIONALLY: they are absent from the DOM until there is something to
+ * message and the Tag row CONDITIONALLY: they are absent from the DOM until there is something to
  * clear, no results, or a selection. The enhancer cannot work that way: it takes the markup it is
  * given and toggles `hidden`, because authored markup is static by definition. So the two bindings
  * disagreed about how many elements exist in the resting state, and only one of them can be what a
@@ -90,18 +90,10 @@ export const comboboxContract = {
   css: "@skryensya/core/components/combobox.css",
   parts: comboboxParts,
   /*
-   * Multiple-selection chips (+ remove) are binding-filled; emit has them absent / hidden at rest.
+   * Multiple selections are removable Tags, binding-filled; emit has them absent / hidden at rest.
    */
   systemOwned: ["selectedItems", "selectedItem", "selectedItemLabel", "removeTrigger"],
   hooks: [
-    "--sk-anchored-align",
-    "--sk-anchored-arrow-edge",
-    "--sk-anchored-arrow-near",
-    "--sk-anchored-justify",
-    "--sk-anchored-offset",
-    "--sk-anchored-position-area",
-    "--sk-anchored-position-try",
-    "--sk-anchored-size",
     "--sk-anchored-z",
     "--sk-combobox-bg",
     "--sk-combobox-border-color",
@@ -162,8 +154,15 @@ export const comboboxContract = {
     disabled: { type: "boolean", default: false, attr: "disabled", trueValue: "" },
     required: { type: "boolean", default: false, attr: "required", trueValue: "" },
     readOnly: { type: "boolean", default: false, attr: "readonly", trueValue: "" },
-    /** More than one choice at a time, each shown as a removable chip above the input. */
+    /** More than one choice at a time, each shown as a removable Tag above the input. */
     multiple: { type: "boolean", default: false, attr: "data-multiple", machineInput: true },
+    /**
+     * How many items `multiple` accepts. Zag's own combobox machine has no such limit (TagsInput's
+     * does, this one doesn't), so both bindings enforce it themselves: past it, every unselected
+     * item is disabled - still visible with its checkmark if already chosen, just not pickable -
+     * and the placeholder is dropped rather than inviting a search that cannot go anywhere.
+     */
+    max: { type: "number", min: 1, integer: true, attr: "data-max", machineInput: true },
     /** Whether a search that matches nothing is still a value. */
     allowCustomValue: {
       type: "boolean",
@@ -186,6 +185,7 @@ export const comboboxContract = {
         "required",
         "readOnly",
         "multiple",
+        "max",
         "allowCustomValue",
         "appearance",
       ],
@@ -195,6 +195,7 @@ export const comboboxContract = {
       compose: [
         { of: "button", sheets: ["@skryensya/core/components/button.css"], systemOwned: true },
         { of: "icon", systemOwned: true },
+        { of: "tag", sheets: ["@skryensya/core/components/tag.css"], systemOwned: true },
       ],
       slots: {
         /** Names the field. Required because the enhancer refuses to run without one. */
@@ -267,26 +268,24 @@ export const comboboxContract = {
                 attrs: {
                   type: "button",
                   "data-icon-only": "",
-                  "data-size": "sm",
+                  "data-size": "xs",
                   "data-variant": "ghost",
                 },
                 children: [{ element: "span", attrs: { "data-sk-icon": "close", "data-sk-icon-size": "sm" } }],
               },
-              /*
-               * Decorative, not a second control: Zag's own `getTriggerProps()` already defaults
-               * this to `tabIndex: -1` (never a Tab stop), and every existing open path - typing,
-               * `openOnClick` on the input itself - never went through it either. What made it
-               * read as an independent button was purely visual (its own `.sk-button` ghost hover/
-               * pressed feedback on a mouse hover/click Zag still wired up), not a real second
-               * interaction surface. `aria-hidden` and a plain `span` remove that affordance
-               * instead of just restyling it; the input's own `role="combobox"` +
-               * `aria-expanded` already say everything a screen reader needs.
-               */
+              /* A real button, as small as the clear one is not: it opens and closes the list for a
+               * pointer. `tabIndex: -1` stays (Zag's default): the input is the keyboard's way in. */
               {
-                element: "span",
+                element: "button",
                 part: "trigger",
+                also: ["sk-button", "sk-interactive"],
                 mount: "data-sk-combobox-trigger",
-                attrs: { "aria-hidden": "true" },
+                attrs: {
+                  type: "button",
+                  "data-icon-only": "",
+                  "data-size": "sm",
+                  "data-variant": "ghost",
+                },
                 children: [
                   {
                     element: "span",

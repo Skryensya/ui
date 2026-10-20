@@ -22,7 +22,12 @@ import { selectAttrs, selectParts } from "./select.js";
 
 export const userSelectAttrs = {
   root: "data-sk-user-select",
+  /* Vanilla-only, the same JSON-island opt-in `selectAttrs.items` documents: a roster too large to
+   * hand-author as rows (names, emails, avatars included) names a `<script type="application/json">`
+   * here instead, and `UserSelect.svelte` generates and virtualizes rather than adopting. */
+  items: "data-sk-user-select-items",
   search: "data-sk-user-select-search",
+  searchClear: "data-sk-user-select-search-clear",
   list: "data-sk-user-select-list",
   empty: "data-sk-user-select-empty",
   /** The row shown instead of the list while the roster loads: a Loader and the `loading` string. */
@@ -64,6 +69,8 @@ export const userSelectLabels = {
   selectedOne: "{name} selected",
   selectedMany: "{count} {term} selected",
   clear: "Clear all",
+  /** The accessible name of the search field's own clear button. */
+  clearSearch: "Clear search",
   empty: "No {term} available",
   /** The search came back empty: the title, then a hint under it. */
   noResults: 'No {term} match "{query}"',
@@ -281,7 +288,22 @@ export const userSelectContract = {
                     element: "input",
                     also: ["sk-input"],
                     mount: userSelectAttrs.search,
-                    attrs: { type: "search", "data-size": "sm" },
+                    attrs: { type: "search", "data-size": "sm", "data-variant": "ghost" },
+                  },
+                  {
+                    /* The browser's own ✕ in a type="search" field is not a control we can name or
+                     * style, so the field has a real one; the native one is hidden in the sheet. */
+                    element: "button",
+                    also: ["sk-button", "sk-interactive"],
+                    mount: userSelectAttrs.searchClear,
+                    attrs: {
+                      type: "button",
+                      hidden: "",
+                      "data-icon-only": "",
+                      "data-size": "xs",
+                      "data-variant": "ghost",
+                    },
+                    children: [icon("close", "sm")],
                   },
                   {
                     element: "div",

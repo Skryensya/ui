@@ -27,6 +27,7 @@
 @use "semantic/z";
 @use "semantic/breakpoints";
 @use "semantic/reduced-motion";
+@use "semantic/theme-switching";
 
 /* --sk-density registered so the browser type-checks it as a number and gives it a real
  * initial value; a junk value like `--sk-density: red` is now rejected, not inherited. */
@@ -68,4 +69,6 @@
   @include density.tokens;
 
   @include reduced-motion.tokens;
+
+  @include theme-switching.tokens;
 }

@@ -9,7 +9,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Texto enriquecido con una barra de formato, construido sobre ProseMirror.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Rich text with a formatting bar, built on ProseMirror.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

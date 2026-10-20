@@ -78,3 +78,8 @@
   place-items: center;
   padding-inline: 0;
 }
+
+/* That unlayered `display` must not defeat `hidden`: a toggle a controller hides (captions, when there is no track) stays hidden. */
+.sk-button.sk-icon-toggle[hidden] {
+  display: none;
+}

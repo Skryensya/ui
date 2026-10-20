@@ -112,7 +112,6 @@ report. The command above serves the same site locally.
 | [`@skryensya/core`](packages/core) | The contract itself: design tokens, component parts, shared option types, the shared state machines, and the token validator. |
 | [`@skryensya/vanilla`](packages/vanilla) | Progressive enhancers for authored HTML. Zag state machines behind a Svelte-rendered internal layer. |
 | [`@skryensya/react`](packages/react) | React components rendering the same markup contract. |
-| [`@skryensya/charts`](packages/charts) | Renderer for the chart contract's line and area kinds. |
 | [`@skryensya/editor`](packages/editor) | The ProseMirror engine behind the Editor contract: schema, commands, keymap, serialization. |
 | [`@skryensya/devtools`](packages/devtools) | Optional runtime debug overlay: hit-area visualization and inspection aids. |
 | [`@skryensya/phone`](packages/phone) | The numbering plans behind Input's phone format: `libphonenumber-js` wrapped as a registrable plan. Not part of the 0.0.1 release assets. |

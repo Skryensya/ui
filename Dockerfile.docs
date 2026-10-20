@@ -21,7 +21,6 @@ COPY apps/docs/package.json ./apps/docs/package.json
 COPY apps/eval-viewer/package.json ./apps/eval-viewer/package.json
 COPY packages/ai-compiler/package.json ./packages/ai-compiler/package.json
 COPY packages/ai-gates/package.json ./packages/ai-gates/package.json
-COPY packages/charts/package.json ./packages/charts/package.json
 COPY packages/core/package.json ./packages/core/package.json
 COPY packages/devtools/package.json ./packages/devtools/package.json
 COPY packages/editor/package.json ./packages/editor/package.json
@@ -43,7 +42,6 @@ RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
 
 COPY apps/docs ./apps/docs
 COPY packages/ai-compiler ./packages/ai-compiler
-COPY packages/charts ./packages/charts
 COPY packages/core ./packages/core
 COPY packages/devtools ./packages/devtools
 # `@skryensya/editor` is an OPTIONAL peer dependency of `@skryensya/vanilla`, and optional is what

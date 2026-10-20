@@ -8,29 +8,15 @@
  * English page, and the React island that renders next to both), and a card whose demo says one
  * thing while its source says another teaches nothing.
  *
- * The images are `dummyimage.com` placeholders and not files in `public/`: a card example is about
- * the COMPOSITION, and a checked-in photograph invites the reader to believe the asset is part of
- * the system. A URL that spells out its own dimensions cannot be mistaken for one.
+ * The images are the docs' own satin placeholders (`lib/satin.ts`): a card example is about the
+ * COMPOSITION, and a stock photograph invites the reader to believe the asset is part of the system.
+ * Abstract folds cannot be mistaken for one, work offline, and match the look of the rest of the docs.
  */
 
 import type { StableIconName } from "@skryensya/core/icon";
+import { satin } from "../lib/satin";
 
 export type CardLang = "es" | "en";
-
-/** Placeholder media, sized to the aspect the frame asks for so nothing is re-cropped by the CDN. */
-export function dummyImage(width: number, height: number, bg: string, fg: string, text: string) {
-  return `https://dummyimage.com/${width}x${height}/${bg}/${fg}&text=${encodeURIComponent(text)}`;
-}
-
-/*
- * The same placeholder with NO label, for the two examples that print a caption over the photo.
- * dummyimage centres its text vertically, so a labelled placeholder collides with the caption and
- * the wash ends up demonstrating the opposite of what it is for: a real photograph would put its
- * subject there, not a word. A single space is how the service is asked for a blank panel.
- */
-export function blankImage(width: number, height: number, bg: string) {
-  return dummyImage(width, height, bg, bg, " ");
-}
 
 export type PlainMediaCard = { src: string; alt: string; title: string; body: string };
 export type BasicCard = { title: string; body: string };
@@ -63,27 +49,20 @@ export type CardCopy = {
   cta: { read: string; open: string; add: string; details: string; month: string };
 };
 
-/* Three tints from the accent family so a grid of three reads as a set, not as three unrelated
- * stock photos. Hex, because dummyimage speaks hex and not custom properties. */
-const media = {
-  a: ["1d4ed8", "eff6ff"],
-  b: ["0f766e", "ecfdf5"],
-  c: ["7c3aed", "f5f3ff"],
-} as const;
+/* Three dark tints so a grid of three reads as a set. */
+const media = { a: satin("blue"), b: satin("sage"), c: satin("lilac") } as const;
 
 /*
- * LIGHT tints, and only for the two examples that put a caption on the image.
+ * PALE satin, and only for the two examples that put a caption on the image.
  *
- * The wash exists to hold white text over a photograph that might be bright. Demonstrated over the
- * dark tints above, it was invisible (dark ink fading into dark blue), and the example argued
- * against itself: a reader would conclude the gradient does nothing. A pale panel is the honest
- * stand-in for the bright photo the wash is actually for.
+ * The wash exists to hold white text over a picture that might be bright. Demonstrated over the dark
+ * tints above, it was invisible (dark ink fading into dark), and the example argued against itself: a
+ * reader would conclude the gradient does nothing. A pale picture is the honest stand-in for the bright
+ * one the wash is actually for.
  */
-const lightMedia = {
-  a: "bfdbfe",
-  b: "a7f3d0",
-  c: "ddd6fe",
-} as const;
+const paleMedia = { a: "pearl", b: "mist", c: "blush" } as const;
+const tall = (k: keyof typeof paleMedia) => satin(paleMedia[k], "4x5");
+const wide = (k: keyof typeof paleMedia) => satin(paleMedia[k], "16x9");
 
 export const cardCopy: Record<CardLang, CardCopy> = {
   es: {
@@ -108,9 +87,9 @@ export const cardCopy: Record<CardLang, CardCopy> = {
       month: "/mes",
     },
     plainMedia: [
-      { src: dummyImage(640, 360, media.a[0], media.a[1], "Acme"), alt: "Equipo de Acme trabajando en su oficina", title: "Cómo Acme redujo su tiempo de carga", body: "Migraron a Grid y Stack y sacaron cuarenta líneas de CSS propio por vista." },
-      { src: dummyImage(640, 360, media.b[0], media.b[1], "Nimbus"), alt: "Equipo de soporte de Nimbus", title: "El soporte de Nimbus responde en minutos", body: "Un tablero compartido reemplazó tres hojas de cálculo distintas." },
-      { src: dummyImage(640, 360, media.c[0], media.c[1], "Vela"), alt: "Equipo de producto de Vela", title: "Vela cambió Slack por avisos dentro del producto", body: "Menos ruido, y la alerta llega justo donde se toma la decisión." },
+      { src: media.a, alt: "Equipo de Acme trabajando en su oficina", title: "Cómo Acme redujo su tiempo de carga", body: "Migraron a Grid y Stack y sacaron cuarenta líneas de CSS propio por vista." },
+      { src: media.b, alt: "Equipo de soporte de Nimbus", title: "El soporte de Nimbus responde en minutos", body: "Un tablero compartido reemplazó tres hojas de cálculo distintas." },
+      { src: media.c, alt: "Equipo de producto de Vela", title: "Vela cambió Slack por avisos dentro del producto", body: "Menos ruido, y la alerta llega justo donde se toma la decisión." },
     ],
     basic: [
       { title: "Versión 2.4", body: "Mejora la búsqueda y reduce el tiempo de carga en los proyectos grandes." },
@@ -143,19 +122,19 @@ export const cardCopy: Record<CardLang, CardCopy> = {
       { title: "Novedades", body: "Cambios del producto y notas de versión.", checked: false },
     ],
     media: [
-      { src: dummyImage(640, 360, media.a[0], media.a[1], "Tokens"), alt: "Portada de la guía de tokens", badge: "Guía", title: "Tokens de color", body: "Cómo se elige una rampa y por qué el modo oscuro no es un invertido." },
-      { src: dummyImage(640, 360, media.b[0], media.b[1], "Layout"), alt: "Portada de la guía de layout", badge: "Guía", title: "Layout y densidad", body: "Stack, Inline y Grid resuelven el 90% de las pantallas sin CSS propio." },
-      { src: dummyImage(640, 360, media.c[0], media.c[1], "Motion"), alt: "Portada de la guía de movimiento", badge: "Guía", title: "Movimiento", body: "Duraciones, curvas y la regla que respeta a quien pide menos movimiento." },
+      { src: media.a, alt: "Portada de la guía de tokens", badge: "Guía", title: "Tokens de color", body: "Cómo se elige una rampa y por qué el modo oscuro no es un invertido." },
+      { src: media.b, alt: "Portada de la guía de layout", badge: "Guía", title: "Layout y densidad", body: "Stack, Inline y Grid resuelven el 90% de las pantallas sin CSS propio." },
+      { src: media.c, alt: "Portada de la guía de movimiento", badge: "Guía", title: "Movimiento", body: "Duraciones, curvas y la regla que respeta a quien pide menos movimiento." },
     ],
     gradient: [
-      { src: blankImage(640, 800, lightMedia.a), strength: "subtle", alt: "Fotografía de la campaña Aurora", eyebrow: "Campaña · subtle", title: "Aurora", body: "El lavado más liviano, para una foto que ya es oscura donde va el texto." },
-      { src: blankImage(640, 800, lightMedia.b), strength: "moderate", alt: "Fotografía de la campaña Marea", eyebrow: "Campaña · moderate", title: "Marea", body: "El valor por defecto, y el que sirve para casi cualquier fotografía." },
-      { src: blankImage(640, 800, lightMedia.c), strength: "strong", alt: "Fotografía de la campaña Cobalto", eyebrow: "Campaña · strong", title: "Cobalto", body: "El más denso, para una foto clara o con mucho detalle bajo el texto." },
+      { src: tall("a"), strength: "subtle", alt: "Fotografía de la campaña Aurora", eyebrow: "Campaña · subtle", title: "Aurora", body: "El lavado más liviano, para una foto que ya es oscura donde va el texto." },
+      { src: tall("b"), strength: "moderate", alt: "Fotografía de la campaña Marea", eyebrow: "Campaña · moderate", title: "Marea", body: "El valor por defecto, y el que sirve para casi cualquier fotografía." },
+      { src: tall("c"), strength: "strong", alt: "Fotografía de la campaña Cobalto", eyebrow: "Campaña · strong", title: "Cobalto", body: "El más denso, para una foto clara o con mucho detalle bajo el texto." },
     ],
     mediaLink: [
-      { src: blankImage(640, 360, lightMedia.a), alt: "Portada del artículo sobre anclaje", eyebrow: "Producto · 6 min", title: "Anclaje sin JavaScript", body: "Dejamos que el navegador coloque los popups y el código se volvió más chico." },
-      { src: blankImage(640, 360, lightMedia.b), alt: "Portada del artículo sobre contraste", eyebrow: "Accesibilidad · 4 min", title: "Contraste que sobrevive un rebranding", body: "Los pares de contraste se prueban solos, y una marca nueva no los rompe." },
-      { src: blankImage(640, 360, lightMedia.c), alt: "Portada del artículo sobre bindings", eyebrow: "Ingeniería · 8 min", title: "Un contrato, dos bindings", body: "El mismo marcado en Vanilla y en React, sin una segunda receta de estilos." },
+      { src: wide("a"), alt: "Portada del artículo sobre anclaje", eyebrow: "Producto · 6 min", title: "Anclaje sin JavaScript", body: "Dejamos que el navegador coloque los popups y el código se volvió más chico." },
+      { src: wide("b"), alt: "Portada del artículo sobre contraste", eyebrow: "Accesibilidad · 4 min", title: "Contraste que sobrevive un rebranding", body: "Los pares de contraste se prueban solos, y una marca nueva no los rompe." },
+      { src: wide("c"), alt: "Portada del artículo sobre bindings", eyebrow: "Ingeniería · 8 min", title: "Un contrato, dos bindings", body: "El mismo marcado en Vanilla y en React, sin una segunda receta de estilos." },
     ],
     product: [
       { badge: "Inicial", tone: "neutral", title: "Inicial", body: "Para una persona que empieza: tres proyectos y treinta días de historial.", price: "0 €", period: "/mes" },
@@ -185,9 +164,9 @@ export const cardCopy: Record<CardLang, CardCopy> = {
       month: "/month",
     },
     plainMedia: [
-      { src: dummyImage(640, 360, media.a[0], media.a[1], "Acme"), alt: "The Acme team working in their office", title: "How Acme cut their load time", body: "They moved to Grid and Stack and dropped forty lines of their own CSS per view." },
-      { src: dummyImage(640, 360, media.b[0], media.b[1], "Nimbus"), alt: "The Nimbus support team", title: "Nimbus support answers in minutes", body: "One shared board replaced three separate spreadsheets." },
-      { src: dummyImage(640, 360, media.c[0], media.c[1], "Vela"), alt: "The Vela product team", title: "Vela swapped Slack for in-product alerts", body: "Less noise, and the alert lands right where the decision gets made." },
+      { src: media.a, alt: "The Acme team working in their office", title: "How Acme cut their load time", body: "They moved to Grid and Stack and dropped forty lines of their own CSS per view." },
+      { src: media.b, alt: "The Nimbus support team", title: "Nimbus support answers in minutes", body: "One shared board replaced three separate spreadsheets." },
+      { src: media.c, alt: "The Vela product team", title: "Vela swapped Slack for in-product alerts", body: "Less noise, and the alert lands right where the decision gets made." },
     ],
     basic: [
       { title: "Version 2.4", body: "Improves search and cuts loading time on large projects." },
@@ -220,19 +199,19 @@ export const cardCopy: Record<CardLang, CardCopy> = {
       { title: "Product updates", body: "Product changes and release notes.", checked: false },
     ],
     media: [
-      { src: dummyImage(640, 360, media.a[0], media.a[1], "Tokens"), alt: "Cover of the tokens guide", badge: "Guide", title: "Color tokens", body: "How a ramp is chosen and why dark mode is not an inverted palette." },
-      { src: dummyImage(640, 360, media.b[0], media.b[1], "Layout"), alt: "Cover of the layout guide", badge: "Guide", title: "Layout and density", body: "Stack, Inline and Grid solve 90% of screens with no CSS of your own." },
-      { src: dummyImage(640, 360, media.c[0], media.c[1], "Motion"), alt: "Cover of the motion guide", badge: "Guide", title: "Motion", body: "Durations, curves and the rule that respects anyone asking for less motion." },
+      { src: media.a, alt: "Cover of the tokens guide", badge: "Guide", title: "Color tokens", body: "How a ramp is chosen and why dark mode is not an inverted palette." },
+      { src: media.b, alt: "Cover of the layout guide", badge: "Guide", title: "Layout and density", body: "Stack, Inline and Grid solve 90% of screens with no CSS of your own." },
+      { src: media.c, alt: "Cover of the motion guide", badge: "Guide", title: "Motion", body: "Durations, curves and the rule that respects anyone asking for less motion." },
     ],
     gradient: [
-      { src: blankImage(640, 800, lightMedia.a), strength: "subtle", alt: "Photograph from the Aurora campaign", eyebrow: "Campaign · subtle", title: "Aurora", body: "The lightest wash, for a photo already dark where the text sits." },
-      { src: blankImage(640, 800, lightMedia.b), strength: "moderate", alt: "Photograph from the Tide campaign", eyebrow: "Campaign · moderate", title: "Tide", body: "The default, and the one that works for almost any photograph." },
-      { src: blankImage(640, 800, lightMedia.c), strength: "strong", alt: "Photograph from the Cobalt campaign", eyebrow: "Campaign · strong", title: "Cobalt", body: "The densest, for a bright photo or heavy detail under the text." },
+      { src: tall("a"), strength: "subtle", alt: "Photograph from the Aurora campaign", eyebrow: "Campaign · subtle", title: "Aurora", body: "The lightest wash, for a photo already dark where the text sits." },
+      { src: tall("b"), strength: "moderate", alt: "Photograph from the Tide campaign", eyebrow: "Campaign · moderate", title: "Tide", body: "The default, and the one that works for almost any photograph." },
+      { src: tall("c"), strength: "strong", alt: "Photograph from the Cobalt campaign", eyebrow: "Campaign · strong", title: "Cobalt", body: "The densest, for a bright photo or heavy detail under the text." },
     ],
     mediaLink: [
-      { src: blankImage(640, 360, lightMedia.a), alt: "Cover of the anchoring article", eyebrow: "Product · 6 min", title: "Anchoring without JavaScript", body: "We let the browser place the popups and the code got smaller." },
-      { src: blankImage(640, 360, lightMedia.b), alt: "Cover of the contrast article", eyebrow: "Accessibility · 4 min", title: "Contrast that survives a rebrand", body: "Contrast pairs test themselves, and a new brand does not break them." },
-      { src: blankImage(640, 360, lightMedia.c), alt: "Cover of the bindings article", eyebrow: "Engineering · 8 min", title: "One contract, two bindings", body: "The same markup in Vanilla and React, with no second styling recipe." },
+      { src: wide("a"), alt: "Cover of the anchoring article", eyebrow: "Product · 6 min", title: "Anchoring without JavaScript", body: "We let the browser place the popups and the code got smaller." },
+      { src: wide("b"), alt: "Cover of the contrast article", eyebrow: "Accessibility · 4 min", title: "Contrast that survives a rebrand", body: "Contrast pairs test themselves, and a new brand does not break them." },
+      { src: wide("c"), alt: "Cover of the bindings article", eyebrow: "Engineering · 8 min", title: "One contract, two bindings", body: "The same markup in Vanilla and React, with no second styling recipe." },
     ],
     product: [
       { badge: "Starter", tone: "neutral", title: "Starter", body: "For one person getting going: three projects and thirty days of history.", price: "€0", period: "/month" },

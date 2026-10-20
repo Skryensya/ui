@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { Meter } from "./meter.js";
 
 describe("Meter React contracts", () => {
@@ -47,5 +47,31 @@ describe("Meter React contracts", () => {
     const meter = ui.getByRole("meter", { name: "Uso" });
     expect(meter.hasAttribute("data-sk-meter")).toBe(true);
     expect(meter.className).toContain("sk-meter");
+  });
+
+  it("warns in development when value falls outside [min, max], but still announces it verbatim", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const ui = render(<Meter label="Storage" max={100} min={0} value={142} />);
+
+    expect(spy.mock.calls.at(-1)?.[0]).toMatch(/outside its own/i);
+    expect(ui.getByRole("meter").getAttribute("aria-valuenow")).toBe("142");
+    expect(ui.getByRole("meter").style.getPropertyValue("--sk-meter-fill")).toBe("100%");
+    spy.mockRestore();
+  });
+
+  it("warns in development when the range is inverted or empty", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    render(<Meter label="Misconfigured" max={0} min={100} value={50} />);
+
+    expect(spy.mock.calls.at(-1)?.[0]).toMatch(/inverted or empty range/i);
+    spy.mockRestore();
+  });
+
+  it("does not warn when value sits inside a normal range", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    render(<Meter label="Storage" max={100} min={0} value={62} />);
+
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
   });
 });

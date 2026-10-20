@@ -9,7 +9,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Convierte un texto corto en un símbolo escaneable, dibujado como un solo path SVG.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Turns a short string into a scannable symbol, drawn as a single SVG path.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

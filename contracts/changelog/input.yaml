@@ -3,13 +3,30 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "d232c38d4a3c0cc8"
+surface: "568b92f6e5d3cc75"
 entries:
+  - date: 2026-10-17
+    kind: feature
+    target: Textarea
+    es:
+      title: "Textarea crece con el contenido: autoSize"
+      body: "Nueva opción autoSize (field-sizing: content), con un tope en --sk-textarea-autosize-max-block-size (40vh por defecto). Un navegador sin soporte mantiene la caja de alto fijo de siempre."
+    en:
+      title: "Textarea grows with its content: autoSize"
+      body: "New autoSize option (field-sizing: content), capped by --sk-textarea-autosize-max-block-size (40vh by default). A browser without support keeps the plain fixed-height box."
   - date: 2026-10-01
     kind: feature
     es:
       title: Primera versión
-      body: Captura una línea de texto con el control nativo del navegador.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Captures a line of text with the browser's native control.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."
+  - date: 2026-10-14
+    kind: feature
+    es:
+      title: Variante ghost
+      body: "Input, Textarea y NativeInput aceptan variant=\"ghost\": el campo sin contenedor visible, para usarlo dentro de una superficie que ya lo enmarca."
+    en:
+      title: Ghost variant
+      body: "Input, Textarea and NativeInput take variant=\"ghost\": the field with no visible container, for use inside a surface that already frames it."

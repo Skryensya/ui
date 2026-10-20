@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { anchorNameFor, bindAnchor, supportsAnchorPositioning } from "@skryensya/core/anchored";
+  import { placeAnchored } from "@skryensya/core/anchored";
   import {
     CLIPBOARD_COPIED_EVENT,
     CLIPBOARD_DEFAULT_TIMEOUT,
@@ -80,12 +80,14 @@
   };
   trigger.addEventListener("click", onClick);
 
-  const unbindAnchor =
-    flag && supportsAnchorPositioning() ? bindAnchor(trigger, flag, anchorNameFor(trigger.id)) : undefined;
+  // No Zag machine places the flag: the popper does, for as long as the machine says "copied".
+  $effect(() => {
+    if (!api.copied || !flag) return;
+    return placeAnchored(trigger, flag, { placement: "block-start" });
+  });
 
   onDestroy(() => {
     trigger.removeEventListener("click", onClick);
-    unbindAnchor?.();
   });
 
   let announced: ClipboardStatus = "idle";

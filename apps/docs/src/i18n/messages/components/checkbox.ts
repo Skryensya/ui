@@ -97,10 +97,10 @@ export const checkboxMessages = {
     "checkbox.singleTitle": "Una opción: el caso base",
 
     "checkbox.prop.orientation.horizontal":
-      "Usa <code>horizontal</code> para dos o tres opciones cortas que caben en una línea.",
+      "<code>horizontal</code> existe, pero no es la buena práctica: en una fila cuesta más leer, comparar y encontrar a qué opción pertenece cada etiqueta, y se rompe en pantallas angostas. Reserva para un par de opciones muy cortas.",
 
     "checkbox.prop.orientation.vertical":
-      "Usa <code>vertical</code>, el valor por defecto, para listas de más de tres opciones o con etiquetas largas.",
+      "Usa <code>vertical</code>, el valor por defecto, siempre que puedas: una opción por línea se escanea rápido y aguanta etiquetas largas.",
 
     "checkbox.prop.orientation.body":
       "Cómo se ordenan los hijos de un <code>CheckboxGroup</code>.",
@@ -249,10 +249,10 @@ export const checkboxMessages = {
     "checkbox.singleTitle": "One option: the base case",
 
     "checkbox.prop.orientation.horizontal":
-      "Use <code>horizontal</code> for two or three short options that fit on one line.",
+      "<code>horizontal</code> exists, but it is not the good practice: a row is harder to read and compare, it is easy to lose which label belongs to which box, and it breaks on narrow screens. Keep it for a pair of very short options.",
 
     "checkbox.prop.orientation.vertical":
-      "Use <code>vertical</code>, the default, for lists of more than three options or with long labels.",
+      "Use <code>vertical</code>, the default, whenever you can: one option per line scans quickly and holds long labels.",
 
     "checkbox.prop.orientation.body":
       "How a <code>CheckboxGroup</code>'s children are arranged.",

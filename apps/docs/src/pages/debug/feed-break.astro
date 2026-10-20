@@ -1,0 +1,7 @@
+---
+if (import.meta.env.PROD) return new Response(null, { status: 404 });
+import "@skryensya/core/components/feed.css";
+import { FeedBreak } from "../../components/react-demos/debug-feed-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+<DebugShell title="Feed" docsHref="/components/feed"><FeedBreak client:only="react" /></DebugShell>

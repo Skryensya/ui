@@ -98,6 +98,11 @@ export type LightboxProps = Omit<DialogHTMLAttributes<HTMLDialogElement>, "open"
     /** Where focus goes on close when the element that opened it is gone. */
     fallbackFocus?: () => HTMLElement | null;
     /**
+     * The `VideoPlayer` a video item plays in: authored once, in the page's language, and shown in the photo's place while a video is
+     * up. Give it any `src` (it is replaced by the item's); without one, a video uses the browser's own controls.
+     */
+    video?: ReactNode;
+    /**
      * Bind this lightbox to a handle created elsewhere with `createLightboxHandle()`. What
      * `LightboxProvider` does; rarely needed directly.
      */
@@ -131,6 +136,7 @@ export function Lightbox({
   onImageLoad,
   onImageError,
   fallbackFocus,
+  video,
   ...props
 }: LightboxProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -208,6 +214,7 @@ export function Lightbox({
       <figure className={lightboxParts.figure}>
         {/* The controller prepends the two `<img>` here; React renders nothing that could collide. */}
         <div className={lightboxParts.stage}>
+          {video}
           <span aria-hidden="true" className={`${lightboxParts.loader} sk-loader`} data-size="lg" />
           <p className={lightboxParts.error} data-error-label={errorLabel} hidden>
             {errorLabel}
@@ -283,7 +290,11 @@ export type LightboxTriggerProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>,
    * whenever the thumbnail is a crop: a crop is never used as the placeholder.
    */
   thumbnailSrc?: string;
-  /** The thumbnail. Its `alt` names the link. */
+  /** The link is to a video. Needed only when the file name does not say (`.mp4` `.webm` `.mov` `.m4v` `.ogv` are taken as video). */
+  video?: boolean;
+  /** A video that starts again when it ends. */
+  videoLoop?: boolean;
+  /** The thumbnail. Its `alt` names the link; for a video it is also the poster. */
   children: ReactNode;
 };
 
@@ -302,6 +313,8 @@ function LightboxTrigger({
   width,
   height,
   thumbnailSrc,
+  video,
+  videoLoop,
   children,
   className,
   ...props
@@ -321,6 +334,8 @@ function LightboxTrigger({
         [lightboxAttrs.width]: width,
         [lightboxAttrs.height]: height,
         [lightboxAttrs.thumbnail]: thumbnailSrc,
+        [lightboxAttrs.type]: video ? "video" : undefined,
+        [lightboxAttrs.videoLoop]: videoLoop ? "" : undefined,
       }}
     >
       {children}

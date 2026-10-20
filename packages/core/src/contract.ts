@@ -268,6 +268,12 @@ export type ContractTemplate = {
    * icon brings its own box and must not be wrapped in one.
    */
   readonly element?: string;
+  /**
+   * The name of an enum option whose value IS this node's tag, for a node that is not the host: an
+   * EmptyState's title is an `h2` by default and an `h1` on a page that has no other heading. The
+   * option lists the tag names and takes no `attr`, exactly like a host `element` option.
+   */
+  readonly elementOption?: string;
   /** Key into the contract's `parts`. Absent for a structural element that carries no part class. */
   readonly part?: string;
   /** Extra classes written verbatim, for a pattern this component composes (`sk-interactive`). */
@@ -674,6 +680,17 @@ export type ContractSignature = {
   readonly pairs?: readonly {
     readonly a: { readonly slot: string; readonly option: string };
     readonly b: { readonly slot: string; readonly option: string };
+  }[];
+  /**
+   * One slot's option forces a VALUE on another slot's option, rather than merely matching it:
+   * a split button's action going `loading` has to leave the menu trigger `disabled`, which is not
+   * `pairs`' claim (the two sides hold the SAME value) because `loading` and `disabled` are not the
+   * same option under two names - a loading action is not itself disabled in the native sense, and
+   * a disabled trigger does not imply the action is loading back. The relationship only runs one way.
+   */
+  readonly slotImplies?: readonly {
+    readonly when: { readonly slot: string; readonly option: string; readonly equals: string };
+    readonly then: { readonly slot: string; readonly option: string; readonly equals: string };
   }[];
   readonly slots: Readonly<Record<string, ContractSlot>>;
   /** The id relationships this signature owes, and the only place ids are decided. */

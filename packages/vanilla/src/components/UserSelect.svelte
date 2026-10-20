@@ -1,10 +1,4 @@
 <script lang="ts">
-  import {
-    anchorNameFor,
-    bindAnchor,
-    stripPositioningStyle,
-    supportsAnchorPositioning,
-  } from "@skryensya/core/anchored";
   import { avatarParts } from "@skryensya/core/avatar";
   import { loaderContract, loaderParts, loaderTicks } from "@skryensya/core/loader";
   import { comboboxParts } from "@skryensya/core/combobox";
@@ -21,11 +15,13 @@
     type UserSelectLabels,
   } from "@skryensya/core/user-select";
   import { normalizeProps, useMachine } from "@zag-js/svelte";
-  import { onDestroy, onMount } from "svelte";
+  import { mount, onDestroy, onMount, unmount } from "svelte";
   import { remountIcons } from "../icon.js";
   import { applyZagProps, bindZagEvents, type DomProps } from "../runtime/apply";
   import { bindParts, type PartBinding } from "../runtime/bind-part.svelte";
   import { getRoot, uniqueId } from "../runtime/svelte-hydrate";
+  import { buildAvatar, type AvatarLike } from "../avatar-dom.js";
+  import UserSelectItems from "./UserSelectItems.svelte";
 
   /*
    * USER SELECT, a machine-backed enhancer over `@zag-js/select` (the SAME machine `Select.svelte`
@@ -49,6 +45,46 @@
   const own = selectorsFor(userSelectAttrs);
 
   /*
+   * THE OTHER WAY IN: a roster too large to hand-author as rows (`userSelectAttrs.items`'s own
+   * comment) opts in instead of writing them, the same `data-sk-user-select-items` / JSON-script
+   * convention `Select.svelte` uses for its own large lists. `UserSelectItems.svelte` then
+   * generates and virtualizes the rows, mounted onto `list` once it exists below.
+   */
+  type GeneratedUser = AvatarLike & { id: string; email?: string; disabled?: boolean };
+
+  function readGeneratedUsers(scriptId: string): GeneratedUser[] {
+    const script = document.getElementById(scriptId);
+    if (!script) {
+      throw new Error(`UserSelect's [${userSelectAttrs.items}] names a script "${scriptId}" that does not exist.`);
+    }
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(script.textContent || "[]");
+    } catch {
+      throw new Error(`UserSelect's [${userSelectAttrs.items}] script "${scriptId}" is not valid JSON.`);
+    }
+    if (!Array.isArray(parsed)) {
+      throw new Error(`UserSelect's [${userSelectAttrs.items}] script "${scriptId}" must hold a JSON array.`);
+    }
+    return parsed as GeneratedUser[];
+  }
+
+  /** Can't be authored for a roster this size either, so it is generated the same way. */
+  function generateHiddenOptions(select: HTMLSelectElement, users: readonly GeneratedUser[]): void {
+    select.replaceChildren(
+      ...users.map((user) => {
+        const option = document.createElement("option");
+        option.value = user.id;
+        option.textContent = user.name;
+        option.disabled = Boolean(user.disabled);
+        return option;
+      }),
+    );
+  }
+
+  const itemsScriptId = root.getAttribute(userSelectAttrs.items);
+
+  /*
    * The same string table React reads (`userSelectLabels`), overridden from the root: `data-term`
    * for the noun, `data-placeholder` and `data-search-placeholder` under their existing names, and
    * `data-<key>-label` for every other key (`data-clear-label`, `data-count-label`, ...).
@@ -70,6 +106,21 @@
   const content = root.querySelector<HTMLElement>(selector.content);
   const search = root.querySelector<HTMLInputElement>(own.search);
   const hidden = root.querySelector<HTMLSelectElement>(selector.hidden);
+  // Authored markup that predates the button gets one, so the native ✕ (hidden in the sheet) never leaves
+  // the field with no way to clear it.
+  let searchClear = root.querySelector<HTMLButtonElement>(own.searchClear);
+  if (!searchClear && search) {
+    searchClear = document.createElement("button");
+    searchClear.type = "button";
+    searchClear.className = "sk-button sk-interactive";
+    searchClear.setAttribute(userSelectAttrs.searchClear, "");
+    searchClear.setAttribute("data-icon-only", "");
+    searchClear.setAttribute("data-size", "xs");
+    searchClear.setAttribute("data-variant", "ghost");
+    searchClear.hidden = true;
+    searchClear.textContent = "×";
+    search.after(searchClear);
+  }
 
   if (!trigger) throw new Error("UserSelect requires a [data-sk-select-trigger] element.");
   if (!content) throw new Error("UserSelect requires a [data-sk-select-content] element.");
@@ -129,13 +180,19 @@
   const authored: Authored[] = Array.from(root.querySelectorAll<HTMLElement>(selector.item)).map(readItem);
   const authoredByValue = new Map(authored.map((row) => [row.item.value, row]));
 
+  const jsonUsers: GeneratedUser[] = itemsScriptId ? readGeneratedUsers(itemsScriptId) : [];
+  const usersById = new Map(jsonUsers.map((user) => [user.id, user]));
+
   function assertHiddenSelectMatches(hiddenSelect: HTMLSelectElement, items: readonly Authored[]): void {
     const got = Array.from(hiddenSelect.options).map((option) => option.value);
     const expected = items.map((row) => row.item.value);
     if (got.join(" ") !== expected.join(" "))
       throw new Error(`UserSelect hidden select drifted from its items: [${got.join(", ")}] vs [${expected.join(", ")}].`);
   }
-  if (hidden) assertHiddenSelectMatches(hidden, authored);
+  if (hidden) {
+    if (itemsScriptId) generateHiddenOptions(hidden, jsonUsers);
+    else assertHiddenSelectMatches(hidden, authored);
+  }
 
   // The rows stay exactly where the author put them; ONLY the wrapper around them is generated. A
   // `role="listbox"` (`composite: false`'s `getListProps()`) belongs on this element, never on
@@ -276,13 +333,13 @@
   if (!search.placeholder) search.placeholder = label("searchPlaceholder");
   if (!search.hasAttribute("aria-label")) search.setAttribute("aria-label", search.placeholder);
   if (root.hasAttribute("data-disabled")) search.disabled = true;
+  if (searchClear && !searchClear.hasAttribute("aria-label")) searchClear.setAttribute("aria-label", label("clearSearch"));
   if (clearEl && !clearEl.textContent?.trim()) clearEl.textContent = label("clear");
   const maxAvatars = Number(root.dataset.maxAvatars) || 3;
 
-  const emptyMessage = () =>
-    authored.length === 0
-      ? label("empty")
-      : label("noResults", { query: query.trim() });
+  const noRoster = () => (itemsScriptId ? jsonUsers.length === 0 : authored.length === 0);
+
+  const emptyMessage = () => (noRoster() ? label("empty") : label("noResults", { query: query.trim() }));
 
   const resultText = (count: number) => {
     if (loading) return label("loading");
@@ -326,7 +383,36 @@
     }
   };
 
-  const collection = $derived(makeCollection(visible.map((row) => row.item)));
+  /*
+   * THE JSON ROSTER'S OWN ORDER AND FILTER, pure data transforms instead of `pinSelected`'s/
+   * `filterAuthoredItems`'s DOM moves - there are no authored nodes to move. Same two-stage shape
+   * (pin first, then filter) as the React binding's `orderedUsers`/`filteredUsers`.
+   */
+  let pinnedIds: readonly string[] = $state([]);
+  const jsonSearchKeys = new Map(jsonUsers.map((user) => [user.id, userSelectSearchKey(`${user.name} ${user.email ?? ""}`)]));
+  const orderedUsers = $derived.by(() => {
+    const first = new Set(pinnedIds);
+    return [...jsonUsers.filter((user) => first.has(user.id)), ...jsonUsers.filter((user) => !first.has(user.id))];
+  });
+  const filteredUsers = $derived.by(() => {
+    const needle = userSelectSearchKey(query.trim());
+    if (!needle) return orderedUsers;
+    return orderedUsers.filter((user) => jsonSearchKeys.get(user.id)!.includes(needle));
+  });
+
+  const collection = $derived(
+    itemsScriptId
+      ? makeCollection(filteredUsers.map((user) => ({ value: user.id, label: user.name, disabled: user.disabled })))
+      : makeCollection(visible.map((row) => row.item)),
+  );
+
+  /*
+   * Only the virtualized path ever fills this - `UserSelectItems.svelte`'s `onReady` sets it once
+   * it has built its own virtualizer. `useMachine`'s own options are read through a getter below,
+   * so this starting `undefined` and becoming real a tick later is not a race.
+   */
+  let scrollToIndexRef: ((index: number, options?: { align?: string; behavior?: string }) => void) | undefined =
+    $state(undefined);
 
   const readDefaultValue = (): string[] | undefined => {
     const value = root.dataset.value;
@@ -334,8 +420,6 @@
   };
 
   const machineId = root.id || uniqueId("sk-user-select");
-  const anchorName = supportsAnchorPositioning() ? anchorNameFor(machineId) : null;
-  let unbindAnchor: (() => void) | undefined;
 
   const service = useMachine(select.machine, () => ({
     id: machineId,
@@ -349,6 +433,10 @@
     disabled: root.hasAttribute("data-disabled"),
     defaultValue: readDefaultValue(),
     positioning: { ...selectPositioning, boundary: root.closest("dialog") ? document.documentElement : undefined },
+    scrollToIndexFn: itemsScriptId
+      ? (details: { index: number; immediate?: boolean }) =>
+          scrollToIndexRef?.(details.index, { align: "auto", behavior: details.immediate ? "auto" : "smooth" })
+      : undefined,
     // The clear button's accessible name is its visible text, not Zag's own "Clear value".
     translations: { clearTriggerLabel: clearEl?.textContent?.trim() || label("clear") },
     onValueChange(details: { value: string[] }) {
@@ -360,18 +448,37 @@
 
   const selectedRows = () => api.value.map((value) => authoredByValue.get(value)).filter((row): row is Authored => row != null);
 
+  /*
+   * ONE SHAPE FOR THE TRIGGER SUMMARY, from either source: an authored row's avatar is CLONED (the
+   * same node the picker already rendered), a JSON one is BUILT fresh (`buildAvatar`, the one real
+   * difference `userSelectAttrs.items`'s own comment names) - `triggerLabel`/`renderTriggerValue`
+   * read only this, and stay the same either way.
+   */
+  type SelectedDisplay = { value: string; label: string; avatarNode: () => HTMLElement | null };
+  const selectedDisplay = (): SelectedDisplay[] =>
+    itemsScriptId
+      ? api.value
+          .map((id) => usersById.get(id))
+          .filter((user): user is GeneratedUser => user != null)
+          .map((user) => ({ value: user.id, label: user.name, avatarNode: () => buildAvatar(user, "sm") }))
+      : selectedRows().map((row) => ({
+          value: row.item.value,
+          label: row.item.label,
+          avatarNode: () => (row.avatar?.cloneNode(true) as HTMLElement | undefined) ?? null,
+        }));
+
   const triggerLabel = () => {
-    const selected = selectedRows();
+    const selected = selectedDisplay();
     if (selected.length === 0) return placeholder;
-    if (selected.length === 1) return `${placeholder}, ${label("selectedOne", { name: selected[0]!.item.label })}`;
+    if (selected.length === 1) return `${placeholder}, ${label("selectedOne", { name: selected[0]!.label })}`;
     return `${placeholder}, ${label("selectedMany", { count: selected.length })}`;
   };
 
   // `null`, not "": an empty selection's key IS "", and the first render must still paint the empty state.
   let renderedKey: string | null = null;
   const renderTriggerValue = () => {
-    const selected = selectedRows();
-    const nextKey = selected.map((row) => row.item.value).join(" ");
+    const selected = selectedDisplay();
+    const nextKey = selected.map((row) => row.value).join(" ");
     if (nextKey === renderedKey) return;
     renderedKey = nextKey;
 
@@ -401,7 +508,7 @@
     wrap.dataset.wrap = "false";
 
     if (selected.length === 1) {
-      const avatar = selected[0]!.avatar?.cloneNode(true) as HTMLElement | undefined;
+      const avatar = selected[0]!.avatarNode();
       if (avatar) wrap.append(avatar);
     } else {
       const group = document.createElement("div");
@@ -409,7 +516,7 @@
       group.setAttribute("role", "group");
       const shown = selected.slice(0, maxAvatars);
       for (const row of shown) {
-        const avatar = row.avatar?.cloneNode(true) as HTMLElement | undefined;
+        const avatar = row.avatarNode();
         if (avatar) group.append(avatar);
       }
       const overflow = selected.length - shown.length;
@@ -424,7 +531,7 @@
 
     const text = document.createElement("span");
     text.className = selectParts.value;
-    text.textContent = selected.length === 1 ? selected[0]!.item.label : label("count", { count: selected.length });
+    text.textContent = selected.length === 1 ? selected[0]!.label : label("count", { count: selected.length });
     wrap.append(text);
     valueEl.append(wrap);
   };
@@ -453,13 +560,7 @@
     {
       part: "positioner",
       node: () => positioner,
-      props: () => {
-        const props = api.getPositionerProps();
-        return anchorName ? stripPositioningStyle(props) : props;
-      },
-      after: (node) => {
-        if (anchorName) unbindAnchor = bindAnchor(trigger, node, anchorName);
-      },
+      props: () => api.getPositionerProps(),
     },
     { part: "content", node: () => content, props: () => api.getContentProps(), events: true },
     {
@@ -480,12 +581,12 @@
       node: () => emptyEl,
       props: () => ({}),
       after: (node) => {
-        node.hidden = visible.length > 0;
-        const noRoster = authored.length === 0;
-        setEmptyIcon(noRoster ? "user" : "search");
+        const count = itemsScriptId ? filteredUsers.length : visible.length;
+        node.hidden = count > 0;
+        setEmptyIcon(noRoster() ? "user" : "search");
         emptyTitleEl.textContent = emptyMessage();
-        emptyHintEl.textContent = noRoster ? "" : label("noResultsHint");
-        emptyHintEl.hidden = noRoster;
+        emptyHintEl.textContent = noRoster() ? "" : label("noResultsHint");
+        emptyHintEl.hidden = noRoster();
       },
     },
     {
@@ -493,7 +594,8 @@
       node: () => statusEl,
       props: () => ({}),
       after: (node) => {
-        const text = api.open ? resultText(visible.length) : "";
+        const count = itemsScriptId ? filteredUsers.length : visible.length;
+        const text = api.open ? resultText(count) : "";
         if (node.textContent !== text) node.textContent = text;
       },
     },
@@ -567,18 +669,38 @@
   onMount(() => {
     for (const row of authored) cleanups.push(bindZagEvents(row.node, () => api.getItemProps({ item: row.item }) as DomProps));
 
+    const syncSearchClear = () => {
+      if (searchClear) searchClear.hidden = search.value.length === 0;
+    };
     const onInput = () => {
       query = search.value;
+      syncSearchClear();
       filterAuthoredItems(query);
     };
+    const onSearchClear = () => {
+      search.value = "";
+      onInput();
+      search.focus();
+    };
+    searchClear?.addEventListener("click", onSearchClear);
+    // A pointer press on the trigger opens the list and focuses the search: no keyboard ring on it
+    // until a key is pressed in the field or it loses focus.
+    const onTriggerPointer = () => search.setAttribute("data-focus-pointer", "");
+    const clearPointer = () => search.removeAttribute("data-focus-pointer");
     const onKeydown = (event: KeyboardEvent) => {
+      clearPointer();
       if (event.key === " ") event.stopPropagation();
     };
+    trigger.addEventListener("pointerdown", onTriggerPointer, true);
+    search.addEventListener("blur", clearPointer);
     search.addEventListener("input", onInput);
     search.addEventListener("keydown", onKeydown);
     cleanups.push(
       () => search.removeEventListener("input", onInput),
+      () => searchClear?.removeEventListener("click", onSearchClear),
       () => search.removeEventListener("keydown", onKeydown),
+      () => trigger.removeEventListener("pointerdown", onTriggerPointer, true),
+      () => search.removeEventListener("blur", clearPointer),
     );
   });
 
@@ -589,14 +711,42 @@
     if (!wasOpen && api.open) {
       query = "";
       search.value = "";
+      if (searchClear) searchClear.hidden = true;
+      // Harmless against an empty `authored` in JSON mode: still resets `listEl.scrollTop`, which
+      // both modes need.
       pinSelected(api.value);
       filterAuthoredItems("");
+      pinnedIds = api.value;
     }
     wasOpen = api.open;
   });
 
+  /*
+   * THE VIRTUALIZED ROWS, mounted directly onto `listEl` - see `UserSelectItems.svelte`'s own
+   * banner for why that needs a second `mount()` rather than a template slot here.
+   */
+  let itemsApp: object | undefined;
+  if (itemsScriptId) {
+    listEl.style.position = "relative";
+    itemsApp = mount(UserSelectItems, {
+      target: listEl,
+      props: {
+        getUsers: () => filteredUsers,
+        scrollElement: listEl,
+        getApi: () => api,
+        // A name line plus an email line, `--space-inset-xs sm` padding (`user-select.css`): wider
+        // than Select's single-line row, and only ever a starting guess - `measureElement` inside
+        // `UserSelectItems.svelte` corrects it once a row with or without an email actually paints.
+        estimateItemSize: 60,
+        onReady: (scrollToIndex) => {
+          scrollToIndexRef = scrollToIndex;
+        },
+      },
+    });
+  }
+
   onDestroy(() => {
     for (const cleanup of cleanups) cleanup();
-    unbindAnchor?.();
+    if (itemsApp) void unmount(itemsApp);
   });
 </script>

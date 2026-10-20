@@ -115,6 +115,10 @@
     display: grid;
     gap: 2px;
     min-inline-size: 0;
+    /* Inherited by label and description: each item shrinks to as little as ~36px across 12
+       stages, and `min-inline-size: 0` alone doesn't stop a label from overlapping its neighbours
+       when it has no break point of its own (a German compound, an unbroken word). */
+    overflow-wrap: anywhere;
   }
 
   .sk-steps__label {
@@ -203,7 +207,15 @@
     padding-block-end: var(--space-inset-xs);
   }
 
-  @media (max-width: 40rem) {
+  /*
+   * A CONTAINER QUERY, NOT A VIEWPORT ONE (decision 35, which `layout.css` states for the whole
+   * kit: every width here is asked of a container, never of the viewport). This one still read
+   * `@media`, which only ever sees a narrow VIEWPORT - a Steps placed in a narrow sidebar on a
+   * wide desktop got no fallback at all, 12 stages overlapping in a 437px container. Changed to
+   * match the convention `description-list.css`/`timeline.css`/`questionnaire.css` already follow
+   * in this same file set.
+   */
+  @container (width < 40rem) {
     .sk-steps:not([data-orientation="horizontal"], [data-appearance="segments"]) {
       flex-direction: column;
     }

@@ -9,7 +9,7 @@ entries:
     kind: feature
     es:
       title: Componente nuevo
-      body: Pone los mismos aspectos lado a lado para dos a cuatro cosas, cuando hay que elegir.
+      body: "Se suma a la librería, con su contrato, un binding de React y una hoja de estilos para marcado simple."
     en:
       title: New component
-      body: Sets the same aspects side by side for two to four things, when you have to choose.
+      body: "Added to the library, with its contract, a React binding and a stylesheet for plain markup."

@@ -1,3 +1,4 @@
+import { satin, type SatinPaleTint, type SatinTint } from "../lib/satin";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
 import { anatomyCanvas, anatomyHints, namePart } from "./annotation-parts";
@@ -8,13 +9,29 @@ import { anatomyCanvas, anatomyHints, namePart } from "./annotation-parts";
  * `mounted: false` deliberately leaves the zero-JS baseline to native scroll controls.
  */
 
-const demoSrc = "/demos/media-overlay.svg";
+/* Each feature has its own satin, so a row of slides reads as different cards, not one picture repeated. */
+const featureTint = {
+  productivity: "blue",
+  context: "graphite",
+  analytics: "sage",
+  collaboration: "lilac",
+  security: "sand",
+  automation: "slate",
+  reports: "blush",
+  integrations: "mist",
+} as const satisfies Record<string, SatinTint | SatinPaleTint>;
+/* Pale tints share the 16x9 shape, so the overload that wants one tint kind takes both here. */
+const demoSrc = (feature: keyof typeof featureTint) => satin(featureTint[feature] as SatinTint);
 
 const features = [
   ["productivity", "top"],
   ["context", "center"],
   ["analytics", "bottom"],
   ["collaboration", "left"],
+  ["security", "right"],
+  ["automation", "top"],
+  ["reports", "center"],
+  ["integrations", "bottom"],
 ] as const;
 
 type Feature = (typeof features)[number][0];
@@ -39,7 +56,7 @@ function featureSlide(
           contract: "image-frame",
           signature: "ImageFrame",
           options: {
-            src: demoSrc,
+            src: demoSrc(feature),
             alt: "",
             aspect: "16/9",
             radius: "top",
@@ -102,7 +119,7 @@ export const carouselAnatomyTree = (t: Translate): UsageTree => ({
     subject: {
       contract: "carousel",
       signature: "Carousel",
-      options: { autoplayDelay: 3500, slideSize: "min(70%, 18rem)" },
+      options: { mounted: true, autoplayDelay: 3500, slideSize: "min(70%, 18rem)" },
       attrs: { "aria-label": t("demo.carousel.label") },
       children: features.slice(0, 2).map(([feature, position]) => featureSlide(t, feature, position)),
     },
@@ -123,6 +140,7 @@ export const carouselAnatomyTree = (t: Translate): UsageTree => ({
 export const carouselCardsTree = (t: Translate): UsageTree => ({
   contract: "carousel",
   signature: "Carousel",
+  options: { mounted: true, fade: true },
   attrs: { "aria-label": t("demo.carousel.label") },
   children: features.map(([feature, position]) =>
     featureSlide(t, feature, position),
@@ -133,7 +151,7 @@ export const carouselCardsTree = (t: Translate): UsageTree => ({
 export const carouselAutoplayTree = (t: Translate): UsageTree => ({
   contract: "carousel",
   signature: "Carousel",
-  options: { autoplayDelay: 3500, slideSize: "min(65%, 22rem)" },
+  options: { mounted: true, autoplayDelay: 3500, slideSize: "min(65%, 22rem)" },
   attrs: { "aria-label": t("demo.carousel.label") },
   children: features.map(([feature, position]) => featureSlide(t, feature, position)),
 });
@@ -148,7 +166,7 @@ export const carouselAutoplayTree = (t: Translate): UsageTree => ({
 export const carouselFocusableTree = (t: Translate): UsageTree => ({
   contract: "carousel",
   signature: "Carousel",
-  options: { autoplayDelay: 3500, slideSize: "min(65%, 22rem)" },
+  options: { mounted: true, autoplayDelay: 3500, slideSize: "min(65%, 22rem)" },
   attrs: { "aria-label": t("demo.carousel.focusLabel") },
   children: features.map(([feature, position]) =>
     featureSlide(t, feature, position, `#${feature}`),
@@ -167,6 +185,9 @@ const people = [
   ["third", "Radia Perlman", "RP"],
   ["fourth", "Barbara McClintock", "BM"],
   ["fifth", "Karen Spärck Jones", "KS"],
+  ["sixth", "Margaret Hamilton", "MH"],
+  ["seventh", "Katherine Johnson", "KJ"],
+  ["eighth", "Hedy Lamarr", "HL"],
 ] as const;
 
 function personSlide(
@@ -228,9 +249,145 @@ function personSlide(
 export const carouselBareTree = (t: Translate): UsageTree => ({
   contract: "carousel",
   signature: "Carousel",
-  options: { controls: "none" },
+  options: { mounted: true, controls: "none" },
   attrs: { "aria-label": t("demo.carousel.team.label") },
   children: people.map((person) => personSlide(t, person)),
+});
+
+/*
+ * OTHER KINDS OF CARD. The feature card above is one typology (image, eyebrow, title, body). A track
+ * holds anything that is a self-contained unit: a figure with its delta, a quote with its author, a
+ * product with its price. Each is its own tree, keyed by position so copy never moves with a rename.
+ */
+const stats = [
+  ["first", "positive", "up"],
+  ["second", "positive", "up"],
+  ["third", "danger", "down"],
+  ["fourth", "neutral", "flat"],
+] as const;
+
+/** Metric cards: a label, one large figure, its change as a Badge, and what it is measured against. */
+export const carouselStatsTree = (t: Translate): UsageTree => ({
+  contract: "carousel",
+  signature: "Carousel",
+  options: { mounted: true, fade: true, slideSize: "min(60%, 15rem)" },
+  attrs: { "aria-label": t("demo.carousel.stats.label") },
+  children: stats.map(([position, tone]) => ({
+    contract: "carousel",
+    signature: "CarouselSlide",
+    children: {
+      contract: "box",
+      signature: "Box",
+      options: { surface: "surface", border: "subtle", padding: "lg" },
+      children: {
+        contract: "layout",
+        signature: "Stack",
+        options: { gap: "sm", align: "start" },
+        children: [
+          { contract: "typography", signature: "Text", options: { size: "caption", tone: "tertiary", weight: "label" }, children: t(`demo.carousel.stat.${position}.label` as never) },
+          { contract: "typography", signature: "Text", options: { size: "xl", weight: "label" }, children: t(`demo.carousel.stat.${position}.value` as never) },
+          { contract: "badge", signature: "Badge", options: { tone: tone === "danger" ? "danger" : tone === "positive" ? "success" : "neutral" }, children: t(`demo.carousel.stat.${position}.delta` as never) },
+          { contract: "typography", signature: "Text", options: { size: "sm", tone: "secondary" }, children: t(`demo.carousel.stat.${position}.note` as never) },
+        ],
+      },
+    },
+  })),
+});
+
+const quotes = [
+  ["first", "Ada Lovelace", "AL"],
+  ["second", "Grace Hopper", "GH"],
+  ["third", "Radia Perlman", "RP"],
+  ["fourth", "Karen Spärck Jones", "KS"],
+] as const;
+
+/** Testimonial cards: the quote first and large, then who said it, with their avatar. */
+export const carouselQuotesTree = (t: Translate): UsageTree => ({
+  contract: "carousel",
+  signature: "Carousel",
+  options: { mounted: true, fade: true, slideSize: "min(80%, 22rem)" },
+  attrs: { "aria-label": t("demo.carousel.quotes.label") },
+  children: quotes.map(([position, name, initials]) => ({
+    contract: "carousel",
+    signature: "CarouselSlide",
+    children: {
+      contract: "box",
+      signature: "Box",
+      options: { surface: "sunken", border: "subtle", padding: "lg" },
+      children: {
+        contract: "layout",
+        signature: "Stack",
+        options: { gap: "lg" },
+        children: [
+          { contract: "typography", signature: "Text", children: t(`demo.carousel.quote.${position}.text` as never) },
+          {
+            contract: "layout",
+            signature: "Inline",
+            options: { gap: "sm", inlineAlign: "center" },
+            children: [
+              { contract: "avatar", signature: "Avatar.initials", options: { size: "md", name }, children: initials },
+              {
+                contract: "layout",
+                signature: "Stack",
+                options: { gap: "xs" },
+                children: [
+                  { contract: "typography", signature: "Text", options: { size: "sm", weight: "label" }, children: name },
+                  { contract: "typography", signature: "Text", options: { size: "caption", tone: "tertiary" }, children: t(`demo.carousel.person.${position}.role` as never) },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    },
+  })),
+});
+
+const products = [
+  ["first", "sage", true],
+  ["second", "sand", false],
+  ["third", "slate", false],
+  ["fourth", "blush", true],
+  ["fifth", "lilac", false],
+] as const;
+
+/** Product cards: a tall image, name and price on one line, and a Badge only where it earns it. */
+export const carouselProductsTree = (t: Translate): UsageTree => ({
+  contract: "carousel",
+  signature: "Carousel",
+  options: { mounted: true, fade: true, slideSize: "min(55%, 14rem)" },
+  attrs: { "aria-label": t("demo.carousel.products.label") },
+  children: products.map(([position, tint, isNew]) => ({
+    contract: "carousel",
+    signature: "CarouselSlide",
+    children: {
+      contract: "box",
+      signature: "Box",
+      options: { surface: "surface", border: "subtle", padding: "none" },
+      children: [
+        {
+          contract: "image-frame",
+          signature: "ImageFrame",
+          options: { src: satin(tint as SatinTint), alt: "", aspect: "4/3", radius: "top" },
+        },
+        {
+          contract: "box",
+          signature: "Box",
+          options: { padding: "md" },
+          children: {
+            contract: "layout",
+            signature: "Stack",
+            options: { gap: "xs", align: "start" },
+            children: [
+              ...(isNew ? [{ contract: "badge", signature: "Badge", options: { tone: "accent" }, children: t("demo.carousel.product.new") } as UsageTree] : []),
+              { contract: "typography", signature: "Text", options: { weight: "label" }, children: t(`demo.carousel.product.${position}.name` as never) },
+              { contract: "typography", signature: "Text", options: { size: "sm", tone: "secondary" }, children: t(`demo.carousel.product.${position}.price` as never) },
+            ],
+          },
+        },
+      ],
+    },
+  })),
 });
 
 /** Same scroll-snap markup with the enhancer intentionally absent. */
@@ -246,7 +403,7 @@ export const carouselNativeTree = (t: Translate): UsageTree => ({
       contract: "image-frame",
       signature: "ImageFrame",
       options: {
-        src: demoSrc,
+        src: demoSrc(feature),
         alt: "",
         aspect: "16/9",
         position,
@@ -271,7 +428,7 @@ export const carouselNativeTree = (t: Translate): UsageTree => ({
 export const carouselDontFewTree = (t: Translate): UsageTree => ({
   contract: "carousel",
   signature: "Carousel",
-  options: { slideSize: "48%" },
+  options: { mounted: true, slideSize: "48%" },
   attrs: { "aria-label": t("demo.carousel.label") },
   children: features.slice(0, 2).map(([feature, position]) => featureSlide(t, feature, position)),
 });

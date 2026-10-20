@@ -5,11 +5,29 @@
 # hash.
 surface: "17bc1036fc4eb51c"
 entries:
+  - date: 2026-10-17
+    kind: feature
+    target: Toast
+    es:
+      title: "toastQueue / useToastQueue: un toast() imperativo, sin contexto ni proveedor"
+      body: "toastQueue.show/update/dismiss más el hook useToastQueue, en @skryensya/react. Un consumidor ya no escribe a mano su propio pushToast/patchToast/closeToast para un toast que pasa de \"en curso\" a \"listo\" o \"falló\". Toast y ToastRegion siguen siendo los mismos componentes; esto es la capa imperativa encima."
+    en:
+      title: "toastQueue / useToastQueue: an imperative toast(), no context or provider"
+      body: "toastQueue.show/update/dismiss plus the useToastQueue hook, in @skryensya/react. A consumer no longer hand-writes their own pushToast/patchToast/closeToast for a toast that moves from \"in progress\" to \"done\" or \"failed\". Toast and ToastRegion stay the same components; this is the imperative layer on top."
+  - date: 2026-10-17
+    kind: bugfix
+    target: Toast
+    es:
+      title: "Dos acciones ya no aprietan el mensaje a una columna de pocos caracteres"
+      body: "Toast movía las acciones al lado del mensaje para que una sola quedara compacta; con dos, esa misma columna auto se ensanchaba y dejaba el texto en ~6 caracteres de ancho. Con dos o más acciones, vuelven a su propia fila debajo del mensaje, como en Callout."
+    en:
+      title: "Two actions no longer squeeze the message into a handful of characters"
+      body: "Toast moved actions beside the message so a single one stayed compact; with two, that same auto column widened and left the text ~6 characters wide. With two or more actions, they fall back to their own row under the message, as Callout already does."
   - date: 2026-10-01
     kind: feature
     es:
       title: Primera versión
-      body: Parte del kit desde la primera versión.
+      body: "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple."
     en:
       title: First release
-      body: Part of the kit since the first release.
+      body: "Published for the first time, with its contract, a React binding and a stylesheet for plain markup."

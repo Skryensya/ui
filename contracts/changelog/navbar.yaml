@@ -18,7 +18,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Reúne marca, navegación y acciones globales en la cabecera.
+      body: "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple."
     en:
       title: First release
-      body: Collects brand, global navigation, and actions in the header.
+      body: "Published for the first time, with its contract, a React binding and a stylesheet for plain markup."

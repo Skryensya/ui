@@ -14,9 +14,20 @@ import {
   textReadingTree,
   textTitleTree,
 } from "../../demos/typography";
+import type { UsageTree } from "@skryensya/core/usage-tree";
 import { getLocale, tList, useTranslations } from "../../i18n";
 import { annotationDemoCss } from "../../demos/annotation";
 import "@skryensya/core/components/annotation.css";
+
+/* The four examples are bare text: without room and a measure they sit on the card's edge and run the
+   full stage width, so each gets inline padding, block padding and a readable line length. */
+const framed = (tree: UsageTree): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "sm" },
+  attrs: { style: "padding: var(--space-inset-md) var(--space-inset-lg); max-inline-size: 36rem;" },
+  children: tree,
+});
 
 const t = useTranslations(getLocale(Astro.url));
 const explain = (option: string, values: readonly string[]) =>
@@ -88,10 +99,10 @@ const explain = (option: string, values: readonly string[]) =>
     />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <UsagePreview tree={textTitleTree(t)} title={t("textPage.titleBlockTitle")} description={t("textPage.titleBlockBody")} storybookTitle="Components/Heading" storybookStory="TextTitle" />
-    <UsagePreview tree={textReadingTree(t)} title={t("textPage.readingTitle")} description={t("textPage.readingBody")} storybookTitle="Components/Heading" storybookStory="TextReading" />
-    <UsagePreview tree={codeTree(t)} title={t("textPage.codeTitle")} description={t("textPage.codeBody")} storybookTitle="Components/Heading" storybookStory="Code" />
-    <UsagePreview tree={outputTree(t)} title={t("textPage.outputTitle")} description={t("textPage.outputBody")} storybookTitle="Components/Heading" storybookStory="Output" />
+    <UsagePreview tree={framed(textTitleTree(t))} title={t("textPage.titleBlockTitle")} description={t("textPage.titleBlockBody")} storybookTitle="Components/Heading" storybookStory="TextTitle" />
+    <UsagePreview tree={framed(textReadingTree(t))} title={t("textPage.readingTitle")} description={t("textPage.readingBody")} storybookTitle="Components/Heading" storybookStory="TextReading" />
+    <UsagePreview tree={framed(codeTree(t))} title={t("textPage.codeTitle")} description={t("textPage.codeBody")} storybookTitle="Components/Heading" storybookStory="Code" />
+    <UsagePreview tree={framed(outputTree(t))} title={t("textPage.outputTitle")} description={t("textPage.outputBody")} storybookTitle="Components/Heading" storybookStory="Output" />
 
     <p set:html={t("component.reactNote")} />
 

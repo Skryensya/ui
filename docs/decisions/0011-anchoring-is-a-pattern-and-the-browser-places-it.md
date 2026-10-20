@@ -1,20 +1,46 @@
 ---
 num: 11
-title: Anchoring is a pattern, and the browser is what places it
-short: "Anchoring: a pattern, the browser's engine"
+title: Anchoring is a pattern, and Zag's popper is what places it
+short: "Anchoring: a pattern, one engine (@zag-js/popper)"
 summary: >-
-  Nine components float anchored to a trigger and each one solved placement on its own: three CSS
-  dialects, four copies of the support probe and one hand-written geometry. This decision unifies them in
-  a PATTERN, `sk-anchored`, which ships the positioner's structure and its styling hooks, plus a minimal
-  module in `@skryensya/core/anchored` that only does the anchor-to-popup wiring. The primary engine is
-  the CSS Anchor Positioning API, that is, THE BROWSER; where it is absent, Zag's machine positions. No
-  engine of our own is added, and no direct Floating UI dependency.
+  Nine components float anchored to a trigger and each one solved placement on its own. This decision
+  unifies them in a PATTERN, `sk-anchored`, plus a small module in `@skryensya/core/anchored`. ONE engine
+  places every box: Zag's popper (floating-ui underneath), through the component's own machine or, for
+  the boxes with none, through `placeAnchored`. The CSS Anchor Positioning API, which this decision first
+  chose, was removed (2026-10-14).
 ---
 
-Tooltip, Popover, Popup, Menu, Select, Combobox, Date picker, Flyout and submenus all do the same thing:
-put a box next to an element, flip it when it does not fit, and hide it if the anchor scrolls off screen.
-The anatomy was already the same without anyone having named it, `__trigger`, `__positioner`, `__content`
-in six of them. What was duplicated was everything else.
+## Amendment, 2026-10-14: the browser no longer places
+
+The first version of this decision made CSS Anchor Positioning the primary engine and Zag's machine the
+fallback. It was removed, for two measured reasons:
+
+- **A box trailed its anchor while the page scrolled.** In Chromium, under real wheel scrolling, an
+  anchor-positioned box was laid out against the previous scroll step in roughly one frame out of three.
+  Nothing in the pattern could fix it: the engine's timing is not a property.
+- **Two engines meant two behaviours.** Submenus, and every box in a browser without the API, were
+  already placed by Zag; the browser engine could not paint a box anchored inside another anchored box.
+
+What replaced it:
+
+- **`anchoredPositioning`** (`core/src/anchored.ts`) is spread into every machine's `positioning`:
+  `strategy: "fixed"`, a 4px gutter and `animationFrame`, so the popper re-measures every frame while a
+  box is open instead of after each scroll event.
+- **`placeAnchored(reference, floating, options)`** is the same popper for the boxes with no machine: the
+  copy button's flag and Megamenu's shared panel. **`placeNativePopovers()`** does it for `popover="auto"`
+  boxes, on the browser's `toggle` event.
+- **The stylesheet** (`patterns/anchored.css`) only turns the popper's `--x`/`--y` into a `transform`
+  and owns the arrow. Side, flip and gap are popper options set in JS; `--sk-anchored-position-area`,
+  `-offset`, `-size`, `-justify`, `-align` and `-position-try` no longer exist.
+- **The arrow** is marked `data-part="arrow"`, which is how the popper finds and moves it, and takes
+  `data-side` from the side the popper resolved.
+- **`data-placed`** is written once the popper has measured a box that has no machine, so it is never
+  seen at the origin first.
+
+The rest of this document is the original reasoning. Anything below about `position-area`,
+`position-try`, `anchor-size()`, `anchor-name`, the `@supports` split or the degraded states describes
+the removed engine; the anatomy, the four logical placements, the optional authored arrow and the
+decision to add no engine of our own still hold.
 
 ## What was there
 

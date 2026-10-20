@@ -9,10 +9,10 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Elige un color con área, rieles, canales editables y presets, o el picker nativo.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Picks a color with an area, rails, editable channels and presets, or the native picker.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."
   - date: 2026-10-13
     kind: feature
     es:

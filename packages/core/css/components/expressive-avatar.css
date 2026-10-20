@@ -106,6 +106,9 @@
     box-sizing: border-box;
     inline-size: max-content;
     max-inline-size: min(18rem, 80vw);
+    /* The cap above bounds the box, but not an unbroken word inside it (a URL, an email) - that
+       still ran past the edge without this. */
+    overflow-wrap: anywhere;
     padding: var(--space-inset-sm) var(--space-inset-md);
     border: 1px solid var(--color-border-subtle);
     border-radius: var(--radius-surface);

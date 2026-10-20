@@ -3,13 +3,39 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "ee96ffb5f7ad76f0"
+surface: "c022e2a0c84de9ea"
 entries:
+  - date: 2026-10-18
+    kind: feature
+    target: Button.action
+    es:
+      title: "loading ya no superpone: el spinner entra en línea, y loadingText puede cambiar el texto"
+      body: "El spinner deja de flotar sobre la etiqueta (visibility nunca alcanzaba una etiqueta de puro texto, que seguía visible debajo) y ahora ocupa el lugar de pre, dentro del flujo. La etiqueta se mantiene visible salvo que se indique loadingText, una opción nueva que la reemplaza mientras loading está activo. pre y post se ocultan mientras carga."
+    en:
+      title: "loading no longer overlays: the spinner goes inline, and loadingText can swap the text"
+      body: "The spinner stops floating over the label (visibility never reached a plain-text label, which stayed visible underneath it) and now takes pre's place, in flow. The label stays visible unless loadingText, a new option, replaces it while loading. pre and post hide while loading."
+  - date: 2026-10-17
+    kind: feature
+    es:
+      title: "asChild: la ropa de Button sobre un Link de router, sin onClick a mano"
+      body: "<Button asChild><Link to=...>…</Link></Button> clona el hijo con las clases y atributos de Button, encadenando su propio onClick antes del de Button. pre/post/loading no están disponibles aquí: son la anatomía de Button, y el hijo ya es todo lo que se renderiza."
+    en:
+      title: "asChild: Button's own chrome over a router Link, no hand-rolled onClick"
+      body: "<Button asChild><Link to=...>…</Link></Button> clones the child with Button's classes and data attrs, chaining its own onClick before Button's. pre/post/loading are not available here: they are Button's own anatomy, and the child already is everything that renders."
+  - date: 2026-10-17
+    kind: feature
+    target: Button.action
+    es:
+      title: "loading: ocupado, no solo deshabilitado"
+      body: "Nueva opción loading: pone aria-busy, implica disabled (un segundo clic no arranca una segunda exportación) y superpone un Loader sin cambiar el ancho del botón (el texto se oculta con visibility, nunca se desmonta). Solo en Button.action; un enlace no espera nada que este componente pueda ver."
+    en:
+      title: "loading: busy, not just disabled"
+      body: "New loading option: sets aria-busy, implies disabled (a second click cannot start a second export) and overlays a Loader without changing the button's width (the label hides with visibility, never unmounts). Button.action only; a link does not wait on anything this component can see."
   - date: 2026-10-01
     kind: feature
     es:
       title: Primera versión
-      body: Ejecuta acciones o lleva a un destino con énfasis visual.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Runs actions or emphasizes navigation to a destination.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

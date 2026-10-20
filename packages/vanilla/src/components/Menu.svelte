@@ -1,10 +1,5 @@
 <script lang="ts">
-  import {
-    anchorNameFor,
-    bindAnchor,
-    stripPositioningStyle,
-    supportsAnchorPositioning,
-  } from "@skryensya/core/anchored";
+  import { anchoredPositioning } from "@skryensya/core/anchored";
   import { menu } from "@skryensya/core/machines";
   import { menuAttrs, menuEvents, menuParts, type MenuItemKind } from "@skryensya/core/menu";
   import { selectorsFor } from "@skryensya/core/selectors";
@@ -68,63 +63,23 @@
     }));
 
   /*
-   * The Anchoring pattern (ADR-25). ONLY the TRIGGER (button) goes down that path: a context trigger is
-   * not a fixed point of the layout, it is the region that captured the right-click, and the machine
-   * already resolves that case on its own with `getContextTriggerProps`/`anchorPoint`.
-   *
    * Captured ONCE: this machine's `getRootProps` does not touch `root.id`, but the trigger/content do
    * receive namespaced ids that `applyZagProps` writes back. The same reason the machine's id is never
    * re-read live from the DOM anywhere else in this migration.
    */
   const menuId = root.id || uniqueId("sk-menu");
-  const anchorEl = trigger;
-  /*
-   * `!hasSubmenu`: a submenu's trigger lives INSIDE the parent menu's own anchor-positioned panel,
-   * and the browser's anchor-positioning engine cannot paint a box anchored to something inside
-   * ANOTHER anchor-positioned box. Measured against a live nested Menu, the computed rect comes
-   * back correct and nothing ever paints there. So a submenu always falls back to the machine's own
-   * placement instead (the fallback this pattern already ships for browsers with no engine at all).
-   *
-   * The TOP level withholds native positioning too, whenever it HAS a submenu, not only the submenu
-   * itself: mixing engines one level apart put the two out of the same coordinate space. The
-   * submenu's `--x`/`--y` are the machine's own measurement, taken relative to the viewport; but the
-   * browser resolves the SUBMENU's `position: fixed` against the nearest ancestor that is itself
-   * anchor-positioned (the top level's OWN positioner, still carrying `anchor-name` unconditionally
-   * whether or not it is placed via `@supports`) rather than the viewport. Measured against a live
-   * nested Menu: a submenu math-correct in viewport terms rendered offset by roughly the top level
-   * panel's own on-screen position. One engine for the whole tree removes the mismatch instead of
-   * chasing which ancestor property makes it a containing block.
-   */
   const isSubmenu = Boolean(root.parentElement?.closest<HTMLElement>(selector.root));
-  const hasSubmenu = isSubmenu || Boolean(root.querySelector<HTMLElement>(selector.root));
-  const anchorName = supportsAnchorPositioning() && !hasSubmenu && anchorEl ? anchorNameFor(menuId) : null;
-  let unbindAnchor: (() => void) | undefined;
 
   const service = useMachine(menu.machine, () => ({
     id: menuId,
     "aria-label": root.getAttribute("aria-label") ?? undefined,
     defaultOpen: root.hasAttribute("data-open"),
-    /*
-     * `strategy: "fixed"`, not the machine's own default (`absolute`): irrelevant while the browser
-     * places this box (`anchorName`), but it is what the machine writes into its OWN inline style,
-     * which is what actually positions a SUBMENU now that `anchorName` is withheld from one (see the
-     * note above). `absolute`'s containing block is the nearest positioned ancestor, here the parent
-     * menu's own panel, so a submenu measuring past that panel's edge grew ITS `overflow: auto`
-     * scrollport instead of floating free. The exact failure `patterns/anchored.css` already
-     * explains choosing `fixed` over `absolute` to avoid for the browser-placed case.
-     */
-    /*
-     * `gutter: 0` wherever the anchoring engine exists, even when this machine is the one placing
-     * the box: `.sk-anchored` still applies `margin: var(--sk-anchored-offset)` there, so the machine's
-     * own 8px default came ON TOP of the hook (measured: 12px under a trigger whose hook says 4px,
-     * and 8px under one whose hook says 0). The hook is the one gap; only a browser without the
-     * engine, where that margin never applies, keeps the machine's default.
-     */
-    positioning: {
-      placement: "bottom-start" as const,
-      strategy: "fixed" as const,
-      ...(supportsAnchorPositioning() ? { gutter: 0 } : {}),
-    },
+    // `fixed`, from the pattern: a submenu measuring past its parent panel's edge would otherwise grow that
+    // panel's own `overflow: auto` scrollport instead of floating free.
+    positioning: isSubmenu
+      ? // Fixed: inside the parent panel, an absolute box would take its scrollport as containing block.
+        { ...anchoredPositioning, placement: "right-start" as const, strategy: "fixed" as const }
+      : { ...anchoredPositioning, placement: "bottom-start" as const },
     onOpenChange(details: { open: boolean }) {
       root.dispatchEvent(new CustomEvent(menuEvents.openChange, { bubbles: true, detail: { open: details.open } }));
     },
@@ -224,13 +179,7 @@
     {
       part: "positioner",
       node: () => (live() ? positioner : null),
-      props: () => {
-        const props = api.getPositionerProps();
-        return anchorName ? stripPositioningStyle(props) : props;
-      },
-      after: (node) => {
-        if (anchorName && anchorEl) unbindAnchor = bindAnchor(anchorEl, node, anchorName);
-      },
+      props: () => api.getPositionerProps(),
     },
     { part: "content", node: () => (live() ? content : null), props: () => api.getContentProps(), events: true },
 
@@ -311,7 +260,6 @@
 
   onDestroy(() => {
     for (const cleanup of cleanups) cleanup();
-    unbindAnchor?.();
     safeArea?.destroy();
     if (ownsReadout) readout?.destroy();
     else readout?.release(menuId);

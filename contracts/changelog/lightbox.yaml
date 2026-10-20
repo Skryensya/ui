@@ -3,13 +3,29 @@
 # `surface` es la forma del contrato la última vez que alguien la revisó. Si el compilador dice
 # que no coincide, algo de lo que un consumidor depende se movió: escribe la entrada y pega el
 # hash nuevo.
-surface: "65d1f39639bc18bc"
+surface: "140ea3f95130c853"
 entries:
   - date: 2026-10-01
     kind: feature
     es:
       title: Primera versión
-      body: Muestra una imagen o una galería en grande, con zoom, en un diálogo modal.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Shows an image or a gallery large, with zoom, in a modal dialog.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."
+  - date: 2026-10-13
+    kind: feature
+    es:
+      title: Muestra videos
+      body: "Un enlace a un .mp4, .webm, .mov, .m4v u .ogv se reproduce en el mismo visor, con sus propios controles, flechas, contador y pie. Sin zoom ni arrastre. Nuevas opciones del enlace: `video` y `videoLoop`."
+    en:
+      title: Plays video
+      body: "A link to an .mp4, .webm, .mov, .m4v or .ogv plays in the same viewer, with its own controls, arrows, counter and caption. No zoom or drag. New trigger options: `video` and `videoLoop`."
+  - date: 2026-10-13
+    kind: feature
+    es:
+      title: Los videos se reproducen en el VideoPlayer
+      body: "Nuevo slot `video`: un VideoPlayer escrito en la página, con sus palabras en su idioma. El visor carga en él el archivo de cada video y lo muestra en lugar de la foto. Sin slot, el video usa los controles del navegador."
+    en:
+      title: Videos play in the VideoPlayer
+      body: "New `video` slot: a VideoPlayer authored in the page, with its words in its own language. The viewer loads each video's file into it and shows it in the photo's place. With no slot, the video uses the browser's own controls."

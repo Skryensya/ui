@@ -5,9 +5,17 @@
  * region must reserve its own gutter but keep visual chrome quiet until the reader hovers or moves
  * keyboard focus into it. Native scrolling, wheel momentum, touch panning, and OS preferences stay
  * owned by the platform; this pattern only colors the browser's exposed scrollbar surface.
+ *
+ * GLOBAL MODE IS THE SAME CLASS, higher up: `scrollbar-color`/`scrollbar-width` are inherited
+ * properties, so one `.sk-scrollbar` on a shell root already reaches every scrollable descendant in
+ * Firefox and current Chrome with no extra rule. `::-webkit-scrollbar` and its siblings are
+ * pseudo-elements, which never inherit, so THOSE are repeated once against `.sk-scrollbar *` rather
+ * than against `.sk-scrollbar` alone - one class, put on one ancestor instead of five regions, and
+ * every scroll region under it is styled instead of only the element wearing the class itself.
  */
 @layer components {
-  .sk-scrollbar {
+  .sk-scrollbar,
+  .sk-scrollbar * {
     --sk-scrollbar-size: var(--space-inset-xs);
     --sk-scrollbar-track-bg: var(--color-bg-surface-sunken);
     --sk-scrollbar-thumb-bg: var(--color-border-strong);
@@ -17,21 +25,34 @@
     scrollbar-width: thin;
   }
 
-  .sk-scrollbar::-webkit-scrollbar {
+  @supports selector(select::picker(select)) {
+    /* A customizable select's picker is a separate scroll surface, not a DOM descendant. */
+    .sk-scrollbar::picker(select),
+    .sk-scrollbar select::picker(select) {
+      scrollbar-color: inherit;
+      scrollbar-width: inherit;
+    }
+  }
+
+  .sk-scrollbar::-webkit-scrollbar,
+  .sk-scrollbar *::-webkit-scrollbar {
     inline-size: var(--sk-scrollbar-size);
     block-size: var(--sk-scrollbar-size);
   }
 
-  .sk-scrollbar::-webkit-scrollbar-track {
+  .sk-scrollbar::-webkit-scrollbar-track,
+  .sk-scrollbar *::-webkit-scrollbar-track {
     background: var(--sk-scrollbar-track-bg);
   }
 
-  .sk-scrollbar::-webkit-scrollbar-thumb {
+  .sk-scrollbar::-webkit-scrollbar-thumb,
+  .sk-scrollbar *::-webkit-scrollbar-thumb {
     border-radius: var(--radius-control);
     background: var(--sk-scrollbar-thumb-bg);
   }
 
-  .sk-scrollbar:hover::-webkit-scrollbar-thumb {
+  .sk-scrollbar:hover::-webkit-scrollbar-thumb,
+  .sk-scrollbar *:hover::-webkit-scrollbar-thumb {
     background-color: var(--sk-scrollbar-thumb-hover-bg);
   }
 
@@ -43,7 +64,8 @@
    *
    * The thumb sits at border-default rather than border-strong: this is a hint you reach for, not
    * a line demanding to be read. */
-  .sk-scrollbar--reveal {
+  .sk-scrollbar--reveal,
+  .sk-scrollbar--reveal * {
     --sk-scrollbar-track-bg: transparent;
     --sk-scrollbar-thumb-bg: var(--color-border-default);
 
@@ -57,22 +79,28 @@
    * existed to begin with (touch scrollbars are transient overlays with no layout width of their
    * own), so the gutter was pure dead space down one edge of content that never needed it. */
   @media (hover: hover) {
-    .sk-scrollbar--reveal {
+    .sk-scrollbar--reveal,
+    .sk-scrollbar--reveal * {
       scrollbar-gutter: stable;
     }
   }
 
-  .sk-scrollbar--reveal::-webkit-scrollbar-thumb {
+  .sk-scrollbar--reveal::-webkit-scrollbar-thumb,
+  .sk-scrollbar--reveal *::-webkit-scrollbar-thumb {
     background-color: transparent;
   }
 
   .sk-scrollbar--reveal:hover,
-  .sk-scrollbar--reveal:focus-within {
+  .sk-scrollbar--reveal:focus-within,
+  .sk-scrollbar--reveal *:hover,
+  .sk-scrollbar--reveal *:focus-within {
     scrollbar-color: var(--sk-scrollbar-thumb-bg) transparent;
   }
 
   .sk-scrollbar--reveal:hover::-webkit-scrollbar-thumb,
-  .sk-scrollbar--reveal:focus-within::-webkit-scrollbar-thumb {
+  .sk-scrollbar--reveal:focus-within::-webkit-scrollbar-thumb,
+  .sk-scrollbar--reveal *:hover::-webkit-scrollbar-thumb,
+  .sk-scrollbar--reveal *:focus-within::-webkit-scrollbar-thumb {
     background-color: var(--sk-scrollbar-thumb-bg);
   }
 }

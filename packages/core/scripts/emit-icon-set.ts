@@ -23,6 +23,11 @@ import { join } from "node:path";
 export interface IconGeometry {
   viewBox: string;
   body: string;
+  /**
+   * Presentation attributes this one icon changes on top of the set's own: a solid play mark in an outline
+   * set (`{ fill: "currentColor" }`). Geometry intent belongs to the set, never to the CSS.
+   */
+  attrs?: Record<string, string>;
 }
 
 export interface IconSetSource {
@@ -57,8 +62,9 @@ export function extractSvgBody(svg: string, name: string): IconGeometry {
 /** Build the `set.ts` source for one set. Pure: no fs, no process, just the string. */
 export function buildSetSource({ map, attrs, header, resolve }: IconSetSource) {
   const entries = Object.entries(map).map(([role, name]) => {
-    const { viewBox, body } = resolve(name, role);
-    return `  ${JSON.stringify(role)}: { viewBox: ${JSON.stringify(viewBox)}, attrs: ATTRS, body: ${JSON.stringify(body)} },`;
+    const { viewBox, body, attrs: own } = resolve(name, role);
+    const iconAttrs = own ? `{ ...ATTRS, ...${JSON.stringify(own)} }` : "ATTRS";
+    return `  ${JSON.stringify(role)}: { viewBox: ${JSON.stringify(viewBox)}, attrs: ${iconAttrs}, body: ${JSON.stringify(body)} },`;
   });
 
   return `${header}

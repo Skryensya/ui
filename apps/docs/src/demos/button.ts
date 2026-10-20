@@ -1,6 +1,7 @@
 import { PLACEHOLDER_HREF } from "../lib/placeholder-hrefs";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
+import { frostBackdrop } from "../lib/frost-backdrop";
 import { genericIcon } from "./anatomy-subject";
 import { anatomyCanvas, anatomyHints } from "./annotation-parts";
 
@@ -24,11 +25,13 @@ const EMPHASES = ["solid", "soft", "ghost"] as const;
 const TONES = ["neutral", "accent", "danger"] as const;
 
 /** A row or column header: caption-sized and secondary, scaffolding rather than content. */
-const axisLabel = (text: string, style?: string): UsageTree => ({
+const axisLabel = (text: string, style?: string, onDark = false): UsageTree => ({
   contract: "typography",
   signature: "Text",
   options: { size: "caption", tone: "secondary", weight: "label" },
-  ...(style ? { attrs: { style } } : {}),
+  /* `data-axis-label` is what the card's frosted appearance reads (preview-card.css) to turn the grid's labels white; a tree that is
+     frosted from the start (`onDark`) says so itself, since its frame does not carry the page's stylesheet. */
+  attrs: { "data-axis-label": "", ...(style || onDark ? { style: `${onDark ? "color: white; " : ""}${style ?? ""}` } : {}) },
   children: text,
 });
 
@@ -41,12 +44,13 @@ const axisLabel = (text: string, style?: string): UsageTree => ({
  */
 /* The same distance on both axes, and room enough that the labels read as headings of the grid, not as part of it. */
 const AXIS_GAP = "var(--space-inset-lg)";
-const toneLabel = (tone: string, column: number) =>
-  axisLabel(tone, `position: absolute; white-space: nowrap; grid-row: 1 / 2; grid-column: ${column} / ${column + 1}; inset-block-end: calc(100% + ${AXIS_GAP});`);
-const emphasisLabel = (variant: string, row: number) =>
+const toneLabel = (tone: string, column: number, onDark: boolean) =>
+  axisLabel(tone, `position: absolute; white-space: nowrap; grid-row: 1 / 2; grid-column: ${column} / ${column + 1}; inset-block-end: calc(100% + ${AXIS_GAP});`, onDark);
+const emphasisLabel = (variant: string, row: number, onDark: boolean) =>
   axisLabel(
     variant,
     `position: absolute; white-space: nowrap; grid-row: ${row} / ${row + 1}; grid-column: 1 / 2; inset-inline-end: calc(100% + ${AXIS_GAP}); inset-block-start: 50%; translate: 0 -50%;`,
+    onDark,
   );
 
 const variantMatrix = (t: Translate, appearance?: "brutalist" | "frosted", backdrop = ""): UsageTree => ({
@@ -54,11 +58,13 @@ const variantMatrix = (t: Translate, appearance?: "brutalist" | "frosted", backd
   signature: "Grid",
   options: { columns: "3", gap: "md" },
   /* `relative`: an absolutely positioned grid item takes its grid AREA as containing block only when the grid itself is positioned. */
-  attrs: { style: `position: relative; align-items: center; justify-items: start;${backdrop}` },
+  /* The tone labels hang above the grid, outside its box, so the grid carries the room they take (their gap plus one caption line)
+     as its own top margin: the stage grows by that much and the labels stay below the card's tool row instead of inside it. */
+  attrs: { style: `position: relative; align-items: center; justify-items: start; margin-block-start: calc(${AXIS_GAP} + 2rem);${backdrop}` },
   children: [
-    ...TONES.map((tone, column) => toneLabel(tone, column + 1)),
+    ...TONES.map((tone, column) => toneLabel(tone, column + 1, appearance === "frosted")),
     ...EMPHASES.flatMap((variant, row) => [
-      emphasisLabel(variant, row + 1),
+      emphasisLabel(variant, row + 1, appearance === "frosted"),
       ...TONES.map(
         (tone): UsageTree => ({
           contract: "button",
@@ -84,20 +90,19 @@ export const buttonBrutalistMatrixTree = (t: Translate): UsageTree => variantMat
 /*
  * FROSTED ONLY MEANS SOMETHING OVER SOMETHING. On a blank page a material that processes its backdrop
  * has nothing to process, so every frosted specimen sits on a backdrop the docs own: the page's own
- * surface, a chromatic sweep built from the action tokens, and a local photograph (the lightbox
- * demo's, served from `public/`, no remote dependency).
+ * surface, a chromatic sweep built from the action tokens, and the docs' own grainy satin
+ * (`lib/frost-backdrop.ts`).
  */
-const FROST_PHOTO = "/demos/lightbox/fjord.jpg";
 const FROST_BACKDROPS = {
   surface: "background: var(--color-bg-surface);",
   chromatic: "background: linear-gradient(135deg, var(--color-action-accent), var(--color-action-danger));",
-  photo: `background: center / cover url(${FROST_PHOTO});`,
+  grain: `background: ${frostBackdrop};`,
 } as const;
 const onBackdrop = (backdrop: string) => ` padding: var(--space-inset-lg); border-radius: var(--radius-surface); ${backdrop}`;
 
-/** The matrix again, frosted, over the photograph: the material has detail and colour to work on. */
+/** The matrix again, frosted, over the grainy satin: the material has detail and colour to work on. */
 export const buttonFrostedMatrixTree = (t: Translate): UsageTree =>
-  variantMatrix(t, "frosted", onBackdrop(FROST_BACKDROPS.photo));
+  variantMatrix(t, "frosted", onBackdrop(FROST_BACKDROPS.grain));
 
 /*
  * ── APPEARANCE ──────────────────────────────────────────────────────────────────────────────────
@@ -123,11 +128,11 @@ const captionedGrid = (
   ).flatMap((row) => [...row.map(([caption]) => axisLabel(caption)), ...row.map(([, cell]) => cell)]),
 });
 
-/* Frosted specimens stand on the photograph; brutalist ones on the page, where they belong. */
-const stage = (appearance: ShowcasedAppearance) => (appearance === "frosted" ? onBackdrop(FROST_BACKDROPS.photo) : "");
+/* Frosted specimens stand on the satin; brutalist ones on the page, where they belong. */
+const stage = (appearance: ShowcasedAppearance) => (appearance === "frosted" ? onBackdrop(FROST_BACKDROPS.grain) : "");
 
 /**
- * One Button, every appearance: same label, same tone, same everything else. Over the photograph, so
+ * One Button, every appearance: same label, same tone, same everything else. Over the satin, so
  * the one material that processes its backdrop has a backdrop to process; the others ignore it.
  */
 export const buttonAppearanceTree = (t: Translate): UsageTree =>
@@ -142,7 +147,7 @@ export const buttonAppearanceTree = (t: Translate): UsageTree =>
         children: t("demo.button.continue"),
       },
     ]),
-    onBackdrop(FROST_BACKDROPS.photo),
+    onBackdrop(FROST_BACKDROPS.grain),
   );
 
 /*
@@ -272,7 +277,7 @@ export const buttonFrostedShapesTree = (t: Translate, href: string = PLACEHOLDER
 
 /**
  * The same four buttons on the three backdrops frosted has to survive: the page's own surface, a
- * chromatic sweep and a photograph. Plain soft opens each row, for the distinction the section is
+ * chromatic sweep and the satin. Plain soft opens each row, for the distinction the section is
  * about: the variant lets the backdrop through, the material processes it.
  */
 export const buttonFrostedBackdropsTree = (t: Translate): UsageTree => ({
@@ -325,7 +330,7 @@ export const buttonDestructivePairTree = (t: Translate): UsageTree => ({
     {
       contract: "button",
       signature: "Button.action",
-      options: { variant: "ghost", tone: "danger", size: "sm" },
+      options: { variant: "ghost", tone: "danger" },
       children: t("demo.button.delete"),
     },
     {
@@ -453,17 +458,20 @@ export const firstComponentButtonsTree = (t: Translate): UsageTree => ({
 });
 
 /*
- * A tile fills its container by design (it is a cell in a set of choices), so it sits in a responsive
- * two-column Grid, the context it is actually used in: one column wide, full width only once the
- * grid collapses on a narrow screen.
+ * A tile fills its container by design (it is a cell in a set of choices), so it sits in a Grid cell,
+ * the context it is actually used in. The one cell is capped at 18rem and centred in the stage; it
+ * shrinks with the stage on a narrow screen.
  */
 export const tileButtonTree = (_t: Translate): UsageTree => ({
   contract: "layout",
   signature: "Grid",
   options: { columns: "2", responsive: true },
+  attrs: { style: "grid-template-columns: minmax(0, 18rem); justify-content: center; padding: var(--space-inset-lg);" },
   children: {
     contract: "tile",
     signature: "TileButton",
+    options: { padding: "lg" },
+    attrs: { style: "min-block-size: 7rem;" },
     children: {
       contract: "tile",
       signature: "TileContent",

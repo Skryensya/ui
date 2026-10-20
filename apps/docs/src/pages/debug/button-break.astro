@@ -19,25 +19,13 @@ if (import.meta.env.PROD) {
 import "@skryensya/core/tokens.scss";
 import "@skryensya/core/components/button.css";
 import "../../styles/site.css";
-import { siteIconSet } from "../../icons";
 import { ButtonBreak } from "../../components/react-demos/debug-button-break";
+
+import DebugShell from "../../components/DebugShell.astro";
 ---
 
-<!doctype html>
-<html
-  lang="en"
-  class="sk-scrollbar"
-  data-scheme="system"
-  data-icon-set={siteIconSet}
-  data-radius="md"
-  style="--sk-density: 1"
->
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="noindex" />
-    <title>break: button</title>
-    <style is:global>
+<DebugShell title="Button">
+<style is:global>
       .break-page {
         padding: var(--space-inset-lg);
         display: flex;
@@ -140,19 +128,16 @@ import { ButtonBreak } from "../../components/react-demos/debug-button-break";
         align-self: stretch;
       }
     </style>
-  </head>
-  <body>
-    <div class="break-page">
-      <header>
-        <h1>break: Button</h1>
-        <p class="break-intro">
-          One scenario per row, the real <code>@skryensya/react</code> Button in each. Dashed outlines
-          are the container the scenario renders inside, not part of the component. Tab through the
-          instances to check focus, and toggle OS dark mode, forced colors, 200% zoom and reduced
-          motion while this page is open: those are viewing modes, so the page renders nothing for them.
-        </p>
-      </header>
-      <ButtonBreak client:load />
-    </div>
-  </body>
-</html>
+<div class="break-page" data-toc-transparent>
+  <header>
+    <h1>break: Button</h1>
+    <p class="break-intro">
+One scenario per row, the real <code>@skryensya/react</code> Button in each. Dashed outlines
+are the container the scenario renders inside, not part of the component. Tab through the
+instances to check focus, and toggle OS dark mode, forced colors, 200% zoom and reduced
+motion while this page is open: those are viewing modes, so the page renders nothing for them.
+    </p>
+  </header>
+  <ButtonBreak client:load />
+</div>
+</DebugShell>

@@ -1,0 +1,7 @@
+---
+if (import.meta.env.PROD) return new Response(null, { status: 404 });
+import "@skryensya/core/components/procedure.css";
+import { ProcedureBreak } from "../../components/react-demos/debug-procedure-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+<DebugShell title="Procedure" docsHref="/components/procedure"><ProcedureBreak client:only="react" /></DebugShell>

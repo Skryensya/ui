@@ -28,6 +28,13 @@ export const tagsInputParts = {
   /** The box that looks like a field: the tags and the entry sit inside it, and it takes the focus ring. */
   control: "sk-tags-input__control",
   /**
+   * The tags-plus-entry column, wrapping independently of `clear`: the same split Combobox's own
+   * `value` column makes from its `clear`/`trigger` columns, so the one thing that wraps to
+   * several lines is not the same flex item the clear button has to stay OUT of that wrap to sit
+   * at a fixed corner inset (see `tags-input.css`).
+   */
+  value: "sk-tags-input__value",
+  /**
    * The tags, as a group. `display: contents`, so it adds no box: it exists because the LIST is the
    * value, and the enhancer replaces the whole of it at once when the value changes (see the Svelte
    * component). Without it there is no node standing for "the tags" that is not also the field.
@@ -43,6 +50,8 @@ export const tagsInputParts = {
   itemInput: "sk-tags-input__item-input",
   /** Where new tags are typed. */
   input: "sk-tags-input__input",
+  /** Clears every tag at once. Same job, same place and the same markup shape as Combobox's own. */
+  clear: "sk-tags-input__clear",
   /** The form participant, carrying the whole value so a plain submit works. */
   hidden: "sk-tags-input__hidden",
 } as const;
@@ -54,6 +63,7 @@ export type TagsInputPartClass = (typeof tagsInputParts)[TagsInputPart];
 export const tagsInputAttrs = {
   root: "data-sk-tags-input",
   control: "data-sk-tags-input-control",
+  value: "data-sk-tags-input-value",
   list: "data-sk-tags-input-items",
   item: "data-sk-tags-input-item",
   preview: "data-sk-tags-input-item-preview",
@@ -61,6 +71,7 @@ export const tagsInputAttrs = {
   remove: "data-sk-tags-input-item-remove",
   itemInput: "data-sk-tags-input-item-input",
   input: "data-sk-tags-input-input",
+  clear: "data-sk-tags-input-clear",
   hidden: "data-sk-tags-input-hidden",
 } as const;
 
@@ -214,8 +225,16 @@ export const tagsInputContract = {
       requires: ["label"],
       forward: ["id", "aria-*"],
       mount: tagsInputAttrs.root,
-      /* The chip is a Tag, not a drawing of one: sk-tag and its two parts, with tag.css behind them. */
-      compose: [{ of: "tag", sheets: ["@skryensya/core/components/tag.css"], systemOwned: true }],
+      /*
+       * The chip is a Tag, not a drawing of one: sk-tag and its two parts, with tag.css behind them.
+       * Clear is a plain system-owned Button + Icon, the same borrow Combobox's own clear makes, not
+       * routed through Tag.
+       */
+      compose: [
+        { of: "tag", sheets: ["@skryensya/core/components/tag.css"], systemOwned: true },
+        { of: "button", sheets: ["@skryensya/core/components/button.css"], systemOwned: true },
+        { of: "icon", systemOwned: true },
+      ],
       slots: {
         /**
          * The tags the field starts with, one entry each. A collection and not a delimited string
@@ -252,10 +271,15 @@ export const tagsInputContract = {
             mount: tagsInputAttrs.control,
             children: [
               {
-                element: "span",
-                part: "list",
-                mount: tagsInputAttrs.list,
+                element: "div",
+                part: "value",
+                mount: tagsInputAttrs.value,
                 children: [
+                  {
+                    element: "span",
+                    part: "list",
+                    mount: tagsInputAttrs.list,
+                    children: [
               {
                 repeat: "items",
                 children: [
@@ -329,6 +353,27 @@ export const tagsInputContract = {
                 mount: tagsInputAttrs.input,
                 options: ["label", "placeholder"],
                 attrs: { type: "text", autocomplete: "off" },
+              },
+                ],
+              },
+              /*
+               * Clears every tag at once. The same system-owned Button + Icon realization Combobox's
+               * own clear is, borrowed rather than redrawn; the enhancer hides it while there is
+               * nothing to clear (see the Svelte/React bindings). A sibling of `value`, OUTSIDE the
+               * wrap it owns: see `tags-input.css` for why.
+               */
+              {
+                element: "button",
+                part: "clear",
+                also: ["sk-button", "sk-interactive"],
+                mount: tagsInputAttrs.clear,
+                attrs: {
+                  type: "button",
+                  "data-icon-only": "",
+                  "data-size": "xs",
+                  "data-variant": "ghost",
+                },
+                children: [{ element: "span", attrs: { "data-sk-icon": "close", "data-sk-icon-size": "sm" } }],
               },
             ],
           },

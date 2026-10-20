@@ -64,6 +64,36 @@ describe("Timeline", () => {
     expect(onlyLabel.hasAttribute("datetime")).toBe(false);
   });
 
+  it("omits the time element when timeLabel came up empty, not just when absent", () => {
+    // A relative-time formatter that returns "" (nothing to say yet) must not still warrant an
+    // empty <time> with no datetime and no label either.
+    const ui = render(
+      <Timeline>
+        <TimelineItem heading="Un evento" timeLabel="" />
+      </Timeline>,
+    );
+    expect(ui.getByRole("listitem").querySelector("time")).toBeNull();
+  });
+
+  it("keeps the machine-only time even when the label half is an empty string", () => {
+    const ui = render(
+      <Timeline>
+        <TimelineItem heading="Solo máquina" time="2026-03-14" timeLabel="" />
+      </Timeline>,
+    );
+    const time = ui.getByRole("listitem").querySelector("time");
+    expect(time?.getAttribute("datetime")).toBe("2026-03-14");
+  });
+
+  it("omits the detail element when children came up empty", () => {
+    const ui = render(
+      <Timeline>
+        <TimelineItem heading="Pedido entregado">{""}</TimelineItem>
+      </Timeline>,
+    );
+    expect(ui.getByRole("listitem").querySelector(".sk-timeline__body")).toBeNull();
+  });
+
   it("hides the dot from the accessibility tree", () => {
     // It repeats nothing: the heading beside it is the event, and a tone is emphasis on top of
     // text that already says the same.

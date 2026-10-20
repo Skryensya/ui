@@ -16,6 +16,11 @@
     display: grid;
     gap: var(--space-stack-xs);
     align-content: start;
+    /* No `min-inline-size: 0` or wrap rule existed at all on label/value - the worst instance of
+       this gap found in the sweep. A long label/value in a narrow grid column has `min-width: auto`
+       by default, which can overflow the column before ever needing to wrap. */
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
   }
   .sk-stat__label { font-size: var(--font-size-body-sm); color: var(--color-text-tertiary); }
   .sk-stat__value {

@@ -33,7 +33,7 @@ export const boxMessages = {
 
     "box.a11yIntro": "Box no agrega roles ni foco.",
 
-    "box.whenNot3": 'Si toda la superficie es una sola acción o un destino: usa <a href="/es/componentes/tile">Tile</a>.',
+    "box.whenNot3": 'Si toda la superficie es una sola acción o un destino: usa <a href="/es/componentes/tile-link">TileLink</a>.',
 
     "box.whenNot2": 'Para centrar la columna de una página: usa <a href="/es/componentes/wrapper">Wrapper</a>.',
 
@@ -123,7 +123,7 @@ export const boxMessages = {
 
     "box.a11yIntro": "Box adds no roles and no focus.",
 
-    "box.whenNot3": 'If the whole surface is one action or destination: use <a href="/components/tile">Tile</a>.',
+    "box.whenNot3": 'If the whole surface is one action or destination: use <a href="/components/tile-link">TileLink</a>.',
 
     "box.whenNot2": 'To center a page column: use <a href="/components/wrapper">Wrapper</a>.',
 

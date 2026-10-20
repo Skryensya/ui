@@ -4,6 +4,28 @@ import { type HTMLAttributes, type ReactNode, type TdHTMLAttributes, type ThHTML
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
+export type ComparisonTableScrollProps = HTMLAttributes<HTMLDivElement> & {
+  children: ReactNode;
+};
+
+/**
+ * The box a wide comparison scrolls inside, opt-in and separate from `ComparisonTable` itself.
+ *
+ * `table-layout` stays `auto` (deliberate: content columns size to their text, not forced equal),
+ * and in every real layout engine that means `overflow`/`max-inline-size` on the `<table>` itself
+ * cannot cap its width - confirmed live, not assumed: a 4-column comparison still measured 816px
+ * inside a 229px container with those properties set directly on the table. This wrapper is the
+ * box that actually shrinks and owns the sideways scroll, same reasoning as `Table`'s own
+ * `TableScroll`. Not automatic, because a comparison that already fits never needs it.
+ */
+export function ComparisonTableScroll({ children, className, ...props }: ComparisonTableScrollProps) {
+  return (
+    <div {...props} className={cx(comparisonTableParts.scroll, className)}>
+      {children}
+    </div>
+  );
+}
+
 export type ComparisonTableProps = HTMLAttributes<HTMLTableElement> & {
   /** What the first column holds, in words. Drawn visually hidden in the corner cell, and required. */
   aspectLabel: string;

@@ -135,8 +135,8 @@ export const separatorContract = {
         labelledBySlot: "children",
         children: [
           { element: "span", part: "rule", attrs: { "aria-hidden": "true" } },
-          { element: "span", part: "label", slot: "children" },
-          { element: "span", part: "rule", attrs: { "aria-hidden": "true" } },
+          { element: "span", part: "label", slot: "children", whenGiven: "children" },
+          { element: "span", part: "rule", attrs: { "aria-hidden": "true" }, whenGiven: "children" },
         ],
       },
       react: { from: "@skryensya/react/separator", name: "LabelledSeparator" },

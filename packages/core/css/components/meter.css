@@ -31,6 +31,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    /* Found on the break harness (`/debug/meter-break`): without this, a flex item's automatic
+     * minimum is its own content width, so the label never actually shrank far enough to need the
+     * ellipsis above - same gap Button's own root rule once had. */
+    min-inline-size: 0;
   }
 
   .sk-meter-group__value {

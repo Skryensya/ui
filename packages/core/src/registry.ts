@@ -1,6 +1,5 @@
 import { boxContract, layoutContract, wrapperContract } from "./layout.js";
 import { heroContract } from "./hero.js";
-import { folderContract } from "./folder.js";
 import { footerContract } from "./footer.js";
 import { typographyContract } from "./typography.js";
 import { breadcrumbContract } from "./breadcrumb.js";
@@ -22,7 +21,6 @@ import { scrollStackContract } from "./scroll-stack.js";
 import { separatorContract } from "./separator.js";
 import { tagsInputContract } from "./tags-input.js";
 import { timelineContract } from "./timeline.js";
-import { chartContract } from "./chart.js";
 import { stepsContract } from "./steps.js";
 import { listContract } from "./list.js";
 import { mediaOverlayContract } from "./media-overlay.js";
@@ -55,7 +53,6 @@ import { contentContract } from "./content.js";
 import { numberFieldContract } from "./number-field.js";
 import { navbarContract } from "./navbar.js";
 import { toolbarContract } from "./toolbar.js";
-import { dockContract } from "./dock.js";
 import { editorContract } from "./editor.js";
 import { tooltipContract } from "./tooltip.js";
 import { selectContract } from "./select.js";
@@ -100,7 +97,6 @@ import { iconContract } from "./icon.js";
 import { inputContract } from "./input.js";
 import { imageCropperContract } from "./image-cropper.js";
 import { imageFrameContract } from "./image-frame.js";
-import { stickerContract } from "./sticker.js";
 import { navListContract } from "./nav-list.js";
 import { tableContract } from "./table.js";
 import { treegridContract } from "./treegrid.js";
@@ -148,17 +144,14 @@ export const contracts = fromContracts(
   clipboardContract,
   listboxContract,
   calloutContract,
-  chartContract,
   checkboxContract,
   emptyStateContract,
   formFieldContract,
   heroContract,
-  folderContract,
   footerContract,
   iconContract,
   imageCropperContract,
   imageFrameContract,
-  stickerContract,
   fadeEdgeContract,
   scrollHintContract,
   presenceContract,
@@ -201,7 +194,6 @@ export const contracts = fromContracts(
   resizableContract,
   scrollExpandContract,
   scrollStackContract,
-  dockContract,
   separatorContract,
   tagsInputContract,
   timelineContract,

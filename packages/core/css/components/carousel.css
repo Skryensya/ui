@@ -13,12 +13,13 @@
  * the ready check for a reason: a carousel asked to have no controls must not sprout native ones
  * for the frame before the enhancer mounts, which is exactly what the zero-JS layer is for.
  *
- * THE ROOT IS A 3-COLUMN GRID, and that is load-bearing. `::scroll-button()` boxes are laid out as
+ * THE ROOT IS A 2-ROW GRID, and that is load-bearing. `::scroll-button()` boxes are laid out as
  * siblings AFTER the scroll container, in the parent's formatting context: in a flex column they
- * stack on top of each other down the left edge, which is what the zero-JS layer used to do. Placing
- * them (and `::scroll-marker-group`) into explicit cells of row 2 puts them exactly where the
- * enhancer's control row goes: [ icon ]  • • •  [ icon ]. The two layers are then the same carousel,
- * swapping one for the other does not move a pixel.
+ * stack on top of each other down the left edge, which is what the zero-JS layer used to do.
+ * Placing them into explicit cells fixes that. Row 1 is the track, alone; row 2 is the controls
+ * UNDER it: the indicator (dots or a "2 / 5" count) at the start, the autoplay toggle and prev/next
+ * together at the end. Both layers use the same cells, so swapping one for the other does not move
+ * a pixel, and a slide is never covered by a button.
  *
  * The native pseudo-element rules are dropped whole by browsers that don't parse them (Safari,
  * Firefox today), which is the intended graceful degradation: a plain, still-native snap scroller.
@@ -27,16 +28,28 @@
  * both layers: the enhancer runs its machine with Zag's `autoSize`, which measures the track instead
  * of imposing widths on it. So a peek is a peek with or without JavaScript.
  */
+@import url("./button.css");
+
 @layer components {
   .sk-carousel {
     --sk-carousel-gap: var(--space-inline-md);
+    --sk-carousel-edge-padding: 0px;
     /* Each slide's basis. Under 100% peeks the next slide; a fixed value gives a multi-up track. */
     --sk-carousel-slide-size: min(100%, 20rem);
-    /* Paint and hit share the HIG floor so prev/next/autoplay never drop below 44px. */
-    --sk-carousel-control-size: max(var(--size-control-md), var(--size-touch-target));
-    --sk-carousel-control-bg: var(--color-bg-surface);
+    /* The native prev/next are Button's soft, neutral, `sm` icon-only face, line for line (button.css): the
+     * same square, radius, fill, edge and raised shadow, so the zero-JS controls and the enhanced Buttons
+     * that replace them are the same object, not a circle that swaps for a square. */
+    --sk-carousel-control-size: var(--size-control-sm);
+    --sk-carousel-control-bg: light-dark(
+      color-mix(in oklab, var(--color-bg-surface-sunken) 60%, transparent),
+      color-mix(in oklab, var(--color-action-neutral) 42%, transparent)
+    );
+    --sk-carousel-control-radius: var(--radius-pill);
     --sk-carousel-control-fg: var(--color-text-primary);
-    --sk-carousel-control-border: var(--color-border-default);
+    --sk-carousel-control-border: light-dark(
+      color-mix(in oklab, var(--color-border-subtle) 60%, transparent),
+      color-mix(in oklab, var(--color-border-subtle) 70%, transparent)
+    );
     --sk-carousel-control-disabled-fg: var(--color-text-disabled);
     /* `::scroll-button()` cannot contain DOM placeholders. The chosen icon set's Carousel adapter
      * binds these hooks to its chevron SVGs; empty defaults keep Core free of vendor geometry. */
@@ -56,9 +69,9 @@
      * purpose: with no controls (a single slide, or a browser with neither JS nor the pseudos) the
      * row never materialises and the root is exactly as tall as the track, gap and all. */
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr) auto auto auto;
     align-items: center;
-    column-gap: var(--space-inline-md);
+    column-gap: var(--space-inline-sm);
     row-gap: var(--space-stack-sm);
     min-inline-size: 0;
   }
@@ -79,6 +92,7 @@
   .sk-carousel__track {
     position: relative;
     grid-column: 1 / -1;
+    grid-row: 1;
     display: flex;
     gap: var(--sk-carousel-gap);
     min-inline-size: 0;
@@ -90,6 +104,9 @@
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     overscroll-behavior-x: contain;
+    /* Air at both ends; the same value is the snap padding, so a centred slide can reach the middle. */
+    padding-inline: var(--sk-carousel-edge-padding);
+    scroll-padding-inline: var(--sk-carousel-edge-padding);
     /* The dots and buttons are the affordance; the native bar would be a second, redundant one. */
     scrollbar-width: none;
   }
@@ -103,9 +120,31 @@
     inline-size: var(--sk-carousel-slide-size);
     max-inline-size: 100%;
     min-inline-size: 0;
+    /* Inherited by whatever card title the consumer composes inside: the slide itself already
+       shrinks to its container, but that alone doesn't give an unbroken German compound word
+       anywhere to break - it still overflowed the card by 36px without this. */
+    overflow-wrap: anywhere;
     /* Snap to the start edge, and never skip a slide on a hard flick. */
     scroll-snap-align: start;
     scroll-snap-stop: always;
+  }
+
+  /* ALIGN, SNAP AND STEP are options of the root, so the zero-JS layer snaps the same way the enhanced one does. The enhancer
+   * writes the same values inline. A slide that is not a stop (`slidesPerMove` above 1) is marked by the binding. */
+  .sk-carousel[data-align="center"] .sk-carousel__slide {
+    scroll-snap-align: center;
+  }
+
+  .sk-carousel[data-align="end"] .sk-carousel__slide {
+    scroll-snap-align: end;
+  }
+
+  .sk-carousel[data-snap="proximity"] .sk-carousel__track {
+    scroll-snap-type: x proximity;
+  }
+
+  .sk-carousel__slide[data-no-snap] {
+    scroll-snap-align: none;
   }
 
   /* DRAGGING WITH A MOUSE, on by default (`data-mouse-drag="off"` opts out).
@@ -135,68 +174,56 @@
   }
 
   /* ── DOM controls (rendered by the enhancer; present only once JS has enhanced) ───────────────────
-   * The wrapper spans row 2 and repeats the root's 3-column geometry, so the buttons and dots land in
-   * the same places as the native pseudo-elements above. */
+   * The wrapper takes no box: its children are cells of the root's grid, so prev and next sit over the
+   * track's two sides and the indicator and autoplay toggle share the row under it. */
   .sk-carousel__controls {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    column-gap: var(--space-inline-md);
+    display: contents;
   }
 
+  /* Prev, next and autoplay ARE Buttons (soft, neutral, icon-only: a quiet surface that still separates
+     from the canvas); the carousel only places them. Paint, hit area, focus and disabled are Button's. */
   .sk-carousel__button {
-    box-sizing: border-box;
+    --sk-button-radius: var(--sk-carousel-control-radius);
+    grid-row: 2;
+    align-self: center;
+  }
+
+  .sk-carousel__button[data-side="start"] {
+    grid-column: 3;
+  }
+
+  .sk-carousel__button[data-side="end"] {
+    grid-column: 4;
+  }
+
+  /* `chevron-left`/`chevron-right` are hardcoded icon names (`carousel.tsx`), which do not follow
+     `dir` on their own: found as a real bug, same class as Lightbox's own chevrons. */
+  .sk-carousel__button .sk-icon:dir(rtl) {
+    transform: scaleX(-1);
+  }
+
+  /* The pause/play toggle leads the control row, ahead of the indicator: the one control that stops the motion is the
+   * first thing reached, and prev/next stay together at the far end. The indicator steps aside by exactly its width
+   * and the row's gap, so with no autoplay the indicator still starts at the edge. */
+  .sk-carousel__autoplay {
+    grid-row: 2;
+    grid-column: 1;
+    justify-self: start;
+  }
+
+  .sk-carousel:has(.sk-carousel__autoplay) :is(.sk-carousel__dots, .sk-carousel__count) {
+    margin-inline-start: calc(var(--sk-carousel-control-size) + var(--space-inline-sm));
+  }
+
+  /* Both glyphs are real icons (the vocabulary names `play` and `pause`); `data-pressed` is the machine's "is
+   * playing", so playing shows the pause mark and paused shows the play mark. */
+  .sk-carousel__autoplay [data-glyph] {
+    display: none;
+  }
+
+  .sk-carousel__autoplay[data-pressed] [data-glyph="pause"],
+  .sk-carousel__autoplay:not([data-pressed]) [data-glyph="play"] {
     display: inline-grid;
-    place-items: center;
-    flex: none;
-    inline-size: var(--sk-carousel-control-size);
-    block-size: var(--sk-carousel-control-size);
-    border: 1px solid var(--sk-carousel-control-border);
-    border-radius: var(--radius-pill);
-    background: var(--sk-carousel-control-bg);
-    color: var(--sk-carousel-control-fg);
-    cursor: pointer;
-  }
-
-  .sk-carousel__button:disabled {
-    color: var(--sk-carousel-control-disabled-fg);
-    border-color: var(--color-border-subtle);
-    cursor: not-allowed;
-  }
-
-  /* The pause/play toggle takes a fourth column, and only when it exists: an empty track column plus
-   * a column gap would push the dots off centre on every carousel that does not autoplay. */
-  .sk-carousel__controls:has(.sk-carousel__autoplay) {
-    grid-template-columns: auto minmax(0, 1fr) auto auto;
-  }
-
-  /* Two bars when playing, one triangle when paused. Drawn here rather than pulled from an icon set:
-   * the stable icon vocabulary names roles a whole system needs, and this glyph is one component's
-   * detail: adding it would be work for every set author, forever.
-   *
-   * On `::after`, not `::before`: `sk-interactive`'s state layer already owns the `::before` of every
-   * interactive element, and it is `position: absolute; inset: 0; opacity: 0` until a state raises it.
-   * A glyph drawn there is a glyph painted at zero opacity. */
-  .sk-carousel__autoplay::after {
-    content: "";
-    inline-size: 0.5rem;
-    block-size: 0.625rem;
-    background: linear-gradient(
-      to right,
-      currentColor 0 35%,
-      transparent 35% 65%,
-      currentColor 65% 100%
-    );
-  }
-
-  /* `data-pressed` is the machine's "is playing"; without it the button offers play, so it draws one. */
-  .sk-carousel__autoplay:not([data-pressed])::after {
-    inline-size: 0;
-    block-size: 0;
-    background: none;
-    border-block: 0.3125rem solid transparent;
-    border-inline-start: 0.5rem solid currentColor;
   }
 
   .sk-carousel__dots {
@@ -205,8 +232,20 @@
     align-items: center;
     justify-content: center;
     gap: var(--sk-carousel-dot-gap);
-    justify-self: center;
+    grid-row: 2;
+    grid-column: 1;
+    justify-self: start;
     max-inline-size: 100%;
+  }
+
+  /* `data-indicator="count"`: "2 / 5", in place of the dots. Tabular, so the width does not twitch. */
+  .sk-carousel__count {
+    grid-row: 2;
+    grid-column: 1;
+    justify-self: start;
+    color: var(--sk-carousel-control-fg);
+    font-size: var(--font-size-body-sm);
+    font-variant-numeric: tabular-nums;
   }
 
   /*
@@ -262,6 +301,7 @@
   .sk-carousel:not([data-controls="none"]):not([data-sk-carousel-ready]):not([data-sk-carousel-mounting])
     .sk-carousel__track::scroll-button(inline-end) {
     grid-row: 2;
+    align-self: center;
     display: inline-grid;
     place-items: center;
     /* `content: url()` creates an inline image; remove its text baseline so grid centering is exact. */
@@ -269,21 +309,22 @@
     inline-size: var(--sk-carousel-control-size);
     block-size: var(--sk-carousel-control-size);
     border: 1px solid var(--sk-carousel-control-border);
-    border-radius: var(--radius-pill);
-    background: var(--sk-carousel-control-bg);
+    border-radius: var(--sk-carousel-control-radius);
+    background: var(--elevation-wash-raised) var(--sk-carousel-control-bg);
+    box-shadow: var(--elevation-raised);
     color: var(--sk-carousel-control-fg);
     cursor: pointer;
   }
 
   .sk-carousel:not([data-controls="none"]):not([data-sk-carousel-ready]):not([data-sk-carousel-mounting])
     .sk-carousel__track::scroll-button(inline-start) {
-    grid-column: 1;
+    grid-column: 3;
     content: var(--sk-carousel-native-previous-icon) / "Anterior";
   }
 
   .sk-carousel:not([data-controls="none"]):not([data-sk-carousel-ready]):not([data-sk-carousel-mounting])
     .sk-carousel__track::scroll-button(inline-end) {
-    grid-column: 3;
+    grid-column: 4;
     content: var(--sk-carousel-native-next-icon) / "Siguiente";
   }
 
@@ -307,12 +348,17 @@
   .sk-carousel:not([data-controls="none"]):not([data-sk-carousel-ready]):not([data-sk-carousel-mounting])
     .sk-carousel__track::scroll-marker-group {
     grid-row: 2;
-    grid-column: 2;
+    grid-column: 1;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     gap: var(--sk-carousel-dot-gap);
+  }
+
+  /* A counter is drawn by the enhancer only: with no JS there is nothing to count with, so no dots either. */
+  .sk-carousel[data-indicator="count"]:not([data-sk-carousel-ready]) .sk-carousel__track::scroll-marker-group {
+    display: none;
   }
 
   .sk-carousel:not([data-controls="none"]):not([data-sk-carousel-ready]):not([data-sk-carousel-mounting]) .sk-carousel__slide::scroll-marker {

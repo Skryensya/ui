@@ -48,18 +48,24 @@ export function Quote({
   variant = variantOption.default,
   ...props
 }: QuoteProps) {
+  // A computed attribution, source or image that comes up "" is treated the same as not given at
+  // all - otherwise that half still renders, empty, with nothing in it for anyone to read.
+  const hasAttribution = attribution !== undefined && attribution !== "";
+  const hasSource = source !== undefined && source !== "";
+  const hasImage = image !== undefined && image !== "";
+
   return (
     <figure {...props} className={cx(quoteParts.root, className)} data-variant={variant}>
       <blockquote className={quoteParts.body} cite={cite}>
         {children}
       </blockquote>
       {/* Either half warrants the caption: a name with no work, or a work quoted anonymously. */}
-      {(attribution !== undefined || source !== undefined) && (
+      {(hasAttribution || hasSource) && (
         <figcaption className={quoteParts.attribution}>
-          {image !== undefined && <span className={quoteParts.media}>{image}</span>}
+          {hasImage && <span className={quoteParts.media}>{image}</span>}
           <span className={quoteParts.author}>
             {attribution}
-            {source !== undefined && <cite className={quoteParts.source}>{source}</cite>}
+            {hasSource && <cite className={quoteParts.source}>{source}</cite>}
           </span>
         </figcaption>
       )}

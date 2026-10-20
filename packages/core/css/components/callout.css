@@ -115,12 +115,21 @@
     justify-content: center;
     inline-size: 2.25rem;
     block-size: 2.25rem;
+    /* Found on the break harness (`/debug/callout-break`): the contract restricts this slot to a
+     * system Icon (`of: ["Icon"]`), but the React prop (`icon?: ReactNode`, same looseness Button's
+     * own `pre`/`post` slots accept) lets a caller hand it anything. A system Icon always fits the
+     * box; this is the fallback for whatever does not, so oversized content clips to the box
+     * instead of spilling past it. */
+    overflow: hidden;
   }
   /* CONTENT sits beside the icon (or alone, with none): an optional title stacked over the
    * description. `min-inline-size: 0` is the load-bearing bit, a grid item defaults to its
    * min-content width, so without it a long unbroken word would refuse to shrink and blow out the
    * column instead of wrapping. Its own grid + `stack-xs` gap sets the title↔description rhythm. */
-  .sk-callout__content { min-inline-size: 0; display: grid; gap: var(--sk-callout-content-gap); }
+  /* `overflow-wrap: anywhere` alongside `min-inline-size: 0`: shrinking the column is not enough on
+   * its own when the text itself is one unbroken token (a file path, a hash) with no normal break
+   * opportunity, which still overflows a narrow panel without this. */
+  .sk-callout__content { min-inline-size: 0; display: grid; gap: var(--sk-callout-content-gap); overflow-wrap: anywhere; }
   /* TITLE, body size at label weight: emphasised without becoming a heading (it is a status line, not a
    * document landmark). It inherits the tone color from the callout. */
   .sk-callout__title { margin: 0; font-size: var(--font-size-body); font-weight: var(--font-weight-label); line-height: var(--font-line-height-body); }

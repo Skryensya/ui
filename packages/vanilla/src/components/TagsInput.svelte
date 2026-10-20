@@ -28,6 +28,7 @@
   const control = root.querySelector<HTMLElement>(`[${tagsInputAttrs.control}]`);
   const authoredList = root.querySelector<HTMLElement>(`[${tagsInputAttrs.list}]`);
   const input = root.querySelector<HTMLInputElement>(`[${tagsInputAttrs.input}]`);
+  const clear = root.querySelector<HTMLButtonElement>(`[${tagsInputAttrs.clear}]`);
   const hidden = root.querySelector<HTMLInputElement>(`[${tagsInputAttrs.hidden}]`);
 
   /* The live list, swapped in for the authored one below. */
@@ -47,6 +48,9 @@
   const removeLabel =
     root.querySelector<HTMLElement>(`[${tagsInputAttrs.remove}]`)?.getAttribute("aria-label") ??
     tagsInputContract.options.removeLabel.default;
+  /* Same fallback chain as Combobox's own clear: an authored aria-label, then a data attribute,
+     then the hardcoded default - there is no formal `clearLabel` option on either contract. */
+  const clearLabel = clear?.getAttribute("aria-label") || root.dataset.clearLabel || "Limpiar todo";
 
   const numberOf = (value: string | null) => (value === null || value === "" ? undefined : Number(value));
 
@@ -70,6 +74,7 @@
     readOnly: root.hasAttribute("data-readonly"),
     invalid: root.hasAttribute("data-invalid"),
     required: root.hasAttribute("data-required"),
+    translations: { clearTriggerLabel: clearLabel },
     onValueChange(details: { value: string[] }) {
       root.dispatchEvent(
         new CustomEvent(tagsInputEvents.valueChange, { bubbles: true, detail: { value: details.value } }),
@@ -107,6 +112,9 @@
       props: () => ({ ...api.getInputProps(), "aria-label": authoredLabel }),
       events: true,
     },
+    /* Zag's own `hidden` already reads "no tags", which is exactly right here - unlike Combobox's
+       clear, this one has no typed-text half to account for. */
+    { part: "clearTrigger", node: () => (parts ? clear : null), props: () => api.getClearTriggerProps(), events: true },
     { part: "hidden", node: () => parts?.hidden, props: () => api.getHiddenInputProps() },
   ];
 

@@ -255,19 +255,6 @@
   }
 
   /*
-   * Unlike Combobox's own list (usually short enough that a reader rarely reaches its end), this
-   * one is ALWAYS scrolling. 48 rows at the default step, none of which fit inside the 12rem cap
-   * above. Without `overscroll-behavior: contain`, wheeling past the LAST row hands the rest of the
-   * gesture to whatever scrolls next. The page behind the open dropdown, which reads as the list
-   * leaking out of its own box mid-scroll. `combobox.css`'s own `.sk-combobox__content` sets the
-   * same property for the identical reason; `select.css`'s own `.sk-select__content` does not,
-   * because Select's list is ordinarily short too and never needed it.
-   */
-  .sk-time-field__options-positioner .sk-select__content {
-    overscroll-behavior: contain;
-  }
-
-  /*
    * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
    *
    * Input's axis on this field (input.css documents it): written as the root's own hooks behind

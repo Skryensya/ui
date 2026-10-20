@@ -171,10 +171,10 @@ export const table = (caption: string, head: string[], rows: Node[][], rowHeader
   },
 });
 
-export const field = (label: string, control: UsageTree, extra: { hint?: string; labelHidden?: boolean } = {}): UsageTree => ({
+export const field = (label: string, control: UsageTree, extra: { hint?: string; labelVisuallyHidden?: boolean } = {}): UsageTree => ({
   contract: "form-field",
   signature: "FormField",
-  options: extra.labelHidden ? { labelHidden: true } : {},
+  options: extra.labelVisuallyHidden ? { labelVisuallyHidden: true } : {},
   slots: { label, ...(extra.hint ? { hint: extra.hint } : {}), children: control } as UsageTree["slots"],
 });
 

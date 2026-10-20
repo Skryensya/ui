@@ -1,0 +1,32 @@
+---
+import { breakFindings } from "../lib/break-findings";
+interface Props { component: string }
+const { component } = Astro.props;
+const findings = breakFindings[component] ?? [];
+---
+<section class="break-findings" aria-labelledby="break-findings-title" data-break-findings>
+  <h2 id="break-findings-title">Errores y fixes</h2>
+  <p>Diagnóstico, no demo corregida. Los casos de abajo conservan los datos adversos y el comportamiento real del componente.</p>
+  {findings.length ? findings.map((finding) => (
+    <article class="break-finding" data-break-status={finding.status}>
+      <h3>{finding.status === "open" ? "ERROR ABIERTO" : "CORREGIDO"} — {finding.scenario}</h3>
+      <p><strong>Error observado:</strong> {finding.error}</p>
+      <p><strong>{finding.status === "open" ? "Fix propuesto — SIN APLICAR:" : "Fix aplicado:"}</strong> {finding.fix}</p>
+      <p><strong>Revisar:</strong> <code>{finding.source}</code></p>
+    </article>
+  )) : <p><strong>Sin errores nuevos registrados para esta página.</strong> No significa que esté libre de defectos ni que se haya completado toda la matriz de pruebas. El historial anotado junto a los casos se conserva.</p>}
+</section>
+
+<style>
+  .break-findings {
+    margin-block: var(--space-stack-lg);
+    padding-inline-start: var(--space-inset-md);
+    border-inline-start: 3px solid var(--color-border-default);
+    max-inline-size: 75ch;
+    overflow-wrap: anywhere;
+  }
+  .break-finding { margin-block: var(--space-stack-lg); }
+  .break-finding h3 { font-size: var(--font-size-body); }
+  .break-finding[data-break-status="open"] h3 { color: var(--color-text-danger); }
+  .break-finding p { margin-block: var(--space-stack-xs); }
+</style>

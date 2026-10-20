@@ -9,6 +9,7 @@ import {
 import { renderIconBox, type IconSet } from "@skryensya/core/icon";
 import { connectTablePager } from "@skryensya/core/table-pager-dom";
 import { useEffect, useRef, type HTMLAttributes, type ReactNode } from "react";
+import { dev, devTicket } from "../dev-warning.js";
 import { Icon, useIconSet } from "./icon.js";
 
 /* Derived, never restated: the defaults live in the contract. */
@@ -20,6 +21,23 @@ const {
   previousLabel: previousLabelOption,
   siblings: siblingsOption,
 } = paginationContract.options;
+
+/*
+ * Found on the break harness (`/debug/pagination-break`): `paginationRange()` only `Math.trunc`s
+ * the CURRENT page, never `total` - the contract declares `total`/`page` as `integer: true`, but
+ * that is checked against an authored usage tree (`validate_ui`), never against a direct React
+ * call, which is how every real app actually renders this component. A realistic `total /
+ * pageSize` left un-rounded renders a page button literally labelled "12.5".
+ */
+function warnNonIntegerPaginationProp(name: "page" | "total", value: number): void {
+  if (!dev || Number.isInteger(value)) return;
+  console.error(
+    ...devTicket("<Pagination>", {
+      issue: `received a non-integer "${name}" (${value}).`,
+      fix: "Round it first (Math.ceil for a total, Math.round for a page) - it will otherwise render as a literal page number.",
+    }),
+  );
+}
 
 const escapeAttr = (value: string) => value.replaceAll("&", "&amp;").replaceAll('"', "&quot;");
 
@@ -59,6 +77,13 @@ export function Pagination({
   total,
   ...props
 }: PaginationProps) {
+  // Effect, not a direct render-body call: client-only, post-mount, straight into the browser's
+  // own console - same reasoning as Kbd's own warnEmptyKbd.
+  useEffect(() => {
+    warnNonIntegerPaginationProp("page", page);
+    warnNonIntegerPaginationProp("total", total);
+  }, [page, total]);
+
   const rootRef = useRef<HTMLElement>(null);
   const slots = paginationRange(page, total, siblings);
   const go = (next: number) => {

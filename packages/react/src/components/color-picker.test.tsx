@@ -80,6 +80,10 @@ describe("ColorPicker", () => {
     expect(hidden).toBeTruthy();
     expect(ui.container.querySelector(".sk-color-picker__swatch")).toBeTruthy();
     expect(ui.container.querySelector(".sk-color-picker__value")?.textContent).toBe("rgba(51, 102, 255, 1)");
+    // The value ellipsizes at narrow widths with no way to read it fully without this.
+    expect(ui.container.querySelector(".sk-color-picker__value")?.getAttribute("title")).toBe(
+      "rgba(51, 102, 255, 1)",
+    );
   });
 
   it("a consumer's own triggerLabel overrides Zag's color-describing default", () => {

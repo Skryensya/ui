@@ -1,4 +1,4 @@
-import { anchorNameFor, bindAnchor } from "@skryensya/core/anchored";
+import { placeAnchored } from "@skryensya/core/anchored";
 import { imageFrameParts } from "@skryensya/core/image-frame";
 import { megamenuAttrs, megamenuEvents, megamenuParts } from "@skryensya/core/megamenu";
 import { resolveMegamenuEvent, type MegamenuEvent, type MegamenuState } from "@skryensya/core/megamenu";
@@ -157,7 +157,6 @@ function connect(root: HTMLElement): () => void {
   // real divergence from React, which never puts one there either. First caught by
   // `megamenu/product`, the first canonical tree to render this contract at all.
   const id = root.id || uniqueId("sk-megamenu");
-  const anchorName = anchorNameFor(id);
 
   const sharedPositioner = parsed[0]!.positioner;
   const sharedContent = parsed[0]!.content;
@@ -182,7 +181,8 @@ function connect(root: HTMLElement): () => void {
   // moment a canonical tree first rendered this contract.
   sharedContent.dataset.state = "closed";
 
-  const unbindAnchor = bindAnchor(root, sharedPositioner, anchorName);
+  // One box shared by every trigger, placed against the bar by the popper while any of them is open.
+  let stopPlacing: (() => void) | undefined;
 
   const triggers = parsed.map(({ trigger }) => trigger);
 
@@ -224,6 +224,8 @@ function connect(root: HTMLElement): () => void {
       // Content stays exactly as it was: the exit transition fades OUT what is already there,
       // never an empty box shrinking to nothing.
       sharedContent.dataset.state = "closed";
+      stopPlacing?.();
+      stopPlacing = undefined;
       return;
     }
     if (openingDifferent) {
@@ -239,6 +241,7 @@ function connect(root: HTMLElement): () => void {
       currentDefaultImage = defaultImageByIndex[state.openIndex];
     }
     sharedContent.dataset.state = "open";
+    stopPlacing ??= placeAnchored(root, sharedPositioner, { placement: "block-end" });
   };
 
   const dispatch = (event: MegamenuEvent) => apply(resolveMegamenuEvent(state, event));
@@ -435,7 +438,7 @@ function connect(root: HTMLElement): () => void {
     visiblePanel.removeEventListener("pointerout", onPreviewPointerOut);
     visiblePanel.removeEventListener("focusin", onPreviewFocusIn);
     visiblePanel.removeEventListener("focusout", onPreviewFocusOut);
-    unbindAnchor();
+    stopPlacing?.();
   };
 }
 

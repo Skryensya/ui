@@ -42,15 +42,15 @@ import Base from "../layouts/Base.astro";
 import CodeBlock from "../components/CodeBlock.astro";
 import Toc from "../components/Toc.astro";
 import { tokens } from "../lib/tokens";
-import { dummyImage } from "../examples/card-data";
+import { satin } from "../lib/satin";
 import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/image-frame.css";
 
-/* A real (if generic) placeholder photo, not a gradient wash: the same dummyimage.com trick every
- * other card example in these docs already uses (examples/card-data.ts). One shared URL for all 22
+/* A real (if generic) placeholder photo, not a gradient wash: the same satin placeholder every
+ * other card example in these docs already uses (lib/satin.ts). One shared URL for all 22
  * card instances (11 presets × 2 schemes). The browser fetches it once and serves the rest from
  * cache, so this costs one network request, not twenty-two. */
-const demoImage = dummyImage(640, 220, "d4d4d4", "737373", "Image");
+const demoImage = satin("pearl");
 
 interface Preset {
   id: string;
@@ -595,7 +595,7 @@ const ucCssTeaching =
                       {/* A card is where a preset's whole character shows at once: the radius,
                           shadow and border come from the SAME box primitive every real card uses,
                           and the body proves type + link color read correctly on top of it. The
-                          image is a plain placeholder photo (dummyimage.com, like every other card
+                          image is a plain placeholder picture (satin, like every other card
                           example in these docs). A short, wide banner rather than 16/9, so the
                           card doesn't tower over the buttons and callout around it. */}
                       <div class="sk-box preset-card__demo-card" data-surface="raised" data-border="subtle">

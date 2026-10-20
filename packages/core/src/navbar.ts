@@ -55,6 +55,13 @@ export const navbarContract = {
 
   signatures: {
     Navbar: {
+      /*
+       * `--sk-navbar-min-height` defaults to `--size-control-lg`, a page header's weight, on
+       * purpose: there is no `dense`/`app` variant here because `AppBar` already is that
+       * variant, at `--size-control-xs`, as its own bar rather than a mode of this one. A
+       * desktop-in-the-browser app wanting a ~24px chrome bar reaches for `AppBar` alone,
+       * never inside a `Navbar`.
+       */
       intent: ["top-bar", "app-header", "page-chrome"],
       host: { element: "header" },
       options: ["appearance"],

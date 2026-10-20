@@ -9,14 +9,15 @@ import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/morph-stack";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+const { morphStackAnatomyCss } = demos;
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Morph Stack", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.morphStackAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.morphStackAnatomyTree, { decorators: [withCss(morphStackAnatomyCss)] });
+export const TurnPlayground: StoryObj = treeStory(demos.morphStackTurnPlaygroundTree);
 export const Default: StoryObj = treeStory(demos.morphStackTree);
 export const Turn: StoryObj = treeStory(demos.morphStackTurnTree);
 export const Tuned: StoryObj = treeStory(demos.morphStackTunedTree);
 export const Inverse: StoryObj = treeStory(demos.morphStackInverseTree);
-export const TurnPlayground: StoryObj = treeStory(demos.morphStackTurnPlaygroundTree);
 export const Layers: StoryObj = treeStory(demos.morphStackLayersTree);

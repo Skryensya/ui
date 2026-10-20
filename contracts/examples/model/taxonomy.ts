@@ -163,7 +163,6 @@ export const intents = [
   /* ── wave: components without a first example ───────────────────────────────────────────────── */
   intent("status/progress/loading-indicator", { en: "Loading indicator", es: "Indicador de carga" }, { en: "Say that something is being fetched and what it is.", es: "Decir que algo se está trayendo y qué es." }),
   intent("actions/buttons/copy-value", { en: "Copy a value", es: "Copiar un valor" }, { en: "Hand someone a value to paste elsewhere, with confirmation.", es: "Darle a alguien un valor para pegar en otro sitio, con confirmación." }),
-  intent("metrics/trends/trend-chart", { en: "Trend chart", es: "Gráfico de tendencia" }, { en: "Show how one measure moves over time.", es: "Mostrar cómo se mueve una medida en el tiempo." }),
   intent("identity/people/animated-avatar", { en: "Animated avatar", es: "Avatar animado" }, { en: "Put one expressive face where a person welcomes the reader.", es: "Poner una cara expresiva donde una persona da la bienvenida." }),
   intent("input/choice/option-list", { en: "Option list", es: "Lista de opciones" }, { en: "Choose one or several from a short, fixed set.", es: "Elegir una o varias de un conjunto corto y fijo." }),
   intent("status/notices/toast", { en: "Toast", es: "Toast" }, { en: "Report the result of an action without leaving where you are.", es: "Informar el resultado de una acción sin salir de donde estás." }),
@@ -181,7 +180,6 @@ export const intents = [
   intent("input/fields/date", { en: "Date", es: "Fecha" }, { en: "Ask for a day, typed or picked.", es: "Pedir un día, escrito o elegido." }),
   intent("input/fields/color", { en: "Colour", es: "Color" }, { en: "Let someone choose any colour.", es: "Dejar que alguien elija cualquier color." }),
   intent("actions/buttons/primary-with-alternatives", { en: "Action with alternatives", es: "Acción con alternativas" }, { en: "Make the usual choice one press and keep variations close.", es: "Hacer la opción habitual de una pulsación y mantener cerca las variaciones." }),
-  intent("actions/toolbars/launcher-dock", { en: "Launcher dock", es: "Dock de lanzadores" }, { en: "Keep the few actions used all day at the edge of the screen.", es: "Tener al borde de la pantalla las pocas acciones que se usan todo el día." }),
   intent("actions/menus/command-menu", { en: "Command menu", es: "Menú de comandos" }, { en: "Collect what can be done to one thing behind one button.", es: "Reunir lo que se puede hacer con una cosa detrás de un botón." }),
   intent("collaboration/messages/comment-feed", { en: "Comment feed", es: "Feed de comentarios" }, { en: "Show a growing stream of what people said.", es: "Mostrar un flujo creciente de lo que la gente dijo." }),
   intent("content/documentation/flow-diagram", { en: "Flow diagram", es: "Diagrama de flujo" }, { en: "Explain a process with its branches and loops.", es: "Explicar un proceso con sus bifurcaciones y ciclos." }),

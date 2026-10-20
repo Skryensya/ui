@@ -1,0 +1,148 @@
+---
+/*
+ * Diagnostic only: a `break` harness for Badge (Badge, BadgeDot, BadgeHolder). One scenario per
+ * row, the REAL `@skryensya/react` components in each, labels and fixed-width/clipped containers
+ * around them and nothing else.
+ *
+ * The environment is the site's own: `tokens.scss`, `components/badge.css`, `components/button.css`
+ * (BadgeHolder's own demos anchor a badge to a real Button) and `styles/site.css`, the same ones the
+ * docs shell imports. No fonts, colours or token overrides of this page's own - a badge observed
+ * under those is a different badge.
+ *
+ * Not linked from the site nav. `noindex`, like `/debug/layout-grid-rail`.
+ *
+ * Dev-only: `astro build` runs with NODE_ENV=production (see astro.config.ts), so this 404s out of
+ * the static build instead of shipping the break-* classes and the BadgeBreak island into dist.
+ */
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
+import "@skryensya/core/tokens.scss";
+import "@skryensya/core/components/badge.css";
+import "@skryensya/core/components/button.css";
+import "../../styles/site.css";
+import { BadgeBreak } from "../../components/react-demos/debug-badge-break";
+
+import DebugShell from "../../components/DebugShell.astro";
+---
+
+<DebugShell title="Badge">
+<style is:global>
+      .break-page {
+        padding: var(--space-inset-lg);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-stack-xl);
+      }
+      .break-intro {
+        max-inline-size: 60ch;
+        color: var(--color-text-secondary);
+      }
+      .break-group {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-stack-lg);
+        padding-block-start: var(--space-stack-md);
+        border-block-start: 1px solid var(--color-border-subtle);
+      }
+      .break-group__title {
+        margin: 0;
+        font-family: var(--font-family-mono);
+        font-size: var(--font-size-body-sm);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--color-text-secondary);
+      }
+      .break-case {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-stack-xs);
+      }
+      .break-case__label {
+        margin: 0;
+        font-family: var(--font-family-mono);
+        font-size: var(--font-size-caption);
+        color: var(--color-text-primary);
+      }
+      .break-case__note {
+        margin: 0;
+        font-size: var(--font-size-caption);
+        color: var(--color-text-secondary);
+      }
+      /* Marks a scenario that visibly broke. Written by the run, read as the report. */
+      .break-case__broke {
+        margin: 0;
+        font-family: var(--font-family-mono);
+        font-size: var(--font-size-caption);
+        color: var(--color-text-danger);
+      }
+      /* A scenario that broke and has since been fixed. Kept on the page beside the ones that still
+         do, so the report reads as a history rather than only a snapshot. */
+      .break-case__fixed {
+        margin: 0;
+        font-family: var(--font-family-mono);
+        font-size: var(--font-size-caption);
+        color: var(--color-text-success);
+      }
+      .break-case__stage {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-stack-sm);
+      }
+      /* The only thing the page adds to a scenario: a fixed width to render inside. */
+      .break-w-320 {
+        inline-size: 320px;
+        outline: 1px dashed var(--color-border-default);
+      }
+      .break-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-inline-sm);
+        align-items: center;
+      }
+      .break-rtl {
+        display: flex;
+        gap: var(--space-inline-sm);
+      }
+      .break-squeeze {
+        display: flex;
+        align-items: center;
+        gap: var(--space-inline-sm);
+      }
+      .break-squeeze__text {
+        flex: 1;
+        margin: 0;
+        font-size: var(--font-size-body-sm);
+      }
+      /*
+       * Stands in for the ordinary, unrelated reason an ancestor clips: a card or rail rounding its
+       * own corners. `overflow: hidden` here is not testing Badge, it is testing what happens to a
+       * BadgeHolder's corner badge (positioned OUTSIDE the holder's box by design) when it lands
+       * inside one, which is common and not a contrived setup.
+       */
+      .break-clip {
+        inline-size: 64px;
+        block-size: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        background: var(--color-bg-surface-sunken);
+      }
+    </style>
+<div class="break-page" data-toc-transparent>
+  <header>
+    <h1>break: Badge</h1>
+    <p class="break-intro">
+One scenario per row, the real <code>@skryensya/react</code> Badge family in each. Dashed
+outlines and the shaded squares are the container the scenario renders inside, not part of
+the component. Toggle OS dark mode, forced colors, 200% zoom and reduced motion while this
+page is open: those are viewing modes, so the page renders nothing for them.
+    </p>
+  </header>
+  <BadgeBreak client:load />
+</div>
+</DebugShell>

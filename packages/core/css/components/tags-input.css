@@ -25,6 +25,10 @@
     --sk-tags-input-border-color: var(--color-border-default);
     --sk-tags-input-border-width: 1px;
     --sk-tags-input-radius: var(--radius-control);
+    /* `sm`, not Input's own `xs`: the box no longer paints this as a border-to-border inset (the
+       control itself carries none - `.sk-tags-input__value` and the clear button spend it on the
+       inline edges instead, below), so a tighter value read as the tags and the caret crowding the
+       border. */
     --sk-tags-input-padding-x: var(--space-inset-sm);
     --sk-tags-input-padding-y: var(--space-inset-xs);
     /* Between chips, and between the last chip and the entry: one gap, so the row reads evenly. */
@@ -34,6 +38,20 @@
      * row, because a 3ch field is not something anyone can type into.
      */
     --sk-tags-input-input-min-size: 8ch;
+    /*
+     * Half the leftover space a flex `align-items: center` would give the clear button on a
+     * single, `min-block-size`-tall line - same number `align-self: center` would land on, read as
+     * a margin instead so it holds once Tags push the control past one line (the clear button's
+     * own rule says why). `.sk-tags-input__control` carries NO padding of its own (same as
+     * Combobox's control - `.sk-tags-input__value` and the clear button supply their own insets
+     * instead, below), so only the border has to come back out before halving.
+     */
+    --sk-tags-input-clear-offset: calc(
+      (
+          max(var(--size-control-md), var(--size-touch-target)) - var(--size-control-xs) -
+            2 * var(--sk-tags-input-border-width)
+        ) / 2
+    );
 
     --sk-tags-input-invalid-border-color: var(--color-border-danger);
     --sk-tags-input-disabled-bg: var(--color-action-disabled);
@@ -53,19 +71,42 @@
     box-sizing: border-box;
   }
 
+  /*
+   * THE OUTER ROW DOES NOT WRAP. Same split Combobox's own control makes between its `value`
+   * column and `clear`/`trigger`: the tags-plus-entry column (`.sk-tags-input__value`, below) owns
+   * the wrapping, so this row is always exactly two items wide - that column, then the clear
+   * button - and `align-items: stretch` is what lets the clear button's own rule position itself
+   * against the FULL height of that column once Tags push it past one line, not just the short
+   * last line the entry happens to share with it.
+   */
   .sk-tags-input__control {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--sk-tags-input-gap);
+    align-items: stretch;
     /* No fixed height: the field is as tall as the tags in it, and grows by whole rows. */
     min-block-size: max(var(--size-control-md), var(--size-touch-target));
-    padding: var(--sk-tags-input-padding-y) var(--sk-tags-input-padding-x);
     border: var(--sk-tags-input-border-width) solid var(--sk-tags-input-border-color);
     border-radius: var(--sk-tags-input-radius);
     background: var(--sk-tags-input-wash) var(--sk-tags-input-bg);
     box-shadow: var(--sk-tags-input-shadow);
     cursor: text;
+  }
+
+  /*
+   * The tags-plus-entry column: everything that wraps, now that `clear` is pulled out to its own
+   * fixed-width column instead of sharing this flow (see `.sk-tags-input__clear` below). Carries
+   * its OWN inline-start padding rather than the control's, same split Combobox's `value` makes -
+   * the control stays padding-free so the clear button's centring math only has its border to
+   * account for, not a padding value too.
+   */
+  .sk-tags-input__value {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sk-tags-input-gap);
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    padding-inline-start: var(--sk-tags-input-padding-x);
+    padding-block: var(--sk-tags-input-padding-y);
   }
 
   /*
@@ -126,8 +167,12 @@
   .sk-tags-input__input {
     flex: 1 1 var(--sk-tags-input-input-min-size);
     min-inline-size: var(--sk-tags-input-input-min-size);
-    /* The entry is a bare line inside the box: the box is the field, and draws the edge once. */
-    padding: 0;
+    /* The entry is a bare line inside the box: the box is the field, and draws the edge once.
+       Carries its OWN trailing padding (same as Combobox's input) rather than the control's: with
+       no tags typed yet (clear hidden) this is the only thing standing between the caret and the
+       border. */
+    padding-block: 0;
+    padding-inline: 0 var(--sk-tags-input-padding-x);
     border: 0;
     background: none;
     color: var(--color-text-primary);
@@ -138,6 +183,48 @@
 
   .sk-tags-input__input::placeholder {
     color: var(--color-text-tertiary);
+  }
+
+  /*
+   * Clears every tag at once. Same borrow, same ghost treatment AND the same top pin as
+   * Combobox's own clear: its own column (`.sk-tags-input__control` is now two columns, this and
+   * `.sk-tags-input__value`), stretched to that column's full height by the control's own
+   * `align-items: stretch`, so `align-self: start` has a real, tall box to pin itself to the TOP
+   * of once Tags wrap `.sk-tags-input__value` to several lines - not just the short last line the
+   * entry happens to share with it, which is all a `flex-wrap` sibling of the tags ever was.
+   *
+   * THE MARGIN IS CENTRE MATH, not the control's padding. One line of tags is exactly
+   * `min-block-size` tall (nothing forces it taller), so centring the button in THAT height - the
+   * same half-the-leftover-space a flex `align-items: center` would have given it - is what makes
+   * a single line read as centred. Fixed rather than `align-self: center`, it holds that same
+   * distance once more lines push the column past `min-block-size`, instead of re-centring on the
+   * new, taller total.
+   */
+  .sk-tags-input__clear.sk-button {
+    --sk-button-bg: transparent;
+    --sk-button-fg: var(--color-text-secondary);
+    --sk-button-border-color: transparent;
+    --sk-button-border-width: 0;
+    --sk-button-shadow: none;
+    --sk-button-radius: var(--sk-tags-input-radius);
+
+    align-self: start;
+    margin-block-start: var(--sk-tags-input-clear-offset);
+    margin-inline-start: var(--sk-tags-input-gap);
+    /* The control carries no end padding of its own (see its rule above), so this is what keeps
+       the button off the border - Combobox's trigger, the other outermost column, supplies the
+       exact same margin for the exact same reason. */
+    margin-inline-end: var(--sk-tags-input-padding-x);
+  }
+
+  .sk-tags-input__clear.sk-button:is(:disabled, [aria-disabled="true"]) {
+    --sk-button-fg: var(--color-text-disabled);
+  }
+
+  /* `[hidden]` must win over `.sk-button`'s own `display` (same layer, so the UA `[hidden] { display:
+     none }` loses to it otherwise): the enhancer hides this while there is nothing to clear. */
+  .sk-tags-input__clear[hidden] {
+    display: none;
   }
 
   .sk-tags-input[data-invalid] .sk-tags-input__control {

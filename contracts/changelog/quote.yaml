@@ -5,6 +5,15 @@
 # hash.
 surface: "6fd39360b4c83ff6"
 entries:
+  - date: 2026-10-18
+    kind: bugfix
+    target: Quote
+    es:
+      title: "Un attribution o source calculado y vacío ya no deja una leyenda vacía"
+      body: "La leyenda se mostraba con attribution !== undefined || source !== undefined; un valor calculado que llegaba como \"\" seguía contando como dado, así que aparecía un figcaption vacío (o un <cite> vacío si solo source era \"\"). Ahora una cadena vacía cuenta como ausente, igual para attribution, source e image."
+    en:
+      title: "A computed, empty attribution or source no longer leaves an empty caption"
+      body: "The caption showed whenever attribution !== undefined || source !== undefined; a computed value that came up \"\" still counted as given, so an empty figcaption appeared (or an empty <cite> when only source was \"\"). An empty string now counts as absent, the same way for attribution, source and image."
   - date: 2026-10-02
     kind: feature
     target: media
@@ -18,7 +27,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Muestra palabras de otro, con quién las dijo y en qué obra aparecieron.
+      body: "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple."
     en:
       title: First release
-      body: Shows somebody else's words, with who said them and the work they appeared in.
+      body: "Published for the first time, with its contract, a React binding and a stylesheet for plain markup."

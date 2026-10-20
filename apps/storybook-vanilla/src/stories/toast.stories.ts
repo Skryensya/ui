@@ -8,13 +8,14 @@ import "@skryensya/core/components/toast.css";
 import "@skryensya/core/patterns/icon.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/toast";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+const { toastAnatomyCss } = demos;
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Toast", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.toastAnatomyTree);
-export const Simple: StoryObj = treeStory(demos.toastSimpleTree);
-export const Action: StoryObj = treeStory(demos.toastActionTree);
+export const Anatomy: StoryObj = treeStory(demos.toastAnatomyTree, { decorators: [withCss(toastAnatomyCss)] });
 export const Emit: StoryObj = treeStory(demos.toastEmitTree);
+export const Simple: StoryObj = treeStory(demos.toastSimpleTree);
 export const Status: StoryObj = treeStory(demos.toastStatusTree);
+export const Action: StoryObj = treeStory(demos.toastActionTree);
 export const Stack: StoryObj = treeStory(demos.toastStackTree);

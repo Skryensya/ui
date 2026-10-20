@@ -165,6 +165,7 @@ export const NavListLink = forwardRef<HTMLAnchorElement, NavListLinkProps>(funct
   return (
     <li className={navListParts.item}>
       <a
+        title={children}
         {...props}
         {...{ [currentOption.attr]: current ? currentOption.trueValue : undefined }}
         className={cx(`${navListParts.link} sk-interactive`, className)}

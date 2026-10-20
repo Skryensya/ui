@@ -17,9 +17,10 @@ import {
   type ReactNode,
   type RefObject,
 } from "react";
-import { useAnchored } from "./anchored.js";
+import { anchorProps, positionerProps } from "./anchored.js";
+import { getDirection } from "../direction.js";
 import { Icon } from "./icon.js";
-import { hasSubmenu, MenuPopup, useMenuMachine, type CheckedState } from "./menu.js";
+import { MenuPopup, useMenuMachine, type CheckedState } from "./menu.js";
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
@@ -125,7 +126,8 @@ export function Menubar({ children, className, label, ...props }: MenubarProps) 
     const dropdownOpen = focusNow.subIndex !== null;
     if ((event.key === "Home" || event.key === "End") && dropdownOpen) return; // Zag's own list nav
 
-    const action = resolveMenubarKey({ key: event.key, focus: focusNow, topCount, hasMenuAt, subCountOf });
+    const dir = getDirection(props.dir, event.currentTarget);
+    const action = resolveMenubarKey({ key: event.key, focus: focusNow, topCount, hasMenuAt, subCountOf, dir });
     if (action.kind === "none") return;
     event.preventDefault();
     event.stopPropagation();
@@ -225,12 +227,6 @@ export function MenubarItem(publicProps: MenubarItemProps) {
       );
     },
   });
-  /* Same rule as `Menu`'s own top level (`menu.tsx`): the native anchoring engine is withheld from the
-     WHOLE dropdown once any level of it has a submenu. A submenu is placed by the machine in viewport
-     coordinates, and the browser resolves its `position: fixed` against the nearest ancestor that is
-     itself anchor-positioned, so mixing the two engines one level apart threw "Exportar"'s submenu to
-     the far corner of the preview. */
-  const anchor = useAnchored(id, !hasSubmenu(items ?? []));
   const [checkedState, setChecked] = useState<CheckedState>(() => initialCheckedState(items ?? []));
 
   useEffect(() => {
@@ -268,7 +264,7 @@ export function MenubarItem(publicProps: MenubarItemProps) {
       {hasMenu ? (
         <button
           {...api.getTriggerProps()}
-          {...anchor.anchor(cx(menubarParts.item, "sk-button sk-interactive"))}
+          {...anchorProps(cx(menubarParts.item, "sk-button sk-interactive"))}
           {...{ "data-size": "sm", "data-variant": "ghost" }}
           {...{ [menubarAttrs.item]: "", [menuAttrs.trigger]: "" }}
           ref={ref}
@@ -316,7 +312,7 @@ export function MenubarItem(publicProps: MenubarItemProps) {
           items={items!}
           onCheckedChange={onCheckedChange}
           onSelect={onSelect}
-          positionerProps={anchor.positioner(api.getPositionerProps(), menuParts.positioner)}
+          positionerProps={positionerProps(api.getPositionerProps(), menuParts.positioner)}
           service={service}
           setCheckedState={setCheckedState}
         />

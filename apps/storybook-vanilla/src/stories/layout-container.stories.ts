@@ -11,6 +11,6 @@ import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Grid - LayoutContainer", tags: ["autodocs"] } satisfies Meta;
 
+export const GridSpan: StoryObj = treeStory(demos.gridSpanTree);
 export const StackJustify: StoryObj = treeStory(demos.stackJustifyTree);
 export const InlineShow: StoryObj = treeStory(demos.inlineShowTree);
-export const GridSpan: StoryObj = treeStory(demos.gridSpanTree);

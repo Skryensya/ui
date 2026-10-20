@@ -35,13 +35,20 @@ const iconTrigger = (name: string, label: string, size?: "sm"): UsageTree => ({
  * No layout wrapper around each one: `.sk-tooltip` is `inline-flex`, so they flow wherever they are
  * dropped. The outer `Inline` is the demo's own row, not part of a tooltip.
  */
+const cased = (caption: string, tree: UsageTree): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "sm", align: "center" },
+  children: [tree, { contract: "typography", signature: "Text", options: { size: "caption", tone: "secondary" }, children: caption }],
+});
+
 export const tooltipTree = (t: Translate): UsageTree => ({
   contract: "layout",
   signature: "Inline",
-  options: { gap: "md", inlineAlign: "center" },
+  options: { gap: "xl", inlineAlign: "start" },
   children: [
     // 1. An icon-only control. The name lives in `aria-label`; the tooltip expands it.
-    {
+    cased(t("demo.tooltip.case.icon"), {
       contract: "tooltip",
       signature: "Tooltip",
       options: { placement: "block-end", arrow: true },
@@ -49,14 +56,14 @@ export const tooltipTree = (t: Translate): UsageTree => ({
         content: t("demo.tooltip.export.content"),
         children: iconTrigger("download", t("demo.tooltip.export.label")),
       },
-    },
+    }),
     // 2. Explaining a figure that is already on screen: the number is always visible, the tooltip
     //    only says how it is arrived at. Default placement, which is the case the contract's own
     //    default gets wrong.
-    {
+    cased(t("demo.tooltip.case.figure"), {
       contract: "layout",
       signature: "Inline",
-      options: { gap: "xs" },
+      options: { gap: "xs", inlineAlign: "center" },
       children: [
         t("demo.tooltip.metric.value"),
         {
@@ -69,10 +76,10 @@ export const tooltipTree = (t: Translate): UsageTree => ({
           },
         },
       ],
-    },
+    }),
     // 3. Giving back what the width had to cut. The trigger is the truncated text itself, and
     //    `tabindex` is what makes it reachable: without focus the tooltip would be mouse-only.
-    {
+    cased(t("demo.tooltip.case.truncated"), {
       contract: "tooltip",
       signature: "Tooltip",
       options: { placement: "inline-end", arrow: true },
@@ -81,11 +88,12 @@ export const tooltipTree = (t: Translate): UsageTree => ({
         children: {
           contract: "typography",
           signature: "Text",
-          attrs: { class: "sk-truncate", tabindex: "0" },
+          // Cut for real: a fixed width and an ellipsis, or the "truncated" case shows full text.
+          attrs: { tabindex: "0", style: "inline-size: 9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" },
           children: t("demo.tooltip.truncated.content"),
         },
       },
-    },
+    }),
   ],
 });
 

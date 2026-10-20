@@ -25,7 +25,7 @@ import { join, resolve } from "node:path";
 const root = resolve(import.meta.dirname, "..");
 
 /** What a release ships, in the order it builds: `core` first, the rest depend on it. */
-export const shipped = ["core", "icons-lucide", "icons-material", "icons-phosphor", "react", "vanilla", "charts", "editor", "devtools", "cli"] as const;
+export const shipped = ["core", "icons-lucide", "icons-material", "icons-phosphor", "react", "vanilla", "editor", "devtools", "cli"] as const;
 
 type Condition = string | { [key: string]: Condition };
 interface Manifest {
@@ -62,7 +62,7 @@ export function packedExports(name: string, exports: Record<string, Condition>):
       out[subpath] = condition;
       continue;
     }
-    /* `core`, `charts`, `editor` and the icon sets are built by `tsc`, which writes declarations beside the JavaScript. */
+    /* `core`, `editor` and the icon sets are built by `tsc`, which writes declarations beside the JavaScript. */
     const declared = name === "react" || name === "vanilla" ? file : dist.replace(/\.js$/, ".d.ts");
     out[subpath] = { types: declared, default: dist };
   }

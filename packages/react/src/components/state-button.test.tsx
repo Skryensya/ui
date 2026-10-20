@@ -49,4 +49,24 @@ describe("StateButton (React)", () => {
     fireEvent.click(ui.getByRole("button"));
     expect(onClick).toHaveBeenCalled();
   });
+
+  it("warns when it has no accessible name, same posture as Slider/Rating", () => {
+    /* Every face is icon-only, so nothing else could name it; `validate_ui` catches this for a
+       contract-built tree, but a hand-written `<StateButton>` outside that tooling had no runtime
+       signal at all before this. */
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const ui = render(<StateButton faces={faces} current="light" />);
+
+    expect(spy).toHaveBeenCalled();
+    expect(ui.getByRole("button").getAttribute("data-sk-a11y-warn")).toBe("");
+    spy.mockRestore();
+  });
+
+  it("does not warn once an accessible name is given", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    render(<StateButton aria-label="Modo" current="light" faces={faces} />);
+
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
 });

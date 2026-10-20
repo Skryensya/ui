@@ -11,6 +11,12 @@ and **lessons** so the rest of the catalogue can be audited the same way.
 
 ## Breaking changes are allowed
 
+**Update 2026-10-17: this is no longer true.** The kit shipped a release (`v0.0.2`) and at least two
+real consumer repos depend on it in production (`informes-asimov`, `slep-barrancas-remake`, both
+tracking a `skryensya-ui-pain-points.md` against today's prop names). A break is still fine — tell
+them in the changelog entry, same as before — but "no consumer exists to spare" is no longer the
+reason; see memory `no-consumers-yet`.
+
 The kit has **no external consumers**: the only code depending on it is `apps/docs` and the
 Storybooks, all in this repo. So a contract fix is never held back because it breaks
 something. Break it, then repair every caller in the same change, and leave
@@ -80,7 +86,6 @@ promise regresses are incomplete.
 | `fade-edge` | `done` | 2026-09-17: semantics Marquee alt; validate mode/direction/hooks + React data/style attrs. Later: `excludes` `mode=transparent`↔`color` (locked) |
 | `feed` | `done` | 2026-09-17: a11y label; semantics CommentThread/EmptyState; validate bounds/parents + React busy false |
 | `file-upload` | `done` | 2026-09-17: required dropzone/trigger labels; React clearLabel opt-in + `sk:fileuploadchange` DOM; semantics FormField; validate + React tests. Second pass: React `data-sk-file-upload` mount |
-| `folder` | `done` | 2026-09-17: `outputHooks` clip/tail; validate parents/href/mount/sheets; React `data-active`. Second pass: React `data-sk-folder` mount |
 | `footer` | `done` | 2026-09-17: `divider` `falseValue`; React defaults from contract; semantics Box/Hero; validate + layout tests |
 | `form-field` | `done` | 2026-09-17: semantics labelHidden vs bare aria-label; drop dead `invalid` type; validate + React labelHidden |
 | `hero` | `done` | 2026-09-17: React defaults from contract; semantics Box/Footer/Stack; validate defaults/element/sheets |
@@ -223,7 +228,6 @@ mark the row `done` here.
 | FadeEdge | Semantics Marquee vs wrap; validate mode/direction/hooks; React data attrs + style hooks | `ai-compiler` validate.test · `react` fade-edge.test |
 | Feed | `a11y` label; semantics CommentThread/EmptyState/Comment; validate bounds/parents/busy emit | `ai-compiler` validate.test · `react` feed.test |
 | FileUpload | required dropzone/trigger; React DOM `sk:fileuploadchange` + clearLabel opt-in; semantics FormField; validate | `ai-compiler` validate.test · `react` file-upload.test · `vanilla` file-upload (existing) |
-| Folder | `outputHooks` clip/tail; validate parents/href/mount; React data-active | `ai-compiler` validate.test · `react` folder.test · `vanilla` folder (existing) |
 | Footer | `divider` `falseValue: "false"` (emit↔React/CSS); React defaults from contract; semantics Box/Hero | `ai-compiler` validate.test · `react` layout.test |
 | FormField | semantics labelHidden vs bare `aria-label`; drop unused `FormFieldOptions.invalid`; validate wiring/sheets | `ai-compiler` validate.test · `react` form-field.test |
 | Hero | React defaults from contract (Footer peer); semantics Box/Footer/Stack; validate | `ai-compiler` validate.test · `react` layout.test (existing) |
@@ -531,8 +535,6 @@ mark the row `done` here.
 
 | Gap | Severity | Status |
 | --- | --- | --- |
-| Silhouette `viewBox`/`d` and `data-sk-folder-ready` are binding-written after measure | medium | intentional: residual `compose`/systemOwned |
-| React does not write `data-sk-folder` mount (would double-bind with the enhancer) | low | **resolved 2026-09-17**: React stamps `folderAttrs.root`; measures itself (no vanilla mount call) |
 | Label/children/previews accept `node` (rich markup; headings and ImageFrames) | low | intentional: composition is the point |
 | No custom `events` (reveal is CSS `:hover`/`focus-within`/`data-active`) | low | intentional |
 | `compose` of ImageFrame inside FolderPreview | medium | **resolved 2026-09-17**: FolderPreview `compose` → image-frame; Folder/FolderLink `hitTesting.childrenNone` |

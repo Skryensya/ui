@@ -40,6 +40,8 @@
      */
     --sk-questionnaire-measure: 60ch;
     --sk-questionnaire-shortcut-fg: var(--color-text-tertiary);
+    /* Air above the progress and below the actions, so the form does not sit flush against its host. */
+    --sk-questionnaire-padding-block: var(--space-inset-lg);
 
     /*
      * ONE ROW FOR EVERY QUESTION, so the box never changes height as the reader moves through it.
@@ -62,6 +64,7 @@
      */
     inline-size: min(100%, var(--sk-questionnaire-measure));
     margin-inline: auto;
+    padding-block: var(--sk-questionnaire-padding-block);
     min-inline-size: 0;
   }
 
@@ -147,6 +150,33 @@
    * the form and still below a page heading, which lets the form stay at 18px rather than growing to
    * out-shout its own answers.
    */
+  /*
+   * SECTION, the eyebrow above a question that belongs to one - the same role timeline.css's own
+   * eyebrow plays, "quiet, and ABOVE the heading". Read fresh on every question in it rather than
+   * deduplicated against the one before (QuestionnaireItemProps's own comment): a step's own title
+   * surviving a Next the way a wizard's "Step 2 of 5" does, not a sibling repeating itself.
+   */
+  .sk-questionnaire__section {
+    margin-block-end: var(--sk-questionnaire-head-gap);
+  }
+
+  .sk-questionnaire__section-title {
+    margin: 0;
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-emphasis);
+    line-height: var(--font-line-height-display);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .sk-questionnaire__section-description {
+    margin: 0;
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-body-sm);
+    line-height: var(--font-line-height-body-sm);
+  }
+
   .sk-questionnaire__title {
     /*
      * THE LEGEND IS NOT A FLEX ITEM. A rendered `<legend>` is laid out by the fieldset above its
@@ -162,6 +192,9 @@
     font-weight: var(--font-weight-emphasis);
     line-height: var(--font-line-height-heading-h4);
     text-wrap: pretty;
+    /* `text-wrap: pretty` improves normal prose wrapping but gives an unbroken word (a URL, a
+       German compound) nowhere to break - only Steps' own label got `overflow-wrap` before this. */
+    overflow-wrap: anywhere;
   }
 
   /* A description right below the question reads as part of it, so it takes the tight rung and the
@@ -182,6 +215,7 @@
     font-size: var(--font-size-body-sm);
     line-height: var(--font-line-height-body-sm);
     text-wrap: pretty;
+    overflow-wrap: anywhere;
   }
 
   /*
@@ -285,6 +319,7 @@
     font-size: var(--font-size-caption);
     line-height: var(--font-line-height-caption);
     text-wrap: pretty;
+    overflow-wrap: anywhere;
   }
 
   .sk-questionnaire__anchor:first-child {
@@ -506,8 +541,13 @@
    *
    * Below it the form goes back to one column with the rail on top; Steps' own vertical layout still
    * applies, which is the compact rail it falls back to anyway.
+   *
+   * A CONTAINER query, not the viewport (decision 35, patterns/query-container.css): a
+   * Questionnaire embedded in a narrower region (a side panel, a Dialog sized to its content) has
+   * that region's room, not the window's. Still ordinary descendant containment even inside a
+   * modal `<dialog>`: top-layer promotion moves the dialog itself, not what is laid out inside it.
    */
-  @media (width < 52rem) {
+  @container (width < 52rem) {
     .sk-questionnaire[data-progress-orientation="vertical"] {
       grid-template-columns: minmax(0, 1fr);
       inline-size: min(100%, var(--sk-questionnaire-measure));

@@ -18,7 +18,8 @@ import type { DateValue, DateView, DayTableCellState } from "@skryensya/core/cal
 import { datePicker } from "@skryensya/core/machines";
 import { normalizeProps, Portal, useMachine } from "@zag-js/react";
 import { useId, useRef, type ReactNode, type RefObject } from "react";
-import { useAnchored } from "./anchored.js";
+import { anchoredPositioning } from "@skryensya/core/anchored";
+import { anchorProps, positionerProps } from "./anchored.js";
 import { asDate, asDates, CalendarBody } from "./calendar.js";
 import { Icon } from "./icon.js";
 
@@ -106,6 +107,7 @@ export function DatePicker({
   const generatedId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
   const service = useMachine(datePicker.machine, {
+    positioning: { placement: "bottom-start", ...anchoredPositioning },
     id: id ?? generatedId,
     name,
     locale,
@@ -141,7 +143,6 @@ export function DatePicker({
 
   /* The anchor is the whole control (input + buttons), not the calendar button: the panel lines up with
    * the field, which is what the calendar is editing. */
-  const anchor = useAnchored(id ?? generatedId);
   const inputCount = selectionMode === "range" ? 2 : 1;
 
   return (
@@ -158,7 +159,7 @@ export function DatePicker({
           {label}
         </label>
       ) : null}
-      <div {...api.getControlProps()} {...anchor.anchor(datePickerParts.control)}>
+      <div {...api.getControlProps()} {...anchorProps(datePickerParts.control)}>
         {Array.from({ length: inputCount }, (_, index) => (
           <input
             {...api.getInputProps({ index })}
@@ -193,7 +194,7 @@ export function DatePicker({
         </button>
       </div>
       <Portal container={container}>
-        <div {...anchor.positioner(api.getPositionerProps(), datePickerParts.positioner)}>
+        <div {...positionerProps(api.getPositionerProps(), datePickerParts.positioner)}>
           <div
             {...api.getContentProps()}
             className={`${datePickerParts.content} ${calendarParts.root}`}

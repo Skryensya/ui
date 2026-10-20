@@ -14,6 +14,7 @@
     "dev:restart": "astro dev stop || true ; astro dev --background --port 4173 --force",
     "dev:clean": "astro dev stop || true ; rm -rf node_modules/.vite .astro ; astro dev --background --port 4173 --force",
     "check": "node scripts/generate-component-icons.ts --check && astro check && vitest run",
+    "preview-id": "node scripts/preview-id.ts",
     "icons:components": "node scripts/generate-component-icons.ts",
     "build": "astro build",
     "preview": "astro preview",
@@ -21,7 +22,6 @@
   },
   "dependencies": {
     "@skryensya/ai-compiler": "workspace:*",
-    "@skryensya/charts": "workspace:*",
     "@skryensya/core": "workspace:*",
     "@skryensya/examples": "workspace:*",
     "@skryensya/icons-lucide": "workspace:*",
@@ -30,7 +30,6 @@
     "@skryensya/phone": "workspace:*",
     "@skryensya/react": "workspace:*",
     "@skryensya/vanilla": "workspace:*",
-    "@tanstack/charts": "0.15.0",
     "@zag-js/react": "^1.43.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

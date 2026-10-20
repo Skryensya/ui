@@ -44,10 +44,6 @@ const componentDescriptions = {
     es: "Añade superficie, borde y espacio interior alrededor de un grupo.",
     en: "Adds surface, border, and inner spacing around a group.",
   },
-  "/components/tile": {
-    es: "Superficie con una sola intención interactiva: navegar, actuar, elegir o divulgar.",
-    en: "A surface with one interactive intent: navigate, act, choose, or disclose.",
-  },
   "/components/breadcrumb": {
     es: "Muestra la ruta jerárquica y permite volver a niveles superiores.",
     en: "Shows the hierarchical path and links back to higher levels.",
@@ -71,10 +67,6 @@ const componentDescriptions = {
   "/components/carousel": {
     es: "Recorre colecciones visuales horizontales mediante pasos definidos.",
     en: "Browses visual collections horizontally in discrete steps.",
-  },
-  "/components/charts": {
-    es: "Visualiza una serie de valores con nombre. Las barras están en Core; línea y área son opcionales.",
-    en: "Visualizes a series of labelled values. Bars live in Core; line and area are optional.",
   },
   "/components/checkbox": {
     es: "Permite marcar una o varias opciones independientes en un formulario.",
@@ -127,10 +119,6 @@ const componentDescriptions = {
   "/components/editor": {
     es: "Texto enriquecido con una barra de formato, construido sobre ProseMirror.",
     en: "Rich text with a formatting bar, built on ProseMirror.",
-  },
-  "/components/folder": {
-    es: "Una superficie con pestaña, dibujada como una silueta sola; puede aparecer sólo al interactuar.",
-    en: "A surface with a tab, drawn as one silhouette; it can appear only on interaction.",
   },
   "/components/fade-edge": {
     es: "Desvanece el contenido suavemente en un borde para ocultar overflow sin cortes duros.",
@@ -195,10 +183,6 @@ const componentDescriptions = {
   "/components/morph-stack": {
     es: "Tres placas apiladas que se abren en una pila isométrica al pasar el puntero o por estado.",
     en: "Three plates that fan out into an isometric stack under the pointer or by state.",
-  },
-  "/components/sticker": {
-    es: "Convierte una ilustración en un sticker troquelado que se despega y se pega.",
-    en: "Turns artwork into a die-cut sticker that peels and applies.",
   },
   "/components/inline": {
     es: "Alinea elementos relacionados en una fila que puede envolver.",
@@ -320,10 +304,6 @@ const componentDescriptions = {
     es: "Un contenedor que se abre desde una ventana pequeña hasta llenar la caja al hacer scroll, o al revés.",
     en: "A container that opens from a small window to fill the box as you scroll, or the other way round.",
   },
-  "/components/dock": {
-    es: "Un grupo compacto de acciones con iconos y nombres accesibles.",
-    en: "A compact group of icon actions with accessible names.",
-  },
   "/components/scroll-stack": {
     es: "Dos secciones donde la segunda sube y cubre a la primera al hacer scroll, con un gesto sutil.",
     en: "Two sections where the second one rises over the first as you scroll, with a subtle gesture.",
@@ -407,6 +387,30 @@ const componentDescriptions = {
   "/components/stat": {
     es: "Destaca una métrica con su etiqueta y contexto.",
     en: "Highlights a metric with its label and context.",
+  },
+  "/components/tile-link": {
+    es: "Una tarjeta entera que lleva a otra parte, con título y descripción.",
+    en: "A whole card that leads somewhere, with a title and a description.",
+  },
+  "/components/tile-checkbox": {
+    es: "Una tarjeta entera que es una casilla de verificación.",
+    en: "A whole card that is a checkbox.",
+  },
+  "/components/tile-switch": {
+    es: "Una tarjeta entera que es un interruptor.",
+    en: "A whole card that is a switch.",
+  },
+  "/components/tile-radio-group": {
+    es: "Tarjetas enteras entre las que se elige una.",
+    en: "Whole cards among which one is chosen.",
+  },
+  "/components/expandable-tile": {
+    es: "Una tarjeta entera que se despliega para mostrar su contenido.",
+    en: "A whole card that unfolds to show its content.",
+  },
+  "/components/tile-button": {
+    es: "Una tarjeta entera que ejecuta una acción, con título y descripción.",
+    en: "A whole card that runs an action, with a title and a description.",
   },
   "/components/state-button": {
     es: "Muestra una de varias acciones o estados mediante un único botón de ícono.",

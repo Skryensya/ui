@@ -1,0 +1,19 @@
+---
+/* Dev-only stress harness for FileUpload: a real React component with real File objects. */
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
+import "@skryensya/core/tokens.scss";
+import "@skryensya/core/components/file-upload.css";
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/patterns/icon.css";
+import "../../styles/site.css";
+import { FileUploadBreak } from "../../components/react-demos/debug-file-upload-break";
+import DebugShell from "../../components/DebugShell.astro";
+
+---
+
+<DebugShell title="Drop zone" docsHref="/components/drop-zone">
+  <FileUploadBreak client:only="react" />
+</DebugShell>

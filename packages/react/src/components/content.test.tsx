@@ -1,7 +1,7 @@
-import { fireEvent, render, within } from "@testing-library/react";
+import { act, fireEvent, render, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { toastEvents } from "@skryensya/core/content";
-import { Toast, ToastRegion } from "./content.js";
+import { Toast, ToastRegion, toastQueue, useToastQueue } from "./content.js";
 
 describe("content component contracts", () => {
   it("defaults to a neutral toast and announces danger assertively", () => {
@@ -124,5 +124,47 @@ describe("content component contracts", () => {
     persistent.unmount();
     timed.unmount();
     vi.useRealTimers();
+  });
+});
+
+describe("toastQueue / useToastQueue", () => {
+  function Toaster() {
+    const { toasts, remove } = useToastQueue();
+    return (
+      <ToastRegion>
+        {toasts.map((item) => (
+          <Toast key={item.id} {...item} onDismiss={() => remove(item.id)} />
+        ))}
+      </ToastRegion>
+    );
+  }
+
+  it("shows, updates and dismisses a toast from outside any component", () => {
+    const ui = render(<Toaster />);
+    let id = "";
+    act(() => {
+      id = toastQueue.show({ children: "Uploading…" });
+    });
+    expect(ui.getByText("Uploading…")).toBeTruthy();
+
+    act(() => {
+      toastQueue.update(id, { children: "Uploaded." });
+    });
+    expect(ui.getByText("Uploaded.")).toBeTruthy();
+
+    act(() => {
+      toastQueue.dismiss(id);
+    });
+    expect(ui.queryByText("Uploaded.")).toBeNull();
+  });
+
+  it("removes a toast when its own dismiss button is clicked, through the hook's remove", () => {
+    const ui = render(<Toaster />);
+    act(() => {
+      toastQueue.show({ children: "Saved.", dismissible: true });
+    });
+    const toast = ui.getByText("Saved.").closest("[data-sk-toast]")!;
+    fireEvent.click(within(toast as HTMLElement).getByRole("button", { name: "Dismiss notification" }));
+    expect(ui.queryByText("Saved.")).toBeNull();
   });
 });

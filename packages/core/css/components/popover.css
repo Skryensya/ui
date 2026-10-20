@@ -1,37 +1,13 @@
 /*
  * TIER 3, POPOVER: native Popover API, no machine.
  *
- * The placement belongs to the Anchoring pattern (ADR-11): the trigger also carries `sk-anchor` and
- * the positioner also `sk-anchored`, and from there come the sides, the flip, the gap, the z-index
- * and the `position-visibility`. With the pattern also comes the set of `data-sk-placement` rules,
- * which is what makes Popover's and Popup's `placement` prop DO something: before, the attribute was
- * written and there was not a single rule reading it.
- *
- * What is left here is the paint and one thing this component does not share with the other eight
- * anchored ones: what it does when the browser does NOT have the API. It is the only one without a
- * machine, so it is the only one without a JS fallback to place it.
+ * The placement belongs to the Anchoring pattern: the trigger also carries `sk-anchor` and the
+ * positioner `sk-anchored`, and the popper places it (`placeNativePopovers` in `core/src/anchored.ts`
+ * listens for the browser's `toggle` and does it), which is what makes Popover's and Popup's
+ * `placement` prop DO something. What is left here is the paint.
  */
 @layer components {
   .sk-popover {
-    /*
-     * A STATIC anchor name, made safe by scoping it rather than by generating one per instance.
-     *
-     * The pattern reads the name from `--sk-anchored-name`, and every other anchored component has
-     * a binding that writes a unique one inline. A popover has no enhancer at all: the browser owns
-     * light-dismiss, Escape and the top layer, so nothing could write it into authored markup, and
-     * a template is the same text every time. `anchor-scope` is the answer the platform already
-     * has: it limits the name to this subtree, so any number of popovers on a page can share it.
-     */
-    anchor-scope: --sk-popover, --sk-popover-box;
-    --sk-anchored-name: --sk-popover;
-    /*
-     * THE PANEL'S OWN NAME, for the arrow. The arrow is another anchored box whose far margin is the
-     * panel's height, read with `anchor-size(<box name> block)` (`patterns/anchored.css`), so that the arrow
-     * and the panel flip together. Every other anchored component has a binding that writes a unique box
-     * name inline; this one has none, and without it that `anchor-size()` is invalid, the margin with it,
-     * and the diamond lost its position and sat on the panel's top-left corner over the title. Scoped like
-     * the trigger's name, for the same reason: any number of popovers can share it. */
-    --sk-anchored-box-name: --sk-popover-box;
     display: inline-flex;
   }
 
@@ -61,22 +37,17 @@
     --sk-popover-wash: var(--elevation-wash-overlay);
 
     box-sizing: border-box;
-    /* NO `margin: 0` here. In this component the positioner and the content are THE SAME element, so
-     * its margin is the gap to the anchor, and the gap is set by the pattern (`--sk-anchored-offset`)
-     * inside its `@supports`. A `margin: 0` here beat it by import order and the panel came out stuck
-     * to the trigger; and outside the `@supports` it is precisely the user agent's `margin: auto` that
-     * centers the degraded sheet, so resetting it broke both paths at once. */
     /* THE UA GIVES EVERY `[popover]` AN `overflow: auto`, AND HERE THAT WAS CLIPPING THE ARROW.
      *
      * The arrow lives half its body OUTSIDE the box (`inset-block-start: -4px`), which is what makes it
      * peek toward the anchor; with a scrollport in the way it was never drawn, and the markup could
-     * author it and it would never appear. This component is the only one of the nine anchored ones
-     * where that happens, because it is the only one whose positioner IS a native popover.
-     *
-     * On the anchored path there is no `max-block-size`, so that `auto` scrolled nothing: it only
-     * clipped. The degraded state further down puts it back along with the maximum height, and there it
-     * is needed; it beats this rule by specificity, not by order. */
+     * author it and it would never appear. This component is the only anchored one where that happens,
+     * because it is the only one whose positioner IS a native popover. There is no `max-block-size`, so
+     * that `auto` scrolled nothing: it only clipped. */
     overflow: visible;
+    /* The positioner caps width above, but a cap doesn't give an unbroken email/URL in the content
+       anywhere to break - it still forced the panel wider than the cap without this. */
+    overflow-wrap: anywhere;
     padding: var(--sk-popover-padding);
     border: 1px solid var(--sk-popover-border-color);
     border-radius: var(--sk-popover-radius);
@@ -89,9 +60,8 @@
 
     /*
      * A FADE, NOT A MATERIALIZE. Menu and Tooltip also scale, slide and blur in (`--motion-materialize-*`),
-     * but this panel cannot: any of `scale`, `translate` or `filter` makes it the containing block of its
-     * arrow, and the arrow is anchored to the trigger OUTSIDE it (see the arrow note below). Opacity does
-     * not, so the arrow is right from the first frame.
+     * but this panel cannot: `scale`, `translate` and `filter` compose with the `transform` that places
+     * it and would pull the arrow off the edge for the length of the animation. Opacity does not.
      *
      * `transition` + `@starting-style` + `allow-discrete` on `display`/`overlay`, not `@keyframes`:
      * the same idiom `Dialog` uses for its own `[open]`/no-attribute pair, which is what lets the
@@ -110,16 +80,8 @@
   }
 
   /*
-   * THE ARROW FOLLOWS THE TRIGGER, not the panel: it is anchored to the trigger by the pattern
-   * (`patterns/anchored.css`), so where the panel is pushed sideways to stay on screen the arrow still
-   * points at the button.
-   *
-   * It only works because the panel NEVER carries a transform, not even while it animates. `scale`, `translate` and `filter` each
-   * make an element the containing block of its `fixed` descendants, and an anchor must lie inside the
-   * positioned element's containing block: with the panel as that block, the trigger (outside it) was no
-   * valid anchor and the arrow was never placed. So the enter and exit are OPACITY ONLY: no materialize
-   * scale, slide or blur. With them the arrow appeared misplaced for the length of the animation (the
-   * panel was its containing block until the transform settled) and snapped into place at the end.
+   * THE ARROW FOLLOWS THE TRIGGER, not the panel: the popper slides it along the panel's edge so it
+   * points at the button even where the panel is pushed sideways to stay on screen.
    *
    * The arrow paints what the panel paints: its fill is the elevation wash over the base color, so a flat
    * `--sk-anchored-arrow-bg` came out a different shade. Frosted uses the same glass as the panel.
@@ -132,6 +94,11 @@
        the transition, and to `visible` at its start, so entering is unchanged. The arrow is a child
        of the panel, so it fades with it meanwhile. */
     transition: visibility var(--motion-exit-duration) var(--motion-exit-easing) allow-discrete;
+  }
+
+  /* Hidden until the popper has measured it: a popover is shown by the browser before it is placed. */
+  .sk-popover__positioner:not([data-placed]) {
+    visibility: hidden;
   }
 
   .sk-popover__content:popover-open {
@@ -161,26 +128,6 @@
     margin: 0;
     color: var(--color-text-secondary);
     font-size: var(--font-size-body-sm);
-  }
-
-  /* ── THE DEGRADED STATE, CHOSEN ──────────────────────────────────────────────
-   * Without the anchoring API there is nothing to place this panel: it has no machine, so there is no
-   * JS fallback to fall to, and that is what sets it apart from the other eight anchored ones.
-   *
-   * Left to itself it would be governed by the `inset: 0` the user agent gives `[popover]`, fighting
-   * the `margin: 0` of the paint above, and it would end up against an edge of the screen, far from its
-   * trigger. That is WORSE than not being anchored: it looks like a layout bug.
-   *
-   * So the other reading is chosen on purpose: a CENTERED SHEET, which honestly says "this belongs to
-   * the page" instead of faking a relationship with a button that cannot be drawn. It is also what the
-   * user agent already wanted to do; `margin: auto` over the `inset: 0` is what centers it. */
-  @supports not (anchor-name: --a) {
-    .sk-popover__positioner:popover-open {
-      inset: 0;
-      margin: auto;
-      max-block-size: calc(100vb - 2 * var(--space-inset-md));
-      overflow: auto;
-    }
   }
 
   /*

@@ -18,10 +18,10 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Presenta bloques de código legibles, resaltados y copiables.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Displays readable, highlighted, and copyable code blocks.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."
   - date: 2026-10-13
     kind: breaking
     es:

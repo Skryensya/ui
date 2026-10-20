@@ -16,6 +16,13 @@ const tagLink = (children: string, href: string, options: Record<string, string 
   children,
 });
 
+const tagToggle = (children: string, selected: boolean, options: Record<string, string | boolean> = {}): UsageTree => ({
+  contract: "tag",
+  signature: "Tag.toggle",
+  options: { selected, ...options },
+  children,
+});
+
 
 /** Chip, label and remove control: the removable tag shows every Tag part. */
 export const tagAnatomyTree = (t: Translate): UsageTree => ({
@@ -45,17 +52,40 @@ export const tagAnatomyTree = (t: Translate): UsageTree => ({
 /* The smallest honest tag: a keyword attached to content, no status semantics and no action. */
 export const tagSimpleTree = (t: Translate): UsageTree => tag(t("demo.tag.design"));
 
-/* Tones in one row: the shape stays Tag, while color communicates the keyword's role. */
+const tagArticleCard = (title: string, summary: string, tags: UsageTree[]): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { surface: "surface", border: "subtle", padding: "lg" },
+  children: [{
+    contract: "layout",
+    signature: "Stack",
+    options: { gap: "sm" },
+    children: [
+      { contract: "typography", signature: "Heading", options: { headingSize: "h4", flush: true }, children: title },
+      { contract: "typography", signature: "Text", options: { tone: "secondary" }, children: summary },
+      { contract: "layout", signature: "Inline", options: { gap: "sm" }, children: tags },
+    ],
+  }],
+});
+
+/* Categories are Tags even when they are labels, not controls; the card context makes that role clear. */
+export const tagCategoriesTree = (t: Translate): UsageTree =>
+  tagArticleCard(t("demo.tag.articleTitle"), t("demo.tag.articleSummary"), [
+    tag(t("demo.tag.design")),
+    tag(t("demo.tag.accessibility")),
+    tag(t("demo.tag.performance")),
+  ]);
+
+/* Accent emphasizes a category; it does not mean selected or communicate a status. */
 export const tagTonesTree = (t: Translate): UsageTree => ({
   contract: "layout",
   signature: "Inline",
   options: { gap: "sm" },
   children: [
     tag(t("demo.tag.design")),
-    tag("tokens", { tone: "accent" }),
-    tag(t("demo.tag.active"), { tone: "success" }),
-    tag("beta", { tone: "warning" }),
-    tag(t("demo.tag.deprecated"), { tone: "danger" }),
+    tag(t("demo.tag.accessibility"), { tone: "accent" }),
+    tag(t("demo.tag.performance")),
+
   ],
 });
 
@@ -68,11 +98,29 @@ export const tagLinksTree = (t: Translate): UsageTree => ({
   signature: "Inline",
   options: { gap: "sm" },
   children: [
-    tagLink(t("demo.tag.design"), "/topics/design"),
-    tagLink("tokens", "/topics/tokens", { tone: "accent" }),
-    tagLink(t("demo.tag.active"), "/topics/active", { tone: "success" }),
+    tagLink(t("demo.tag.design"), "/components/heading"),
+    tagLink(t("demo.tag.accessibility"), "/components/skip-link", { tone: "accent" }),
+    tagLink(t("demo.tag.performance"), "/motion"),
   ],
 });
+
+/*
+ * Choice chips: a real button each, `aria-pressed` carries selection and the component styles that
+ * state persistently. The mode changes only the initial selection; the docs property owns the behavior.
+ */
+export const tagToggleTree = (t: Translate, mode: "single" | "multiple" = "multiple"): UsageTree => ({
+  contract: "layout",
+  signature: "Inline",
+  options: { gap: "sm" },
+  children: [
+    tagToggle(t("demo.tag.design"), true),
+    tagToggle("frontend", mode === "multiple"),
+    tagToggle(t("demo.tag.accessibility"), false),
+  ],
+});
+
+/* Beta is a status, not a category. Used only by the DoDont pair below. */
+export const tagStatusMisuseTree = (): UsageTree => tag("Beta");
 
 /*
  * Complete filter bar: removable applied facets. The remove button's accessible name names the exact
@@ -92,10 +140,9 @@ export const tagRemovableTree = (t: Translate): UsageTree => ({
       removable: true,
       removeLabel: t("demo.tag.remove", { name: "frontend" }),
     }),
-    tag(t("demo.tag.active"), {
-      tone: "success",
+    tag(t("demo.tag.accessibility"), {
       removable: true,
-      removeLabel: t("demo.tag.remove", { name: t("demo.tag.active") }),
+      removeLabel: t("demo.tag.remove", { name: t("demo.tag.accessibility") }),
     }),
   ],
 });

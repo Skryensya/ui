@@ -18,7 +18,8 @@
 
 /* Stretch every slide's surface so a peek row reads as one height. */
 .sk-carousel__slide > .carousel-card,
-.sk-carousel__slide > .carousel-person {
+.sk-carousel__slide > .carousel-person,
+.sk-carousel__slide > .sk-box {
   block-size: 100%;
 }
 

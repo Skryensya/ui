@@ -1,9 +1,10 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
+import { videoPlayerWords } from "./data/video-player-words";
 
 /*
- * Real photos from Unsplash, fetched once through picsum.photos (the docs' default image source) and
- * kept under `public/demos/lightbox/` so the demos and the gates work offline, each with a square
+ * The docs' own satin pictures (`tools/frost-backdrop`, one per tint), kept under `public/demos/lightbox/` so the demos and the
+ * gates work offline, each with a square
  * 400px thumbnail beside it, drawn at a fixed 200×200 (2x for dense screens), and a `-small` copy at
  * the photo's OWN proportions (480px on the long side) that the lightbox shows blurred while the full
  * one loads: the square is a crop, and a crop is never a placeholder.
@@ -37,7 +38,7 @@ const photos = (t: Translate): readonly Photo[] => [
     alt: t("lightbox.demo.dawnAlt"),
     title: t("lightbox.demo.dawnTitle"),
     description: t("lightbox.demo.dawnDescription"),
-    credit: "Alexey Topolyanskiy · Unsplash",
+    credit: "skryensya/ui",
   },
   {
     file: "street",
@@ -46,7 +47,7 @@ const photos = (t: Translate): readonly Photo[] => [
     height: 1600,
     alt: t("lightbox.demo.forestAlt"),
     title: t("lightbox.demo.forestTitle"),
-    credit: "Nicholas Swanson · Unsplash",
+    credit: "skryensya/ui",
   },
   {
     file: "coast",
@@ -56,7 +57,7 @@ const photos = (t: Translate): readonly Photo[] => [
     alt: t("lightbox.demo.panoramaAlt"),
     title: t("lightbox.demo.panoramaTitle"),
     description: t("lightbox.demo.panoramaDescription"),
-    credit: "Paul Jarvis · Unsplash",
+    credit: "skryensya/ui",
   },
   {
     file: "waterfall",
@@ -65,7 +66,7 @@ const photos = (t: Translate): readonly Photo[] => [
     height: 1201,
     alt: t("lightbox.demo.lighthouseAlt"),
     title: t("lightbox.demo.lighthouseTitle"),
-    credit: "Andrew Coelho · Unsplash",
+    credit: "skryensya/ui",
   },
   {
     file: "snow-camp",
@@ -74,7 +75,7 @@ const photos = (t: Translate): readonly Photo[] => [
     height: 1200,
     alt: t("lightbox.demo.snowAlt"),
     description: t("lightbox.demo.snowDescription"),
-    credit: "Wolfgang Lutz · Unsplash",
+    credit: "skryensya/ui",
   },
   {
     file: "puppy",
@@ -82,7 +83,7 @@ const photos = (t: Translate): readonly Photo[] => [
     height: 144,
     alt: t("lightbox.demo.tinyAlt"),
     description: t("lightbox.demo.tinyDescription"),
-    credit: "André Spieker · Unsplash",
+    credit: "skryensya/ui",
   },
 ];
 
@@ -342,6 +343,90 @@ export const lightboxTinyTree = (t: Translate): UsageTree => {
   };
 };
 
+/*
+ * VIDEOS: the same triggers and the same viewer, pointed at clips. The file name says it is a video (`.webm`), so nothing but the
+ * clip's own address, its size and its poster (the thumbnail's bigger twin) is needed; `triggerVideoLoop` keeps each clip running,
+ * and the viewer's counter and error words say "video". The thumbnails are the posters, so what flies out of the page is what the
+ * clip starts as.
+ */
+const VIDEO_DIR = "/demos/lightbox-video";
+type Clip = { readonly file: string; readonly alt: string; readonly title: string; readonly description?: string };
+const clips = (t: Translate): readonly Clip[] => [
+  { file: "satin-blue", alt: t("lightbox.demo.videoBlueAlt"), title: t("lightbox.demo.videoBlueTitle"), description: t("lightbox.demo.videoBlueDescription") },
+  { file: "satin-sage", alt: t("lightbox.demo.videoSageAlt"), title: t("lightbox.demo.videoSageTitle") },
+  { file: "satin-sand", alt: t("lightbox.demo.videoSandAlt"), title: t("lightbox.demo.videoSandTitle"), description: t("lightbox.demo.videoSandDescription") },
+  { file: "satin-lilac", alt: t("lightbox.demo.videoLilacAlt"), title: t("lightbox.demo.videoLilacTitle") },
+];
+
+const clipTrigger = (opens: string, clip: Clip): UsageTree => ({
+  contract: "lightbox",
+  signature: "Lightbox.Trigger",
+  options: {
+    opens,
+    triggerSrc: `${VIDEO_DIR}/${clip.file}.webm`,
+    triggerWidth: 1600,
+    triggerHeight: 900,
+    triggerThumbnail: `${VIDEO_DIR}/${clip.file}-poster.jpg`,
+    triggerVideoLoop: true,
+    triggerTitle: clip.title,
+    ...(clip.description ? { triggerDescription: clip.description } : {}),
+    triggerCredit: "skryensya/ui",
+  },
+  slots: {
+    children: {
+      contract: "image-frame",
+      signature: "ImageFrame",
+      options: { aspect: "1/1", radius: "control", src: `${VIDEO_DIR}/${clip.file}-thumb.jpg`, alt: clip.alt },
+    },
+  },
+});
+
+export const lightboxVideoTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "md" },
+  children: [
+    {
+      contract: "layout",
+      signature: "Inline",
+      options: { gap: "sm" },
+      attrs: { role: "list", "aria-label": t("lightbox.demo.videoLabel") },
+      children: clips(t).map((clip) => ({
+        contract: "layout",
+        signature: "Stack",
+        attrs: { role: "listitem" },
+        children: [clipTrigger("demo-lightbox-video", clip)],
+      })),
+    },
+    {
+      contract: "typography",
+      signature: "Text",
+      options: { size: "sm", tone: "secondary" },
+      children: t("lightbox.videoNote"),
+    },
+    {
+      contract: "lightbox",
+      signature: "Lightbox",
+      options: {
+        lightboxId: "demo-lightbox-video",
+        loop: true,
+        ...labels(t),
+        label: t("lightbox.demo.videoViewerLabel"),
+        counterLabel: t("lightbox.videoCounterLabel"),
+        errorLabel: t("lightbox.videoErrorLabel"),
+      },
+      slots: {
+        /* The system's VideoPlayer, in the page's language. Its `src` is only the first clip: the viewer loads each item's own file into it. */
+        video: {
+          contract: "video-player",
+          signature: "VideoPlayer",
+          options: { src: `${VIDEO_DIR}/${clips(t)[0]!.file}.webm`, ...videoPlayerWords(t), autoHide: true },
+        },
+      },
+    },
+  ],
+});
+
 /* Loop on, and a broken image in the middle: navigation carries on straight through the error. */
 export const lightboxLoopTree = (t: Translate): UsageTree => {
   const [dawn, forest] = photos(t);
@@ -392,5 +477,36 @@ export const lightboxLoopTree = (t: Translate): UsageTree => {
 /* ImageFrame is the thumbnail's own; the lightbox's sheet brings button + loader. */
 export const lightboxDemoCss = `.sk-lightbox__trigger {
   inline-size: 200px;
+}
+
+/* A thumbnail that opens a clip says so: a play mark over its middle, drawn here because the viewer styles the viewer, not the page's thumbnails. */
+.sk-lightbox__trigger:is([href$=".webm"], [href$=".mp4"]) {
+  position: relative;
+}
+.sk-lightbox__trigger:is([href$=".webm"], [href$=".mp4"])::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  inline-size: 3rem;
+  block-size: 3rem;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 0.45);
+  clip-path: none;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.sk-lightbox__trigger:is([href$=".webm"], [href$=".mp4"])::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 50% auto auto 50%;
+  inline-size: 1rem;
+  block-size: 1.2rem;
+  translate: -35% -50%;
+  background: white;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  pointer-events: none;
 }`;
 

@@ -320,8 +320,11 @@ export const questionnaireSegmentsTree = (t: Translate): UsageTree =>
   questionnaire(t, { progress: "segments" });
 
 /* The rail beside the question instead of above it, which is what a longer journey wants. */
-export const questionnaireRailTree = (t: Translate): UsageTree =>
-  questionnaire(t, { progress: "steps", progressOrientation: "vertical" });
+export const questionnaireRailTree = (t: Translate): UsageTree => {
+  const tree = questionnaire(t, { progress: "steps", progressOrientation: "vertical" });
+  // The rail sits at the start edge of the stage; without inline padding it touches the card's border.
+  return { ...tree, attrs: { ...tree.attrs, style: "padding-inline: var(--space-inset-lg);" } };
+};
 
 export const questionnaireBranchingTree = (t: Translate): UsageTree => ({
   contract: "questionnaire",

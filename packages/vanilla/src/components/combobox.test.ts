@@ -93,7 +93,7 @@ describe("Combobox Vanilla contracts", () => {
     });
   });
 
-  it("spends the query on each chip when multiple", async () => {
+  it("spends the query on each Tag when multiple", async () => {
     const root = mount(markup.replace("data-sk-combobox>", "data-sk-combobox data-multiple>"));
     const { input, items } = parts(root);
 
@@ -101,12 +101,21 @@ describe("Combobox Vanilla contracts", () => {
     type(input, "arg");
     fireEvent.click(items[1]);
 
-    // The chip carries the answer, so the input is free for the next search. On the whole list.
+    // The Tag carries the answer, so the input is free for the next search. On the whole list.
     await waitFor(() => expect(input.value).toBe(""));
     expect(shown(root)).toHaveLength(items.length);
     expect(
       root.querySelector("[data-sk-combobox-selected-items]")?.textContent,
     ).toContain("Argentina");
+    const selectedTag = root.querySelector<HTMLElement>("[data-sk-combobox-selected-items] .sk-tag");
+    expect(selectedTag?.getAttribute("data-removable")).toBe("");
+    const selectedLabel = selectedTag?.querySelector(".sk-tag__label");
+    expect(selectedLabel?.getAttribute("title")).toBe("Argentina");
+
+    const remove = selectedTag?.querySelector<HTMLButtonElement>("[data-sk-combobox-remove-trigger]");
+    expect(remove?.classList.contains("sk-tag__remove")).toBe(true);
+    fireEvent.click(remove!);
+    await waitFor(() => expect(root.querySelector("[data-sk-combobox-selected-items] .sk-tag")).toBeNull());
   });
 
   it("marks the highlight as keyboard-driven so the option can carry the focus ring", async () => {
@@ -150,7 +159,7 @@ describe("Combobox Vanilla contracts", () => {
     expect(items[0].hasAttribute("aria-selected")).toBe(false);
   });
 
-  it("keeps aria-selected tied to the chosen chips when multiple, not the highlight", async () => {
+  it("keeps aria-selected tied to the chosen Tags when multiple, not the highlight", async () => {
     const root = mount(markup.replace("data-sk-combobox>", "data-sk-combobox data-multiple>"));
     const { input, items } = parts(root);
 
@@ -164,7 +173,7 @@ describe("Combobox Vanilla contracts", () => {
 
     fireEvent.click(items[0]);
 
-    // Choosing it as a chip is what turns aria-selected on: with chips, it means "part of the
+    // Choosing it as a Tag is what turns aria-selected on: with Tags, it means "part of the
     // chosen set" (`aria-multiselectable="true"`), not "currently previewed".
     await waitFor(() => expect(items[0].getAttribute("aria-selected")).toBe("true"));
   });

@@ -4,7 +4,7 @@ entries:
     kind: feature
     es:
       title: Componente nuevo
-      body: Nuevo en esta versión.
+      body: "Se suma a la librería, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: New component
-      body: New in this release.
+      body: "Added to the library, with its contract, a React binding and a Vanilla mount."

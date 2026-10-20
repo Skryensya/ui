@@ -7,11 +7,12 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/list.css";
 import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/audio-player";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+const { audioPlayerAnatomyCss } = demos;
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Audio Player", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.audioPlayerAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.audioPlayerAnatomyTree, { decorators: [withCss(audioPlayerAnatomyCss)] });
 export const Default: StoryObj = treeStory(demos.audioPlayerTree);
 export const Card: StoryObj = treeStory(demos.audioPlayerCardTree);
 export const Playlist: StoryObj = treeStory(demos.audioPlayerPlaylistTree);

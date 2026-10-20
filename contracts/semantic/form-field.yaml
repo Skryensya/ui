@@ -5,9 +5,9 @@ FormField:
     - "a control needs a label, and it almost always does"
     - "a validation message has to be shown next to the control"
     - "a short hint is needed before the user types"
-    - "the label has to exist for the screen reader but the composition already says it visually: labelHidden clips it without dropping the for"
+    - "the label has to exist for the screen reader but the composition already says it visually: labelVisuallyHidden clips it without dropping the for"
   avoidWhen:
-    - "the control carries no label at all; then the control itself carries aria-label and there is no FormField (labelHidden is NOT this: the slot is still required)"
+    - "the control carries no label at all; then the control itself carries aria-label and there is no FormField (labelVisuallyHidden is NOT this: the slot is still required)"
     - "the aim is to mark it invalid without saying why; the error's presence is what invalidates, and color is never the only signal"
     - "the control already brings its own label wired by its machine, like NumberField or Combobox; wrapping it would add a second `for` competing with the first"
   alternatives:

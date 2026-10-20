@@ -63,6 +63,7 @@ describe("Badge", () => {
     const pill = ui.getByText("9");
     expect(pill.className).toContain("sk-badge");
     expect(pill.getAttribute("data-size")).toBe("sm");
+    expect(pill.hasAttribute("data-single-digit")).toBe(true);
     expect(pill.parentElement?.classList).toContain("sk-badge-holder");
     expect(ui.getByRole("button", { name: "Menu" })).toBeTruthy();
   });
@@ -90,5 +91,20 @@ describe("Badge", () => {
     );
     expect(ui.getByText("default").getAttribute("data-size")).toBe("md");
     expect(ui.getByText("compact").getAttribute("data-size")).toBe("xs");
+  });
+
+  it("recovers the full text through title when it's a plain string, since overflow:clip never shows an ellipsis", () => {
+    /* `overflow: clip` with no ellipsis is deliberate (a truncated word reads as a different, wrong
+       one, per the component's own CSS comment) - but that leaves no visual cue a value is cut off
+       at all, and no way to read it. `title` was the missing half of that decision. */
+    const ui = render(<Badge>Invitation expired 12 days ago</Badge>);
+    expect(ui.getByText("Invitation expired 12 days ago").getAttribute("title")).toBe(
+      "Invitation expired 12 days ago",
+    );
+  });
+
+  it("leaves title unset for non-text children, since there is no single string to recover", () => {
+    const ui = render(<Badge><strong>x</strong></Badge>);
+    expect(ui.container.querySelector(".sk-badge")!.hasAttribute("title")).toBe(false);
   });
 });

@@ -1,0 +1,28 @@
+---
+/* Dev-only stress harness for NativeSelect and enhanced Select. */
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
+import "@skryensya/core/components/select.css";
+import "@skryensya/core/components/form-field.css";
+import "@skryensya/core/patterns/anchored.css";
+import "../../styles/site.css";
+import { SelectBreak } from "../../components/react-demos/debug-select-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+
+<DebugShell title="Select" docsHref="/components/select">
+  <SelectBreak client:only="react" />
+</DebugShell>
+
+<style is:global>
+  .break-w-18rem {
+    inline-size: min(18rem, 100%);
+  }
+
+  .break-select-field {
+    inline-size: min(100%, 28rem);
+    min-inline-size: 0;
+  }
+</style>

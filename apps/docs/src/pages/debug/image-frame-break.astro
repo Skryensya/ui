@@ -1,0 +1,7 @@
+---
+if (import.meta.env.PROD) return new Response(null, { status: 404 });
+import "@skryensya/core/patterns/image-frame.css";
+import { ImageFrameBreak } from "../../components/react-demos/debug-image-frame-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+<DebugShell title="ImageFrame" docsHref="/components/image-frame"><ImageFrameBreak client:only="react" /></DebugShell>

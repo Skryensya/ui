@@ -9,10 +9,11 @@ import "@skryensya/core/components/table.css";
 import "@skryensya/core/patterns/anchored.css";
 import "@skryensya/core/patterns/table-pager.css";
 import * as demos from "@docs/demos/table-pager";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/TablePager", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.tablePagerAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.tablePagerAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(demos.tablePagerTree);
 export const Minimal: StoryObj = treeStory(demos.tablePagerMinimalTree);

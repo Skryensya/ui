@@ -1,0 +1,56 @@
+---
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
+import "@skryensya/core/tokens.scss";
+import "@skryensya/core/components/carousel.css";
+import "@skryensya/core/patterns/state-layer.css";
+import "@skryensya/icons-lucide/carousel.css";
+import "../../styles/site.css";
+import { CarouselBreak } from "../../components/react-demos/debug-carousel-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+
+<DebugShell title="Carousel">
+  <CarouselBreak client:only="react" />
+</DebugShell>
+
+<style is:global>
+  .break-carousel-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-stack-sm);
+    min-block-size: 14rem;
+    padding: var(--space-inset-md);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-surface);
+    background: var(--color-bg-surface);
+    color: var(--color-text-primary);
+  }
+
+  .break-carousel-card__eyebrow,
+  .break-carousel-card__title,
+  .break-carousel-card__description,
+  .break-carousel-card__metric {
+    margin: 0;
+  }
+
+  .break-carousel-card__eyebrow {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-caption);
+  }
+
+  .break-carousel-card__title {
+    font-size: var(--font-size-heading-sm);
+  }
+
+  .break-carousel-card__description {
+    color: var(--color-text-secondary);
+  }
+
+  .break-carousel-card__metric {
+    margin-block-start: auto;
+    font-variant-numeric: tabular-nums;
+  }
+</style>

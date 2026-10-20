@@ -5,11 +5,20 @@
 # hash.
 surface: "2271a4ca64053fda"
 entries:
+  - date: 2026-10-18
+    kind: bugfix
+    target: TimelineItem
+    es:
+      title: "timeLabel/children vacíos ya no dejan un <time> o un detalle vacíos; el rail angosta por contenedor"
+      body: "Un timeLabel calculado (\"\", un formateador relativo sin nada que decir aún) seguía garantizando un <time> vacío; igual con children=\"\". Ahora \"\" cuenta como ausente. Además, el rail angosto por debajo de 30rem leía la ventana (@media), no el contenedor: un historial en un panel angosto sobre una página ancha nunca angostaba."
+    en:
+      title: "An empty timeLabel/children no longer leaves an empty <time> or detail; the rail narrows by container"
+      body: "A computed timeLabel (\"\", a relative-time formatter with nothing to say yet) still warranted an empty <time>; same for children=\"\". \"\" now counts as absent. Separately, the narrower rail below 30rem read the viewport (@media), not the container: a history in a narrow panel on a wide page never narrowed."
   - date: 2026-10-01
     kind: feature
     es:
       title: Primera versión
-      body: Muestra eventos que ya ocurrieron en un riel fechado.
+      body: "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple."
     en:
       title: First release
-      body: Shows events that already happened on a dated rail.
+      body: "Published for the first time, with its contract, a React binding and a stylesheet for plain markup."

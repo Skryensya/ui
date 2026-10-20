@@ -5,11 +5,12 @@ import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/state-button.css";
 import * as demos from "@docs/demos/state-button";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/StateButton", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.stateButtonAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.stateButtonAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Basic: StoryObj = treeStory(demos.stateButtonBasicTree);
 export const ThemeToggle: StoryObj = treeStory(demos.stateButtonThemeToggleTree);
 export const Copy: StoryObj = treeStory(demos.stateButtonCopyTree);

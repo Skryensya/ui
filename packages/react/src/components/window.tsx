@@ -207,7 +207,7 @@ export function Window({
           <div {...api.getContentProps()} className={windowParts.content} data-appearance={appearance}>
             <div {...api.getDragTriggerProps()} className={windowParts.drag}>
               <div {...api.getHeaderProps()} className={windowParts.header}>
-                <h2 {...api.getTitleProps()} className={windowParts.title}>
+                <h2 {...api.getTitleProps()} className={windowParts.title} title={title}>
                   {title}
                 </h2>
                 <div {...api.getControlProps()} className={windowParts.controls}>

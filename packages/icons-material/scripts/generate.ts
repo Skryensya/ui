@@ -79,7 +79,12 @@ const MAP = {
   upload: "upload",
   download: "download",
   file: "description",
+  /* Material draws no distinct "blank file" vs. "text file": `description` is lines of text on a
+     page either way, the same drawing `file` already uses. */
+  "file-text": "description",
   folder: "folder",
+  "folder-open": "folder_open",
+  home: "home",
   settings: "settings",
   user: "person",
   language: "translate",

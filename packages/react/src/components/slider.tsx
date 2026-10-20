@@ -1,12 +1,35 @@
 import { slider } from "@skryensya/core/machines";
 import { clampSliderRange, sliderEvents, sliderParts, sliderContract } from "@skryensya/core/slider";
 import { normalizeProps, useMachine } from "@zag-js/react";
-import { useId, useRef, type CSSProperties, type HTMLAttributes } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type HTMLAttributes } from "react";
+import { dev, devTicket } from "../dev-warning.js";
 
 /* Derived, never restated: the default lives in the contract. */
 const { max: maxOption, min: minOption } = sliderContract.options;
 
+/*
+ * The contract's own a11y rule (`sliderContract.a11y`) requires `aria-label` or `aria-labelledby`
+ * on `Slider`; nothing checked it at runtime, found the same way Switch's own gap was.
+ * `SliderRange` has no equivalent gap: `lowLabel`/`highLabel` are required PROPS at the type level
+ * (`SliderRangeProps` below), not optional strings, so there is nothing to check at runtime there.
+ */
+function warnMissingSliderName(ariaLabel: unknown, ariaLabelledBy: unknown): void {
+  if (!dev || ariaLabel || ariaLabelledBy) return;
+  console.error(
+    ...devTicket("<Slider>", {
+      issue: "no accessible name.",
+      fix: "Give it `aria-label` or `aria-labelledby` - without one it announces as a bare number.",
+    }),
+  );
+}
+
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
+
+function getDirection(dir: HTMLAttributes<HTMLDivElement>["dir"], root: HTMLElement | null): "ltr" | "rtl" {
+  if (dir === "rtl" || dir === "ltr") return dir;
+  const target = dir ? root : root?.parentElement ?? root;
+  return getComputedStyle(target ?? document.documentElement).direction === "rtl" ? "rtl" : "ltr";
+}
 
 const toNumber = (value: unknown, fallback: number) => {
   const n = typeof value === "number" ? value : Number(value);
@@ -38,10 +61,19 @@ export function Slider({
   step,
   style,
   value,
+  dir,
   ...props
 }: SliderProps) {
+  // Effect, not a direct render-body call: client-only, post-mount, straight into the browser's
+  // own console - same reasoning as Kbd's own warnEmptyKbd.
+  useEffect(() => {
+    warnMissingSliderName(props["aria-label"], props["aria-labelledby"]);
+  }, [props["aria-label"], props["aria-labelledby"]]);
+
   const generatedId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
+  const [direction, setDirection] = useState<"ltr" | "rtl">(dir === "rtl" ? "rtl" : "ltr");
+  useLayoutEffect(() => setDirection(getDirection(dir, rootRef.current)), [dir]);
   const lo = toNumber(min, 0);
   const hi = toNumber(max, 100);
   const controlled = value !== undefined;
@@ -50,6 +82,7 @@ export function Slider({
     "aria-label": props["aria-label"] ? [String(props["aria-label"])] : undefined,
     "aria-labelledby": props["aria-labelledby"] ? [String(props["aria-labelledby"])] : undefined,
     defaultValue: [toNumber(defaultValue, lo)],
+    dir: direction,
     disabled,
     max: hi,
     min: lo,
@@ -77,17 +110,19 @@ export function Slider({
     <div
       {...props}
       {...rootProps}
+      dir={dir}
       className={cx(sliderParts.root, className)}
       data-sk-slider=""
+      data-sk-slider-ready="true"
       ref={rootRef}
       style={{ ...(rootProps.style as CSSProperties), ...style }}
     >
-      <div {...controlProps} className={sliderParts.control} data-sk-slider-control="">
-        <div {...trackProps} className={sliderParts.track} data-sk-slider-track="">
-          <div {...rangeProps} className={sliderParts.range} data-sk-slider-range-part="" />
+      <div {...controlProps} dir={dir} className={sliderParts.control} data-sk-slider-control="">
+        <div {...trackProps} dir={dir} className={sliderParts.track} data-sk-slider-track="">
+          <div {...rangeProps} dir={dir} className={sliderParts.range} data-sk-slider-range-part="" />
         </div>
-        <div {...thumbProps} className={sliderParts.thumb} data-sk-slider-thumb="" draggable={undefined}>
-          <input {...api.getHiddenInputProps({ index: 0, name })} className={sliderParts.input} data-sk-slider-input="" />
+        <div {...thumbProps} dir={dir} className={sliderParts.thumb} data-sk-slider-thumb="" draggable={undefined}>
+          <input {...api.getHiddenInputProps({ index: 0, name })} dir={dir} className={sliderParts.input} data-sk-slider-input="" />
         </div>
       </div>
     </div>
@@ -107,6 +142,7 @@ export type SliderRangeProps = {
   defaultHighValue?: number;
   lowName?: string;
   highName?: string;
+  dir?: HTMLAttributes<HTMLDivElement>["dir"];
   onValueChange?: (value: { low: number; high: number }) => void;
 };
 
@@ -122,16 +158,20 @@ export function SliderRange({
   lowName,
   max = maxOption.default,
   min = minOption.default,
+  dir,
   onValueChange,
   step,
 }: SliderRangeProps) {
   const generatedId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
+  const [direction, setDirection] = useState<"ltr" | "rtl">(dir === "rtl" ? "rtl" : "ltr");
+  useLayoutEffect(() => setDirection(getDirection(dir, rootRef.current)), [dir]);
   const { low, high } = clampSliderRange(defaultLowValue ?? min, defaultHighValue ?? max);
   const service = useMachine(slider.machine, {
     id: id ?? generatedId,
     "aria-label": [lowLabel, highLabel],
     defaultValue: [low, high],
+    dir: direction,
     disabled,
     max,
     min,
@@ -157,25 +197,29 @@ export function SliderRange({
   return (
     <div
       {...rootProps}
+      dir={dir}
       className={cx(sliderParts.rangeRoot, className)}
       data-sk-slider-range=""
+      data-sk-slider-range-ready="true"
       ref={rootRef}
       style={rootProps.style as CSSProperties}
     >
-      <div {...controlProps} className={sliderParts.rangeControl} data-sk-slider-range-control="">
-        <div {...trackProps} className={sliderParts.rangeTrack} data-sk-slider-range-track="">
-          <div {...rangeProps} className={sliderParts.rangeFill} data-sk-slider-range-fill="" />
+      <div {...controlProps} dir={dir} className={sliderParts.rangeControl} data-sk-slider-range-control="">
+        <div {...trackProps} dir={dir} className={sliderParts.rangeTrack} data-sk-slider-range-track="">
+          <div {...rangeProps} dir={dir} className={sliderParts.rangeFill} data-sk-slider-range-fill="" />
         </div>
-        <div {...lowThumbProps} className={sliderParts.rangeLow} data-sk-slider-range-low="" draggable={undefined}>
+        <div {...lowThumbProps} dir={dir} className={sliderParts.rangeLow} data-sk-slider-range-low="" draggable={undefined}>
           <input
             {...api.getHiddenInputProps({ index: 0, name: lowName })}
+            dir={dir}
             className={sliderParts.rangeLowInput}
             data-sk-slider-range-low-input=""
           />
         </div>
-        <div {...highThumbProps} className={sliderParts.rangeHigh} data-sk-slider-range-high="" draggable={undefined}>
+        <div {...highThumbProps} dir={dir} className={sliderParts.rangeHigh} data-sk-slider-range-high="" draggable={undefined}>
           <input
             {...api.getHiddenInputProps({ index: 1, name: highName })}
+            dir={dir}
             className={sliderParts.rangeHighInput}
             data-sk-slider-range-high-input=""
           />

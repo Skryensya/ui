@@ -837,6 +837,9 @@ export const questionnaireParts = {
   root: "sk-questionnaire",
   progress: "sk-questionnaire__progress",
   position: "sk-questionnaire__position",
+  section: "sk-questionnaire__section",
+  sectionTitle: "sk-questionnaire__section-title",
+  sectionDescription: "sk-questionnaire__section-description",
   item: "sk-questionnaire__item",
   title: "sk-questionnaire__title",
   description: "sk-questionnaire__description",
@@ -923,6 +926,7 @@ export const questionnaireContract = {
     "--sk-questionnaire-item-gap",
     "--sk-questionnaire-measure",
     "--sk-questionnaire-rail",
+    "--sk-questionnaire-padding-block",
     "--sk-questionnaire-shortcut-fg",
     "--sk-questionnaire-shortcut-gap",
     "--sk-questionnaire-shortcut-gutter",
@@ -1278,6 +1282,16 @@ export const questionnaireContract = {
       ],
       parents: ["Questionnaire"],
       slots: {
+        /**
+         * The group this question belongs to, as the EYEBROW above it (`sk-questionnaire__section`,
+         * "quiet, and ABOVE the heading", `typography.css`'s own eyebrow role). Read fresh on every
+         * question inside the group, not deduplicated against the one before it: the questionnaire
+         * shows one question at a time, so two consecutive ones sharing a section name read as a
+         * step's own title surviving a Next, never a sibling repeating itself.
+         */
+        section: { accepts: "text" },
+        /** Shown under `section`, once, on every question that names it. */
+        sectionDescription: { accepts: "text" },
         /** The question. Rendered as the fieldset's `<legend>`, so it names every answer inside. */
         title: { accepts: "text", required: true },
         description: { accepts: "text" },
@@ -1325,6 +1339,15 @@ export const questionnaireContract = {
         host: true,
         name: "item",
         children: [
+          {
+            element: "div",
+            part: "section",
+            whenGiven: "section",
+            children: [
+              { element: "p", part: "sectionTitle", slot: "section" },
+              { element: "p", part: "sectionDescription", whenGiven: "sectionDescription", slot: "sectionDescription" },
+            ],
+          },
           { element: "legend", part: "title", slot: "title" },
           { element: "p", part: "description", name: "description", whenGiven: "description", slot: "description" },
           {

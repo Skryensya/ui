@@ -21,7 +21,20 @@ export const dialogStackContract = {
   category: "overlays",
   css: "@skryensya/core/components/dialog-stack.css",
   parts: dialogStackParts,
-  hooks: ["--sk-dialog-stack-gap", "--sk-dialog-stack-inline-size", "--sk-dialog-stack-bg", "--sk-dialog-stack-border-color", "--sk-dialog-stack-radius", "--sk-dialog-stack-padding", "--sk-dialog-stack-elevation", "--sk-dialog-stack-backdrop-bg"],
+  hooks: [
+    "--sk-dialog-stack-gap",
+    "--sk-dialog-stack-inline-size",
+    "--sk-dialog-stack-bg",
+    "--sk-dialog-stack-border-color",
+    "--sk-dialog-stack-radius",
+    "--sk-dialog-stack-padding",
+    "--sk-dialog-stack-elevation",
+    "--sk-dialog-stack-backdrop-bg",
+    /** Set to `0s` for a close with no animated exit (a dialog closing because the page it sat
+     * over already navigated away). Reveal is untouched; only close reads these. */
+    "--sk-dialog-stack-exit-duration",
+    "--sk-dialog-stack-exit-easing",
+  ],
   options: {
     defaultOpen: { type: "boolean", default: false, attr: "data-default-open", trueValue: "", machineInput: true },
   },

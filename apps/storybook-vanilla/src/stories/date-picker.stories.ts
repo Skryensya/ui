@@ -10,5 +10,5 @@ import { treeStory, type Meta, type StoryObj } from "../tree-story";
 export default { title: "Components/DatePicker", tags: ["autodocs"] } satisfies Meta;
 
 export const Default: StoryObj = treeStory(demos.datePickerTree);
-export const Disabled: StoryObj = treeStory(demos.datePickerDisabledTree);
 export const NativeDatePicker: StoryObj = treeStory(demos.nativeDatePickerTree);
+export const Disabled: StoryObj = treeStory(demos.datePickerDisabledTree);

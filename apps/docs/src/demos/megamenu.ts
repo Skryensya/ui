@@ -1,4 +1,5 @@
 import { placeholderHrefs } from "../lib/placeholder-hrefs";
+import { satin, type SatinTint } from "../lib/satin";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
 import { anatomyFigureTree } from "./annotation-parts";
@@ -15,7 +16,7 @@ import { DEMO_IMAGE_FRAME_SRC } from "./image-frame.js";
  *
  * EVERY link carries `data-sk-megamenu-preview` (`megamenu.ts`'s own `attrs` escape hatch, no
  * contract change needed; see that constant's own doc), each a differently-colored placeholder:
- * hovering or focusing one swaps ITS trigger's image (the Lightbox demos' own photos, so nothing here
+ * hovering or focusing one swaps ITS trigger's image (the docs' satin thumbnails, so nothing here
  * needs the network), reverting to the trigger's own authored default
  * the instant focus/hover leaves every preview link.
  */
@@ -44,7 +45,7 @@ export const megamenuTree = (
                 signature: "NavListLink",
                 options: { href: hrefs.overview },
                 attrs: {
-                  "data-sk-megamenu-preview": "/demos/lightbox/fjord-thumb.jpg",
+                  "data-sk-megamenu-preview": satin("blue", "thumb"),
                   "data-sk-megamenu-preview-alt": "",
                 },
                 children: t("demo.megamenu.link1"),
@@ -54,7 +55,7 @@ export const megamenuTree = (
                 signature: "NavListLink",
                 options: { href: hrefs.pricing },
                 attrs: {
-                  "data-sk-megamenu-preview": "/demos/lightbox/coast-thumb.jpg",
+                  "data-sk-megamenu-preview": satin("slate", "thumb"),
                   "data-sk-megamenu-preview-alt": "",
                 },
                 children: t("demo.megamenu.link2"),
@@ -64,7 +65,7 @@ export const megamenuTree = (
                 signature: "NavListLink",
                 options: { href: hrefs.integrations },
                 attrs: {
-                  "data-sk-megamenu-preview": "/demos/lightbox/waterfall-thumb.jpg",
+                  "data-sk-megamenu-preview": satin("sage", "thumb"),
                   "data-sk-megamenu-preview-alt": "",
                 },
                 children: t("demo.megamenu.link3"),
@@ -82,7 +83,7 @@ export const megamenuTree = (
                 signature: "NavListLink",
                 options: { href: hrefs.teams },
                 attrs: {
-                  "data-sk-megamenu-preview": "/demos/lightbox/snow-camp-thumb.jpg",
+                  "data-sk-megamenu-preview": satin("graphite", "thumb"),
                   "data-sk-megamenu-preview-alt": "",
                 },
                 children: t("demo.megamenu.link4"),
@@ -92,7 +93,7 @@ export const megamenuTree = (
                 signature: "NavListLink",
                 options: { href: hrefs.enterprise },
                 attrs: {
-                  "data-sk-megamenu-preview": "/demos/lightbox/street-thumb.jpg",
+                  "data-sk-megamenu-preview": satin("sand", "thumb"),
                   "data-sk-megamenu-preview-alt": "",
                 },
                 children: t("demo.megamenu.link5"),
@@ -110,7 +111,7 @@ export const megamenuTree = (
                 signature: "NavListLink",
                 options: { href: "#" },
                 attrs: {
-                  "data-sk-megamenu-preview": "/demos/lightbox/coast-thumb.jpg",
+                  "data-sk-megamenu-preview": satin("slate", "thumb"),
                   "data-sk-megamenu-preview-alt": "",
                 },
                 children: t("demo.megamenu.link6"),
@@ -120,7 +121,7 @@ export const megamenuTree = (
                 signature: "NavListLink",
                 options: { href: "#" },
                 attrs: {
-                  "data-sk-megamenu-preview": "/demos/lightbox/fjord-thumb.jpg",
+                  "data-sk-megamenu-preview": satin("blue", "thumb"),
                   "data-sk-megamenu-preview-alt": "",
                 },
                 children: t("demo.megamenu.link7"),
@@ -130,7 +131,7 @@ export const megamenuTree = (
           {
             contract: "image-frame",
             signature: "ImageFrame",
-            options: { aspect: "4/3", fit: "cover", radius: "surface", src: "/demos/lightbox/fjord-thumb.jpg", alt: "" },
+            options: { aspect: "4/3", fit: "cover", radius: "surface", src: satin("blue", "4x3"), alt: "" },
           },
         ],
       },
@@ -152,7 +153,7 @@ export const megamenuTree = (
                 signature: "NavListLink",
                 options: { href: "#" },
                 attrs: {
-                  "data-sk-megamenu-preview": "/demos/lightbox/coast-thumb.jpg",
+                  "data-sk-megamenu-preview": satin("slate", "thumb"),
                   "data-sk-megamenu-preview-alt": "",
                 },
                 children: t("demo.megamenu.link6"),
@@ -162,7 +163,7 @@ export const megamenuTree = (
                 signature: "NavListLink",
                 options: { href: "#" },
                 attrs: {
-                  "data-sk-megamenu-preview": "/demos/lightbox/fjord-thumb.jpg",
+                  "data-sk-megamenu-preview": satin("blue", "thumb"),
                   "data-sk-megamenu-preview-alt": "",
                 },
                 children: t("demo.megamenu.link7"),
@@ -180,7 +181,7 @@ export const megamenuTree = (
                 signature: "NavListLink",
                 options: { href: "#" },
                 attrs: {
-                  "data-sk-megamenu-preview": "/demos/lightbox/waterfall-thumb.jpg",
+                  "data-sk-megamenu-preview": satin("sage", "thumb"),
                   "data-sk-megamenu-preview-alt": "",
                 },
                 children: t("demo.megamenu.link8"),
@@ -190,7 +191,7 @@ export const megamenuTree = (
                 signature: "NavListLink",
                 options: { href: "#" },
                 attrs: {
-                  "data-sk-megamenu-preview": "/demos/lightbox/snow-camp-thumb.jpg",
+                  "data-sk-megamenu-preview": satin("graphite", "thumb"),
                   "data-sk-megamenu-preview-alt": "",
                 },
                 children: t("demo.megamenu.link9"),
@@ -200,7 +201,7 @@ export const megamenuTree = (
           {
             contract: "image-frame",
             signature: "ImageFrame",
-            options: { aspect: "4/3", fit: "cover", radius: "surface", src: "/demos/lightbox/coast-thumb.jpg", alt: "" },
+            options: { aspect: "4/3", fit: "cover", radius: "surface", src: satin("slate", "4x3"), alt: "" },
           },
         ],
       },
@@ -222,7 +223,7 @@ export const megamenuTree = (
                 signature: "NavListLink",
                 options: { href: "#" },
                 attrs: {
-                  "data-sk-megamenu-preview": "/demos/lightbox/street-thumb.jpg",
+                  "data-sk-megamenu-preview": satin("sand", "thumb"),
                   "data-sk-megamenu-preview-alt": "",
                 },
                 children: t("demo.megamenu.link10"),
@@ -232,7 +233,7 @@ export const megamenuTree = (
                 signature: "NavListLink",
                 options: { href: "#" },
                 attrs: {
-                  "data-sk-megamenu-preview": "/demos/lightbox/puppy-thumb.jpg",
+                  "data-sk-megamenu-preview": satin("lilac", "thumb"),
                   "data-sk-megamenu-preview-alt": "",
                 },
                 children: t("demo.megamenu.link11"),
@@ -250,7 +251,7 @@ export const megamenuTree = (
                 signature: "NavListLink",
                 options: { href: "#" },
                 attrs: {
-                  "data-sk-megamenu-preview": "/demos/lightbox/waterfall-thumb.jpg",
+                  "data-sk-megamenu-preview": satin("sage", "thumb"),
                   "data-sk-megamenu-preview-alt": "",
                 },
                 children: t("demo.megamenu.link8"),
@@ -260,7 +261,7 @@ export const megamenuTree = (
                 signature: "NavListLink",
                 options: { href: "#" },
                 attrs: {
-                  "data-sk-megamenu-preview": "/demos/lightbox/snow-camp-thumb.jpg",
+                  "data-sk-megamenu-preview": satin("graphite", "thumb"),
                   "data-sk-megamenu-preview-alt": "",
                 },
                 children: t("demo.megamenu.link9"),
@@ -270,7 +271,7 @@ export const megamenuTree = (
           {
             contract: "image-frame",
             signature: "ImageFrame",
-            options: { aspect: "4/3", fit: "cover", radius: "surface", src: "/demos/lightbox/waterfall-thumb.jpg", alt: "" },
+            options: { aspect: "4/3", fit: "cover", radius: "surface", src: satin("sage", "4x3"), alt: "" },
           },
         ],
       },
@@ -285,11 +286,14 @@ export const megamenuTree = (
  */
 type Hrefs = { overview: string; pricing: string; integrations: string; teams: string; enterprise: string };
 
+/* The preview each link swaps in: the names the variants were written with, each now one of the satin thumbnails. */
+const megamenuTint: Record<string, SatinTint> = { fjord: "blue", coast: "slate", waterfall: "sage", "snow-camp": "graphite", street: "sand", puppy: "lilac" };
+
 const variantLink = (label: string, href: string, photo: string): UsageTree => ({
   contract: "nav-list",
   signature: "NavListLink",
   options: { href },
-  attrs: { "data-sk-megamenu-preview": `/demos/lightbox/${photo}-thumb.jpg`, "data-sk-megamenu-preview-alt": "" },
+  attrs: { "data-sk-megamenu-preview": satin(megamenuTint[photo], "thumb"), "data-sk-megamenu-preview-alt": "" },
   children: label,
 });
 
@@ -347,7 +351,7 @@ export const megamenuFourColumnsTree = (t: Translate, hrefs: Hrefs): UsageTree =
     {
       contract: "image-frame",
       signature: "ImageFrame",
-      options: { aspect: "4/3", fit: "cover", radius: "surface", src: "/demos/lightbox/fjord-thumb.jpg", alt: "" },
+      options: { aspect: "4/3", fit: "cover", radius: "surface", src: satin("blue", "4x3"), alt: "" },
     },
   ]);
 
@@ -366,7 +370,7 @@ export const megamenuThreeColumnsTree = (t: Translate, hrefs: Hrefs): UsageTree 
     {
       contract: "image-frame",
       signature: "ImageFrame",
-      options: { aspect: "4/3", fit: "cover", radius: "surface", src: "/demos/lightbox/coast-thumb.jpg", alt: "" },
+      options: { aspect: "4/3", fit: "cover", radius: "surface", src: satin("slate", "4x3"), alt: "" },
     },
   ]);
 

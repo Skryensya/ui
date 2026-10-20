@@ -1,4 +1,4 @@
-import type { ComponentContract } from "./contract.js";
+import type { ComponentContract, OptionsOf } from "./contract.js";
 
 export const emptyStateParts = {
   root: "sk-empty-state",
@@ -31,13 +31,21 @@ export const emptyStateContract = {
     "--sk-empty-state-padding",
     "--sk-empty-state-title-size",
   ],
-  options: {},
+  options: {
+    /*
+     * The title's LEVEL, as its element: the document's outline, not appearance. A region inside a page
+     * is an `h2`; a state that IS the page (a 404, an empty inbox that fills the view) has no other
+     * heading and is its `h1`. Size is the `--sk-empty-state-title-size` hook, so a level never has to
+     * be chosen for how big it looks.
+     */
+    headingElement: { type: "enum", values: ["h1", "h2", "h3", "h4", "h5", "h6"], default: "h2", prop: "headingElement" },
+  },
 
   signatures: {
     EmptyState: {
       intent: ["no-results", "nothing-here-yet", "empty-list", "first-run"],
       host: { element: "section" },
-      options: [],
+      options: ["headingElement"],
       slots: {
         icon: { accepts: "signature", of: ["Icon"] },
         title: { accepts: "text", required: true },
@@ -56,7 +64,7 @@ export const emptyStateContract = {
             attrs: { "aria-hidden": "true" },
             slot: "icon",
           },
-          { element: "h2", part: "title", slot: "title" },
+          { element: "h2", elementOption: "headingElement", part: "title", slot: "title" },
           { element: "div", part: "description", whenGiven: "description", slot: "description" },
           { element: "div", part: "actions", whenGiven: "actions", slot: "actions" },
         ],
@@ -65,3 +73,5 @@ export const emptyStateContract = {
     },
   },
 } as const satisfies ComponentContract;
+
+export type EmptyStateOptions = OptionsOf<typeof emptyStateContract>;

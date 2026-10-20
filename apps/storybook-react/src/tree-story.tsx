@@ -5,6 +5,7 @@ import { loadTree, renderTree } from "@skryensya/react/render-tree";
 import type { Translate } from "@docs/i18n";
 import { isLocale, translator } from "@skryensya/storybook-kit/translate";
 import { wireCommandPaletteDemo } from "@skryensya/storybook-kit/command-palette-playground";
+import { wireTagInteractions } from "@skryensya/storybook-kit/tag-interactions";
 import { rootControls, withRootOptions } from "@skryensya/storybook-kit/controls";
 
 /*
@@ -46,9 +47,13 @@ function controlsOf(factory: TreeFactory) {
 export function treeStory(factory: TreeFactory, story: StoryObj = {}): StoryObj {
   const { args, argTypes } = controlsOf(factory);
   return {
-    /* A demo whose trigger the docs wire with a script (a palette's "open") gets it wired here. */
-    play: ({ canvasElement }: { canvasElement: HTMLElement }) => wireCommandPaletteDemo(canvasElement),
     ...story,
+    /* Story-only behavior for Tag examples: their owner normally handles selection and removal. */
+    play: async (context) => {
+      await wireCommandPaletteDemo(context.canvasElement);
+      wireTagInteractions(context.canvasElement);
+      await story.play?.(context);
+    },
     args: { ...args, ...story.args },
     argTypes: { ...argTypes, ...story.argTypes },
     loaders: [

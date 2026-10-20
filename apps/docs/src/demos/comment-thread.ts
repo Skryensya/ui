@@ -71,8 +71,8 @@ const replyComposer = (t: Translate): UsageTree => ({
     signature: "FormField",
     /* The label is clipped, not dropped: the comment right above the box already says what this
      * field is, so showing the word again is noise a reader has to skip. A screen reader still
-     * reads it, which is the whole difference between `labelHidden` and no label. */
-    options: { labelHidden: true },
+     * reads it, which is the whole difference between `labelVisuallyHidden` and no label. */
+    options: { labelVisuallyHidden: true },
     slots: { label: t("demo.commentThread.replyFieldLabel") },
     children: {
       contract: "input",

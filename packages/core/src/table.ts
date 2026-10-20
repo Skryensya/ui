@@ -24,10 +24,17 @@ export const tableParts = {
    * entirely on a table with more than a couple of rows.
    */
   columnResizer: "sk-table__column-resizer",
+  /** `TableHeader`'s `sortable` shape: the button wrapping its content, and its direction arrow. */
+  sortButton: "sk-table__sort-button",
+  sortIndicator: "sk-table__sort-indicator",
 } as const;
 
 export type TablePart = keyof typeof tableParts;
 export type TablePartClass = (typeof tableParts)[TablePart];
+
+export const tableEvents = {
+  sortChange: "sk:tablesortchange",
+} as const;
 
 /*
  * The composition where ORDER and CARDINALITY finally matter.
@@ -102,6 +109,29 @@ export const tableContract = {
      */
     rowspan: { type: "number", min: 1, max: 65534, integer: true, attr: "rowspan", prop: "rowSpan" },
     /**
+     * `TableHeader` only: wraps its content in a button and adds the direction indicator, WAI-ARIA
+     * APG's sortable-table-header pattern. Sorting the rows stays the consumer's: this only reports
+     * that the control was activated (`onSortChange`/`sk:tablesortchange`), the same division
+     * Accordion and TreeView already draw between "something happened" and "what that means".
+     */
+    sortable: { type: "boolean", default: false, attr: "data-sortable", trueValue: "", machineInput: true },
+    /**
+     * The column's current order, straight onto `aria-sort`. Omitted (not `"none"`) for an
+     * UNSORTABLE header: `aria-sort` on a header nothing can reorder promises an interaction that
+     * is not there. `"none"` is the sortABLE-but-unsorted state ARIA itself defines, distinct from
+     * omitting the attribute.
+     */
+    sortDirection: { type: "enum", values: ["ascending", "descending", "none"], attr: "aria-sort" },
+    /** The sort button's accessible name, when the column header's own text is not enough on its own. */
+    sortLabel: { type: "string", attr: "aria-label", prop: "sortLabel" },
+    /**
+     * `TableHeader` only: the column's name exists for a screen reader and takes no space on
+     * screen (`sk-visually-hidden`, in the base bundle already). For a column every row answers
+     * with icon-only buttons - its own name would repeat "Actions" down every row if it were
+     * visible, so the column keeps its accessible name without spending a column's width on it.
+     */
+    visuallyHidden: { type: "boolean", default: false, attr: "data-visually-hidden", trueValue: "" },
+    /**
      * Opt-in: a binding-inserted drag handle between each pair of column headers, WAI-ARIA APG's
      * "Window Splitter" pattern (`role="separator"`, `aria-orientation="vertical"`,
      * Left/Right/Home/End resize, Enter/double-click fits the column to its own content. See
@@ -152,6 +182,14 @@ export const tableContract = {
       signatures: ["Table"],
     },
   ],
+
+  events: {
+    /** Detail: `{}`. The sort button was activated; which direction comes next is the consumer's. */
+    sortChange: "sk:tablesortchange",
+  },
+  eventDetails: {
+    sortChange: { detail: {}, reactProp: "onSortChange", source: "header", trigger: "sortButton" },
+  },
 
   signatures: {
     /*
@@ -252,13 +290,43 @@ export const tableContract = {
     },
 
     TableHeader: {
-      intent: ["column-header", "row-header", "grouped-header"],
+      intent: ["column-header", "row-header", "grouped-header", "sortable-column-header"],
       host: { element: "th" },
       /* A header spans too: the column group over its subcolumns is the common case, not a corner. */
-      options: ["scope", "colspan", "rowspan"],
+      options: ["scope", "colspan", "rowspan", "sortable", "sortDirection", "sortLabel", "visuallyHidden"],
       parents: ["TableRow"],
       slots: { children: { accepts: "node", required: true } },
-      template: { element: "th", part: "header", host: true, slot: "children" },
+      template: {
+        element: "th",
+        part: "header",
+        host: true,
+        children: [
+          /* Two branches of the SAME content, never both: `sortable` decides which markup a
+             column header gets, not which CSS state it is in (unlike the icon-swap pattern just
+             below, which IS a CSS state: both arrows exist whenever the button does). */
+          {
+            element: "button",
+            part: "sortButton",
+            also: ["sk-interactive"],
+            attrs: { type: "button", "data-sk-table-sort-button": "" },
+            whenGiven: "sortable",
+            children: [
+              { slot: "children" },
+              {
+                element: "span",
+                part: "sortIndicator",
+                attrs: { "aria-hidden": "true" },
+                children: [
+                  { element: "span", attrs: { "data-state": "ascending" }, children: [{ element: "span", attrs: { "data-sk-icon": "arrow-up", "data-sk-icon-size": "sm" } }] },
+                  { element: "span", attrs: { "data-state": "descending" }, children: [{ element: "span", attrs: { "data-sk-icon": "arrow-down", "data-sk-icon-size": "sm" } }] },
+                  { element: "span", attrs: { "data-state": "none" }, children: [{ element: "span", attrs: { "data-sk-icon": "arrow-up", "data-sk-icon-size": "sm" } }] },
+                ],
+              },
+            ],
+          },
+          { slot: "children", whenMissing: "sortable" },
+        ],
+      },
       react: { from: "@skryensya/react/table", name: "TableHeader" },
     },
 

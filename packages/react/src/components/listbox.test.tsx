@@ -47,4 +47,12 @@ describe("Listbox", () => {
 
     expect(selected(ui.container)).toEqual(["a", "b"]);
   });
+
+  it("recovers a truncated option's full text through title", () => {
+    const long = "Benachrichtigungseinstellungen für Projekt-Updates";
+    const ui = render(
+      <Listbox items={[{ value: "x", label: long }]} label="Opciones" />,
+    );
+    expect(ui.getByRole("option", { name: long }).getAttribute("title")).toBe(long);
+  });
 });

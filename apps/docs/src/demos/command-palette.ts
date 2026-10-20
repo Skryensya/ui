@@ -39,10 +39,14 @@ export const commandPaletteDemoTree = (t: Translate, { vaul }: { vaul?: boolean 
         label: t("demo.commandPalette.label"),
         paletteId: "demo-cmdk-tree",
         ...(vaul === undefined ? {} : { vaul }),
+        /* "#", like every other demo's placeholder links (megamenu, card, …): a real docs path here
+           would navigate the whole page away on select, since CommandPalette's own `choose()` calls
+           `window.location.assign(entry.href)` whenever no `onSelect` is wired up, and a UsageTree
+           has no channel to supply one. */
         entries: JSON.stringify([
-          { label: t("demo.commandPalette.button"), href: "/components/button", section: t("demo.commandPalette.section") },
-          { label: t("demo.commandPalette.dialog"), href: "/components/dialog", section: t("demo.commandPalette.section") },
-          { label: t("demo.commandPalette.toc"), href: "/components/toc", section: t("demo.commandPalette.section") },
+          { label: t("demo.commandPalette.button"), href: "#", section: t("demo.commandPalette.section") },
+          { label: t("demo.commandPalette.dialog"), href: "#", section: t("demo.commandPalette.section") },
+          { label: t("demo.commandPalette.toc"), href: "#", section: t("demo.commandPalette.section") },
         ]),
       },
     },

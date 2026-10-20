@@ -9,7 +9,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: "Explica una relación entre varias cosas: nodos en una grilla y aristas que el runtime traza."
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: "Explains how several things relate: nodes in a grid, and edges the runtime draws."
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

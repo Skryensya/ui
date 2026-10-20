@@ -3,13 +3,21 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "6dee59dcc21a5938"
+surface: "f9b4ed26d728ac87"
 entries:
   - date: 2026-10-01
     kind: feature
     es:
       title: Primera versión
-      body: Recorre colecciones visuales horizontales mediante pasos definidos.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Browses visual collections horizontally in discrete steps.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."
+  - date: 2026-10-14
+    kind: feature
+    es:
+      title: Alineación, paso, snap suave y aire en los bordes
+      body: "Nuevas opciones align, slidesPerMove, snap=\"proximity\" y edgePadding: slide centrado, avance de varios en varios y arrastre que puede quedar entre slides."
+    en:
+      title: Alignment, step, soft snap and edge padding
+      body: "New options align, slidesPerMove, snap=\"proximity\" and edgePadding: a centred slide, moving several at a time and a drag that can rest between slides."

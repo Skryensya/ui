@@ -58,7 +58,22 @@ export type LightboxImage = {
   /** Intrinsic size, when known: reserves the image's box before it loads, so nothing jumps. */
   readonly width?: number;
   readonly height?: number;
+  /**
+   * What `src` is. Absent, it is worked out from the file's extension (`.mp4`, `.webm`, `.mov`, `.m4v`, `.ogv`
+   * are video); say `"video"` or `"image"` for anything the name does not give away. A video plays in the same viewer, with
+   * its own controls: no zoom, no drag, since a gesture on a player is a gesture on its scrubber.
+   */
+  readonly kind?: "image" | "video";
+  /** A video that starts again when it ends. Ignored for images. */
+  readonly loop?: boolean;
 };
+
+const videoExtension = /\.(?:mp4|m4v|webm|mov|ogv)(?:[?#].*)?$/i;
+
+/** Whether an item is a video: its `kind` when it says, otherwise what its `src` looks like. */
+export function lightboxIsVideo(item: { readonly src: string; readonly kind?: "image" | "video" }): boolean {
+  return item.kind ? item.kind === "video" : videoExtension.test(item.src.trim());
+}
 
 /* ---------------------------------------------------------------------------------------------- *
  * Anatomy
@@ -87,6 +102,8 @@ export const lightboxParts = {
   stage: "sk-lightbox__stage",
   /** The full-size `<img>`. Created by the controller, never authored: an `<img>` with no `src` is not HTML. */
   image: "sk-lightbox__image",
+  /** The `<video>` shown instead of the image when the current item is a video and no `VideoPlayer` was authored in the `video` slot. Created by the controller. */
+  video: "sk-lightbox__video",
   /** The thumbnail shown under the loading indicator. Also created by the controller. */
   placeholder: "sk-lightbox__placeholder",
   /** The loading indicator. A decorative Loader; the stage's state is what is announced. */
@@ -122,6 +139,10 @@ export const lightboxAttrs = {
   thumbnail: "data-lightbox-thumbnail",
   width: "data-lightbox-width",
   height: "data-lightbox-height",
+  /** On a trigger: `video` or `image`, for a file whose name does not say (`/clips/42`). The extension decides otherwise. */
+  type: "data-lightbox-type",
+  /** On a video trigger: the clip starts again when it ends. */
+  videoLoop: "data-lightbox-video-loop",
   /** Configuration read by the controller off the root. */
   loop: "data-loop",
   zoom: "data-zoom",
@@ -584,7 +605,7 @@ export const lightboxContract = {
   css: "@skryensya/core/components/lightbox.css",
   parts: lightboxParts,
   /* The images, the placeholder and the caption's text are the controller's, in both bindings. */
-  systemOwned: ["image", "placeholder"],
+  systemOwned: ["image", "video", "placeholder"],
   hooks: [
     "--sk-lightbox-backdrop-bg",
     "--sk-lightbox-bg",
@@ -701,6 +722,14 @@ export const lightboxContract = {
      * when the real photo lands is exactly the jump this exists to avoid.
      */
     triggerThumbnail: { type: "string", attr: lightboxAttrs.thumbnail, prop: "thumbnailSrc" },
+    /**
+     * The link is to a video, not a photo. Needed only when the file name does not say (`.mp4`, `.webm`, `.mov`, `.m4v` and
+     * `.ogv` are taken as video). It plays in the same viewer, with its own controls; the thumbnail is its poster, and there
+     * is no zoom or drag, since a gesture on a player is a gesture on its scrubber.
+     */
+    triggerVideo: { type: "boolean", default: false, attr: lightboxAttrs.type, trueValue: "video", prop: "video" },
+    /** A video that starts again when it ends. */
+    triggerVideoLoop: { type: "boolean", default: false, attr: lightboxAttrs.videoLoop, trueValue: "", prop: "videoLoop" },
   },
 
   signatures: {
@@ -732,7 +761,14 @@ export const lightboxContract = {
         { of: "loader", sheets: ["@skryensya/core/components/loader.css"], systemOwned: true },
         { of: "icon", systemOwned: true },
       ],
-      slots: {},
+      slots: {
+        /**
+         * The VideoPlayer a video item plays in. Authored once, in the page's language (its labels are its own options), and left
+         * hidden until a video is up: the lightbox then loads the item's file into the player's `<video>` and shows it in the
+         * photo's place. With none, a video falls back to the browser's own controls.
+         */
+        video: { accepts: "node" },
+      },
       template: {
         element: "dialog",
         part: "root",
@@ -758,6 +794,7 @@ export const lightboxContract = {
                 element: "div",
                 part: "stage",
                 children: [
+                  { slot: "video" },
                   {
                     element: "span",
                     part: "loader",
@@ -826,6 +863,8 @@ export const lightboxContract = {
         "triggerWidth",
         "triggerHeight",
         "triggerThumbnail",
+        "triggerVideo",
+        "triggerVideoLoop",
       ],
       requires: ["opens", "triggerSrc"],
       forward: ["id", "aria-*"],

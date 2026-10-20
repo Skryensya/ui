@@ -1,11 +1,5 @@
 <script lang="ts">
   import {
-    anchorNameFor,
-    bindAnchor,
-    stripPositioningStyle,
-    supportsAnchorPositioning,
-  } from "@skryensya/core/anchored";
-  import {
     selectAttrs,
     selectEvents,
     selectPositioning,
@@ -14,10 +8,11 @@
   } from "@skryensya/core/select";
   import { select } from "@skryensya/core/machines";
   import { normalizeProps, useMachine } from "@zag-js/svelte";
-  import { onDestroy } from "svelte";
+  import { mount } from "svelte";
   import { bindParts, type PartBinding } from "../runtime/bind-part.svelte";
   import { getRoot, uniqueId } from "../runtime/svelte-hydrate";
   import { selectorsFor } from "@skryensya/core/selectors";
+  import SelectItems from "./SelectItems.svelte";
 
   /*
    * SELECT, a machine-backed enhancer over `@zag-js/select` (the SAME machine React uses, via
@@ -37,11 +32,10 @@
   const valueEl = root.querySelector<HTMLElement>(selector.value);
   const content = root.querySelector<HTMLElement>(selector.content);
   const positioner = root.querySelector<HTMLElement>(selector.positioner);
-  const itemEls = Array.from(root.querySelectorAll<HTMLElement>(selector.item));
+  const hidden = root.querySelector<HTMLSelectElement>(selector.hidden);
 
   if (!trigger) throw new Error("Select requires a [data-sk-select-trigger] element.");
   if (!content) throw new Error("Select requires a [data-sk-select-content] element.");
-  if (itemEls.length === 0) throw new Error("Select requires at least one [data-sk-select-item].");
 
   function readItem(el: HTMLElement): SelectOption {
     const value = el.dataset.value;
@@ -72,9 +66,53 @@
     }
   }
 
-  const items = itemEls.map(readItem);
-  const hidden = root.querySelector<HTMLSelectElement>(selector.hidden);
-  if (hidden) assertHiddenSelectMatches(hidden, items);
+  /*
+   * THE OTHER WAY IN: a list too large to hand-author as `<li>`s (see `selectAttrs.items`'s own
+   * comment and `SelectItems.svelte`, which renders and virtualizes it). `data-sk-select-items`
+   * names a `<script type="application/json">`, the same convention `command-palette.ts`'s
+   * `readIndex` already uses for its own index.
+   */
+  function readGeneratedItems(scriptId: string): SelectOption[] {
+    const script = document.getElementById(scriptId);
+    if (!script) {
+      throw new Error(`Select's [${selectAttrs.items}] names a script "${scriptId}" that does not exist.`);
+    }
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(script.textContent || "[]");
+    } catch {
+      throw new Error(`Select's [${selectAttrs.items}] script "${scriptId}" is not valid JSON.`);
+    }
+    if (!Array.isArray(parsed)) {
+      throw new Error(`Select's [${selectAttrs.items}] script "${scriptId}" must hold a JSON array.`);
+    }
+    return parsed as SelectOption[];
+  }
+
+  /** Can't be authored for a list this size either, so it is generated the same way. */
+  function generateHiddenOptions(select: HTMLSelectElement, items: readonly SelectOption[]): void {
+    select.replaceChildren(
+      ...items.map((item) => {
+        const option = document.createElement("option");
+        option.value = item.value;
+        option.textContent = item.label;
+        option.disabled = Boolean(item.disabled);
+        return option;
+      }),
+    );
+  }
+
+  const itemsScriptId = root.getAttribute(selectAttrs.items);
+  const itemEls = itemsScriptId ? [] : Array.from(root.querySelectorAll<HTMLElement>(selector.item));
+  if (!itemsScriptId && itemEls.length === 0) {
+    throw new Error(`Select requires at least one [data-sk-select-item], or a [${selectAttrs.items}] script id.`);
+  }
+
+  const items = itemsScriptId ? readGeneratedItems(itemsScriptId) : itemEls.map(readItem);
+  if (hidden) {
+    if (itemsScriptId) generateHiddenOptions(hidden, items);
+    else assertHiddenSelectMatches(hidden, items);
+  }
 
   const collection = select.collection<SelectOption>({
     items,
@@ -83,20 +121,21 @@
     isItemDisabled: (item) => Boolean(item.disabled),
   });
 
+  /*
+   * Only the virtualized path ever fills this - `SelectItems.svelte`'s `onReady` sets it once it has
+   * built its own virtualizer. `useMachine`'s own options are read through a getter (`() => ({...})`
+   * below), so this starting `undefined` and becoming real a tick after `useMachine` is called is not
+   * a race: nothing calls `scrollToIndexFn` before a keypress gives it a reason to.
+   */
+  let scrollToIndexRef: ((index: number, options?: { align?: string; behavior?: string }) => void) | undefined =
+    $state(undefined);
+
   const placeholder = root.dataset.placeholder ?? "";
   // Captured ONCE, never re-read from the DOM: `getRootProps().id` returns a namespaced id
   // (`select:${id}`) that `applyZagProps` writes back onto `root.id`. Reading `root.id` live from
   // `useMachine`'s reactive factory would feed that prefix back on every recomputation. The imperative
   // original never mutated `root.id`; this reproduces the same thing.
   const selectId = root.id || uniqueId("sk-select");
-
-  // PROGRESSIVE ENHANCEMENT: when the browser has the CSS Anchor Positioning API, the placement lives
-  // in select.css (behind the same @supports); the only thing that cannot live in shared CSS is the
-  // anchor↔popup relationship: a name unique to this instance that ties THIS trigger to THIS listbox.
-  // Where the API is missing, `anchorName` is null and Zag's JS placement (configured below) is the
-  // only one; the fallback, not a second-class path.
-  const anchorName = supportsAnchorPositioning() ? anchorNameFor(selectId) : null;
-  let unbindAnchor: (() => void) | undefined;
 
   /* Only the parts the consumer gave an id to; the rest still belong to the machine. */
   function authoredIds(): Record<string, string> {
@@ -139,6 +178,10 @@
     /* Shared with React (`selectPositioning`); `boundary` stays here because it is a DOM lookup and
      * the shared const holds no DOM. */
     positioning: { ...selectPositioning, boundary: root.closest("dialog") ? document.documentElement : undefined },
+    scrollToIndexFn: itemsScriptId
+      ? (details: { index: number; immediate?: boolean }) =>
+          scrollToIndexRef?.(details.index, { align: "auto", behavior: details.immediate ? "auto" : "smooth" })
+      : undefined,
     onValueChange(details: { value: string[] }) {
       const change: SelectValueChangeDetails = { value: details.value };
       root.dispatchEvent(
@@ -175,18 +218,7 @@
     {
       part: "positioner",
       node: () => positioner,
-      // On the anchor path, CSS owns placement (select.css), so drop Zag's inline positioning styles
-      // entirely; leaving them would fight the browser's positioner.
-      props: () => {
-        const props = api.getPositionerProps();
-        return anchorName ? stripPositioningStyle(props) : props;
-      },
-      after: (node) => {
-        // Re-asserted HERE, not once at mount: the positioner's patch rewrites its inline style on
-        // every render, dropping the hook set earlier. Stamping right after keeps it stable across
-        // every open/close; idempotent, so it is free to repeat.
-        if (anchorName) unbindAnchor = bindAnchor(trigger, node, anchorName);
-      },
+      props: () => api.getPositionerProps(),
     },
     { part: "content", node: () => content, props: () => api.getContentProps(), events: true },
 
@@ -227,5 +259,24 @@
 
   bindParts(bindings);
 
-  onDestroy(() => unbindAnchor?.());
+  /*
+   * THE VIRTUALIZED ROWS, mounted directly onto `content` - see `SelectItems.svelte`'s own banner
+   * for why that needs a second `mount()` rather than a template slot here.
+   */
+  if (itemsScriptId) {
+    content.style.position = "relative";
+    mount(SelectItems, {
+      target: content,
+      props: {
+        items,
+        scrollElement: content,
+        getApi: () => api,
+        /* `--size-touch-target` (`primitives/_size.scss`): every item's own `min-block-size`. */
+        estimateItemSize: 44,
+        onReady: (scrollToIndex) => {
+          scrollToIndexRef = scrollToIndex;
+        },
+      },
+    });
+  }
 </script>

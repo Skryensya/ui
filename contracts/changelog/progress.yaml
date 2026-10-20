@@ -9,7 +9,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Muestra cuánto avanzó una tarea con duración conocida.
+      body: "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple."
     en:
       title: First release
-      body: Shows how much of a task with known duration is complete.
+      body: "Published for the first time, with its contract, a React binding and a stylesheet for plain markup."

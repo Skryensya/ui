@@ -27,6 +27,8 @@ import type { ComponentContract, OptionValue } from "./contract.js";
  */
 export const comparisonTableParts = {
   root: "sk-comparison-table",
+  /** The box a wide comparison scrolls inside. See `ComparisonTableScroll`'s own comment below. */
+  scroll: "sk-comparison-table-scroll",
   caption: "sk-comparison-table__caption",
   /** The top-left cell. It names the row headers' column and is visually hidden. */
   corner: "sk-comparison-table__corner",
@@ -68,6 +70,28 @@ export const comparisonTableContract = {
   },
 
   signatures: {
+    /*
+     * The box a wide comparison scrolls inside, same reasoning as `Table`'s own `TableScroll`:
+     * `table-layout` stays `auto` so the content columns size to their text, which means `overflow`
+     * and `max-inline-size` on the `<table>` itself cannot cap it in the real layout engines - a
+     * 4-column comparison measured at 816px inside a 229px container regardless of what the
+     * table's own stylesheet declared. A flex or grid parent also defaults to `min-size: auto`, so
+     * a wide table pushes that column open rather than scrolling, which is the other half of why
+     * this is a separate box and not a class on the table.
+     *
+     * Opt-in, not automatic: a two-column comparison in a wide column never needs it, and baking a
+     * wrapper into `ComparisonTable` itself would change its root element for every consumer,
+     * including the ones who never asked for scrolling.
+     */
+    ComparisonTableScroll: {
+      intent: ["scrollable-comparison-table", "wide-comparison", "comparison-that-does-not-blow-the-layout"],
+      host: { element: "div" },
+      options: [],
+      slots: { children: { accepts: "signature", of: ["ComparisonTable"], required: true } },
+      template: { element: "div", part: "scroll", host: true, slot: "children" },
+      react: { from: "@skryensya/react/comparison-table", name: "ComparisonTableScroll" },
+    },
+
     ComparisonTable: {
       intent: ["compare-two-to-four-things", "feature-comparison", "when-to-use-which", "side-by-side"],
       host: { element: "table" },

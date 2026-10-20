@@ -24,6 +24,21 @@ describe("Stat", () => {
     expect(ui.getByText("48.200 €")).toBeTruthy();
   });
 
+  it("applies suffix/locale/fractionDigits to a plain numeric value, with no separate count", () => {
+    // `count` exists for the authored-text/vanilla path (a pre-formatted `value` string plus the
+    // raw number beside it); a plain numeric `value` is the documented React path on its own and
+    // must not need a redundant `count` just to get its own suffix/locale/fractionDigits applied.
+    const ui = render(<Stat animate={false} fractionDigits={1} label="Usage" suffix="%" value={82} />);
+    expect(ui.container.querySelector(".sk-stat__value")?.textContent).toBe("82.0%");
+  });
+
+  it("applies suffix to a plain numeric value while animated, with no separate count", () => {
+    const ui = render(
+      <Stat animate={{ duration: 0, whenVisible: false }} label="Usage" suffix="%" value={82} />,
+    );
+    expect(ui.container.querySelector(".sk-stat__value-sizer")?.textContent).toBe("82%");
+  });
+
   it("counts a numeric value up when animate is on", () => {
     vi.stubGlobal(
       "IntersectionObserver",

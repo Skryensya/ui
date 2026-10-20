@@ -31,6 +31,7 @@ import { nodeAt, type TreePath } from "./react-demos/usage-tree-path";
 import { storybookDocsUrl, storybookReactUrl, storybookVanillaUrl } from "../lib/navigation";
 import { resolveStorybookStory } from "../lib/storybook-stories";
 import { getLocale, useTranslations } from "../i18n";
+import { previewId } from "../lib/preview-ids";
 import "@skryensya/core/components/segmented.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/menu.css";
@@ -55,6 +56,8 @@ interface Props {
   toggleLabel?: string;
   /** The control's accessible name when `variants` is set. */
   variantsLabel?: string;
+  /** The rendered specimen's accessible group name, separate from the property control. */
+  specimenLabel?: string;
   /** Where `optionName` lives when it is not on the root: a path of keys and indices (`usage-tree-path.ts`). */
   target?: TreePath;
   /** The preview's heading. Omit it when the page already titled this example. */
@@ -63,6 +66,8 @@ interface Props {
   description?: string;
   /** One sentence under a fixed example, inside the card. Trusted HTML. */
   caption?: string;
+  /** Add a reset control for a stateful example that can be restored to its initial state. */
+  reload?: boolean;
   /** What each value is for, under the controlled example for the one chosen. Trusted HTML; optional per value. */
   explain?: Record<string, string>;
   /** A segment's label per value. Absent, the value itself, capitalized ("neutral" -> "Neutral"). */
@@ -114,11 +119,13 @@ const {
   variants,
   initialVariant,
   variantsLabel,
+  specimenLabel,
   toggleLabel,
   target = [],
   title,
   description,
   caption,
+  reload = false,
   explain,
   labels,
   stageMinBlockSize,
@@ -269,6 +276,18 @@ const titleParts = (() => {
   const colon = title?.indexOf(": ") ?? -1;
   return title && colon > 0 ? { name: title.slice(0, colon), note: title.slice(colon) } : null;
 })();
+/* The site-wide number the debug panel's "Preview ids" check shows (lib/preview-ids.ts). */
+/* A card with nothing to name it by (no title, label or option) is told apart by its content, or every unnamed card on a page would share one number. */
+const unnamed = !title && !label && !optionName;
+const previewNumber = previewId(
+  Astro.url.pathname,
+  title,
+  label,
+  optionName,
+  storybookTitle,
+  storybookStory,
+  unnamed ? [...JSON.stringify([authoredTree, variants, css])].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7).toString(36) : undefined,
+);
 const id = title ? `usage-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}` : undefined;
 /* A scope per card, stable across builds: the same tree and css always get the same attribute. */
 /* The frame's settings, when the example renders in one. Its script is COMPILED here: the frame runs
@@ -283,7 +302,7 @@ const scope = css && !asPlayground ? `u${[...(css + JSON.stringify(tree))].reduc
 ---
 
 <section
-  class:list={["sk-preview-section", (optionName || variants || asPlayground) && "sk-usage-preview--controlled", (framedStage || asPlayground) && viewport === "overlay" && "sk-preview-section--overlay-stage"]}
+  class:list={["sk-preview-section", (optionName || variants || asPlayground) && "sk-usage-preview--controlled", asPlayground && !optionName && !variants && "sk-usage-preview--framed", (framedStage || asPlayground) && viewport === "overlay" && "sk-preview-section--overlay-stage"]}
   data-width={width}
   {...(id ? { "aria-labelledby": id } : label ? { "aria-label": label } : {})}
 >
@@ -296,12 +315,13 @@ const scope = css && !asPlayground ? `u${[...(css + JSON.stringify(tree))].reduc
   {scope && !framedStage && <style is:inline set:html={`[data-usage-scope="${scope}"] { ${css} }`} />}
   {
     framedStage && bare ? (
-      <div class="sk-component-preview" data-sk-component-preview data-sk-component-preview-chrome="false" data-sk-component-preview-surface="none" {...screenRoot}>
+      <div class="sk-component-preview" data-sk-preview-id={previewNumber} data-sk-component-preview data-sk-component-preview-chrome="false" data-sk-component-preview-surface="none" {...screenRoot}>
         <TreeDemo client:visible tree={tree} measure={measure} frameOptions={frameOptions} />
       </div>
     ) : (
       <div
         class="sk-preview-card"
+        data-sk-preview-id={previewNumber}
         data-usage-scope={framedStage ? undefined : scope}
         style={stageMinBlockSize ? `--sk-preview-card-stage-min-block-size: ${stageMinBlockSize};` : undefined}
       >
@@ -310,6 +330,23 @@ const scope = css && !asPlayground ? `u${[...(css + JSON.stringify(tree))].reduc
             <div class="sk-preview-card__code-menu" set:html={codeMenuMarkup} />
           ) : null
         }
+        {reload && (
+          <button
+            class="sk-button sk-interactive sk-preview-card__reload"
+            type="button"
+            data-appearance="plain"
+            data-variant="ghost"
+            data-tone="neutral"
+            data-size="sm"
+            data-icon-only
+            data-sk-button
+            data-sk-preview-reload
+            aria-label={t("preview.reloadAction")}
+            title={t("preview.reloadAction")}
+          >
+            <span data-sk-icon="refresh" data-sk-icon-size="md" aria-hidden="true"></span>
+          </button>
+        )}
         {
           optionName || variants || asPlayground ? (
             <div
@@ -332,6 +369,7 @@ const scope = css && !asPlayground ? `u${[...(css + JSON.stringify(tree))].reduc
               measure={asPlayground ? measure : undefined}
               labels={segmentLabels}
               controlLabel={variantsLabel ?? title ?? optionName ?? label ?? ""}
+              specimenLabel={specimenLabel}
               explain={explainByValue}
               remountOnChange={remountOnChange}
               keepFrames={keepFrames}
@@ -359,16 +397,47 @@ const scope = css && !asPlayground ? `u${[...(css + JSON.stringify(tree))].reduc
 </section>
 
 <script>
+  import { nextTagSelection } from "../lib/tag-selection";
+
   /* A form inside a static example never submits natively: that would reload the docs page under the reader. */
   document.addEventListener("submit", (event) => {
     if ((event.target as HTMLElement | null)?.closest?.("[data-static-stage]")) event.preventDefault();
   });
 
   /* A link inside an example is part of the specimen, not a way out: it goes nowhere. The card's own links
-     (the code menu's Storybook items) live outside the example and keep working. */
+     (the code menu's Storybook items) live outside the example and keep working, and so do the links that are
+     a component's own control: a Lightbox trigger is an `<a href>` that opens the viewer. This handler runs before
+     the viewer's (it registers at page load), and a prevented click is one the viewer ignores, so it must not
+     touch them: the viewer cancels the navigation itself. */
   const inertLink = (event: Event) => {
-    const link = (event.target as HTMLElement | null)?.closest?.("a[href]");
-    if (link && link.closest(".sk-preview-section") && !link.closest(".sk-preview-card__code-menu")) event.preventDefault();
+    const target = event.target as HTMLElement | null;
+    const reload = target?.closest?.("[data-sk-preview-reload]");
+    if (reload) {
+      reload.closest(".sk-preview-card")?.dispatchEvent(new CustomEvent("sk:preview-reload"));
+      return;
+    }
+    if (event.type === "click") {
+      const toggle = target?.closest<HTMLButtonElement>("button.sk-tag[aria-pressed]");
+      const playground = toggle?.closest<HTMLElement>(".sk-property-playground");
+      const mode = playground?.dataset.skPlaygroundValue;
+      if (toggle && (mode === "single" || mode === "multiple")) {
+        const group = toggle.closest('[role="group"]');
+        const buttons = Array.from(group?.querySelectorAll<HTMLButtonElement>("button.sk-tag[aria-pressed]") ?? []);
+        const index = buttons.indexOf(toggle);
+        if (index < 0) return;
+        const next = nextTagSelection(
+          buttons.map((button) => button.getAttribute("aria-pressed") === "true"),
+          index,
+          mode,
+        );
+        buttons.forEach((button, buttonIndex) => button.setAttribute("aria-pressed", String(next[buttonIndex])));
+        return;
+      }
+    }
+    const link = target?.closest?.("a[href]");
+    if (!link || !link.closest(".sk-preview-section")) return;
+    if (link.closest(".sk-preview-card__code-menu") || link.matches("[data-sk-lightbox-open]")) return;
+    event.preventDefault();
   };
   document.addEventListener("click", inertLink);
   document.addEventListener("auxclick", inertLink);
@@ -398,11 +467,10 @@ const scope = css && !asPlayground ? `u${[...(css + JSON.stringify(tree))].reduc
     padding-block: 0;
   }
 
-  /* A framed example stands alone in the card, with no panel under it, so it is rounded and edged on every
-     corner like the card around it (the chrome-less frame only rounds the start corners, which is
-     right when a source panel is fused below). */
+  /* A framed example stands alone in the card, with no panel under it, so it is rounded on every corner like the card
+     around it (the chrome-less frame only rounds the start corners, which is right when a source panel is fused below).
+     NO BORDER of its own: the card already has one, and a second around the example read as a box inside a box. */
   .sk-usage-preview--controlled :global(.sk-property-playground iframe.sk-component-preview__stage) {
-    border: 1px solid var(--color-border-subtle);
     border-end-start-radius: var(--radius-surface);
     border-end-end-radius: var(--radius-surface);
   }

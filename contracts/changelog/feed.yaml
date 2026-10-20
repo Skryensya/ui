@@ -9,7 +9,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Stream de publicaciones independientes, cada una con su posición anunciada.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: A stream of independent posts, each announced with its own position.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

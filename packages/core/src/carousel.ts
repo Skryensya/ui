@@ -39,12 +39,27 @@ export const carouselAttrs = {
    */
   controls: "data-controls",
   /**
+   * `data-fade-edge` on the root: the track fades its two ends, scroll-aware, with FadeEdge's own
+   * ramp (`fade-edge.css`), so a slide cut by the viewport releases instead of hard-clipping and
+   * each end retires once it is reached. FadeEdge is paint-only composition; the carousel is the
+   * scroller it paints on.
+   */
+  fade: "data-fade-edge",
+  /** `data-indicator="count"` on the root: "2 / 5" in place of the dots. Dots by default. */
+  indicator: "data-indicator",
+  /**
    * `data-mouse-drag="off"` on the root: turn OFF click-and-drag with a mouse. It is ON by default,
    * because a mouse cannot scroll a horizontal track any other way, a vertical wheel scrolls the
    * PAGE, so without drag a desktop pointer has no way through a carousel with no controls.
    * Turn it off for slides whose text people are meant to select: the drag suppresses selection.
    */
   mouseDrag: "data-mouse-drag",
+  /** `data-align` on the root: which edge of the track a slide snaps to. `start` by default. */
+  align: "data-align",
+  /** `data-slides-per-move` on the root: how many slides one step (button, key, snap) travels. 1 by default. */
+  slidesPerMove: "data-slides-per-move",
+  /** `data-snap="proximity"` on the root: a soft snap that lets a drag come to rest between slides. */
+  snap: "data-snap",
 } as const;
 
 export const carouselParts = {
@@ -57,6 +72,8 @@ export const carouselParts = {
    * has to be stoppable (WCAG 2.2.2), so the option and the control are one thing, not two. */
   autoplay: "sk-carousel__autoplay",
   dots: "sk-carousel__dots",
+  /** The page counter ("2 / 5") `data-indicator="count"` draws instead of the dots. */
+  count: "sk-carousel__count",
   dot: "sk-carousel__dot",
 } as const;
 
@@ -86,6 +103,8 @@ export const carouselTranslations = {
   nextTrigger: "Siguiente",
   prevTrigger: "Anterior",
   indicator: (index: number) => `Ir a la diapositiva ${index + 1}`,
+  /** The "2 / 5" counter. */
+  count: (page: number, count: number) => `${page + 1} / ${count}`,
   item: (index: number, count: number) => `${index + 1} de ${count}`,
   autoplayStart: "Reanudar la rotación",
   autoplayStop: "Pausar la rotación",
@@ -110,17 +129,19 @@ export const carouselContract = {
    * Template authors root + track + slides. Prev/next, dots, and autoplay pause are enhancer-
    * injected (or native pseudo-elements until ready); class names stay owned here for CSS.
    */
-  systemOwned: ["controls", "button", "autoplay", "dots", "dot"],
+  systemOwned: ["controls", "button", "autoplay", "dots", "dot", "count"],
   hooks: [
     "--sk-carousel-control-bg",
     "--sk-carousel-control-border",
     "--sk-carousel-control-disabled-fg",
+    "--sk-carousel-control-radius",
     "--sk-carousel-control-fg",
     "--sk-carousel-control-size",
     "--sk-carousel-dot-active-color",
     "--sk-carousel-dot-color",
     "--sk-carousel-dot-gap",
     "--sk-carousel-dot-size",
+    "--sk-carousel-edge-padding",
     "--sk-carousel-gap",
     "--sk-carousel-motion-duration",
     "--sk-carousel-motion-easing",
@@ -157,18 +178,51 @@ export const carouselContract = {
      * bad accident.
      */
     controls: { type: "enum", values: ["auto", "none"], attr: "data-controls" },
+    /** Fade the track's two ends with FadeEdge, so the peeking slide releases instead of hard-clipping. */
+    fade: { type: "boolean", default: false, attr: "data-fade-edge", trueValue: "" },
+    /** What says where you are: one dot per page, or a "2 / 5" counter. */
+    indicator: { type: "enum", values: ["dots", "count"], attr: "data-indicator" },
     /**
      * Click-and-drag with a mouse, ON by default: a mouse cannot scroll a horizontal track any
      * other way. Turn it off for slides whose text people are meant to select.
      */
     mouseDrag: { type: "enum", values: ["on", "off"], attr: "data-mouse-drag" },
+    /**
+     * Which edge of the track a slide comes to rest on, Embla's `align`. `center` is the focused-slide
+     * carousel: pair it with `edgePadding`, or the first and last slide cannot reach the middle.
+     */
+    align: { type: "enum", values: ["start", "center", "end"], attr: "data-align" },
+    /** How many slides one step travels, Embla's `slidesToScroll`. Slides in between are not snap points. */
+    slidesPerMove: { type: "number", min: 1, attr: "data-slides-per-move" },
+    /**
+     * `proximity` snaps only when a drag ends near a slide, so it can come to rest between two: the closest
+     * this carousel gets to Embla's `dragFree`. Absent means `mandatory`: every release lands on a slide.
+     */
+    snap: { type: "enum", values: ["mandatory", "proximity"], attr: "data-snap" },
+    /** Air before the first slide and after the last, as a CSS length. What lets `align="center"` centre the ends. */
+    edgePadding: { type: "string", styleProperty: "--sk-carousel-edge-padding" },
   },
 
   signatures: {
     Carousel: {
       intent: ["carousel", "slider-of-cards", "snap-scroller", "gallery"],
       host: { element: "section" },
-      options: ["loop", "autoplay", "autoplayDelay", "mounted", "slideSize", "orientation", "controls", "mouseDrag"],
+      options: [
+        "loop",
+        "autoplay",
+        "autoplayDelay",
+        "mounted",
+        "slideSize",
+        "orientation",
+        "controls",
+        "indicator",
+        "fade",
+        "mouseDrag",
+        "align",
+        "slidesPerMove",
+        "snap",
+        "edgePadding",
+      ],
       slots: { children: { accepts: "signature", of: ["CarouselSlide"], required: true } },
       template: {
         element: "section",

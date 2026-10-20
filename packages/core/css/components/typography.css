@@ -98,6 +98,7 @@
     font-weight: var(--sk-heading-font-weight);
     line-height: var(--sk-heading-line-height);
     text-wrap: balance;
+    overflow-wrap: anywhere;
   }
 
   /* FLUSH, explicit opt-in for a heading that must discard contextual block air. Use when it is the
@@ -177,6 +178,7 @@
      */
     inline-size: fit-content;
     max-inline-size: 100%;
+    overflow-wrap: anywhere;
   }
 
   /* Brand / accent paint, the colored call-out in a paragraph. */

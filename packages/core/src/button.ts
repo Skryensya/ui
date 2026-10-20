@@ -7,6 +7,13 @@ export const buttonParts = {
   pre: "sk-button__pre",
   /** Trailing slot: icon (or other affordance) after the label. */
   post: "sk-button__post",
+  /** The label itself, wrapped so `[data-loading]` can hide it selectively - plain text has no
+   *  element of its own to select. */
+  label: "sk-button__label",
+  /** The `loading` spinner. Always in the DOM; `[data-loading]` is what shows it. */
+  loader: "sk-button__loader",
+  /** The `loadingText` substitute for the label. Only in the DOM when `loadingText` is given. */
+  loadingLabel: "sk-button__loading-label",
 } as const;
 
 export type ButtonPart = keyof typeof buttonParts;
@@ -31,6 +38,9 @@ export const buttonContract = {
     root: buttonParts.root,
     pre: buttonParts.pre,
     post: buttonParts.post,
+    label: buttonParts.label,
+    loader: buttonParts.loader,
+    loadingLabel: buttonParts.loadingLabel,
   },
   hooks: [
     "--sk-button-accent",
@@ -202,6 +212,32 @@ export const buttonContract = {
       attr: "disabled",
       trueValue: "",
     },
+    /*
+     * BUSY, NOT JUST DISABLED: a button that triggered something slow (export a PDF) and is
+     * waiting on it. Implies `disabled` (the attrsWhen below), so a second click cannot start a
+     * second export, and carries `aria-busy` so a screen reader hears the button itself is working,
+     * not merely unavailable. The spinner is systemOwned (compose), not a `pre`/`post` the author
+     * swaps in by hand: it takes the `pre` icon's place inline (button.css), the same reserved
+     * position, rather than floating over the label - a control that LOOKS inert but is secretly
+     * doing something read as broken on the break harness. The label stays put unless `loadingText`
+     * overrides it (below); either way the button is free to reflow, since its content genuinely
+     * changed, not merely its paint. Action only, the same reasoning `pressed` already states: a
+     * link does not wait on anything this component can see.
+     */
+    loading: {
+      type: "boolean",
+      default: false,
+      attr: "data-loading",
+      trueValue: "",
+    },
+    /*
+     * What the label says WHILE busy, when the plain label on its own does not say enough ("Save"
+     * mid-export reads fine without one; "Delete 12 items" does not, since the count is the part a
+     * reader needs confirmed is still in flight). Text only, no attribute: `textFromOption`
+     * (button.css's own `[data-loading]` rule) renders it, and omitting it is the common case - the
+     * plain label keeps showing beside the spinner instead.
+     */
+    loadingText: { type: "string" },
   },
 
   signatures: {
@@ -219,8 +255,13 @@ export const buttonContract = {
         "pressed",
         "disabled",
         "type",
+        "loading",
+        "loadingText",
       ],
-      compose: [{ of: "icon", systemOwned: true }],
+      compose: [
+        { of: "icon", systemOwned: true },
+        { of: "loader", sheets: ["@skryensya/core/components/loader.css"], systemOwned: true },
+      ],
       hitTesting: { childrenNone: ["Icon"] },
       /*
        * Native form association and a11y names the contract does not own as options. `type` is an
@@ -262,11 +303,25 @@ export const buttonContract = {
         host: true,
         // The announcement, beside the behaviour: `disabled` stops the click, `aria-disabled` is
         // what a screen reader reads on a control it can still land on.
-        attrsWhen: [{ option: "disabled", given: true, attrs: { "aria-disabled": "true" } }],
+        attrsWhen: [
+          { option: "disabled", given: true, attrs: { "aria-disabled": "true" } },
+          { option: "loading", given: true, attrs: { "aria-disabled": "true", "aria-busy": "true", disabled: "" } },
+        ],
         children: [
           { element: "span", part: "pre", whenGiven: "pre", slot: "pre" },
-          { slot: "children" },
+          /* Wrapped (unlike every other slot's own `children`) so `[data-loading]` has an element
+             to hide: plain text has none, and that gap is what let a loading label sit, fully
+             visible, UNDER the old overlay spinner (the break harness's actual "raro" case). */
+          { element: "span", part: "label", slot: "children" },
           { element: "span", part: "post", whenGiven: "post", slot: "post" },
+          /* Always in the DOM, like the icon-swap `[data-state]` pattern elsewhere (Select,
+             Details): `[data-loading]` is what shows it, never a conditional template branch.
+             Sized by button.css off the host's own `data-size`, the same tiers `.sk-icon` uses -
+             no `data-size` written here, unlike `pre`/`post`'s icons, so there is nothing for an
+             attribute selector to race against. */
+          { element: "span", part: "loader", also: ["sk-loader"], attrs: { "aria-hidden": "true" } },
+          /* Only exists when `loadingText` is given; the plain label above keeps showing otherwise. */
+          { element: "span", part: "loadingLabel", whenGiven: "loadingText", textFromOption: "loadingText" },
         ],
       },
       react: { from: "@skryensya/react/button", name: "Button" },

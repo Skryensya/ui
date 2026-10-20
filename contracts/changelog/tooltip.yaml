@@ -9,7 +9,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Añade una explicación corta al hover o foco de un control.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Adds a short explanation on hover or keyboard focus.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

@@ -129,14 +129,6 @@
       "types": "./src/scroll-expand.ts",
       "default": "./src/scroll-expand.ts"
     },
-    "./dock-controller": {
-      "types": "./src/dock-controller.ts",
-      "default": "./src/dock-controller.ts"
-    },
-    "./dock": {
-      "types": "./src/dock.ts",
-      "default": "./src/dock.ts"
-    },
     "./scroll-stack": {
       "types": "./src/scroll-stack.ts",
       "default": "./src/scroll-stack.ts"
@@ -221,11 +213,6 @@
       "types": "./src/changelog.ts",
       "default": "./src/changelog.ts"
     },
-    "./chart": {
-      "types": "./src/chart.ts",
-      "import": "./src/chart.ts",
-      "default": "./src/chart.ts"
-    },
     "./button": {
       "types": "./src/button.ts",
       "default": "./src/button.ts"
@@ -262,10 +249,6 @@
     "./machines": {
       "types": "./src/machines.ts",
       "default": "./src/machines.ts"
-    },
-    "./folder": {
-      "types": "./src/folder.ts",
-      "default": "./src/folder.ts"
     },
     "./form-field": {
       "types": "./src/form-field.ts",
@@ -338,10 +321,6 @@
     "./image-frame": {
       "types": "./src/image-frame.ts",
       "default": "./src/image-frame.ts"
-    },
-    "./sticker": {
-      "types": "./src/sticker.ts",
-      "default": "./src/sticker.ts"
     },
     "./media-overlay": {
       "types": "./src/media-overlay.ts",
@@ -746,6 +725,7 @@
     "@zag-js/number-input": "^1.43.3",
     "@zag-js/password-input": "1.43.3",
     "@zag-js/pin-input": "^1.43.3",
+    "@zag-js/popper": "1.43.3",
     "@zag-js/radio-group": "^1.43.3",
     "@zag-js/rating-group": "^1.43.3",
     "@zag-js/select": "^1.43.3",

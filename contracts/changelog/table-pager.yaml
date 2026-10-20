@@ -9,7 +9,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Pagina en el cliente las filas de una tabla, con tamaño de página opcional.
+      body: "Se publica por primera vez, con su contrato y un montaje en Vanilla."
     en:
       title: First release
-      body: Pages a table's rows on the client, with an optional page size.
+      body: "Published for the first time, with its contract and a Vanilla mount."

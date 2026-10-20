@@ -17,6 +17,9 @@ const ROOT = "[data-docs-not-found]";
 const PATH = "[data-docs-not-found-path]";
 const PANEL = "[data-docs-not-found-suggestions]";
 const LIST = "[data-docs-not-found-list]";
+const SEARCH = "[data-docs-not-found-search]";
+/* The header already carries the palette's trigger; this page's own button just presses it. */
+const PALETTE = "[data-sk-command-palette-open]:not([data-docs-not-found-search])";
 
 /**
  * The part of a failed path worth searching for: the last segment, minus the extension and the
@@ -50,6 +53,10 @@ export function initNotFound(): void {
   const root = document.querySelector<HTMLElement>(ROOT);
   if (!root) return;
 
+  document.querySelector<HTMLElement>(SEARCH)?.addEventListener("click", () => {
+    document.querySelector<HTMLElement>(PALETTE)?.click();
+  });
+
   const path = document.querySelector<HTMLElement>(PATH);
   /* `pathname` alone: a query string or a hash is not what failed to resolve, and echoing one back
      would put whatever the URL carried onto the page. `textContent`, never markup, for the same
@@ -70,27 +77,31 @@ export function initNotFound(): void {
       const hits = suggest(index, queryFromPath(window.location.pathname));
       if (hits.length === 0) return;
 
+      /* The placeholder row the List needed to be valid goes; each hit is the kit's own ListItemLink anatomy
+         (item > action > content > title, with the section as `trailing`). */
+      list.replaceChildren();
       for (const hit of hits) {
         const item = document.createElement("li");
-        item.className = "sk-nav-list__item";
+        item.className = "sk-list__item";
 
         const link = document.createElement("a");
-        link.className = "sk-nav-list__link sk-interactive";
+        link.className = "sk-list__action sk-interactive";
         link.href = hit.href;
 
-        /* The label in its own part, as `SidebarNav` writes it: the pattern's CSS lays the link out
-         * as label + trailing, so bare text in the link is not the same anatomy. */
-        const label = document.createElement("span");
-        label.className = "sk-nav-list__label";
-        label.textContent = hit.label;
-        link.append(label);
+        const content = document.createElement("span");
+        content.className = "sk-list__content";
+        const title = document.createElement("span");
+        title.className = "sk-list__title";
+        title.textContent = hit.label;
+        content.append(title);
+        link.append(content);
 
-        /* The section a hit belongs to, as the list's own trailing slot: two pages can share a name
-         * across sections ("Overview"), and the trailing text is what tells them apart. */
+        /* The section a hit belongs to: two pages can share a name across sections ("Overview"), and the
+           trailing text is what tells them apart. */
         const where = hit.section ?? hit.group;
         if (where) {
           const trailing = document.createElement("span");
-          trailing.className = "sk-nav-list__trailing";
+          trailing.className = "sk-list__trailing";
           trailing.textContent = where;
           link.append(trailing);
         }

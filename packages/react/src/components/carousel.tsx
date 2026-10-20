@@ -7,6 +7,8 @@ import {
   type CarouselGotoDetail,
 } from "@skryensya/core/carousel";
 import type { OptionValue } from "@skryensya/core/contract";
+import { fadeEdgeAttrs } from "@skryensya/core/fade-edge";
+import { watchFadeEdge } from "@skryensya/core/fade-edge-dom";
 import { carousel } from "@skryensya/core/machines";
 import { prefersReducedMotion as reducedMotion } from "@skryensya/core/reduced-motion";
 import { normalizeProps, useMachine } from "@zag-js/react";
@@ -32,6 +34,14 @@ const { mounted: mountedOption } = carouselContract.options;
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
+/*
+ * One `<button>` per slide, with no cap, rendered a thousand-slide control rail ~2,416px wide -
+ * found as a real break, not a taste call. The contract already offers `indicator="count"` ("2 / 5")
+ * as the built-in alternative to dots; past this many pages, nothing reads a wall of dots as
+ * navigation anyway, so the count display takes over regardless of which indicator was asked for.
+ */
+const MAX_DOTS = 20;
+
 export type CarouselHandle = {
   /** Snap to a page index. Dispatches the same goto command any consumer can dispatch. */
   snapTo: (index: number) => void;
@@ -48,11 +58,23 @@ export type CarouselProps = HTMLAttributes<HTMLElement> & {
   autoplay?: boolean | number;
   orientation?: OptionValue<typeof carouselContract.options.orientation>;
   controls?: OptionValue<typeof carouselContract.options.controls>;
+  /** Fade the track's two ends with FadeEdge (needs `@skryensya/core/components/fade-edge.css`). */
+  fade?: boolean;
+  /** What says where you are: one dot per page (default), or a "2 / 5" counter. */
+  indicator?: OptionValue<typeof carouselContract.options.indicator>;
   mouseDrag?: OptionValue<typeof carouselContract.options.mouseDrag>;
   /** Set false to leave the native CSS-only scroll-snap baseline unenhanced. */
   mounted?: boolean;
   /** CSS length for each slide, e.g. `min(42%, 14rem)`. */
   slideSize?: string;
+  /** Which edge a slide comes to rest on. `center` wants `edgePadding` so the ends can reach the middle. */
+  align?: OptionValue<typeof carouselContract.options.align>;
+  /** How many slides one step travels. The slides in between are not snap points. */
+  slidesPerMove?: number;
+  /** `proximity` lets a drag come to rest between slides, the closest this gets to a free drag. */
+  snap?: OptionValue<typeof carouselContract.options.snap>;
+  /** Air before the first slide and after the last, as a CSS length. */
+  edgePadding?: string;
 };
 
 type CarouselApi = ReturnType<typeof carousel.connect>;
@@ -61,6 +83,8 @@ type CarouselApi = ReturnType<typeof carousel.connect>;
  * slide is the plain scroll-snap item the zero-JS baseline draws. */
 const CarouselApiContext = createContext<CarouselApi | null>(null);
 const CarouselIndexContext = createContext<number>(-1);
+/* What every slide needs from the root: where it comes to rest, and whether it is a stop at all. */
+const CarouselSnapContext = createContext<{ align: OptionValue<typeof carouselContract.options.align>; step: number }>({ align: "start", step: 1 });
 
 /*
  * CAROUSEL, the same `@zag-js/carousel` machine the vanilla enhancer runs, configured the same way
@@ -93,10 +117,28 @@ function useCarouselHandle(handleRef: InnerProps["handleRef"], rootRef: React.Re
   );
 }
 
-function rootAttributes({ autoplay, controls, loop, mouseDrag, orientation }: InnerProps) {
+/* The two lengths the sheet reads, merged under the consumer's own style. */
+function rootStyle({ edgePadding, slideSize, style }: InnerProps): CSSProperties | undefined {
+  if (!slideSize && !edgePadding) return style;
   return {
+    ...style,
+    ...(slideSize ? { "--sk-carousel-slide-size": slideSize } : {}),
+    ...(edgePadding ? { "--sk-carousel-edge-padding": edgePadding } : {}),
+  } as CSSProperties;
+}
+
+/* One step travels `slidesPerMove` slides, so only every Nth slide is a stop. */
+const stepOf = (slidesPerMove: number | undefined) => (slidesPerMove && slidesPerMove > 1 ? Math.floor(slidesPerMove) : 1);
+
+function rootAttributes({ align, autoplay, controls, fade, indicator, loop, mouseDrag, orientation, slidesPerMove, snap }: InnerProps) {
+  return {
+    "data-align": align,
+    "data-slides-per-move": slidesPerMove,
+    "data-snap": snap,
     "data-autoplay": typeof autoplay === "number" ? autoplay : autoplay ? "" : undefined,
     "data-controls": controls,
+    "data-indicator": indicator,
+    "data-fade-edge": fade ? "" : undefined,
     "data-loop": loop ? "" : undefined,
     "data-mouse-drag": mouseDrag,
     "data-orientation": orientation,
@@ -104,8 +146,25 @@ function rootAttributes({ autoplay, controls, loop, mouseDrag, orientation }: In
 }
 
 function StaticCarousel(inner: InnerProps) {
-  const { autoplay, children, className, controls, handleRef, loop, mouseDrag, orientation, slideSize, style, ...props } =
-    inner;
+  const {
+    align: _align,
+    autoplay: _autoplay,
+    children,
+    className,
+    controls: _controls,
+    fade: _fade,
+    indicator: _indicator,
+    edgePadding: _edgePadding,
+    handleRef,
+    loop: _loop,
+    mouseDrag: _mouseDrag,
+    orientation: _orientation,
+    slideSize: _slideSize,
+    slidesPerMove: _slidesPerMove,
+    snap: _snap,
+    style: _style,
+    ...props
+  } = inner;
   const rootRef = useRef<HTMLElement>(null);
   useCarouselHandle(handleRef, rootRef);
 
@@ -115,7 +174,7 @@ function StaticCarousel(inner: InnerProps) {
       {...rootAttributes(inner)}
       className={cx(carouselParts.root, className)}
       ref={rootRef}
-      style={slideSize ? { ...style, "--sk-carousel-slide-size": slideSize } as CSSProperties : style}
+      style={rootStyle(inner)}
     >
       {/* A div, not a <ul>: the machine gives each slide role="group", which takes it out of the
           list and leaves a list with no list items. */}
@@ -126,12 +185,37 @@ function StaticCarousel(inner: InnerProps) {
 
 
 function MountedCarousel(inner: InnerProps) {
-  const { autoplay, children, className, controls, dir, handleRef, id, loop, mouseDrag, orientation, slideSize, style, ...props } =
-    inner;
+  const {
+    align,
+    autoplay,
+    children,
+    className,
+    controls,
+    dir,
+    fade,
+    indicator,
+    edgePadding: _edgePadding,
+    handleRef,
+    id,
+    loop,
+    mouseDrag,
+    orientation,
+    slideSize: _slideSize,
+    slidesPerMove,
+    snap,
+    style: _style,
+    ...props
+  } = inner;
   const generatedId = useId();
   const rootId = id ?? generatedId;
   const rootRef = useRef<HTMLElement>(null);
   useCarouselHandle(handleRef, rootRef);
+  const trackRef = useRef<HTMLDivElement>(null);
+  // FadeEdge paints on the scroller itself: the track. The watcher keeps the retired end honest.
+  useEffect(() => {
+    const track = trackRef.current;
+    return fade && track ? watchFadeEdge(track) : undefined;
+  }, [fade]);
 
   const slides = Children.toArray(children).filter(isValidElement);
   const ids = {
@@ -165,6 +249,9 @@ function MountedCarousel(inner: InnerProps) {
     allowMouseDrag: mouseDrag !== "off",
     autoSize: true,
     spacing: "var(--sk-carousel-gap)",
+    padding: "var(--sk-carousel-edge-padding)",
+    snapType: snap === "proximity" ? "proximity" : "mandatory",
+    slidesPerMove: stepOf(slidesPerMove),
     translations: carouselTranslations,
   });
   const api = carousel.connect(service, normalizeProps);
@@ -256,52 +343,66 @@ function MountedCarousel(inner: InnerProps) {
       data-sk-carousel=""
       data-sk-carousel-ready={ready ? "true" : undefined}
       ref={rootRef}
-      style={{
-        ...(rootProps.style as CSSProperties),
-        ...style,
-        ...(slideSize ? { "--sk-carousel-slide-size": slideSize } : null),
-      } as CSSProperties}
+      style={{ ...(rootProps.style as CSSProperties), ...rootStyle(inner) }}
     >
       <CarouselApiContext.Provider value={api}>
-        <div {...api.getItemGroupProps()} className={carouselParts.track}>
-          {slides.map((slide, index) => (
-            <CarouselIndexContext.Provider key={slide.key ?? index} value={index}>
-              {slide}
-            </CarouselIndexContext.Provider>
-          ))}
-        </div>
+        <CarouselSnapContext.Provider value={{ align: align ?? "start", step: stepOf(slidesPerMove) }}>
+          <div
+            {...api.getItemGroupProps()}
+            {...(fade ? { [fadeEdgeAttrs.direction]: "horizontal", [fadeEdgeAttrs.scrollAware]: "" } : {})}
+            className={fade ? `${carouselParts.track} sk-fade-edge` : carouselParts.track}
+            ref={trackRef}
+          >
+            {slides.map((slide, index) => (
+              <CarouselIndexContext.Provider key={slide.key ?? index} value={index}>
+                {slide}
+              </CarouselIndexContext.Provider>
+            ))}
+          </div>
+        </CarouselSnapContext.Provider>
       </CarouselApiContext.Provider>
       {showControls ? (
         <div {...api.getControlProps()} className={carouselParts.controls}>
-          <button {...api.getPrevTriggerProps()} className={`${carouselParts.button} sk-interactive`}>
-            <Icon name="chevron-left" size="sm" />
+          <button {...api.getPrevTriggerProps()} className={`${carouselParts.button} sk-button sk-interactive`} data-icon-only="" data-side="start" data-size="sm" data-tone="neutral" data-variant="soft">
+            <Icon name="chevron-left" size="md" />
           </button>
-          <div {...api.getIndicatorGroupProps()} className={carouselParts.dots}>
-            {api.pageSnapPoints.map((_, index) => (
-              <button
-                {...api.getIndicatorProps({ index })}
-                aria-current={index === api.page ? "true" : undefined}
-                className={`${carouselParts.dot} sk-interactive`}
-                key={index}
-              />
-            ))}
-          </div>
-          <button {...api.getNextTriggerProps()} className={`${carouselParts.button} sk-interactive`}>
-            <Icon name="chevron-right" size="sm" />
+          {indicator === "count" || api.pageSnapPoints.length > MAX_DOTS ? (
+            <span className={carouselParts.count}>{carouselTranslations.count(api.page, api.pageSnapPoints.length)}</span>
+          ) : (
+            <div {...api.getIndicatorGroupProps()} className={carouselParts.dots}>
+              {api.pageSnapPoints.map((_, index) => (
+                <button
+                  {...api.getIndicatorProps({ index })}
+                  aria-current={index === api.page ? "true" : undefined}
+                  className={`${carouselParts.dot} sk-interactive`}
+                  key={index}
+                />
+              ))}
+            </div>
+          )}
+          <button {...api.getNextTriggerProps()} className={`${carouselParts.button} sk-button sk-interactive`} data-icon-only="" data-side="end" data-size="sm" data-tone="neutral" data-variant="soft">
+            <Icon name="chevron-right" size="md" />
           </button>
-          {/* The glyph is CSS, drawn from `data-pressed`. Its state and label follow the reader's last
+          {/* Both glyphs are drawn and CSS shows one from `data-pressed`. Its state and label follow the reader's last
               explicit choice, not Zag's momentary `isPlaying` (see `Carousel.svelte`). */}
           {wantsAutoplay ? (
             <button
               {...api.getAutoplayTriggerProps()}
               aria-label={desiredPlaying ? carouselTranslations.autoplayStop : carouselTranslations.autoplayStart}
-              className={`${carouselParts.button} ${carouselParts.autoplay} sk-interactive`}
+              className={`${carouselParts.button} ${carouselParts.autoplay} sk-button sk-interactive`}
+              data-icon-only=""
+              data-size="sm"
+              data-tone="neutral"
+              data-variant="soft"
               data-pressed={desiredPlaying ? "" : undefined}
               onClick={(event) => {
                 if (event.defaultPrevented) return;
                 setDesiredPlaying((playing) => !playing);
               }}
-            />
+            >
+              <span data-glyph="pause"><Icon name="pause" size="md" /></span>
+              <span data-glyph="play"><Icon name="play" size="md" /></span>
+            </button>
           ) : null}
         </div>
       ) : null}
@@ -317,15 +418,19 @@ export type CarouselSlideProps = HTMLAttributes<HTMLDivElement> & {
 export function CarouselSlide({ children, className, ...props }: CarouselSlideProps) {
   const api = useContext(CarouselApiContext);
   const index = useContext(CarouselIndexContext);
-  const itemProps = api && index >= 0 ? api.getItemProps({ index }) : null;
+  const { align, step } = useContext(CarouselSnapContext);
+  const itemProps = api && index >= 0 ? api.getItemProps({ index, snapAlign: align }) : null;
+  const isStop = index % step === 0;
   return (
     <div
       {...props}
       {...itemProps}
       className={cx(carouselParts.slide, className)}
+      /* A slide between two stops (`slidesPerMove` above 1) is marked, and the sheet takes its snap away. */
+      data-no-snap={itemProps && !isStop ? "" : undefined}
       /* `scroll-snap-align` first, as the enhancer seeds it before the machine's first measure: that
          measure reads the computed value, and a consumer may mount without the system's sheet. */
-      style={itemProps ? { scrollSnapAlign: "start", ...(itemProps.style as CSSProperties), ...props.style } : props.style}
+      style={itemProps ? { scrollSnapAlign: isStop ? align : "none", ...(itemProps.style as CSSProperties), ...props.style } : props.style}
     >
       {children}
     </div>

@@ -28,6 +28,11 @@
       color-mix(in oklch, var(--color-text-primary) 40%, transparent),
       color-mix(in oklch, var(--color-bg-canvas) 80%, transparent)
     );
+    /* Set to `0s` for a close with no animated exit, the same escape hatch dialog-stack.css gives
+     * its own body: indirection, not a direct reference to the shared `--motion-exit-duration`,
+     * which every OTHER component's exit also reads. */
+    --sk-dialog-exit-duration: var(--motion-exit-duration);
+    --sk-dialog-exit-easing: var(--motion-exit-easing);
 
     box-sizing: border-box;
     inline-size: var(--sk-dialog-inline-size);
@@ -47,12 +52,12 @@
     translate: 0 calc(-1 * var(--motion-exit-distance));
     filter: blur(var(--motion-materialize-blur));
     transition:
-      opacity var(--motion-exit-duration) var(--motion-exit-easing),
-      scale var(--motion-exit-duration) var(--motion-exit-easing),
-      translate var(--motion-exit-duration) var(--motion-exit-easing),
-      filter var(--motion-exit-duration) var(--motion-exit-easing),
-      overlay var(--motion-exit-duration) var(--motion-exit-easing) allow-discrete,
-      display var(--motion-exit-duration) var(--motion-exit-easing) allow-discrete;
+      opacity var(--sk-dialog-exit-duration) var(--sk-dialog-exit-easing),
+      scale var(--sk-dialog-exit-duration) var(--sk-dialog-exit-easing),
+      translate var(--sk-dialog-exit-duration) var(--sk-dialog-exit-easing),
+      filter var(--sk-dialog-exit-duration) var(--sk-dialog-exit-easing),
+      overlay var(--sk-dialog-exit-duration) var(--sk-dialog-exit-easing) allow-discrete,
+      display var(--sk-dialog-exit-duration) var(--sk-dialog-exit-easing) allow-discrete;
   }
 
   .sk-dialog[open] {
@@ -82,8 +87,8 @@
     background: var(--sk-dialog-backdrop-bg);
     opacity: 0;
     transition:
-      opacity var(--motion-exit-duration) var(--motion-exit-easing),
-      overlay var(--motion-exit-duration) var(--motion-exit-easing) allow-discrete;
+      opacity var(--sk-dialog-exit-duration) var(--sk-dialog-exit-easing),
+      overlay var(--sk-dialog-exit-duration) var(--sk-dialog-exit-easing) allow-discrete;
   }
 
   .sk-dialog[open]::backdrop {
@@ -124,6 +129,9 @@
   .sk-dialog__title {
     min-inline-size: 0;
     margin: 0;
+    /* Shrinkable (`min-inline-size: 0`) isn't wrappable on its own for an unbroken long title
+       (a long compound word, an email) - it still ran into the close button without this. */
+    overflow-wrap: anywhere;
   }
 
   /* First content cluster (title alone, or eyebrow + title) fills; the close form stays end-aligned. */

@@ -1,0 +1,24 @@
+/*
+ * MODE: high contrast, appearance ink.
+ *
+ * Its own file, not part of `hc.scss`: that one is the token override set and the validator holds it
+ * to "only mode-aware base tokens". This re-points a component hook, which is a different job.
+ */
+@layer overrides {
+  /*
+   * BRUTALIST DRAWS ITS EDGE AND ITS OFFSET IN WHITE ON A DARK HIGH-CONTRAST PAGE. Every component
+   * derives that ink from the same `--brutalist-black` (the system's shadow at full alpha), which on
+   * a black page is black on black: the hard edge and the offset vanish. Declared here, in the layer
+   * above the components, so one rule retunes all of them and none has to know; the face keeps its
+   * own surface. Light mode keeps what each component derives.
+   */
+  [data-contrast="high"] [data-appearance="brutalist"] {
+    --brutalist-black: light-dark(oklch(from var(--shadow-lg) l c h / 1), var(--palette-white));
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast]) [data-appearance="brutalist"] {
+      --brutalist-black: light-dark(oklch(from var(--shadow-lg) l c h / 1), var(--palette-white));
+    }
+  }
+}

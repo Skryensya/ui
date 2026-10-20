@@ -1,0 +1,9 @@
+---
+if (import.meta.env.PROD) return new Response(null, { status: 404 });
+import "@skryensya/core/components/menubar.css";
+import "@skryensya/core/components/menu.css";
+import "@skryensya/core/patterns/anchored.css";
+import { MenubarBreak } from "../../components/react-demos/debug-menubar-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+<DebugShell title="Menubar" docsHref="/components/menubar"><MenubarBreak client:only="react" /></DebugShell>

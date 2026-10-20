@@ -14,12 +14,13 @@ import {
 } from "../../demos/combobox";
 import { getLocale, tList, useTranslations } from "../../i18n";
 import "@skryensya/core/components/combobox.css";
+import "@skryensya/core/components/tag.css";
 import "@skryensya/core/components/form-field.css";
 import "@skryensya/core/components/radio-group.css";
 import "@skryensya/core/patterns/scrollbar.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
-import { variantsTree } from "../../demos/variants";
+import { withOptionAt } from "../react-demos/usage-tree-path";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
@@ -33,12 +34,13 @@ import { dd2 } from "../../demos/dodont-labels";
   title="Combobox"
   description={t("combobox.description")}
   contractId="combobox"
-  extraSheets={["@skryensya/core/patterns/anchored.css", "@skryensya/core/components/button.css", "@skryensya/core/components/form-field.css", "@skryensya/core/patterns/scrollbar.css"]}
+  extraSheets={["@skryensya/core/patterns/anchored.css", "@skryensya/core/components/button.css", "@skryensya/core/components/form-field.css", "@skryensya/core/components/tag.css", "@skryensya/core/patterns/scrollbar.css"]}
   appearanceTargetSelector=".sk-combobox"
   styleGroups={[
     { file: "components/combobox.css", probe: "sk-combobox", title: "Combobox" },
     { file: "patterns/anchored.css", probe: "sk-anchored", title: "Heredados de Anclaje" },
     { file: "components/button.css", probe: "sk-button", title: "Heredados de Button" },
+    { file: "components/tag.css", probe: "sk-tag", title: "Heredados de Tag" },
   ]}
   testFiles={["packages/react/src/components/combobox.test.tsx", "packages/vanilla/src/components/combobox.test.ts"]}
 >
@@ -59,7 +61,13 @@ import { dd2 } from "../../demos/dodont-labels";
     </ul>
 
     <UsagePreview
-      tree={variantsTree(comboboxSingleTree(t, locale), [{ label: t("component.state.default"), options: {} }, { label: t("component.state.disabled"), options: { disabled: true } }, { label: t("component.state.invalid"), options: { invalid: true } }])}
+      variants={[
+        { value: "default", label: t("component.state.default"), tree: comboboxSingleTree(t, locale) },
+        { value: "disabled", label: t("component.state.disabled"), tree: withOptionAt(comboboxSingleTree(t, locale), [], "disabled", true) },
+        { value: "invalid", label: t("component.state.invalid"), tree: withOptionAt(comboboxSingleTree(t, locale), [], "invalid", true) },
+      ]}
+      variantsLabel={t("component.statesTitle")}
+      stageMinBlockSize="12rem"
       title={t("component.statesTitle")}
       description={t("component.statesBody")}
       storybookTitle="Components/Combobox"

@@ -1,0 +1,35 @@
+---
+/* Dev-only stress harness for DataGrid: the real keyboard grid with directory-shaped records. */
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
+import "@skryensya/core/tokens.scss";
+import "@skryensya/core/components/data-grid.css";
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/patterns/state-layer.css";
+import "../../styles/site.css";
+import { DataGridBreak } from "../../components/react-demos/debug-data-grid-break";
+import DebugShell from "../../components/DebugShell.astro";
+
+---
+
+<DebugShell title="Data Grid">
+  <DataGridBreak client:only="react" />
+</DebugShell>
+
+<style is:global>
+  .break-grid-viewport {
+    max-block-size: min(70vh, 42rem);
+    overflow: auto;
+  }
+
+  .break-grid__identity,
+  .break-grid__contact {
+    display: grid;
+    min-inline-size: 0;
+  }
+
+  .break-grid__identity { gap: var(--space-stack-2xs); }
+  .break-grid__contact { gap: var(--space-stack-xs); }
+</style>

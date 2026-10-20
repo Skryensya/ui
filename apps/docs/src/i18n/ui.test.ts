@@ -44,7 +44,6 @@ describe("ui.ts locale parity", () => {
     // Component-name / feature lists, `·` or `+`-joined: naming is locale-invariant on purpose.
     "cardPage.gradientNote",
     "carousel.multiNote",
-    "chartsPage.analyticsNote",
     "landing.needs.data.items",
     "landing.needs.forms.items",
     "landing.needs.nav.items",

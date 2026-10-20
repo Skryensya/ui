@@ -124,6 +124,7 @@ function signatureSurface(signature: ContractSignature) {
     implies: signature.implies,
     excludes: signature.excludes,
     pairs: signature.pairs,
+    slotImplies: signature.slotImplies,
     slots: Object.fromEntries(
       Object.entries(signature.slots).map(([name, slot]) => [name, slotSurface(slot)]),
     ),
@@ -154,8 +155,8 @@ function signatureSurface(signature: ContractSignature) {
  *
  * Included: css, parts, options (public fields), events, eventDetails, a11y, hooks, hookSheets,
  * outputHooks, authoredAttrs, systemOwned, and per signature host / option lists / requires·forbids·groups /
- * parents / notInside / descendants / implies / excludes / pairs / slots / mount / portals / hitTesting /
- * forward / compose / deprecated.
+ * parents / notInside / descendants / implies / excludes / pairs / slotImplies / slots / mount /
+ * portals / hitTesting / forward / compose / deprecated.
  *
  * Excluded: template (also / attrs / attrsWhen / optionAttrs / …), wiring, because, intent, react,
  * category, and option.machineInput.

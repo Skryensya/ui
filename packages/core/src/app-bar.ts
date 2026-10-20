@@ -98,14 +98,6 @@ export const appBarContract = {
   css: "@skryensya/core/components/app-bar.css",
   parts: appBarParts,
   hooks: [
-    "--sk-anchored-align",
-    "--sk-anchored-arrow-edge",
-    "--sk-anchored-arrow-near",
-    "--sk-anchored-justify",
-    "--sk-anchored-offset",
-    "--sk-anchored-position-area",
-    "--sk-anchored-position-try",
-    "--sk-anchored-size",
     "--sk-anchored-z",
     "--sk-app-bar-bg",
     "--sk-app-bar-block-size",
@@ -189,7 +181,10 @@ export const appBarContract = {
       parents: ["AppBar"],
       portals: { container: true },
       slots: {
-        children: { accepts: "text", required: true },
+        /* `node`, not `text`: a title that opens its own dropdown is still one button's accessible
+           name either way, so an author composing an icon beside the word loses nothing a plain
+           string had. */
+        children: { accepts: "node", required: true },
         items: { accepts: "items", item: appBarItemShape },
       },
       template: {
@@ -255,7 +250,9 @@ export const appBarContract = {
       parents: ["AppBar"],
       portals: { container: true },
       slots: {
-        children: { accepts: "text", required: true },
+        /* `node`, not `text`: an icon beside the status word, or a `tone` read only from markup the
+           author composes (a colored span), needs more than a string can carry. */
+        children: { accepts: "node", required: true },
         items: { accepts: "items", item: appBarItemShape },
       },
       template: {
@@ -266,7 +263,15 @@ export const appBarContract = {
         host: true,
         mount: menuAttrs.root,
         children: [
-          { element: "span", part: "statusText", slot: "children", whenMissing: "items" },
+          /*
+           * `role="status"` implies `aria-live="polite"` and `aria-atomic="true"`: a reader using a
+           * screen reader hears "Saving… / Not saved" the moment the text inside changes, with no
+           * extra markup from the author. Only on the plain-text shape (no `items`): the menu-button
+           * shape below is a control, and giving a live region the SAME content a reader can also
+           * open as a menu would announce it twice, once as a change and once as whatever opening
+           * the menu re-reads.
+           */
+          { element: "span", part: "statusText", slot: "children", whenMissing: "items", attrs: { role: "status" } },
           {
             element: "button",
             part: "trigger",
@@ -316,14 +321,19 @@ export function resolveAppBarKey(params: {
   readonly count: number;
   /** Whether a dropdown of the bar's menus is open right now. */
   readonly open: boolean;
+  /** Which key moves toward the END of the bar; defaults to LTR's own "ArrowRight". Found as a
+   * real bug reading this switch directly: it never took a direction at all. */
+  readonly dir?: "ltr" | "rtl";
 }): AppBarAction {
-  const { key, index, count, open } = params;
+  const { key, index, count, open, dir = "ltr" } = params;
   if (count < 1) return { kind: "none" };
   const last = count - 1;
+  const forward = dir === "rtl" ? "ArrowLeft" : "ArrowRight";
+  const backward = dir === "rtl" ? "ArrowRight" : "ArrowLeft";
   switch (key) {
-    case "ArrowRight":
+    case forward:
       return { kind: "move", index: index < last ? index + 1 : 0, open };
-    case "ArrowLeft":
+    case backward:
       return { kind: "move", index: index > 0 ? index - 1 : last, open };
     case "Home":
       return open ? { kind: "none" } : { kind: "move", index: 0, open: false };

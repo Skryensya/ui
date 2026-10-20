@@ -81,6 +81,9 @@
     flex-direction: column;
     gap: var(--sk-message-content-gap);
     min-inline-size: 0;
+    /* The bubble's content is consumer-authored (see the file comment above); an email or URL in
+       it had no break point, same gap found across several other components in this sweep. */
+    overflow-wrap: anywhere;
   }
 
   .sk-message[data-align="end"] > .sk-message__content {

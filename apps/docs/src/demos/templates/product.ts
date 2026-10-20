@@ -1,7 +1,7 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../../i18n";
 import { siteFooter } from "./shared";
-import { blankImage } from "../../examples/card-data";
+import { satin } from "../../lib/satin";
 
 /*
  * PRODUCT DETAIL. The ecommerce page before `checkout`: one thing for sale, looked at closely. It
@@ -71,7 +71,7 @@ export const productTree = (t: Translate, locale: "es" | "en"): UsageTree => {
                     signature: "ImageFrame",
                     options: {
                       aspect: "1/1",
-                      src: blankImage(800, 800, "a8a29e"),
+                      src: satin("pearl", "1x1"),
                       alt: t("demo.product.imageAlt"),
                     },
                     slots: {

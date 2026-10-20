@@ -1,11 +1,11 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 
-/*
- * Button's frosted demos (and the Tile comparison) stage on this photograph. Kept for them.
- */
-const FROST_PHOTO = "/demos/lightbox/street-small.jpg";
+import { frostBackdropTall } from "./frost-backdrop";
 
-export const frostStage = `padding: var(--space-inset-lg); border-radius: var(--radius-surface); background: center / cover url(${FROST_PHOTO});`;
+/*
+ * Button's frosted demos (and the Tile comparison) stage on the docs' own backdrop (`frost-backdrop.ts`), the 4:3 one: its cells are close to square.
+ */
+export const frostStage = `padding: var(--space-inset-lg); border-radius: var(--radius-surface); background: ${frostBackdropTall};`;
 
 /*
  * THE APPEARANCE STAGE: what a page whose examples follow the appearance switch puts under every

@@ -9,10 +9,11 @@ import "@skryensya/core/components/tooltip.css";
 import "@skryensya/core/patterns/anchored.css";
 import "@skryensya/core/patterns/icon.css";
 import * as demos from "@docs/demos/toolbar";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Toolbar", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.toolbarAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.toolbarAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(demos.toolbarTree);
 export const NestedToolbar: StoryObj = treeStory(demos.nestedToolbarTree);

@@ -73,16 +73,35 @@ export function resolveAppearance(mode: ColorMode, prefersDark: boolean): Appear
 }
 
 /**
+ * `data-theme-switching` for the two frames a `light-dark()` repaint takes, so every component's own
+ * hover/focus color transition does not fire right along with it (semantic/_theme-switching.scss):
+ * without this, switching mode is a cross-fade staggered by however many elements happen to be
+ * transitioning, not the instant flip a reader asked for. Two frames, not one: the attribute has to
+ * still be there on the frame the NEW colors actually paint, one frame after the one the DOM write
+ * below lands in.
+ */
+function suppressTransitionsAcrossRepaint(root: HTMLElement): void {
+  root.setAttribute("data-theme-switching", "");
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      root.removeAttribute("data-theme-switching");
+    });
+  });
+}
+
+/**
  * Paint the color-mode preference on a root (usually `<html>`): `data-scheme` for chrome
  * glyphs / FOUC, and `style.colorScheme` so `light-dark()` follows.
  */
 export function applyColorMode(root: HTMLElement, mode: ColorMode): void {
+  suppressTransitionsAcrossRepaint(root);
   root.setAttribute("data-scheme", mode);
   root.style.colorScheme = mode === "system" ? "light dark" : mode;
 }
 
 /** Paint light or dark on a root: never `system`. */
 export function applyAppearance(root: HTMLElement, mode: Appearance): void {
+  suppressTransitionsAcrossRepaint(root);
   root.setAttribute("data-scheme", mode);
   root.style.colorScheme = mode;
 }

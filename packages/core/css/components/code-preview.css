@@ -55,6 +55,12 @@
      */
     --sk-code-preview-copy-scroll-inset: 0.75rem;
 
+    /* As a grid item (Stack, a Procedure step's content column, …) the box's automatic minimum
+       width is otherwise its longest unbroken `pre` line, which stretches the whole track past the
+       reading column. `overflow-x: auto` below on the inner `pre` only ever gets to act once this
+       is 0; `.sk-layout-grid`'s own children get the same reset for the same reason. */
+    min-inline-size: 0;
+
     margin-block: var(--space-stack-sm);
     border: 1px solid var(--sk-code-preview-border-color);
     border-radius: var(--radius-surface);
@@ -109,10 +115,24 @@
   .sk-code-preview__meta > :first-child {
     color: var(--sk-code-preview-label-active-fg);
     overflow-wrap: anywhere;
+    /*
+     * `overflow-wrap: anywhere` makes this item's own min-content size (what `min-width: auto`
+     * floors a flex item at) collapse to a single character, so a fixed-width sibling with
+     * nothing to give up left this one squeezed to 1,610px of one-letter-per-line. A real floor,
+     * not an automatic one, so the name stays readable before it ever reaches that point.
+     */
+    min-inline-size: 8ch;
   }
 
   .sk-code-preview__meta > :not(:first-child) {
-    flex: none;
+    /* Was `flex: none`: a fixed width that never gave the filename back any room. Secondary
+       metadata truncates instead, per the usual rule for a field whose start carries the meaning
+       and whose end doesn't need to stay in view. */
+    flex: 0 1 auto;
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font-size: calc(var(--font-size-caption) - 1px);
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -183,6 +203,7 @@
   .sk-code-preview__viewport:not(:has(pre, .shiki, .astro-code)) {
     padding: var(--space-inset-md);
     overflow-x: auto;
+    overscroll-behavior-inline: contain;
     font-family: var(--font-family-code);
     font-size: var(--sk-code-preview-font-size);
     line-height: var(--sk-code-preview-line-height);
@@ -310,6 +331,7 @@
     margin: 0;
     padding: var(--space-inset-md);
     overflow-x: auto;
+    overscroll-behavior-inline: contain;
     /* The window's own scrollbar, and the only affordance saying there is more below: quiet enough
      * not to read as a border, present enough to be found. A bottom fade was the other candidate
      * and is the wrong instrument here. It would still be painted over the last line once the

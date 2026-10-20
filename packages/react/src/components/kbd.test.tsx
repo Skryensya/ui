@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { Kbd } from "./kbd.js";
 
 describe("Kbd", () => {
@@ -51,5 +51,23 @@ describe("Kbd", () => {
 
     const accent = render(<Kbd tone="accent">K</Kbd>);
     expect(accent.container.querySelector("kbd")?.getAttribute("data-tone")).toBe("accent");
+  });
+
+  it("warns in development when a key legend is empty, and marks it visually too", () => {
+    // A platform-computed legend (an OS-specific shortcut absent on this one) can come up empty:
+    // the keycap still renders, at its full square size, with nothing to announce. Same shared
+    // `[data-sk-a11y-warn]` signal as Button's own empty-content case.
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const ui = render(<Kbd>{""}</Kbd>);
+    expect(spy.mock.calls.at(-1)?.[0]).toMatch(/renders nothing/i);
+    expect(ui.container.querySelector("kbd")?.getAttribute("data-sk-a11y-warn")).toBe("");
+    spy.mockRestore();
+  });
+
+  it("does not warn when there is a real legend", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    render(<Kbd>Esc</Kbd>);
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
   });
 });

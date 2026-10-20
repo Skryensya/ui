@@ -160,4 +160,15 @@ describe("Window", () => {
     expect(positioner.style.zIndex).toBe("");
     expect(positioner.style.getPropertyValue("--z-index")).not.toBe("");
   });
+
+  it("recovers a truncated title bar through title, since the bar ellipsizes at narrow widths", async () => {
+    const long = "Window Properties: Advanced Network Configuration";
+    const ui = render(
+      <Window defaultOpen title={long} trigger="Open">
+        <p>Body</p>
+      </Window>,
+    );
+    const dialog = await ui.findByRole("dialog");
+    expect(dialog.querySelector(".sk-window__title")!.getAttribute("title")).toBe(long);
+  });
 });

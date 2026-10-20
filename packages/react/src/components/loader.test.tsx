@@ -1,6 +1,6 @@
 import { render, within } from "@testing-library/react";
 import axe from "axe-core";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { LOADER_TICKS, loaderTicks, type LoaderVariant } from "@skryensya/core/loader";
 import { Loader, LoaderStatus } from "./loader.js";
 
@@ -39,6 +39,16 @@ describe("Loader", () => {
     expect(loader?.getAttribute("aria-hidden")).toBe("true");
     expect(loader?.getAttribute("role")).toBeNull();
     expect(within(ui.container).getByRole("button", { name: "Guardando" })).toBeTruthy();
+  });
+
+  it("falls back to decorative on an explicit empty label, not an empty status announcement", () => {
+    // label="" (a computed status not yet set) must not become an empty, explicit aria-label on
+    // a role="status" region - that is worse than the nameless-decorative default.
+    const ui = render(<Loader label="" />);
+    const loader = ui.container.querySelector(".sk-loader");
+
+    expect(loader?.getAttribute("role")).toBeNull();
+    expect(loader?.getAttribute("aria-hidden")).toBe("true");
   });
 
   /*
@@ -81,6 +91,20 @@ describe("Loader", () => {
 
     expect(status.classList).toContain("sk-visually-hidden");
     expect(status.getAttribute("aria-atomic")).toBe("true");
+  });
+
+  it("warns in development when LoaderStatus's label is empty", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    render(<LoaderStatus label="" />);
+    expect(spy.mock.calls.at(-1)?.[0]).toMatch(/renders nothing/i);
+    spy.mockRestore();
+  });
+
+  it("does not warn when LoaderStatus has a real label", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    render(<LoaderStatus label="Cargando" />);
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
   });
 
   it("has no serious accessibility violations in labelled and decorative uses", async () => {

@@ -1,5 +1,6 @@
 import { PLACEHOLDER_HREF } from "../lib/placeholder-hrefs";
 import { frostStage } from "./data/frost-stage";
+import { satin } from "../lib/satin";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import { projectTile } from "./grid-cards";
 import type { Translate } from "../i18n";
@@ -303,7 +304,7 @@ export const heroSplitTree = (t: Translate): UsageTree => ({
               contract: "image-frame",
               signature: "ImageFrame",
               options: {
-                src: "https://picsum.photos/seed/product-screenshot/720/480",
+                src: satin("blue"),
                 alt: t("demo.hero.splitImageAlt"),
                 aspect: "3/2",
                 radius: "surface",
@@ -638,7 +639,7 @@ export const heroVideoDemoTree = (t: Translate): UsageTree => ({
             {
               contract: "image-frame",
               signature: "ImageFrame",
-              options: { src: "https://picsum.photos/seed/video-demo-thumb/960/540", alt: t("demo.hero.videoImageAlt"), aspect: "16/9", radius: "surface" },
+              options: { src: satin("lilac"), alt: t("demo.hero.videoImageAlt"), aspect: "16/9", radius: "surface" },
             },
           ],
         },

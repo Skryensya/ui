@@ -18,7 +18,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Abre un panel no modal que se mueve, cambia de tamaño, se minimiza y se maximiza.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Opens a non-modal panel that moves, resizes, minimizes and maximizes.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

@@ -48,7 +48,7 @@
   .sk-checkbox {
     display: inline-flex;
     gap: var(--sk-checkbox-gap);
-    align-items: center;
+    align-items: flex-start;
     color: var(--sk-checkbox-label-fg);
     cursor: pointer;
   }

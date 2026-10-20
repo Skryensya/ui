@@ -70,9 +70,15 @@
 
   .sk-avatar__fallback { display: inline-flex; }
 
-  .sk-avatar-group { display: inline-flex; align-items: center; }
+  /*
+   * THE RING IS A HOOK, same reasoning as the disc's own `--sk-avatar-bg`/`-fg`: it only reads
+   * right against the page's own plain background, which demo data always is and a real card
+   * (`surface="raised"`, a sunken panel) never is. Without this, the ring stayed the one color on
+   * Avatar a consumer could not match to where they actually put the group.
+   */
+  .sk-avatar-group { display: inline-flex; align-items: center; --sk-avatar-group-ring: var(--color-bg-surface); }
   .sk-avatar-group > .sk-avatar,
-  .sk-avatar-group > .sk-avatar-group__overflow { box-shadow: 0 0 0 2px var(--color-bg-surface), inset 0 0 0 1px var(--color-border-subtle); }
+  .sk-avatar-group > .sk-avatar-group__overflow { box-shadow: 0 0 0 2px var(--sk-avatar-group-ring), inset 0 0 0 1px var(--color-border-subtle); }
   /*
    * The "+N" chip and the overlap follow the discs' own size. They were fixed at md, so a stack of
    * sm avatars ended in a chip taller than every disc beside it, which any fixed-height host (a
@@ -83,22 +89,26 @@
   .sk-avatar-group:has(> .sk-avatar[data-size="lg"]) { --avatar-group-size: var(--size-control-lg); }
   .sk-avatar-group:has(> .sk-avatar[data-size="xl"]) { --avatar-group-size: calc(var(--size-control-lg) * 4 / 3); }
   .sk-avatar-group > * + * { margin-inline-start: calc(var(--avatar-group-size) / -3); }
-  /* The FIRST avatar is on top and each one after tucks under the one before it, so the stack reads
-     front to back. Flex items take `z-index` without being positioned; twelve ranks, past that the
-     rest share the bottom. */
+  /* Keep source order front-to-back at any group length. Newer sibling-index functions handle the
+     uncapped case; the finite ladder remains as a fallback in browsers without them. */
   .sk-avatar-group > * { z-index: 0; }
-  .sk-avatar-group > :nth-child(1) { z-index: 12; }
-  .sk-avatar-group > :nth-child(2) { z-index: 11; }
-  .sk-avatar-group > :nth-child(3) { z-index: 10; }
-  .sk-avatar-group > :nth-child(4) { z-index: 9; }
-  .sk-avatar-group > :nth-child(5) { z-index: 8; }
-  .sk-avatar-group > :nth-child(6) { z-index: 7; }
-  .sk-avatar-group > :nth-child(7) { z-index: 6; }
-  .sk-avatar-group > :nth-child(8) { z-index: 5; }
-  .sk-avatar-group > :nth-child(9) { z-index: 4; }
-  .sk-avatar-group > :nth-child(10) { z-index: 3; }
-  .sk-avatar-group > :nth-child(11) { z-index: 2; }
-  .sk-avatar-group > :nth-child(12) { z-index: 1; }
+  @supports (z-index: calc(sibling-count() - sibling-index())) {
+    .sk-avatar-group > * { z-index: calc(sibling-count() - sibling-index()); }
+  }
+  @supports not (z-index: calc(sibling-count() - sibling-index())) {
+    .sk-avatar-group > :nth-child(1) { z-index: 12; }
+    .sk-avatar-group > :nth-child(2) { z-index: 11; }
+    .sk-avatar-group > :nth-child(3) { z-index: 10; }
+    .sk-avatar-group > :nth-child(4) { z-index: 9; }
+    .sk-avatar-group > :nth-child(5) { z-index: 8; }
+    .sk-avatar-group > :nth-child(6) { z-index: 7; }
+    .sk-avatar-group > :nth-child(7) { z-index: 6; }
+    .sk-avatar-group > :nth-child(8) { z-index: 5; }
+    .sk-avatar-group > :nth-child(9) { z-index: 4; }
+    .sk-avatar-group > :nth-child(10) { z-index: 3; }
+    .sk-avatar-group > :nth-child(11) { z-index: 2; }
+    .sk-avatar-group > :nth-child(12) { z-index: 1; }
+  }
   /* The "+3" chip reads the same hooks as the discs it caps, so re-tinting a group tints its
      overflow with it instead of leaving one odd grey circle at the end of the stack. */
   .sk-avatar-group__overflow { position: relative; display: inline-grid; place-items: center; inline-size: var(--avatar-group-size); block-size: var(--avatar-group-size); flex: none; border-radius: var(--radius-pill); background: var(--sk-avatar-bg, var(--color-bg-surface-sunken)); color: var(--sk-avatar-fg, var(--color-text-primary)); font-size: var(--font-size-caption); font-weight: var(--font-weight-label); }

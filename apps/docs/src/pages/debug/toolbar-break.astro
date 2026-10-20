@@ -1,0 +1,8 @@
+---
+if (import.meta.env.PROD) return new Response(null, { status: 404 });
+import "@skryensya/core/components/toolbar.css";
+import "@skryensya/core/components/segmented.css";
+import { ToolbarBreak } from "../../components/react-demos/debug-toolbar-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+<DebugShell title="Toolbar" docsHref="/components/toolbar"><ToolbarBreak client:only="react" /></DebugShell>

@@ -122,9 +122,15 @@ export function AvatarGroup({
   ...props
 }: AvatarGroupProps) {
   const items = Children.toArray(children);
-  const visible = max && items.length > max ? items.slice(0, max) : items;
+  // `max` is 0 for a group collapsed entirely behind its count - `max &&` would read that 0 as
+  // "no cap" (0 is falsy) and show everyone instead.
+  const capped = typeof max === "number" && items.length > max;
+  const visible = capped ? items.slice(0, max) : items;
   const overflowCount = items.length - visible.length;
-  const overflow = overflowCount > 0 ? `+${overflowCount}` : overflowLabel;
+  // With a `max`, the computed count is authoritative, including "none": a static `overflow`
+  // label is for a composition that supplies its own already-trimmed `children` and has no `max`
+  // to compute from, not a value to fall back on just because this group's own count came up 0.
+  const overflow = overflowCount > 0 ? `+${overflowCount}` : max === undefined ? overflowLabel : null;
 
   return (
     <div {...props} aria-label={label} className={cx(avatarParts.group, className)} role="group">

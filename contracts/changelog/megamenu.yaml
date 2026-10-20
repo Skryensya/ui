@@ -9,7 +9,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Despliega un panel borde a borde con varias columnas de enlaces de navegación.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Opens an edge-to-edge panel with several columns of navigation links.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

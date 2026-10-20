@@ -44,13 +44,19 @@
   .sk-resizable__panel {
     /* The binding overwrites this inline with the panel's current share; declared so the hook exists. */
     --sk-resizable-size: 50;
+    /* Author-set style properties (`minInlineSize`/`minBlockSize`), 0 when absent: the machine still
+     * drags in percentages of the group's current width, so this is the absolute floor UNDER that
+     * percentage, not a replacement for it. Safe on the cross axis too: see resizable.ts's comment. */
+    --sk-resizable-panel-min-inline-size: 0;
+    --sk-resizable-panel-min-block-size: 0;
 
     box-sizing: border-box;
     flex: 0 0 auto;
     inline-size: calc(var(--sk-resizable-size) * 1%);
-    min-inline-size: 0;
-    min-block-size: 0;
+    min-inline-size: var(--sk-resizable-panel-min-inline-size);
+    min-block-size: var(--sk-resizable-panel-min-block-size);
     overflow: auto;
+    overscroll-behavior: contain;
   }
 
   .sk-resizable[data-direction="vertical"] > .sk-resizable__panel {

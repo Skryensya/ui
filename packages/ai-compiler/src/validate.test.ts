@@ -319,7 +319,12 @@ describe("collections: entries are checked, not just counted", () => {
   });
 
   it("requires each entry's content", () => {
-    expect(rules(tabs([{ options: { value: "a" }, slots: { label: "Uno" } }]))).toContain(
+    // `children` is NOT required (the panel-less "selector" shape, tabs.ts's own comment); `label`
+    // still is, there being no tab with no name at all.
+    expect(rules(tabs([{ options: { value: "a" }, slots: {} }]))).toContain(
+      "missing-required-slot",
+    );
+    expect(rules(tabs([{ options: { value: "a" }, slots: { label: "Uno" } }]))).not.toContain(
       "missing-required-slot",
     );
   });
@@ -905,67 +910,6 @@ describe("callout: tone live region and action tone gate", () => {
   });
 });
 
-describe("chart: named series of labelled values", () => {
-  const chart = (items: unknown): UsageTree =>
-    ({
-      contract: "chart",
-      signature: "Chart",
-      options: { label: "Ventas" },
-      slots: { items },
-    }) as UsageTree;
-
-  it("requires a label and at least one point with a text label", () => {
-    expect(rules({ contract: "chart", signature: "Chart" })).toEqual(
-      expect.arrayContaining(["missing-required", "missing-required-slot"]),
-    );
-    expect(
-      validateUsageTree(
-        chart([
-          { options: { value: 10 }, slots: { label: "Ene" } },
-          { options: { value: 20, tone: "warning" }, slots: { label: "Feb", text: "20 u" } },
-        ]),
-      ).valid,
-    ).toBe(true);
-  });
-
-  it("rejects a non-number value on a point", () => {
-    expect(rules(chart([{ options: { value: "10" }, slots: { label: "Ene" } }]))).toContain(
-      "invalid-option-value",
-    );
-  });
-
-  it("publishes mount on the signature so line/area enhancers attach", () => {
-    expect(getContract("chart")!.signatures.Chart.mount).toBe("data-sk-chart");
-  });
-
-  it("implies an ISO currency code when format is currency", () => {
-    expect(
-      rules({
-        contract: "chart",
-        signature: "Chart",
-        options: { label: "Ventas", format: "currency" },
-        slots: { items: [{ options: { value: 10 }, slots: { label: "Ene" } }] },
-      }),
-    ).toContain("missing-implied");
-    expect(
-      rules({
-        contract: "chart",
-        signature: "Chart",
-        options: { label: "Ventas", format: "currency", currency: "usd" },
-        slots: { items: [{ options: { value: 10 }, slots: { label: "Ene" } }] },
-      }),
-    ).toContain("invalid-option-value");
-    expect(
-      validateUsageTree({
-        contract: "chart",
-        signature: "Chart",
-        options: { label: "Ventas", format: "currency", currency: "USD" },
-        slots: { items: [{ options: { value: 10 }, slots: { label: "Ene" } }] },
-      } as UsageTree).valid,
-    ).toBe(true);
-  });
-});
-
 describe("code-preview: chrome around already-highlighted code", () => {
   const preview = (overrides: Partial<UsageTree> = {}): UsageTree =>
     ({
@@ -1149,6 +1093,7 @@ describe("combobox: filterable field with positioned list", () => {
     expect(sheets).toContain("@skryensya/core/patterns/visually-hidden.css");
     expect(sheets).toContain("@skryensya/core/components/form-field.css");
     expect(sheets).toContain("@skryensya/core/components/button.css");
+    expect(sheets).toContain("@skryensya/core/components/tag.css");
     expect(unplaced).toEqual([]);
   });
 });
@@ -1891,103 +1836,6 @@ describe("file-upload: labelled dropzone shell", () => {
   });
 });
 
-describe("folder: measured tab silhouette", () => {
-  const folder = (overrides: Partial<UsageTree> = {}): UsageTree =>
-    ({
-      contract: "folder",
-      signature: "Folder",
-      slots: { label: "Radio", children: "Una radio personal." },
-      ...overrides,
-    }) as UsageTree;
-
-  const preview = (child = "1"): UsageTree => ({
-    contract: "folder",
-    signature: "FolderPreview",
-    slots: { children: child },
-  });
-
-  it("requires label and children on Folder, and href on FolderLink", () => {
-    expect(rules({ contract: "folder", signature: "Folder" })).toEqual(
-      expect.arrayContaining(["missing-required-slot"]),
-    );
-    expect(validateUsageTree(folder()).valid).toBe(true);
-    expect(
-      rules({
-        contract: "folder",
-        signature: "FolderLink",
-        slots: { label: "Radio", children: "Cuerpo" },
-      }),
-    ).toContain("missing-required");
-    expect(
-      validateUsageTree({
-        contract: "folder",
-        signature: "FolderLink",
-        options: { href: "#radio" },
-        slots: { label: "Radio", children: "Cuerpo" },
-      }).valid,
-    ).toBe(true);
-  });
-
-  it("keeps FolderPreview under Folder/FolderLink and FolderStack children to folders", () => {
-    expect(rules(preview())).toContain("invalid-parent");
-    expect(
-      validateUsageTree(
-        folder({
-          slots: {
-            label: "Radio",
-            children: "Cuerpo",
-            previews: [preview("1"), preview("2")],
-          },
-        }),
-      ).valid,
-    ).toBe(true);
-    expect(
-      rules({
-        contract: "folder",
-        signature: "FolderStack",
-        slots: {
-          children: [{ contract: "typography", signature: "Text", children: "no" }],
-        },
-      }),
-    ).toContain("slot-accepts");
-    expect(
-      validateUsageTree({
-        contract: "folder",
-        signature: "FolderStack",
-        options: { overlap: "100px" },
-        slots: {
-          children: [
-            folder(),
-            {
-              contract: "folder",
-              signature: "FolderLink",
-              options: { href: "#otro" },
-              slots: { label: "Otro", children: "Más." },
-            },
-          ],
-        },
-      }).valid,
-    ).toBe(true);
-  });
-
-  it("publishes mount on Folder/FolderLink and its runtime clip, fan clip, mask and tail outputHooks", () => {
-    const contract = getContract("folder")!;
-    expect(contract.signatures.Folder.mount).toBe("data-sk-folder");
-    expect(contract.signatures.FolderLink.mount).toBe("data-sk-folder");
-    const outputs = ["--sk-folder-clip", "--sk-folder-fan-clip", "--sk-folder-mask", "--sk-folder-tail"];
-    expect(contract.outputHooks).toEqual(outputs);
-    expect(contract.hooks).toEqual(expect.arrayContaining(outputs));
-    expect(emitMarkup(folder({ options: { active: true } }))).toContain("data-active");
-  });
-
-  it("publishes its own stylesheet with no foreign hookSheets", () => {
-    expect(getContract("folder")!.hookSheets ?? []).toEqual([]);
-    const { sheets, unplaced } = sheetsForTree(folder());
-    expect(sheets).toContain("@skryensya/core/components/folder.css");
-    expect(unplaced).toEqual([]);
-  });
-});
-
 describe("footer: page closing band", () => {
   const text: UsageTree = { contract: "typography", signature: "Text", children: "Crédito" };
   const footer = (overrides: Partial<UsageTree> = {}): UsageTree =>
@@ -2071,11 +1919,11 @@ describe("form-field: labelled control chrome", () => {
     expect(emitMarkup(field())).not.toContain("aria-invalid");
   });
 
-  it("emits labelHidden and puts required/disabled on the control, not the box", () => {
+  it("emits labelVisuallyHidden and puts required/disabled on the control, not the box", () => {
     const markup = emitMarkup(
-      field({ options: { labelHidden: true, required: true, disabled: true } }),
+      field({ options: { labelVisuallyHidden: true, required: true, disabled: true } }),
     );
-    expect(markup).toContain("data-label-hidden");
+    expect(markup).toContain("data-label-visually-hidden");
     expect(markup).toContain("<input");
     expect(markup).toMatch(/<input[^>]*\srequired/);
     expect(markup).toMatch(/<input[^>]*\sdisabled/);
@@ -5653,6 +5501,20 @@ describe("split-button: the two halves are welded, not left to memory", () => {
     expect(rules(split(action({}), menu({ triggerWeldStart: true })))).toContain("restricted-option-value");
     expect(rules(split(action({ weldEnd: true }), menu({})))).toContain("restricted-option-value");
   });
+
+  it("slotImplies: a loading action leaves the menu trigger reachable, not merely busy", () => {
+    expect(
+      rules(split(action({ weldEnd: true, loading: true }), menu({ triggerWeldStart: true }))),
+    ).toContain("missing-implied");
+    expect(
+      rules(split(action({ weldEnd: true, loading: true }), menu({ triggerWeldStart: true, disabled: true }))),
+    ).not.toContain("missing-implied");
+    // One-way: a disabled trigger with no loading action is unremarkable (an author can always
+    // disable the whole group), the reverse of what the rule actually asks.
+    expect(
+      rules(split(action({ weldEnd: true }), menu({ triggerWeldStart: true, disabled: true }))),
+    ).not.toContain("missing-implied");
+  });
 });
 
 describe("slider: a named thumb whose value sits inside its own range", () => {
@@ -5985,7 +5847,6 @@ describe("forward: host attr allowlists", () => {
     );
     expect(getContract("list")!.signatures.ListItemLink.forward).toContain("target");
     expect(getContract("nav-list")!.signatures.NavListLink.forward).toContain("rel");
-    expect(getContract("folder")!.signatures.FolderLink.forward).toContain("download");
     expect(getContract("skip-link")!.signatures.SkipLink.forward).toContain("id");
     expect(getContract("sidebar")!.signatures.SidebarTrigger.forward).toContain("id");
     expect(getContract("tile")!.signatures.TileButton.forward).toContain("form");
@@ -6151,9 +6012,6 @@ describe("compose / systemOwned", () => {
     expect(getContract("avatar")!.signatures["Avatar.image"].compose?.[0]).toMatchObject({
       of: "image-frame",
       systemOwned: true,
-    });
-    expect(getContract("folder")!.signatures.Folder.hitTesting).toEqual({
-      childrenNone: ["FolderPreview"],
     });
     expect(getContract("loader")!.systemOwned).toEqual(["tick"]);
     expect(getContract("color-picker")!.systemOwned).toEqual(
@@ -6337,11 +6195,7 @@ describe("unsafe URLs", () => {
     }
   });
 
-  it("lets an inline image be an image, and nothing else", () => {
-    const sticker = (src: string) =>
-      validateUsageTree({ contract: "sticker", signature: "Sticker", options: { src, alt: "" } }).problems.filter((p) => p.rule === "unsafe-url");
-    expect(sticker("data:image/svg+xml;utf8,<svg/>")).toEqual([]);
-    expect(sticker("data:text/html,<script>")).toHaveLength(1);
+  it("lets a link to an image be a raster, never an SVG", () => {
     /* A link to an image may be a raster, never an SVG, which can carry script. */
     expect(link("data:image/png;base64,AAAA")).toEqual([]);
     expect(link("data:image/svg+xml;utf8,<svg onload=alert(1)/>")).toHaveLength(1);

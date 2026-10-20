@@ -104,4 +104,16 @@ describe("Quote", () => {
     const ui = render(<Quote image={<Avatar name="Ursula K. Le Guin" />}>An unattributed passage.</Quote>);
     expect(ui.container.querySelector("figcaption")).toBeNull();
   });
+
+  it("omits the caption when a computed attribution comes up empty, not just when it is absent", () => {
+    const ui = render(<Quote attribution="">An unattributed passage, computed.</Quote>);
+    expect(ui.container.querySelector("figcaption")).toBeNull();
+  });
+
+  it("does not render an empty cite when a computed source comes up empty", () => {
+    const ui = render(<Quote attribution="Someone" source="">Words.</Quote>);
+    const caption = ui.container.querySelector("figcaption");
+    expect(caption).not.toBeNull();
+    expect(caption?.querySelector("cite")).toBeNull();
+  });
 });

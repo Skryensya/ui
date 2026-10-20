@@ -25,6 +25,15 @@
     display: flex;
     align-items: center;
     gap: var(--sk-menubar-gap);
+    /*
+     * Nothing here constrained the bar's width at all: expanded labels forced it to 621px in a
+     * 229px container, with no wrap and no scroll. Same scroll-fallback convention as AppBar's
+     * own `__menus`/`__status` rows and Toolbar's own fix above.
+     */
+    min-inline-size: 0;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
   }
 
   .sk-menubar__item-wrapper {

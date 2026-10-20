@@ -9,7 +9,7 @@ entries:
     kind: feature
     es:
       title: Componente nuevo
-      body: Avatar reactivo que mira, parpadea y habla, con una imagen entera por cada expresión.
+      body: "Se suma a la librería, con su contrato, un binding de React y una hoja de estilos para marcado simple."
     en:
       title: New component
-      body: Reactive avatar that looks, blinks and talks, with one whole image per expression.
+      body: "Added to the library, with its contract, a React binding and a stylesheet for plain markup."

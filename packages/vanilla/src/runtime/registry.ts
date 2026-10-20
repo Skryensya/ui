@@ -26,10 +26,6 @@ type Registration = {
 // Runtime plugin loading is intentional: static imports would defeat selector gating and ship every enhancer.
 const registrations: readonly Registration[] = [
   {
-    selector: "[data-sk-dock]",
-    load: async () => (await import("../components/dock.js")).mountDock,
-  },
-  {
     selector: "[data-sk-dialog-stack]",
     load: async () => (await import("../components/dialog-stack.js")).mountDialogStack,
   },
@@ -115,10 +111,6 @@ const registrations: readonly Registration[] = [
      */
     selector: "[data-sk-vaul], [data-sk-dialog-vaul]:not([data-sk-command-palette]):not([data-sk-command-palette-lazy])",
     load: async () => (await import("../components/vaul.js")).mountVaul,
-  },
-  {
-    selector: "[data-sk-folder]",
-    load: async () => (await import("../components/folder.js")).mountFolder,
   },
   {
     selector: "[data-sk-tabs]",
@@ -313,10 +305,6 @@ const registrations: readonly Registration[] = [
   {
     selector: "[data-sk-meter]",
     load: async () => (await import("../components/meter.js")).mountMeter,
-  },
-  {
-    selector: "[data-sk-chart]",
-    load: async () => (await import("../components/chart.js")).mountChart,
   },
   {
     selector: "[data-sk-breadcrumb]",

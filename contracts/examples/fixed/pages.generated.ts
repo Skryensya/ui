@@ -4570,7 +4570,7 @@ export const pageSnippets: readonly Snippet[] = [
                       "signature": "ImageFrame",
                       "options": {
                         "aspect": "1/1",
-                        "src": "https://dummyimage.com/800x800/a8a29e/a8a29e&text=%20",
+                        "src": "/demos/satin/satin-pearl-1x1.jpg",
                         "alt": "Lumen 65 keyboard seen from above"
                       },
                       "slots": {
@@ -5738,7 +5738,7 @@ export const pageSnippets: readonly Snippet[] = [
                       "signature": "ImageFrame",
                       "options": {
                         "aspect": "16/9",
-                        "src": "https://dummyimage.com/960x540/78716c/78716c&text=%20",
+                        "src": "/demos/satin/satin-slate-16x9.jpg",
                         "alt": "A desk covered in interface sketches"
                       }
                     },

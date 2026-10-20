@@ -33,6 +33,13 @@ describe("Toolbar React contracts", () => {
     expect(tactile.getByRole("toolbar", { name: "Tactile" }).getAttribute("data-appearance")).toBe("tactile");
   });
 
+  it("writes data-justify, start by default", () => {
+    const plain = render(<Toolbar label="Plain"><button type="button">A</button></Toolbar>);
+    expect(plain.getByRole("toolbar", { name: "Plain" }).getAttribute("data-justify")).toBe("start");
+    const between = render(<Toolbar justify="between" label="Between"><button type="button">A</button></Toolbar>);
+    expect(between.getByRole("toolbar", { name: "Between" }).getAttribute("data-justify")).toBe("between");
+  });
+
   it("sets role and aria-orientation", () => {
     const ui = render(<Fixture />);
     const toolbar = ui.getByRole("toolbar", { name: "Formato" });

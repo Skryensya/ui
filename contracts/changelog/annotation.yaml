@@ -9,7 +9,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Nombra las partes de algo ya dibujado, con etiquetas en los márgenes y una línea guía a cada pieza.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Names the parts of something already drawn, with labels in the margins and a leader line to each piece.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

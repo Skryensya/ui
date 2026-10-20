@@ -318,3 +318,17 @@ export const navListContract = {
 export type NavListOrientation = OptionValue<typeof navListContract.options.orientation>;
 export type NavListOptions = SignatureOptionsOf<typeof navListContract, "NavList">;
 export type NavListLinkOptions = SignatureOptionsOf<typeof navListContract, "NavListLink">;
+
+/**
+ * Whether `href` is the page `pathname` names, for `NavListLink`'s `current` option. No router is
+ * assumed (decision 2's reasoning one tier up: a name here is a role, never a vendor), so this
+ * takes the two strings a consumer's own router already hands back and does only the comparison
+ * that is easy to get wrong by hand: exact match always counts, and so does a route NESTED under
+ * `href` ("/students/42" marks "/students" current too) UNLESS `href` is the root - every path is
+ * nested under "/", and matching there would mark it current on every single page.
+ */
+export function navListLinkIsCurrent(pathname: string, href: string, options?: { exact?: boolean }): boolean {
+  if (pathname === href) return true;
+  if (options?.exact || href === "" || href === "/") return false;
+  return pathname.startsWith(`${href}/`);
+}

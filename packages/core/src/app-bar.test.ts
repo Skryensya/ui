@@ -26,6 +26,13 @@ describe("resolveAppBarKey", () => {
     for (const key of ["ArrowDown", "ArrowUp", "Enter", " ", "Escape", "a"]) expect(resolve(key, 1)).toEqual({ kind: "none" });
     expect(resolveAppBarKey({ key: "ArrowRight", index: 0, count: 0, open: false })).toEqual({ kind: "none" });
   });
+
+  it("swaps which arrow moves forward under dir: \"rtl\"", () => {
+    /* Found as a real bug: this never took a direction at all, so ArrowRight always meant "next
+       array index" regardless of which way the bar reads. */
+    expect(resolveAppBarKey({ key: "ArrowRight", index: 0, count: 3, open: false, dir: "rtl" })).toEqual({ kind: "move", index: 2, open: false });
+    expect(resolveAppBarKey({ key: "ArrowLeft", index: 0, count: 3, open: false, dir: "rtl" })).toEqual({ kind: "move", index: 1, open: false });
+  });
 });
 
 describe("shouldSwitchOnPointer", () => {

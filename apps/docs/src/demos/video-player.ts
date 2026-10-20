@@ -1,6 +1,7 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
 import { anatomyCanvas, anatomyHints, namePart } from "./annotation-parts";
+import { videoPlayerWords } from "./data/video-player-words";
 
 type UIKey = Parameters<Translate>[0];
 
@@ -20,26 +21,12 @@ const player = (t: Translate, options: Record<string, string | number | boolean>
   contract: "video-player",
   signature: "VideoPlayer",
   options: {
-    label: t(k("label")),
     src: FILM,
     poster: POSTER,
     captionsSrc: t(k("captions.src")),
     captionsLang: t(k("captions.lang")),
     captionsTitle: t(k("captions.title")),
-    playLabel: t(k("playLabel")),
-    pauseLabel: t(k("pauseLabel")),
-    replayLabel: t(k("replayLabel")),
-    muteLabel: t(k("muteLabel")),
-    unmuteLabel: t(k("unmuteLabel")),
-    seekLabel: t(k("seekLabel")),
-    volumeLabel: t(k("volumeLabel")),
-    speedLabel: t(k("speedLabel")),
-    captionsLabel: t(k("captionsLabel")),
-    fullscreenLabel: t(k("fullscreenLabel")),
-    exitFullscreenLabel: t(k("exitFullscreenLabel")),
-    remainingLabel: t(k("remainingLabel")),
-    elapsedLabel: t(k("elapsedLabel")),
-    timeLabel: t(k("timeLabel")),
+    ...videoPlayerWords(t),
     ...options,
   },
   ...(rootStyle ? { attrs: { style: rootStyle } } : {}),

@@ -25,10 +25,6 @@ import "@skryensya/core/tokens.scss";
  */
 import.meta.glob("../../core/css/patterns/*.css", { eager: true });
 import.meta.glob("../../core/css/components/*.css", { eager: true });
-/* (Folder is one of the sheets that glob now covers. Its silhouette is drawn from numbers the
- * stylesheet publishes as hooks, `--sk-folder-tab-height` and friends, so without it BOTH bindings
- * fall back to `folderGeometryFrom`'s defaults and the gate compares two folders drawn from a
- * stylesheet that was never loaded. That is the failure mode for every sheet above.) */
 /* Needed for focus-ring.spec.ts (G5): that gate reads a real computed `outline-style` off a
  * highlighted `.sk-menu__item`, which resolves to nothing without this sheet. Confirmed missing
  * before this addition: `menu/with-submenu` was already a canonical tree and rendered, unstyled,

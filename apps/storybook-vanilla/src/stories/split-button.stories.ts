@@ -9,16 +9,17 @@ import "@skryensya/core/patterns/anchored.css";
 import "@skryensya/core/patterns/icon.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/split-button";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/SplitButton", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.splitButtonAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.splitButtonAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(demos.splitButtonTree);
-export const Vertical: StoryObj = treeStory(demos.splitButtonVerticalTree);
 export const Small: StoryObj = treeStory(demos.splitButtonSmallTree);
 export const Subtle: StoryObj = treeStory(demos.splitButtonSubtleTree);
 export const OverMedia: StoryObj = treeStory(demos.splitButtonOverMediaTree);
 export const Ghost: StoryObj = treeStory(demos.splitButtonGhostTree);
 export const Danger: StoryObj = treeStory(demos.splitButtonDangerTree);
+export const Vertical: StoryObj = treeStory(demos.splitButtonVerticalTree);
 export const MenuFirst: StoryObj = treeStory(demos.splitButtonMenuFirstTree);

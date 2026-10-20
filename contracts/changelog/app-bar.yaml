@@ -3,13 +3,21 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "9289a968556f62e1"
+surface: "a11bee362ac93706"
 entries:
+  - date: 2026-10-17
+    kind: feature
+    es:
+      title: "AppBarMenu y AppBarStatus aceptan un nodo, y el estado anuncia sus cambios"
+      body: "children pasa de texto a nodo en ambos: un icono junto a la palabra, o un tono propio, ya componen. El texto de AppBarStatus (sin items) ahora lleva role=\"status\", así que un lector de pantalla anuncia el cambio solo. (Esta entrada cubre también una limpieza interna no relacionada: --sk-anchored-* vive ahora en la configuración de posicionamiento compartida, no en los hooks propios de este contrato.)"
+    en:
+      title: "AppBarMenu and AppBarStatus accept a node, and the status announces its own changes"
+      body: "children moves from text to node on both: an icon beside the word, or a tone of your own, compose fine now. AppBarStatus's plain text (no items) now carries role=\"status\", so a screen reader announces the change on its own. (This entry also covers an unrelated internal cleanup: --sk-anchored-* now lives in the shared positioning config, not in this contract's own hooks.)"
   - date: 2026-10-01
     kind: feature
     es:
       title: Primera versión
-      body: "La barra del borde superior de una aplicación de escritorio: menús de solo acciones, con submenús, y una zona de estado a la derecha que puede abrir su propio menú."
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: "The bar along an application's top edge, as on a desktop: menus of actions only, with submenus, and a status area on the trailing side that can open its own menu."
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

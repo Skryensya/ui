@@ -9,7 +9,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: "Navegación 2D por celdas: datos tabulares o widgets agrupados."
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: "2D cell navigation: tabular data or grouped widgets."
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

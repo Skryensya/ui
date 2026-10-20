@@ -13,7 +13,8 @@ import {
   type ReactNode,
   type RefObject,
 } from "react";
-import { useAnchored } from "./anchored.js";
+import { getDirection } from "../direction.js";
+import { anchorProps, positionerProps } from "./anchored.js";
 import { Icon } from "./icon.js";
 import { MenuPopup, useMenuMachine, type CheckedState } from "./menu.js";
 
@@ -96,7 +97,13 @@ export function AppBar({ children, className, label, status, ...props }: AppBarP
     const openMenu = open !== undefined && keys.includes(open) ? open : undefined;
     const focused = keys.find((key) => entries.current.get(key)?.trigger === document.activeElement);
     const current = focused ?? openMenu ?? stop ?? keys[0];
-    const action = resolveAppBarKey({ key: event.key, index: Math.max(0, keys.indexOf(current!)), count: keys.length, open: openMenu !== undefined });
+    const action = resolveAppBarKey({
+      key: event.key,
+      index: Math.max(0, keys.indexOf(current!)),
+      count: keys.length,
+      open: openMenu !== undefined,
+      dir: getDirection(props.dir, event.currentTarget),
+    });
     if (action.kind === "none") return;
     event.preventDefault();
     event.stopPropagation();
@@ -169,8 +176,6 @@ function Chevron() {
   );
 }
 
-const nestsSubmenu = (items: readonly AppBarItem[]): boolean => items.some((item) => Boolean(item.children?.length));
-
 /** The machine, the popup and the registration one trigger of the bar needs, menu or status alike. */
 function useDropdown(menu: boolean, items: readonly AppBarItem[] | undefined) {
   const context = useAppBar("AppBarMenu and AppBarStatus");
@@ -182,13 +187,12 @@ function useDropdown(menu: boolean, items: readonly AppBarItem[] | undefined) {
   const { service, api } = useMenuMachine({
     id,
     defaultOpen: false,
+    // Flush under the bar's own edge: the gap is for a trigger that stands alone.
+    gutter: 0,
     onOpenChange(details) {
       eventRootRef.current?.dispatchEvent(new CustomEvent(menuEvents.openChange, { bubbles: true, detail: details }));
     },
   });
-  /* Withheld the moment any level nests a submenu, exactly as Menu does: the browser's engine and the
-     machine's must not place two levels of one tree, or the submenu lands in the wrong space. */
-  const anchor = useAnchored(id, !nestsSubmenu(items ?? []));
   /* Nothing in a bar's dropdown is ever checked (actions only), so Menu's checked state stays empty. */
   const checkedState: CheckedState = {};
 
@@ -205,7 +209,7 @@ function useDropdown(menu: boolean, items: readonly AppBarItem[] | undefined) {
 
   const setCheckedState = () => {};
 
-  return { key, context, hasMenu, api, service, anchor, eventRootRef, triggerRef, checkedState, setCheckedState };
+  return { key, context, hasMenu, api, service, eventRootRef, triggerRef, checkedState, setCheckedState };
 }
 
 function Popup({
@@ -223,7 +227,7 @@ function Popup({
       eventRootRef={dropdown.eventRootRef}
       items={items!}
       onSelect={onSelect}
-      positionerProps={dropdown.anchor.positioner(dropdown.api.getPositionerProps(), cx(appBarParts.dropdown, menuParts.positioner))}
+      positionerProps={positionerProps(dropdown.api.getPositionerProps(), cx(appBarParts.dropdown, menuParts.positioner))}
       service={dropdown.service}
       setCheckedState={dropdown.setCheckedState}
     />
@@ -231,8 +235,8 @@ function Popup({
 }
 
 export type AppBarMenuProps = DropdownProps & {
-  /** The title: the contract's `children` slot (`text`). */
-  children: string;
+  /** The title: the contract's `children` slot (`node`). An icon beside the word composes fine. */
+  children: ReactNode;
   /** Bold, the way a desktop bar draws the application's own menu. */
   strong?: boolean;
   /** Fires when a title without a dropdown is activated. */
@@ -242,7 +246,7 @@ export type AppBarMenuProps = DropdownProps & {
 export function AppBarMenu(publicProps: AppBarMenuProps) {
   const { children, container, items, onActivate, onSelect, strong } = publicProps;
   const dropdown = useDropdown(true, items);
-  const { key, context, hasMenu, api, anchor, eventRootRef, triggerRef } = dropdown;
+  const { key, context, hasMenu, api, eventRootRef, triggerRef } = dropdown;
   const tabIndex = context.isStop(key) ? 0 : -1;
   const common = {
     [menuAttrs.trigger]: "",
@@ -265,7 +269,7 @@ export function AppBarMenu(publicProps: AppBarMenuProps) {
       {...(strong ? { "data-strong": "" } : {})}
     >
       {hasMenu ? (
-        <button {...api.getTriggerProps()} {...anchor.anchor(cx(appBarParts.trigger, "sk-interactive"))} {...common}>
+        <button {...api.getTriggerProps()} {...anchorProps(cx(appBarParts.trigger, "sk-interactive"))} {...common}>
           {children}
           <Chevron />
         </button>
@@ -280,14 +284,15 @@ export function AppBarMenu(publicProps: AppBarMenuProps) {
 }
 
 export type AppBarStatusProps = DropdownProps & {
-  /** The words shown: plain text, or the label of the menu button when `items` is given. */
-  children: string;
+  /** What is shown: a node, or the label of the menu button when `items` is given. An icon, a
+   * `tone` read from markup (a colored span) or a live region of your own compose fine. */
+  children: ReactNode;
 };
 
 export function AppBarStatus(publicProps: AppBarStatusProps) {
   const { children, container, items, onSelect } = publicProps;
   const dropdown = useDropdown(false, items);
-  const { key, context, hasMenu, api, anchor, eventRootRef, triggerRef } = dropdown;
+  const { key, context, hasMenu, api, eventRootRef, triggerRef } = dropdown;
 
   return (
     <div ref={eventRootRef} className={cx(appBarParts.statusItem, menuParts.root)} data-density="compact" {...{ [menuAttrs.root]: "" }}>
@@ -295,7 +300,7 @@ export function AppBarStatus(publicProps: AppBarStatusProps) {
         <>
           <button
             {...api.getTriggerProps()}
-            {...anchor.anchor(cx(appBarParts.trigger, "sk-interactive"))}
+            {...anchorProps(cx(appBarParts.trigger, "sk-interactive"))}
             {...{ [menuAttrs.trigger]: "", [appBarAttrs.trigger]: "" }}
             onPointerEnter={() => context.pointed(key)}
             ref={triggerRef}
@@ -307,7 +312,15 @@ export function AppBarStatus(publicProps: AppBarStatusProps) {
           <Popup dropdown={dropdown} items={items} container={container} onSelect={onSelect} />
         </>
       ) : (
-        <span className={appBarParts.statusText}>{children}</span>
+        /*
+         * `role="status"` implies `aria-live="polite"` + `aria-atomic="true"`: a reader hears
+         * "Saving… / Not saved" the moment `children` changes, no extra markup needed. Only here,
+         * not on the menu-button shape above: that one is a control, and a live region over the
+         * SAME text a reader can also open as a menu would announce it twice.
+         */
+        <span className={appBarParts.statusText} role="status">
+          {children}
+        </span>
       )}
     </div>
   );

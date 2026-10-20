@@ -4,7 +4,39 @@ import { type HTMLAttributes, type ReactNode } from "react";
 /* Derived, never restated: the default lives in the contract. */
 const { appearance: appearanceOption, size: sizeOption, tone: toneOption, pulse: pulseOption } = badgeContract.options;
 
-export type BadgeProps = Omit<HTMLAttributes<HTMLSpanElement>, "children"> & {
+/*
+ * A badge reports; it never acts. Plain `HTMLAttributes<HTMLSpanElement>` still carries every mouse,
+ * pointer, keyboard and drag handler (and `role`/`tabIndex`, the two props that turn a plain span
+ * INTO a widget) because the DOM lets any element listen for a click - but the contract never
+ * declares a `forward` list for Badge/BadgeDot (badge.ts), so none of that was ever part of the
+ * promise. Omitting it here closes a gap the contract already implied: the same move Badge and Tag
+ * just made at the content layer (Tag owns the feedback tones) now holds at the interaction layer
+ * too (Tag owns being clicked, dismissed or navigated). `BadgeHolder` is NOT restricted this way: it
+ * anchors a real Button or Avatar, which is supposed to stay interactive.
+ */
+type NonInteractiveSpanProps = Omit<
+  HTMLAttributes<HTMLSpanElement>,
+  | "onClick"
+  | "onDoubleClick"
+  | "onContextMenu"
+  | "onMouseDown"
+  | "onMouseUp"
+  | "onPointerDown"
+  | "onPointerUp"
+  | "onKeyDown"
+  | "onKeyUp"
+  | "onKeyPress"
+  | "onTouchStart"
+  | "onTouchEnd"
+  | "onDrag"
+  | "onDragStart"
+  | "onDragEnd"
+  | "onDrop"
+  | "role"
+  | "tabIndex"
+>;
+
+export type BadgeProps = Omit<NonInteractiveSpanProps, "children"> & {
   children: ReactNode;
   tone?: BadgeTone;
   size?: BadgeSize;
@@ -21,15 +53,25 @@ export function Badge({
   ...props
 }: BadgeProps) {
   const classes = className ? `${badgeParts.root} ${className}` : badgeParts.root;
+  const text = typeof children === "string" || typeof children === "number" ? String(children) : undefined;
+  const singleDigit = text !== undefined && /^\p{Decimal_Number}$/u.test(text);
 
   return (
-    <span {...props} className={classes} data-appearance={appearance} data-size={size} data-tone={tone}>
+    <span
+      title={text}
+      {...props}
+      className={classes}
+      data-appearance={appearance}
+      data-single-digit={singleDigit ? "" : undefined}
+      data-size={size}
+      data-tone={tone}
+    >
       {children}
     </span>
   );
 }
 
-export type BadgeDotProps = Omit<HTMLAttributes<HTMLSpanElement>, "aria-label"> & {
+export type BadgeDotProps = Omit<NonInteractiveSpanProps, "aria-label"> & {
   tone?: BadgeTone;
   pulse?: boolean;
   /** What the dot means ("Unread", "Online"). Its only accessible content. */

@@ -4,7 +4,7 @@ import { materialIcons } from "@skryensya/icons-material";
 import { phosphorIcons } from "@skryensya/icons-phosphor";
 import { render, within } from "@testing-library/react";
 import axe from "axe-core";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { Icon, IconSetProvider } from "./icon.js";
 
 /* The real sets, not fixtures. A stub here would let the shipped geometry rot, and these three are
@@ -69,6 +69,24 @@ describe("Icon React contracts", () => {
     expect(meaningful.svg().getAttribute("role")).toBe("img");
     expect(meaningful.svg().getAttribute("aria-label")).toBe("Advertencia");
     expect(meaningful.svg().getAttribute("aria-hidden")).toBeNull();
+  });
+
+  it("warns and marks meaningful icons that have no label", () => {
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+    const { svg } = renderIcon(<Icon name="warning" decorative={false} />);
+
+    expect(error.mock.calls.at(-1)?.[0]).toMatch(/<Icon>.*accessible name/s);
+    expect(svg().getAttribute("data-sk-a11y-warn")).toBe("");
+    error.mockRestore();
+  });
+
+  it("does not warn for decorative icons", () => {
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+    const { svg } = renderIcon(<Icon name="check" />);
+
+    expect(error).not.toHaveBeenCalled();
+    expect(svg().hasAttribute("data-sk-a11y-warn")).toBe(false);
+    error.mockRestore();
   });
 
   it("never makes the svg a tab stop", () => {
@@ -177,5 +195,18 @@ describe.each(sets)("the %s set", (_name, iconSet) => {
       const paints = [attrs.fill, attrs.stroke].filter(Boolean);
       expect(paints.some((p) => p === "currentColor"), `${role}: ${JSON.stringify(attrs)}`).toBe(true);
     }
+  });
+
+  it("degrades to nothing instead of crashing for a name the active set doesn't draw", () => {
+    /* `name`'s type is a closed vocabulary, but a value computed at runtime (an API field, a CMS
+       string) reaches this component with that type erased; `icon.attrs` on `undefined` crashed
+       before this fix, which is exactly what happened the first time this contract was exercised
+       with an unrecognized name (see the comment on `iconContract.options.name`). */
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const { container } = render(<Icon name={"not-a-real-icon" as never} />);
+
+    expect(container.querySelector("svg")).toBeNull();
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
   });
 });

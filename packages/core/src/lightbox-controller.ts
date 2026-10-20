@@ -12,6 +12,7 @@ import {
   formatLightboxCounter,
   lightboxAttrs,
   lightboxClampView,
+  lightboxIsVideo,
   lightboxContract,
   lightboxElasticView,
   lightboxFlingDistance,
@@ -44,6 +45,7 @@ import {
   type LightboxSize,
   type LightboxView,
 } from "./lightbox.js";
+import { videoPlayerParts } from "./video-player.js";
 
 /*
  * LIGHTBOX, the controller: the one place a lightbox's behaviour is wired. DOM-touching and
@@ -207,7 +209,15 @@ export function lightboxImageFromTrigger(trigger: Element): LightboxImage {
     credit: text(lightboxAttrs.credit),
     width,
     height,
+    kind: kindOf(trigger),
+    loop: trigger.hasAttribute(lightboxAttrs.videoLoop) && trigger.getAttribute(lightboxAttrs.videoLoop) !== "false" ? true : undefined,
   };
+}
+
+/** `data-lightbox-type` when it says; otherwise left for `lightboxIsVideo` to read off the file name. */
+function kindOf(trigger: Element): "image" | "video" | undefined {
+  const value = trigger.getAttribute(lightboxAttrs.type)?.trim().toLowerCase();
+  return value === "video" || value === "image" ? value : undefined;
 }
 
 /** Every trigger that opens the lightbox with this id, in document order: one gallery. */
@@ -272,6 +282,22 @@ export function connectLightbox(dialog: HTMLDialogElement, initial: LightboxConf
   placeholder.hidden = true;
   const image = createImage(lightboxParts.image);
   stage.prepend(placeholder, image);
+  /* The third surface, for an item that is a video. It is the page's own VideoPlayer when one was authored in the `video` slot (the
+     system's player, in the page's language), and its `<video>` is the one the lightbox loads files into. Otherwise it is a bare
+     `<video>` with the browser's controls, created here like the images: a `<video>` with no source is an empty player. Either
+     way it stays hidden until the current item is a video, and the image hides in its place. */
+  const player = stage.querySelector<HTMLElement>(`.${videoPlayerParts.root}`);
+  const video: HTMLVideoElement = player?.querySelector<HTMLVideoElement>("video") ?? doc.createElement("video");
+  if (!player) {
+    video.className = lightboxParts.video;
+    video.controls = true;
+    video.playsInline = true;
+    video.preload = "metadata";
+    stage.prepend(video);
+  }
+  /** What is shown and hidden, sized and animated: the player, or the bare video. */
+  const videoSurface: HTMLElement = player ?? video;
+  videoSurface.hidden = true;
 
   /* ---- state ---- */
   let config: LightboxConfig = { ...initial };
@@ -325,7 +351,11 @@ export function connectLightbox(dialog: HTMLDialogElement, initial: LightboxConf
   const loop = () => setting("loop") ?? lightboxContract.options.loop.default;
   const zoomEnabled = () => setting("zoom") ?? lightboxContract.options.zoom.default;
   const maxZoom = () => sanitizeLightboxMaxZoom(setting("maxZoom"));
-  const canZoom = () => isOpen && zoomEnabled() && status === "loaded";
+  const isVideo = (at = index): boolean => {
+    const item = images[at];
+    return item !== undefined && lightboxIsVideo(item);
+  };
+  const canZoom = () => isOpen && zoomEnabled() && status === "loaded" && !isVideo();
   const zoomed = () => view.scale > LIGHTBOX_MIN_ZOOM + 1e-6;
   const rtl = () => (dialog.closest("[dir]")?.getAttribute("dir") ?? doc.documentElement.dir) === "rtl";
   const counterLabel = () => config.counterLabel ?? lightboxContract.options.counterLabel.default;
@@ -374,7 +404,8 @@ export function connectLightbox(dialog: HTMLDialogElement, initial: LightboxConf
   };
 
   const renderZoomControls = (): void => {
-    const enabled = zoomEnabled();
+    /* A video has no zoom to offer: its controls are the player's own. */
+    const enabled = zoomEnabled() && !isVideo();
     const ready = canZoom();
     if (zoomBar) zoomBar.hidden = !enabled;
     for (const action of ["zoom-in", "zoom-out", "reset-zoom"] as const) {
@@ -436,12 +467,12 @@ export function connectLightbox(dialog: HTMLDialogElement, initial: LightboxConf
   let loadToken = 0;
   const preloaded = new Map<string, HTMLImageElement>();
 
-  const sizeTo = (img: HTMLImageElement, current: LightboxImage): void => {
+  const sizeTo = (img: HTMLElement, current: LightboxImage): void => {
     /* Known dimensions reserve the image's box before a single byte arrives, so nothing shifts when
        it does: the fitted rules in lightbox.css keep the ratio at any stage size. */
     if (current.width && current.height) {
-      img.width = current.width;
-      img.height = current.height;
+      img.setAttribute("width", String(current.width));
+      img.setAttribute("height", String(current.height));
       /* The attributes alone do not do it: `inline-size: auto` beats their presentational width, and
          an image with no pixels yet is 0×0. The stylesheet turns these two into a fitted box. */
       img.style.setProperty("--sk-lightbox-image-width", `${current.width}px`);
@@ -464,6 +495,13 @@ export function connectLightbox(dialog: HTMLDialogElement, initial: LightboxConf
     view = LIGHTBOX_FIT_VIEW;
     applyView();
 
+    if (lightboxIsVideo(current)) {
+      renderVideo(current, token);
+      return;
+    }
+    /* Back to a photo: the player is put away, silent and with no source. */
+    stopVideo();
+
     const thumb = current.thumbnailSrc && current.thumbnailSrc !== current.src ? current.thumbnailSrc : "";
     if (thumb) {
       sizeTo(placeholder, current);
@@ -478,12 +516,53 @@ export function connectLightbox(dialog: HTMLDialogElement, initial: LightboxConf
     }
 
     setStatus("loading");
+    image.hidden = false;
     image.alt = current.alt;
     sizeTo(image, current);
     image.src = current.src;
     /* Already in the cache: the load event may still come, but the photo is there now. */
     if (image.complete && image.naturalWidth > 0) settle(token, "loaded");
   };
+
+  /* A video takes the image's place: the photo and its placeholder hide, the player shows with its own controls, and the poster is the
+     thumbnail that opened it. It starts playing (the reader just asked for it), and settles as loaded once the first frame is there. */
+  const renderVideo = (current: LightboxImage, token: number): void => {
+    placeholder.hidden = true;
+    placeholder.removeAttribute("src");
+    image.hidden = true;
+    image.removeAttribute("src");
+    videoSurface.hidden = false;
+    setStatus("loading");
+    /* The clip's own description names what is playing: on the player's region when there is one, otherwise on the bare video. */
+    videoSurface.setAttribute("aria-label", current.alt);
+    sizeTo(videoSurface, current);
+    video.loop = current.loop === true;
+    if (current.thumbnailSrc) video.poster = current.thumbnailSrc;
+    else video.removeAttribute("poster");
+    video.src = current.src;
+    video.autoplay = true;
+    /* A browser may refuse to start it on its own; the controls are right there, so that is not an error. */
+    void video.play?.()?.catch(() => {});
+    if (video.readyState >= 2) settle(token, "loaded");
+  };
+  /** Silence the player and let go of its file: closing, or moving on to a photo. */
+  const stopVideo = (): void => {
+    if (videoSurface.hidden && !video.hasAttribute("src")) return;
+    video.pause?.();
+    videoSurface.hidden = true;
+    video.removeAttribute("src");
+    video.removeAttribute("poster");
+    videoSurface.removeAttribute(lightboxAttrs.sized);
+    /* `load()` after removing the source is what actually stops the download. */
+    video.load?.();
+  };
+  const onVideoSettled = (outcome: "loaded" | "error") => (): void => {
+    const current = images[index];
+    if (!current || !lightboxIsVideo(current) || video.getAttribute("src") !== current.src) return;
+    settle(loadToken, outcome);
+  };
+  video.addEventListener("loadeddata", onVideoSettled("loaded"));
+  video.addEventListener("error", onVideoSettled("error"));
 
   const settle = (token: number, outcome: "loaded" | "error"): void => {
     if (token !== loadToken || status !== "loading" || !isOpen) return;
@@ -556,7 +635,8 @@ export function connectLightbox(dialog: HTMLDialogElement, initial: LightboxConf
     if (!trigger || trigger.getAttribute(lightboxAttrs.opens) !== dialog.id) return;
     const next = lightboxImageFromTrigger(trigger);
     warm(next.thumbnailSrc);
-    warm(next.src);
+    /* A video is not fetched on a hover: it is large, and an `Image` cannot hold it anyway. */
+    if (!lightboxIsVideo(next)) warm(next.src);
   };
 
   const preloadNeighbours = (): void => {
@@ -565,6 +645,8 @@ export function connectLightbox(dialog: HTMLDialogElement, initial: LightboxConf
       /* The neighbour's placeholder too, so a swap to a photo still loading crosses to its blur, not
          to nothing. */
       warm(images[at]!.thumbnailSrc);
+      /* Neither is a neighbouring video preloaded, for the same reason: it starts when it is reached. */
+      if (isVideo(at)) continue;
       const src = images[at]!.src;
       const cached = preloaded.get(src);
       preloaded.delete(src);
@@ -657,7 +739,8 @@ export function connectLightbox(dialog: HTMLDialogElement, initial: LightboxConf
     easing: token(`--motion-${kind}-easing`) || "ease",
   });
   const px = (value: string): number => Number.parseFloat(value) || 0;
-  const visibleImages = (): HTMLImageElement[] => [image, placeholder].filter((img) => !img.hidden);
+  /* Whatever is drawn in the stage now: the photo and its placeholder, or the video. They all fly, slide and fade the same way. */
+  const visibleImages = (): HTMLElement[] => [image, placeholder, videoSurface].filter((media) => !media.hidden);
 
   /* The thumbnail currently hidden on the page because the photo is standing in for it. */
   let source: HTMLElement | null = null;
@@ -679,7 +762,7 @@ export function connectLightbox(dialog: HTMLDialogElement, initial: LightboxConf
      transitions on the same elements are left alone. */
   const stopMotion = (): void => {
     const Transition = (win as typeof globalThis).CSSTransition;
-    for (const element of [image, placeholder, stage]) {
+    for (const element of [image, placeholder, videoSurface, stage]) {
       for (const animation of element.getAnimations?.() ?? []) {
         if (Transition && animation instanceof Transition) continue;
         animation.cancel();
@@ -717,7 +800,7 @@ export function connectLightbox(dialog: HTMLDialogElement, initial: LightboxConf
   };
 
   /** The two ends of one photo's FLIP between its fitted box and a thumbnail. */
-  const flipFrames = (img: HTMLImageElement, thumb: HTMLElement): { onThumb: Keyframe; fitted: Keyframe } | null => {
+  const flipFrames = (img: HTMLElement, thumb: HTMLElement): { onThumb: Keyframe; fitted: Keyframe } | null => {
     const drag = drawnTranslate(img);
     const rect = img.getBoundingClientRect();
     /* The fitted box itself, without the offset the rect includes: the flight starts where it is drawn. */
@@ -842,10 +925,36 @@ export function connectLightbox(dialog: HTMLDialogElement, initial: LightboxConf
     ghosts.clear();
   };
 
+  /** The frame a video is showing, as an image address; `null` when it cannot be read (nothing decoded yet, or no canvas). */
+  const snapshotOf = (player: HTMLVideoElement): string | null => {
+    if (!player.videoWidth || !player.videoHeight) return null;
+    try {
+      const canvas = doc.createElement("canvas");
+      canvas.width = player.videoWidth;
+      canvas.height = player.videoHeight;
+      const context = canvas.getContext("2d");
+      if (!context) return null;
+      context.drawImage(player, 0, 0);
+      return canvas.toDataURL("image/jpeg", 0.92);
+    } catch {
+      return null;
+    }
+  };
+
   const ghostOf = (): HTMLImageElement | null => {
     if (!canAnimate()) return null;
-    const from = status === "loaded" ? image : !placeholder.hidden && placeholder.src ? placeholder : null;
+    /* The outgoing item is whichever surface is drawn (`index` has already moved on): a video leaves as the frame it was showing. */
+    const from =
+      status === "loaded"
+        ? videoSurface.hidden
+          ? image
+          : video
+        : !placeholder.hidden && placeholder.src
+          ? placeholder
+          : null;
     if (!from) return null;
+    const frame = from === video ? snapshotOf(video) : (from as HTMLImageElement).currentSrc || (from as HTMLImageElement).src;
+    if (!frame) return null;
     const rect = from.getBoundingClientRect();
     const opacity = Number.parseFloat(win.getComputedStyle(from).opacity);
     if (!rect.width || !rect.height || !(opacity > 0)) return null;
@@ -856,7 +965,7 @@ export function connectLightbox(dialog: HTMLDialogElement, initial: LightboxConf
     ghost.alt = "";
     ghost.setAttribute("aria-hidden", "true");
     ghost.decoding = "sync";
-    ghost.src = from.currentSrc || from.src;
+    ghost.src = frame;
     ghost.style.left = `${rect.left - box.left}px`;
     ghost.style.top = `${rect.top - box.top}px`;
     ghost.style.width = `${rect.width}px`;
@@ -879,13 +988,17 @@ export function connectLightbox(dialog: HTMLDialogElement, initial: LightboxConf
   const animateStep = (direction: 1 | -1, ghost: HTMLImageElement | null): void => {
     if (!canAnimate()) return;
     const settle = timing("release", 320);
-    const from = canMove() ? (rtl() ? -direction : direction) * px(token("--motion-navigate-distance")) * 4 : 0;
+    const lean = canMove() ? (rtl() ? -direction : direction) : 0;
+    /* How far each side drifts: a lean toward the side it goes to or comes from, not a slide across the screen. */
+    const drift = lean * px(token("--motion-navigate-distance"));
+    /* No picture to grow out of (the outgoing one had not loaded): the arrival slides in the old way, from the side it comes from. */
+    const from = drift * 4;
     if (ghost) {
       const out = ghost.animate(
         [
-          { translate: "0px 0px", opacity: ghost.style.opacity },
-          { opacity: 0, offset: 0.6 },
-          { translate: `${-from}px 0px`, opacity: 0 },
+          { translate: "0px 0px", opacity: ghost.style.opacity, scale: "1" },
+          { opacity: 0, offset: 0.7 },
+          { translate: `${-drift}px 0px`, opacity: 0, scale: canMove() ? "0.97" : "1" },
         ],
         { ...settle, fill: "forwards" },
       );
@@ -896,11 +1009,26 @@ export function connectLightbox(dialog: HTMLDialogElement, initial: LightboxConf
       void out.finished.then(drop, drop);
     }
     for (const img of visibleImages()) {
-      if (from) img.animate([{ translate: `${from}px 0px` }, { translate: "0px 0px" }], { ...settle, composite: "add" });
+      /*
+       * THE ARRIVAL GROWS OUT OF THE DEPARTURE. The incoming picture starts as the outgoing one's box (cropped to it, the way the
+       * thumbnail's crop is when a photo flies out of the page) and settles into its own, while the outgoing one fades out above
+       * it: a landscape turning into a portrait changes shape in one motion, instead of one frame holding a box that is gone and
+       * the next one a box that has arrived. The same measurement as the flight from a thumbnail, with the ghost as the thumbnail.
+       */
+      const pair = ghost && canMove() ? flipFrames(img, ghost) : null;
+      if (pair) {
+        const { clipPath: fromClip, ...fromMove } = pair.onThumb;
+        const { clipPath: toClip, ...toMove } = pair.fitted;
+        img.animate([fromMove, { ...toMove, translate: "0px 0px" }], { ...settle, composite: "add" });
+        img.animate([{ clipPath: fromClip }, { clipPath: toClip }], settle);
+        if (drift) img.animate([{ translate: `${drift}px 0px` }, { translate: "0px 0px" }], { ...settle, composite: "add" });
+      } else if (from) {
+        img.animate([{ translate: `${from}px 0px` }, { translate: "0px 0px" }], { ...settle, composite: "add" });
+      }
       /* Up to the opacity it is meant to have: a photo still loading is 0 (its own transition brings
-         it in when it lands), the blurred placeholder is less than 1. */
+         it in when it lands), the blurred placeholder is less than 1. The fade leads the move, so the two are never both half there for long. */
       const target = win.getComputedStyle(img).opacity;
-      if (Number.parseFloat(target) > 0) img.animate([{ opacity: 0 }, { opacity: target, offset: 0.6 }, { opacity: target }], settle);
+      if (Number.parseFloat(target) > 0) img.animate([{ opacity: 0 }, { opacity: target, offset: 0.5 }, { opacity: target }], settle);
     }
   };
 
@@ -1120,6 +1248,8 @@ export function connectLightbox(dialog: HTMLDialogElement, initial: LightboxConf
     if (pointers.has(event.pointerId)) endGesture(event, true);
     if (event.pointerType === "mouse" && event.button !== 0) return;
     if ((event.target as Element | null)?.closest?.("button, a")) return;
+    /* A press on a video is a press on its player: its scrubber, its volume. No pan, swipe or pinch to take it over. */
+    if (isVideo()) return;
     pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     suppressClick = false;
 
@@ -1639,6 +1769,8 @@ export function connectLightbox(dialog: HTMLDialogElement, initial: LightboxConf
     image.style.transform = "";
     /* Stop whatever is still downloading, and hold nothing a closed viewer does not need. */
     loadToken += 1;
+    stopVideo();
+    image.hidden = false;
     image.removeAttribute("src");
     /* An `<img>` with alt text and no source draws as a broken image; the stylesheet hides it too. */
     image.alt = "";

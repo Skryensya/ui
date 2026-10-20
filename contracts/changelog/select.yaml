@@ -3,13 +3,84 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "a874bca51d502f1d"
+surface: "b1ebab28ffd78fba"
 entries:
+  - date: 2026-10-18
+    kind: bugfix
+    target: Select
+    es:
+      title: Restaurado el scrollbar estándar del kit
+      body: "Se retira la variante de thumb que cambiaba el ancho. El select usa sk-scrollbar sin overrides, con track completo y esquinas recortadas; se elimina el inset artificial del thumb."
+    en:
+      title: Standard kit scrollbar restored
+      body: "The thumb variant that changed the width is removed. Select uses sk-scrollbar without overrides, retaining the full-height track and rounded clipping; the artificial thumb inset is removed."
+  - date: 2026-10-18
+    kind: bugfix
+    target: Select
+    es:
+      title: Track completo con separación vertical solo en el thumb
+      body: "El panel no añade padding al scrollbar. La variante compartida del kit deja 4 px en los extremos del thumb sin acortar el track; sin soporte se conserva el scrollbar estándar."
+    en:
+      title: Full-height track with vertical inset on the thumb only
+      body: "The panel adds no scrollbar padding. A shared kit variant insets the thumb by 4 px at each end without shortening the track; unsupported browsers retain the standard scrollbar."
+  - date: 2026-10-18
+    kind: bugfix
+    target: Select
+    es:
+      title: Scrollbar al borde del panel, sin padding exterior
+      body: "El padding se aplica a los items dentro de la lista. El scrollbar llega al borde interior del panel y sus esquinas siguen recortadas."
+    en:
+      title: Scrollbar flush with the panel, without outer padding
+      body: "Padding applies to items inside the list. The scrollbar reaches the panel's inner edge while its corners remain clipped."
+  - date: 2026-10-18
+    kind: bugfix
+    target: Select.native
+    es:
+      title: Valores largos en una sola línea, sin desbordar el campo
+      body: "selectedcontent recorta el valor con puntos suspensivos y deja visible la flecha. React lo instala después de hidratar; sin soporte se conserva el control nativo clásico."
+    en:
+      title: Long values stay on one line without overflowing the field
+      body: "selectedcontent truncates the value with an ellipsis while preserving the picker icon. React installs it after hydration; unsupported browsers keep the classic native control."
+  - date: 2026-10-18
+    kind: bugfix
+    target: Select
+    es:
+      title: Espacio simétrico alrededor de la lista y el scrollbar
+      body: "El panel exterior lleva el padding y el borde. La lista deja la misma separación antes del scrollbar, sin modificar los estilos del kit; también en RTL."
+    en:
+      title: Symmetric spacing around the list and scrollbar
+      body: "The outer panel owns padding and border. The list leaves the same gap before the scrollbar without overriding kit styling, including in RTL."
+  - date: 2026-10-18
+    kind: bugfix
+    es:
+      title: Scrollbar del kit en ambos selects
+      body: "El select nativo usa sk-scrollbar y el desplegable mejorado añade un panel con recorte redondeado sin cambiar la lista que controla Zag. Se eliminan los estilos de scrollbar específicos del select."
+    en:
+      title: Kit scrollbar in both selects
+      body: "Native select uses sk-scrollbar, and the enhanced popup adds a rounded clipping panel without changing Zag's scrolling list. Select-specific scrollbar styling is removed."
+  - date: 2026-10-17
+    kind: feature
+    target: Select
+    es:
+      title: "Dentro de FormField, un solo label: Select ya hereda el id, required y describedBy"
+      body: "Select ahora llama al mismo useFormFieldControl que Input/NativeSelect. Sin label propio, el trigger toma el id del campo (asociación nativa, sin aria-labelledby) y ya no pinta una segunda etiqueta. Con label propio, el emparejamiento de Select con el suyo queda intacto."
+    en:
+      title: "Inside FormField, one label: Select now inherits id, required and describedBy"
+      body: "Select now calls the same useFormFieldControl Input/NativeSelect already do. With no label of its own, the trigger takes the field's id (native association, no aria-labelledby) and no longer paints a second label. With its own label, Select's own pairing stays untouched."
+  - date: 2026-10-17
+    kind: feature
+    target: Select
+    es:
+      title: "aria-label / aria-labelledby, un nombre accesible oculto"
+      body: "El contrato ya declaraba forward: [\"id\", \"aria-*\"], pero el binding de React los descartaba en silencio. Van al trigger real; si no se pasan, no tocan el aria-labelledby que Zag ya calcula. (Esta entrada cubre también una limpieza interna no relacionada: el posicionamiento de la lista usa ahora anchoredPositioning compartido.)"
+    en:
+      title: "aria-label / aria-labelledby, a hidden accessible name"
+      body: "The contract already declared forward: [\"id\", \"aria-*\"], but the React binding silently dropped them. They land on the real trigger; left out, they never touch the aria-labelledby Zag already computes. (This entry also covers an unrelated internal cleanup: the listbox's positioning now uses the shared anchoredPositioning config.)"
   - date: 2026-10-01
     kind: feature
     es:
       title: Primera versión
-      body: Elige un valor de una lista compacta de opciones.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Chooses one value from a compact list of options.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

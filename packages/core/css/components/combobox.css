@@ -20,12 +20,12 @@
     --sk-combobox-content-wash: var(--elevation-wash-raised);
     --sk-combobox-radius: var(--radius-control);
     --sk-combobox-content-radius: var(--radius-surface);
-    --sk-combobox-padding-x: var(--space-inset-sm);
+    --sk-combobox-padding-x: var(--space-inset-md);
     --sk-combobox-item-padding: var(--space-inset-xs) var(--space-inset-sm);
 
     display: grid;
     gap: var(--space-stack-xs);
-    min-inline-size: 12rem;
+    min-inline-size: min(12rem, 100%);
     max-inline-size: 100%;
   }
 
@@ -86,52 +86,45 @@
     gap: var(--space-inline-xs);
     align-items: center;
     min-inline-size: 0;
-    padding-inline-start: var(--sk-combobox-padding-x);
+    /* One step in from `--sk-combobox-padding-x` (space-inset-md, still what the INPUT's own
+     * trailing padding uses before the clear button): the typed/selected text read with more air
+     * on its left than the field needs, so only this start edge comes down a token. */
+    padding-inline-start: var(--space-inset-sm);
   }
 
+  /* No box of its own: `display: contents` drops its own flex row, so each Tag becomes a direct
+   * flex item of `.sk-combobox__value` ABOVE, in the very same wrap as the input. Two nested
+   * flex-wrap boxes (this one wrapping Tags, value wrapping this-plus-input) each decide their own
+   * line breaks, so the input only ever starts a fresh line below every Tag, never shares a Tag's
+   * trailing space even when there is room. One flat list fixes that: the input is just the last
+   * item, and it wraps only when the line is actually full. (Selectors like `:has()` and `+` still
+   * see this element; only its box is gone. `role="list"`/`aria-label` on it stay read by current
+   * browsers — unlike pre-2022 engines, `display: contents` no longer strips explicit ARIA.) */
   .sk-combobox__selected-items {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-inline-xs);
-    align-items: center;
-    min-inline-size: 0;
-    padding-block: 2px;
+    display: contents;
   }
 
-  .sk-combobox__selected-item {
-    display: inline-flex;
-    align-items: center;
-    min-inline-size: 0;
-    min-block-size: calc(var(--size-touch-target) - 4px);
-    border: 1px solid var(--color-border-subtle);
-    border-radius: var(--radius-pill);
-    background: var(--color-bg-surface);
-    color: var(--color-text-primary);
-    font-size: var(--font-size-body-sm);
+  /* Tags read as a TagsInput row, not a text field: `--sk-combobox-padding-x` (space-inset-md) is
+   * sized for the single-select case, where the input alone fills the control and needs the wider
+   * inline margin a line of text wants. A row of chips doesn't: matches TagsInput's own
+   * `--sk-tags-input-padding-y` (tags-input.css) for the block padding single-select never needed —
+   * it has only the input's own touch-target height to centre inside — so that reads the same in
+   * both fields (the START inline padding is its own value here, not tied to TagsInput's; the END
+   * side stays as-is — it is the INPUT's own trailing padding, shared with single-select, not this
+   * rule's to double up on). Scoped to `:has()` so plain single-select is untouched. */
+  .sk-combobox__value:has(.sk-combobox__selected-items) {
+    padding-inline-start: var(--space-inset-xs);
+    padding-block: var(--space-inset-xs);
   }
 
-  .sk-combobox__selected-item-label {
-    min-inline-size: 0;
-    padding-inline: var(--space-inset-sm) var(--space-inset-xs);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  /* Every REAL action inside the field composes Button's icon-only sm contract. Component CSS only
-     supplies the quiet field recipe; Button owns the square, focus ring and expanded hit target.
-     The chevron (`.sk-combobox__trigger`) is no longer one of these - see its own rules below. */
-  :is(.sk-combobox__remove-trigger, .sk-combobox__clear).sk-button {
+  /* Clear and trigger compose Button; selected-value removal is painted by Tag. */
+  :is(.sk-combobox__clear, .sk-combobox__trigger).sk-button {
     --sk-button-bg: transparent;
     --sk-button-fg: var(--color-text-secondary);
     --sk-button-border-color: transparent;
     --sk-button-border-width: 0;
     --sk-button-shadow: none;
     --sk-button-radius: var(--sk-combobox-radius);
-  }
-
-  .sk-combobox__remove-trigger.sk-button {
-    margin-inline: calc((var(--size-touch-target) - var(--size-control-sm)) * 0.5);
   }
 
   .sk-combobox__input {
@@ -147,6 +140,26 @@
     font: inherit;
   }
 
+  /* Once there are Tags to read, the input is only for typing the NEXT filter, not for holding a
+   * value of its own: the 6rem/8rem floor above is sized for the single-select, label-in-the-field
+   * case and reserves far more width than a query needs, pushing it (and every Tag after it) onto a
+   * new row well before the row is actually full. Dropping its floor to 3rem is enough to type into
+   * while leaving room for Tags to keep filling the current line.
+   *
+   * The BLOCK floor needs dropping too, same reasoning: `--size-touch-target` (42px) makes sense
+   * when the input is the only thing in the control, but once it shares a flex line with 1.75rem
+   * Tags (tag.css's `--sk-tag-height`, the one fixed height every chip paints at, density or not)
+   * that floor alone inflates just the input's row — and with it the placeholder and the typed text,
+   * which sit centred inside that extra height — so a field that reads flush against its own Tags
+   * suddenly has visible air around only one row. The control itself still floors at a full
+   * `--size-touch-target` (its own `min-block-size`, above), so the touch target does not shrink:
+   * only this row's box does, matching the Tags instead of a lone taller line among them. */
+  .sk-combobox__selected-items + .sk-combobox__input {
+    flex-basis: 3rem;
+    min-inline-size: 3rem;
+    min-block-size: 1.75rem;
+  }
+
   .sk-combobox__input::placeholder {
     color: var(--color-text-tertiary);
   }
@@ -155,35 +168,37 @@
     cursor: not-allowed;
   }
 
-  /* Clear paints at control-sm. The margin reserves exactly the difference between that face and
-     Button's fixed touch target, so it and the input's own edge never have overlapping hits. */
+  /* Clear paints at control-xs. The inline margin reserves exactly the difference between that face
+   * and Button's fixed touch target, so it and the input's own edge never have overlapping hits.
+   *
+   * `align-self: start`, pinned by a fixed `margin-block-start`, not `center`: once Tags wrap onto
+   * several lines the grid row grows to that whole tall height (`align-items: stretch` on the
+   * control), and `center` puts the button at the middle of ALL of it instead of where a reader's
+   * eye actually is, against the first line. The fixed offset below is `.sk-combobox__input`'s own
+   * `calc(--size-touch-target - 2px)` trick read the other way — `--size-touch-target` minus the
+   * 1px border on each edge is this row's real content height (42px, not 44), and centring
+   * control-xs (24px) inside THAT is what the margin computes, same number `align-self: center`
+   * landed on for a single line, so the common case reads identically; what changes is only the
+   * wrapped one, which this keeps pinned to the top instead of floating. */
   .sk-combobox__clear.sk-button {
-    align-self: center;
-    margin-inline: calc((var(--size-touch-target) - var(--size-control-sm)) * 0.5);
+    position: relative;
+    z-index: 1;
+    align-self: start;
+    margin-block-start: calc((var(--size-touch-target) - 2px - var(--size-control-xs)) / 2);
+    margin-inline-start: calc((var(--size-touch-target) - var(--size-control-xs)) * 0.5);
   }
 
   .sk-combobox__clear.sk-button:is(:disabled, [aria-disabled="true"]) {
     --sk-button-fg: var(--color-text-disabled);
   }
 
-  /*
-   * THE CHEVRON, a plain decorative indicator now (see the contract's own note on `part: "trigger"`
-   * in `combobox.ts`), not a Button composition: same `--size-control-sm` square holding a
-   * `--size-icon-md` glyph as `.sk-select__indicator` (`select.css`), the exact spacing an
-   * icon-only `sm` Button gives its own icon, without the hover/pressed feedback that made it read
-   * as a second clickable control. `place-items: center` on both this and its `[data-state]`
-   * children for the same reason `select.css` needs it on its own children: a plain `<span>`'s line
-   * box is taller than the glyph it holds, and centering only the OUTER box leaves the icon a
-   * couple pixels off true centre.
-   */
-  .sk-combobox__trigger {
-    display: inline-grid;
-    place-items: center;
-    align-self: center;
-    inline-size: var(--size-control-sm);
-    block-size: var(--size-control-sm);
-    color: var(--color-text-secondary);
-    margin-inline-end: var(--space-inset-xs);
+  /* The chevron: a real icon-only ghost Button. Its two glyphs swap on `data-state`, and
+     `place-items: center` keeps each one on true centre inside the square. Same reasoning as Clear
+     just above for the pinned `align-self: start`. */
+  .sk-combobox__trigger.sk-button {
+    align-self: start;
+    margin-block-start: calc((var(--size-touch-target) - 2px - var(--size-control-sm)) / 2);
+    margin-inline-end: calc((var(--size-touch-target) - var(--size-control-sm)) * 0.5);
   }
 
   .sk-combobox__trigger .sk-icon {
@@ -226,27 +241,16 @@
     --sk-combobox-content-wash: var(--elevation-wash-raised);
     --sk-combobox-item-padding: var(--space-inset-xs) var(--space-inset-sm);
 
-    --sk-anchored-position-area: block-end span-inline-end;
-    --sk-anchored-justify: start;
-    --sk-anchored-align: auto;
-    --sk-anchored-offset: var(--space-stack-xs) 0;
-    --sk-anchored-position-try: flip-block;
   }
 
-  @supports (anchor-name: --a) {
-    .sk-combobox__positioner {
-      /* As wide as the field. Inside the @supports because `anchor-size()` without a resolved anchor is
-       * invalid, and the pattern reads this hook on the fallback path too. */
-      --sk-anchored-size: anchor-size(width);
-    }
-  }
-
-  .sk-combobox__content {
+    .sk-combobox__content {
     display: none;
+    /* Zag copies this value onto the portalled positioner. */
+    z-index: var(--z-popover);
     box-sizing: border-box;
     inline-size: var(--reference-width);
-    min-inline-size: 12rem;
-    max-inline-size: min(26rem, calc(100vi - 2 * var(--space-inset-md)));
+    min-inline-size: min(12rem, var(--reference-width));
+    max-inline-size: min(26rem, var(--available-width, calc(100vi - 2 * var(--space-inset-md))));
     max-block-size: min(
       var(--sk-combobox-content-max-block-size),
       var(--available-height, calc(100vb - 2 * var(--space-inset-md)))
@@ -383,7 +387,7 @@
 
   .sk-combobox__item-copy {
     display: grid;
-    gap: 2px;
+    gap: calc(var(--space-inline-xs) / 2);
     min-inline-size: 0;
   }
 
@@ -466,8 +470,7 @@
 
   @media (forced-colors: active) {
     .sk-combobox__control,
-    .sk-combobox__content,
-    .sk-combobox__selected-item {
+    .sk-combobox__content {
       border-color: CanvasText;
     }
 

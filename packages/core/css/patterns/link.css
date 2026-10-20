@@ -1,0 +1,18 @@
+/*
+ * LINK: opt-in root pattern (decision 11's neighbor).
+ *
+ * Consent IS the import, same as `scroll-lock.css`. A plain `<a href>` nobody gave a class - a link
+ * inside a paragraph of prose, inside user content - carries no `.sk-*` styling and painted the
+ * browser's own blue/purple instead of the kit's accent. Every component's own anchor (`Button`
+ * with `href`, `Breadcrumb`, `NavListLink`...) always carries a class, so `:not([class])` can never
+ * reach one: this rule only ever meets a link nothing here already named.
+ *
+ * `:where()` keeps it at specificity 0, the same reason `sk-visually-hidden` does: an author's own
+ * `a { color: red }` on their prose, or a future `.sk-*` component that turns out to render a bare
+ * anchor after all, still wins without `!important` on either side.
+ */
+@layer components {
+  :where(a:not([class])) {
+    color: var(--color-text-link);
+  }
+}

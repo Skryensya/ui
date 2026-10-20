@@ -1,0 +1,149 @@
+---
+import Base from "../layouts/Base.astro";
+import BreakFindings from "./BreakFindings.astro";
+
+interface Props {
+  title: string;
+  docsHref?: string;
+}
+
+const { title, docsHref } = Astro.props;
+const slug = Astro.url.pathname.split("/").filter(Boolean).at(-1) ?? "";
+const componentSlug = slug.replace(/-break$/, "");
+const componentHref = docsHref ?? (componentSlug && componentSlug !== "index" ? `/components/${componentSlug}` : undefined);
+---
+
+<Base title={`Break: ${title}`} debugPage noIndex>
+  <nav class="debug-page-links" aria-label="Debug page links">
+    <a class="sk-button sk-interactive" data-variant="soft" href="/debug">Break index</a>
+    {componentHref && <a class="sk-button sk-interactive" data-variant="soft" href={componentHref}>{title} docs</a>}
+  </nav>
+  {slug.endsWith("-break") && <BreakFindings component={componentSlug} />}
+  <slot />
+</Base>
+
+<style is:global>
+  .debug-page-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-inline-sm);
+    padding-block-start: 0;
+  }
+
+  .break-page {
+    padding: var(--space-inset-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-stack-xl);
+  }
+
+  .break-intro {
+    max-inline-size: 60ch;
+    color: var(--color-text-secondary);
+  }
+
+  .break-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-stack-lg);
+    padding-block-start: var(--space-stack-md);
+    border-block-start: 1px solid var(--color-border-subtle);
+  }
+
+  .break-group__title {
+    margin: 0;
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-body-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-secondary);
+  }
+
+  .break-case {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-stack-xs);
+  }
+
+  .break-case__label {
+    margin: 0;
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-caption);
+    color: var(--color-text-primary);
+  }
+
+  .break-case__note,
+  .break-case__broke,
+  .break-case__fixed {
+    margin: 0;
+    font-size: var(--font-size-caption);
+  }
+
+  .break-case__note { color: var(--color-text-secondary); }
+  .break-case__broke { color: var(--color-text-danger); }
+  .break-case__fixed { color: var(--color-text-success); }
+
+  .break-case__stage {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-stack-sm);
+    max-inline-size: 100%;
+    /* Do not conceal specimen overflow behind a harness-owned scrollport. */
+    overflow: visible;
+  }
+
+  /* Older pages declare stage styles too; diagnostics must not silently clip a failure. */
+  .break-page .break-case__stage {
+    overflow: visible;
+    outline: 1px dashed var(--color-border-default);
+  }
+
+  .break-w-320 {
+    inline-size: 320px;
+    outline: 1px dashed var(--color-border-default);
+  }
+
+  .break-w-1100 {
+    inline-size: min(1100px, 100%);
+    outline: 1px dashed var(--color-border-default);
+  }
+
+  .break-data-pair,
+  .break-scenario-grid {
+    display: grid;
+    gap: var(--space-stack-md);
+    inline-size: 100%;
+  }
+
+  .break-data-pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .break-scenario-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  }
+
+  .break-select-scenario {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-stack-md);
+  }
+
+  .break-data-pair__item {
+    min-inline-size: 0;
+  }
+
+  .break-data-pair__label {
+    margin: 0 0 var(--space-stack-xs);
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-caption);
+    color: var(--color-text-secondary);
+  }
+
+  @media (max-width: 48rem) {
+    .break-data-pair {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

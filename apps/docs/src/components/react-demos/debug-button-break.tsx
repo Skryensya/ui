@@ -27,7 +27,17 @@ const LABELS = {
   rtl: "احفظ التغييرات",
   mixed: "احفظ إلى Google Drive الآن",
   diacritics: "Hiển thị Ẩn Giấy tờ सहेजें",
+  htmlish: "<b>Save</b> now & continue",
+  newline: "Line one\nLine two",
 };
+
+const countPluralRules = new Intl.PluralRules("es");
+const countNumberFormat = new Intl.NumberFormat("es");
+/** The fixed row's label: a count goes through Intl, never straight into a template string. */
+function deleteLabel(n: number): string {
+  const word = countPluralRules.select(n) === "one" ? "elemento" : "elementos";
+  return `Eliminar ${countNumberFormat.format(n)} ${word}`;
+}
 
 function Case({
   label,
@@ -57,7 +67,7 @@ function Case({
 
 function Group({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <section className="break-group">
+    <section className="break-group" data-toc-transparent>
       <h2 className="break-group__title">{title}</h2>
       {children}
     </section>
@@ -111,7 +121,7 @@ export function ButtonBreak() {
       </Group>
 
       <Group title="Content length">
-        <Case label="Empty string children" fixed="React now logs a `renders nothing` error in dev and the vanilla enhancer throws. The paint is unchanged: this is an authoring bug, not a CSS one, so the two empty buttons below still look exactly like this.">
+        <Case label="Empty string children" fixed="React now logs a `renders nothing` error in dev and the vanilla enhancer throws. It also carries the same dashed danger outline an unlabelled iconOnly button gets (`[data-sk-a11y-warn]`, dev-only): the console error alone left the empty button pixel-identical to a real one right beside it.">
           <Button>{LABELS.empty}</Button>
           <Button variant="ghost">{LABELS.empty}</Button>
         </Case>
@@ -171,7 +181,7 @@ export function ButtonBreak() {
             <Button pre={<Icon name="upload" />}>{LABELS.mixed}</Button>
           </div>
         </Case>
-        <Case label="Stacked diacritics and tall scripts" broke="at size xs the Devanagari matra and the Vietnamese tone marks cross the top border; sm clears it by about a pixel.">
+        <Case label="Stacked diacritics and tall scripts" fixed="cleared. `xs` had no leading (`line-height: 1`) and not enough slack to make up for it; it now gets `--scale-line-height-snug` of its own (button.css's data-size=xs rule).">
           {SIZES.map((size) => (
             <Button key={size} size={size}>
               {LABELS.diacritics}
@@ -299,6 +309,115 @@ export function ButtonBreak() {
           <div className="break-w-320 break-stretch">
             <Button disabled>{LABELS.sentences}</Button>
             <Button pressed>{LABELS.unbreakable}</Button>
+          </div>
+        </Case>
+        <Case label="Welded pair, disabled" note="Does the seam (the one border the weld rules clear) still read as one control once disabled fades both halves?">
+          <div className="break-weld">
+            <Button weldEnd disabled>
+              Save
+            </Button>
+            <Button weldStart iconOnly aria-label="More options" disabled>
+              <Icon name="chevron-down" />
+            </Button>
+          </div>
+        </Case>
+        <Case label="Welded pair, long label in a 320px container">
+          <div className="break-w-320">
+            <div className="break-weld">
+              <Button weldEnd tone="accent">
+                {LABELS.sentences}
+              </Button>
+              <Button weldStart iconOnly aria-label="More options" tone="accent">
+                <Icon name="chevron-down" />
+              </Button>
+            </div>
+          </div>
+        </Case>
+      </Group>
+
+      <Group title="Loading">
+        <Case
+          label="Short label"
+          fixed="inline. The spinner used to float over the label with `visibility: hidden` on the label underneath - which never reached `Save`, since plain text has no element of its own to hide. The label sat fully visible right under the spinner. It now takes the `pre` icon's own place instead, in flow, and the label keeps showing beside it."
+        >
+          <Button loading>Save</Button>
+        </Case>
+        <Case label="Long label" note="No `loadingText` given, so the label keeps showing beside the spinner; the button still holds the width the label gives it, same as before, just for a different reason now (real content, not an invisible one).">
+          <Button loading>{LABELS.sentences}</Button>
+        </Case>
+        <Case label="Long label, with loadingText" note="`loadingText` replaces the label while loading; the button is free to reflow to the shorter phrase, since its content genuinely changed.">
+          <Button loading loadingText="Guardando…">
+            {LABELS.sentences}
+          </Button>
+        </Case>
+        <Case
+          label="iconOnly"
+          fixed="the spinner now takes the icon's own place instead of sitting beside it in a square with no room for both (button.css's `[data-icon-only]` rule)."
+        >
+          <Button loading iconOnly aria-label="Uploading">
+            <Icon name="upload" />
+          </Button>
+        </Case>
+        <Case
+          label="Every size, spinner scaled to match"
+          fixed="the spinner used to be pinned at one size (`sm`) regardless of the button's own, reading undersized on `md`/`lg` and oversized on `xs` - the actual 'se ve raro' this group started from. It now scales off `data-size` like every other icon in button.css."
+        >
+          {SIZES.map((size) => (
+            <Button key={size} size={size} loading>
+              {`size ${size}`}
+            </Button>
+          ))}
+        </Case>
+        <Case
+          label="Welded pair, one half loading"
+          note="Raw welded Buttons, not a composed SplitButton: nothing here couples the two halves, so the trigger beside a loading action stays fully clickable. SplitButton's own contract carries that rule (split-button.ts's `slotImplies`) - this primitive pair does not, and is not meant to."
+        >
+          <div className="break-weld">
+            <Button weldEnd loading>
+              Save
+            </Button>
+            <Button weldStart iconOnly aria-label="More options">
+              <Icon name="chevron-down" />
+            </Button>
+          </div>
+        </Case>
+      </Group>
+
+      <Group title="Accessible name (not in the first pass)">
+        <Case label="iconOnly with NO aria-label or aria-labelledby" fixed="flagged. Dev console still logs the `<Button iconOnly> has no accessible name` error, and now the button itself carries a dashed danger outline (`[data-sk-a11y-warn]`, dev-only, button.tsx + button.css) instead of sitting pixel-identical to every correctly-labelled button around it.">
+          <Button iconOnly>
+            <Icon name="settings" />
+          </Button>
+        </Case>
+      </Group>
+
+      <Group title="Escaping and whitespace (not in the first pass)">
+        <Case label="HTML-looking text and a raw ampersand" note="React text nodes escape by construction; this checks Button adds no second rendering layer (dangerouslySetInnerHTML, a markdown pass) that would un-escape it.">
+          <Button>{LABELS.htmlish}</Button>
+        </Case>
+        <Case label="Embedded newline" note="white-space: nowrap collapses it to a space rather than wrapping or being dropped — checking that holds with an embedded \\n specifically, not just a long run-on sentence.">
+          <Button>{LABELS.newline}</Button>
+        </Case>
+      </Group>
+
+      <Group title="Count baked into the label (not in the first pass)">
+        <Case
+          label="Hardcoded plural / no thousands separator, 0 / 1 / 1284"
+          note="Not a Button bug — Button renders whatever string it's given — but this is where the classic caller bug (Intl.PluralRules, CATALOG.md) actually surfaces, since a count baked into a button's label is one of the most common real call sites for it."
+          broke="the naive row's `Eliminar ${n} elementos` reads “Eliminar 1 elementos” at n=1 and “Eliminar 1284 elementos” with no separator at n=1284."
+          fixed="the row below it, same three counts, built with Intl.PluralRules + Intl.NumberFormat instead of string interpolation."
+        >
+          <div className="break-row">
+            {[0, 1, 1284].map((n) => (
+              <Button key={n} tone="danger">{`Eliminar ${n} elementos`}</Button>
+            ))}
+          </div>
+          <div className="break-row">
+            {[0, 1, 1284].map((n) => (
+              <Button key={n} tone="danger">
+                {deleteLabel(n)}
+              </Button>
+            ))}
           </div>
         </Case>
       </Group>

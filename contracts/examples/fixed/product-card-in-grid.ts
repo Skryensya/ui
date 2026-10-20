@@ -35,7 +35,7 @@ export const productCardInGridSnippet: Snippet = {
             contract: "image-frame",
             signature: "ImageFrame",
             options: {
-              src: "https://picsum.photos/seed/desk-lamp/600/450",
+              src: "/demos/satin/satin-sand-4x3.jpg",
               alt: "A brass desk lamp with a fabric shade",
               aspect: "4/3",
               radius: "top",

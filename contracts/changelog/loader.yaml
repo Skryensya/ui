@@ -5,11 +5,20 @@
 # hash.
 surface: "fd83cd06fa93c85b"
 entries:
+  - date: 2026-10-18
+    kind: bugfix
+    target: Loader
+    es:
+      title: "label=\"\" vuelve a caer en decorativo, no en un status vacío"
+      body: "Loader solo revisaba label === undefined; un status computado que llegaba como cadena vacía quedaba con role=\"status\" y aria-label=\"\", un nombre accesible explícito y vacío en una región en vivo. Ahora una etiqueta vacía o solo espacios cae en el mismo camino decorativo que no pasar ninguna."
+    en:
+      title: "label=\"\" falls back to decorative again, not an empty status"
+      body: "Loader only checked label === undefined; a computed status that came up empty still got role=\"status\" and aria-label=\"\", an explicit, empty accessible name on a live region. An empty or whitespace-only label now takes the same decorative path as no label at all."
   - date: 2026-10-01
     kind: feature
     es:
       title: Primera versión
-      body: Indica que una operación breve sigue en curso.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Indicates that a short operation is still running.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

@@ -36,6 +36,13 @@ describe("avatarInitials", () => {
     expect(avatarInitials("")).toBe("");
     expect(avatarInitials("   ")).toBe("");
   });
+
+  it("keeps an emoji glued to a name whole, rather than splitting its surrogate pair", () => {
+    // 🎨 is U+1F3A8, outside the BMP: a UTF-16 index op (`str[0]`) takes only its first half,
+    // which paints as a lone, broken glyph. `Array.from` walks code points instead.
+    expect(avatarInitials("🎨 Priya Shah")).toBe("🎨P");
+    expect(avatarInitials("🎨")).toBe("🎨");
+  });
 });
 
 describe("progressFraction", () => {

@@ -46,11 +46,19 @@ export function CalendarBody({
   nextIcon?: ReactNode;
   viewIcon?: ReactNode;
 }) {
+  /*
+   * `api.focusedValue`, not `api.visibleRange.start`: the grid always renders full weeks, so its
+   * first cell is often a trailing day from the PREVIOUS month (a range from June 12-17 2026
+   * starts its first row on Sunday May 31) - the heading then named that spillover day's month,
+   * not the month actually being viewed. Reproduced live: "May 2026" over a June grid, in any
+   * timezone, confirming this was never about time zones at all. `focusedValue` is the date Zag
+   * itself tracks as the one in view/being interacted with, which stays in the right month.
+   */
   const headingLabel =
     api.view === "day"
-      ? api.format(api.visibleRange.start, { month: "long", year: "numeric" })
+      ? api.format(api.focusedValue, { month: "long", year: "numeric" })
       : api.view === "month"
-        ? api.format(api.visibleRange.start, { year: "numeric" })
+        ? api.format(api.focusedValue, { year: "numeric" })
         : (() => {
             const decade = api.getDecade();
             return `${decade.start ?? ""}–${decade.end ?? ""}`;

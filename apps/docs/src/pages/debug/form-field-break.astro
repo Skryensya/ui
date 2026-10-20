@@ -1,0 +1,8 @@
+---
+if (import.meta.env.PROD) return new Response(null, { status: 404 });
+import "@skryensya/core/components/form-field.css";
+import "@skryensya/core/components/input.css";
+import { FormFieldBreak } from "../../components/react-demos/debug-form-field-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+<DebugShell title="FormField" docsHref="/components/form-field"><FormFieldBreak client:only="react" /></DebugShell>

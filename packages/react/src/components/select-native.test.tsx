@@ -1,5 +1,6 @@
 import { render } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { StrictMode } from "react";
+import { describe, expect, it, vi } from "vitest";
 import { FormField } from "./form-field.js";
 import { NativeSelect } from "./select-native.js";
 
@@ -20,6 +21,28 @@ describe("NativeSelect", () => {
     expect(control.getAttribute("data-sk-select")).toBeNull();
     expect(control.classList.contains("sk-select-native")).toBe(true);
     expect((control as HTMLSelectElement).value).toBe("starter");
+  });
+
+  it("adds a native value container once after hydration and preserves controlled selection", () => {
+    vi.stubGlobal("CSS", { ...globalThis.CSS, supports: () => true });
+    try {
+      const options = [{ value: "starter", label: "Starter" }, { value: "pro", label: "Pro" }];
+      const onChange = () => {};
+      const ui = render(
+        <StrictMode><NativeSelect aria-label="Plan" options={options} value="starter" onChange={onChange} /></StrictMode>,
+      );
+      const control = ui.getByRole("combobox", { name: "Plan" }) as HTMLSelectElement;
+      expect(control.firstElementChild?.tagName).toBe("BUTTON");
+      expect(control.querySelectorAll("button > selectedcontent")).toHaveLength(1);
+      expect(control.value).toBe("starter");
+      ui.rerender(
+        <StrictMode><NativeSelect aria-label="Plan" options={options} value="pro" onChange={onChange} /></StrictMode>,
+      );
+      expect(control.querySelectorAll("button > selectedcontent")).toHaveLength(1);
+      expect(control.value).toBe("pro");
+    } finally {
+      vi.unstubAllGlobals();
+    }
   });
 
   /*

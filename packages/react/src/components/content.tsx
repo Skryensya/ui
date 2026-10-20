@@ -11,7 +11,19 @@ import {
 } from "@skryensya/core/content";
 import { Button } from "./button.js";
 import { Icon } from "./icon.js";
-import { useCallback, useEffect, useRef, type HTMLAttributes, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useSyncExternalStore,
+  type HTMLAttributes,
+  type ReactNode,
+} from "react";
+
+/** True inside a `ToastTemplate`: a blueprint is cloned per use, so it must not run its own timeout. */
+const BlueprintContext = createContext(false);
 
 /* Derived, never restated: the default lives in the contract. */
 const { dismissLabel: dismissLabelOption, tone: toneOption } = contentContract.options;
@@ -83,6 +95,7 @@ export function Toast({
   const dismissed = useRef(false);
   const liveRegion = toastLiveRegions[getToastLiveRegion(tone)];
   const hasDismiss = dismissible ?? Boolean(onDismiss);
+  const isBlueprint = useContext(BlueprintContext);
 
   const dismiss = useCallback(
     (reason: ToastDismissDetails["reason"]) => {
@@ -117,11 +130,11 @@ export function Toast({
   );
 
   useEffect(() => {
-    if (!hasToastTimeout(timeout)) return;
+    if (isBlueprint || !hasToastTimeout(timeout)) return;
 
     const timer = window.setTimeout(() => dismiss("timeout"), timeout);
     return () => window.clearTimeout(timer);
-  }, [dismiss, timeout]);
+  }, [dismiss, isBlueprint, timeout]);
 
   return (
     <div
@@ -184,5 +197,80 @@ export type ToastTemplateProps = HTMLAttributes<HTMLTemplateElement> & {
   children: ReactNode;
 };
 export function ToastTemplate({ children, ...props }: ToastTemplateProps) {
-  return <template {...props}>{children}</template>;
+  return (
+    <template {...props}>
+      <BlueprintContext.Provider value>{children}</BlueprintContext.Provider>
+    </template>
+  );
+}
+
+/*
+ * THE IMPERATIVE LAYER ON TOP OF `Toast`/`ToastRegion`, which stay exactly what they were: a
+ * component the caller places and a component the caller places inside it. Every consumer who
+ * needed "push a toast from a click handler, patch it to done, let it dismiss itself" was writing
+ * this same small store by hand (the kit's own pain-points log names it `pushToast`/`patchToast`/
+ * `closeToast`); this is that store, written once.
+ *
+ * A module-level store, not a React context: `toastQueue.show(...)` has to work from a plain event
+ * handler or a promise callback with no component above it holding a provider, the same reason
+ * `react-hot-toast`/`sonner` are singletons. One queue per module is the right shape because a page
+ * has one notification area, the same assumption `ToastRegion`'s own singular name already makes.
+ */
+
+export type ToastQueueItem = Omit<ToastProps, "children"> & { id: string; children: ReactNode };
+export type ToastQueueOptions = Omit<ToastQueueItem, "id">;
+
+type ToastQueueListener = () => void;
+
+let toastQueueItems: readonly ToastQueueItem[] = [];
+const toastQueueListeners = new Set<ToastQueueListener>();
+let nextToastId = 0;
+
+function notifyToastQueue(): void {
+  for (const listener of toastQueueListeners) listener();
+}
+
+export const toastQueue = {
+  /** Adds a toast and returns its id, for a later `update`/`dismiss` (a task that moves from
+   * "in progress" to "done" or "failed" is one toast, not two). */
+  show(options: ToastQueueOptions): string {
+    const id = `toast-${(nextToastId += 1)}`;
+    toastQueueItems = [...toastQueueItems, { id, ...options }];
+    notifyToastQueue();
+    return id;
+  },
+  /** Merges fields into an already-shown toast: the loading→done/failed transition. */
+  update(id: string, patch: Partial<ToastQueueOptions>): void {
+    toastQueueItems = toastQueueItems.map((item) => (item.id === id ? { ...item, ...patch } : item));
+    notifyToastQueue();
+  },
+  /**
+   * Removes a toast immediately, with no exit animation: a programmatic dismiss skips the
+   * animated exit the rendered `Toast`'s own ✕ and `timeout` already play (its `dismiss()` is
+   * internal, with no ref or prop this queue can reach to ask for the same sequence from outside).
+   * shortcut: no animated exit from code, upgrade by giving `Toast` a controlled `dismissed` prop
+   * its own effect watches, the same shape `timeout` already uses internally.
+   */
+  dismiss(id: string): void {
+    toastQueueItems = toastQueueItems.filter((item) => item.id !== id);
+    notifyToastQueue();
+  },
+};
+
+/**
+ * The current queue, plus the remove the rendered `Toast`'s own `onDismiss` should call: THAT path
+ * (the ✕, or `timeout`) already waited for the exit transition inside `Toast` itself, so removal
+ * here only ever follows an animation that already played, never pre-empts one.
+ */
+export function useToastQueue(): { toasts: readonly ToastQueueItem[]; remove: (id: string) => void } {
+  const toasts = useSyncExternalStore(
+    useCallback((listener: ToastQueueListener) => {
+      toastQueueListeners.add(listener);
+      return () => toastQueueListeners.delete(listener);
+    }, []),
+    () => toastQueueItems,
+    () => toastQueueItems,
+  );
+  const remove = useCallback((id: string) => toastQueue.dismiss(id), []);
+  return { toasts, remove };
 }

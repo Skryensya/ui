@@ -24,9 +24,9 @@ import { treeStory, type Meta, type StoryObj } from "../tree-story";
 export default { title: "Components/Box - Layout", tags: ["autodocs"] } satisfies Meta;
 
 export const Box: StoryObj = treeStory(demos.boxTree);
-export const BoxAppearance: StoryObj = treeStory(demos.boxAppearanceTree);
 export const BoxSurfaces: StoryObj = treeStory(demos.boxSurfacesTree);
 export const BoxControls: StoryObj = treeStory(demos.boxControlsTree);
+export const BoxAppearance: StoryObj = treeStory(demos.boxAppearanceTree);
 export const Hero: StoryObj = treeStory(demos.heroTree);
 export const HeroCentered: StoryObj = treeStory(demos.heroCenteredTree);
 export const HeroEyebrow: StoryObj = treeStory(demos.heroEyebrowTree);

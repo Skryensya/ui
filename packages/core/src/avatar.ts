@@ -31,10 +31,14 @@ export function avatarInitials(name: string): string {
     .split(/\s+/)
     .filter(Boolean);
   if (parts.length === 0) return "";
-  if (parts.length === 1) return parts[0]!.slice(0, 2);
+  // `Array.from` walks code points, not UTF-16 units, so an emoji glued to a name ("🎨 Priya") -
+  // a surrogate pair - stays one character instead of splitting into a lone, unpaired half that
+  // paints as `�`. shortcut: a multi-code-point grapheme (a ZWJ sequence, a flag) still only
+  // keeps its first code point; upgrade to Intl.Segmenter if that ever shows up in a real name.
+  if (parts.length === 1) return Array.from(parts[0]!).slice(0, 2).join("");
   return parts
     .slice(0, 2)
-    .map((part) => part[0] ?? "")
+    .map((part) => Array.from(part)[0] ?? "")
     .join("");
 }
 
@@ -58,6 +62,7 @@ export const avatarContract = {
     "--sk-avatar-brutalist-offset-inline",
     "--sk-avatar-brutalist-shadow",
     "--sk-avatar-fg",
+    "--sk-avatar-group-ring",
     "--sk-avatar-size",
   ],
 

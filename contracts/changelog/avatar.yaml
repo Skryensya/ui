@@ -3,8 +3,34 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "e03f7ca973dde968"
+surface: "3d360b86ce6426c5"
 entries:
+  - date: 2026-10-17
+    kind: bugfix
+    target: AvatarGroup
+    es:
+      title: "AvatarGroup: max=0 y un overflow estático ya no mienten"
+      body: "max={0} se leía como \"sin tope\" (0 es falsy) y mostraba a todos; un overflow dado a mano aparecía igual aunque max ya probara que no sobraba nadie. Ahora max manda cuando está presente, incluido el caso \"nada sobra\"."
+    en:
+      title: "AvatarGroup: max=0 and a static overflow no longer lie"
+      body: "max={0} read as \"no cap\" (0 is falsy) and showed everyone; a hand-given overflow showed up even once max already proved nothing was left out. max is now authoritative whenever it is given, including the \"nothing overflowed\" case."
+  - date: 2026-10-17
+    kind: feature
+    target: AvatarGroup
+    es:
+      title: "--sk-avatar-group-ring, un hook para el anillo entre discos"
+      body: "El anillo que separa discos superpuestos estaba fijo en --color-bg-surface: correcto sobre la página en blanco, visiblemente distinto sobre una card con surface=\"raised\" o un panel sunken. Ahora es un hook, como el resto del color de Avatar."
+    en:
+      title: "--sk-avatar-group-ring, a hook for the ring between discs"
+      body: "The ring separating overlapping discs was fixed to --color-bg-surface: right on the plain page, visibly off on a card with surface=\"raised\" or a sunken panel. It is now a hook, like the rest of Avatar's color."
+  - date: 2026-10-17
+    kind: bugfix
+    es:
+      title: Iniciales correctas para un nombre con un emoji pegado adelante
+      body: "avatarInitials tomaba la primera unidad UTF-16 de cada palabra; un emoji fuera del plano básico (un par sustituto) quedaba partido a la mitad y pintaba un glifo roto (ej. \"🎨 Priya Shah\" → \"�P\"). Ahora recorre code points enteros."
+    en:
+      title: Correct initials for a name with an emoji glued to the front
+      body: "avatarInitials took the first UTF-16 unit of each word; an emoji outside the basic plane (a surrogate pair) was split in half and painted a broken glyph (e.g. \"🎨 Priya Shah\" → \"�P\"). It now walks whole code points."
   - date: 2026-10-02
     kind: feature
     es:
@@ -17,7 +43,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Representa la identidad de una persona con foto o iniciales.
+      body: "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple."
     en:
       title: First release
-      body: Represents a person's identity with a photo or initials.
+      body: "Published for the first time, with its contract, a React binding and a stylesheet for plain markup."

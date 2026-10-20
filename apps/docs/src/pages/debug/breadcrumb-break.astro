@@ -1,0 +1,9 @@
+---
+if (import.meta.env.PROD) return new Response(null, { status: 404 });
+import "@skryensya/core/components/breadcrumb.css";
+import "@skryensya/core/components/menu.css";
+import "@skryensya/core/patterns/anchored.css";
+import { BreadcrumbBreak } from "../../components/react-demos/debug-breadcrumb-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+<DebugShell title="Breadcrumb" docsHref="/components/breadcrumb"><BreadcrumbBreak client:only="react" /></DebugShell>

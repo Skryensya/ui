@@ -64,6 +64,9 @@ export type SplitButtonProps = {
   menu?: ReactNode;
   onClick?: () => void;
   disabled?: boolean;
+  /** Forces the menu trigger `disabled` too (core's `slotImplies`, split-button.ts): a busy action
+   *  cannot leave its own alternatives still reachable. */
+  loading?: boolean;
   menuLabel?: string;
   menuItems?: readonly MenuItem[];
   menuIndicator?: ReactNode;
@@ -73,6 +76,7 @@ export type SplitButtonProps = {
 export function SplitButton({
   children,
   disabled,
+  loading,
   label,
   menu,
   itemIndicator,
@@ -103,6 +107,7 @@ export function SplitButton({
           size={size}
           weldEnd
           disabled={disabled}
+          loading={loading}
           onClick={onClick}
           type="button"
         >
@@ -111,7 +116,9 @@ export function SplitButton({
       )}
       {menu ?? (
         <Menu
-          disabled={disabled}
+          // `loading` forces this too (slotImplies, split-button.ts): the trigger cannot stay
+          // reachable while the action it belongs to is already running.
+          disabled={disabled || loading}
           indicator={menuIndicator}
           itemIndicator={itemIndicator}
           items={menuItems ?? []}

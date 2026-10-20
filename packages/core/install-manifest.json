@@ -34,6 +34,8 @@
     "css": {
       "entry": "@skryensya/core/components/annotation.css",
       "files": [
+        "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/a11y-warn.css",
         "@skryensya/core/components/button.css",
         "@skryensya/core/components/canvas.css",
         "@skryensya/core/components/annotation.css"
@@ -85,6 +87,8 @@
     "css": {
       "entry": "@skryensya/core/components/audio-player.css",
       "files": [
+        "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/a11y-warn.css",
         "@skryensya/core/components/button.css",
         "@skryensya/core/components/list.css",
         "@skryensya/core/patterns/icon-toggle.css",
@@ -129,6 +133,8 @@
     "css": {
       "entry": "@skryensya/core/components/back-to-top.css",
       "files": [
+        "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/a11y-warn.css",
         "@skryensya/core/components/button.css",
         "@skryensya/core/components/back-to-top.css"
       ]
@@ -210,6 +216,8 @@
     "css": {
       "entry": "@skryensya/core/components/button.css",
       "files": [
+        "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/a11y-warn.css",
         "@skryensya/core/components/button.css"
       ]
     },
@@ -233,6 +241,8 @@
     "css": {
       "entry": "@skryensya/core/components/calendar.css",
       "files": [
+        "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/a11y-warn.css",
         "@skryensya/core/components/button.css",
         "@skryensya/core/components/calendar.css"
       ]
@@ -273,6 +283,8 @@
     "css": {
       "entry": "@skryensya/core/components/canvas.css",
       "files": [
+        "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/a11y-warn.css",
         "@skryensya/core/components/button.css",
         "@skryensya/core/components/canvas.css"
       ]
@@ -297,6 +309,9 @@
     "css": {
       "entry": "@skryensya/core/components/carousel.css",
       "files": [
+        "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/a11y-warn.css",
+        "@skryensya/core/components/button.css",
         "@skryensya/core/components/carousel.css"
       ]
     },
@@ -334,29 +349,6 @@
       ]
     },
     "vanilla": null
-  },
-  "chart": {
-    "category": "data",
-    "css": {
-      "entry": "@skryensya/core/components/chart.css",
-      "files": [
-        "@skryensya/core/components/chart.css"
-      ]
-    },
-    "react": {
-      "entry": "@skryensya/react/chart",
-      "names": [
-        "Chart"
-      ]
-    },
-    "vanilla": {
-      "entry": "@skryensya/vanilla/chart",
-      "mount": "mountChart",
-      "selectors": [
-        "[data-sk-chart]"
-      ],
-      "auto": true
-    }
   },
   "checkbox": {
     "category": "forms",
@@ -614,6 +606,8 @@
     "css": {
       "entry": "@skryensya/core/components/date-picker.css",
       "files": [
+        "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/a11y-warn.css",
         "@skryensya/core/components/button.css",
         "@skryensya/core/components/calendar.css",
         "@skryensya/core/components/date-picker.css"
@@ -728,30 +722,6 @@
       "mount": "mountDialogStack",
       "selectors": [
         "[data-sk-dialog-stack]"
-      ],
-      "auto": true
-    }
-  },
-  "dock": {
-    "category": "actions",
-    "css": {
-      "entry": "@skryensya/core/components/dock.css",
-      "files": [
-        "@skryensya/core/components/dock.css"
-      ]
-    },
-    "react": {
-      "entry": "@skryensya/react/dock",
-      "names": [
-        "Dock",
-        "DockItem"
-      ]
-    },
-    "vanilla": {
-      "entry": "@skryensya/vanilla/dock",
-      "mount": "mountDock",
-      "selectors": [
-        "[data-sk-dock]"
       ],
       "auto": true
     }
@@ -879,32 +849,6 @@
       "auto": true
     }
   },
-  "folder": {
-    "category": "content",
-    "css": {
-      "entry": "@skryensya/core/components/folder.css",
-      "files": [
-        "@skryensya/core/components/folder.css"
-      ]
-    },
-    "react": {
-      "entry": "@skryensya/react/folder",
-      "names": [
-        "Folder",
-        "FolderLink",
-        "FolderPreview",
-        "FolderStack"
-      ]
-    },
-    "vanilla": {
-      "entry": "@skryensya/vanilla/folder",
-      "mount": "mountFolder",
-      "selectors": [
-        "[data-sk-folder]"
-      ],
-      "auto": true
-    }
-  },
   "footer": {
     "category": "layout",
     "css": {
@@ -969,6 +913,8 @@
     "css": {
       "entry": "@skryensya/core/components/image-cropper.css",
       "files": [
+        "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/a11y-warn.css",
         "@skryensya/core/components/button.css",
         "@skryensya/core/components/image-cropper.css"
       ]
@@ -1034,6 +980,7 @@
     "css": {
       "entry": "@skryensya/core/components/kbd.css",
       "files": [
+        "@skryensya/core/patterns/a11y-warn.css",
         "@skryensya/core/components/kbd.css"
       ]
     },
@@ -1074,8 +1021,9 @@
     "css": {
       "entry": "@skryensya/core/components/lightbox.css",
       "files": [
-        "@skryensya/core/components/button.css",
         "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/a11y-warn.css",
+        "@skryensya/core/components/button.css",
         "@skryensya/core/components/lightbox.css"
       ]
     },
@@ -1257,6 +1205,8 @@
       "entry": "@skryensya/core/components/menubar.css",
       "files": [
         "@skryensya/core/components/menu.css",
+        "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/a11y-warn.css",
         "@skryensya/core/components/button.css",
         "@skryensya/core/components/menubar.css"
       ]
@@ -1959,22 +1909,6 @@
     },
     "vanilla": null
   },
-  "sticker": {
-    "category": "content",
-    "css": {
-      "entry": "@skryensya/core/components/sticker.css",
-      "files": [
-        "@skryensya/core/components/sticker.css"
-      ]
-    },
-    "react": {
-      "entry": "@skryensya/react/sticker",
-      "names": [
-        "Sticker"
-      ]
-    },
-    "vanilla": null
-  },
   "switch": {
     "category": "forms",
     "css": {
@@ -2069,6 +2003,7 @@
     "css": {
       "entry": "@skryensya/core/components/tag.css",
       "files": [
+        "@skryensya/core/patterns/a11y-warn.css",
         "@skryensya/core/components/tag.css"
       ]
     },
@@ -2244,6 +2179,8 @@
     "css": {
       "entry": "@skryensya/core/components/tour.css",
       "files": [
+        "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/a11y-warn.css",
         "@skryensya/core/components/button.css",
         "@skryensya/core/patterns/visually-hidden.css",
         "@skryensya/core/components/tour.css"
@@ -2394,8 +2331,9 @@
     "css": {
       "entry": "@skryensya/core/components/video-player.css",
       "files": [
-        "@skryensya/core/components/button.css",
         "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/a11y-warn.css",
+        "@skryensya/core/components/button.css",
         "@skryensya/core/patterns/icon-toggle.css",
         "@skryensya/core/components/video-player.css"
       ]

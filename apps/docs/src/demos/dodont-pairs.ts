@@ -1,7 +1,7 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
 import { splitButtonTree } from "./split-button";
-import { STICKER_STAR } from "./sticker";
+import { tileRadioGroupItems } from "./data/radio-group";
 
 type UIKey = Parameters<Translate>[0];
 
@@ -204,24 +204,6 @@ export const sidebarDontTree = (t: Translate): UsageTree =>
     railLink("info", t("demo.sidebar.dd.settings")),
   ]);
 
-/* ───────────── Sticker ───────────── */
-
-/** A status is a word: Badge. */
-export const stickerDoTree = (t: Translate): UsageTree => ({
-  contract: "badge",
-  signature: "Badge",
-  options: { tone: "accent" },
-  children: t("demo.sticker.dd.status"),
-});
-
-/** The same word peeled onto a sticker: a keepsake silhouette doing a label's job. */
-export const stickerDontTree = (t: Translate): UsageTree => ({
-  contract: "sticker",
-  signature: "Sticker",
-  options: { state: "applied" },
-  children: { contract: "typography", signature: "Text", options: { weight: "emphasis" }, children: t("demo.sticker.dd.status") },
-});
-
 
 /* ═════════════ SECOND PAIRS ═════════════ */
 
@@ -285,6 +267,104 @@ const disabledTile = (t: Translate, description: UIKey): UsageTree => ({
 export const tileDisabledDoTree = (t: Translate): UsageTree => disabledTile(t, "demo.tile.dd.archiveWhy");
 export const tileDisabledDontTree = (t: Translate): UsageTree => disabledTile(t, "demo.tile.dd.archiveNoWhy");
 
+/* ───────────── Tile family: switch, checkbox, radio group, expandable ───────────── */
+
+const tileCopy = (t: Translate, title: UIKey, description: UIKey): UsageTree => ({
+  contract: "tile",
+  signature: "TileContent",
+  slots: { title: t(title), description: t(description) },
+});
+
+const tileSwitch = (t: Translate, title: UIKey, description: UIKey): UsageTree => ({
+  contract: "tile",
+  signature: "TileSwitch",
+  options: { name: "dd-tile-switch", defaultChecked: true },
+  children: tileCopy(t, title, description),
+});
+
+/** The title names the preference; the switch already says whether it is on. */
+export const tileSwitchDoTree = (t: Translate): UsageTree => tileSwitch(t, "demo.tile.dd.switchDoTitle", "demo.tile.dd.switchDoBody");
+export const tileSwitchDontTree = (t: Translate): UsageTree => tileSwitch(t, "demo.tile.dd.switchDontTitle", "demo.tile.dd.switchDontBody");
+
+const tileCheckbox = (t: Translate, title: UIKey, description: UIKey): UsageTree => ({
+  contract: "tile",
+  signature: "TileCheckbox",
+  options: { name: "dd-tile-checkbox", value: "digest" },
+  children: tileCopy(t, title, description),
+});
+
+/** Each option explains itself: what it is and what it costs or changes. */
+export const tileCheckboxDoTree = (t: Translate): UsageTree => tileCheckbox(t, "demo.tile.dd.checkDoTitle", "demo.tile.dd.checkDoBody");
+export const tileCheckboxDontTree = (t: Translate): UsageTree => tileCheckbox(t, "demo.tile.dd.checkDontTitle", "demo.tile.dd.checkDontBody");
+
+const tileRadios = (t: Translate, defaultValue?: string): UsageTree => ({
+  contract: "tile",
+  signature: "TileRadioGroup",
+  options: { name: "dd-tile-radio", ...(defaultValue ? { defaultValue } : {}) },
+  attrs: { "aria-label": t("demo.radioGroup.label"), class: "sk-tile-grid", style: "max-inline-size: 22rem;" },
+  slots: { items: tileRadioGroupItems(t).slice(0, 2) },
+});
+
+/** A group opens with one option chosen; with none, "required" has nothing to start from. */
+export const tileRadioGroupDoTree = (t: Translate): UsageTree => tileRadios(t, "starter");
+export const tileRadioGroupDontTree = (t: Translate): UsageTree => tileRadios(t);
+
+const expandable = (t: Translate, title: UIKey, description: UIKey): UsageTree => ({
+  contract: "tile",
+  signature: "ExpandableTile",
+  attrs: { style: "max-inline-size: 22rem;" },
+  children: [
+    {
+      contract: "tile",
+      signature: "ExpandableTileTrigger",
+      children: [tileCopy(t, title, description), { contract: "tile", signature: "TileChevron" }],
+    },
+    { contract: "tile", signature: "ExpandableTileContent", children: t("demo.tile.dd.expandBody") },
+  ],
+});
+
+/** The closed title says what is inside, so nobody opens it to find out. */
+export const expandableTileDoTree = (t: Translate): UsageTree => expandable(t, "demo.tile.dd.expandDoTitle", "demo.tile.dd.expandDoBody");
+export const expandableTileDontTree = (t: Translate): UsageTree => expandable(t, "demo.tile.dd.expandDontTitle", "demo.tile.dd.expandDontBody");
+
+/* ───────────── TileButton: the title names the action ───────────── */
+
+const tileButton = (t: Translate, title: UIKey, description: UIKey): UsageTree => ({
+  contract: "tile",
+  signature: "TileButton",
+  children: tileCopy(t, title, description),
+});
+
+/** The title is the verb; the description adds what helps decide. */
+export const tileButtonVerbDoTree = (t: Translate): UsageTree => tileButton(t, "demo.tile.buttonList.export.title", "demo.tile.buttonList.export.description");
+
+/** A title that could belong to any card; the real action is buried in the description. */
+export const tileButtonVerbDontTree = (t: Translate): UsageTree => tileButton(t, "demo.tile.dd.vagueTitle", "demo.tile.dd.vagueBody");
+
+/* ───────────── TileButton: the destructive action, last and named plainly ───────────── */
+
+const tileButtonStack = (...items: UsageTree[]): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "sm" },
+  attrs: { style: "max-inline-size: 22rem;" },
+  children: items,
+});
+
+/** Share first, delete last and called by what it does. */
+export const tileButtonOrderDoTree = (t: Translate): UsageTree =>
+  tileButtonStack(
+    tileButton(t, "demo.tile.buttonList.share.title", "demo.tile.buttonList.share.description"),
+    tileButton(t, "demo.tile.buttonList.delete.title", "demo.tile.buttonList.delete.description"),
+  );
+
+/** Delete first, called "Remove": a softer word that hides what it does. */
+export const tileButtonOrderDontTree = (t: Translate): UsageTree =>
+  tileButtonStack(
+    tileButton(t, "demo.tile.dd.vagueDeleteTitle", "demo.tile.dd.vagueDeleteBody"),
+    tileButton(t, "demo.tile.buttonList.share.title", "demo.tile.buttonList.share.description"),
+  );
+
 /* ───────────── SkipLink: content first ───────────── */
 
 const skipPair = (first: UsageTree, second: UsageTree): UsageTree => ({
@@ -329,15 +409,3 @@ export const sidebarNamesDontTree = (t: Translate): UsageTree =>
     railLink("settings", t("demo.sidebar.dd.longSettings")),
   ]);
 
-/* ───────────── Sticker: the silhouette is the point ───────────── */
-
-const SQUARE = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="96" height="96"><rect x="4" y="4" width="92" height="92" fill="#3182ce"/></svg>');
-
-const stickerOf = (src: string, alt: string): UsageTree => ({
-  contract: "sticker",
-  signature: "Sticker",
-  options: { src, alt, state: "applied" },
-});
-
-export const stickerShapeDoTree = (t: Translate): UsageTree => stickerOf(STICKER_STAR, t("demo.sticker.starAlt"));
-export const stickerShapeDontTree = (t: Translate): UsageTree => stickerOf(SQUARE, t("demo.sticker.dd.squareAlt"));

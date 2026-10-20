@@ -8,7 +8,12 @@ const { size: sizeOption, variant: variantOption } = tabsContract.options;
 export type TabsItem = {
   value: string;
   label: ReactNode;
-  children: ReactNode;
+  /**
+   * Omit for a "selector" shape: tabs that choose what a single shared content area shows
+   * (read `value` from `onValueChange`) rather than each owning its own panel. An item that
+   * gives this gets a panel wired with `aria-controls`; one that does not gets neither.
+   */
+  children?: ReactNode;
   disabled?: boolean;
 };
 
@@ -69,7 +74,7 @@ export function Tabs({
             // associated tabpanel element"), selected or not. `getContentProps` already computes
             // each panel's real id regardless of selection, so this overrides with the real one
             // rather than leaving it unset on every unselected tab.
-            aria-controls={api.getContentProps({ value: item.value }).id}
+            aria-controls={item.children != null ? api.getContentProps({ value: item.value }).id : undefined}
             // `sk-interactive` is the state layer, and it was missing here while authored markup had
             // it: the React path simply did not paint hover or press. The symmetry gate is what saw it.
             className={`${tabsParts.trigger} sk-interactive`}
@@ -80,16 +85,18 @@ export function Tabs({
           </button>
         ))}
       </div>
-      {items.map((item) => (
-        <div
-          {...api.getContentProps({ value: item.value })}
-          className={tabsParts.content}
-          data-sk-tabs-content=""
-          key={item.value}
-        >
-          {item.children}
-        </div>
-      ))}
+      {items
+        .filter((item) => item.children != null)
+        .map((item) => (
+          <div
+            {...api.getContentProps({ value: item.value })}
+            className={tabsParts.content}
+            data-sk-tabs-content=""
+            key={item.value}
+          >
+            {item.children}
+          </div>
+        ))}
     </div>
   );
 }

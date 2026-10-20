@@ -49,14 +49,6 @@ export const menubarContract = {
   css: "@skryensya/core/components/menubar.css",
   parts: menubarParts,
   hooks: [
-    "--sk-anchored-align",
-    "--sk-anchored-arrow-edge",
-    "--sk-anchored-arrow-near",
-    "--sk-anchored-justify",
-    "--sk-anchored-offset",
-    "--sk-anchored-position-area",
-    "--sk-anchored-position-try",
-    "--sk-anchored-size",
     "--sk-anchored-z",
     "--sk-menubar-gap",
   ],
@@ -230,20 +222,25 @@ export function resolveMenubarKey(params: {
   readonly topCount: number;
   readonly hasMenuAt: (topIndex: number) => boolean;
   readonly subCountOf: (topIndex: number) => number;
+  /** Which key moves toward the END of the bar; defaults to LTR's own "ArrowRight". Found as a
+   * real bug reading this switch directly: it never took a direction at all. */
+  readonly dir?: "ltr" | "rtl";
 }): MenubarAction {
-  const { key, focus, topCount, hasMenuAt, subCountOf } = params;
+  const { key, focus, topCount, hasMenuAt, subCountOf, dir = "ltr" } = params;
   if (topCount < 1) return { kind: "none" };
   const lastTop = topCount - 1;
   const isOpen = focus.subIndex !== null;
   const hasMenu = hasMenuAt(focus.topIndex);
   const subCount = subCountOf(focus.topIndex);
+  const forward = dir === "rtl" ? "ArrowLeft" : "ArrowRight";
+  const backward = dir === "rtl" ? "ArrowRight" : "ArrowLeft";
 
   switch (key) {
-    case "ArrowRight": {
+    case forward: {
       const topIndex = focus.topIndex < lastTop ? focus.topIndex + 1 : 0;
       return { kind: "moveTop", topIndex, keepOpen: isOpen };
     }
-    case "ArrowLeft": {
+    case backward: {
       const topIndex = focus.topIndex > 0 ? focus.topIndex - 1 : lastTop;
       return { kind: "moveTop", topIndex, keepOpen: isOpen };
     }

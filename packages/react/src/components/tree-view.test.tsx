@@ -117,6 +117,28 @@ describe("TreeView (React)", () => {
     expect(node("README.md").getAttribute("aria-selected")).toBe("true");
   });
 
+  it("stays fully expanded and hides the chevron when collapsible is false", async () => {
+    const onExpandedChange = vi.fn();
+    render(<TreeView collapsible={false} label="Archivos" nodes={nodes} onExpandedChange={onExpandedChange} />);
+
+    expect(node("src").getAttribute("aria-expanded")).toBe("true");
+    fireEvent.click(control("src"));
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    // Still expanded: the click reached the control (same roving focus and ARIA Zag always gives
+    // it), but the controlled expandedValue never let the collapse take.
+    expect(node("src").getAttribute("aria-expanded")).toBe("true");
+    expect(onExpandedChange).not.toHaveBeenCalled();
+  });
+
+  it("wraps a long label instead of truncating it, only when asked", () => {
+    const wrapped = render(<TreeView label="Archivos" nodes={nodes} wrap />);
+    expect(document.querySelector(".sk-tree-view")?.getAttribute("data-wrap")).toBe("");
+    const plain = render(<TreeView label="Archivos" nodes={nodes} />);
+    expect(plain.container.querySelector(".sk-tree-view")?.hasAttribute("data-wrap")).toBe(false);
+    wrapped.unmount();
+  });
+
   it("leaves a disabled node out of the selection", async () => {
     const onSelectionChange = vi.fn();
     render(<TreeView label="Archivos" nodes={disabledNodes} onSelectionChange={onSelectionChange} />);

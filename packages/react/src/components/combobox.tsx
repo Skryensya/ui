@@ -5,10 +5,13 @@ import {
   comboboxContract,
 } from "@skryensya/core/combobox";
 import { formFieldParts } from "@skryensya/core/form-field";
+import { tagParts } from "@skryensya/core/tag";
 import { combobox } from "@skryensya/core/machines";
 import { normalizeProps, Portal, useMachine } from "@zag-js/react";
-import { useId, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
-import { useAnchored } from "./anchored.js";
+import { useEffect, useId, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
+import { anchoredPositioning } from "@skryensya/core/anchored";
+import { anchorProps, positionerProps } from "./anchored.js";
+import { Button } from "./button.js";
 import { Icon } from "./icon.js";
 const cx = (...classes: Array<string | undefined>) =>
   classes.filter(Boolean).join(" ");
@@ -42,16 +45,30 @@ export type ComboboxProps = {
   container?: RefObject<HTMLElement>;
   id?: string;
   name?: string;
-  /** Field name. Contract slot `label` accepts text; keep this a string for emit parity. */
-  label: string;
+  /**
+   * Field name. Contract slot `label` accepts text; keep this a string for emit parity. Optional
+   * so a tree already naming the field another way (`aria-label`/`aria-labelledby`) is not forced
+   * into a second, visible one: the same escape hatch `Select`'s own `aria-label` is.
+   */
+  label?: string;
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
   hint?: string;
   error?: string;
-  items: readonly ComboboxItem[];
+  items?: readonly ComboboxItem[];
+  /**
+   * `Select`'s own option shape (`{ value, label, disabled }`), accepted here too: it is already a
+   * subset of `ComboboxItem`, so a tree moving from `Select` to `Combobox` for its typeahead keeps
+   * its exact options array. Ignored when `items` is also given.
+   */
+  options?: readonly ComboboxItem[];
   placeholder?: string;
   disabled?: boolean;
   readOnly?: boolean;
   required?: boolean;
   multiple?: boolean;
+  /** How many items `multiple` accepts; see the contract's note. */
+  max?: number;
   value?: string | readonly string[];
   defaultValue?: string | readonly string[];
   inputValue?: string;
@@ -63,6 +80,7 @@ export type ComboboxProps = {
   clearIndicator?: ReactNode;
   removeIndicator?: ReactNode;
   clearLabel?: string;
+  triggerLabel?: string;
   selectedLabel?: string;
   removeLabel?: (item: ComboboxItem) => string;
   emptyLabel?: string;
@@ -76,7 +94,10 @@ export type ComboboxProps = {
 export function Combobox({
   allowCustomValue,
   appearance,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledby,
   clearLabel = "Limpiar selección",
+  triggerLabel = "Mostrar opciones",
   clearIndicator,
   container,
   defaultInputValue = "",
@@ -88,13 +109,15 @@ export function Combobox({
   id,
   inputValue,
   itemIndicator,
-  items,
+  items: itemsProp,
   label,
+  max,
   multiple,
   name,
   onInputValueChange,
   onValueChange,
   openOnClick = true,
+  options: optionsProp,
   placeholder,
   readOnly,
   removeIndicator,
@@ -105,12 +128,28 @@ export function Combobox({
   triggerIndicator,
   value,
 }: ComboboxProps) {
+  const items = itemsProp ?? optionsProp ?? [];
   const generatedId = useId();
   const machineId = id ?? generatedId;
   const rootRef = useRef<HTMLDivElement>(null);
   const hintId = `${machineId}-hint`;
   const errorId = `${machineId}-error`;
   const [query, setQuery] = useState(defaultInputValue);
+  /*
+   * `max`'s own tracking. Zag's machine has no concept of it, so this is read separately from the
+   * value it limits: seeded from whichever of `value`/`defaultValue` started the field, kept in
+   * sync with a CONTROLLED `value` by the effect below, and otherwise advanced by this component's
+   * own `onValueChange` further down - the same split Rating and TagsInput's React bindings use
+   * for state the machine doesn't carry.
+   */
+  const [selectedValues, setSelectedValues] = useState<Set<string>>(
+    () => new Set(asValues(value ?? defaultValue) ?? []),
+  );
+  useEffect(() => {
+    if (value === undefined) return;
+    setSelectedValues(new Set(asValues(value)));
+  }, [value]);
+  const atMax = Boolean(multiple && max !== undefined && selectedValues.size >= max);
   /*
    * ── Virtual focus ────────────────────────────────────────────────────────────────────────────
    *
@@ -147,11 +186,15 @@ export function Combobox({
         items: filteredItems,
         itemToString: (item) => item.label,
         itemToValue: (item) => item.value,
-        isItemDisabled: (item) => Boolean(item.disabled),
+        // Past `max`, every item not already chosen is disabled - it stays visible with its
+        // checkmark if selected, just not pickable - rather than letting a search run into a dead
+        // end.
+        isItemDisabled: (item) => Boolean(item.disabled) || (atMax && !selectedValues.has(item.value)),
       }),
-    [filteredItems],
+    [filteredItems, atMax, selectedValues],
   );
   const service = useMachine(combobox.machine, {
+    positioning: { placement: "bottom-start", ...anchoredPositioning },
     id: machineId,
     collection,
     name,
@@ -175,6 +218,7 @@ export function Combobox({
     selectionBehavior: "preserve",
     translations: {
       clearTriggerLabel: clearLabel,
+      triggerLabel,
     },
     onInputValueChange(details) {
       // Only what the user TYPED is a filter. The machine writes this input too (the label after a
@@ -190,12 +234,13 @@ export function Combobox({
     onValueChange(details) {
       const next = { value: details.value };
       onValueChange?.(next);
+      setSelectedValues(new Set(details.value));
       rootRef.current?.dispatchEvent(
         new CustomEvent(comboboxEvents.valueChange, { bubbles: true, detail: next }),
       );
       // The other half of `selectionBehavior: "preserve"`. Single: the input shows what was chosen.
-      // Multiple: the chip already shows it, so the query is spent; clear it so the next search
-      // starts from the whole list instead of the one match that produced this chip.
+      // Multiple: the Tag already shows it, so the query is spent; clear it so the next search
+      // starts from the whole list instead of the one match that produced this Tag.
       queueMicrotask(() => {
         const label = multiple ? "" : (details.items.at(-1)?.label ?? "");
         if (api.inputValue !== label) api.setInputValue(label, "script");
@@ -206,7 +251,6 @@ export function Combobox({
 
   /* The anchor is the whole CONTROL, not the chevron button: the listbox lines up with the field the
    * user is typing into, and anchoring it to the chevron would pin it to a 32px square. */
-  const anchor = useAnchored(machineId);
   const inputProps = api.getInputProps();
   const describedBy =
     [
@@ -238,17 +282,19 @@ export function Combobox({
       }}
       ref={rootRef}
     >
-      <label
-        {...api.getLabelProps()}
-        className={cx(formFieldParts.label, comboboxParts.label)}
-      >
-        {label}
-        {required ? (
-          <span aria-hidden="true" className={formFieldParts.requiredIndicator}>
-            *
-          </span>
-        ) : null}
-      </label>
+      {label ? (
+        <label
+          {...api.getLabelProps()}
+          className={cx(formFieldParts.label, comboboxParts.label)}
+        >
+          {label}
+          {required ? (
+            <span aria-hidden="true" className={formFieldParts.requiredIndicator}>
+              *
+            </span>
+          ) : null}
+        </label>
+      ) : null}
       {hint ? (
         <div className={formFieldParts.hint} id={hintId}>
           {hint}
@@ -256,7 +302,7 @@ export function Combobox({
       ) : null}
       <div
         {...api.getControlProps()}
-        {...anchor.anchor(comboboxParts.control)}
+        {...anchorProps(comboboxParts.control)}
         data-readonly={readOnly ? "" : undefined}
       >
         <div className={comboboxParts.value}>
@@ -268,40 +314,45 @@ export function Combobox({
             >
               {api.selectedItems.map((item) => (
                 <span
-                  className={comboboxParts.selectedItem}
+                  aria-disabled={disabled || readOnly ? "true" : undefined}
+                  className={cx(comboboxParts.selectedItem, tagParts.root)}
+                  data-appearance="plain"
+                  data-removable=""
+                  data-tone="neutral"
                   key={item.value}
                   role="listitem"
                 >
-                  <span className={comboboxParts.selectedItemLabel}>
+                  <span className={cx(comboboxParts.selectedItemLabel, tagParts.label)} title={item.label}>
                     {item.label}
                   </span>
-                  <button
+                  <Button
                     aria-label={removeLabel(item)}
-                    className={cx(
-                      comboboxParts.removeTrigger,
-                      "sk-button",
-                      "sk-interactive",
-                    )}
-                    data-icon-only=""
-                    data-size="sm"
-                    data-variant="ghost"
+                    className={cx(comboboxParts.removeTrigger, tagParts.remove)}
+                    disabled={disabled || readOnly}
+                    iconOnly
                     onClick={() => {
                       api.clearValue(item.value);
                       api.focus();
                     }}
-                    type="button"
+                    size="sm"
+                    variant="ghost"
                   >
                     {removeIndicator ?? <Icon name="close" size="sm" />}
-                  </button>
+                  </Button>
                 </span>
               ))}
             </div>
           ) : null}
           <input
             {...inputProps}
+            {...(ariaLabel ? { "aria-label": ariaLabel } : null)}
+            {...(ariaLabelledby ? { "aria-labelledby": ariaLabelledby } : null)}
             aria-describedby={describedBy}
             aria-errormessage={error ? errorId : undefined}
             className={comboboxParts.input}
+            // Nothing typed here can go anywhere once `max` is reached, so the placeholder's own
+            // invitation to search is dropped with it rather than left to invite a dead end.
+            placeholder={atMax ? undefined : inputProps.placeholder}
           />
         </div>
         {/* Rendered-and-hidden rather than conditional, which is what the enhancer can do with
@@ -311,7 +362,7 @@ export function Combobox({
           {...api.getClearTriggerProps()}
           className={cx(comboboxParts.clear, "sk-button", "sk-interactive")}
           data-icon-only=""
-          data-size="sm"
+          data-size="xs"
           data-variant="ghost"
           hidden={!showClear}
           tabIndex={0}
@@ -319,16 +370,15 @@ export function Combobox({
         >
           {clearIndicator ?? <Icon name="close" size="sm" />}
         </button>
-        {/*
-          Decorative, not a second control: Zag's own `getTriggerProps()` already defaults this to
-          `tabIndex: -1` (never a Tab stop), and every open path here - typing, `openOnClick` on
-          the input itself - never went through it either. What made it read as an independent
-          button was purely visual (its own `.sk-button` ghost hover/pressed feedback on a mouse
-          click Zag still wired up), not a real second interaction surface. `aria-hidden` and a
-          plain `span` remove that affordance instead of just restyling it; the input's own
-          `role="combobox"` + `aria-expanded` already say everything a screen reader needs.
-        */}
-        <span aria-hidden="true" className={comboboxParts.trigger} data-state={api.open ? "open" : "closed"}>
+        <button
+          {...api.getTriggerProps()}
+          className={cx(comboboxParts.trigger, "sk-button", "sk-interactive")}
+          data-icon-only=""
+          data-size="sm"
+          data-state={api.open ? "open" : "closed"}
+          data-variant="ghost"
+          type="button"
+        >
           {triggerIndicator ?? (
             <>
               <span data-state="closed">
@@ -339,7 +389,7 @@ export function Combobox({
               </span>
             </>
           )}
-        </span>
+        </button>
       </div>
       {error ? (
         <div className={formFieldParts.error} id={errorId}>
@@ -359,7 +409,7 @@ export function Combobox({
           : null}
       </div>
       <Portal container={container}>
-        <div {...anchor.positioner(api.getPositionerProps(), comboboxParts.positioner)}>
+        <div {...positionerProps(api.getPositionerProps(), comboboxParts.positioner)}>
           <div
             {...api.getContentProps()}
             className={cx(comboboxParts.content, "sk-scrollbar")}
@@ -376,7 +426,7 @@ export function Combobox({
                  * single-select: it moves `aria-selected="true"` onto whichever option is highlighted
                  * as you arrow through the list, before Enter commits anything. That is what
                  * "visually indicated as the currently selected value" means in the APG's
-                 * roles/states table. Multiple stays on Zag's default: with chips, `aria-selected`
+                 * roles/states table. Multiple stays on Zag's default: with Tags, `aria-selected`
                  * genuinely means "part of the chosen set" (aria-multiselectable="true"), a state the
                  * base combobox pattern does not cover. Placed after the spread so it wins.
                  */

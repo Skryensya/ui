@@ -266,6 +266,8 @@ export const resizableContract = {
     "--sk-resizable-handle-color",
     "--sk-resizable-handle-hit",
     "--sk-resizable-handle-line",
+    "--sk-resizable-panel-min-block-size",
+    "--sk-resizable-panel-min-inline-size",
     "--sk-resizable-size",
   ],
   outputHooks: ["--sk-resizable-size"],
@@ -299,6 +301,18 @@ export const resizableContract = {
      * itself: a focusable `separator` that says only "separator" is a control nobody can tell apart.
      */
     label: { type: "string", attr: "aria-label" },
+    /**
+     * An absolute CSS floor (`"22rem"`, `"320px"`), ON TOP OF `minSize`: the machine still drags in
+     * percentages of the group's current pixel width, so the SAME percentage floor is a different
+     * absolute width in a 2000px window and a 600px one. These two are `Sidebar`'s
+     * `minInlineSize`/`maxInlineSize` by the same reasoning (sidebar.ts): a length is not state, so
+     * it is a style property the emitted markup carries before any JavaScript runs, not an attribute
+     * a stylesheet would need one rule per value for. Harmless to set on the cross axis too (a
+     * horizontal panel's `min-block-size` floor never fights its `block-size: 100%`), so one pair
+     * covers both directions without a third option to pick which axis means "along the split".
+     */
+    minInlineSize: { type: "string", styleProperty: "--sk-resizable-panel-min-inline-size" },
+    minBlockSize: { type: "string", styleProperty: "--sk-resizable-panel-min-block-size" },
   },
 
   signatures: {
@@ -319,7 +333,7 @@ export const resizableContract = {
       intent: ["resizable-pane", "split-view-side"],
       host: { element: "div" },
       parents: ["Resizable"],
-      options: ["size", "minSize", "maxSize", "collapsible", "collapsedSize"],
+      options: ["size", "minSize", "maxSize", "collapsible", "collapsedSize", "minInlineSize", "minBlockSize"],
       forward: ["id", "aria-*"],
       slots: { children: { accepts: "node" } },
       template: { element: "div", part: "panel", host: true, slot: "children" },

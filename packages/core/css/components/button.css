@@ -25,6 +25,9 @@
  * whatever --sk-button-bg is, so it is correct on neutral surfaces and saturated fills alike,
  * and the focus ring comes from the pattern's --focus-ring-* family.
  */
+@import url("./loader.css");
+@import url("../patterns/a11y-warn.css");
+
 @layer components {
   .sk-button {
     --sk-button-bg: var(--color-action-neutral);
@@ -745,7 +748,7 @@
    */
   .sk-button[data-appearance="frosted"] {
     --frost-opacity: 84%;
-    --frost-blur: 16px;
+    --frost-blur: var(--frost-blur-md);
     /* What the material is tinted with, and the opaque baseline. The resolved face by default; ghost
      * and soft swap it (below). */
     --frost-face: var(--sk-button-bg);
@@ -754,7 +757,7 @@
     --frost-floor: 0%;
     /* The fine optical edge, from the button's own ink so it reads on its own face in every tone and
      * mode. The top highlight, the lit rim of the sheet, is the system's `--frost-highlight`. */
-    --frost-edge: color-mix(in oklab, currentColor 24%, transparent);
+    --frost-edge: color-mix(in oklab, currentColor 18%, transparent);
     /* Separation from the backdrop: a hairline of the system's own shadow colour under the sheet.
      * Its own value rather than `--sk-button-shadow`, because that hook is `none` on ghost, pressed
      * and disabled, and `inset …, none` is an invalid list that drops the highlight with it. */
@@ -764,8 +767,8 @@
      * toned face whose legibility floor lets only a trace of the backdrop through. */
     --sk-button-wash: linear-gradient(
       to bottom,
-      color-mix(in oklab, var(--frost-highlight) 55%, transparent),
-      transparent 50%
+      color-mix(in oklab, var(--frost-highlight) 45%, transparent),
+      transparent 40%
     );
     border-color: var(--frost-edge);
     box-shadow: inset 0 1px 0 var(--frost-highlight), var(--frost-drop);
@@ -806,7 +809,7 @@
    * is left alone, so aria-pressed can still give it its fill. */
   .sk-button[data-appearance="frosted"][data-variant="ghost"] {
     --frost-opacity: 65%;
-    --frost-blur: 8px;
+    --frost-blur: var(--frost-blur-sm);
     --frost-face: var(--color-bg-surface);
     --frost-edge: color-mix(in oklab, currentColor 16%, transparent);
     --frost-drop: 0 0 transparent;
@@ -832,8 +835,8 @@
         transparent
       );
     background: var(--frost-glass, var(--sk-button-wash) var(--frost-face));
-    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur)) saturate(150%);
-    backdrop-filter: var(--frost-on) blur(var(--frost-blur)) saturate(150%);
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur)) saturate(var(--frost-saturate));
   }
 
   /* Hover and press make the sheet a little denser, beneath the state layer that already tints it. */
@@ -877,6 +880,13 @@
      * or the line box from stretching the square into a tall pill. */
     block-size: var(--sk-button-height);
     flex: none;
+
+    /* NOTHING TO CLIP, SO THE 44px TARGET STAYS WHOLE WHILE IT IS PRESSED. The base rule's `overflow: clip` exists for an overlong
+     * label; a lone square glyph has none. Measured in Chrome: once `:active` applies the press `scale`, hit-testing drops
+     * `overflow-clip-margin` and cuts the `::after` back to the face. The pointer goes down on the 44px target, the squeeze
+     * pulls it out from under the finger, and the release lands on whatever is behind it (the chip, not the button), so only
+     * the 24px face ever produced a click. */
+    overflow: visible;
   }
 
   /*
@@ -943,6 +953,15 @@
     --sk-button-height: var(--size-control-xs);
     --sk-button-padding-x: var(--space-inset-xs);
     --sk-button-font-size: var(--font-size-caption);
+    /*
+     * Found on the break harness (`/debug/button-break`): the root rule's `font: … / 1 …` gives the
+     * label NO leading, and at this face a stacked Devanagari matra or Vietnamese tone mark needs
+     * more room above the glyph than a 24px control has left over once a 1px border and a 12px,
+     * line-height-1 line box are accounted for - the mark crossed the top border. `sm` already
+     * clears it (more height, same font-size step down), which is why only `xs` needs its own
+     * override rather than a change to the shared shorthand every size would inherit.
+     */
+    line-height: var(--scale-line-height-snug);
   }
 
   /*
@@ -1014,6 +1033,67 @@
     display: none;
   }
 
+  /*
+   * THE LOADER SITS INLINE, where `pre` would be - never an overlay (the earlier shape here: a
+   * `position: absolute` spinner floating over a label that `visibility: hidden` was supposed to
+   * clear but, for plain text with no element of its own, never actually reached - the label sat
+   * fully visible underneath it; `sk-button__label` below is the fix). `order: -1` is what moves it
+   * to the front without reordering the DOM: `pre`/`post` stay where the contract puts them.
+   */
+  .sk-button__loader {
+    display: none;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    order: -1;
+    /* Scales with the button's own face, same tiers `.sk-icon` uses a few rules down - pinned to
+       one size (the loader's own default, `sm`) read small on an `lg` button and oversized on
+       `xs`, the mismatch the break harness flagged. */
+    --sk-loader-size: var(--size-icon-lg);
+  }
+
+  .sk-button[data-size="xs"] .sk-button__loader { --sk-loader-size: var(--size-icon-sm); }
+  .sk-button[data-size="sm"] .sk-button__loader { --sk-loader-size: var(--size-icon-md); }
+  .sk-button[data-size="lg"] .sk-button__loader { --sk-loader-size: var(--size-icon-xl); }
+
+  .sk-button[data-loading] {
+    cursor: wait;
+  }
+
+  /* The icon slots step aside for the spinner; the label does not, unless `loadingText` replaces
+     it (below) - the spinner alone already says "busy", and a caller who wrote no loading phrase
+     should not lose the one that names the action. */
+  .sk-button[data-loading] .sk-button__pre,
+  .sk-button[data-loading] .sk-button__post {
+    display: none;
+  }
+
+  .sk-button[data-loading] .sk-button__loader {
+    display: inline-flex;
+  }
+
+  .sk-button__loading-label {
+    display: none;
+  }
+
+  /* Only in the DOM when `loadingText` was given (button.ts's `whenGiven`); swap the plain label
+     for it rather than showing both. */
+  .sk-button[data-loading] .sk-button__loading-label {
+    display: inline;
+  }
+
+  .sk-button[data-loading]:has(.sk-button__loading-label) .sk-button__label {
+    display: none;
+  }
+
+  /* An icon-only button's "label" IS its one glyph, the same role `pre`/`post` play everywhere
+     else: the spinner takes its place instead of sitting beside it in a square with no room for
+     both. `loadingText` makes no sense here either - there is no text slot to swap - so this is
+     keyed on the shape alone, not on whether one was given. */
+  .sk-button[data-loading][data-icon-only] .sk-button__label {
+    display: none;
+  }
+
   /* xs is the one step where the off-by-one above runs out: `--size-icon-sm` IS the bottom of the
    * icon scale, so the 24px face takes the pattern's own sm rather than reaching a step up. */
   .sk-button[data-size="xs"] .sk-icon {
@@ -1027,6 +1107,10 @@
   .sk-button[data-size="lg"] .sk-icon {
     --sk-icon-size: var(--size-icon-xl);
   }
+
+  /* `[data-sk-a11y-warn]` itself lives in `../patterns/a11y-warn.css` (imported above): one rule,
+     shared with Kbd and Tag, rather than a copy kept in sync in every component that checks for an
+     icon-only control with no name or a control that renders nothing at all. */
 
   /* Real disabled state, keys off the actual pseudo-class and ARIA, not a variant name. The
    * disabled LOOK is these tokens; the state layer separately forces its own opacity to 0. */

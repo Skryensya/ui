@@ -282,6 +282,14 @@ export const layoutContract = {
      * always scrolls as a page: a phone has no room for panes.
      */
     scroll: { type: "enum", values: ["page", "regions"], attr: "data-scroll" },
+    /*
+     * KEEPS THE SIDEBAR AT ANY WIDTH, `regions` included. The compact default assumes narrow means
+     * a PHONE, which has no room for a side column; a desktop-in-the-browser app's window can be
+     * every bit as narrow while staying a desktop app the whole time, where the index the sidebar
+     * holds is not optional chrome to give up, it is a navigation the work area depends on. Off
+     * by default: a responsive SITE still wants the phone behaviour this does not touch.
+     */
+    sidebarPersistent: { type: "boolean", default: false, attr: "data-sidebar-persistent", trueValue: "" },
     /* The header stays at the top while the page scrolls under it. Meaningless with `regions`, where nothing scrolls past it. */
     stickyHeader: { type: "boolean", default: false, attr: "data-sticky-header", trueValue: "" },
     /*
@@ -393,20 +401,27 @@ export const layoutContract = {
     AppShell: {
       intent: ["app-shell", "application-frame", "header-rail-and-main", "dashboard-frame", "page-chrome-layout"],
       host: { element: "div" },
-      options: ["shellHeight", "scroll", "stickyHeader"],
+      options: ["shellHeight", "scroll", "stickyHeader", "sidebarPersistent"],
       slots: {
         children: {
           /*
            * Placed by what they are AND where they stand: a Sidebar before the Main is the start rail, one after
-           * it is the end rail (an inspector, a detail pane). Below the expanded line the rails are not drawn;
-           * what they carry reaches a phone through a `Vaul.drawer` opened from the header (decision 35).
+           * it is the end rail (an inspector, a detail pane). Below the expanded line the rails are not drawn
+           * (unless `sidebarPersistent`); what they carry otherwise reaches a phone through a `Vaul.drawer`
+           * opened from the header (decision 35).
            */
           accepts: "signature",
           of: ["SkipLink", "Navbar", "AppBar", "Sidebar", "Main", "Footer", "Vaul.drawer"],
           required: true,
         },
       },
-      template: { element: "div", part: "appShell", host: true, options: ["shellHeight", "scroll", "stickyHeader"], slot: "children" },
+      template: {
+        element: "div",
+        part: "appShell",
+        host: true,
+        options: ["shellHeight", "scroll", "stickyHeader", "sidebarPersistent"],
+        slot: "children",
+      },
       react: { from: "@skryensya/react/layout", name: "AppShell" },
     },
 

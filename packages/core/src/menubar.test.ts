@@ -40,6 +40,32 @@ describe("resolveMenubarKey. Left/Right between top-level items", () => {
       keepOpen: true,
     });
   });
+
+  it("swaps which arrow moves forward under dir: \"rtl\", instead of ignoring direction entirely", () => {
+    /* Found as a real bug reading the switch directly: it never took a direction param at all,
+       so ArrowRight always meant "next array index" regardless of which way the bar reads. */
+    expect(
+      resolveMenubarKey({
+        key: "ArrowRight",
+        focus: { topIndex: 0, subIndex: null },
+        topCount: 3,
+        hasMenuAt: (topIndex) => topIndex !== 2,
+        subCountOf: () => 0,
+        dir: "rtl",
+      }),
+    ).toEqual({ kind: "moveTop", topIndex: 2, keepOpen: false });
+
+    expect(
+      resolveMenubarKey({
+        key: "ArrowLeft",
+        focus: { topIndex: 0, subIndex: null },
+        topCount: 3,
+        hasMenuAt: (topIndex) => topIndex !== 2,
+        subCountOf: () => 0,
+        dir: "rtl",
+      }),
+    ).toEqual({ kind: "moveTop", topIndex: 1, keepOpen: false });
+  });
 });
 
 describe("resolveMenubarKey. Opening and moving within a dropdown", () => {

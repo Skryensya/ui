@@ -331,3 +331,78 @@ describe("UserSelect loading", () => {
     destroyMount(root);
   });
 });
+
+describe("UserSelect virtualized (JSON roster)", () => {
+  function virtualizedMarkup({ scriptId = "huge-roster", count = 500 } = {}) {
+    const roster = Array.from({ length: count }, (_, i) => {
+      const id = String(i + 1).padStart(4, "0");
+      return { id: `member-${id}`, name: `Workspace member ${id}`, email: `member.${id}@example.com` };
+    });
+    return `<script type="application/json" id="${scriptId}">${JSON.stringify(roster)}</script>
+    <div class="sk-select" data-sk-user-select data-sk-user-select-items="${scriptId}" id="members" data-placeholder="Select members">
+      <select data-sk-select-hidden name="members" multiple></select>
+      <div class="sk-select__control" data-sk-select-control>
+        <button class="sk-select__trigger sk-interactive" data-sk-select-trigger type="button">
+          <span class="sk-select__value" data-sk-select-value></span>
+          <span class="sk-select__indicator" data-sk-select-indicator aria-hidden="true">
+            <span data-state="closed"><svg class="sk-icon"></svg></span>
+            <span data-state="open"><svg class="sk-icon"></svg></span>
+          </span>
+        </button>
+      </div>
+      <div class="sk-select__positioner" data-sk-select-positioner>
+        <div class="sk-select__content" data-sk-select-content>
+          <input class="sk-input" data-sk-user-select-search type="search" placeholder="Search members..." />
+          <div data-sk-user-select-list></div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  it("generates the hidden options and virtualizes a JSON-supplied roster too large to author", async () => {
+    document.body.innerHTML = virtualizedMarkup({ count: 500 });
+    const root = document.querySelector("[data-sk-user-select]") as HTMLElement;
+    const list = root.querySelector("[data-sk-user-select-list]") as HTMLElement;
+    const hidden = root.querySelector("select") as HTMLSelectElement;
+    // jsdom's own layout is all-zero; `@tanstack/virtual-core` reads `offsetWidth`/`offsetHeight`
+    // (not `getBoundingClientRect`), for the viewport AND for every mounted row's own measured
+    // size - see `select.test.ts`'s identical setup for the full reasoning.
+    Object.defineProperty(list, "offsetWidth", { configurable: true, value: 300 });
+    Object.defineProperty(list, "offsetHeight", { configurable: true, value: 300 });
+    const rowHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "offsetHeight");
+    Object.defineProperty(HTMLElement.prototype, "offsetHeight", { configurable: true, get: () => 60 });
+
+    try {
+      expect(mountUserSelect(document)).toBe(1);
+
+      expect(hidden.options.length).toBe(500);
+      expect(hidden.options[0]?.value).toBe("member-0001");
+      expect(hidden.options[499]?.value).toBe("member-0500");
+
+      const mountedItems = list.querySelectorAll("[data-sk-select-item]");
+      expect(mountedItems.length).toBeGreaterThan(0);
+      expect(mountedItems.length).toBeLessThan(500);
+      expect(list.style.position).toBe("relative");
+
+      const onValueChange = vi.fn();
+      root.addEventListener("sk:userselectvaluechange", onValueChange);
+      const trigger = root.querySelector("[data-sk-select-trigger]") as HTMLElement;
+      fireEvent.click(trigger);
+      await waitFor(() => expect(list.querySelector('[data-value="member-0001"]')).toBeTruthy());
+      fireEvent.click(list.querySelector('[data-value="member-0001"]') as HTMLElement);
+
+      await waitFor(() =>
+        expect(onValueChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: ["member-0001"] } })),
+      );
+      expect([...hidden.selectedOptions].map((o) => o.value)).toEqual(["member-0001"]);
+    } finally {
+      if (rowHeight) Object.defineProperty(HTMLElement.prototype, "offsetHeight", rowHeight);
+      else delete (HTMLElement.prototype as { offsetHeight?: unknown }).offsetHeight;
+    }
+  });
+
+  it("refuses a [data-sk-user-select-items] script id that does not exist", () => {
+    document.body.innerHTML = virtualizedMarkup().replace('id="huge-roster"', 'id="huge-roster-typo"');
+    expect(() => mountUserSelect(document)).toThrow(/does not exist/);
+  });
+});

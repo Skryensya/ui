@@ -9,7 +9,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: "Combina jerarquía y columnas: filas expandibles con varios valores cada una."
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: "Combines hierarchy and columns: expandable rows, each with several values."
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

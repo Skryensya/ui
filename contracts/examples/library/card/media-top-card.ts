@@ -66,7 +66,7 @@ export const mediaTopCard: PatternModule<Content> = {
   pattern,
   uses: [
     post("backlog", true, {
-      src: "https://dummyimage.com/640x360/d9e2ec/334e68&text=%20",
+      src: "/demos/satin/satin-pearl-16x9.jpg",
       kind: { en: "Guide", es: "Guía" },
       eyebrow: { en: "6 min read", es: "6 min de lectura" },
       title: { en: "Sorting a backlog that grew without a plan", es: "Cómo ordenar un backlog que creció sin plan" },
@@ -75,7 +75,7 @@ export const mediaTopCard: PatternModule<Content> = {
       meta: { en: "October 3", es: "3 de octubre" },
     }),
     post("reports", false, {
-      src: "https://dummyimage.com/640x360/e3f2e1/2f5d3a&text=%20",
+      src: "/demos/satin/satin-mist-16x9.jpg",
       kind: { en: "News", es: "Novedades" },
       eyebrow: { en: "3 min read", es: "3 min de lectura" },
       title: { en: "Exporting reports now takes one click", es: "Exportar reportes ahora toma un clic" },
@@ -84,7 +84,7 @@ export const mediaTopCard: PatternModule<Content> = {
       meta: { en: "September 28", es: "28 de septiembre" },
     }),
     post("support-team", false, {
-      src: "https://dummyimage.com/640x360/f6e7d8/7a4b1e&text=%20",
+      src: "/demos/satin/satin-blush-16x9.jpg",
       kind: { en: "Story", es: "Caso" },
       eyebrow: { en: "8 min read", es: "8 min de lectura" },
       title: { en: "A support team that answered twice as many", es: "Un equipo de soporte que respondió el doble" },

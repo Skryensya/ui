@@ -12,11 +12,12 @@ import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/feed";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Feed", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.feedAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.feedAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(demos.feedTree);
 export const Activity: StoryObj = treeStory(demos.feedActivityTree);
 export const Busy: StoryObj = treeStory(demos.feedBusyTree);

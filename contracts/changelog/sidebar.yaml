@@ -26,7 +26,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Aloja navegación o herramientas persistentes junto al contenido.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Holds persistent navigation or tools beside the content.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

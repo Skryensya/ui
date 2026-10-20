@@ -54,15 +54,15 @@ describe("FormField contract", () => {
     expect(input.disabled).toBe(true);
   });
 
-  it("clips the label with labelHidden without dropping the accessible name", () => {
+  it("clips the label with labelVisuallyHidden without dropping the accessible name", () => {
     const ui = render(
-      <FormField label="Reply" labelHidden>
+      <FormField label="Reply" labelVisuallyHidden>
         <Input name="reply" />
       </FormField>,
     );
 
     const root = ui.container.querySelector(".sk-form-field");
-    expect(root?.getAttribute("data-label-hidden")).toBe("");
+    expect(root?.getAttribute("data-label-visually-hidden")).toBe("");
     expect(fieldIn(ui).getByRole("textbox", { name: /Reply/ })).toBeTruthy();
   });
 

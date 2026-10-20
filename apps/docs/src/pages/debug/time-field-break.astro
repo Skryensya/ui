@@ -1,0 +1,20 @@
+---
+/* Dev-only stress harness for TimeField locale, value and option-list edges. */
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
+import "@skryensya/core/tokens.scss";
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/select.css";
+import "@skryensya/core/components/time-field.css";
+import "@skryensya/core/patterns/anchored.css";
+import "@skryensya/core/patterns/scrollbar.css";
+import "../../styles/site.css";
+import { TimeFieldBreak } from "../../components/react-demos/debug-time-field-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+
+<DebugShell title="TimeField" docsHref="/components/time-field">
+  <TimeFieldBreak client:only="react" />
+</DebugShell>

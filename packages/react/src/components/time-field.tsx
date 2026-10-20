@@ -1,5 +1,5 @@
 import { select } from "@skryensya/core/machines";
-import { selectParts } from "@skryensya/core/select";
+import { selectParts, selectPositioning } from "@skryensya/core/select";
 import { formatTimeValue, generateTimeOptions, getPeriodLabels, getTimeFieldTokens, parseTimeValue, resolveHourCycle, segmentBounds, timeFieldParts, to12Hour, to24Hour, type HourCycle, type Period, type TimeFieldOption, type TimeFieldSegmentType, type TimeFieldValueChangeDetails, type TimeValue, timeFieldContract } from "@skryensya/core/time-field";
 import { normalizeProps, Portal, useMachine } from "@zag-js/react";
 import {
@@ -11,7 +11,8 @@ import {
   type KeyboardEvent,
   type RefObject,
 } from "react";
-import { useAnchored } from "./anchored.js";
+import { anchorProps, positionerProps } from "./anchored.js";
+import { getDirection } from "../direction.js";
 import { Icon } from "./icon.js";
 
 /* Derived, never restated: the default lives in the contract. */
@@ -215,10 +216,9 @@ export function TimeField({
       if (!parsed) return;
       commit(decompose(parsed, cycle));
     },
-    positioning: { sameWidth: false },
+    positioning: { ...selectPositioning, sameWidth: false },
   });
   const pickerApi = select.connect(pickerService, normalizeProps);
-  const anchor = useAnchored(pickerId);
 
   const segmentRefs = useRef<Partial<Record<TimeFieldSegmentType, HTMLDivElement | null>>>({});
   const controlRef = useRef<HTMLDivElement>(null);
@@ -228,6 +228,10 @@ export function TimeField({
   const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => () => clearTimeout(advanceTimerRef.current), []);
 
+  // `direction` is a step through `segmentOrder` (the LOCALE's own order: hour before minute),
+  // used both for typing's own auto-advance (always logically "forward", regardless of screen
+  // direction) and for the arrow keys below (which name a screen side, and need their own
+  // direction-aware translation into this same array step - see that call site's own comment).
   const moveFocus = (from: TimeFieldSegmentType, direction: 1 | -1) => {
     const next = segmentOrder[segmentOrder.indexOf(from) + direction];
     if (next) segmentRefs.current[next]?.focus();
@@ -319,14 +323,20 @@ export function TimeField({
         commit({ ...segments, [type]: current === undefined ? max : wrapStep(current, -step, min, max) });
         return;
       }
+      /*
+       * ArrowLeft/ArrowRight name a screen side; `moveFocus`'s own `direction` is a step through
+       * `segmentOrder` (the locale's array order), and the two stop agreeing under `dir: "rtl"` -
+       * the segment one array-step forward sits to the LEFT on screen, not the right. Found as the
+       * same bug class Segmented/Menubar/Toolbar/AppBar all had.
+       */
       case "ArrowLeft":
+      case "ArrowRight": {
         event.preventDefault();
-        moveFocus(type, -1);
+        const rtl = getDirection(undefined, controlRef.current) === "rtl";
+        const forward = rtl ? "ArrowLeft" : "ArrowRight";
+        moveFocus(type, event.key === forward ? 1 : -1);
         return;
-      case "ArrowRight":
-        event.preventDefault();
-        moveFocus(type, 1);
-        return;
+      }
       case "Home":
         event.preventDefault();
         bufferRef.current = null;
@@ -368,7 +378,7 @@ export function TimeField({
       <div
         aria-describedby={hintId}
         aria-labelledby={labelId}
-        {...anchor.anchor(timeFieldParts.control)}
+        {...anchorProps(timeFieldParts.control)}
         data-disabled={disabled ? "" : undefined}
         ref={controlRef}
         role="group"
@@ -444,7 +454,7 @@ export function TimeField({
       {disabled || readOnly ? null : (
         <Portal container={container}>
           <div
-            {...anchor.positioner(
+            {...positionerProps(
               pickerApi.getPositionerProps(),
               cx(selectParts.positioner, "sk-time-field__options-positioner"),
             )}

@@ -125,7 +125,7 @@ export type ControlledFieldRender<TValues extends FieldValues, TName extends Fie
 
 export type ControlledFieldProps<TValues extends FieldValues, TName extends FieldPath<TValues>> = Pick<
   FormFieldProps,
-  "label" | "hint" | "labelHidden" | "className" | "id"
+  "label" | "hint" | "labelVisuallyHidden" | "className" | "id"
 > & {
   name: TName;
   /** Optional inside a `Form`: it is read from the form's context. */

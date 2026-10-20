@@ -50,6 +50,10 @@ export function TimelineItem({
   tone = toneOption.default,
   ...props
 }: TimelineItemProps) {
+  // A computed relative time ("" from a formatter with nothing to say yet, e.g. "just now") must
+  // not still warrant an empty <time> - visible chrome with nothing in it to read or announce.
+  const hasTime = (time !== undefined && time !== "") || (timeLabel !== undefined && timeLabel !== "");
+
   return (
     <li {...props} className={cx(timelineParts.item, className)} data-tone={tone}>
       {/* The dot repeats nothing the heading beside it does not already say, so it is hidden. */}
@@ -58,13 +62,13 @@ export function TimelineItem({
       </span>
       {/* Either half of the time is enough to warrant the element: the machine value alone still
           belongs in the markup, and the label alone is a legible time with no parseable form. */}
-      {(time !== undefined || timeLabel !== undefined) && (
+      {hasTime && (
         <time className={timelineParts.time} dateTime={time}>
           {timeLabel}
         </time>
       )}
       <span className={timelineParts.heading}>{heading}</span>
-      {children !== undefined && <div className={timelineParts.body}>{children}</div>}
+      {children !== undefined && children !== "" && <div className={timelineParts.body}>{children}</div>}
     </li>
   );
 }

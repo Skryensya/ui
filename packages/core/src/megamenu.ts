@@ -104,14 +104,6 @@ export const megamenuContract = {
   /* Authored on a NavListLink inside a trigger column to swap this megamenu's preview image. */
   authoredAttrs: [megamenuAttrs.preview, megamenuAttrs.previewAlt],
   hooks: [
-    "--sk-anchored-align",
-    "--sk-anchored-arrow-edge",
-    "--sk-anchored-arrow-near",
-    "--sk-anchored-justify",
-    "--sk-anchored-offset",
-    "--sk-anchored-position-area",
-    "--sk-anchored-position-try",
-    "--sk-anchored-size",
     "--sk-anchored-z",
     "--sk-megamenu-bg",
     "--sk-megamenu-border-color",

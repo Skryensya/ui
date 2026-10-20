@@ -1,5 +1,6 @@
-import { qrGeometry, qrCodeParts, type QrLevel, type QrMask, type QrModuleShape, type QrPolarity, type QrSize, type QrTone, qrCodeContract } from "@skryensya/core/qr-code";
+import { qrGeometry, qrCodeParts, QrError, type QrLevel, type QrMask, type QrModuleShape, type QrPolarity, type QrSize, type QrTone, qrCodeContract } from "@skryensya/core/qr-code";
 import type { CSSProperties, HTMLAttributes, ReactNode, Ref } from "react";
+import { dev, devTicket } from "../dev-warning.js";
 
 /* Export works on the rendered element: pass the `ref` of a <QRCode> to these. */
 export {
@@ -64,13 +65,24 @@ export function QRCode({
   value,
   ...props
 }: QRCodeProps) {
-  const { path, extent } = qrGeometry(value, {
-    level,
-    mask,
-    moduleShape: shape,
-    quietZone,
-    logoRatio,
-  });
+  /*
+   * `qrGeometry` throws `QrError` when `value` is too long to encode at the chosen error-correction
+   * level (core's own test proves it throws); caught here so a value a caller didn't bound - an API
+   * response, a generated URL - degrades to an empty symbol instead of crashing the tree it's in.
+   */
+  let geometry: { path: string; extent: number } | null = null;
+  try {
+    geometry = qrGeometry(value, { level, mask, moduleShape: shape, quietZone, logoRatio });
+  } catch (cause) {
+    if (dev) {
+      console.error(
+        ...devTicket("<QRCode>", {
+          issue: cause instanceof QrError ? cause.message : "failed to encode `value`.",
+          fix: "Shorten the value or lower the error-correction `level`.",
+        }),
+      );
+    }
+  }
 
   return (
     <div
@@ -83,6 +95,7 @@ export function QRCode({
       data-polarity={polarity}
       data-quiet-zone={quietZone}
       data-size={size}
+      data-status={geometry ? undefined : "error"}
       data-tone={tone}
       /* What it encodes, stated in the markup like the other three encoder inputs: the Vanilla
          enhancer redraws from these, and the two bindings must emit the same attributes. */
@@ -92,15 +105,17 @@ export function QRCode({
          the markup emitter writes the same one from the contract's `styleProperty`. */
       style={{ ...style, "--sk-qr-code-logo-ratio": logoRatio } as QRCodeStyle}
     >
-      <svg
-        aria-hidden="true"
-        className={qrCodeParts.frame}
-        focusable="false"
-        viewBox={`0 0 ${extent} ${extent}`}
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path className={qrCodeParts.modules} d={path} fill="currentColor" />
-      </svg>
+      {geometry ? (
+        <svg
+          aria-hidden="true"
+          className={qrCodeParts.frame}
+          focusable="false"
+          viewBox={`0 0 ${geometry.extent} ${geometry.extent}`}
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path className={qrCodeParts.modules} d={geometry.path} fill="currentColor" />
+        </svg>
+      ) : null}
       {logo === undefined ? null : <div className={qrCodeParts.logo}>{logo}</div>}
     </div>
   );

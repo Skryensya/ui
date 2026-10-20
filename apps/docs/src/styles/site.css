@@ -514,6 +514,24 @@ html:has(dialog:modal) .sk-toc {
   align-items: start;
 }
 
+/* Hidden diagnostics use the regular header, TOC, and devtools overlay, but not the section rail. */
+.shell[data-debug-page] {
+  --docs-document-max: min(var(--size-wrapper-lg), 110ch);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.shell[data-debug-page] > .docs-sidebar {
+  display: none;
+}
+
+.shell[data-debug-page] > .docs-document-pair {
+  grid-column: 1;
+}
+
+.shell[data-debug-page] .docs-document-pair > main {
+  --sk-wrapper-max: var(--docs-document-max);
+}
+
 /*
  * BACK TO TOP, PLACED BY THE SITE, because placement is not the component's to hold: it ships the
  * button, the reveal and the accessible name, and says nothing about where a consumer wants it
@@ -1437,10 +1455,6 @@ h2.docs-catalog-section__title {
   margin-block: var(--space-stack-xl) var(--space-stack-lg);
 }
 
-.docs-related-components > .sk-list {
-  margin-inline: calc(var(--sk-list-row-padding-x) * -1);
-}
-
 /* ── "En esta página", the index of the document ─────────────────────────── */
 /* The component (`@skryensya/core/components/toc.css`) owns the anatomy; this is only what makes
  * THIS shell's instance a rail rather than the disclosure it ships as. The list is compiled with
@@ -1897,6 +1911,41 @@ main[data-document-layout="grid"]:has(> .docs-catalog-groups) > * {
  * site's token directly. All that's left here is bridging that one custom property to the site's
  * own (just above), plus this density-only override, which has nothing to do with the rail at all.
  */
+/*
+ * THE TOC GOES ALL THE WAY TO THE RIGHT, and the document sits in the middle of what is left.
+ *
+ * `sk-layout-grid`'s own rail template keeps start-rail + content + end-rail as ONE unit with the
+ * same fluid gutter on both outer sides, so on a wide screen the toc floated in from the edge by
+ * that whole gutter (measured: 186px at 1920px). Here the rail's own side stops being fluid: the
+ * end gutter is the fixed inset and the air that used to sit there goes into the gap between the
+ * document and the rail instead. The document stays centered between the sidebar and the rail (same
+ * fluid track on both of its sides), and the rail hugs the viewport edge at every width. It is the
+ * pattern's `@container (width >= 72rem)` template with only those two tracks changed, restated here
+ * because the pattern cannot know which side of the page a consumer wants the rail pinned to. The
+ * footer row carries the same template so its content column stays on the article's own.
+ */
+@container (width >= 72rem) {
+  .docs-document-pair[data-document-layout="grid"].sk-layout-grid:has(> [data-width="rail"]),
+  .docs-footer-row.sk-layout-grid:has(> [data-width="rail"]) {
+    grid-template-columns:
+      [full-width-start]
+        minmax(var(--sk-layout-gutter), 1fr)
+      [breakout-start content-start]
+        minmax(0, var(--sk-layout-narrow-track))
+      [narrow-start]
+        minmax(0, var(--sk-layout-narrow))
+      [narrow-end]
+        minmax(0, var(--sk-layout-narrow-track))
+      [content-end breakout-end]
+        minmax(var(--sk-layout-rail-gap), 1fr)
+      [end-rail-start]
+        var(--sk-layout-rail-inline-size)
+      [end-rail-end]
+        var(--sk-layout-gutter)
+      [full-width-end];
+  }
+}
+
 .docs-document-pair[data-document-layout="grid"] {
   --sk-layout-breakout: min(
     var(--size-wrapper-lg),
@@ -2339,6 +2388,19 @@ main .lede {
   /* Never part of the collapse: a fixed size reads as a stable label, not a fourth thing scaling
      on scroll alongside the eyebrow and the title. */
   flex: none;
+}
+
+/* Dev-only (see the prop's own comment in ComponentPageShell.astro). Plain and small on purpose:
+   it is chrome about the page, not of it, and must never read as a real part of the component. */
+.docs-component-hero__break-link {
+  flex: none;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-caption);
+  color: var(--color-text-secondary);
+}
+
+.docs-component-hero__break-link:hover {
+  color: var(--color-text-primary);
 }
 
 .docs-component-hero h1 {
@@ -3897,9 +3959,10 @@ html[data-sk-component-preview-pref="vanilla"] [data-sk-install-binding="react"]
   justify-items: center;
 }
 
-/* Frosted blurs what is behind it, and a flat canvas has nothing to blur: give it the docs' photograph to work on. */
+/* Frosted blurs what is behind it, and a flat canvas has nothing to blur: give it the docs' satin to work on. It is the one stage on screen,
+   so it gets the version that slowly moves. */
 .docs-hook-modal__stage[data-docs-appearance="frosted"] .docs-hook-modal__canvas {
-  background: center / cover var(--docs-frost-photo);
+  background: var(--docs-frost-backdrop-motion);
 }
 
 /* The example sits in the middle with the same room above and below: its menus open into it. */
@@ -4108,8 +4171,5 @@ html[data-sk-component-preview-pref="vanilla"] [data-sk-install-binding="react"]
 }
 
 /* THE BACKDROP FROSTED NEEDS, for every example that has the appearance menu: a frosted material over a blank stage
-   has nothing to process. It is the photograph the Button page's frosted matrix already sits on (`public/demos/`,
-   no remote dependency), shared as one value so the cards and the hook playground cannot drift. */
-:root {
-  --docs-frost-photo: url("/demos/lightbox/fjord.jpg");
-}
+   has nothing to process. It is the docs' own grainy satin (`lib/frost-backdrop.ts`, served from `public/demos/frost/`), written onto
+   `:root` as `--docs-frost-backdrop` (and `-motion`) by `Base.astro` so the cards and the hook playground cannot drift. */

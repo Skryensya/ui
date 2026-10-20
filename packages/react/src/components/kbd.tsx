@@ -1,8 +1,30 @@
 import { kbdParts, type KbdTone, kbdContract } from "@skryensya/core/kbd";
-import { type HTMLAttributes } from "react";
+import { useEffect, type HTMLAttributes } from "react";
+import { a11yWarnRef, dev, devTicket } from "../dev-warning.js";
 
 /* Derived, never restated: the default lives in the contract. */
 const { appearance: appearanceOption, tone: toneOption } = kbdContract.options;
+
+/*
+ * Same posture as Tag's own `warnEmptyTag`: `children` is the WHOLE accessible content here too,
+ * with no icon slot or `aria-label` escape hatch to fall back on - a key legend computed from the
+ * platform (an OS-specific shortcut that has no key on this one) can come up empty and render a
+ * blank keycap with nothing to announce.
+ */
+function isEmptyKbd(children: string): boolean {
+  return children.trim().length === 0;
+}
+
+function warnEmptyKbd(empty: boolean): void {
+  if (!dev || !empty) return;
+  console.error(
+    ...devTicket("<Kbd>", {
+      issue: "renders nothing: children is empty.",
+      why: "The keycap still takes its square minimum size and nothing is announced - there is no `aria-label` to fall back on, the legend IS the accessible content.",
+      fix: "Give it a key, or do not render it.",
+    }),
+  );
+}
 
 export type { KbdTone };
 
@@ -33,9 +55,21 @@ const keyIcon = (label: string): string | undefined => {
 export function Kbd({ appearance = appearanceOption.default, children, className, tone = toneOption.default, ...props }: KbdProps) {
   const classes = className ? `${kbdParts.root} ${className}` : kbdParts.root;
   const dataKey = (props as { "data-key"?: string })["data-key"] ?? keyIcon(children);
+  const empty = isEmptyKbd(children);
+  // Effect, not a direct render-body call: guarantees this only ever runs client-side, after
+  // mount, straight into the browser's own console - no SSR pass involved, so there is no SSR-
+  // vs-client environment to disagree about in the first place.
+  useEffect(() => warnEmptyKbd(empty), [empty]);
 
   return (
-    <kbd {...props} className={classes} data-appearance={appearance} data-tone={tone} data-key={dataKey}>
+    <kbd
+      {...props}
+      className={classes}
+      data-appearance={appearance}
+      data-tone={tone}
+      data-key={dataKey}
+      ref={a11yWarnRef(empty)}
+    >
       {children}
     </kbd>
   );

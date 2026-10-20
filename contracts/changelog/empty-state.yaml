@@ -3,13 +3,21 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "d626aa1663b563c5"
+surface: "baaf1c9c09b8424a"
 entries:
   - date: 2026-10-01
     kind: feature
     es:
       title: Primera versión
-      body: Explica por qué no hay contenido y orienta el siguiente paso.
+      body: "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple."
     en:
       title: First release
-      body: Explains why content is absent and points to the next step.
+      body: "Published for the first time, with its contract, a React binding and a stylesheet for plain markup."
+  - date: 2026-10-14
+    kind: feature
+    es:
+      title: Nivel del título
+      body: "Nueva opción headingElement (h1 a h6, por defecto h2): un estado que es toda la página, como un 404, usa h1."
+    en:
+      title: Title level
+      body: "New headingElement option (h1 to h6, h2 by default): a state that is the whole page, like a 404, uses h1."

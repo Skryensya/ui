@@ -23,7 +23,7 @@ const { pattern, use } = definePattern<Content>({
       titleBlock(title, body),
       inline(
         [
-          { contract: "form-field", signature: "FormField", options: { labelHidden: true }, attrs: { "data-sizing": "fill" }, slots: { label, children: { contract: "input", signature: "Input", options: { type: "email", name: `${ctx.ns}-email`, placeholder } } } },
+          { contract: "form-field", signature: "FormField", options: { labelVisuallyHidden: true }, attrs: { "data-sizing": "fill" }, slots: { label, children: { contract: "input", signature: "Input", options: { type: "email", name: `${ctx.ns}-email`, placeholder } } } },
           action(submit, { tone: "accent", variant: "soft", type: "submit" }),
         ],
         { gap: "sm", inlineAlign: "end", wrap: false },

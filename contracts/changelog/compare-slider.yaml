@@ -9,7 +9,7 @@ entries:
     kind: feature
     es:
       title: Componente nuevo
-      body: Dos capas del mismo tamaño y un divisor que se arrastra para revelar una sobre la otra.
+      body: "Se suma a la librería, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: New component
-      body: Two layers of the same size and a divider you drag to reveal one over the other.
+      body: "Added to the library, with its contract, a React binding and a Vanilla mount."

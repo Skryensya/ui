@@ -99,6 +99,7 @@ describe("Button Vanilla contracts", () => {
     /* Full size, focusable, clickable, and on `ghost` invisible. The React binding warns on the same
      * shape; here the markup is already in the document, so the enhancer throws. */
     expect(() => mountButton(root)).toThrow(/renders nothing/);
+    expect(root.getAttribute("data-sk-a11y-warn")).toBe("");
   });
 
   it("accepts a button whose only content is an icon element", () => {
@@ -116,6 +117,7 @@ describe("Button Vanilla contracts", () => {
     );
 
     expect(() => mountButton(root)).toThrow(/accessible name/i);
+    expect(root.getAttribute("data-sk-a11y-warn")).toBe("");
   });
 
   it("accepts an icon-only button named by visually-hidden text", () => {

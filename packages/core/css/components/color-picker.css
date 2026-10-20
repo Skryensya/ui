@@ -212,11 +212,6 @@
     --sk-color-picker-content-gap: var(--space-stack-xs);
     --sk-color-picker-content-shadow: var(--elevation-overlay);
     --sk-color-picker-content-wash: var(--elevation-wash-overlay);
-    --sk-anchored-position-area: block-end span-inline-end;
-    --sk-anchored-justify: start;
-    --sk-anchored-align: auto;
-    --sk-anchored-offset: var(--space-stack-xs) 0;
-    --sk-anchored-position-try: flip-block;
   }
 
   .sk-color-picker__content {
@@ -445,7 +440,6 @@
       z-index: var(--z-overlay);
       display: none;
       align-items: end;
-      position-area: none;
       margin: 0;
       background: var(--sk-color-picker-backdrop-bg);
     }

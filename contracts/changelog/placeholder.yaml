@@ -17,7 +17,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Reserva la estructura mientras el contenido termina de cargar.
+      body: "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple."
     en:
       title: First release
-      body: Preserves layout while content finishes loading.
+      body: "Published for the first time, with its contract, a React binding and a stylesheet for plain markup."

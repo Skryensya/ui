@@ -645,7 +645,7 @@ export function bentoSets(es: boolean): BentoTile[][] {
           {
             contract: "form-field",
             signature: "FormField",
-            options: { labelHidden: true },
+            options: { labelVisuallyHidden: true },
             slots: { label: t("Buscar proyectos", "Search projects") },
             children: {
               contract: "input",

@@ -60,12 +60,17 @@
   } as const;
   const iconOnly = { [iconOnlyOption.attr]: iconOnlyOption.trueValue } as const;
 
+  /*
+   * `api.focusedValue`, not `api.visibleRange.start`: the grid always renders full weeks, so its
+   * first cell is often a trailing day from the PREVIOUS month - found reproducing live, same bug
+   * and same fix as the React binding (see calendar.tsx's own comment on this).
+   */
   const headingLabel = $derived.by(() => {
     if (api.view === "day") {
-      return api.format(api.visibleRange.start, { month: "long", year: "numeric" });
+      return api.format(api.focusedValue, { month: "long", year: "numeric" });
     }
     if (api.view === "month") {
-      return api.format(api.visibleRange.start, { year: "numeric" });
+      return api.format(api.focusedValue, { year: "numeric" });
     }
     const decade = api.getDecade();
     return `${decade.start ?? ""}–${decade.end ?? ""}`;

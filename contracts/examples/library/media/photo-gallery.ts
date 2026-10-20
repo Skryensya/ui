@@ -80,9 +80,9 @@ export const photoGallery: PatternModule<Content> = {
         errorLabel: { en: "This photo could not be loaded.", es: "No se pudo cargar esta foto." },
         counterLabel: { en: "Photo {index} of {count}", es: "Foto {index} de {count}" },
         photos: [
-          { file: "fjord", width: 1800, height: 1200, alt: { en: "A fjord at dawn: dark water and rock under a pale sky", es: "Un fiordo al amanecer: agua y roca oscuras bajo un cielo pálido" }, title: { en: "Dawn over the fjord", es: "Amanecer en el fiordo" }, credit: "Alexey Topolyanskiy · Unsplash" },
-          { file: "coast", width: 1800, height: 1200, alt: { en: "A wide coast with blue sea and green hills", es: "Una costa amplia con mar azul y colinas verdes" }, title: { en: "The wide coast", es: "La costa amplia" }, credit: "Paul Jarvis · Unsplash" },
-          { file: "waterfall", width: 1800, height: 1201, alt: { en: "A waterfall in a green forest", es: "Una cascada en un bosque verde" }, credit: "Andrew Coelho · Unsplash" },
+          { file: "fjord", width: 1800, height: 1200, alt: { en: "Blue satin folds with fine film grain", es: "Pliegues de satén azul con grano fino de película" }, title: { en: "Dawn over the fjord", es: "Amanecer en el fiordo" }, credit: "Alexey Topolyanskiy · Unsplash" },
+          { file: "coast", width: 1800, height: 1200, alt: { en: "Slate-grey satin folds with fine film grain", es: "Pliegues de satén gris pizarra con grano fino de película" }, title: { en: "The wide coast", es: "La costa amplia" }, credit: "skryensya/ui" },
+          { file: "waterfall", width: 1800, height: 1201, alt: { en: "Sage-green satin folds with fine film grain", es: "Pliegues de satén verde salvia con grano fino de película" }, credit: "skryensya/ui" },
         ],
       },
     }),

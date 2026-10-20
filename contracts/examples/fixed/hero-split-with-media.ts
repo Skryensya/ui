@@ -69,7 +69,7 @@ export const heroSplitWithMediaSnippet: Snippet = {
                 contract: "image-frame",
                 signature: "ImageFrame",
                 options: {
-                  src: "https://picsum.photos/seed/product-screenshot/720/480",
+                  src: "/demos/satin/satin-blue-16x9.jpg",
                   alt: "The product's dashboard, showing a project list and its own status column",
                   aspect: "3/2",
                   radius: "surface",

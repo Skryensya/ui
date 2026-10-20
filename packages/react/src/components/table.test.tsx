@@ -297,3 +297,57 @@ describe("Table column resize", () => {
     restore();
   });
 });
+
+describe("TableHeader sortable", () => {
+  it("wraps children in a button, writes aria-sort, and fires onSortChange on click", () => {
+    const onSortChange = vi.fn();
+    const ui = render(
+      <table>
+        <thead>
+          <tr>
+            <TableHeader sortable sortDirection="ascending" onSortChange={onSortChange}>
+              Name
+            </TableHeader>
+          </tr>
+        </thead>
+      </table>,
+    );
+    const header = ui.container.querySelector("th")!;
+    expect(header.getAttribute("aria-sort")).toBe("ascending");
+    expect(header.getAttribute("data-sortable")).toBe("");
+    const button = within(header).getByRole("button", { name: "Name" });
+    fireEvent.click(button);
+    expect(onSortChange).toHaveBeenCalledTimes(1);
+  });
+
+  it("leaves a plain header untouched, with no aria-sort and no button", () => {
+    const ui = render(
+      <table>
+        <thead>
+          <tr>
+            <TableHeader>Name</TableHeader>
+          </tr>
+        </thead>
+      </table>,
+    );
+    const header = ui.container.querySelector("th")!;
+    expect(header.hasAttribute("aria-sort")).toBe(false);
+    expect(header.hasAttribute("data-sortable")).toBe(false);
+    expect(header.querySelector("button")).toBeNull();
+  });
+
+  it("keeps the column's accessible name while hiding it visually with visuallyHidden", () => {
+    const ui = render(
+      <table>
+        <thead>
+          <tr>
+            <TableHeader visuallyHidden>Actions</TableHeader>
+          </tr>
+        </thead>
+      </table>,
+    );
+    const header = ui.container.querySelector("th")!;
+    expect(header.getAttribute("data-visually-hidden")).toBe("");
+    expect(header.querySelector(".sk-visually-hidden")?.textContent).toBe("Actions");
+  });
+});

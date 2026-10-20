@@ -1,0 +1,17 @@
+---
+/* Dev-only stress harness for TagsInput's accepted values and max boundary. */
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/tag.css";
+import "@skryensya/core/components/tags-input.css";
+import "../../styles/site.css";
+import { TagsInputBreak } from "../../components/react-demos/debug-tags-input-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+
+<DebugShell title="TagsInput" docsHref="/components/tags-input">
+  <TagsInputBreak client:only="react" />
+</DebugShell>

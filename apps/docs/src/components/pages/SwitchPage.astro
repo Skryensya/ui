@@ -5,7 +5,6 @@ import "@skryensya/core/components/switch.css";
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -20,30 +19,16 @@ import { variantsTree } from "../../demos/variants";
 
 const t = useTranslations(getLocale(Astro.url));
 
-const tileSwitchVanilla = `import { initComponents } from "@skryensya/vanilla/auto";
-
-// Each label is authored with data-sk-tile-switch (data-name, data-value,
-// data-default-checked) plus its input role="switch" and its indicator.
-// initComponents hydrates them with the @zag-js/checkbox machine.
-await initComponents();
-
-for (const root of document.querySelectorAll(
-  "[data-sk-tile-switch]",
-)) {
-  root.addEventListener("sk:tilecheckedchange", (event) => {
-    console.log(root.dataset.value, event.detail.checked);
-  });
-}`;
 ---
 
 <ComponentPageShell
+  breakHarness="/debug/selection-break"
   hookPlayground={{ tree: switchTree(t), fit: true }}
   title="Switch"
   description={t("switchPage.description")}
   contractId="switch"
   appearanceTargetSelector=".sk-switch"
   styleGroups={[{ file: "components/switch.css", probe: "sk-switch" }]}
-  testFiles={["packages/vanilla/src/components/tile-switch.svelte.test.ts"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} />
@@ -54,9 +39,6 @@ for (const root of document.querySelectorAll(
 
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview tree={switchTree(t)} title={t("switchPage.basicTitle")} description={t("switchPage.basicBody")} storybookTitle="Components/Switch" storybookStory="Default" />
-    <UsagePreview tree={tileSwitchTree(t)} title={t("switchPage.tileTitle")} description={t("switchPage.tileBody1")} storybookTitle="Components/Switch" storybookStory="TileSwitch" />
-    <p set:html={t("switchPage.tileBody2")} />
-    <CodeBlock code={tileSwitchVanilla} label="JavaScript" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

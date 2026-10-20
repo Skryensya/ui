@@ -50,6 +50,7 @@ const ENTRY = `
 @use "primitives";
 @use "semantic";
 @use "modes/hc";
+@use "modes/hc-appearance";
 @use "dimensions/radius";
 @use "dimensions/press-scale";
 @use "mixins";
@@ -125,6 +126,7 @@ const TOKENS_ENTRY = `
 @use "primitives";
 @use "semantic";
 @use "modes/hc";
+@use "modes/hc-appearance";
 @use "mixins";
 @layer primitives, semantic, components, overrides;
 @include mixins.forced-colors;

@@ -13,15 +13,34 @@
     flex-wrap: wrap;
     gap: var(--sk-toolbar-gap);
     align-items: center;
+    /* A flex item's default min-width is its content's, not 0: nested in a narrower flex/grid
+     * parent (a sidebar), the bar refused to shrink and never reached the width `flex-wrap` needs
+     * to actually wrap at. Shrinking to 0 is safe here because `flex-wrap: wrap` already handles
+     * the bar's own children; nothing downstream reads an intrinsic minimum off the bar itself. */
+    min-inline-size: 0;
     padding: var(--sk-toolbar-padding);
     border: var(--sk-toolbar-border-width) solid var(--sk-toolbar-border-color);
     border-radius: var(--sk-toolbar-radius);
     background: var(--sk-toolbar-bg);
+    /*
+     * `flex-wrap` resolves several controls that together exceed the width, but has nothing to
+     * wrap against when a SINGLE command is itself wider than the container - that case forced
+     * the bar to 292px in a 229px container. A scroll fallback, same convention as AppBar's own
+     * `__menus`/`__status` rows, catches exactly the case wrap can't.
+     */
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
   }
   .sk-toolbar[aria-orientation="vertical"] {
     flex-direction: column;
     align-items: stretch;
   }
+  /* JUSTIFY: `start` needs no rule, it is the flex initial value. The other three only matter once
+   * the bar actually has slack to distribute, which is on the caller: this never forces 100% width. */
+  .sk-toolbar[data-justify="center"] { justify-content: center; }
+  .sk-toolbar[data-justify="end"] { justify-content: end; }
+  .sk-toolbar[data-justify="between"] { justify-content: space-between; }
   .sk-toolbar__group {
     display: flex;
     gap: 1px;

@@ -8,6 +8,6 @@ import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Select", tags: ["autodocs"] } satisfies Meta;
 
+export const Single: StoryObj = treeStory(demos.selectSingleTree);
 export const Default: StoryObj = treeStory(demos.selectTree);
 export const Native: StoryObj = treeStory(demos.selectNativeTree);
-export const Single: StoryObj = treeStory(demos.selectSingleTree);

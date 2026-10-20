@@ -1,5 +1,9 @@
 ---
 import "@skryensya/core/components/tag.css";
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/patterns/box.css";
+import "@skryensya/core/components/typography.css";
+import "@skryensya/core/patterns/layout.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
@@ -9,16 +13,22 @@ import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
-import { tagAnatomyTree, tagLinksTree, tagRemovableTree, tagSimpleTree, tagTonesTree } from "../../demos/tag";
+import { tagAnatomyTree, tagCategoriesTree, tagLinksTree, tagRemovableTree, tagSimpleTree, tagStatusMisuseTree, tagToggleTree, tagTonesTree } from "../../demos/tag";
+import { TagRemovableDemo } from "../react-demos/tag-interactions";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`tagPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
+const filterVariants = [
+  { value: "single", label: t("tagPage.selection.single"), tree: tagToggleTree(t, "single"), explain: t("tagPage.selection.singleExplain") },
+  { value: "multiple", label: t("tagPage.selection.multiple"), tree: tagToggleTree(t, "multiple"), explain: t("tagPage.toggleBody") },
+];
 ---
 
 <ComponentPageShell
+  breakHarness="/debug/tag-break"
   hookPlayground={{ tree: tagSimpleTree(t), fit: true }}
   title="Tag"
   description={t("tagPage.description")}
@@ -38,7 +48,7 @@ const explain = (option: string, values: readonly string[]) =>
       optionName="tone"
       title={t("tagPage.prop.tone.title")}
       description={t("tagPage.prop.tone.body")}
-      explain={explain("tone", ["neutral", "accent", "success", "warning", "danger"])}
+      explain={explain("tone", ["neutral", "accent"])}
       stageMinBlockSize="7rem"
       storybookTitle="Components/Tag"
       storybookStory="Simple"
@@ -56,11 +66,37 @@ const explain = (option: string, values: readonly string[]) =>
       storybookStory="Simple"
     />
 
+    <UsagePreview
+      tree={tagSimpleTree(t)}
+      optionName="disabled"
+      title={t("tagPage.prop.disabled.title")}
+      description={t("tagPage.prop.disabled.body")}
+      explain={explain("disabled", ["false", "true"])}
+      labels={{ false: t("tagPage.prop.disabled.falseLabel"), true: t("tagPage.prop.disabled.trueLabel") }}
+      stageMinBlockSize="7rem"
+      storybookTitle="Components/Tag"
+      storybookStory="Simple"
+    />
+
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview tree={tagSimpleTree(t)} title={t("tagPage.simpleTitle")} description={t("tagPage.simpleBody")} storybookTitle="Components/Tag" storybookStory="Simple" />
+    <UsagePreview tree={tagCategoriesTree(t)} title={t("tagPage.categoriesTitle")} description={t("tagPage.categoriesBody")} />
     <UsagePreview tree={tagTonesTree(t)} title={t("tagPage.tonesTitle")} description={t("tagPage.tonesBody")} storybookTitle="Components/Tag" storybookStory="Tones" />
     <UsagePreview tree={tagLinksTree(t)} title={t("tagPage.linksTitle")} description={t("tagPage.linksBody")} storybookTitle="Components/Tag" storybookStory="Links" />
-    <UsagePreview tree={tagRemovableTree(t)} title={t("tagPage.removableTitle")} description={t("tagPage.removableBody")} storybookTitle="Components/Tag" storybookStory="Removable" />
+    <UsagePreview tree={tagRemovableTree(t)} title={t("tagPage.removableTitle")} description={t("tagPage.removableBody")} reload storybookTitle="Components/Tag" storybookStory="Removable">
+      <TagRemovableDemo client:visible labels={["react", "frontend", t("demo.tag.accessibility")]} groupLabel={t("tagPage.appliedFiltersLabel")} removeLabel={t("demo.tag.remove")} emptyLabel={t("tagPage.noFiltersLabel")} />
+    </UsagePreview>
+    <UsagePreview
+      tree={tagToggleTree(t)}
+      variants={filterVariants}
+      initialVariant="multiple"
+      variantsLabel={t("tagPage.selection.modeLabel")}
+      specimenLabel={t("tagPage.topicFiltersLabel")}
+      title={t("tagPage.toggleTitle")}
+      description={t("tagPage.toggleDescription")}
+      storybookTitle="Components/Tag"
+      storybookStory="Toggle"
+    />
 
 
     <h3>{t("component.contractNotesTitle")}</h3>
@@ -77,14 +113,16 @@ const explain = (option: string, values: readonly string[]) =>
     <p class="lede" set:html={t("tagPage.guidelinesLede")} />
     <WhenToUse use={tList(t, "tagPage.when")} avoid={tList(t, "tagPage.whenNot")} />
     <DoDont
+      compact
       title={t("tagPage.dd.job.title")}
-      do={{ tree: tagRemovableTree(t), caption: t("tagPage.dd.job.do") }}
-      dont={{ tree: tagTonesTree(t), caption: t("tagPage.dd.job.dont") }}
+      do={{ tree: tagTonesTree(t), caption: t("tagPage.dd.job.do") }}
+      dont={{ tree: tagStatusMisuseTree(), caption: t("tagPage.dd.job.dont") }}
     />
     <DoDont
+      compact
       title={t("tagPage.dd.link.title")}
-      do={{ tree: tagLinksTree(t), caption: t("tagPage.dd.link.do") }}
-      dont={{ tree: tagRemovableTree(t), caption: t("tagPage.dd.link.dont") }}
+      do={{ tree: tagToggleTree(t), caption: t("tagPage.dd.link.do") }}
+      dont={{ tree: tagTonesTree(t), caption: t("tagPage.dd.link.dont") }}
     />
     <ContentRules items={tList(t, "tagPage.content")} />
   </Fragment>

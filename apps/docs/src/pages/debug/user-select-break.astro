@@ -1,0 +1,22 @@
+---
+/* Dev-only stress harness for UserSelect's selected users, search and collection sizes. */
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
+import "@skryensya/core/components/avatar.css";
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/checkbox.css";
+import "@skryensya/core/components/combobox.css";
+import "@skryensya/core/components/select.css";
+import "@skryensya/core/components/user-select.css";
+import "@skryensya/core/patterns/anchored.css";
+import "@skryensya/core/patterns/scrollbar.css";
+import "../../styles/site.css";
+import { UserSelectBreak } from "../../components/react-demos/debug-user-select-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+
+<DebugShell title="UserSelect" docsHref="/components/user-select">
+  <UserSelectBreak client:only="react" />
+</DebugShell>

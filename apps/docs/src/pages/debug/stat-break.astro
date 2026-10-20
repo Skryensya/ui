@@ -1,0 +1,103 @@
+---
+/*
+ * Diagnostic only: a `break` harness for Stat. One scenario per row, the REAL `@skryensya/react`
+ * Stat in each, labels and nothing else.
+ *
+ * The environment is the site's own: `tokens.scss`, `components/stat.css` and `styles/site.css`,
+ * the same ones the docs shell imports. No fonts, colours or token overrides of this page's own -
+ * a stat observed under those is a different stat.
+ *
+ * Not linked from the site nav. `noindex`, like `/debug/quote-break`.
+ *
+ * Dev-only: `astro build` runs with NODE_ENV=production (see astro.config.ts), so this 404s out of
+ * the static build instead of shipping the break-* classes and the StatBreak island into dist.
+ */
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
+import "@skryensya/core/tokens.scss";
+import "@skryensya/core/components/stat.css";
+import "../../styles/site.css";
+import { StatBreak } from "../../components/react-demos/debug-stat-break";
+
+import DebugShell from "../../components/DebugShell.astro";
+---
+
+<DebugShell title="Stat">
+<style is:global>
+      .break-page {
+        padding: var(--space-inset-lg);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-stack-xl);
+      }
+      .break-intro {
+        max-inline-size: 60ch;
+        color: var(--color-text-secondary);
+      }
+      .break-group {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-stack-lg);
+        padding-block-start: var(--space-stack-md);
+        border-block-start: 1px solid var(--color-border-subtle);
+      }
+      .break-group__title {
+        margin: 0;
+        font-family: var(--font-family-mono);
+        font-size: var(--font-size-body-sm);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--color-text-secondary);
+      }
+      .break-case {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-stack-xs);
+      }
+      .break-case__label {
+        margin: 0;
+        font-family: var(--font-family-mono);
+        font-size: var(--font-size-caption);
+        color: var(--color-text-primary);
+      }
+      .break-case__note {
+        margin: 0;
+        font-size: var(--font-size-caption);
+        color: var(--color-text-secondary);
+      }
+      /* Marks a scenario that visibly broke. Written by the run, read as the report. */
+      .break-case__broke {
+        margin: 0;
+        font-family: var(--font-family-mono);
+        font-size: var(--font-size-caption);
+        color: var(--color-text-danger);
+      }
+      /* A scenario that broke and has since been fixed. Kept on the page beside the ones that still
+         do, so the report reads as a history rather than only a snapshot. */
+      .break-case__fixed {
+        margin: 0;
+        font-family: var(--font-family-mono);
+        font-size: var(--font-size-caption);
+        color: var(--color-text-success);
+      }
+      .break-case__stage {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-stack-sm);
+      }
+    </style>
+<div class="break-page" data-toc-transparent>
+  <header>
+    <h1>break: Stat</h1>
+    <p class="break-intro">
+One scenario per row, the real <code>@skryensya/react</code> Stat in each. Toggle OS dark
+mode, forced colors and reduced motion while this page is open: those are viewing modes,
+so the page renders nothing for them.
+    </p>
+  </header>
+  <StatBreak client:load />
+</div>
+</DebugShell>

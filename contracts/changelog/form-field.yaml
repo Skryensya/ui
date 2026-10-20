@@ -3,13 +3,21 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "bbfd4ccb15c83e7a"
+surface: "764779315503886e"
 entries:
   - date: 2026-10-01
     kind: feature
     es:
       title: Primera versión
-      body: Rotula un control y le adjunta ayuda y mensaje de validación.
+      body: "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple."
     en:
       title: First release
-      body: Labels a control and attaches its guidance and validation message.
+      body: "Published for the first time, with its contract, a React binding and a stylesheet for plain markup."
+  - date: 2026-10-17
+    kind: breaking
+    es:
+      title: "labelHidden se renombra a labelVisuallyHidden"
+      body: "El nombre sugería aria-hidden; la etiqueta sigue en el árbol de accesibilidad, solo se oculta a la vista. El atributo pasa de data-label-hidden a data-label-visually-hidden."
+    en:
+      title: "labelHidden is renamed to labelVisuallyHidden"
+      body: "The name suggested aria-hidden; the label stays in the accessibility tree, only the eye skips it. The attribute moves from data-label-hidden to data-label-visually-hidden."

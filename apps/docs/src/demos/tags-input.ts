@@ -63,19 +63,32 @@ export const tagsInputEmptyTree = (t: Translate): UsageTree => ({
   slots: { items: [] },
 });
 
-/** Three at most. Past it a new tag is refused in silence and the text stays in the entry. */
+/*
+ * THREE AT MOST. Past it a new tag is refused in silence and the text stays in the entry - which
+ * is exactly why the limit is stated up front, in a visible hint, rather than left for a reader to
+ * discover by hitting it (the a11y guidance on this page says the same thing; this is the one
+ * example that has to practice it, not just state it).
+ */
 export const tagsInputMaxTree = (t: Translate): UsageTree => ({
-  contract: "tags-input",
-  signature: "TagsInput",
-  options: {
-    label: t("demo.tagsInput.maxLabel"),
-    placeholder: t("demo.tagsInput.maxPlaceholder"),
-    removeLabel: t("demo.tagsInput.removeLabel"),
-    max: 3,
-    name: "skills",
-  },
+  contract: "form-field",
+  signature: "FormField",
   slots: {
-    items: [tag(t, "demo.tagsInput.tag.css"), tag(t, "demo.tagsInput.tag.a11y")],
+    label: t("demo.tagsInput.maxLabel"),
+    hint: t("demo.tagsInput.maxHint"),
+    children: {
+      contract: "tags-input",
+      signature: "TagsInput",
+      options: {
+        label: t("demo.tagsInput.maxLabel"),
+        placeholder: t("demo.tagsInput.maxPlaceholder"),
+        removeLabel: t("demo.tagsInput.removeLabel"),
+        max: 3,
+        name: "skills",
+      },
+      slots: {
+        items: [tag(t, "demo.tagsInput.tag.css"), tag(t, "demo.tagsInput.tag.a11y")],
+      },
+    },
   },
 });
 

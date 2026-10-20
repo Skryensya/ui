@@ -1,0 +1,8 @@
+---
+if (import.meta.env.PROD) return new Response(null, { status: 404 });
+import "@skryensya/core/components/message.css";
+import "@skryensya/core/components/avatar.css";
+import { MessageBreak } from "../../components/react-demos/debug-message-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+<DebugShell title="Message" docsHref="/components/message"><MessageBreak client:only="react" /></DebugShell>

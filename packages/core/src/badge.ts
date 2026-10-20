@@ -16,6 +16,12 @@ export type BadgePartClass = (typeof badgeParts)[BadgePart];
  * pill needs to be told that `tone` is a role (never a hue), that the Dot has no visible content of
  * its own, and that the Holder only exists to park a badge on another control's corner.
  *
+ * NEITHER SIGNATURE DECLARES `forward`: there is no public channel for `href`, `onClick` or any
+ * other action. The React binding enforces the same line at the type level (badge.tsx's own
+ * `NonInteractiveSpanProps`), so this is not merely unstated, it is unwritable. A badge that needs
+ * to be clicked, dismissed or navigated is not a badge - see Tag (`tag.ts`), which owns exactly
+ * those three jobs and deliberately none of Badge's tones.
+ *
  * Holder composition: one anchor (button or avatar) then one badge (pill or dot). Hit-testing is
  * part of the Holder's promise (`hitTesting.childrenNone`): the anchored badge does not receive
  * clicks so they reach the control underneath; badge.css realizes `pointer-events: none`.

@@ -1,0 +1,12 @@
+---
+/* Dev-only stress harness for Popover content at narrow trigger widths. */
+if (import.meta.env.PROD) return new Response(null, { status: 404 });
+import "@skryensya/core/components/popover.css";
+import "@skryensya/core/patterns/anchored.css";
+import "../../styles/site.css";
+import { PopoverBreak } from "../../components/react-demos/debug-popover-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+<DebugShell title="Popover" docsHref="/components/popover">
+  <PopoverBreak client:only="react" />
+</DebugShell>

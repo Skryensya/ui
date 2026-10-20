@@ -5,11 +5,20 @@
 # hash.
 surface: "5da66e1cdc979876"
 entries:
+  - date: 2026-10-17
+    kind: feature
+    target: Combobox (React)
+    es:
+      title: "options y aria-label: Select migra a Combobox sin reescribir su árbol de opciones"
+      body: "El binding de React acepta options (la forma de SelectOption, ya un subconjunto de ComboboxItem) como alias de items, y aria-label/aria-labelledby como nombre accesible oculto, igual que Select. El contrato declarativo sigue exigiendo un label visible; esto es específico del binding de React."
+    en:
+      title: "options and aria-label: Select moves to Combobox without rewriting its options tree"
+      body: "The React binding accepts options (SelectOption's shape, already a subset of ComboboxItem) as an alias for items, and aria-label/aria-labelledby as a hidden accessible name, the same as Select. The declarative contract still requires a visible label; this is React-binding-specific."
   - date: 2026-10-01
     kind: feature
     es:
       title: Primera versión
-      body: Busca y selecciona una opción mediante una entrada editable.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Searches and selects an option through editable input.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

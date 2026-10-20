@@ -1,0 +1,65 @@
+---
+import { withPy } from "../../demos/tile";
+import "@skryensya/core/components/tile.css";
+/* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
+import "@skryensya/core/components/annotation.css";
+import { annotationDemoCss } from "../../demos/annotation";
+import { expandableTileTree, tileAnatomyTree } from "../../demos/tile";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import { expandableTileDoTree, expandableTileDontTree } from "../../demos/dodont-pairs";
+import { getLocale, tList, useTranslations } from "../../i18n";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+---
+
+<ComponentPageShell
+  hookPlayground={{ tree: expandableTileTree(t) }}
+  title="ExpandableTile"
+  description={t("expandableTilePage.description")}
+  contractId="tile"
+  importNames={["ExpandableTile", "ExpandableTileTrigger", "ExpandableTileContent"]}
+  appearanceTargetSelector=".sk-tile--expandable"
+  testFiles={["packages/react/src/components/tile.test.tsx"]}
+>
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} />
+  </Fragment>
+
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("expandableTilePage.lede")} />
+
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={withPy(expandableTileTree(t))} title={t("tilePage.expandableTitle")} description={t("tilePage.expandableBody")} storybookTitle="Components/Tile" storybookStory="ExpandableTile" />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("tilePage.anatomyBody")} />
+    <UsagePreview tree={tileAnatomyTree(t)} css={annotationDemoCss} label={t("tilePage.anatomyPreviewLabel")} bare />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "expandableTilePage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("expandableTilePage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "expandableTilePage.when")} avoid={tList(t, "expandableTilePage.whenNot")} />
+    <DoDont
+      title={t("expandableTilePage.dd.title.title")}
+      do={{ tree: expandableTileDoTree(t), caption: t("expandableTilePage.dd.title.do") }}
+      dont={{ tree: expandableTileDontTree(t), caption: t("expandableTilePage.dd.title.dont") }}
+    />
+    <ContentRules items={tList(t, "expandableTilePage.content")} />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("expandableTilePage.a11yIntro")} does={tList(t, "expandableTilePage.a11yDoes")} yours={tList(t, "expandableTilePage.a11yYours")} />
+  </Fragment>
+</ComponentPageShell>

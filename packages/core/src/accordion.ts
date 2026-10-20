@@ -170,6 +170,7 @@ export const accordionContract = {
     "--sk-details-heading-gap",
     "--sk-details-indicator-fg",
     "--sk-details-padding",
+    "--sk-details-summary-min-block-size",
   ],
   /* This component's styling does not fit in one stylesheet; see `hookSheets` on the contract. The
      third is the platform half's: `details.css` paints `<details>` and animates `::details-content`,
@@ -198,6 +199,18 @@ export const accordionContract = {
       values: ["plain", "tactile", "brutalist", "frosted"],
       default: "plain",
       attr: "data-appearance",
+    },
+    /**
+     * `Details`/`DetailsGroup` only: the platform half's own density. `md` is the generous,
+     * card-like default; `sm` tightens padding and the summary's minimum height for a disclosure
+     * sitting inside an already-dense panel (a drawer, a sidebar), where `md`'s weight competes
+     * with what it is disclosing instead of receding behind it.
+     */
+    size: {
+      type: "enum",
+      values: ["sm", "md"],
+      default: "md",
+      attr: "data-size",
     },
     /**
      * Whether the open section may be closed again. Only meaningful when `type` is `single`
@@ -379,7 +392,7 @@ export const accordionContract = {
     DetailsGroup: {
       intent: ["faq-without-javascript", "exclusive-disclosures", "no-runtime-accordion"],
       host: { element: "section" },
-      options: ["appearance"],
+      options: ["appearance", "size"],
       slots: { children: { accepts: "signature", of: ["Details"], required: true } },
       template: { element: "section", part: "nativeGroup", host: true, slot: "children" },
       react: { from: "@skryensya/react/details", name: "DetailsGroup" },
@@ -393,7 +406,7 @@ export const accordionContract = {
        * exclusivity, docs aside). The group is optional coordination via shared `name`, not a
        * required ancestor, same split `Accordion` vs a single `ExpandableTile`.
        */
-      options: ["name", "open", "appearance"],
+      options: ["name", "open", "appearance", "size"],
       slots: {
         children: {
           accepts: "signature",
@@ -477,3 +490,4 @@ export const accordionContract = {
 /** Derived, never restated: adding a value to the contract's `type` enum is the only edit. */
 export type AccordionType = OptionValue<typeof accordionContract.options.type>;
 export type AccordionAppearance = OptionValue<typeof accordionContract.options.appearance>;
+export type AccordionSize = OptionValue<typeof accordionContract.options.size>;

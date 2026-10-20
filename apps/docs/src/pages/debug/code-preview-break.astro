@@ -1,0 +1,7 @@
+---
+if (import.meta.env.PROD) return new Response(null, { status: 404 });
+import "@skryensya/core/components/code-preview.css";
+import { CodePreviewBreak } from "../../components/react-demos/debug-code-preview-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+<DebugShell title="CodePreview" docsHref="/components/code-preview"><CodePreviewBreak client:only="react" /></DebugShell>

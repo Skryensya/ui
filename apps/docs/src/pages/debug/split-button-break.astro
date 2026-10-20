@@ -1,0 +1,9 @@
+---
+if (import.meta.env.PROD) return new Response(null, { status: 404 });
+import "@skryensya/core/components/split-button.css";
+import "@skryensya/core/components/menu.css";
+import "@skryensya/core/patterns/anchored.css";
+import { SplitButtonBreak } from "../../components/react-demos/debug-split-button-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+<DebugShell title="SplitButton" docsHref="/components/split-button"><SplitButtonBreak client:only="react" /></DebugShell>

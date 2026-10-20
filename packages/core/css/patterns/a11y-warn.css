@@ -1,0 +1,25 @@
+/*
+ * PATTERN, A11Y DEV WARNING
+ *
+ * A shared, dev-only visual flag for a failure a `console.error` already reports but a glance at
+ * the page cannot see: an icon-only control with no accessible name, a control that renders
+ * nothing at all. Every binding that checks for one of these writes `data-sk-a11y-warn` only when
+ * `import.meta.env.DEV` is true (button.tsx, kbd.tsx, tag.tsx, …), so this rule has nothing to
+ * match in a production build - the attribute never reaches the DOM there.
+ *
+ * ONE RULE, not one per component: the failure reads the same everywhere it happens - the control
+ * sits pixel-identical to a correct one right beside it until this makes it visibly wrong instead
+ * (first found on Button's own break harness, `/debug/button-break`). Unscoped on purpose, the same
+ * way `sk-visually-hidden` is: whichever component's root carries the attribute gets the outline,
+ * with no per-component copy of this rule to keep in sync.
+ *
+ * NEVER APPLIED to an element that is `sk-visually-hidden` by design (LoaderStatus's live region):
+ * a dashed outline on a 1px, clipped box is not a visual signal, it is nothing, so that component
+ * keeps the console error as its only diagnostic rather than reaching for this attribute.
+ */
+@layer components {
+  [data-sk-a11y-warn] {
+    outline: 2px dashed var(--color-border-danger);
+    outline-offset: 2px;
+  }
+}

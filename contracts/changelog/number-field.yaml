@@ -17,7 +17,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Captura cantidades con límites y controles incrementales.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Captures quantities with limits and step controls.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

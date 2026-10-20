@@ -15,7 +15,6 @@ import { initComponents } from "@skryensya/vanilla/auto";
 import { mountButton } from "@skryensya/vanilla/button";
 import { mountCalendar } from "@skryensya/vanilla/calendar";
 import { mountCarousel } from "@skryensya/vanilla/carousel";
-import { mountChart } from "@skryensya/vanilla/chart";
 import { mountCheckboxGroup } from "@skryensya/vanilla/checkbox-group";
 import { mountCodePreview } from "@skryensya/vanilla/code-preview";
 import { mountColorPicker } from "@skryensya/vanilla/color-picker";
@@ -30,7 +29,6 @@ import { mountEditor } from "@skryensya/vanilla/editor";
 import { mountExpandableTile } from "@skryensya/vanilla/expandable-tile";
 import { mountFileUpload } from "@skryensya/vanilla/file-upload";
 import { mountFeed } from "@skryensya/vanilla/feed";
-import { mountFolder } from "@skryensya/vanilla/folder";
 import { mountInput } from "@skryensya/vanilla/input";
 import { mountLoader } from "@skryensya/vanilla/loader";
 import { mountMarquee } from "@skryensya/vanilla/marquee";
@@ -68,7 +66,6 @@ import { mountTimeField } from "@skryensya/vanilla/time-field";
 import { mountToast } from "@skryensya/vanilla/toast";
 import { mountToc } from "@skryensya/vanilla/toc";
 import { mountToolbar } from "@skryensya/vanilla/toolbar";
-import { mountDock } from "@skryensya/vanilla/dock";
 import { mountTooltip } from "@skryensya/vanilla/tooltip";
 import { mountTreegrid } from "@skryensya/vanilla/treegrid";
 import { mountTreeView } from "@skryensya/vanilla/tree-view";
@@ -82,7 +79,7 @@ import { describe, expect, it } from "vitest";
 /*
  * DERIVED FROM `runtime/registry.ts`'s OWN `registrations`, not hand-counted: this file went stale
  * once already (asserted `toHaveLength(23)` while the real registry had grown past 40, missing 18
- * real mounts - `mountMegamenu`, `mountChart`, `mountTreegrid` among them - silently, because the
+ * real mounts - `mountMegamenu`, `mountTreegrid` among them - silently, because the
  * length check and the import list never disagreed with EACH OTHER, only with the registry neither
  * one read). If this list drifts from `registry.ts` again, regenerate it: every mount function it
  * lists is `(await import("../components/<file>.js")).mount<Name>` in that file's `registrations`
@@ -107,7 +104,6 @@ const mounts = [
   mountListbox,
   mountQrCode,
   mountCarousel,
-  mountChart,
   mountCheckboxGroup,
   mountColorPicker,
   mountCombobox,
@@ -122,7 +118,6 @@ const mounts = [
   mountScrollHint,
   mountFeed,
   mountFileUpload,
-  mountFolder,
   mountInput,
   mountLoader,
   mountMarquee,
@@ -157,7 +152,6 @@ const mounts = [
   mountToast,
   mountToc,
   mountToolbar,
-  mountDock,
   mountTooltip,
   mountTreegrid,
   mountTreeView,
@@ -168,7 +162,7 @@ const mounts = [
 describe("Vanilla public entry points", () => {
   it("publishes the lazy auto-loader and one mount for every regular enhanced module", () => {
     expect(initComponents).toBeTypeOf("function");
-    expect(mounts).toHaveLength(73);
+    expect(mounts).toHaveLength(70);
     expect(mounts.every((mount) => typeof mount === "function")).toBe(true);
   });
 
@@ -224,7 +218,6 @@ describe("Vanilla public entry points", () => {
         mountListbox,
         mountQrCode,
         mountCarousel,
-        mountChart,
         mountCheckboxGroup,
         mountColorPicker,
         mountCombobox,
@@ -239,7 +232,6 @@ describe("Vanilla public entry points", () => {
         mountScrollHint,
         mountFeed,
         mountFileUpload,
-        mountFolder,
         mountInput,
         mountLoader,
         mountMarquee,
@@ -274,7 +266,6 @@ describe("Vanilla public entry points", () => {
         mountToast,
         mountToc,
         mountToolbar,
-        mountDock,
         mountTooltip,
         mountTreegrid,
         mountTreeView,

@@ -1,15 +1,8 @@
 <script lang="ts">
-  import {
-    anchoredParts,
-    anchorNameFor,
-    bindAnchor,
-    stripPositioningStyle,
-    supportsAnchorPositioning,
-  } from "@skryensya/core/anchored";
+  import { anchoredParts, anchoredPositioning } from "@skryensya/core/anchored";
   import { colorPicker } from "@skryensya/core/machines";
   import { colorPickerParts, colorPickerEvents } from "@skryensya/core/color-picker";
   import { normalizeProps, useMachine } from "@zag-js/svelte";
-  import { onDestroy, onMount } from "svelte";
   import { bindParts, type PartBinding } from "../runtime/bind-part.svelte";
   import { getRoot, uniqueId } from "../runtime/svelte-hydrate";
   import ColorPickerPanel from "./ColorPickerPanel.svelte";
@@ -44,6 +37,7 @@
   let positioner: HTMLElement | undefined = $state();
 
   const service = useMachine(colorPicker.machine, () => ({
+    positioning: { placement: "bottom-start" as const, ...anchoredPositioning },
     id: root.id,
     // The emitter only writes `name` on the hidden input (it is the only node in the template that
     // claims it, just like Select's hidden `<select>`), so it is read from there first; the root is
@@ -66,13 +60,6 @@
 
   const api = $derived(colorPicker.connect(service, normalizeProps));
 
-  // Anchor positioning, same mechanism as DatePicker (ADR-25): with the browser API, Zag's `style` for
-  // the positioner is discarded and CSS anchor positioning places it; without it, it passes through
-  // untouched and Zag positions.
-  const anchored = supportsAnchorPositioning();
-  let unbindAnchor: (() => void) | undefined;
-  /** Generic, so the template spread below needs no cast either: `stripPositioningStyle` takes any object. */
-  const positionerProps = <T extends object>(props: T) => (anchored ? stripPositioningStyle(props) : props);
 
   const bindings: PartBinding[] = [
     { part: "root", node: () => root, props: () => api.getRootProps() },
@@ -110,15 +97,11 @@
     if (value) value.textContent = api.valueAsString;
   });
 
-  onMount(() => {
-    if (anchored) unbindAnchor = bindAnchor(control, positioner, anchorNameFor(root.id));
-  });
-  onDestroy(() => unbindAnchor?.());
 </script>
 
 <div
   bind:this={positioner}
-  {...positionerProps(api.getPositionerProps())}
+  {...api.getPositionerProps()}
   class="{colorPickerParts.positioner} {anchoredParts.positioner}"
 >
   <div {...api.getContentProps()} class={colorPickerParts.content}>

@@ -14,8 +14,19 @@ export type NativeSelectProps = Omit<SelectHTMLAttributes<HTMLSelectElement>, "c
   options?: readonly SelectOption[];
 };
 
+/* Install the platform button after hydration: React's validator and legacy HTML parsers reject
+   it inside <select>. Selection stays native, and unsupported browsers keep the classic control. */
+function attachSelectedContent(select: HTMLSelectElement | null) {
+  if (!select?.ownerDocument.defaultView?.CSS?.supports?.("appearance: base-select")) return;
+  if (select.firstElementChild?.tagName === "BUTTON") return;
+  const button = select.ownerDocument.createElement("button");
+  button.type = "button";
+  button.append(select.ownerDocument.createElement("selectedcontent"));
+  select.prepend(button);
+}
+
 export function NativeSelect({ children, className, options, ...props }: NativeSelectProps) {
-  const classes = className ? `${selectParts.native} ${className}` : selectParts.native;
+  const classes = `${selectParts.native} sk-scrollbar${className ? ` ${className}` : ""}`;
   /* Inside a FormField this is the field's control, wired exactly as Input is: the label's `for`,
      the hint and error ids, and the field's required/disabled/invalid state. Outside one, every
      value falls back to what was passed here. */
@@ -30,6 +41,7 @@ export function NativeSelect({ children, className, options, ...props }: NativeS
       disabled={control.disabled}
       id={control.id}
       required={control.required}
+      ref={attachSelectedContent}
     >
       {options?.map((option) => (
         <option disabled={option.disabled} key={option.value} value={option.value}>

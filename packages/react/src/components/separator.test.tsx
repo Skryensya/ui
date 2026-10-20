@@ -64,6 +64,16 @@ describe("LabelledSeparator", () => {
     for (const rule of rules) expect(rule.getAttribute("aria-hidden")).toBe("true");
   });
 
+  it("falls back to the nameless separator role instead of an explicit, empty name", () => {
+    // A computed label ("" when some upstream value is missing) must not wire aria-labelledby to
+    // an empty span: that gives an explicit empty accessible name, worse than no label at all.
+    const ui = render(<LabelledSeparator>{""}</LabelledSeparator>);
+    const separator = ui.getByRole("separator");
+    expect(separator.hasAttribute("aria-labelledby")).toBe(false);
+    expect(separator.querySelector(".sk-separator__label")).toBeNull();
+    expect(separator.querySelectorAll(".sk-separator__rule")).toHaveLength(1);
+  });
+
   it("gives every instance its own label id", () => {
     const ui = render(
       <>
@@ -73,5 +83,13 @@ describe("LabelledSeparator", () => {
     );
     const [first, second] = ui.getAllByRole("separator");
     expect(first?.getAttribute("aria-labelledby")).not.toBe(second?.getAttribute("aria-labelledby"));
+  });
+
+  it("recovers a truncated label through title", () => {
+    const long = "Benachrichtigungseinstellungen für ältere Einträge";
+    const ui = render(<LabelledSeparator>{long}</LabelledSeparator>);
+    expect(ui.getByRole("separator").querySelector(".sk-separator__label")!.getAttribute("title")).toBe(
+      long,
+    );
   });
 });

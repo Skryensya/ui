@@ -9,7 +9,7 @@ entries:
     kind: feature
     es:
       title: Componente nuevo
-      body: Un reproductor de video con los controles del sistema sobre un video real, manejable con el teclado.
+      body: "Se suma a la librería, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: New component
-      body: A video player with the system's controls over a real video, runnable from the keyboard.
+      body: "Added to the library, with its contract, a React binding and a Vanilla mount."

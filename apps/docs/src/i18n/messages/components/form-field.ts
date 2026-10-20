@@ -6,7 +6,7 @@ export const formFieldMessages = {
 
     "formFieldPage.description": "Pone la etiqueta, la ayuda y el error alrededor de un control, y los conecta.",
 
-    "formFieldPage.a11yYours2": "Con <code>labelHidden</code>, el contexto visual debe decir qué pide el campo.",
+    "formFieldPage.a11yYours2": "Con <code>labelVisuallyHidden</code>, el contexto visual debe decir qué pide el campo.",
 
     "formFieldPage.a11yYours1": "Escribe el error en texto: el color no es la única señal (WCAG 2.2, 1.4.1).",
 
@@ -81,12 +81,12 @@ export const formFieldMessages = {
     "demo.formField.dd.accountError": "Ese correo ya tiene cuenta. Inicia sesión o usa otro.",
     "demo.formField.dd.middleName": "Segundo nombre",
     "demo.formField.dd.optional": "Opcional",
-    "formFieldPage.prop.labelHidden.title": "Label hidden: la etiqueta solo para lectores",
-    "formFieldPage.prop.labelHidden.body": "<code>labelHidden</code> esconde la etiqueta a la vista y la deja para lectores de pantalla.",
-    "formFieldPage.prop.labelHidden.false": "Usa <code>false</code>, el valor por defecto: la etiqueta se ve sobre el control.",
-    "formFieldPage.prop.labelHidden.true": "Usa <code>true</code> solo cuando el contexto ya dice qué pide el campo, como una búsqueda con su botón.",
-    "formFieldPage.prop.labelHidden.falseLabel": "Visible",
-    "formFieldPage.prop.labelHidden.trueLabel": "Oculta",
+    "formFieldPage.prop.labelVisuallyHidden.title": "Label hidden: la etiqueta solo para lectores",
+    "formFieldPage.prop.labelVisuallyHidden.body": "<code>labelVisuallyHidden</code> esconde la etiqueta a la vista y la deja para lectores de pantalla.",
+    "formFieldPage.prop.labelVisuallyHidden.false": "Usa <code>false</code>, el valor por defecto: la etiqueta se ve sobre el control.",
+    "formFieldPage.prop.labelVisuallyHidden.true": "Usa <code>true</code> solo cuando el contexto ya dice qué pide el campo, como una búsqueda con su botón.",
+    "formFieldPage.prop.labelVisuallyHidden.falseLabel": "Visible",
+    "formFieldPage.prop.labelVisuallyHidden.trueLabel": "Oculta",
     "formFieldPage.guidelinesLede": "Un campo claro dice qué pide antes de que la persona escriba.",
     "formFieldPage.dd.label.title": "Etiqueta: no placeholder",
     "formFieldPage.dd.label.do": "La etiqueta dice qué dato se pide; el placeholder solo muestra un ejemplo.",
@@ -123,7 +123,7 @@ export const formFieldMessages = {
 
     "formFieldPage.description": "Puts the label, hint and error around a control, and connects them.",
 
-    "formFieldPage.a11yYours2": "With <code>labelHidden</code>, the visual context must say what the field asks for.",
+    "formFieldPage.a11yYours2": "With <code>labelVisuallyHidden</code>, the visual context must say what the field asks for.",
 
     "formFieldPage.a11yYours1": "Write the error as text: color is not the only signal (WCAG 2.2, 1.4.1).",
 
@@ -198,12 +198,12 @@ export const formFieldMessages = {
     "demo.formField.dd.accountError": "That email already has an account. Sign in or use another.",
     "demo.formField.dd.middleName": "Middle name",
     "demo.formField.dd.optional": "Optional",
-    "formFieldPage.prop.labelHidden.title": "Label hidden: the label for screen readers only",
-    "formFieldPage.prop.labelHidden.body": "<code>labelHidden</code> hides the label from view and keeps it for screen readers.",
-    "formFieldPage.prop.labelHidden.false": "Use <code>false</code>, the default: the label shows above the control.",
-    "formFieldPage.prop.labelHidden.true": "Use <code>true</code> only when the context already says what the field asks for, like a search with its button.",
-    "formFieldPage.prop.labelHidden.falseLabel": "Visible",
-    "formFieldPage.prop.labelHidden.trueLabel": "Hidden",
+    "formFieldPage.prop.labelVisuallyHidden.title": "Label hidden: the label for screen readers only",
+    "formFieldPage.prop.labelVisuallyHidden.body": "<code>labelVisuallyHidden</code> hides the label from view and keeps it for screen readers.",
+    "formFieldPage.prop.labelVisuallyHidden.false": "Use <code>false</code>, the default: the label shows above the control.",
+    "formFieldPage.prop.labelVisuallyHidden.true": "Use <code>true</code> only when the context already says what the field asks for, like a search with its button.",
+    "formFieldPage.prop.labelVisuallyHidden.falseLabel": "Visible",
+    "formFieldPage.prop.labelVisuallyHidden.trueLabel": "Hidden",
     "formFieldPage.guidelinesLede": "A clear field says what it asks for before people type.",
     "formFieldPage.dd.label.title": "Label: not a placeholder",
     "formFieldPage.dd.label.do": "The label says what data is asked for; the placeholder only shows an example.",

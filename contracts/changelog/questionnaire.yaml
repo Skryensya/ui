@@ -3,8 +3,44 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "a70dff49b9ae2b5d"
+surface: "9174a038498c5a3e"
 entries:
+  - date: 2026-10-18
+    kind: bugfix
+    target: progressOrientation
+    es:
+      title: "Las dos columnas caen a una por el contenedor, no por la ventana"
+      body: "El retroceso a una columna bajo 52rem leía @media (la ventana); un Questionnaire embebido en un panel o un Dialog angosto sobre una página ancha nunca caía a una columna, aunque no tuviera lugar para las dos. Ahora es @container, siguiendo la decisión 35 que ya sigue el resto del sistema; sigue resolviendo bien incluso dentro de un <dialog> modal."
+    en:
+      title: "The two columns fall back to one by the container, not the window"
+      body: "The fallback to one column below 52rem read @media (the window); a Questionnaire embedded in a narrow panel or Dialog on an otherwise wide page never fell back, even with no room for both. It is now @container, following decision 35, which the rest of the system already does; it still resolves correctly even inside a modal <dialog>."
+  - date: 2026-10-17
+    kind: feature
+    target: QuestionnaireItem
+    es:
+      title: "Un QuestionnaireItem envuelto en un componente propio ya cuenta"
+      body: "Cada QuestionnaireItem se anota a sí mismo ante Questionnaire sin importar cuántos componentes propios lo envuelvan (un paso de wizard con su propia cromática, por ejemplo); antes, el recorrido de un solo nivel de children no veía más allá del envoltorio y la pregunta quedaba fuera de la cuenta, la navegación y el envío. shortcut: un ítem envuelto intercalado entre dos directos queda agrupado después de todos los directos, no entre ellos."
+    en:
+      title: "A QuestionnaireItem wrapped in your own component now counts"
+      body: "Every QuestionnaireItem announces itself to Questionnaire no matter how many of your own components wrap it (a wizard step with its own chrome, say); before, the one-level walk of children could not see past the wrapper and the question was left out of the count, navigation and submit. shortcut: a wrapped item interleaved between two direct ones lands grouped after all the direct ones, not between them."
+  - date: 2026-10-17
+    kind: feature
+    target: QuestionnaireItem
+    es:
+      title: "section / sectionDescription: el eyebrow de un grupo de preguntas"
+      body: "Dos slots nuevos, mostrados dentro de la pregunta como el rol eyebrow de typography.css. Se leen de nuevo en cada pregunta del grupo, nunca deduplicados contra la anterior: el cuestionario muestra una pregunta a la vez, así que no hay un hermano al lado para repetirse."
+    en:
+      title: "section / sectionDescription: a question group's own eyebrow"
+      body: "Two new slots, shown inside the question as typography.css's own eyebrow role. Read fresh on every question in the group, never deduplicated against the one before: the questionnaire shows one question at a time, so there is no sibling beside it to repeat."
+  - date: 2026-10-17
+    kind: feature
+    target: Questionnaire
+    es:
+      title: "onValuesChange: cada respuesta, válida o no, después de cada cambio"
+      body: "Antes solo onValuesSubmit entregaba respuestas, y solo al enviar con todo válido. Un borrador que se guarda solo escuchaba el change del <form> y releía FormData a mano. onValuesChange reporta el mismo valor que ya calcula questionnaireValues, en cada cambio."
+    en:
+      title: "onValuesChange: every answer, valid or not, after every change"
+      body: "Before, only onValuesSubmit handed over answers, and only on a valid submit. A draft that saves itself listened to the <form>'s own change and re-read FormData by hand. onValuesChange reports the same value questionnaireValues already computes, on every change."
   - date: 2026-10-02
     kind: feature
     target: text
@@ -18,7 +54,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Pregunta de a una, valida antes de avanzar y muestra el progreso.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Asks one question at a time, validates before moving on and shows progress.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

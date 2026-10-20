@@ -3,8 +3,17 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "5610b5cfc24a2362"
+surface: "871b2f8f8ef44ae4"
 entries:
+  - date: 2026-10-18
+    kind: feature
+    target: SplitButton
+    es:
+      title: "La acción ocupada deja el menú deshabilitado"
+      body: "Nueva regla: si action lleva loading, menu tiene que llevar disabled. Validada en el árbol (un autor que la rompe recibe un error, no un split button donde el menú sigue abriendo alternativas para la acción que ya está en curso); el binding de React de la convención plana ya la aplica solo con la nueva prop loading."
+    en:
+      title: "A busy action leaves the menu disabled"
+      body: "New rule: when action carries loading, menu must carry disabled. Validated on the tree (an author who breaks it gets an error, not a split button whose menu still opens alternatives for the action already running); the flat-prop React convenience already applies it from its new loading prop."
   - date: 2026-10-09
     kind: feature
     es:
@@ -17,7 +26,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Combina una acción principal con alternativas relacionadas.
+      body: "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple."
     en:
       title: First release
-      body: Pairs one accent action with related alternatives.
+      body: "Published for the first time, with its contract, a React binding and a stylesheet for plain markup."

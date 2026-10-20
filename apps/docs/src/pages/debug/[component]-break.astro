@@ -1,0 +1,17 @@
+---
+import { catalogBreaks } from "../../lib/debug-catalog";
+import { componentItems } from "../../lib/navigation";
+import { CatalogBreak } from "../../components/react-demos/debug-catalog-break";
+import DebugShell from "../../components/DebugShell.astro";
+
+export function getStaticPaths() {
+  return import.meta.env.PROD ? [] : catalogBreaks.map(({ id }) => ({ params: { component: id } }));
+}
+if (import.meta.env.PROD) return new Response(null, { status: 404 });
+const entry = catalogBreaks.find(({ id }) => id === Astro.params.component);
+if (!entry) return new Response(null, { status: 404 });
+const name = componentItems.find(({ href }) => href === entry.docsHref)?.label ?? entry.id;
+---
+<DebugShell title={name} docsHref={entry.docsHref}>
+  <CatalogBreak id={entry.id} name={name} group={entry.group} client:only="react" />
+</DebugShell>

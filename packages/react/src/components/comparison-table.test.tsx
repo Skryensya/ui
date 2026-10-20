@@ -1,7 +1,13 @@
 import { render } from "@testing-library/react";
 import axe from "axe-core";
 import { describe, expect, it } from "vitest";
-import { ComparisonCell, ComparisonColumn, ComparisonRow, ComparisonTable } from "./comparison-table.js";
+import {
+  ComparisonCell,
+  ComparisonColumn,
+  ComparisonRow,
+  ComparisonTable,
+  ComparisonTableScroll,
+} from "./comparison-table.js";
 
 const Fixture = (props: { density?: "compact"; caption?: string }) => (
   <ComparisonTable
@@ -58,5 +64,22 @@ describe("ComparisonTable (React)", () => {
     const ui = render(<Fixture caption="Plans" />);
     const results = await axe.run(ui.container, { rules: { "color-contrast": { enabled: false } } });
     expect(results.violations).toEqual([]);
+  });
+});
+
+describe("ComparisonTableScroll", () => {
+  it("wraps the table in the scroll box, since overflow on the table itself can't cap its width", () => {
+    /* `table-layout` stays auto, so `overflow`/`max-inline-size` on `.sk-comparison-table` directly
+       cannot constrain it in real layout engines (confirmed live against the break harness) - this
+       wrapper is the box that actually shrinks and scrolls. */
+    const ui = render(
+      <ComparisonTableScroll aria-label="Scrollable plans" className="extra">
+        <Fixture />
+      </ComparisonTableScroll>,
+    );
+    const wrapper = ui.container.querySelector("div")!;
+    expect(wrapper.className).toBe("sk-comparison-table-scroll extra");
+    expect(wrapper.getAttribute("aria-label")).toBe("Scrollable plans");
+    expect(wrapper.querySelector("table")).not.toBeNull();
   });
 });

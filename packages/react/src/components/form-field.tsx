@@ -2,7 +2,7 @@ import { formFieldParts, formFieldContract } from "@skryensya/core/form-field";
 import { createContext, useCallback, useContext, useId, useState, type ReactNode } from "react";
 
 /* Derived, never restated: the default lives in the contract. */
-const { disabled: disabledOption, labelHidden: labelHiddenOption, required: requiredOption } = formFieldContract.options;
+const { disabled: disabledOption, labelVisuallyHidden: labelVisuallyHiddenOption, required: requiredOption } = formFieldContract.options;
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
@@ -72,7 +72,7 @@ export type FormFieldProps = {
   required?: boolean;
   disabled?: boolean;
   /** Clips the label to a name-only box. The control keeps its label; only the eye skips it. */
-  labelHidden?: boolean;
+  labelVisuallyHidden?: boolean;
   className?: string;
   id?: string;
 };
@@ -85,7 +85,7 @@ export function FormField({
   hint,
   id,
   label,
-  labelHidden = labelHiddenOption.default,
+  labelVisuallyHidden = labelVisuallyHiddenOption.default,
   required = requiredOption.default,
 }: FormFieldProps) {
   const generatedId = useId();
@@ -122,7 +122,7 @@ export function FormField({
       <div
         className={cx(formFieldParts.root, className)}
         data-disabled={disabled ? "" : undefined}
-        data-label-hidden={labelHidden ? "" : undefined}
+        data-label-visually-hidden={labelVisuallyHidden ? "" : undefined}
       >
         <label className={formFieldParts.label} htmlFor={controlId}>
           {label}

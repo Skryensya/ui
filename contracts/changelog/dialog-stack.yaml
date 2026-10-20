@@ -1,10 +1,18 @@
-surface: "092cd67755ff7147"
+surface: "ef56f105eaadf68e"
 entries:
+  - date: 2026-10-17
+    kind: feature
+    es:
+      title: "--sk-dialog-stack-exit-duration: cerrar sin animación, en una línea"
+      body: "El mismo escape que Dialog, para el body y su ::backdrop: en 0s, un cierre que coincide con una navegación ya no se demora en su propia salida."
+    en:
+      title: "--sk-dialog-stack-exit-duration: closing with no animation, in one line"
+      body: "The same escape Dialog gets, for the body and its ::backdrop: at 0s, a close that coincides with a navigation no longer lingers on its own exit."
   - date: 2026-10-08
     kind: feature
     es:
       title: Componente nuevo
-      body: Guía una tarea corta por pasos dentro de un diálogo con tarjetas apiladas.
+      body: "Se suma a la librería, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: New component
-      body: Guides a short task through steps inside a dialog with stacked cards.
+      body: "Added to the library, with its contract, a React binding and a Vanilla mount."

@@ -63,7 +63,7 @@ function normalize(markup: string): string {
 describe("emitMarkup", () => {
   it("writes the action signature onto its native host", () => {
     expect(normalize(emitMarkup(saveButton))).toBe(
-      '<button class="sk-button sk-interactive" data-sk-button data-variant="solid" data-tone="accent" data-appearance="plain" data-size="md" type="button">Guardar</button>',
+      '<button class="sk-button sk-interactive" data-sk-button data-variant="solid" data-tone="accent" data-appearance="plain" data-size="md" type="button"><span class="sk-button__label">Guardar</span><span class="sk-button__loader sk-loader" aria-hidden="true"></span></button>',
     );
   });
 
@@ -124,6 +124,19 @@ describe("emitMarkup", () => {
         '<nav class="sk-nav-list" data-orientation="vertical"',
       ),
     );
+  });
+
+  it("emits one continuous rule without a label when LabelledSeparator text is empty", () => {
+    const separator: UsageTree = {
+      contract: "separator",
+      signature: "LabelledSeparator",
+      children: "",
+    };
+    const markup = emitMarkup(separator);
+
+    expect(markup).not.toContain("aria-labelledby");
+    expect(markup).not.toContain("sk-separator__label");
+    expect(markup.match(/sk-separator__rule/g)).toHaveLength(1);
   });
 
   it("omits a conditional node when its slot is empty", () => {

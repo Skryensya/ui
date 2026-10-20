@@ -168,7 +168,10 @@ export const stableIconNames = [
   "upload",
   "download",
   "file",
+  "file-text",
   "folder",
+  "folder-open",
+  "home",
   "settings",
   "user",
   "visibility",
@@ -250,16 +253,16 @@ export type RenderIconBoxInput = {
   /** The geometry to wrap. */
   icon: IconData;
   /** Written as `data-icon`; omit to skip it (React re-renders on context change and needs no marker). */
-  dataIcon?: string;
+  dataIcon?: string | undefined;
   /** Emitted as `data-size` only when provided. React defaults to `"md"`, so it is always present there. */
-  size?: IconSize;
+  size?: IconSize | undefined;
   /**
    * The accessible name. `undefined`/`null` → decorative (`aria-hidden`). Any string, INCLUDING the
    * empty string, → content (`role="img"` + `aria-label`), matching an authored `data-sk-icon-label=""`.
    */
-  label?: string | null;
+  label?: string | null | undefined;
   /** Extra classes beyond `sk-icon`, already joined. `sk-icon` is always present and always first. */
-  className?: string;
+  className?: string | undefined;
 };
 
 /** The resolved box: two ordered attribute groups (set-owned, then box-owned) and the inner geometry. */

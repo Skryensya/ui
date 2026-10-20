@@ -25,6 +25,7 @@ import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/layout.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
 import UsagePreview from "../UsagePreview.astro";
 import ComparisonTable from "../ComparisonTable.astro";
 import WhenToUse from "../WhenToUse.astro";
@@ -81,12 +82,17 @@ const explain = (option: string, values: readonly string[]) =>
   title="Questionnaire"
   description={t("questionnairePage.description")}
   contractId="questionnaire"
+  appearanceTargetSelector=".sk-questionnaire :is([data-appearance], .sk-input, .sk-checkbox)"
   testFiles={[
     "packages/core/src/questionnaire.test.ts",
     "packages/react/src/components/questionnaire.test.tsx",
     "packages/vanilla/src/components/questionnaire.test.ts",
   ]}
 >
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} />
+  </Fragment>
+
   <Fragment slot="usage">
     <p class="lede" set:html={t("questionnairePage.lede")} />
 

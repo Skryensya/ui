@@ -6,10 +6,11 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/meter.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/meter";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Meter", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.meterAnatomyTree);
-export const Default: StoryObj = treeStory(demos.meterTree);
+export const Anatomy: StoryObj = treeStory(demos.meterAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Single: StoryObj = treeStory(demos.meterSingleTree);
+export const Default: StoryObj = treeStory(demos.meterTree);

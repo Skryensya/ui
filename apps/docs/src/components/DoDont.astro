@@ -36,7 +36,7 @@ interface Props {
    * by doing it (scrolling a region to see where its fade goes); every other pair stays a picture.
    */
   interactive?: boolean;
-  /** Less air around the specimen, for a tall one that has to be scaled down to fit the frame. */
+  /** Tighten the frame inset for a specimen that needs more room to fit. */
   compact?: boolean;
   /**
    * One half above the other, each as wide as the column, in a short wide frame. For a specimen that is
@@ -51,13 +51,6 @@ interface Props {
 const { title, canvas = false, interactive = false, compact = false, stacked = false, do: good, dont: bad } = Astro.props;
 const t = useTranslations(getLocale(Astro.url));
 
-const inertTree = (tree: UsageTree): UsageTree => ({
-  contract: "layout",
-  signature: "Stack",
-  attrs: { inert: "", style: `padding: var(--space-inset-${compact ? "md" : "xl"}); box-sizing: border-box;` },
-  children: tree,
-});
-
 /* The specimen at natural size, inert: the frame around it does the padding and the scaling. */
 const stageTree = (tree: UsageTree): UsageTree => ({
   contract: "layout",
@@ -71,7 +64,7 @@ const halves = [
 ] as const;
 ---
 
-<section class:list={["sk-do-dont", stacked && "sk-do-dont--stacked"]}>
+<section class:list={["sk-do-dont", stacked && "sk-do-dont--stacked", compact && "sk-do-dont--compact"]}>
   {title && <h3>{title}</h3>}
   <div class="sk-do-dont__pair">
     {
@@ -290,6 +283,11 @@ const halves = [
     border-radius: var(--radius-surface);
     background-color: color-mix(in oklab, var(--color-bg-surface-raised) 92%, var(--sk-do-dont-color) 8%);
     background-image: none;
+  }
+
+  /* Keep the shared 4:3 comparison, but give the specimen more of the frame to fit into. */
+  .sk-do-dont--compact .sk-do-dont__frame {
+    padding: var(--space-inset-md);
   }
 
   .sk-do-dont__frame :global(.sk-app-bar) {

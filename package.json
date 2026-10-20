@@ -14,7 +14,7 @@
     "check:all": "pnpm check && pnpm check:gates",
     "audit:gate": "node scripts/audit-gate.ts",
     "build": "turbo run build",
-    "dev": "turbo run dev --filter=!@skryensya/reference-server",
+    "dev": "turbo run dev --filter=@skryensya/docs --filter=@skryensya/eval-viewer --filter=@skryensya/storybook-react --filter=@skryensya/storybook-vanilla",
     "dev:references": "pnpm --filter @skryensya/reference-server dev",
     "dev:docs": "turbo run dev --filter=@skryensya/docs",
     "dev:maker": "turbo run dev --filter=@skryensya/maker",

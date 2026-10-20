@@ -3,13 +3,21 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "c713df84b6673d95"
+surface: "3c7f0e8668c49c96"
 entries:
+  - date: 2026-10-17
+    kind: feature
+    es:
+      title: "Un ítem sin children ya no es un error: es el selector sin panel propio"
+      body: "children pasa a opcional en cada ítem. Uno sin children no recibe panel ni aria-controls: para elegir entre dos vistas de un contenido compartido (leyendo value/onValueChange), no para cada uno tener su propia sección."
+    en:
+      title: "An item with no children is no longer an error: it is the panel-less selector"
+      body: "children becomes optional on each item. One with no children gets neither a panel nor aria-controls: for choosing between two views of shared content (reading value/onValueChange), not for each to own its own section."
   - date: 2026-10-01
     kind: feature
     es:
       title: Primera versión
-      body: Alterna vistas relacionadas dentro del mismo espacio.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Switches related views within the same space.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

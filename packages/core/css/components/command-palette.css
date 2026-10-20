@@ -170,17 +170,35 @@
    * It stands in for FOCUS (the options are not tabbable; aria-activedescendant keeps DOM focus
    * in the input). Everyday light/dark gets a mix against the raised surface. Sunken-on-surface
    * is 1.00:1 in hc-dark and vanished, which is why a mix of text-on-surface is the tint, not a
-   * second fill token. The focus ring is reserved for forced colors and explicit high contrast:
-   * painting it in the default mode made every selected row look like a HC target. */
+   * second fill token. */
   .sk-command-palette__option[aria-selected="true"] {
     background: var(--sk-command-palette-option-bg-selected);
   }
 
+  /* The tint alone is too quiet to track while arrowing through results. Gated on :focus-within,
+   * not painted unconditionally: a palette can be rendered `open` non-modally (the `open` option),
+   * where focus can genuinely leave it while a row stays aria-selected, and that case still relies
+   * on the HC/forced-colors rules below rather than a ring with nothing backing it. */
+  .sk-command-palette:focus-within .sk-command-palette__option[aria-selected="true"] {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: calc(var(--focus-ring-offset) * -1);
+  }
+
   .sk-command-palette__option-label {
+    /*
+     * Neither this nor `__option-context` had `min-inline-size: 0` - worse than the usual version
+     * of this gap, since even a `0 1fr` share can't shrink without it, and `space-between` left
+     * both children at their own content width. A long label forced the row (and the whole
+     * palette) wider instead of truncating or wrapping. Desktop's own layout never got the
+     * treatment the Vaul/mobile variant already has for this same option row.
+     */
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
     color: var(--color-text-primary);
   }
 
   .sk-command-palette__option-context {
+    flex-shrink: 0;
     color: var(--color-text-tertiary);
     font-size: var(--font-size-caption);
     white-space: nowrap;

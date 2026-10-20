@@ -59,7 +59,6 @@ import { calloutMessages } from "./messages/components/callout";
 import { cardMessages } from "./messages/components/card";
 import { carouselMessages } from "./messages/components/carousel";
 import { changelogMessages } from "./messages/components/changelog";
-import { chartsMessages } from "./messages/components/charts";
 import { checkboxMessages } from "./messages/components/checkbox";
 import { codePreviewMessages } from "./messages/components/code-preview";
 import { colorPickerMessages } from "./messages/components/color-picker";
@@ -85,7 +84,6 @@ import { messageMessages } from "./messages/components/message";
 import { qrCodeMessages } from "./messages/components/qr-code";
 import { feedMessages } from "./messages/components/feed";
 import { fileUploadMessages } from "./messages/components/file-upload";
-import { folderMessages } from "./messages/components/folder";
 import { footerMessages } from "./messages/components/footer";
 import { formFieldMessages } from "./messages/components/form-field";
 import { gridMessages } from "./messages/components/grid";
@@ -93,7 +91,6 @@ import { headingMessages } from "./messages/components/heading";
 import { heroMessages } from "./messages/components/hero";
 import { iconMessages } from "./messages/components/icon";
 import { imageFrameMessages } from "./messages/components/image-frame";
-import { stickerMessages } from "./messages/components/sticker";
 import { inlineMessages } from "./messages/components/inline";
 import { inputMessages } from "./messages/components/input";
 import { kbdMessages } from "./messages/components/kbd";
@@ -128,7 +125,6 @@ import { morphStackMessages } from "./messages/components/morph-stack";
 import { resizableMessages } from "./messages/components/resizable";
 import { scrollExpandMessages } from "./messages/components/scroll-expand";
 import { scrollStackMessages } from "./messages/components/scroll-stack";
-import { dockMessages } from "./messages/components/dock";
 import { separatorMessages } from "./messages/components/separator";
 import { tagsInputMessages } from "./messages/components/tags-input";
 import { quoteMessages } from "./messages/components/quote";
@@ -150,6 +146,8 @@ import { tagMessages } from "./messages/components/tag";
 import { textMessages } from "./messages/components/text";
 import { themeToggleMessages } from "./messages/components/theme-toggle";
 import { tileMessages } from "./messages/components/tile";
+import { tileButtonMessages } from "./messages/components/tile-button";
+import { tilePagesMessages } from "./messages/components/tile-pages";
 import { timeFieldMessages } from "./messages/components/time-field";
 import { toastMessages } from "./messages/components/toast";
 import { tocMessages } from "./messages/components/toc";
@@ -223,7 +221,6 @@ export const ui = {
     ...cardMessages.es,
     ...carouselMessages.es,
     ...changelogMessages.es,
-    ...chartsMessages.es,
     ...checkboxMessages.es,
     ...codePreviewMessages.es,
     ...colorPickerMessages.es,
@@ -249,7 +246,6 @@ export const ui = {
     ...qrCodeMessages.es,
     ...feedMessages.es,
     ...fileUploadMessages.es,
-    ...folderMessages.es,
     ...footerMessages.es,
     ...formFieldMessages.es,
     ...gridMessages.es,
@@ -257,7 +253,6 @@ export const ui = {
     ...heroMessages.es,
     ...iconMessages.es,
     ...imageFrameMessages.es,
-    ...stickerMessages.es,
     ...inlineMessages.es,
     ...inputMessages.es,
     ...kbdMessages.es,
@@ -294,7 +289,6 @@ export const ui = {
     ...resizableMessages.es,
     ...scrollExpandMessages.es,
     ...scrollStackMessages.es,
-    ...dockMessages.es,
     ...separatorMessages.es,
     ...radioGroupMessages.es,
     ...segmentedMessages.es,
@@ -316,6 +310,8 @@ export const ui = {
     ...themeToggleMessages.es,
     ...typographyMessages.es,
     ...tileMessages.es,
+    ...tileButtonMessages.es,
+    ...tilePagesMessages.es,
     ...timeFieldMessages.es,
     ...toastMessages.es,
     ...tocMessages.es,
@@ -384,7 +380,6 @@ export const ui = {
     ...cardMessages.en,
     ...carouselMessages.en,
     ...changelogMessages.en,
-    ...chartsMessages.en,
     ...checkboxMessages.en,
     ...codePreviewMessages.en,
     ...colorPickerMessages.en,
@@ -410,7 +405,6 @@ export const ui = {
     ...qrCodeMessages.en,
     ...feedMessages.en,
     ...fileUploadMessages.en,
-    ...folderMessages.en,
     ...footerMessages.en,
     ...formFieldMessages.en,
     ...gridMessages.en,
@@ -418,7 +412,6 @@ export const ui = {
     ...heroMessages.en,
     ...iconMessages.en,
     ...imageFrameMessages.en,
-    ...stickerMessages.en,
     ...inlineMessages.en,
     ...inputMessages.en,
     ...kbdMessages.en,
@@ -455,7 +448,6 @@ export const ui = {
     ...resizableMessages.en,
     ...scrollExpandMessages.en,
     ...scrollStackMessages.en,
-    ...dockMessages.en,
     ...separatorMessages.en,
     ...radioGroupMessages.en,
     ...segmentedMessages.en,
@@ -477,6 +469,8 @@ export const ui = {
     ...themeToggleMessages.en,
     ...typographyMessages.en,
     ...tileMessages.en,
+    ...tileButtonMessages.en,
+    ...tilePagesMessages.en,
     ...timeFieldMessages.en,
     ...toastMessages.en,
     ...tocMessages.en,

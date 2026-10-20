@@ -1,7 +1,9 @@
 <script lang="ts">
   import { carousel } from "@skryensya/core/machines";
   import { prefersReducedMotion as reducedMotion } from "@skryensya/core/reduced-motion";
-  import { carouselEvents, carouselParts, carouselTranslations, type CarouselGotoDetail } from "@skryensya/core/carousel";
+  import { fadeEdgeAttrs } from "@skryensya/core/fade-edge";
+  import { watchFadeEdge } from "@skryensya/core/fade-edge-dom";
+  import { carouselAttrs, carouselEvents, carouselParts, carouselTranslations, type CarouselGotoDetail } from "@skryensya/core/carousel";
   import { normalizeProps, useMachine } from "@zag-js/svelte";
   import { onDestroy, onMount } from "svelte";
   import { bindParts, type PartBinding } from "../runtime/bind-part.svelte";
@@ -48,9 +50,21 @@
   // The machine starts its effects (mutation/resize/intersection observers) and its `setSnapPoints`
   // entry BEFORE the first `$effect` runs, and for that it resolves the track by id and the slides by
   // `[data-part=item]`. They are seeded here, in the script body, so they are already there when it measures.
+  // `data-fade-edge` on the root: the track IS the scroller FadeEdge paints on, so it takes FadeEdge's
+  // own class and attributes and the shared watcher keeps each end retired once reached.
+  const fade = root.hasAttribute(carouselAttrs.fade);
+  if (fade) {
+    track.classList.add("sk-fade-edge");
+    track.setAttribute(fadeEdgeAttrs.direction, "horizontal");
+    track.setAttribute(fadeEdgeAttrs.scrollAware, "");
+  }
   track.id = ids.itemGroup;
   track.setAttribute("data-scope", "carousel");
   track.setAttribute("data-part", "itemGroup");
+  // Where a slide rests, and which slides are stops at all (`data-slides-per-move`): the same reading the machine is given below.
+  const alignAttr = root.getAttribute("data-align");
+  const align = alignAttr === "center" || alignAttr === "end" ? alignAttr : "start";
+  const step = Math.max(1, Math.floor(Number(root.getAttribute("data-slides-per-move"))) || 1);
   slides.forEach((slide, index) => {
     slide.id = ids.item(index);
     slide.setAttribute("data-scope", "carousel");
@@ -59,7 +73,9 @@
     // The same, but for style: the first measurement reads the COMPUTED `scroll-snap-align` to know
     // where each slide anchors. The system's sheet already declares it, but a consumer may mount without
     // that CSS, and then the machine would not find a single snap point. It is the same value Zag writes.
-    slide.style.setProperty("scroll-snap-align", "start");
+    const isStop = index % step === 0;
+    slide.style.setProperty("scroll-snap-align", isStop ? align : "none");
+    slide.toggleAttribute("data-no-snap", !isStop);
   });
 
   /*
@@ -95,6 +111,9 @@
     // A slide's width is set by the system's CSS; the machine only measures where each snap point falls.
     autoSize: true,
     spacing: "var(--sk-carousel-gap)",
+    padding: "var(--sk-carousel-edge-padding)",
+    snapType: root.getAttribute("data-snap") === "proximity" ? ("proximity" as const) : ("mandatory" as const),
+    slidesPerMove: step,
     translations: carouselTranslations,
   }));
 
@@ -157,7 +176,7 @@
     ...slides.map((slide, index): PartBinding => ({
       part: "item",
       node: () => slide,
-      props: () => api.getItemProps({ index }),
+      props: () => api.getItemProps({ index, snapAlign: align }),
       style: "once",
     })),
   ];
@@ -229,6 +248,9 @@
     // measurement runs before the `$effect`, and the height of the controls row changes the box.
     api.refresh();
   });
+  onMount(() => {
+    if (fade) cleanups.push(watchFadeEdge(track));
+  });
   onDestroy(() => {
     for (const cleanup of cleanups) cleanup();
   });
@@ -236,26 +258,29 @@
 
 {#if showControls}
   <div class={carouselParts.controls} {...api.getControlProps()}>
-    <button {...api.getPrevTriggerProps()} class="{carouselParts.button} sk-interactive">
-      <span data-sk-icon="chevron-left" data-sk-icon-size="sm"></span>
+    <button {...api.getPrevTriggerProps()} class="{carouselParts.button} sk-button sk-interactive" data-icon-only data-side="start" data-size="sm" data-tone="neutral" data-variant="soft">
+      <span data-sk-icon="chevron-left" data-sk-icon-size="md"></span>
     </button>
 
-    <div class={carouselParts.dots} {...api.getIndicatorGroupProps()}>
-      {#each api.pageSnapPoints as _, index (index)}
-        <button
-          {...api.getIndicatorProps({ index })}
-          class="{carouselParts.dot} sk-interactive"
-          aria-current={index === api.page ? "true" : undefined}
-        ></button>
-      {/each}
-    </div>
+    {#if root.getAttribute("data-indicator") === "count"}
+      <span class={carouselParts.count}>{carouselTranslations.count(api.page, api.pageSnapPoints.length)}</span>
+    {:else}
+      <div class={carouselParts.dots} {...api.getIndicatorGroupProps()}>
+        {#each api.pageSnapPoints as _, index (index)}
+          <button
+            {...api.getIndicatorProps({ index })}
+            class="{carouselParts.dot} sk-interactive"
+            aria-current={index === api.page ? "true" : undefined}
+          ></button>
+        {/each}
+      </div>
+    {/if}
 
-    <button {...api.getNextTriggerProps()} class="{carouselParts.button} sk-interactive">
-      <span data-sk-icon="chevron-right" data-sk-icon-size="sm"></span>
+    <button {...api.getNextTriggerProps()} class="{carouselParts.button} sk-button sk-interactive" data-icon-only data-side="end" data-size="sm" data-tone="neutral" data-variant="soft">
+      <span data-sk-icon="chevron-right" data-sk-icon-size="md"></span>
     </button>
 
-    <!-- The glyph is drawn by CSS from `data-pressed`, not an icon: pause/play are not in the stable
-         vocabulary of roles, and this is not reason enough to force every set to draw them. -->
+    <!-- Both glyphs are real icons and CSS shows one from `data-pressed` (playing shows pause). -->
     {#if wantsAutoplay}
       <!--
         `data-pressed` and `aria-label` do NOT come from Zag's spread (which derives them from
@@ -268,14 +293,21 @@
       -->
       <button
         {...api.getAutoplayTriggerProps()}
-        class="{carouselParts.button} {carouselParts.autoplay} sk-interactive"
+        class="{carouselParts.button} {carouselParts.autoplay} sk-button sk-interactive"
+        data-icon-only
+        data-size="sm"
+        data-tone="neutral"
+        data-variant="soft"
         data-pressed={desiredPlaying ? "" : undefined}
         aria-label={desiredPlaying ? carouselTranslations.autoplayStop : carouselTranslations.autoplayStart}
         onclick={(event) => {
           if (event.defaultPrevented) return;
           desiredPlaying = !desiredPlaying;
         }}
-      ></button>
+      >
+        <span data-glyph="pause"><span data-sk-icon="pause" data-sk-icon-size="md"></span></span>
+        <span data-glyph="play"><span data-sk-icon="play" data-sk-icon-size="md"></span></span>
+      </button>
     {/if}
   </div>
 {/if}

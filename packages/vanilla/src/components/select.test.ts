@@ -9,6 +9,25 @@ const items = [
   { value: "ember", label: "ember" },
 ];
 
+function virtualizedMarkup({ scriptId = "huge", count = 500 } = {}) {
+  const huge = Array.from({ length: count }, (_, i) => ({ value: `item-${i}`, label: `Item ${i}` }));
+  return `<script type="application/json" id="${scriptId}">${JSON.stringify(huge)}</script>
+  <div class="sk-select" data-sk-select data-sk-select-items="${scriptId}" id="brand">
+    <select data-sk-select-hidden name="brand"></select>
+    <div class="sk-select__control" data-sk-select-control>
+      <button class="sk-select__trigger sk-interactive" data-sk-select-trigger>
+        <span class="sk-select__value" data-sk-select-value></span>
+        <span class="sk-select__indicator" data-sk-select-indicator aria-hidden="true"><span data-state="closed"><svg class="sk-icon"></svg></span><span data-state="open"><svg class="sk-icon"></svg></span></span>
+      </button>
+    </div>
+    <div class="sk-select__positioner" data-sk-select-positioner>
+      <div class="sk-select__panel">
+      <ul class="sk-select__content sk-scrollbar" data-sk-select-content></ul>
+      </div>
+    </div>
+  </div>`;
+}
+
 function markup({ hidden = false, value = "default" } = {}) {
   return `<div class="sk-select" data-sk-select id="brand" data-value="${value}" data-name="brand">
     ${hidden ? `<select data-sk-select-hidden name="brand">${items.map((i) => `<option value="${i.value}">${i.label}</option>`).join("")}</select>` : ""}
@@ -20,7 +39,8 @@ function markup({ hidden = false, value = "default" } = {}) {
       </button>
     </div>
     <div class="sk-select__positioner" data-sk-select-positioner>
-      <ul class="sk-select__content" data-sk-select-content>
+      <div class="sk-select__panel">
+      <ul class="sk-select__content sk-scrollbar" data-sk-select-content>
         ${items
           .map(
             (i) => `<li class="sk-select__item sk-interactive" data-sk-select-item data-value="${i.value}">
@@ -30,6 +50,7 @@ function markup({ hidden = false, value = "default" } = {}) {
           )
           .join("")}
       </ul>
+      </div>
     </div>
   </div>`;
 }
@@ -160,5 +181,52 @@ describe("Select Vanilla contracts", () => {
 
     await waitFor(() => expect(itemAt("dusk").getAttribute("aria-selected")).toBe("true"));
     expect(itemAt("default").hasAttribute("aria-selected")).toBe(false);
+  });
+
+  it("generates the hidden options and virtualizes a JSON-supplied item list too large to author", async () => {
+    document.body.innerHTML = virtualizedMarkup({ count: 500 });
+    const root = document.querySelector("[data-sk-select]") as HTMLElement;
+    const content = root.querySelector("[data-sk-select-content]") as HTMLElement;
+    const hidden = root.querySelector("select") as HTMLSelectElement;
+    // jsdom's own layout is all-zero; `@tanstack/virtual-core` reads `offsetWidth`/`offsetHeight`
+    // (not `getBoundingClientRect`), for the viewport AND for every mounted row's own measured
+    // size - unstubbed, every row measures 0, and the virtualizer keeps mounting more of them
+    // trying to fill a viewport that, by its own measurements, nothing has ever filled.
+    Object.defineProperty(content, "offsetWidth", { configurable: true, value: 300 });
+    Object.defineProperty(content, "offsetHeight", { configurable: true, value: 300 });
+    const rowHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "offsetHeight");
+    Object.defineProperty(HTMLElement.prototype, "offsetHeight", { configurable: true, get: () => 44 });
+
+    try {
+      expect(mountSelect(document)).toBe(1);
+
+      expect(hidden.options.length).toBe(500);
+      expect(hidden.options[0]?.value).toBe("item-0");
+      expect(hidden.options[499]?.value).toBe("item-499");
+
+      const mountedItems = content.querySelectorAll("[data-sk-select-item]");
+      expect(mountedItems.length).toBeGreaterThan(0);
+      expect(mountedItems.length).toBeLessThan(500);
+      expect(content.style.position).toBe("relative");
+
+      const onValueChange = vi.fn();
+      root.addEventListener("sk:selectvaluechange", onValueChange);
+      fireEvent.click(root.querySelector("[data-sk-select-trigger]") as HTMLElement);
+      await waitFor(() => expect(content.querySelector('[data-value="item-0"]')).toBeTruthy());
+      fireEvent.click(content.querySelector('[data-value="item-0"]') as HTMLElement);
+
+      await waitFor(() =>
+        expect(onValueChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: ["item-0"] } })),
+      );
+      expect(hidden.value).toBe("item-0");
+    } finally {
+      if (rowHeight) Object.defineProperty(HTMLElement.prototype, "offsetHeight", rowHeight);
+      else delete (HTMLElement.prototype as { offsetHeight?: unknown }).offsetHeight;
+    }
+  });
+
+  it("refuses a [data-sk-select-items] script id that does not exist", () => {
+    document.body.innerHTML = virtualizedMarkup().replace('id="huge"', 'id="huge-typo"');
+    expect(() => mountSelect(document)).toThrow(/does not exist/);
   });
 });

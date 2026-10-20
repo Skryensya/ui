@@ -31,7 +31,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Cuenta qué cambió y cuándo, en un riel fechado.
+      body: "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple."
     en:
       title: First release
-      body: Tells what changed and when, on a dated rail.
+      body: "Published for the first time, with its contract, a React binding and a stylesheet for plain markup."

@@ -87,6 +87,7 @@
     flex: 0 1 auto;
     min-inline-size: 0;
     overflow-x: auto;
+    overscroll-behavior-inline: contain;
     scrollbar-width: none;
   }
 
@@ -195,7 +196,6 @@
      alone, and here that gap is what made the list look like it came from nowhere. Two classes, so
      it wins over `.sk-menu__positioner` whichever sheet a page happens to load last. */
   .sk-app-bar__dropdown.sk-menu__positioner {
-    --sk-anchored-offset: 0;
   }
 
   .sk-app-bar__dropdown {

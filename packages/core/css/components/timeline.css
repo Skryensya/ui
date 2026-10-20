@@ -62,6 +62,9 @@
     gap: var(--sk-timeline-content-gap);
     padding-inline-start: var(--sk-timeline-rail);
     min-inline-size: 0;
+    /* Inherited by the heading and detail content below: an unbroken long heading (a compound
+       word) or an email/URL in the detail had no break point. */
+    overflow-wrap: anywhere;
 
     /*
      * HALF THE FIRST LINE, WHICH IS WHERE THE DOT AND THE CONNECTOR BOTH BEGIN. One formula with
@@ -210,10 +213,17 @@
   }
 
   /*
-   * A phone has no room for a 2.5rem gutter beside a 65ch column. The rail narrows rather than
-   * collapsing, because the rail IS the component: an event list with no line down it is a List.
+   * A narrow column has no room for a 2.5rem gutter beside a 65ch measure. The rail narrows rather
+   * than collapsing, because the rail IS the component: an event list with no line down it is a
+   * List.
+   *
+   * A CONTAINER query, not the viewport (decision 35, patterns/query-container.css): an order
+   * history in a narrow side panel has the panel's room, not the window's, and `@media` alone
+   * never narrowed the rail there just because the WINDOW happened to be wide. `:root`'s own
+   * containment (shipped in base) is what lets this resolve with no container of this component's
+   * own to set up.
    */
-  @media (width < 30rem) {
+  @container (width < 30rem) {
     .sk-timeline {
       --sk-timeline-rail: 1.75rem;
       --sk-timeline-item-gap: var(--space-stack-md);

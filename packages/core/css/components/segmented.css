@@ -82,6 +82,13 @@
     border-radius: var(--sk-segmented-radius);
     background: var(--sk-segmented-wash) var(--sk-segmented-bg);
     box-shadow: var(--sk-segmented-shadow);
+    /* Options are `white-space: nowrap` with no cap: German labels forced the track to 669px in
+       a 229px container with no way to reach the rest. Scroll, not shrink or wrap, same
+       convention as Toolbar/Menubar/Tabs - the options stay single-line and selectable. */
+    max-inline-size: 100%;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
   }
   /*
    * SIZE: the track steps up Button's own control scale, and the options' type and inline padding

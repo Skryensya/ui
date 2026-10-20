@@ -1,0 +1,7 @@
+---
+if (import.meta.env.PROD) return new Response(null, { status: 404 });
+import "@skryensya/core/components/otp-input.css";
+import { OtpInputBreak } from "../../components/react-demos/debug-otp-input-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+<DebugShell title="OtpInput" docsHref="/components/otp-input"><OtpInputBreak client:only="react" /></DebugShell>

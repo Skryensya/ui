@@ -33,7 +33,9 @@ import {
   lightboxLoopTree,
   lightboxSingleTree,
   lightboxTinyTree,
+  lightboxVideoTree,
 } from "../../demos/lightbox";
+import "@skryensya/core/components/video-player.css";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
@@ -45,7 +47,7 @@ const cardDemoImages = [
     alt: t("lightbox.demo.dawnAlt"),
     title: t("lightbox.demo.dawnTitle"),
     description: t("lightbox.demo.dawnDescription"),
-    credit: "Alexey Topolyanskiy · Unsplash",
+    credit: "skryensya/ui",
     width: 1800,
     height: 1200,
   },
@@ -55,7 +57,7 @@ const cardDemoImages = [
     alt: t("lightbox.demo.panoramaAlt"),
     title: t("lightbox.demo.panoramaTitle"),
     description: t("lightbox.demo.panoramaDescription"),
-    credit: "Paul Jarvis · Unsplash",
+    credit: "skryensya/ui",
     width: 1800,
     height: 1200,
   },
@@ -68,7 +70,7 @@ const cardDemoImages = [
   title="Lightbox"
   description={t("lightbox.description")}
   contractId="lightbox"
-  extraSheets={["@skryensya/core/patterns/scroll-lock.css", "@skryensya/core/patterns/visually-hidden.css"]}
+  extraSheets={["@skryensya/core/patterns/scroll-lock.css", "@skryensya/core/patterns/visually-hidden.css", "@skryensya/core/components/video-player.css"]}
   testFiles={[
     "packages/core/src/lightbox.test.ts",
     "packages/vanilla/src/components/lightbox.test.ts",
@@ -154,6 +156,17 @@ const cardDemoImages = [
       stageMinBlockSize="24rem"
       storybookTitle="Components/Lightbox"
       storybookStory="Loop"
+    />
+
+    <h3>{t("lightbox.videoTitle")}</h3>
+    <p set:html={t("lightbox.videoBody")} />
+    <UsagePreview
+      tree={lightboxVideoTree(t)}
+      css={lightboxDemoCss}
+      label={t("lightbox.videoTitle")}
+      stageMinBlockSize="24rem"
+      storybookTitle="Components/Lightbox"
+      storybookStory="Video"
     />
 
     <h3>{t("component.contractNotesTitle")}</h3>

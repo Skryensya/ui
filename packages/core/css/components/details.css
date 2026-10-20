@@ -27,6 +27,7 @@
     --sk-details-gap: var(--sk-space-3);
     --sk-details-heading-gap: var(--sk-space-2);
     --sk-details-indicator-fg: var(--color-text-secondary);
+    --sk-details-summary-min-block-size: var(--size-control-lg);
 
     box-sizing: border-box;
     inline-size: 100%;
@@ -43,6 +44,19 @@
   .sk-details *::before,
   .sk-details *::after {
     box-sizing: border-box;
+  }
+
+  /*
+   * SIZE: `sm` tightens the two hooks that carry most of `md`'s weight - the summary's own padding
+   * and its minimum height - for a disclosure sitting inside an already-dense panel. Targeted twice
+   * because the two cases redeclare the hooks at different levels: a lone `.sk-details` carries its
+   * own `data-size`, but a `.sk-details-group`'s children are each a `.sk-details` that already set
+   * its OWN default for these hooks, so inheriting from the group alone would lose to that default.
+   */
+  .sk-details[data-size="sm"],
+  .sk-details-group[data-size="sm"] > .sk-details {
+    --sk-details-padding: var(--space-inset-sm);
+    --sk-details-summary-min-block-size: var(--size-control-md);
   }
 
   /* Same grid as `.sk-tile__trigger`: text cluster + trailing chevron. */
@@ -73,7 +87,7 @@
     gap: 0 var(--sk-details-gap);
     align-items: center;
     align-content: center;
-    min-block-size: var(--size-control-lg);
+    min-block-size: var(--sk-details-summary-min-block-size);
     padding: var(--sk-details-padding);
     cursor: pointer;
     list-style: none;
@@ -81,6 +95,14 @@
 
   .sk-details__summary > * {
     grid-column: 1;
+  }
+
+  /* The text column is `minmax(0, 1fr)`, so it CAN shrink - but shrinking a track doesn't give an
+     unbroken word (a German compound, an email) anywhere to break; it still ran under the chevron
+     column. Found as a real overflow, not a layout nit: the body text already wraps fine, only the
+     summary's own children were missing this. */
+  .sk-details__summary > *:not(.sk-details__indicator) {
+    overflow-wrap: anywhere;
   }
 
   .sk-details__summary > * + :not(.sk-details__indicator) {

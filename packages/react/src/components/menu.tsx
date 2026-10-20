@@ -1,4 +1,4 @@
-import { anchoredParts, supportsAnchorPositioning } from "@skryensya/core/anchored";
+import { anchoredPositioning } from "@skryensya/core/anchored";
 import type { SignatureOptionsOf } from "@skryensya/core/contract";
 import {
   menuAttrs,
@@ -17,7 +17,7 @@ import {
 import { createMenuSafeArea, type MenuSafeAreaHandle } from "@skryensya/core/menu-safe-area";
 import { normalizeProps, Portal, useMachine } from "@zag-js/react";
 import { useEffect, useId, useRef, useState, type ReactNode, type RefObject } from "react";
-import { useAnchored } from "./anchored.js";
+import { anchorProps, positionerProps } from "./anchored.js";
 import { Icon } from "./icon.js";
 
 const cx = (...classes: Array<string | undefined>) =>
@@ -117,6 +117,8 @@ export function useMenuMachine(props: {
   ariaLabel?: string;
   defaultOpen?: boolean;
   open?: boolean;
+  /** The gap to the trigger in px; the pattern's default when absent. */
+  gutter?: number;
   onOpenChange?: (details: { open: boolean }) => void;
 }): { service: MenuService; api: MenuApi } {
   const service = useMachine(menu.machine, {
@@ -125,10 +127,7 @@ export function useMenuMachine(props: {
     defaultOpen: props.defaultOpen,
     open: props.open,
     onOpenChange: props.onOpenChange,
-    /* `gutter: 0` where the anchoring engine exists: `.sk-anchored`'s margin already is the hook's gap
-       even when the machine places the box, and the machine's 8px default came on top of it. Same
-       rule, same reason as `Menu.svelte`. */
-    positioning: { placement: "bottom-start", strategy: "fixed", ...(supportsAnchorPositioning() ? { gutter: 0 } : {}) },
+    positioning: { placement: "bottom-start", ...anchoredPositioning, ...(props.gutter === undefined ? {} : { gutter: props.gutter }) },
   });
   const api = menu.connect(service, normalizeProps);
   return { service, api };
@@ -207,12 +206,6 @@ function initialCheckedState(items: readonly MenuItem[]): CheckedState {
       ...Object.entries(initialCheckedState(item.children ?? [])),
     ]),
   );
-}
-
-/** Any submenu anywhere in the tree; see the note on `useAnchored` in `Menu` below. */
-/** Whether any level of the tree opens a submenu. `Menubar` asks the same question as `Menu`. */
-export function hasSubmenu(items: readonly MenuItem[]): boolean {
-  return items.some((item) => (item.children?.length ?? 0) > 0 || hasSubmenu(item.children ?? []));
 }
 
 function MenuList({
@@ -371,16 +364,8 @@ function Submenu({
   const service = useMachine(menu.machine, {
     id,
     "aria-label": item.label,
-    /*
-     * `strategy: "fixed"`, not the machine's own default (`absolute`): irrelevant while the browser
-     * places this box, but it is what the machine writes into its own inline style, which is what
-     * actually positions THIS submenu now that `useAnchored` is called with `enabled: false` below.
-     * `absolute`'s containing block is the nearest positioned ancestor, here the parent menu's own
-     * panel, so a submenu measuring past that panel's edge grew ITS `overflow: auto` scrollport
-     * instead of floating free. The exact failure `patterns/anchored.css` already explains
-     * choosing `fixed` over `absolute` to avoid for the browser-placed case.
-     */
-    positioning: { placement: "right-start", gutter: 4, strategy: "fixed" },
+    // Fixed: inside the parent panel, an absolute box would take its scrollport as containing block.
+    positioning: { ...anchoredPositioning, placement: "right-start", strategy: "fixed" },
     onOpenChange(details: { open: boolean }) {
       eventRootRef.current?.dispatchEvent(
         new CustomEvent(menuEvents.openChange, { bubbles: true, detail: { open: details.open } }),
@@ -388,13 +373,6 @@ function Submenu({
     },
   });
   const api = menu.connect(service, normalizeProps);
-  /*
-   * `false`: this trigger is itself inside the PARENT menu's anchor-positioned panel, and the
-   * browser's anchor-positioning engine cannot paint a box anchored to something inside another
-   * anchor-positioned box (see the note on `useAnchored`). The machine's own placement, already
-   * correct here, positions this level instead.
-   */
-  const anchor = useAnchored(id, false);
 
   useEffect(() => {
     api.setParent(parentService);
@@ -488,7 +466,7 @@ function Submenu({
         */}
       <button
         {...parentApi.getTriggerItemProps(api)}
-        {...anchor.anchor(cx(menuParts.item, "sk-interactive"))}
+        {...anchorProps(cx(menuParts.item, "sk-interactive"))}
         onKeyDown={(event) => {
           parentApi.getTriggerItemProps(api).onKeyDown?.(event);
           const direction =
@@ -524,7 +502,7 @@ function Submenu({
         </span>
       </button>
       <div
-        {...anchor.positioner(api.getPositionerProps(), menuParts.positioner)}
+        {...positionerProps(api.getPositionerProps(), menuParts.positioner)}
         data-density={density}
         data-sk-submenu=""
       >
@@ -597,18 +575,6 @@ export function Menu({
       );
     },
   });
-  /*
-   * `!hasSubmenu(items)`: withheld from the WHOLE tree the moment any level of it has a submenu, not
-   * only from the submenu itself (see the matching note on `Submenu`'s own `useAnchored` call).
-   * Mixing engines one level apart put the two out of the same coordinate space: a submenu's `--x`/
-   * `--y` are the machine's own measurement relative to the viewport, but the browser resolves that
-   * submenu's `position: fixed` against the nearest ancestor that is itself anchor-positioned. This
-   * top level's own positioner, which carries `anchor-name` unconditionally whether or not it is
-   * placed via `@supports`, rather than the viewport. Measured against a live nested Menu: a
-   * submenu math-correct in viewport terms rendered offset by roughly this panel's own on-screen
-   * position. One engine for the whole tree removes the mismatch.
-   */
-  const anchor = useAnchored(id ?? generatedId, !hasSubmenu(items));
 
   const setCheckedState = (changedItem: MenuItem, checked: boolean) => {
     setChecked((current) => {
@@ -630,15 +596,9 @@ export function Menu({
   };
 
   /*
-   * A CONTEXT trigger never takes the native-anchor route (see the matching comment in
-   * `packages/vanilla/src/components/menu.ts`): the pattern anchors to an ELEMENT, and what matters
-   * here is WHERE INSIDE that (possibly page-wide) element the right-click landed, not the element's
-   * own box. The machine already solves exactly this: `getContextTriggerProps` forwards the click's
-   * point, the machine stores it and hands floating-ui a zero-size anchor rect at that point, so
-   * `getPositionerProps()` comes back with a real `style` placing the menu at the pointer with the
-   * SAME `bottom-start` default as a trigger button (below, growing toward the inline-end). Both
-   * bindings read this off the one shared machine; neither has positioning logic of its own to keep
-   * in sync.
+   * A CONTEXT trigger: the menu opens where the right-click landed, not against the trigger's own box.
+   * `getContextTriggerProps` forwards the click's point, the machine stores it and hands the popper a
+   * zero-size anchor rect at that point, so `getPositionerProps()` places the menu at the pointer.
    */
   /*
    * ONE readout for the whole menu, owned by the root and handed down to every `Submenu`: the
@@ -664,13 +624,7 @@ export function Menu({
     };
   }, [debugSafetyTriangle, rootEl]);
 
-  const isContextMenu = Boolean(contextTarget);
-  const positionerProps = isContextMenu
-    ? {
-        ...api.getPositionerProps(),
-        className: cx(menuParts.positioner, anchoredParts.positioner),
-      }
-    : anchor.positioner(api.getPositionerProps(), menuParts.positioner);
+  const positioner = positionerProps(api.getPositionerProps(), menuParts.positioner);
 
   return (
     /* The debug attribute is STAMPED here, not just threaded as a prop: menu.css keys the flagged
@@ -691,7 +645,7 @@ export function Menu({
       ) : (
         <button
           {...api.getTriggerProps()}
-          {...anchor.anchor(cx("sk-button", "sk-interactive", menuParts.trigger, triggerClassName))}
+          {...anchorProps(cx("sk-button", "sk-interactive", menuParts.trigger, triggerClassName))}
           aria-label={triggerLabel}
           {...{
             [triggerWeldStartOption.attr]: triggerWeldStart
@@ -735,7 +689,7 @@ export function Menu({
         itemIndicator={itemIndicator}
         onCheckedChange={onCheckedChange}
         onSelect={onSelect}
-        positionerProps={positionerProps}
+        positionerProps={positioner}
         readout={readout}
         service={service}
         setCheckedState={setCheckedState}

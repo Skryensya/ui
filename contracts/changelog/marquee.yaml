@@ -5,7 +5,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Repite una franja inerte con movimiento pedido o autoplay siempre pausable.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Repeats an inert strip with requested motion or always-pausable autoplay.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

@@ -151,7 +151,7 @@ function facetTree(words: ChromeWords, facet: Facet, options: FacetOption[]): Us
  * facet, every facet at once), then what is applied, each removable on its own.
  */
 export function searchTree(words: ChromeWords, facets: FacetOptions): UsageTree {
-  const query: UsageTree = { contract: "form-field", signature: "FormField", options: { labelHidden: true }, slots: { label: words.search, children: { contract: "input", signature: "Input", options: { type: "search", name: "q", placeholder: words.searchPlaceholder } } } };
+  const query: UsageTree = { contract: "form-field", signature: "FormField", options: { labelVisuallyHidden: true }, slots: { label: words.search, children: { contract: "input", signature: "Input", options: { type: "search", name: "q", placeholder: words.searchPlaceholder } } } };
   /* Closed until asked for: the page is one text field, and the facets are the way down when it is not enough. */
   const advanced: UsageTree = {
     contract: "accordion",

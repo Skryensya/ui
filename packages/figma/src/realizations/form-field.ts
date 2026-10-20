@@ -13,7 +13,7 @@ export const formFieldRealization: Realization = {
   state: noStates,
   overlays: {},
   ring: "focus ring",
-  exclude: ["labelHidden"],
+  exclude: ["labelVisuallyHidden"],
   width: 320,
   slots: {
     label: { holds: "text", sample: "Email" },

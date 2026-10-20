@@ -1,5 +1,6 @@
 import { checkboxParts, checkboxGroupEvents, selectionParts, type CheckboxGroupValueChangeDetails, type CheckedChangeDetails, type CheckedState, type RadioGroupOrientation, type RadioValueChangeDetails, checkboxContract, radioGroupContract, switchContract } from "@skryensya/core/selection";
 import { forwardRef, useEffect, useId, useMemo, useRef, useState, type ChangeEvent, type HTMLAttributes, type InputHTMLAttributes, type ReactNode } from "react";
+import { dev, devTicket } from "../dev-warning.js";
 import { Icon } from "./icon.js";
 
 /* Derived, never restated: the default lives in the contract. */
@@ -8,6 +9,52 @@ const { orientation: radioOrientationOption } = radioGroupContract.options;
 
 function classes(...values: readonly (string | undefined)[]) {
   return values.filter(Boolean).join(" ");
+}
+
+/*
+ * Shared by CheckboxGroup and RadioGroup (found on their own break harnesses): nothing stops two
+ * entries from sharing a `value`, and both groups key their selection state on it - CheckboxGroup's
+ * `Set<string>` cannot tell two same-valued entries apart, and `key={item.value}` collides too
+ * (React warns about that half on its own). RadioGroup has the sharper version of the same mistake:
+ * `checked={value === item.value}` marks EVERY item with that value checked at once, which breaks
+ * the one guarantee a radio group makes. Dev-only, console-only: a duplicate value is an authoring
+ * mistake in the `items` array the caller controls, not a shape either component can refuse without
+ * costing every group that legitimately repeats a value is never a real intention it was asked to
+ * detect.
+ */
+function warnDuplicateItemValues(componentName: string, consequence: string, items: readonly { value: string }[]): void {
+  if (!dev) return;
+  const seen = new Set<string>();
+  const duplicates = new Set<string>();
+  for (const item of items) {
+    if (seen.has(item.value)) duplicates.add(item.value);
+    seen.add(item.value);
+  }
+  if (duplicates.size === 0) return;
+  console.error(
+    ...devTicket(`<${componentName}>`, {
+      issue: `items sharing the same value: ${[...duplicates].map((v) => `"${v}"`).join(", ")}`,
+      why: consequence,
+      fix: "Give each item a unique value.",
+    }),
+  );
+}
+
+/*
+ * The contract's own a11y rule (`switchContract.a11y`) requires one of children / aria-label /
+ * aria-labelledby; nothing checked it at runtime, found the same way Checkbox's duplicate-value
+ * gap was. A falsy check, not a deep text walk: Switch already decides whether to render the
+ * label span this same way (`{children ? … : null}` below), so the warning asks the identical
+ * question the render already does, rather than a stricter one that could disagree with it.
+ */
+function warnMissingSwitchName(children: ReactNode, ariaLabel: string | undefined, ariaLabelledBy: string | undefined): void {
+  if (!dev || children || ariaLabel || ariaLabelledBy) return;
+  console.error(
+    ...devTicket("<Switch>", {
+      issue: "no accessible name.",
+      fix: "Give it visible text (children), or `aria-label`/`aria-labelledby`.",
+    }),
+  );
 }
 
 /** Check + remove from the icon set, shared with TileCheckbox so both paint one control. */
@@ -114,6 +161,16 @@ export const CheckboxGroup = forwardRef<HTMLDivElement, CheckboxGroupProps>(func
   { appearance = checkboxContract.options.appearance.default, className, defaultValue, disabled, items, label, name, onValueChange, orientation = orientationOption.default, required, value, ...props },
   ref,
 ) {
+  // Effect, not a direct render-body call: client-only, post-mount, straight into the browser's
+  // own console - same reasoning as Switch's own warnMissingSwitchName below.
+  useEffect(() => {
+    warnDuplicateItemValues(
+      "CheckboxGroup",
+      "Checking one checks every item with that value, since the group's selection is keyed on it.",
+      items,
+    );
+  }, [items]);
+
   const labelId = useId();
   // Composed with each item's OWN value (already required to be unique. It is the entries' `key`),
   // not an index: `aria-controls` on the parent, the WAI-ARIA mixed-checkbox pattern's own
@@ -299,6 +356,16 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(function R
   { appearance = radioGroupContract.options.appearance.default, className, defaultValue, disabled, items, label, name, onValueChange, orientation = radioOrientationOption.default, required, spread, value, ...props },
   ref,
 ) {
+  // Effect, not a direct render-body call: client-only, post-mount, straight into the browser's
+  // own console - same reasoning as Switch's own warnMissingSwitchName below.
+  useEffect(() => {
+    warnDuplicateItemValues(
+      "RadioGroup",
+      "Every item with that value renders checked at once, breaking the group's one-choice guarantee.",
+      items,
+    );
+  }, [items]);
+
   const controlled = value !== undefined;
 
   /*
@@ -358,6 +425,13 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
   { appearance = switchContract.options.appearance.default, checked, children, className, defaultChecked, disabled, onCheckedChange, ...props },
   ref,
 ) {
+  // Effect, not a direct render-body call: guarantees this only ever runs client-side, after
+  // mount, straight into the browser's own console - no SSR pass involved, so there is no SSR-
+  // vs-client environment to disagree about in the first place.
+  useEffect(() => {
+    warnMissingSwitchName(children, props["aria-label"], props["aria-labelledby"]);
+  }, [children, props["aria-label"], props["aria-labelledby"]]);
+
   const onChange = (event: ChangeEvent<HTMLInputElement>) => onCheckedChange?.({ checked: event.currentTarget.checked });
 
   return (

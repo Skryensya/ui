@@ -17,7 +17,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: "Cierra la página con una banda propia: navegación secundaria, aviso legal o crédito."
+      body: "Se publica por primera vez, con su contrato y una hoja de estilos para marcado simple."
     en:
       title: First release
-      body: "Closes the page with a band of its own: secondary navigation, a legal line, or a credit."
+      body: "Published for the first time, with its contract and a stylesheet for plain markup."

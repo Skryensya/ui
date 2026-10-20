@@ -17,7 +17,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Representa teclas y combinaciones de teclado dentro del contenido.
+      body: "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple."
     en:
       title: First release
-      body: Represents keys and keyboard combinations inside content.
+      body: "Published for the first time, with its contract, a React binding and a stylesheet for plain markup."

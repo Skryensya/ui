@@ -5,6 +5,15 @@
 # hash.
 surface: "f79deebf1cf837b3"
 entries:
+  - date: 2026-10-17
+    kind: bugfix
+    target: LabelledSeparator
+    es:
+      title: "Una etiqueta vacía ya no deja un nombre accesible vacío"
+      body: "children=\"\" (un valor calculado que resultó vacío) seguía apuntando aria-labelledby a un span sin texto: eso da un nombre accesible explícito y vacío, peor que el \"separator\" sin nombre que este componente existe para reemplazar. Ahora, sin etiqueta, omite aria-labelledby y deja que ese mismo respaldo vuelva a aplicar."
+    en:
+      title: "An empty label no longer leaves an empty accessible name"
+      body: "children=\"\" (a computed value that came up empty) still pointed aria-labelledby at a textless span, which gives an explicit, empty accessible name - worse than the nameless \"separator\" this component exists to replace. With no label, it now omits aria-labelledby and lets that same fallback take back over."
   - date: 2026-10-06
     kind: bugfix
     target: Separator
@@ -18,7 +27,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Dibuja la regla entre dos cosas, con o sin una palabra al medio.
+      body: "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple."
     en:
       title: First release
-      body: Draws the rule between two things, with or without a word in the middle.
+      body: "Published for the first time, with its contract, a React binding and a stylesheet for plain markup."

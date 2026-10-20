@@ -41,6 +41,25 @@
     font-weight: var(--sk-badge-font-weight);
     line-height: var(--sk-badge-line-height);
     white-space: nowrap;
+    /*
+     * Found on the break harness (`/debug/badge-break`): unlike Button's own root rule, this had
+     * no cap at all. A long unbreakable word or a full sentence as badge content just grew the
+     * pill past its container - a flex sibling's line wrapped around whatever space was left, or a
+     * fixed-width column scrolled the page. Same trio Button's fix uses: `min-inline-size: 0` lets
+     * the item shrink below its nowrap content width in a flex/grid track, `max-inline-size: 100%`
+     * caps it to whatever that track (or a plain block container) actually gave it, and `overflow:
+     * clip` cuts the label at that edge instead of spilling past it - never an ellipsis, since a
+     * truncated status word or count reads as a different, wrong one, not a shortened one.
+     */
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    overflow: clip;
+  }
+
+  .sk-badge[data-single-digit] {
+    box-sizing: border-box;
+    inline-size: calc(1lh + 2 * var(--sk-badge-padding-y) + 2px);
+    text-align: center;
   }
 
   .sk-badge[data-size="sm"] {
@@ -100,21 +119,24 @@
     block-size: var(--sk-badge-dot-size);
     border-radius: var(--radius-pill);
     background: var(--sk-badge-dot-color);
+    /* The label clips long text; the dot must let its expanding pulse halo escape. */
+    overflow: visible;
   }
 
   .sk-badge[data-dot][data-pulse]::after {
     content: "";
     position: absolute;
-    inset: 0;
+    inset: -1px;
+    box-sizing: border-box;
+    border: 1px solid var(--sk-badge-dot-color);
     border-radius: inherit;
-    background: var(--sk-badge-dot-color);
     opacity: 0;
     animation: sk-badge-pulse 1.6s cubic-bezier(0.2, 0, 0, 1) infinite;
   }
 
   @keyframes sk-badge-pulse {
     0% {
-      opacity: 0.45;
+      opacity: 0.7;
       scale: 1;
     }
     70%,
@@ -141,7 +163,16 @@
   /* The holder anchors a badge to the top-right corner of whatever it wraps, an icon button, an avatar.
    * The badge rides the corner (mostly outside it, the canonical notification spot) with a ring in the
    * host surface's color so it reads as floating above, not painted onto, the element below. Works for a
-   * dot or a small count pill alike. */
+   * dot or a small count pill alike.
+   *
+   * KNOWN HAZARD, not fixable here (found on `/debug/badge-break`): `translate: 35% -35%` below puts
+   * the badge OUTSIDE this holder's own box on purpose, which is exactly what any ANCESTOR's
+   * `overflow: hidden` then clips - and that ancestor usually sets it for an unrelated reason (a
+   * card or rail rounding its own corners), never knowing a BadgeHolder is inside it. There is no
+   * CSS fix inside this sheet: the "float past the edge" look and "never get clipped" are the same
+   * tradeoff from two sides, and changing the holder to stay inside its own box would be a visual
+   * redesign, not a bug fix. Let the badge's area overflow, or round a separate background layer
+   * instead of clipping the ancestor's contents. */
   .sk-badge-holder {
     position: relative;
     display: inline-flex;
@@ -150,6 +181,7 @@
   /* Hit-testing: contract `BadgeHolder.hitTesting.childrenNone` (Badge, BadgeDot). */
   .sk-badge-holder > .sk-badge {
     position: absolute;
+    z-index: 1;
     inset-block-start: 0;
     inset-inline-end: 0;
     translate: 35% -35%;

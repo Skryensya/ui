@@ -1,0 +1,7 @@
+---
+if (import.meta.env.PROD) return new Response(null, { status: 404 });
+import "@skryensya/core/components/dialog.css";
+import { DialogBreak } from "../../components/react-demos/debug-dialog-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+<DebugShell title="Dialog" docsHref="/components/dialog"><DialogBreak client:only="react" /></DebugShell>

@@ -7,8 +7,17 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "e038684b11cef48c"
+surface: "673583f286ce5db8"
 entries:
+  - date: 2026-10-17
+    kind: feature
+    target: Details
+    es:
+      title: "Details y DetailsGroup tienen un tamaño sm"
+      body: "Nueva opción size (sm/md) para Details y DetailsGroup: sm reduce el relleno del summary y su alto mínimo, para una disclosure dentro de un panel ya denso (un drawer, un sidebar)."
+    en:
+      title: "Details and DetailsGroup get a sm size"
+      body: "New size option (sm/md) on Details and DetailsGroup: sm tightens the summary's padding and minimum height, for a disclosure sitting inside an already-dense panel (a drawer, a sidebar)."
   - date: 2026-10-06
     kind: bugfix
     es:
@@ -21,7 +30,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Agrupa secciones extensas que se abren una a la vez.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Groups long sections that open one at a time.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

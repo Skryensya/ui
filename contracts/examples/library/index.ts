@@ -55,7 +55,6 @@ import { switchRowsCard } from "./form/switch-rows-card.js";
 
 import { copyValue } from "./action/copy-value.js";
 import { loadingIndicator } from "./feedback/loading-indicator.js";
-import { trendChart } from "./table/trend-chart.js";
 import { avatarGreeting } from "./card/avatar-greeting.js";
 import { tagPicker } from "./form/tag-picker.js";
 import { toastNotice } from "./feedback/toast-notice.js";
@@ -73,7 +72,6 @@ import { searchableSelect } from "./form/searchable-select.js";
 import { dateField } from "./form/date-field.js";
 import { colorField } from "./form/color-field.js";
 import { saveWithAlternatives } from "./action/save-with-alternatives.js";
-import { quickActionsDock } from "./action/quick-actions-dock.js";
 import { actionsMenu } from "./navigation/actions-menu.js";
 import { commentFeed } from "./list/comment-feed.js";
 import { decisionFlow } from "./media/decision-flow.js";
@@ -138,7 +136,6 @@ export const modules: readonly PatternModule[] = [
   decisionFlow,
   commentFeed,
   actionsMenu,
-  quickActionsDock,
   saveWithAlternatives,
   colorField,
   dateField,
@@ -158,7 +155,6 @@ export const modules: readonly PatternModule[] = [
   avatarGreeting,
   copyValue,
   loadingIndicator,
-  trendChart,
   amountWell,
   colorChoiceCard,
   commentThreadCard,

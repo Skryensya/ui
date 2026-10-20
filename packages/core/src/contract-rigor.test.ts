@@ -42,9 +42,6 @@ const KNOWN_GAPS: Readonly<Record<string, readonly { rule: string; reason: strin
     { rule: "[docs] the parts table leaves out", reason: "the page's parts table lists the main parts, not the thirty the template draws" },
     { rule: "[docs] the hooks table leaves out", reason: "--sk-audio-player-volume-pad is not in the page's hooks table yet" },
   ],
-  "dock": [
-    { rule: "[docs]", reason: "the page has no parts table and no hooks table yet" },
-  ],
   "dialog-stack": [
     { rule: "[docs]", reason: "the page has no parts table and no hooks table yet" },
   ],
@@ -54,7 +51,6 @@ const AUDITED = [
   "audio-player",
   "compare-slider",
   "dialog-stack",
-  "dock",
   "image-cropper",
   "morph-stack",
   "scroll-expand",

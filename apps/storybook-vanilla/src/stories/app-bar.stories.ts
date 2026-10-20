@@ -8,6 +8,6 @@ import { treeStory, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/AppBar", tags: ["autodocs"] } satisfies Meta;
 
-export const Default: StoryObj = treeStory(demos.appBarTree);
 export const Minimal: StoryObj = treeStory(demos.appBarMinimalTree);
+export const Default: StoryObj = treeStory(demos.appBarTree);
 export const Compare: StoryObj = treeStory(demos.appBarCompareTree);

@@ -1,5 +1,4 @@
 ---
-import "@skryensya/core/components/tile.css";
 /* Structure diagram: the Annotated specimen below is drawn by Annotation's own sheet, and a preview
    frame only ever copies the styles ITS page loaded, so it has to land here too. */
 import "@skryensya/core/components/annotation.css";
@@ -20,7 +19,6 @@ import {
   buttonIconSlotTree,
   buttonIconTree,
   buttonVariantTree,
-  tileButtonTree,
   buttonDoCostTree,
   buttonDoHardDeleteTree,
   buttonDontHardDeleteTree,
@@ -48,14 +46,10 @@ import { lucideIcons } from "@skryensya/icons-lucide";
 // ${t("button.iconsComment").split("\n").join("\n// ")}
 mountIcons(document, lucideIcons);`;
 
-const tileButtonVanilla = `import { createTileButton } from "@skryensya/vanilla/tile-button";
-
-const button = createTileButton();
-button.textContent = "Run deployment";
-button.addEventListener("click", runDeployment);`;
 ---
 
 <ComponentPageShell
+  breakHarness="/debug/button-break"
   hookPlayground={{
     tree: buttonDefaultTree(t),
     fit: true,
@@ -80,7 +74,7 @@ button.addEventListener("click", runDeployment);`;
   description={t("button.description")}
   contractId="button"
   vanillaInstallSteps={[{ title: t("button.vanillaInitTitle"), blocks: [{ kind: "code", code: iconsSnippet, lang: "ts", label: "JavaScript" }] }]}
-  appearanceTargetSelector="[data-sk-button], .sk-tile--interactive"
+  appearanceTargetSelector="[data-sk-button]"
   testFiles={["packages/react/src/components/button.test.tsx", "packages/vanilla/src/components/button.test.ts"]}
 >
   <Fragment slot="appearance">
@@ -164,8 +158,6 @@ button.addEventListener("click", runDeployment);`;
       description={t("button.linkBody")}
       storybookTitle={storybookTitle}
       storybookStory="AsLink" />
-    <UsagePreview tree={tileButtonTree(t)} title={t("button.tileTitle")} description={t("button.tileBody")} storybookTitle={storybookTitle} storybookStory="TileButton" />
-    <CodeBlock code={tileButtonVanilla} label="JavaScript" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

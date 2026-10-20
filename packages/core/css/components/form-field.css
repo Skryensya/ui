@@ -9,11 +9,11 @@
  * which is what keeps the error legible when color is unavailable (WCAG 1.4.1).
  */
 @layer components {
-  /* `labelHidden`: clipped, never removed. The label stays in the accessibility tree and stays the
+  /* `labelVisuallyHidden`: clipped, never removed. The label stays in the accessibility tree and stays the
    * control's `for` target; only the eye skips it, because the composition around the field already
    * named it. Same clip `sk-visually-hidden` applies, written here so the option needs no extra
    * class on the authored markup. */
-  .sk-form-field[data-label-hidden] > .sk-form-field__label {
+  .sk-form-field[data-label-visually-hidden] > .sk-form-field__label {
     position: absolute;
     inline-size: 1px;
     block-size: 1px;
@@ -44,6 +44,9 @@
      * wraps whatever it is given, which is why the gap is the only geometry it owns. */
     display: grid;
     gap: var(--sk-form-field-gap);
+    /* Inherited by label/hint/error: an unbroken long string (a URL in a hint, an email as the
+       error text) had no break point. */
+    overflow-wrap: anywhere;
   }
 
   .sk-form-field__label {

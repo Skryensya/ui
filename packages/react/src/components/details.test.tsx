@@ -100,6 +100,21 @@ describe("Details", () => {
     expect(container.querySelector<HTMLElement>(":scope > .sk-details")!.dataset.appearance).toBe("tactile");
   });
 
+  it("writes size on the group and on a lone details, md when omitted", () => {
+    const { container } = render(
+      <>
+        <DetailsGroup size="sm">
+          <Details><Details.Summary>Runtime</Details.Summary><Details.Content>Node 24</Details.Content></Details>
+        </DetailsGroup>
+        <Details><Details.Summary>Alone</Details.Summary><Details.Content>x</Details.Content></Details>
+      </>,
+    );
+    const group = container.querySelector<HTMLElement>(".sk-details-group")!;
+    expect(group.dataset.size).toBe("sm");
+    expect(group.querySelector<HTMLElement>(".sk-details")!.dataset.size).toBe("md");
+    expect(container.querySelector<HTMLElement>(":scope > .sk-details")!.dataset.size).toBe("md");
+  });
+
   it("joins a consumer's className instead of replacing the part's", () => {
     const ui = render(
       <DetailsGroup className="faq">

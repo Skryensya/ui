@@ -1,0 +1,80 @@
+---
+import { withPy } from "../../demos/tile";
+import "@skryensya/core/components/tile.css";
+import "@skryensya/core/components/radio-group.css";
+/* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
+import "@skryensya/core/components/annotation.css";
+import CodeBlock from "../CodeBlock.astro";
+import { annotationDemoCss } from "../../demos/annotation";
+import { tileRadioGroupAnatomyTree, tileRadioGroupTree } from "../../demos/radio-group";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import { tileRadioGroupDoTree, tileRadioGroupDontTree } from "../../demos/dodont-pairs";
+import { getLocale, tList, useTranslations } from "../../i18n";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const vanilla = `import { initComponents } from "@skryensya/vanilla/auto";
+
+// The root is authored with data-sk-tile-radio-group (data-name, data-default-value),
+// and each option with data-part="item" + an input[type=radio] with its value.
+// initComponents hydrates it with the @zag-js/radio-group machine (the same one React uses).
+await initComponents();
+
+const root = document.querySelector("[data-sk-tile-radio-group]");
+root.addEventListener("sk:tilevaluechange", (event) => {
+  console.log(event.detail.value);
+});`;
+---
+
+<ComponentPageShell
+  hookPlayground={{ tree: tileRadioGroupTree(t) }}
+  title="TileRadioGroup"
+  description={t("tileRadioGroupPage.description")}
+  contractId="tile"
+  importNames={["TileRadioGroup", "TileContent"]}
+  appearanceTargetSelector=".sk-tile--interactive"
+  testFiles={["packages/vanilla/src/components/tile-radio-group.svelte.test.ts"]}
+>
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} />
+  </Fragment>
+
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("tileRadioGroupPage.lede")} />
+
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={withPy(tileRadioGroupTree(t))} title={t("radioGroupPage.tileTitle")} description={t("radioGroupPage.tileBody1")} storybookTitle="Components/RadioGroup" storybookStory="TileRadioGroup" />
+    <p set:html={t("radioGroupPage.tileBody2")} />
+    <CodeBlock code={vanilla} label="JavaScript" />
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("radioGroupPage.tileAnatomyBody")} />
+    <UsagePreview tree={tileRadioGroupAnatomyTree(t)} css={annotationDemoCss} label={t("radioGroupPage.tileAnatomyPreviewLabel")} bare />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "tileRadioGroupPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("tileRadioGroupPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "tileRadioGroupPage.when")} avoid={tList(t, "tileRadioGroupPage.whenNot")} />
+    <DoDont
+      title={t("tileRadioGroupPage.dd.default.title")}
+      do={{ tree: tileRadioGroupDoTree(t), caption: t("tileRadioGroupPage.dd.default.do") }}
+      dont={{ tree: tileRadioGroupDontTree(t), caption: t("tileRadioGroupPage.dd.default.dont") }}
+    />
+    <ContentRules items={tList(t, "tileRadioGroupPage.content")} />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("tileRadioGroupPage.a11yIntro")} does={tList(t, "tileRadioGroupPage.a11yDoes")} yours={tList(t, "tileRadioGroupPage.a11yYours")} />
+  </Fragment>
+</ComponentPageShell>

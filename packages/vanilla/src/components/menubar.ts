@@ -122,7 +122,8 @@ function connect(root: HTMLElement): () => void {
     // dropdown's own content has focus, Home/End navigate ITS list, which is Zag's job.
     if ((event.key === "Home" || event.key === "End") && dropdownOpen) return;
 
-    const action = resolveMenubarKey({ key: event.key, focus, topCount: tops.length, hasMenuAt, subCountOf });
+    const dir = getComputedStyle(root).direction === "rtl" ? "rtl" : "ltr";
+    const action = resolveMenubarKey({ key: event.key, focus, topCount: tops.length, hasMenuAt, subCountOf, dir });
     if (action.kind === "none") return;
     event.preventDefault();
     event.stopPropagation();

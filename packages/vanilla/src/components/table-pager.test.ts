@@ -1,6 +1,7 @@
 import { fireEvent } from "@testing-library/dom";
 import { describe, expect, it } from "vitest";
 import { mountTablePager } from "./table-pager.js";
+import { destroyMount } from "../runtime/svelte-hydrate.js";
 
 const markup = `<div
   data-sk-table-pager
@@ -112,6 +113,20 @@ describe("TablePager Vanilla contracts", () => {
     const root = mount(markup);
     mountTablePager(root);
     expect(root.querySelectorAll("tbody tr[hidden]")).toHaveLength(3);
+  });
+
+  it("leaves no orphaned buttons when it reconnects on the same nav", () => {
+    const root = mount(markup);
+    const nav = root.querySelector<HTMLElement>("[data-sk-table-pager-nav]")!;
+
+    mountTablePager(root);
+    // Mirrors React's TablePager effect re-running on a changed dep (page size, labels, icon set):
+    // cleanup, then connect again, same DOM node, not a fresh mount.
+    destroyMount(root);
+    mountTablePager(root);
+
+    expect(nav.querySelectorAll(".sk-pagination__previous")).toHaveLength(1);
+    expect(nav.querySelectorAll(".sk-pagination__next")).toHaveLength(1);
   });
 
   it("also hears an enhanced Select's own event from the size part", () => {

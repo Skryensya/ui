@@ -457,3 +457,184 @@ describe("Lightbox (Vanilla): focus stays inside", () => {
     expect(state().index).toBe(0);
   });
 });
+
+describe("Lightbox (Vanilla): video", () => {
+  const video = () => document.querySelector<HTMLVideoElement>(`.${lightboxParts.video}`)!;
+  const clip = (attrs = "") =>
+    `<a class="sk-lightbox__trigger" href="/clips/dawn.webm" data-sk-lightbox-open="photos" data-lightbox-title="Dawn, moving" data-lightbox-alt="Slow satin folds" data-lightbox-thumbnail="/clips/dawn-poster.jpg" data-lightbox-width="1600" data-lightbox-height="900" ${attrs}><img src="/clips/dawn-thumb.jpg" alt="Dawn clip"></a>`;
+
+  /* The clip is the fourth item of the "photos" gallery, after the three photos. */
+  function setupWithClip(attrs = ""): void {
+    /* A viewer set up twice in one test must let go of the first: its listeners are on the document, and a click it handles is one the second ignores. */
+    getLightbox("photos")?.destroy();
+    document.body.innerHTML = markup().replace(`<a class="sk-lightbox__trigger" href="/elsewhere.jpg"`, `${clip(attrs)}<a class="sk-lightbox__trigger" href="/elsewhere.jpg"`);
+    expect(mountLightbox(document)).toBe(1);
+  }
+
+  beforeEach(() => {
+    vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue(undefined);
+    vi.spyOn(HTMLMediaElement.prototype, "pause").mockImplementation(() => {});
+    vi.spyOn(HTMLMediaElement.prototype, "load").mockImplementation(() => {});
+  });
+
+  it("builds the player next to the two images, hidden until a video is up", () => {
+    setupWithClip();
+    expect(video()).not.toBeNull();
+    expect(video().hidden).toBe(true);
+    expect(video().controls).toBe(true);
+  });
+
+  it("knows a video by its file name, and by `data-lightbox-type` when the name does not say", () => {
+    setupWithClip();
+    fireEvent.click(document.querySelector('a[href="/clips/dawn.webm"]')!);
+    expect(state().images[3]).toMatchObject({ src: "/clips/dawn.webm", thumbnailSrc: "/clips/dawn-poster.jpg", width: 1600, height: 900 });
+    getLightbox("photos")!.destroy();
+
+    document.body.innerHTML = markup().replace(`<a class="sk-lightbox__trigger" href="/elsewhere.jpg"`, `${clip().replace("/clips/dawn.webm", "/clips/42").replace('data-sk-lightbox-open="photos"', 'data-sk-lightbox-open="photos" data-lightbox-type="video"')}<a class="sk-lightbox__trigger" href="/elsewhere.jpg"`);
+    mountLightbox(document);
+    fireEvent.click(document.querySelector('a[href="/clips/42"]')!);
+    expect(video().getAttribute("src")).toBe("/clips/42");
+  });
+
+  it("shows the player in the image's place, starts it, and settles when its first frame is there", () => {
+    setupWithClip();
+    fireEvent.click(document.querySelector('a[href="/clips/dawn.webm"]')!);
+    expect(video().hidden).toBe(false);
+    expect(video().getAttribute("src")).toBe("/clips/dawn.webm");
+    expect(video().getAttribute("poster")).toBe("/clips/dawn-poster.jpg");
+    expect(video().getAttribute("aria-label")).toBe("Slow satin folds");
+    expect(image().hidden).toBe(true);
+    expect(HTMLMediaElement.prototype.play).toHaveBeenCalled();
+    expect(state().status).toBe("loading");
+    fireEvent.loadedData(video());
+    expect(state().status).toBe("loaded");
+  });
+
+  it("reports a clip that cannot play as an error, with the same words as a photo", () => {
+    setupWithClip();
+    fireEvent.click(document.querySelector('a[href="/clips/dawn.webm"]')!);
+    fireEvent.error(video());
+    expect(state().status).toBe("error");
+    expect(document.querySelector<HTMLElement>(`.${lightboxParts.error}`)!.hidden).toBe(false);
+  });
+
+  it("loops only a clip that asks to", () => {
+    setupWithClip(`data-lightbox-video-loop`);
+    fireEvent.click(document.querySelector('a[href="/clips/dawn.webm"]')!);
+    expect(video().loop).toBe(true);
+    getLightbox("photos")!.close();
+    setupWithClip();
+    fireEvent.click(document.querySelector('a[href="/clips/dawn.webm"]')!);
+    expect(video().loop).toBe(false);
+  });
+
+  it("offers no zoom for a video: the bar's buttons hide and the keys do nothing", () => {
+    setupWithClip();
+    fireEvent.click(document.querySelector('a[href="/clips/dawn.webm"]')!);
+    fireEvent.loadedData(video());
+    expect(button("zoom-in").hidden).toBe(true);
+    fireEvent.keyDown(dialog(), { key: "+" });
+    expect(state().zoom).toBe(1);
+  });
+
+  it("leaves a press on the player to the player: no pan, swipe or drag begins", () => {
+    setupWithClip();
+    fireEvent.click(document.querySelector('a[href="/clips/dawn.webm"]')!);
+    fireEvent.loadedData(video());
+    const id = down(300, 150, "touch", video());
+    move(id, 100, 150);
+    expect(dialog().hasAttribute(lightboxAttrs.dragging)).toBe(false);
+    up(id, 100, 150, "touch", video());
+    expect(state().index).toBe(3);
+  });
+
+  it("puts the player away, silent and with no file, when it moves on to a photo", () => {
+    setupWithClip();
+    fireEvent.click(document.querySelector('a[href="/clips/dawn.webm"]')!);
+    fireEvent.loadedData(video());
+    fireEvent.keyDown(dialog(), { key: "ArrowLeft" });
+    expect(state().index).toBe(2);
+    expect(video().hidden).toBe(true);
+    expect(video().hasAttribute("src")).toBe(false);
+    expect(HTMLMediaElement.prototype.pause).toHaveBeenCalled();
+    expect(image().hidden).toBe(false);
+    expect(image().getAttribute("src")).toBe("/c.jpg");
+    expect(button("zoom-in").hidden).toBe(false);
+  });
+
+  it("stops the clip and lets go of its file when the viewer closes", () => {
+    setupWithClip();
+    fireEvent.click(document.querySelector('a[href="/clips/dawn.webm"]')!);
+    fireEvent.loadedData(video());
+    getLightbox("photos")!.close();
+    expect(video().hidden).toBe(true);
+    expect(video().hasAttribute("src")).toBe(false);
+    expect(HTMLMediaElement.prototype.pause).toHaveBeenCalled();
+  });
+
+  it("does not fetch a neighbouring video ahead of time", () => {
+    setupWithClip();
+    const Original = window.Image;
+    const made: string[] = [];
+    vi.stubGlobal(
+      "Image",
+      class extends Original {
+        constructor() {
+          super();
+          Object.defineProperty(this, "src", { set: (value: string) => void made.push(value), get: () => "" });
+        }
+      },
+    );
+    fireEvent.click(trigger("Peak"));
+    fireEvent.load(image());
+    expect(made).not.toContain("/clips/dawn.webm");
+    vi.unstubAllGlobals();
+  });
+
+  describe("with the system's VideoPlayer authored in the stage", () => {
+    const playerMarkup = `<div class="sk-video-player" data-sk-video-player role="group" aria-label="Video player"><div class="sk-video-player__stage"><video preload="none"></video></div></div>`;
+    function setupWithPlayer(): void {
+      getLightbox("photos")?.destroy();
+      document.body.innerHTML = markup()
+        .replace(`<a class="sk-lightbox__trigger" href="/elsewhere.jpg"`, `${clip()}<a class="sk-lightbox__trigger" href="/elsewhere.jpg"`)
+        .replace('<div class="sk-lightbox__stage">', `<div class="sk-lightbox__stage">${playerMarkup}`);
+      expect(mountLightbox(document)).toBe(1);
+    }
+    const playerRoot = () => document.querySelector<HTMLElement>(".sk-video-player")!;
+    const innerVideo = () => playerRoot().querySelector<HTMLVideoElement>("video")!;
+
+    it("builds no player of its own: the authored one is the surface, and starts hidden", () => {
+      setupWithPlayer();
+      expect(document.querySelector(`.${lightboxParts.video}`)).toBeNull();
+      expect(playerRoot().hidden).toBe(true);
+    });
+
+    it("loads the clip into the player's own <video> and shows the player, sized and named for the clip", () => {
+      setupWithPlayer();
+      fireEvent.click(document.querySelector('a[href="/clips/dawn.webm"]')!);
+      expect(playerRoot().hidden).toBe(false);
+      expect(innerVideo().getAttribute("src")).toBe("/clips/dawn.webm");
+      expect(innerVideo().getAttribute("poster")).toBe("/clips/dawn-poster.jpg");
+      expect(playerRoot().getAttribute("aria-label")).toBe("Slow satin folds");
+      expect(playerRoot().hasAttribute(lightboxAttrs.sized)).toBe(true);
+      expect(image().hidden).toBe(true);
+      fireEvent.loadedData(innerVideo());
+      expect(state().status).toBe("loaded");
+    });
+
+    it("puts the player away, and the clip with it, when it moves on to a photo and when it closes", () => {
+      setupWithPlayer();
+      fireEvent.click(document.querySelector('a[href="/clips/dawn.webm"]')!);
+      fireEvent.loadedData(innerVideo());
+      fireEvent.keyDown(dialog(), { key: "ArrowLeft" });
+      expect(playerRoot().hidden).toBe(true);
+      expect(innerVideo().hasAttribute("src")).toBe(false);
+      expect(HTMLMediaElement.prototype.pause).toHaveBeenCalled();
+      fireEvent.keyDown(dialog(), { key: "ArrowRight" });
+      expect(playerRoot().hidden).toBe(false);
+      getLightbox("photos")!.close();
+      expect(playerRoot().hidden).toBe(true);
+      expect(innerVideo().hasAttribute("src")).toBe(false);
+    });
+  });
+});

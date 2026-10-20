@@ -1,30 +1,25 @@
+import { getPlacement } from "@zag-js/popper";
+
 /*
- * ANCHORED, the contract, and deliberately the smallest module in core.
+ * ANCHORED, the contract, and deliberately a small module.
  *
- * Eight components place a box against another element, tooltip, popover, popup, menu and its
- * submenus, select, combobox, date picker. The PLACEMENT of that box is not JavaScript's
- * job (decision 25): where the browser has CSS Anchor Positioning it lays the box out itself, with
- * `position-try-fallbacks` doing the flip and `position-visibility` handling the lost anchor, both
- * inside the layout engine where that information already lives. Where it does not, the component's
- * Zag machine positions it, because `@zag-js/popper` is already in the tree.
+ * Eight components place a box against another element: tooltip, popover, menu and its submenus,
+ * select, combobox, date picker and the copy button's flag. ONE engine places all of them, Zag's
+ * popper (`@zag-js/popper`, floating-ui underneath), and there is no second path.
  *
- * So this file contains NO GEOMETRY. It never measures an element, never reads a rect, never runs on
- * scroll. What it owns is the one thing that cannot live in a shared stylesheet: the RELATIONSHIPS
- * between an anchor, the box placed against it and the arrow that points back at the anchor, which
- * are names unique per instance. Everything else, the sides, the gap, the flip, the hiding, is in
- * `patterns/anchored.css`.
+ * Most of them already run a Zag machine, and that machine writes the placement as inline style on
+ * its positioner (`getPositionerProps()`), so the component only has to carry the classes below and
+ * `anchoredPositioning`. Popover and the copy button's flag have no machine of their own; they call
+ * `placeAnchored` and get the same engine, the same variables and the same arrow.
  *
- * The two engines must never both run. On the browser path a binding drops the inline `style` that
- * the machine puts on the positioner (`stripPositioningStyle`), and that is what lets the pattern's
- * declarations stay free of `!important`. It is load-bearing rather than tidiness: `position-try`
- * can only flip declarations that are NOT `!important`, so one there would switch the flip off.
+ * What the stylesheet owns (`patterns/anchored.css`) is only what that engine leaves open: that the
+ * box is fixed, where the arrow's diamond sits and which way it turns.
  */
 
 /**
  * Which side of the anchor the box asks for, in logical axes like the rest of the system, so they
- * swap themselves in RTL. A REQUEST and not a guarantee: when it does not fit, the browser flips it
- * to the opposite side of the SAME axis. Asking for `inline-end` means wanting the box beside the
- * anchor, so landing above it would be disobedience rather than adaptation.
+ * swap themselves in RTL. A REQUEST and not a guarantee: when it does not fit, the popper flips it
+ * to the opposite side of the SAME axis.
  */
 export type AnchorPlacement = "block-start" | "block-end" | "inline-start" | "inline-end";
 
@@ -40,9 +35,8 @@ export function isAnchorPlacement(value: unknown): value is AnchorPlacement {
 }
 
 /**
- * Zag's placements are PHYSICAL; ours are logical. Only the JS fallback needs the translation, on
- * the browser path `position-area` is already logical and resolves against the writing direction
- * with nobody translating anything.
+ * Zag's placements are PHYSICAL; ours are logical. This is the translation, for the boxes that are
+ * placed by `placeAnchored` and for a machine that is handed the side as an option.
  */
 export const anchorPlacementToZag = {
   "block-start": "top",
@@ -58,22 +52,16 @@ export const anchorPlacementToZag = {
  * `sk-button`: `class="sk-tooltip__trigger sk-anchor"`, `class="sk-tooltip__positioner sk-anchored"`.
  */
 export const anchoredParts = {
-  /** The element the box is placed against. Carries `anchor-name`. */
+  /** The element the box is placed against. */
   anchor: "sk-anchor",
-  /** The box being placed. Carries `position-anchor` and everything else. */
+  /** The box being placed. */
   positioner: "sk-anchored",
   /**
    * OPTIONAL. A rotated square poking out of the box toward the anchor, authored as a child of the
-   * positioner. Absent unless the markup asks for it: a tooltip or a popover wants one because it is
-   * floating chrome that has to say WHICH control it is talking about; a menu or a select does not,
-   * because a shared edge already says it. Decorative, so it is always `aria-hidden`.
-   *
-   * It comes out of the ANCHOR, not out of the box's centre, so it is an anchored box in its own
-   * right even though it lives inside the positioner. What makes that possible is `position: fixed`:
-   * the spec only lets an element use an anchor that descends from its CONTAINING BLOCK, and the
-   * trigger does not descend from the positioner, but a fixed box is contained by the viewport,
-   * where the trigger does live. With `absolute` the containing block would be the positioner and
-   * every anchor reference would be invalid, silently. The geometry is in `patterns/anchored.css`.
+   * positioner and marked `data-part="arrow"`, which is how the popper finds it to move it. Absent
+   * unless the markup asks for it: a tooltip or a popover wants one because it is floating chrome
+   * that has to say WHICH control it is talking about; a menu or a select does not, because a shared
+   * edge already says it. Decorative, so it is always `aria-hidden`.
    */
   arrow: "sk-anchored-arrow",
 } as const;
@@ -91,108 +79,106 @@ export const anchoredAttrs = {
 } as const;
 
 /**
- * The styling hooks the pattern publishes. `name` is the odd one: it is written by a binding rather
- * than authored, because it must differ per instance.
+ * The positioning every machine in the kit is given, spread into its `positioning` option.
+ *
+ * `absolute`: the box scrolls WITH the document, so the compositor moves it together with its anchor
+ * and it cannot trail it on page scroll (a `fixed` box is repositioned by JS a frame later: measured,
+ * a full wheel step behind). Overflow is still measured against the viewport by the popper.
+ *
+ * `animationFrame`: the popper re-measures every frame while the box is open, instead of after each
+ * scroll event, which lands a frame behind the page and reads as a menu trailing its trigger. The
+ * cost is one cheap measurement per frame, only while something is open.
  */
-export const anchoredHooks = {
-  /** The dashed-ident tying one anchor to one positioner. Set on BOTH elements. */
-  name: "--sk-anchored-name",
-  /**
-   * The dashed-ident naming the POSITIONER itself, so its arrow can measure it. The arrow reads only
-   * its SIZE (`anchor-size()`), never its position: a size cannot go stale on scroll, and Blink does
-   * not re-resolve one anchored element against another during a scroll-only update.
-   */
-  boxName: "--sk-anchored-box-name",
-  /** The gap to the anchor. One hook, because a flip changes the SIDE but not the gap. */
-  offset: "--sk-anchored-offset",
-  /** `auto` by default; `anchor-size(width)` is how Select matches its trigger's width. */
-  size: "--sk-anchored-size",
-  /** Escape hatch for a placement outside the four, such as a submenu's `inline-end span-block-end`. */
-  positionArea: "--sk-anchored-position-area",
-  positionTry: "--sk-anchored-position-try",
-  /** The arrow's side, and its two colors. A component re-declares these; consumers rarely do. */
-  arrowSize: "--sk-anchored-arrow-size",
-  arrowBg: "--sk-anchored-arrow-bg",
-  arrowBorderColor: "--sk-anchored-arrow-border-color",
-  /**
-   * How far the arrow's centre stays clear of the box's corner, so a diamond never lands on the
-   * rounded part. Defaults to one and a half times the arrow, which clears a control-sized radius.
-   */
-  arrowInset: "--sk-anchored-arrow-inset",
+export const anchoredPositioning = {
+  strategy: "absolute",
+  /** The gap to the anchor, in px: what `--space-stack-xs` was when the stylesheet placed these. */
+  gutter: 4,
+  listeners: {
+    ancestorScroll: true,
+    ancestorResize: true,
+    elementResize: true,
+    layoutShift: true,
+    animationFrame: true,
+  },
 } as const;
 
-/**
- * Is the browser the positioning engine here? When false, the component's machine is, and a binding
- * must leave the machine's inline styles alone.
- */
-export function supportsAnchorPositioning(): boolean {
-  return (
-    typeof CSS !== "undefined" &&
-    typeof CSS.supports === "function" &&
-    CSS.supports("anchor-name: --a")
-  );
+export interface PlaceAnchoredOptions {
+  /** The side to ask for. Default `block-end`. */
+  placement?: AnchorPlacement;
+  /** The gap to the anchor, in px. */
+  gutter?: number;
+  /** Make the box as wide as the anchor. */
+  sameWidth?: boolean;
+  /** `absolute` scrolls with the document; `fixed` for a top-layer box, which is not in its flow. */
+  strategy?: "absolute" | "fixed";
 }
 
 /**
- * A dashed-ident unique to one instance, derived from an id the component already has. Zag's
- * generated ids carry `:` and consumers author anything, so everything outside `[A-Za-z0-9_-]`
- * folds to `-`; collisions are impossible in practice because the id was already unique.
- */
-export function anchorNameFor(id: string): string {
-  return `--sk-anchor-${id.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
-}
-
-/**
- * The same, for the POSITIONER's own name, which its arrow measures. A second per-instance ident and
- * not `anchor-scope` on one shared name: two positioners open at once (a menu and its submenu) would
- * both answer to it, and each arrow has to measure ITS box.
- */
-export function anchorBoxNameFor(id: string): string {
-  return boxNameFrom(anchorNameFor(id));
-}
-
-const boxNameFrom = (name: string) => `${name}-box`;
-
-/**
- * Wire one anchor to one positioner, and hand back the undo.
+ * Place `floating` against `reference` with the popper, and hand back the undo. For the boxes that
+ * have no Zag machine of their own; the machines place theirs.
  *
- * The names go on BOTH elements as custom properties rather than being inherited from a common
- * ancestor: there is no common ancestor once React portals the positioner to the body. An arrow
- * inside the positioner needs both names too, and gets them by inheritance, which is one more reason
- * it is authored in there. Idempotent, so a binding that re-runs it on every render, which is what it
- * must do when the machine rewrites the positioner's inline style, costs nothing.
+ * The popper writes `--x`/`--y` on the box (the stylesheet turns them into the transform) and, when
+ * the box holds a `[data-part="arrow"]`, moves it too. `data-side` is mirrored onto the box and the
+ * arrow with the side the popper RESOLVED, which is what the stylesheet reads to turn the diamond.
  */
-export function bindAnchor(
-  anchor: HTMLElement,
-  positioner: HTMLElement | null | undefined,
-  name: string,
+export function placeAnchored(
+  reference: HTMLElement,
+  floating: HTMLElement,
+  { placement = "block-end", gutter = anchoredPositioning.gutter, sameWidth = false, strategy = "absolute" }: PlaceAnchoredOptions = {},
 ): () => void {
-  anchor.style.setProperty(anchoredHooks.name, name);
-  positioner?.style.setProperty(anchoredHooks.name, name);
-  positioner?.style.setProperty(anchoredHooks.boxName, boxNameFrom(name));
-
+  const arrow = floating.querySelector<HTMLElement>("[data-part=arrow]");
+  floating.style.position = strategy;
+  const stop = getPlacement(reference, floating, {
+    ...anchoredPositioning,
+    strategy,
+    placement: anchorPlacementToZag[placement],
+    gutter,
+    sameWidth,
+    onComplete(data) {
+      const side = data.placement.split("-")[0];
+      floating.dataset.side = side;
+      // A box measured while still `display: none` has no size and lands at the origin; the next pass
+      // (the popper watches the box's size) puts it right, and only then is it let be seen.
+      if (floating.offsetWidth) floating.dataset.placed = "";
+      if (arrow) arrow.dataset.side = side;
+    },
+  });
   return () => {
-    anchor.style.removeProperty(anchoredHooks.name);
-    positioner?.style.removeProperty(anchoredHooks.name);
-    positioner?.style.removeProperty(anchoredHooks.boxName);
+    stop();
+    delete floating.dataset.placed;
   };
 }
 
-/**
- * Drop a machine's `style` from its positioner props so it stops positioning, used on the browser
- * path only. Attributes it also owns, id, dir, hidden, are kept: the machine still runs the popup,
- * it just does not place it.
+/*
+ * The native `popover` boxes: the browser owns their light-dismiss, Escape and top layer, so there is
+ * no machine to place them. One listener for the document places whichever `.sk-anchored[popover]`
+ * opens against the control whose `popovertarget` names it, and lets go when it closes. Idempotent,
+ * so every binding that renders a Popover can ask for it.
  *
- * `T extends object`, NOT `Record<string, unknown>`, and the difference is load-bearing for every
- * caller. A Zag `connect()` types its props against a framework's own attribute interfaces, which are
- * closed and carry no index signature, so they do not satisfy `Record<string, unknown>` - which is why
- * all seven vanilla call sites used to cast around this function. `object` accepts them as they are,
- * and the rest destructure works the same either way.
+ * Placed on `toggle`, once the box is shown and so has a size to measure; `data-placed` keeps it hidden
+ * until the first real measurement, so it never flashes at the origin.
  */
-export function stripPositioningStyle<T extends object>(props: T): Omit<T, "style"> {
-  // The one assertion, here rather than at each caller. `T extends object` admits `{}`, which has no
-  // `style` to destructure, so the narrowing has to happen somewhere; doing it once inside is the
-  // whole point of widening the constraint.
-  const { style: _style, ...rest } = props as T & { style?: unknown };
-  return rest as Omit<T, "style">;
+const placedPopovers = new WeakMap<Element, () => void>();
+let popoverListenersInstalled = false;
+
+export function placeNativePopovers(doc: Document = document): void {
+  if (popoverListenersInstalled) return;
+  popoverListenersInstalled = true;
+  const isAnchoredPopover = (el: EventTarget | null): el is HTMLElement =>
+    el instanceof HTMLElement && el.hasAttribute("popover") && el.classList.contains(anchoredParts.positioner);
+  doc.addEventListener(
+    "toggle",
+    (event) => {
+      const box = event.target;
+      if (!isAnchoredPopover(box)) return;
+      placedPopovers.get(box)?.();
+      placedPopovers.delete(box);
+      if ((event as ToggleEvent).newState !== "open") return;
+      const trigger = doc.querySelector<HTMLElement>(`[popovertarget="${CSS.escape(box.id)}"]:not([popovertargetaction="hide"])`);
+      if (!trigger) return;
+      const requested = box.getAttribute(anchoredAttrs.placement);
+      placedPopovers.set(box, placeAnchored(trigger, box, { placement: isAnchorPlacement(requested) ? requested : "block-end", strategy: "fixed" }));
+    },
+    true,
+  );
 }

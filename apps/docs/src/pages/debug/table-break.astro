@@ -1,0 +1,17 @@
+---
+/* Dev-only stress harness for Table: long cells, empty/single rows, sticky and resizable columns. */
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/table.css";
+import "@skryensya/core/patterns/splitter.css";
+import "../../styles/site.css";
+import { TableBreak } from "../../components/react-demos/debug-table-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+
+<DebugShell title="Table" docsHref="/components/table">
+  <TableBreak client:only="react" />
+</DebugShell>

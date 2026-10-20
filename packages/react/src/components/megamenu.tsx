@@ -20,7 +20,8 @@ import {
   type RefObject,
 } from "react";
 import { createPortal } from "react-dom";
-import { useAnchored } from "./anchored.js";
+import { placeAnchored } from "@skryensya/core/anchored";
+import { anchorProps, positionerProps } from "./anchored.js";
 import { ImageFrame } from "./image-frame.js";
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
@@ -105,10 +106,10 @@ export type MegamenuProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
 
 export function Megamenu({ children, className, container, label, onOpenChange, ...props }: MegamenuProps) {
   const id = useId();
-  const anchored = useAnchored(id);
   const [state, setState] = useState<MegamenuState>({ openIndex: null, pinned: false });
   const [displayedIndex, setDisplayedIndex] = useState<number | null>(null);
   const rootRef = useRef<HTMLElement | null>(null);
+  const positionerRef = useRef<HTMLDivElement | null>(null);
   const visiblePanelRef = useRef<HTMLDivElement | null>(null);
   const outgoingPreviewImage = useRef<HTMLImageElement | null>(null);
   const pointerDownWasInsideRef = useRef(false);
@@ -356,9 +357,20 @@ export function Megamenu({ children, className, container, label, onOpenChange, 
     if (link && !stillOnAPreviewLink(event.relatedTarget)) resetPreview();
   };
 
+  /* No Zag machine places this one: the panel is a single box shared by every trigger, placed against the
+     bar itself while any of them is open. */
+  const isOpen = state.openIndex !== null;
+  useEffect(() => {
+    const root = rootRef.current;
+    const box = positionerRef.current;
+    if (!isOpen || !root || !box) return;
+    return placeAnchored(root, box, { placement: "block-end" });
+  }, [isOpen]);
+
   const panel = (
     <div
-      {...anchored.positioner({}, cx(megamenuParts.positioner, megamenuParts.root))}
+      {...positionerProps({}, cx(megamenuParts.positioner, megamenuParts.root))}
+      ref={positionerRef}
       data-sk-megamenu-positioner
       onPointerEnter={cancelPanelClose}
       onPointerLeave={schedulePanelClose}
@@ -403,7 +415,7 @@ export function Megamenu({ children, className, container, label, onOpenChange, 
     <MegamenuContext.Provider value={context}>
       <nav
         {...props}
-        {...anchored.anchor(cx(megamenuParts.root, className))}
+        {...anchorProps(cx(megamenuParts.root, className))}
         {...{ [megamenuAttrs.root]: "" }}
         aria-label={label}
         onBlurCapture={onBlur}

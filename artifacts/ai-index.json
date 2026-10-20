@@ -861,41 +861,6 @@
       ]
     },
     {
-      "category": "data",
-      "css": "@skryensya/core/components/chart.css",
-      "id": "chart",
-      "signatures": [
-        {
-          "alternatives": [
-            "Meter",
-            "Progress",
-            "Table",
-            "Stat"
-          ],
-          "avoidWhen": [
-            "it is ONE measurement within a known range, not a series; that is Meter",
-            "it is the progress of a task; that is Progress",
-            "the values have to be read precisely, compared row by row or sorted; that is a Table, and a five-bar chart is a worse table",
-            "the series has dozens of entries: bars become one-pixel lines and the labels overlap; group the data before drawing it"
-          ],
-          "host": "figure",
-          "id": "Chart",
-          "intent": [
-            "series-of-labelled-values",
-            "trend-over-time",
-            "bar-chart",
-            "sparkline",
-            "dashboard-graph"
-          ],
-          "parents": [],
-          "useWhen": [
-            "there is a SERIES of named values and its shape needs to be seen: a total per month, per hour, per version",
-            "the number of a metric is already stated in text and the chart adds the trend, it does not replace it"
-          ]
-        }
-      ]
-    },
-    {
       "category": "forms",
       "css": "@skryensya/core/components/checkbox.css",
       "id": "checkbox",
@@ -1664,7 +1629,7 @@
           "avoidWhen": [
             "what has to be named are the parts of one thing already drawn: that is Annotation, which anchors each label to a selector inside the subject and does not draw a graph",
             "the content is a sequence with no branches and no loops: that is Procedure if they are instructions, or Steps if progress is primary; a single-column diagram with no forks is a list with extra lines",
-            "the hierarchy is containment and not flow (folders, a file tree): that is TreeView or Folder, where what matters is what is inside what",
+            "the hierarchy is containment and not flow (folders, a file tree): that is TreeView, where what matters is what is inside what",
             "the graph is large, comes from data, or has to be explored or have its nodes dragged: this does not do layout, it draws small hand-written diagrams. Wrapping it in a Canvas is enough to zoom and pan the view",
             "full UML notation, swimlanes or box types by convention (cylinder, parallelogram, hexagon) are needed: those are conventions the reader has to be taught, and of the prose shapes only the three understood without a legend live here. Logic gates are the exception and pass the same test from the other side: they are not a box that means AND, they are the symbol the standard assigns to conjunction, and anyone who reads the notation reads it without a legend",
             "a real schematic is needed: this draws the seven gates and nothing else. There are no flip-flops, buses, multiplexers, components with numbered pins, junction nodes or netlist; a gate holds nothing inside either, so a visible designator (`U1`) has nowhere to go",
@@ -1958,55 +1923,6 @@
       ]
     },
     {
-      "category": "actions",
-      "css": "@skryensya/core/components/dock.css",
-      "id": "dock",
-      "signatures": [
-        {
-          "alternatives": [
-            "Toolbar",
-            "NavList"
-          ],
-          "avoidWhen": [
-            "The controls form a dense editor toolbar that needs roving keyboard focus.",
-            "The items are site destinations rather than actions."
-          ],
-          "host": "div",
-          "id": "Dock",
-          "intent": [
-            "dock",
-            "compact-action-launcher",
-            "icon-action-group"
-          ],
-          "parents": [],
-          "useWhen": [
-            "A small set of frequent application actions needs an icon-based launcher.",
-            "The actions are the application's own, always one press away, and a name on hover or focus is enough to tell the icons apart."
-          ]
-        },
-        {
-          "alternatives": [
-            "Button.action",
-            "Button.navigation"
-          ],
-          "avoidWhen": [
-            "The control navigates to a page or represents a persistent toggle."
-          ],
-          "host": "button",
-          "id": "DockItem",
-          "intent": [
-            "dock-action"
-          ],
-          "parents": [
-            "Dock"
-          ],
-          "useWhen": [
-            "A named icon button runs one action in a Dock."
-          ]
-        }
-      ]
-    },
-    {
       "category": "forms",
       "css": "@skryensya/core/components/editor.css",
       "id": "editor",
@@ -2206,107 +2122,6 @@
             "files have to be attached: a resume, a receipt, photos",
             "drag and drop should be accepted besides the button, without forcing anyone to drag",
             "dropping the file on a whole panel or the whole page is expected, not only on the dashed box; that is dropScope element or page, with overlayLabel so the target shows"
-          ]
-        }
-      ]
-    },
-    {
-      "category": "content",
-      "css": "@skryensya/core/components/folder.css",
-      "id": "folder",
-      "signatures": [
-        {
-          "alternatives": [
-            "Box",
-            "TileLink",
-            "Accordion"
-          ],
-          "avoidWhen": [
-            "it is a surface with no label of its own; that is a Box, which draws nothing",
-            "the whole surface is a control; that is a TileLink or a TileButton, which already bring a control's state and focus",
-            "the content opens and closes; that is an Accordion or a Details"
-          ],
-          "host": "div",
-          "id": "Folder",
-          "intent": [
-            "folder",
-            "tabbed-surface",
-            "labelled-card",
-            "file-folder"
-          ],
-          "parents": [],
-          "useWhen": [
-            "a block of content needs to say what it is about BEFORE it is read: the tab is a label, not one more heading",
-            "there is a collection of things of the same kind and each should read as a separate object",
-            "at rest it should read as clean text: a folder is never seen until it is touched"
-          ]
-        },
-        {
-          "alternatives": [
-            "Folder",
-            "TileLink"
-          ],
-          "avoidWhen": [
-            "the folder does something on the page instead of navigating; that is a TileButton",
-            "there is more than one destination inside; nested links do not exist, put the links in the body of a Folder"
-          ],
-          "host": "a",
-          "id": "FolderLink",
-          "intent": [
-            "folder-link",
-            "clickable-folder",
-            "folder-that-goes-somewhere"
-          ],
-          "parents": [],
-          "useWhen": [
-            "the whole folder goes somewhere: the complete rectangle is the destination",
-            "the reveal has to respond to the keyboard without depending on what is inside"
-          ]
-        },
-        {
-          "alternatives": [
-            "ImageFrame",
-            "Folder"
-          ],
-          "avoidWhen": [
-            "the image is the folder's content and not a preview; that goes in the body, where it can be reached",
-            "it is outside a Folder: alone it means nothing"
-          ],
-          "host": "div",
-          "id": "FolderPreview",
-          "intent": [
-            "folder-preview",
-            "one-card-in-a-folder-fan"
-          ],
-          "parents": [
-            "Folder",
-            "FolderLink"
-          ],
-          "useWhen": [
-            "it goes in the previews slot of a Folder or a FolderLink: it is the box of ONE image of the fan",
-            "the image needs its own mat and shadow, which the image alone cannot carry"
-          ]
-        },
-        {
-          "alternatives": [
-            "Grid",
-            "Folder"
-          ],
-          "avoidWhen": [
-            "each folder needs to be seen whole; that is a Grid or an Inline of Folders",
-            "the set is a list with semantics of its own (results, steps); whoever contains it names that, not this"
-          ],
-          "host": "div",
-          "id": "FolderStack",
-          "intent": [
-            "folder-stack",
-            "overlapping-cards",
-            "drawer-of-folders"
-          ],
-          "parents": [],
-          "useWhen": [
-            "the folders read as a stack: each shows its tab and a strip of body",
-            "the overlap itself is the information, that there is more below and there is an order"
           ]
         }
       ]
@@ -3486,12 +3301,11 @@
       "signatures": [
         {
           "alternatives": [
-            "Sticker",
             "ScrollStack",
             "Carousel"
           ],
           "avoidWhen": [
-            "there are fewer than three plates or more than five; two layers is a peel and Sticker fits it, and a longer series is Carousel or Procedure",
+            "there are fewer than three plates or more than five; a longer series is Carousel or Procedure",
             "the layers carry the information a reader needs (a chart and its legend): it is hidden at rest and absent on touch screens, so it would not be found",
             "the page should open it on a tap; hover is not trusted on a touch screen, so write state yourself from your own control"
           ],
@@ -5042,43 +4856,6 @@
       ]
     },
     {
-      "category": "content",
-      "css": "@skryensya/core/components/sticker.css",
-      "id": "sticker",
-      "signatures": [
-        {
-          "alternatives": [
-            "ImageFrame",
-            "Avatar.image",
-            "Badge"
-          ],
-          "avoidWhen": [
-            "the media needs a rectangular crop, a fixed aspect ratio or object-fit: that is an ImageFrame",
-            "the image only has to be shown; a plain img carries no material treatment and costs nothing",
-            "the motion is a generic entrance or a call for attention; that is an effect such as sk-fx-reveal or sk-fx-pulse, not a peel",
-            "it is a person's identity: that is an Avatar, whatever shape the photo has",
-            "it is a count or a status next to something else; that is a Badge or a Tag, which are text, not artwork",
-            "clicking it is supposed to do something; a sticker is not a control, so put it inside a Button or give the product its own control"
-          ],
-          "host": "span",
-          "id": "Sticker",
-          "intent": [
-            "sticker",
-            "die-cut-sticker",
-            "peelable-sticker",
-            "silhouette-outline",
-            "badge-sticker"
-          ],
-          "parents": [],
-          "useWhen": [
-            "a graphic needs a die-cut edge that follows its own silhouette, not the rectangle around it",
-            "artwork has to read as a physical, adhesive object on the page: a badge earned, a mark placed, a decal",
-            "the product has a state for the graphic's placement (not yet applied, lifting off, stuck down) and it should be seen"
-          ]
-        }
-      ]
-    },
-    {
       "category": "forms",
       "css": "@skryensya/core/components/switch.css",
       "id": "switch",
@@ -6531,5 +6308,5 @@
     }
   ],
   "schemaVersion": "2.3",
-  "sourceHash": "19f4c38fb39e1821"
+  "sourceHash": "85af09bba37eccc7"
 }

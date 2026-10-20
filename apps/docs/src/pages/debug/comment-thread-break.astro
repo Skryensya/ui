@@ -1,0 +1,12 @@
+---
+if (import.meta.env.PROD) return new Response(null, { status: 404 });
+import "@skryensya/core/components/comment-thread.css";
+import "@skryensya/core/components/avatar.css";
+import "@skryensya/core/components/dialog.css";
+import "@skryensya/core/components/form-field.css";
+import "@skryensya/core/components/input.css";
+import "@skryensya/core/patterns/vaul.css";
+import { CommentThreadBreak } from "../../components/react-demos/debug-comment-thread-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+<DebugShell title="CommentThread" docsHref="/components/comment-thread"><CommentThreadBreak client:only="react" /></DebugShell>

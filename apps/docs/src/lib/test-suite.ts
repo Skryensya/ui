@@ -118,7 +118,7 @@ export function demandedFiles(repoRoot: string): readonly DemandedFile[] {
     /*
      * `packages/react/src/components/button.test.tsx` splits after the workspace directory, which is
      * always two segments. BOTH ROOTS COUNT: 103 of the files quoted today live under `packages/*`
-     * and three under `apps/docs` (`CardPage.test.ts`, `ChartsPage.test.ts`,
+     * and two under `apps/docs` (`CardPage.test.ts`,
      * `examples/card-sources.test.ts`). Assuming `packages/` alone is what the first run of this
      * function did, and it threw on the first of those three - which is the behaviour to keep.
      *

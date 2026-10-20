@@ -273,6 +273,15 @@ export function connectTablePager(root: HTMLElement, options: TablePagerDomOptio
 
   return () => {
     for (const cleanup of cleanups) cleanup();
+    /*
+     * Reconciliation only ever removes a nav child whose key is no longer DESIRED (see
+     * `reconcileNav`); it never hears about the whole pager going away. Without this, a second
+     * `connectTablePager` call on the same `nav` (React re-running the effect on a changed dep,
+     * not just an unmount) started from an empty `navNodes` map and rebuilt every button fresh,
+     * leaving the previous call's buttons orphaned in the DOM: one real `nav`, two sets of buttons.
+     */
+    for (const el of navNodes.values()) el.remove();
+    navNodes.clear();
   };
 }
 

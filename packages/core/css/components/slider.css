@@ -59,6 +59,13 @@
     background: var(--sk-slider-fill-color);
   }
 
+  /* Keep the first paint mirrored while React resolves an inherited dir for Zag after hydration. */
+  .sk-slider:dir(rtl) .sk-slider__range,
+  .sk-slider-range:dir(rtl) .sk-slider-range__fill {
+    left: var(--slider-range-end) !important;
+    right: var(--slider-range-start) !important;
+  }
+
   .sk-slider__thumb,
   .sk-slider-range__low,
   .sk-slider-range__high {
@@ -81,6 +88,11 @@
   .sk-slider-range__low[data-dragging],
   .sk-slider-range__high[data-dragging] {
     cursor: grabbing;
+  }
+
+  .sk-slider:dir(rtl) .sk-slider__thumb,
+  .sk-slider-range:dir(rtl) :is(.sk-slider-range__low, .sk-slider-range__high) {
+    transform: translateX(50%) !important;
   }
 
   .sk-slider__thumb:focus-visible,

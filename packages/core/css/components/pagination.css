@@ -77,7 +77,6 @@
     box-sizing: border-box;
     display: inline-grid;
     place-items: center;
-    inline-size: var(--sk-pagination-item-size);
     block-size: var(--sk-pagination-item-size);
     padding: 0;
     border: var(--sk-pagination-item-border-width) solid var(--sk-pagination-item-border-color);
@@ -103,6 +102,32 @@
       scale var(--motion-feedback-duration) var(--motion-feedback-easing);
   }
 
+  /* The two arrows hold one glyph each and never grow: a fixed square, same as before. */
+  .sk-pagination__previous,
+  .sk-pagination__next {
+    inline-size: var(--sk-pagination-item-size);
+  }
+
+  /* `chevron-left`/`chevron-right` are hardcoded icon names (`pagination.tsx`), which do not
+     follow `dir` on their own: found as a real bug, same class as Lightbox's own chevrons. */
+  .sk-pagination__previous .sk-icon:dir(rtl),
+  .sk-pagination__next .sk-icon:dir(rtl) {
+    transform: scaleX(-1);
+  }
+
+  /*
+   * Found on the break harness (`/debug/pagination-break`): a page button was the SAME fixed
+   * square, with no escape for a number wider than one or two digits - a realistic 5-digit total
+   * (a search result set past 10,000 pages) collided with its neighbours instead of the box
+   * growing. `min-inline-size` keeps the square for the common case (one glyph, `grid`'s own
+   * `place-items: center` still centres it) and inline padding gives a wider number room once it
+   * needs more than the floor.
+   */
+  .sk-pagination__item {
+    min-inline-size: var(--sk-pagination-item-size);
+    padding-inline: calc(var(--sk-pagination-item-size) * 0.2);
+  }
+
   .sk-pagination__item:active:not(:disabled),
   .sk-pagination__previous:active:not(:disabled),
   .sk-pagination__next:active:not(:disabled) {
@@ -125,6 +150,11 @@
   .sk-pagination__next .sk-icon {
     --sk-icon-size: var(--size-icon-sm);
     vertical-align: 0;
+  }
+
+  .sk-pagination:dir(rtl) .sk-pagination__previous .sk-icon,
+  .sk-pagination:dir(rtl) .sk-pagination__next .sk-icon {
+    transform: scaleX(-1);
   }
 
   .sk-pagination__item:disabled,

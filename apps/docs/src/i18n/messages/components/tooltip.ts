@@ -5,7 +5,10 @@ export const tooltipMessages = {
     "demo.tooltip.metric.value": "Ingresos $48.2k",
     "demo.tooltip.metric.label": "Cómo se calcula Ingresos",
     "demo.tooltip.metric.content": "Suma facturada del periodo, sin impuestos ni reembolsos",
-    "demo.tooltip.truncated.content": "Migración del pipeline de facturación",
+    "demo.tooltip.truncated.content": "Migración del pipeline de facturación del tercer trimestre",
+    "demo.tooltip.case.icon": "Ícono solo",
+    "demo.tooltip.case.figure": "Cifra",
+    "demo.tooltip.case.truncated": "Texto recortado",
 
     "tooltipPage.description": "Agrega una descripción corta a algo que ya está en pantalla, al pasar el puntero o enfocarlo.",
 
@@ -49,7 +52,7 @@ export const tooltipMessages = {
 
     "tooltipPage.contract1": "Cuelga <code>aria-describedby</code> del control: describe, no nombra.",
 
-    "tooltipPage.casesBody": "Pasa el puntero o recorre con <kbd>Tab</kbd>: la descripción aparece arriba del control.",
+    "tooltipPage.casesBody": "Pasa el puntero o recorre con <kbd>Tab</kbd>: cada descripción aparece junto a su control, del lado donde hay espacio.",
 
     "tooltipPage.casesTitle": "Tres casos: ícono, cifra y texto recortado",
     "tooltipPage.lede": "Tooltip agrega una descripción corta a algo que ya está en pantalla: qué hace un botón de solo ícono, qué significa una cifra, el texto completo de uno recortado. Aparece al pasar el puntero o al enfocar, y nunca es el único lugar donde vive un dato.",
@@ -74,7 +77,10 @@ export const tooltipMessages = {
     "demo.tooltip.metric.value": "Revenue $48.2k",
     "demo.tooltip.metric.label": "How Revenue is calculated",
     "demo.tooltip.metric.content": "Amount invoiced for the period, before tax and refunds",
-    "demo.tooltip.truncated.content": "Billing pipeline migration",
+    "demo.tooltip.truncated.content": "Billing pipeline migration for the third quarter",
+    "demo.tooltip.case.icon": "Icon only",
+    "demo.tooltip.case.figure": "Figure",
+    "demo.tooltip.case.truncated": "Truncated text",
 
     "tooltipPage.description": "Adds a short description to something already on screen, on hover or focus.",
 
@@ -118,7 +124,7 @@ export const tooltipMessages = {
 
     "tooltipPage.contract1": "It hangs <code>aria-describedby</code> on the control: it describes, it does not name.",
 
-    "tooltipPage.casesBody": "Hover or move through with <kbd>Tab</kbd>: the description appears above the control.",
+    "tooltipPage.casesBody": "Hover or move through with <kbd>Tab</kbd>: each description appears next to its control, on the side with room.",
 
     "tooltipPage.casesTitle": "Three cases: icon, figure and truncated text",
     "tooltipPage.lede": "Tooltip adds a short description to something already on screen: what an icon-only button does, what a figure means, the full text of a truncated one. It appears on hover or focus, and is never the only place a piece of data lives.",

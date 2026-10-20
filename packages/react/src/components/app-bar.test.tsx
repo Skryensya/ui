@@ -166,4 +166,16 @@ describe("AppBar", () => {
     expect(document.activeElement).toBe(tres);
     expect([uno, dos, tres].map((title) => title!.tabIndex)).toEqual([-1, -1, 0]);
   });
+
+  it("announces the plain-text status as role=status, and lets children be a node", () => {
+    const ui = render(
+      <AppBar label="Maker">
+        <AppBarStatus>
+          <strong>Guardando…</strong>
+        </AppBarStatus>
+      </AppBar>,
+    );
+    const status = ui.getByRole("status");
+    expect(status.querySelector("strong")?.textContent).toBe("Guardando…");
+  });
 });

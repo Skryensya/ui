@@ -52,4 +52,16 @@ describe("Callout", () => {
     expect(callout.querySelector(".sk-callout__icon")).not.toBeNull();
     expect(callout.querySelector(".sk-callout__actions")?.textContent).toContain("Review plan");
   });
+
+  it("keeps an oversized icon prop inside the fixed-size slot, for the CSS clip to catch", () => {
+    /* The contract restricts `icon` to a system Icon, but the React prop is a loose `ReactNode`
+       (found on the break harness) - `callout.css`'s `.sk-callout__icon` clips anything bigger to
+       the box on purpose. Nothing asserted the markup shape that clip relies on until this test. */
+    const ui = render(
+      <Callout icon={<svg data-testid="oversized" height={200} width={200} />} title="Plan expires">
+        Renew before Friday.
+      </Callout>,
+    );
+    expect(ui.getByTestId("oversized").closest(".sk-callout__icon")).not.toBeNull();
+  });
 });

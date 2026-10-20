@@ -1,0 +1,7 @@
+---
+if (import.meta.env.PROD) return new Response(null, { status: 404 });
+import "@skryensya/core/components/segmented.css";
+import { SegmentedBreak } from "../../components/react-demos/debug-segmented-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+<DebugShell title="SegmentedControl" docsHref="/components/segmented"><SegmentedBreak client:only="react" /></DebugShell>

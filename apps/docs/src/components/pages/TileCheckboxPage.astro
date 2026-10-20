@@ -1,0 +1,74 @@
+---
+import { withPy } from "../../demos/tile";
+import "@skryensya/core/components/tile.css";
+import "@skryensya/core/components/checkbox.css";
+import CodeBlock from "../CodeBlock.astro";
+import { tileCheckboxTree } from "../../demos/checkbox";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import { tileCheckboxDoTree, tileCheckboxDontTree } from "../../demos/dodont-pairs";
+import { getLocale, tList, useTranslations } from "../../i18n";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const vanilla = `import { initComponents } from "@skryensya/vanilla/auto";
+
+// Each label is authored with data-sk-tile-checkbox (data-name, data-value,
+// data-default-checked) plus its input and its indicator.
+// initComponents hydrates them with the @zag-js/checkbox machine.
+await initComponents();
+
+for (const root of document.querySelectorAll("[data-sk-tile-checkbox]")) {
+  root.addEventListener("sk:tilecheckedchange", (event) => {
+    console.log(root.dataset.value, event.detail.checked);
+  });
+}`;
+---
+
+<ComponentPageShell
+  hookPlayground={{ tree: tileCheckboxTree(t) }}
+  title="TileCheckbox"
+  description={t("tileCheckboxPage.description")}
+  contractId="tile"
+  importNames={["TileCheckbox", "TileContent"]}
+  appearanceTargetSelector=".sk-tile--interactive"
+  testFiles={["packages/vanilla/src/components/tile-checkbox.svelte.test.ts"]}
+>
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} />
+  </Fragment>
+
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("tileCheckboxPage.lede")} />
+
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={withPy(tileCheckboxTree(t))} title={t("checkbox.tileTitle")} description={t("checkbox.tileBody1")} storybookTitle="Components/Checkbox" storybookStory="TileCheckbox" />
+    <p set:html={t("checkbox.tileBody2")} />
+    <CodeBlock code={vanilla} label="JavaScript" />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "tileCheckboxPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("tileCheckboxPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "tileCheckboxPage.when")} avoid={tList(t, "tileCheckboxPage.whenNot")} />
+    <DoDont
+      title={t("tileCheckboxPage.dd.copy.title")}
+      do={{ tree: tileCheckboxDoTree(t), caption: t("tileCheckboxPage.dd.copy.do") }}
+      dont={{ tree: tileCheckboxDontTree(t), caption: t("tileCheckboxPage.dd.copy.dont") }}
+    />
+    <ContentRules items={tList(t, "tileCheckboxPage.content")} />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("tileCheckboxPage.a11yIntro")} does={tList(t, "tileCheckboxPage.a11yDoes")} yours={tList(t, "tileCheckboxPage.a11yYours")} />
+  </Fragment>
+</ComponentPageShell>

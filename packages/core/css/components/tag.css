@@ -15,6 +15,8 @@
  * state layer every other control uses, and its 44px hit target comes from the button's own
  * `::after`, which the hand-rolled 20px box never had.
  */
+@import url("../patterns/a11y-warn.css");
+
 @layer components {
   .sk-tag {
     --sk-tag-bg: var(--color-bg-surface-sunken);
@@ -63,10 +65,19 @@
     box-sizing: border-box;
   }
 
+  /* Neutral and accent only - the contract's own `tone` enum (tag.ts). Badge owns the feedback
+     tones (success/warning/danger); a chip never reports a read-only status by itself. */
   .sk-tag[data-tone="accent"] { --sk-tag-bg: var(--color-bg-accent-subtle); --sk-tag-fg: var(--color-text-accent); }
-  .sk-tag[data-tone="success"] { --sk-tag-bg: var(--color-bg-success-subtle); --sk-tag-fg: var(--color-text-success); }
-  .sk-tag[data-tone="warning"] { --sk-tag-bg: var(--color-bg-warning-subtle); --sk-tag-fg: var(--color-text-warning); }
-  .sk-tag[data-tone="danger"] { --sk-tag-bg: var(--color-bg-danger-subtle); --sk-tag-fg: var(--color-text-danger); }
+
+  /* Selection is persistent feedback, not a tone the author has to remember to set. The thicker
+     border gives it a non-color cue; the shared state layer stays free for hover, focus and press. */
+  button.sk-tag[aria-pressed="true"]:not(:disabled):not([aria-disabled="true"]) {
+    --sk-tag-bg: var(--color-bg-accent-subtle);
+    --sk-tag-fg: var(--color-text-accent);
+    --sk-tag-border: var(--color-border-accent);
+    border-width: 2px;
+    padding-inline: calc(var(--space-inset-sm) - 1px);
+  }
 
   .sk-tag[href] {
     text-decoration: none;
@@ -74,6 +85,17 @@
 
   .sk-tag[href]:hover {
     text-decoration: none;
+  }
+
+  /*
+   * `Tag.toggle`'s host (tag.ts): a real `<button>`, styled by every rule above through `.sk-tag`
+   * alone - none of them key off the element. Only the cursor needs its own rule: `<a>` gets
+   * pointer from the UA stylesheet for free, a plain `<span>` (the inert/removable shapes) must
+   * NOT show one, it isn't clickable, and a bare `<button>` cursor is inconsistent across browsers
+   * (Button's own root rule sets it explicitly for the same reason, button.css:134).
+   */
+  button.sk-tag {
+    cursor: pointer;
   }
 
   /* The label is the only part that flexes, so a long keyword ellipsizes instead of pushing the
@@ -95,7 +117,8 @@
    * and wins on specificity, so the chip does not depend on which file was imported last. */
   .sk-tag > .sk-tag__remove[data-icon-only] {
     --sk-button-height: var(--sk-tag-remove-size);
-    --sk-button-radius: var(--radius-pill);
+    /* A soft square, the chip's own corner: a full circle on a chip this small read as a dot. */
+    --sk-button-radius: var(--radius-control);
     /* currentColor, so the control never introduces a hue the tag doesn't already use, and every
      * tone gets a remove button in its own color without a per-tone rule. */
     --sk-button-fg: currentColor;
@@ -111,14 +134,46 @@
     flex: none;
   }
 
-  /* No icon rule here on purpose: at a 24px face the button's own icon-only sm sizing
-   * (--size-icon-sm) already fits, so the chip inherits it instead of re-stating it. */
+  /* THE GLYPH ONE STEP DOWN from the button's own sm sizing (--size-icon-md): at 20px in a 24px face the X crowded the
+   * label and read as heavy as a button. Only the glyph shrinks; the face and the 44px hit area (the button's `::after`,
+   * not re-stated here) stay as they were. Same specificity reasoning as the rule above: it must outrank
+   * `.sk-button[data-size="sm"] .sk-icon`. */
+  .sk-tag > .sk-tag__remove[data-icon-only] .sk-icon {
+    --sk-icon-size: var(--size-icon-sm);
+  }
+
+  /*
+   * Real disabled state, keys off the actual ARIA and (on `Tag.toggle`'s real button) the actual
+   * pseudo-class - same two guards Button's own disabled rule uses, for the same reason: a chip
+   * authored with only `aria-disabled` (the span-rooted shapes) and one that also carries the real
+   * `disabled` attribute (the toggle, and the nested remove button) both have to read as unavailable.
+   */
+  .sk-tag:disabled,
+  .sk-tag[aria-disabled="true"] {
+    --sk-tag-bg: var(--color-action-disabled);
+    --sk-tag-fg: var(--color-text-disabled);
+    --sk-tag-border: var(--color-border-subtle);
+    cursor: not-allowed;
+  }
+
+  /* Disabled outranks appearance, the same ordering Button's own brutalist-disabled rule states: a
+   * strong offset must never make an unavailable chip look pressable. */
+  .sk-tag[data-appearance="brutalist"]:is(:disabled, [aria-disabled="true"]) {
+    --brutalist-black: var(--color-border-subtle);
+  }
 
   /* Forced-colors drops author colors, so the `color-mix` hairline would vanish and the chip would lose
    * its outline. Pin the edge to a system color there, the chip stays a defined box. */
   @media (forced-colors: active) {
     .sk-tag {
       border-color: CanvasText;
+    }
+
+    .sk-tag:disabled,
+    .sk-tag[aria-disabled="true"] {
+      --sk-tag-bg: Canvas;
+      --sk-tag-fg: GrayText;
+      --sk-tag-border: GrayText;
     }
   }
 

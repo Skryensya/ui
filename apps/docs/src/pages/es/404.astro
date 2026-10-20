@@ -7,6 +7,6 @@ import { getLocale, useTranslations } from "../../i18n";
 const t = useTranslations(getLocale(Astro.url));
 ---
 
-<Base railIndex title={t("notFound.title")} description={t("notFound.description")}>
+<Base fullBleed title={t("notFound.title")} description={t("notFound.description")}>
   <NotFoundPage />
 </Base>

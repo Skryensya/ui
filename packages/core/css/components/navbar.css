@@ -38,6 +38,15 @@
     background: var(--sk-navbar-wash) var(--sk-navbar-bg);
     color: var(--sk-navbar-fg);
     box-shadow: var(--sk-navbar-elevation);
+    /*
+     * Brand plus links plus actions had nothing stopping them from forcing the bar wider than its
+     * viewport - no wrap, no scroll, same gap found on Toolbar/Menubar/Megamenu. A scroll fallback,
+     * same convention as AppBar's own `__menus`/`__status` rows.
+     */
+    min-inline-size: 0;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
   }
 
   .sk-navbar__brand {

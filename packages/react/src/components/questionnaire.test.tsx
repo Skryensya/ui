@@ -1,4 +1,5 @@
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import { fireEvent, render, waitFor, within } from "@testing-library/react";
+import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { Questionnaire, QuestionnaireItem, type QuestionnaireProps } from "./questionnaire.js";
 
@@ -29,6 +30,21 @@ function Survey(props: Partial<QuestionnaireProps>) {
       />
       <QuestionnaireItem name="notes" text textLabel="Notes" title="Anything else?" />
     </Questionnaire>
+  );
+}
+
+/*
+ * A consumer's OWN component, wrapping one question - a wizard step with extra chrome, say. It
+ * never tells Questionnaire anything special; registration is what lets Questionnaire learn
+ * this question exists without seeing through it.
+ */
+function SurveyQuestion(props: Parameters<typeof QuestionnaireItem>[0] & { eyebrow?: string }) {
+  const { eyebrow, ...itemProps } = props;
+  return (
+    <div data-testid={`wrapper-${props.name}`}>
+      {eyebrow ? <p>{eyebrow}</p> : null}
+      <QuestionnaireItem {...itemProps} />
+    </div>
   );
 }
 
@@ -288,5 +304,100 @@ describe("Questionnaire (React)", () => {
       expect(kind(ui, "long")).toBe("TEXTAREA");
       expect((ui.container.querySelector('[name="long"]') as HTMLTextAreaElement).rows).toBe(6);
     });
+  });
+
+  it("accepts a locale's own label text, not only the kit's English literals", () => {
+    const ui = render(<Survey nextLabel="Siguiente" previousLabel="Anterior" />);
+    expect(ui.getByText("Siguiente", { selector: "button" })).toBeTruthy();
+  });
+
+  it("reports every answer so far through onValuesChange, before any submit", async () => {
+    const onValuesChange = vi.fn();
+    const ui = render(<Survey onValuesChange={onValuesChange} />);
+
+    // Mounting dispatches no answer change: the first call is the questions as authored, nothing
+    // chosen yet.
+    expect(onValuesChange).toHaveBeenCalledWith({ values: {} });
+
+    fireEvent.click(ui.getByText("Delegation"));
+    await waitFor(() => expect(onValuesChange).toHaveBeenCalledWith({ values: { direction: "delegation" } }));
+
+    // Still called on every change even though the form was never submitted.
+    expect(onValuesChange.mock.calls.length).toBeGreaterThan(1);
+  });
+
+  it("shows a section heading inside the question that names one, and none for one that does not", () => {
+    const ui = render(
+      <Questionnaire aria-label="Onboarding">
+        <QuestionnaireItem
+          name="email"
+          section="Contact"
+          sectionDescription="How we reach you"
+          text
+          textLabel="Email"
+          title="What is your email?"
+        />
+        <QuestionnaireItem name="notes" text textLabel="Notes" title="Anything else?" />
+      </Questionnaire>,
+    );
+    const withSection = fieldset(ui, "What is your email?");
+    expect(within(withSection).getByText("Contact").tagName).toBe("P");
+    expect(within(withSection).getByText("How we reach you")).toBeTruthy();
+
+    const withoutSection = fieldset(ui, "Anything else?");
+    expect(within(withoutSection).queryByText("Contact")).toBeNull();
+  });
+});
+
+describe("Questionnaire (React), items behind a wrapper component", () => {
+  it("counts a wrapped question in the total, shows it, and lets Next reach it", async () => {
+    const ui = render(
+      <Questionnaire aria-label="Onboarding">
+        <QuestionnaireItem name="first" text textLabel="First" title="What is your name?" />
+        <SurveyQuestion eyebrow="Step 2" name="wrapped" text textLabel="Role" title="What is your role?" />
+      </Questionnaire>,
+    );
+    // The wrapper rendered - this alone the direct-only walk already gave for free - and the
+    // count below is the part that did not come for free: 2, not 1.
+    expect(ui.getByTestId("wrapper-wrapped")).toBeTruthy();
+    expect(ui.getByText("Question 1 of 2")).toBeTruthy();
+
+    fireEvent.click(ui.getByRole("button", { name: "Next" }));
+    await waitFor(() => expect(ui.getByText("Question 2 of 2")).toBeTruthy());
+    expect(shown(fieldset(ui, "What is your role?"))).toBe(true);
+  });
+
+  it("submits the wrapped question's own answer", async () => {
+    const onValuesSubmit = vi.fn();
+    const onSubmit = vi.fn((event: { preventDefault: () => void }) => event.preventDefault());
+    const ui = render(
+      <Questionnaire aria-label="Onboarding" onSubmit={onSubmit} onValuesSubmit={onValuesSubmit}>
+        <SurveyQuestion name="role" text textLabel="Role" title="What is your role?" />
+      </Questionnaire>,
+    );
+    fireEvent.change(ui.getByLabelText("Role"), { target: { value: "Engineer" } });
+    fireEvent.click(ui.getByRole("button", { name: "Submit" }));
+    await waitFor(() => expect(onValuesSubmit).toHaveBeenCalledWith({ values: { role: "Engineer" } }));
+  });
+
+  it("drops a wrapped question from the count once it unmounts", async () => {
+    function Toggle() {
+      const [show, setShow] = useState(true);
+      return (
+        <>
+          <button onClick={() => setShow(false)} type="button">
+            Remove
+          </button>
+          <Questionnaire aria-label="Onboarding">
+            <QuestionnaireItem name="first" text textLabel="First" title="What is your name?" />
+            {show ? <SurveyQuestion name="wrapped" text textLabel="Role" title="What is your role?" /> : null}
+          </Questionnaire>
+        </>
+      );
+    }
+    const ui = render(<Toggle />);
+    expect(ui.getByText("Question 1 of 2")).toBeTruthy();
+    fireEvent.click(ui.getByRole("button", { name: "Remove" }));
+    await waitFor(() => expect(ui.getByText("Question 1 of 1")).toBeTruthy());
   });
 });

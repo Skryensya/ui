@@ -9,6 +9,7 @@ import {
   type AccordionValueChangeDetails,
   accordionContract,
 } from "@skryensya/core/accordion";
+import { dev, devTicket } from "../dev-warning.js";
 import { ExpandableTile, ExpandableTileContent, ExpandableTileTrigger } from "./tile.js";
 
 /* Derived, never restated: the default lives in the contract. */
@@ -20,10 +21,13 @@ const {
   defaultOpen: defaultOpenOption,
 } = accordionContract.options;
 import {
+  Children,
   createContext,
   forwardRef,
+  isValidElement,
   useCallback,
   useContext,
+  useEffect,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -34,6 +38,33 @@ import {
   type ReactNode,
   type Ref,
 } from "react";
+
+/*
+ * Verified against the real component before writing this, not assumed: two `Accordion.Item`s
+ * sharing a `value` both open and close together, since `values.includes(itemValue)` (below)
+ * cannot tell them apart - clicking either one's trigger toggles both. Direct children only
+ * (`Children.toArray`, one level): an item nested inside some other wrapper is this check's blind
+ * spot, the same boundary `hasTextContent` draws in button.tsx for the identical reason.
+ */
+function warnDuplicateAccordionItemValues(children: ReactNode): void {
+  if (!dev) return;
+  const seen = new Set<string>();
+  const duplicates = new Set<string>();
+  for (const child of Children.toArray(children)) {
+    if (!isValidElement<{ value?: unknown }>(child) || typeof child.props.value !== "string") continue;
+    const value = child.props.value;
+    if (seen.has(value)) duplicates.add(value);
+    seen.add(value);
+  }
+  if (duplicates.size === 0) return;
+  console.error(
+    ...devTicket("<Accordion>", {
+      issue: `Item children sharing the same value: ${[...duplicates].map((v) => `"${v}"`).join(", ")}`,
+      why: "Opening or closing one opens or closes every item with that value, since the open set is keyed on it.",
+      fix: "Give each item a unique value.",
+    }),
+  );
+}
 
 type AccordionContextValue = {
   disabled: boolean;
@@ -107,6 +138,10 @@ const AccordionRoot = forwardRef<HTMLDivElement, AccordionProps>(function Accord
   },
   ref,
 ) {
+  // Effect, not a direct render-body call: client-only, post-mount, straight into the browser's
+  // own console - same reasoning as Kbd's own warnEmptyKbd.
+  useEffect(() => warnDuplicateAccordionItemValues(children), [children]);
+
   const rootRef = useRef<HTMLDivElement | null>(null);
   const isControlled = value !== undefined;
   const hasRootDefault = defaultValue !== undefined;

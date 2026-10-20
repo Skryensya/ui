@@ -9,7 +9,7 @@ entries:
     kind: feature
     es:
       title: Componente nuevo
-      body: Una ventana de recorte sobre una imagen, con zoom, rotación, proporciones y exportación exacta, incluido el círculo transparente.
+      body: "Se suma a la librería, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: New component
-      body: A crop window over an image, with zoom, rotation, aspect ratios and an exact export, including the transparent circle.
+      body: "Added to the library, with its contract, a React binding and a Vanilla mount."

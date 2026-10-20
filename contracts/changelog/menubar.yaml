@@ -25,7 +25,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Barra horizontal persistente de comandos, algunos con desplegable.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: A persistent horizontal bar of commands, some opening a dropdown.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

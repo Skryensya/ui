@@ -27,62 +27,31 @@
   }
 
   /* An icon-only trigger is a square button: its glyph says what it opens, so the dropdown chevron
-   * (the wrapper around `chevron-down`, as a placeholder or as the `svg[data-icon]` that replaces it; never the trigger's own glyph, which is `aria-hidden` too once the icon pass has run) is left out rather than widening the square. The trigger's accessible
-   * name is `triggerLabel`, which `triggerIconOnly` requires. */
-  .sk-menu__trigger[data-icon-only] > [aria-hidden="true"]:has(> :is([data-sk-icon="chevron-down"], [data-icon="chevron-down"])) {
+   * is left out rather than widening the square — but only when a composed `trigger` slot painted a
+   * glyph of its own alongside it (a real sibling, never a swap: the chevron wrapper is authored
+   * unconditionally by the template, see menu.ts). `:not(:only-child)` is what tells the two cases
+   * apart. Without it, a split button's trigger (icon-only, no `trigger` slot: the chevron IS the
+   * glyph) hid its only child and rendered an empty square. The trigger's accessible name is
+   * `triggerLabel`, which `triggerIconOnly` requires. */
+  .sk-menu__trigger[data-icon-only] > [aria-hidden="true"]:not(:only-child):has(> :is([data-sk-icon="chevron-down"], [data-icon="chevron-down"])) {
     display: none;
   }
 
-  /* The placement belongs to the Anchoring pattern (ADR-11): the trigger also carries `sk-anchor` and
-   * the positioner also `sk-anchored`. But the PATTERN's default is centered under the anchor, which is
-   * what a tooltip or a popover talking ABOUT a specific control wants; a command menu does not: it
-   * opens flush to an edge, like any native dropdown (the browser's `<select>`, a desktop menu,
-   * GitHub's kebab). The panel's start edge lines up with the trigger's start edge and the panel grows
-   * in the reading direction, never split across both sides of a narrow trigger. This is the only
-   * placement the menu re-declares: the pattern's is for whoever measures against a point, not against
-   * an edge.
-   *
-   * BARE `inline-start` (without `span-`) does NOT align: it selects the CELL of the 3×3 grid that
-   * falls completely outside, to the left of the anchor (measured: the panel's RIGHT edge ends up flush
-   * against the trigger's LEFT edge. The panel floats to the side, not below). `span-inline-end`
-   * instead starts the region in the anchor's own column and extends it toward the end, so
-   * `justify-self: start` does put the panel's start edge on the trigger's start edge and lets it grow
-   * in the reading direction.
-   *
-   * `--sk-anchored-offset` is the margin of the WHOLE positioner (all four sides at once, ADR-11), and
-   * the pattern's default is a single value: the same gap in block AND in inline. That is what a
-   * centered tooltip wants, but here it leaves the panel 8px inside the trigger's column instead of
-   * flush with its edge (measured). A PAIR of values in the hook splits the margin into two axes (the
-   * same trick the submenu below uses, in reverse): the first is the block gap, which stays the same;
-   * the second is the inline margin, which goes to ZERO so the panel's start edge sits exactly on the
-   * trigger's start edge.
+  /* The placement belongs to the Anchoring pattern: the trigger also carries `sk-anchor` and the
+   * positioner `sk-anchored`, and the popper places it. A command menu opens flush to an edge, like
+   * any native dropdown: `bottom-start`, set in JS where the machine is configured, so the panel's
+   * start edge lines up with the trigger's.
    *
    * APPEARANCE too: React portals the positioner to the `<body>`, so what `.sk-menu` declares does not
    * reach it by inheritance and every hook read from here down resolves empty. See the equivalent note
    * in `select.css`. */
   .sk-menu__positioner {
-    --sk-anchored-position-area: block-end span-inline-end;
-    --sk-anchored-justify: start;
-    --sk-anchored-offset: var(--space-stack-xs) 0;
     --sk-menu-bg: var(--color-bg-surface-raised);
     --sk-menu-fg: var(--color-text-primary);
     --sk-menu-border-color: var(--color-border-subtle);
     --sk-menu-radius: var(--radius-control);
     --sk-menu-shadow: var(--elevation-raised);
     --sk-menu-wash: var(--elevation-wash-raised);
-  }
-
-  /* A SUBMENU comes out to the side and top-aligned with the item it hangs off, which is none of the
-   * four public placements. It is requested through the escape hook instead of adding a fifth one to
-   * the vocabulary: letting an exception write the contract is how a set of four becomes a set of nine.
-   * `span-block-end` starts the region at the item's top edge and `align-self: start` sticks the panel
-   * there. */
-  .sk-menu__positioner[data-sk-submenu] {
-    --sk-anchored-position-area: inline-end span-block-end;
-    --sk-anchored-justify: auto;
-    --sk-anchored-align: start;
-    --sk-anchored-position-try: flip-inline;
-    --sk-anchored-offset: 0 var(--space-inline-xs);
   }
 
   /* ── density ─────────────────────────────────────────────────────────────────
@@ -120,6 +89,7 @@
     max-block-size: min(24rem, calc(100vb - 2 * var(--space-inset-md)));
     padding: var(--space-inset-xs);
     overflow: auto;
+    overscroll-behavior: contain;
     border: 1px solid var(--sk-menu-border-color);
     border-radius: var(--sk-menu-radius);
     background: var(--sk-menu-wash) var(--sk-menu-bg);
@@ -402,6 +372,13 @@
   button.sk-menu__item > .sk-menu__item-indicator {
     visibility: visible;
     color: var(--sk-menu-fg);
+  }
+
+  /* The bare `chevron-right` above is a hardcoded icon name (menu.tsx/menu.ts's own contract),
+     which does not follow `dir` on its own - found as a real bug, same class as Lightbox's own
+     chevrons. A submenu opens toward the menu's own trailing edge, which flips under RTL too. */
+  button.sk-menu__item > .sk-menu__item-indicator:dir(rtl) {
+    transform: scaleX(-1);
   }
   .sk-menu__separator {
     block-size: 1px;

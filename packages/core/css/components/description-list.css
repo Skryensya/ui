@@ -50,6 +50,9 @@
     gap: var(--sk-description-list-pair-gap);
     min-inline-size: 0;
     padding-block: var(--sk-description-list-row-padding-y);
+    /* Inherited by term and details below: shrinkable isn't wrappable on its own for an unbroken
+       long term (an email as a value) - same gap found across several other components. */
+    overflow-wrap: anywhere;
   }
 
   .sk-description-list__term {
@@ -86,8 +89,14 @@
    * has to share 320px with its value is not a layout, it is two truncations. The literal is
    * `semantic/_breakpoints.scss`'s `compact` (36rem); tier-3 stays CSS (ADR-19), so it is written
    * here with a pointer back rather than read from the map.
+   *
+   * A CONTAINER query, not the viewport (decision 35, patterns/query-container.css): a list in a
+   * narrow sidebar on an otherwise wide page has the sidebar's room, not the window's, and a fixed
+   * --sk-description-list-term-size column that never falls back on viewport alone would overflow
+   * that sidebar instead. `:root`'s own containment (shipped in base) is what lets this resolve
+   * with no container of this component's own to set up.
    */
-  @media (width < 36rem) {
+  @container (width < 36rem) {
     .sk-description-list[data-layout="columns"] .sk-description-list__group {
       display: flex;
       flex-direction: column;

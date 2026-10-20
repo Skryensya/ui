@@ -1,0 +1,11 @@
+---
+/* Dev-only stress harness for Calendar selection, locale and date bounds. */
+if (import.meta.env.PROD) return new Response(null, { status: 404 });
+import "@skryensya/core/components/calendar.css";
+import "../../styles/site.css";
+import { CalendarBreak } from "../../components/react-demos/debug-calendar-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+<DebugShell title="Calendar" docsHref="/components/calendar">
+  <CalendarBreak client:only="react" />
+</DebugShell>

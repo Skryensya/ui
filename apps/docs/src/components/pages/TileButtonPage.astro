@@ -1,0 +1,87 @@
+---
+import { withPx, withPy } from "../../demos/tile";
+import "@skryensya/core/components/tile.css";
+import "@skryensya/core/components/button.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
+import UsagePreview from "../UsagePreview.astro";
+import DoDont from "../DoDont.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import CodeBlock from "../CodeBlock.astro";
+import { tileButtonDemoTree, tileButtonGroupTree, tileButtonListTree, tileButtonPaddingTree } from "../../demos/tile";
+import { tileButtonTree } from "../../demos/button";
+import {
+  tileDisabledDoTree,
+  tileDisabledDontTree,
+  tileButtonVerbDoTree,
+  tileButtonVerbDontTree,
+  tileButtonOrderDoTree,
+  tileButtonOrderDontTree,
+} from "../../demos/dodont-pairs";
+import { getLocale, tList, useTranslations } from "../../i18n";
+
+const t = useTranslations(getLocale(Astro.url));
+
+const vanilla = `import { createTileButton } from "@skryensya/vanilla/tile-button";
+
+const button = createTileButton();
+button.textContent = "Run deployment";
+button.addEventListener("click", runDeployment);`;
+---
+
+<ComponentPageShell
+  hookPlayground={{ tree: tileButtonDemoTree(t) }}
+  title="TileButton"
+  description={t("tileButtonPage.description")}
+  contractId="tile"
+  importNames={["TileButton", "TileContent", "TileChevron"]}
+  appearanceTargetSelector=".sk-tile--interactive"
+  testFiles={["packages/react/src/components/tile.test.tsx"]}
+>
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} />
+  </Fragment>
+
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("tileButtonPage.lede")} />
+
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={withPx(withPy(tileButtonGroupTree(t)))} title={t("tileButtonPage.groupTitle")} description={t("tileButtonPage.groupBody")} storybookTitle="Components/Tile" storybookStory="ButtonGroup" />
+    <UsagePreview tree={withPy(tileButtonTree(t))} title={t("tileButtonPage.sizedTitle")} description={t("tileButtonPage.sizedBody")} storybookTitle="Components/Button" storybookStory="TileButton" />
+    <UsagePreview tree={withPy(tileButtonListTree(t))} title={t("tileButtonPage.listTitle")} description={t("tileButtonPage.listBody")} storybookTitle="Components/Tile" storybookStory="ButtonGroup" />
+    <UsagePreview tree={withPx(withPy(tileButtonPaddingTree(t)))} title={t("tileButtonPage.paddingTitle")} description={t("tileButtonPage.paddingBody")} storybookTitle="Components/Tile" storybookStory="ButtonGroup" />
+    <CodeBlock code={vanilla} label="JavaScript" />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "tileButtonPage.contract").map((item) => <li set:html={item} />)}
+    </ul>
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("tileButtonPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "tileButtonPage.when")} avoid={tList(t, "tileButtonPage.whenNot")} />
+    <DoDont
+      title={t("tilePage.dd.disabled.title")}
+      do={{ tree: tileDisabledDoTree(t), caption: t("tilePage.dd.disabled.do") }}
+      dont={{ tree: tileDisabledDontTree(t), caption: t("tilePage.dd.disabled.dont") }}
+    />
+    <DoDont
+      title={t("tilePage.dd.verb.title")}
+      do={{ tree: tileButtonVerbDoTree(t), caption: t("tilePage.dd.verb.do") }}
+      dont={{ tree: tileButtonVerbDontTree(t), caption: t("tilePage.dd.verb.dont") }}
+    />
+    <DoDont
+      title={t("tilePage.dd.order.title")}
+      do={{ tree: tileButtonOrderDoTree(t), caption: t("tilePage.dd.order.do") }}
+      dont={{ tree: tileButtonOrderDontTree(t), caption: t("tilePage.dd.order.dont") }}
+    />
+    <ContentRules items={tList(t, "tileButtonPage.content")} />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("tileButtonPage.a11yIntro")} does={tList(t, "tileButtonPage.a11yDoes")} yours={tList(t, "tileButtonPage.a11yYours")} />
+  </Fragment>
+</ComponentPageShell>

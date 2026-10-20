@@ -14,16 +14,17 @@ import "@skryensya/core/patterns/dialog-vaul.css";
 import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/comment-thread";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/CommentThread", tags: ["autodocs"] } satisfies Meta;
 
-export const CommentAnatomy: StoryObj = treeStory(demos.commentAnatomyTree);
+export const CommentAnatomy: StoryObj = treeStory(demos.commentAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const CommentAlone: StoryObj = treeStory(demos.commentAloneTree);
 export const CommentActions: StoryObj = treeStory(demos.commentActionsTree);
 export const CommentLikes: StoryObj = treeStory(demos.commentLikesTree);
 export const Default: StoryObj = treeStory(demos.commentThreadTree);
 export const Fixed: StoryObj = treeStory(demos.commentThreadFixedTree);
+export const CommentDeep: StoryObj = treeStory(demos.commentDeepTree);
 export const CommentSkeleton: StoryObj = treeStory(demos.commentSkeletonTree);
 export const InfiniteScroll: StoryObj = treeStory(demos.commentThreadInfiniteScrollTree);
-export const CommentDeep: StoryObj = treeStory(demos.commentDeepTree);

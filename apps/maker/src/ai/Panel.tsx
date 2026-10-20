@@ -332,7 +332,7 @@ export function AIPanel({ maker, onDraft, barSlot, focusRequest = 0 }: {
     <div ref={promptHost}><Dialog title="Project prompt" closeLabel="Close project prompt" onClose={() => setPromptOpen(false)}>
       <Stack gap="sm">
         <Text size="sm" tone="secondary">What this project is: the product, who uses it, the tone, how its screens relate. Maker AI receives it as context with every request in this project. It is saved with the project.</Text>
-        <FormField label="Project prompt" labelHidden><Textarea rows={10} maxLength={4000} value={promptDraft} onChange={e => setPromptDraft(e.currentTarget.value)} /></FormField>
+        <FormField label="Project prompt" labelVisuallyHidden><Textarea rows={10} maxLength={4000} value={promptDraft} onChange={e => setPromptDraft(e.currentTarget.value)} /></FormField>
         <Inline gap="sm">
           <Button size="sm" onClick={savePrompt}>Save</Button>
           <Button size="sm" variant="ghost" onClick={() => setPromptOpen(false)}>Cancel</Button>
@@ -406,7 +406,7 @@ export function AIPanel({ maker, onDraft, barSlot, focusRequest = 0 }: {
       }) : <Text as="span" size="sm" tone="secondary">{maker.page.name} page</Text>}
       {excluded.length > 0 && <Button size="sm" variant="ghost" type="button" onClick={() => setExcluded([])}>Restore selection</Button>}</div>
       <div className="maker-ai__field">
-        <FormField label="Ask Maker" labelHidden><Textarea ref={input} value={content} maxLength={8000} rows={1} placeholder={connected ? "Ask Maker to change something…" : "Connect an AI to start"} onChange={e => setContent(e.currentTarget.value)} onKeyDown={onComposerKey} /></FormField>
+        <FormField label="Ask Maker" labelVisuallyHidden><Textarea ref={input} value={content} maxLength={8000} rows={1} placeholder={connected ? "Ask Maker to change something…" : "Connect an AI to start"} onChange={e => setContent(e.currentTarget.value)} onKeyDown={onComposerKey} /></FormField>
         {busy && !barSlot
           ? <Button type="button" size="sm" iconOnly aria-label="Stop generating" onClick={() => controller.current?.abort()}><Icon name="close" /></Button>
           : <Button type="submit" size="sm" tone="accent" iconOnly aria-label="Send" disabled={!connected || busy || !content.trim()}><Icon name="arrow-up" /></Button>}

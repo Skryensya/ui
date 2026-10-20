@@ -86,4 +86,14 @@ describe("QRCode", () => {
     expect(node).not.toBeNull();
     expect(qrCodeToSvg(node!)).toContain("<path d=\"M");
   });
+
+  it("degrades to an empty symbol instead of crashing when value can't be encoded", () => {
+    /* `qrGeometry` throws `QrError` for a value too long to fit (core's own suite covers that);
+       found as a real crash, since nothing here caught it before this fix. */
+    const ui = render(<QRCode label="Open" value={"x".repeat(5000)} />);
+    const root = ui.getByRole("img", { name: "Open" });
+
+    expect(root.getAttribute("data-status")).toBe("error");
+    expect(ui.container.querySelector("svg")).toBeNull();
+  });
 });

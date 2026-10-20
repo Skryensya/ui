@@ -12,13 +12,14 @@ import "@skryensya/core/components/tile.css";
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/accordion";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+const { accordionAnatomyCss } = demos;
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Accordion", tags: ["autodocs"] } satisfies Meta;
 
-export const DetailsAnatomy: StoryObj = treeStory(demos.detailsAnatomyTree);
-export const Single: StoryObj = treeStory(demos.accordionSingleTree);
+export const DetailsAnatomy: StoryObj = treeStory(demos.detailsAnatomyTree, { decorators: [withCss(accordionAnatomyCss)] });
 export const Exclusive: StoryObj = treeStory(demos.accordionExclusiveTree);
-export const Multiple: StoryObj = treeStory(demos.accordionMultipleTree);
+export const Single: StoryObj = treeStory(demos.accordionSingleTree);
 export const DetailsGroup: StoryObj = treeStory(demos.detailsGroupTree);
+export const Multiple: StoryObj = treeStory(demos.accordionMultipleTree);
 export const Choice: StoryObj = treeStory(demos.accordionChoiceTree);

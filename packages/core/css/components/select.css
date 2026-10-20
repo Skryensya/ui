@@ -22,7 +22,7 @@
     --sk-select-radius: var(--radius-control);
     /* Density can tighten the layout around a select, never its native touch target. */
     --sk-select-height: max(var(--size-control-md), var(--size-touch-target));
-    --sk-select-padding-x: var(--space-inset-sm);
+    --sk-select-padding-x: var(--space-inset-md);
     --sk-select-font-size: var(--font-size-body);
     --sk-select-disabled-bg: var(--color-action-disabled);
     --sk-select-disabled-fg: var(--color-text-disabled);
@@ -38,7 +38,8 @@
     --sk-select-item-padding: var(--space-inset-xs) var(--space-inset-sm);
     --sk-select-item-radius: var(--radius-control);
 
-    min-inline-size: 12rem;
+    min-inline-size: min(12rem, 100%);
+    max-inline-size: 100%;
   }
 
   /* Form field geometry is one recipe. The native element and the enhanced trigger only differ in
@@ -57,6 +58,15 @@
     font-size: var(--sk-select-font-size);
     text-align: start;
     cursor: pointer;
+  }
+
+  /* `sk-scrollbar` (class list) gives the thumb colour and the `::picker(select)` inherit bridge
+   * (patterns/scrollbar.css). This overrides its track to transparent and keeps the thumb always
+   * on — `sk-scrollbar--reveal` hid it until hover/focus, which read as the thumb vanishing while
+   * scrolling the picker's own surface, since that isn't a hover on the select itself. The doubled
+   * class beats `.sk-scrollbar`'s equal-specificity rule without `!important`. */
+  .sk-select-native.sk-select-native {
+    scrollbar-color: var(--color-border-default) transparent;
   }
 
   .sk-select-native {
@@ -98,14 +108,31 @@
     color: var(--sk-select-fg);
   }
 
+  .sk-select-native > button {
+    display: none;
+  }
+
   @supports (appearance: base-select) and selector(select::picker(select)) {
-    .sk-select-native,
-    .sk-select-native::picker(select) {
+    .sk-select-native:has(> button),
+    .sk-select-native:has(> button)::picker(select) {
       appearance: base-select;
     }
 
     .sk-select-native {
       align-items: center;
+    }
+
+    .sk-select-native > button {
+      display: contents;
+    }
+
+    /* Truncate the value, not the whole control: the picker icon keeps its own flex slot. */
+    .sk-select-native selectedcontent {
+      display: block;
+      min-inline-size: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     /* Sized and placed like the enhanced trigger's chevron (`--size-icon-md`, Button's icon-only `sm`
@@ -124,15 +151,26 @@
       inline-size: anchor-size(width);
       min-inline-size: 0;
       max-inline-size: none;
-      max-block-size: var(--sk-select-content-max-block-size);
       margin: var(--space-stack-xs) 0;
       padding: var(--sk-select-content-padding);
-      overflow: auto;
       border: 1px solid var(--sk-select-content-border-color);
       border-radius: var(--sk-select-radius);
       background: var(--sk-select-content-wash) var(--sk-select-content-bg);
       color: var(--sk-select-fg);
       box-shadow: var(--sk-select-content-shadow);
+    }
+
+    /* shortcut: webkit-only (Firefox's scrollbar-color has no thumb inset), matches the inset
+     * .sk-select__content.sk-scrollbar::-webkit-scrollbar-thumb already uses below. */
+    .sk-select-native::picker(select)::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .sk-select-native::picker(select)::-webkit-scrollbar-thumb {
+      border-block: var(--space-inset-xs) solid transparent;
+      border-radius: var(--radius-control);
+      background-color: var(--color-border-default);
+      background-clip: padding-box;
     }
 
     .sk-select-native option {
@@ -394,26 +432,24 @@
      * of the control, not a separate box floating nearby. `span-inline-end` starts the region at the
      * anchor's start edge and `justify-self: start` sticks the box there; the `anchor-center` the
      * pattern uses would center it. */
-    --sk-anchored-position-area: block-end span-inline-end;
-    --sk-anchored-justify: start;
-    --sk-anchored-align: auto;
     /* Gap only on the block axis: an inline one would shift the box 8px and break the edge alignment
      * just asked for. On BOTH block sides, so it survives a flip. */
-    --sk-anchored-offset: var(--space-stack-xs) 0;
     /* Full flip, opposite corner included: a select lives in a long form and near an edge, so all three
      * alternatives genuinely get used. */
-    --sk-anchored-position-try: flip-block, flip-inline, flip-block flip-inline;
   }
 
   .sk-select__content {
     display: grid;
+    /* Zag copies this value onto the portalled positioner. */
+    z-index: var(--z-popover);
     inline-size: max-content;
-    min-inline-size: var(--reference-width);
+    min-inline-size: min(var(--reference-width), var(--available-width));
     max-inline-size: var(--available-width);
     max-block-size: min(var(--sk-select-content-max-block-size), var(--available-height));
     margin: 0;
     padding: var(--sk-select-content-padding);
     overflow: auto;
+    overscroll-behavior: contain;
     border: 1px solid var(--sk-select-content-border-color);
     border-radius: var(--sk-select-radius);
     background: var(--sk-select-content-wash) var(--sk-select-content-bg);
@@ -496,23 +532,41 @@
   }
   /* end data-motion mirror */
 
-  @supports (anchor-name: --a) {
-    .sk-select__positioner {
-      /* `sameWidth`, taken from the anchor instead of the `--reference-width` Zag no longer writes on
-       * this path. It goes IN HERE and not up with the other hooks because `anchor-size()` without a
-       * resolved `position-anchor` is invalid, and the pattern reads this hook outside the `@supports`
-       * too: declaring it outside would leave the positioner with no width on the fallback. */
-      --sk-anchored-size: anchor-size(width);
-    }
+  /* Keep the kit's scrolling list intact and clip its scrollbar at the panel's corners. */
+  .sk-select__panel {
+    box-sizing: border-box;
+    inline-size: max-content;
+    min-inline-size: min(var(--reference-width), var(--available-width));
+    max-inline-size: var(--available-width);
+    overflow: hidden;
+    border: 1px solid var(--sk-select-content-border-color);
+    border-radius: var(--sk-select-radius);
+    background: var(--sk-select-content-wash) var(--sk-select-content-bg);
+    box-shadow: var(--sk-select-content-shadow);
+    transition: display var(--motion-feedback-duration) var(--motion-feedback-easing) allow-discrete;
+  }
 
-    /* Fill the anchored positioner; Zag's --available-* vars are gone on this path, so cap height
-     * outright and let the list scroll inside. Items still ellipsis via their own min-inline-size:0. */
-    .sk-select__content {
-      inline-size: 100%;
-      min-inline-size: 0;
-      max-inline-size: none;
-      max-block-size: var(--sk-select-content-max-block-size);
-    }
+  .sk-select__panel > .sk-select__content {
+    box-sizing: border-box;
+    inline-size: auto;
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    max-block-size: calc(min(var(--sk-select-content-max-block-size), var(--available-height)) - 2px);
+    padding: var(--sk-select-content-padding);
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .sk-select__panel:has(> .sk-select__content[data-state="closed"]) {
+    display: none;
+  }
+
+  /* shortcut: webkit-only (Firefox's scrollbar-color has no thumb inset), upgrade if that gap matters there */
+  .sk-select__content.sk-scrollbar::-webkit-scrollbar-thumb {
+    border-block: var(--space-inset-xs) solid transparent;
+    background-clip: padding-box;
   }
 
   .sk-select__item {
@@ -575,9 +629,7 @@
 
   .sk-select__item-text {
     min-inline-size: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
   }
 
   /* A filtered-out row is `hidden`, and the `display: grid` above outranks the UA's own

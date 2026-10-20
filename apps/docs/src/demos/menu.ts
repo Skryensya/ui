@@ -274,9 +274,19 @@ export const menuDoRowActionsHtml = (t: Translate): string => `<div class="sk-me
   </div>
 </div>`;
 
-/** A Menu standing in for the application's own menu bar: AppBar's job. */
-export const menuDontAppBarHtml = (t: Translate): string => `<div style="display: grid; gap: var(--space-stack-xs); inline-size: 100%;">
-  <div style="padding: var(--space-inset-sm); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-control);">
-    ${openMenuHtml(t("demo.menubar.file"), menuRow(t("demo.menubar.new")) + menuRow(t("demo.menubar.open")) + menuRow(t("demo.menubar.save")))}
+/** A Menu standing in for the application's own menu bar: one button holding File, Edit and View commands in a single list, AppBar's job. */
+export const menuDontAppBarHtml = (t: Translate): string => `<div style="display: grid; row-gap: var(--space-stack-xs); inline-size: 100%;">
+  <div style="display: flex; align-items: center; gap: var(--space-inline-md); padding: var(--space-inset-xs) var(--space-inset-sm); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-control);">
+    <button class="sk-button sk-interactive sk-menu__trigger sk-anchor" type="button" aria-haspopup="menu" aria-expanded="true" data-variant="ghost" data-size="sm">${t("demo.appBar.app")}${chevron}</button>
+  </div>
+  <div class="sk-menu__positioner sk-anchored" style="position: static; inset: auto; inline-size: max-content;">
+    <div class="sk-menu__content" data-state="open" role="menu">${
+      menuRow(t("demo.appBar.new")) +
+      menuRow(t("demo.appBar.open")) +
+      menuRow(t("demo.appBar.export")) +
+      menuRow(t("demo.appBar.undo")) +
+      menuRow(t("demo.appBar.zoomIn")) +
+      menuRow(t("demo.appBar.settings"))
+    }</div>
   </div>
 </div>`;

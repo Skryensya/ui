@@ -1,3 +1,4 @@
+import { satin } from "../lib/satin";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
 import {
@@ -95,7 +96,7 @@ export const placeholderAnatomyTree = (t: Translate): UsageTree => ({
   },
 });
 
-const mediaSrc = "/demos/lightbox/fjord-small.jpg";
+const mediaSrc = satin("slate", "4x3");
 
 /*
  * THE FEATURE CARD, loaded and loading. A photograph with the category and the headline set on it

@@ -8,13 +8,14 @@ import "@skryensya/core/components/input.css";
 import "@skryensya/core/components/password-input.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/password-input";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/PasswordInput", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.passwordInputAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.passwordInputAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const StateCase: StoryObj = treeStory(demos.passwordInputStateCase);
 export const SignIn: StoryObj = treeStory(demos.passwordInputSignInTree);
 export const SignUp: StoryObj = treeStory(demos.passwordInputSignUpTree);
 export const States: StoryObj = treeStory(demos.passwordInputStatesTree);
 export const Compare: StoryObj = treeStory(demos.passwordInputCompareTree);
-export const StateCase: StoryObj = treeStory(demos.passwordInputStateCase);

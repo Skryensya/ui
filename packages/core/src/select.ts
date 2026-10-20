@@ -1,3 +1,4 @@
+import { anchoredPositioning } from "./anchored.js";
 import type { ComponentContract, ContractSlot } from "./contract.js";
 
 export type SelectOption = {
@@ -24,6 +25,9 @@ export type SelectOptions = {
   placeholder?: string;
   options?: readonly SelectOption[];
   onValueChange?: (details: SelectValueChangeDetails) => void;
+  /** Escape hatch for a hidden accessible name: the contract's `forward: [..., "aria-*"]`. */
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
 };
 
 export const selectEvents = {
@@ -31,10 +35,9 @@ export const selectEvents = {
 } as const;
 
 /*
- * HOW THE MACHINE PLACES THE LISTBOX when the browser cannot - the fallback for a browser with no CSS
- * anchor positioning. Shared, because the two bindings had written it separately and disagreed:
- * React passed `{ sameWidth: false }` and the Vanilla enhancer passed a five-key object including
- * `sameWidth: true`. Same machine, same contract, two different listboxes.
+ * HOW THE MACHINE PLACES THE LISTBOX. Shared, because the two bindings had written it separately and
+ * disagreed: React passed `{ sameWidth: false }` and the Vanilla enhancer passed a five-key object
+ * including `sameWidth: true`. Same machine, same contract, two different listboxes.
  *
  * NOT A CONTRACT OPTION, and that distinction is the reason this is a plain const beside
  * `selectEvents` rather than an entry in `selectContract.options`. An option is a value a consumer
@@ -42,20 +45,18 @@ export const selectEvents = {
  * takes, which is exactly what `selectEvents` already is, and ADR-0010 already put this class of
  * shared non-contract fact in Core.
  *
- * `sameWidth: false` RESOLVES THE DISAGREEMENT TOWARD THE STYLESHEET. `select.css` gives the content
+ * `sameWidth: false` LEAVES THE STYLESHEET IN CHARGE. `select.css` gives the content
  * `inline-size: max-content` with `min-inline-size: var(--reference-width)` - at least as wide as the
  * trigger, free to grow past it. `sameWidth: true` pins the width to the trigger exactly, which
- * contradicts the sheet the same component ships; `false` leaves the sheet in charge on both paths.
+ * contradicts the sheet the same component ships.
  *
- * WHAT NOTHING PROVES: the browser gates run Chromium only, Chromium has the anchor API, and on that
- * path the machine's placement is the dead fallback with its style stripped before it reaches the DOM.
- * So this makes the two bindings SAY the same thing. Whether what they now say is right is as untested
- * after this as it was before, in both bindings.
+ * Below the trigger with the start edges ALIGNED (`bottom-start`), not centered: the listbox is the
+ * continuation of the control, not a separate box floating nearby.
  */
 export const selectPositioning = {
+  ...anchoredPositioning,
   placement: "bottom-start",
   sameWidth: false,
-  gutter: 8,
   flip: true,
 } as const;
 
@@ -67,6 +68,15 @@ export const selectPositioning = {
  */
 export const selectAttrs = {
   root: "data-sk-select",
+  /*
+   * NAMES THE JSON ISLAND, the same `<script type="application/json">` convention
+   * `commandPaletteAttrs.index` already uses. Vanilla-only: React gets its items straight through
+   * the `options` prop, so it never needs this. A list too large to hand-author as `<li>`s (a
+   * virtualized select) opts in by setting this instead of writing them - `Select.svelte` then
+   * generates rather than adopts, the same deliberate exception `FileUpload.svelte`'s own
+   * file-list comment names.
+   */
+  items: "data-sk-select-items",
   hidden: "data-sk-select-hidden",
   control: "data-sk-select-control",
   label: "data-sk-select-label",
@@ -90,6 +100,7 @@ export const selectParts = {
   indicator: "sk-select__indicator",
   positioner: "sk-select__positioner",
   content: "sk-select__content",
+  panel: "sk-select__panel",
   item: "sk-select__item",
   itemText: "sk-select__item-text",
   itemIndicator: "sk-select__item-indicator",
@@ -141,14 +152,6 @@ export const selectContract = {
     valueChange: { detail: { value: "string[]" }, reactProp: "onValueChange", source: "root", trigger: "item" },
   },
   hooks: [
-    "--sk-anchored-align",
-    "--sk-anchored-arrow-edge",
-    "--sk-anchored-arrow-near",
-    "--sk-anchored-justify",
-    "--sk-anchored-offset",
-    "--sk-anchored-position-area",
-    "--sk-anchored-position-try",
-    "--sk-anchored-size",
     "--sk-anchored-z",
     "--sk-select-bg",
     "--sk-select-border-color",
@@ -256,6 +259,7 @@ export const selectContract = {
         element: "select",
         part: "native",
         host: true,
+        also: ["sk-scrollbar"],
         /*
          * Shared option attrs are the enhanced signature's `data-*` machine channel. A real
          * `<select>` needs the platform spellings; `value` is suppressed here because the matching
@@ -263,6 +267,11 @@ export const selectContract = {
          */
         optionAttrs: { disabled: "disabled", required: "required", value: "" },
         children: [
+          {
+            element: "button",
+            attrs: { type: "button" },
+            children: [{ element: "selectedcontent" }],
+          },
           {
             element: "option",
             repeat: "items",
@@ -377,29 +386,36 @@ export const selectContract = {
             mount: selectAttrs.positioner,
             children: [
               {
-                element: "ul",
-                part: "content",
-                mount: selectAttrs.content,
+                element: "div",
+                part: "panel",
                 children: [
                   {
-                    element: "li",
-                    part: "item",
-                    also: ["sk-interactive"],
-                    mount: selectAttrs.item,
-                    repeat: "items",
-                    itemOptions: ["value", "disabled"],
+                    element: "ul",
+                    part: "content",
+                    also: ["sk-scrollbar"],
+                    mount: selectAttrs.content,
                     children: [
                       {
-                        element: "span",
-                        part: "itemText",
-                        mount: selectAttrs.itemText,
-                        itemSlot: "label",
-                      },
-                      {
-                        element: "span",
-                        part: "itemIndicator",
-                        mount: selectAttrs.itemIndicator,
-                        children: [{ element: "span", attrs: { "data-sk-icon": "check", "data-sk-icon-size": "md" } }],
+                        element: "li",
+                        part: "item",
+                        also: ["sk-interactive"],
+                        mount: selectAttrs.item,
+                        repeat: "items",
+                        itemOptions: ["value", "disabled"],
+                        children: [
+                          {
+                            element: "span",
+                            part: "itemText",
+                            mount: selectAttrs.itemText,
+                            itemSlot: "label",
+                          },
+                          {
+                            element: "span",
+                            part: "itemIndicator",
+                            mount: selectAttrs.itemIndicator,
+                            children: [{ element: "span", attrs: { "data-sk-icon": "check", "data-sk-icon-size": "md" } }],
+                          },
+                        ],
                       },
                     ],
                   },

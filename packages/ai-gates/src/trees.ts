@@ -31,27 +31,6 @@ const SAMPLE_MEDIA =
       "</svg>",
   );
 
-/*
- * STICKER SPECIMENS, the two kinds of artwork its whole claim is about.
- *
- * A star with a hole punched through its middle, as a transparent PNG: irregular on the outside,
- * transparent on the inside, and raster, so the die-cut edge has to come from pixel alpha with no
- * vector to lean on. Generated once from a canvas and inlined for the reason SAMPLE_MEDIA is.
- */
-const STICKER_RASTER =
-  "data:image/png;base64,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";
-
-/* The same idea as a vector, loaded as an image: a speech bubble with a tail, concave where it
-   meets the body, which is the shape a box-shaped edge would get most visibly wrong. */
-const STICKER_SVG =
-  "data:image/svg+xml;utf8," +
-  encodeURIComponent(
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="72" height="72">' +
-      '<path d="M50 8C75 8 92 30 80 52L92 90L58 72C30 80 8 62 12 40C16 20 30 8 50 8Z" fill="#805ad5"/>' +
-      '<circle cx="40" cy="42" r="6" fill="#fff"/><circle cx="62" cy="42" r="6" fill="#fff"/>' +
-      "</svg>",
-  );
-
 export type Canonical = {
   readonly name: string;
   readonly tree: UsageTree;
@@ -917,42 +896,6 @@ const signatureTrees: readonly Canonical[] = [
       },
     },
   },
-  /*
-   * STICKER, one tree per state and one per kind of artwork, since the silhouette is the claim: a
-   * raster with a hole, an SVG loaded as an image, and an inline SVG (an Icon, the one way a usage
-   * tree can author vector markup). No enhancer: state is an attribute and CSS plays it.
-   */
-  {
-    name: "sticker/raster-idle",
-    enhanced: false,
-    tree: {
-      contract: "sticker",
-      signature: "Sticker",
-      options: { src: STICKER_RASTER, alt: "Estrella dorada" },
-    },
-  },
-  {
-    /* Peeled from the top corner, where the bubble has material to lift; decorative, so `alt=""`. */
-    name: "sticker/svg-peeled",
-    enhanced: false,
-    tree: {
-      contract: "sticker",
-      signature: "Sticker",
-      options: { src: STICKER_SVG, alt: "", state: "peeled", peelOrigin: "block-start-inline-end" },
-    },
-  },
-  {
-    /* Not enhanced, like qr-code/with-logo: the harness draws the Icon's svg in both bindings, and
-       the sticker itself mounts nothing. */
-    name: "sticker/inline-svg-applied",
-    enhanced: false,
-    tree: {
-      contract: "sticker",
-      signature: "Sticker",
-      options: { state: "applied" },
-      children: { contract: "icon", signature: "Icon", options: { name: "settings", size: "lg" } },
-    },
-  },
   {
     /* Closed on purpose: the open state is a plain div, and `hidden` from `present: false` is the
        attribute the contract adds that both bindings have to agree on. */
@@ -1508,25 +1451,6 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
-    name: "dock/default",
-    enhanced: true,
-    tree: {
-      contract: "dock",
-      signature: "Dock",
-      options: { label: "Quick actions" },
-      children: [
-        {
-          contract: "dock", signature: "DockItem", options: { label: "Search" },
-          children: { contract: "icon", signature: "Icon", options: { name: "search", size: "md" } },
-        },
-        {
-          contract: "dock", signature: "DockItem", options: { label: "Settings", disabled: true },
-          children: { contract: "icon", signature: "Icon", options: { name: "settings", size: "md" } },
-        },
-      ],
-    },
-  },
-  {
     name: "toolbar/brutalist",
     enhanced: true,
     tree: {
@@ -1986,71 +1910,6 @@ const signatureTrees: readonly Canonical[] = [
       signature: "ScrollHint",
       options: { axis: "vertical" },
       slots: { children: "Desliza para ver más" },
-    },
-  },
-  /*
-   * The silhouette is MEASURED, so this is the tree that proves the two bindings draw one shape: a
-   * real browser lays both out, each binding calls `folderPath` with what it measured, and the gate
-   * compares the resulting `d` attribute like any other. A difference of one pixel in either
-   * measurement shows up here as a different string.
-   */
-  {
-    name: "folder/one",
-    enhanced: true,
-    tree: {
-      contract: "folder",
-      signature: "Folder",
-      options: {},
-      slots: {
-        label: { contract: "typography", signature: "Heading", options: { headingSize: "h2", flush: true }, children: "Radio" },
-        children: { contract: "typography", signature: "Text", options: { size: "sm" }, children: "Una radio personal." },
-      },
-    },
-  },
-  /* The default use: a stack, invisible at rest in both bindings until something reaches into it. */
-  {
-    name: "folder/stack",
-    enhanced: true,
-    tree: {
-      contract: "folder",
-      signature: "FolderStack",
-      options: { overlap: "100px" },
-      slots: {
-        children: [
-          {
-            contract: "folder",
-            signature: "FolderLink",
-            options: { href: "#radio" },
-            slots: {
-              label: { contract: "typography", signature: "Heading", options: { headingSize: "h2", flush: true }, children: "Radio" },
-              children: { contract: "typography", signature: "Text", options: { size: "sm" }, children: "Una radio personal." },
-              /* A Box rather than the `ImageFrame` the docs use: a canonical tree must not reach the
-               * network, and what this proves is that both bindings place a preview identically. */
-              previews: [
-                {
-                  contract: "folder",
-                  signature: "FolderPreview",
-                  slots: { children: { contract: "box", signature: "Box", options: { surface: "raised", padding: "md" }, slots: { children: "1" } } },
-                },
-                {
-                  contract: "folder",
-                  signature: "FolderPreview",
-                  slots: { children: { contract: "box", signature: "Box", options: { surface: "raised", padding: "md" }, slots: { children: "2" } } },
-                },
-              ],
-            },
-          },
-          {
-            contract: "folder",
-            signature: "FolderLink",
-            options: { href: "#printer" },
-            slots: {
-              label: { contract: "typography", signature: "Heading", options: { headingSize: "h2", flush: true }, children: "Printer" },
-              children: { contract: "typography", signature: "Text", options: { size: "sm" }, children: "Impresión instantánea." },
-            },
-          },
-        ],
-      },
     },
   },
   /* No enhancer at all: the browser owns light-dismiss, Escape and the top layer. */
@@ -3663,7 +3522,7 @@ const signatureTrees: readonly Canonical[] = [
               children: {
                 contract: "form-field",
                 signature: "FormField",
-                options: { labelHidden: true },
+                options: { labelVisuallyHidden: true },
                 slots: { label: "Respuesta" },
                 children: { contract: "input", signature: "Textarea" },
               },
@@ -4406,39 +4265,6 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
 
-  /*
-   * CHART, as a series with an overlay. `line`/`area` are the only kinds that need an enhancer, and
-   * it only paints the overlay: the bars underneath are CSS over the values, so the fixture is
-   * `area` on purpose. The labels stay on, unlike a sparkline in a card, because this is the gate's
-   * only look at the label and value parts.
-   */
-  {
-    name: "chart/area",
-    enhanced: true,
-    tree: {
-      contract: "chart",
-      signature: "Chart",
-      options: {
-        kind: "area",
-        tone: "accent",
-        height: "sm",
-        format: "compact",
-        label: "Visitas por semana, últimas ocho semanas",
-      },
-      slots: {
-        items: [
-          { options: { value: 38200 }, slots: { label: "Sem 1" } },
-          { options: { value: 41500 }, slots: { label: "Sem 2" } },
-          { options: { value: 39800 }, slots: { label: "Sem 3" } },
-          { options: { value: 47200 }, slots: { label: "Sem 4" } },
-          { options: { value: 44100 }, slots: { label: "Sem 5" } },
-          { options: { value: 52600 }, slots: { label: "Sem 6" } },
-          { options: { value: 57300 }, slots: { label: "Sem 7" } },
-          { options: { value: 61400 }, slots: { label: "Sem 8" } },
-        ],
-      },
-    },
-  },
   /*
    * The two shapes an item can take, in one form, because the questionnaire shows ONE item at a
    * time: a required single choice and an optional free-text question. A tree with only the first

@@ -1,0 +1,7 @@
+---
+if (import.meta.env.PROD) return new Response(null, { status: 404 });
+import "@skryensya/core/patterns/nav-list.css";
+import { NavListBreak } from "../../components/react-demos/debug-nav-list-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+<DebugShell title="NavList" docsHref="/components/sidebar"><NavListBreak client:only="react" /></DebugShell>

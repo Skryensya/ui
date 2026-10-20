@@ -100,6 +100,9 @@
     grid-column: 2;
     gap: var(--sk-procedure-content-gap);
     min-inline-size: 0;
+    /* Inherited by the title and body below: shrinkable (`min-inline-size: 0`) isn't wrappable on
+       its own - an email/URL/long compound word still had no break point without this. */
+    overflow-wrap: anywhere;
   }
 
   .sk-procedure__title {

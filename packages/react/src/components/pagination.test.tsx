@@ -41,6 +41,31 @@ describe("Pagination", () => {
     expect(onDom).toHaveBeenCalled();
     expect((onDom.mock.calls[0]![0] as CustomEvent).detail).toEqual({ page: 3 });
   });
+
+  it("warns in development when total is not an integer, and still renders it literally", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const ui = render(<Pagination page={10} total={12.5} />);
+
+    expect(spy.mock.calls.at(-1)?.[0]).toMatch(/non-integer "total"/i);
+    expect(ui.getByRole("button", { name: "12.5" })).toBeTruthy();
+    spy.mockRestore();
+  });
+
+  it("warns in development when page is not an integer", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    render(<Pagination page={2.5} total={10} />);
+
+    expect(spy.mock.calls.at(-1)?.[0]).toMatch(/non-integer "page"/i);
+    spy.mockRestore();
+  });
+
+  it("does not warn when page and total are both integers", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    render(<Pagination page={2} total={10} />);
+
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
 });
 
 describe("TablePagerStatus", () => {

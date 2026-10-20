@@ -12,18 +12,19 @@ import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/icon.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/qr-code";
-import { treeStory, localeOf, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, localeOf, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/QRCode", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory((t) => demos.qrCodeAnatomyTree(t, localeOf(t)));
+export const Anatomy: StoryObj = treeStory((t) => demos.qrCodeAnatomyTree(t, localeOf(t)), { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory((t) => demos.qrCodeTree(localeOf(t)));
+export const Logo: StoryObj = treeStory((t) => demos.qrCodeLogoTree(localeOf(t)));
+export const Card: StoryObj = treeStory((t) => demos.qrCodeCardTree(localeOf(t)));
+export const Popover: StoryObj = treeStory((t) => demos.qrCodePopoverTree(localeOf(t)));
+export const Ticket: StoryObj = treeStory((t) => demos.qrCodeTicketTree(localeOf(t)));
 export const Sizes: StoryObj = treeStory((t) => demos.qrCodeSizesTree(localeOf(t)));
 export const Levels: StoryObj = treeStory((t) => demos.qrCodeLevelsTree(localeOf(t)));
 export const Shapes: StoryObj = treeStory((t) => demos.qrCodeShapesTree(localeOf(t)));
 export const Masks: StoryObj = treeStory((t) => demos.qrCodeMasksTree(localeOf(t)));
 export const Tones: StoryObj = treeStory((t) => demos.qrCodeTonesTree(localeOf(t)));
-export const Logo: StoryObj = treeStory((t) => demos.qrCodeLogoTree(localeOf(t)));
-export const Card: StoryObj = treeStory((t) => demos.qrCodeCardTree(localeOf(t)));
-export const Popover: StoryObj = treeStory((t) => demos.qrCodePopoverTree(localeOf(t)));
-export const Ticket: StoryObj = treeStory((t) => demos.qrCodeTicketTree(localeOf(t)));

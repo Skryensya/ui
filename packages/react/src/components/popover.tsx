@@ -1,7 +1,6 @@
 import { popoverContract, popoverParts, type PopoverPlacement } from "@skryensya/core/popover";
-import { useId, type HTMLAttributes, type ReactNode } from "react";
-import { anchoredParts } from "@skryensya/core/anchored";
-
+import { useEffect, useId, type HTMLAttributes, type ReactNode } from "react";
+import { anchoredParts, placeNativePopovers } from "@skryensya/core/anchored";
 
 const cx = (...classes: Array<string | undefined>) => classes.filter(Boolean).join(" ");
 
@@ -75,6 +74,8 @@ export function Popover({
   ...props
 }: PopoverProps) {
   const generatedId = useId();
+  // The browser shows the panel; the popper places it, once, for the whole document.
+  useEffect(() => placeNativePopovers(), []);
   const contentId = id ?? `${generatedId}-popover`;
   // Same relationship `Dialog` fixes between its `<dialog>` and its own title/body (see
   // `dialog.tsx`): `popover="auto"` grants no implicit accessible name the way `<dialog>` at least
@@ -120,7 +121,7 @@ export function Popover({
         id={contentId}
         popover="auto"
       >
-        {arrow ? <span aria-hidden="true" className={anchoredParts.arrow} /> : null}
+        {arrow ? <span aria-hidden="true" className={anchoredParts.arrow} data-part="arrow" /> : null}
         {hasTitle ? (
           <h2 className={popoverParts.title} id={titleId}>
             {title}

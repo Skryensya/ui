@@ -31,6 +31,8 @@ export type TagsInputProps = {
   placeholder?: string;
   /** Every delete control's accessible name. One string for all of them; see the contract's note. */
   removeLabel?: string;
+  /** The clear-all control's accessible name. Same fallback-default pattern as Combobox's own. */
+  clearLabel?: string;
   /** The tags it starts with. Uncontrolled. */
   defaultValue?: string[];
   /** The tags, controlled. Spread conditionally: see the note inside. */
@@ -61,6 +63,7 @@ export function TagsInput({
   appearance,
   allowDuplicates,
   className,
+  clearLabel = "Limpiar todo",
   defaultValue,
   delimiter = delimiterOption.default,
   disabled,
@@ -102,6 +105,7 @@ export function TagsInput({
     readOnly,
     invalid,
     required,
+    translations: { clearTriggerLabel: clearLabel },
     onValueChange(details) {
       onValueChange?.({ value: details.value });
       /* The same channel authored markup gets, with the same detail. */
@@ -124,50 +128,65 @@ export function TagsInput({
       ref={rootRef}
     >
       <div {...api.getControlProps()} className={tagsInputParts.control}>
-        {/* The node that stands for the whole list. `display: contents`, so it adds no box. */}
-        <span className={tagsInputParts.list}>
-          {api.value.map((tag, index) => {
-            const item = { index, value: tag };
+        {/* The tags-plus-entry column: everything that wraps, kept apart from `clear` so that
+            button has its own column to pin itself to the top of (see the CSS). */}
+        <div className={tagsInputParts.value}>
+          {/* The node that stands for the whole list. `display: contents`, so it adds no box. */}
+          <span className={tagsInputParts.list}>
+            {api.value.map((tag, index) => {
+              const item = { index, value: tag };
 
-            return (
-              <span {...api.getItemProps(item)} className={tagsInputParts.item} key={`${tag}-${index}`}>
-                {/* THE CHIP IS A TAG, composed rather than redrawn: see the contract's own header. */}
-                <span
-                  {...api.getItemPreviewProps(item)}
-                  className={`${tagsInputParts.preview} ${tagParts.root}`}
-                  data-removable=""
-                >
+              return (
+                <span {...api.getItemProps(item)} className={tagsInputParts.item} key={`${tag}-${index}`}>
+                  {/* THE CHIP IS A TAG, composed rather than redrawn: see the contract's own header. */}
                   <span
-                    {...api.getItemTextProps(item)}
-                    className={`${tagsInputParts.text} ${tagParts.label}`}
+                    {...api.getItemPreviewProps(item)}
+                    className={`${tagsInputParts.preview} ${tagParts.root}`}
+                    data-removable=""
                   >
-                    {tag}
+                    <span
+                      {...api.getItemTextProps(item)}
+                      className={`${tagsInputParts.text} ${tagParts.label}`}
+                    >
+                      {tag}
+                    </span>
+                    {/* A real Button, like Tag's own remove control: state layer, focus ring, hit target. */}
+                    <Button
+                      {...api.getItemDeleteTriggerProps(item)}
+                      aria-label={removeLabel}
+                      className={`${tagsInputParts.remove} ${tagParts.remove}`}
+                      iconOnly
+                      size="sm"
+                      variant="ghost"
+                    >
+                      <Icon name="close" />
+                    </Button>
                   </span>
-                  {/* A real Button, like Tag's own remove control: state layer, focus ring, hit target. */}
-                  <Button
-                    {...api.getItemDeleteTriggerProps(item)}
-                    aria-label={removeLabel}
-                    className={`${tagsInputParts.remove} ${tagParts.remove}`}
-                    iconOnly
-                    size="sm"
-                    variant="ghost"
-                  >
-                    <Icon name="close" />
-                  </Button>
+                  <input {...api.getItemInputProps(item)} className={tagsInputParts.itemInput} />
                 </span>
-                <input {...api.getItemInputProps(item)} className={tagsInputParts.itemInput} />
-              </span>
-            );
-          })}
-        </span>
-        <input
-          {...api.getInputProps()}
-          aria-label={label}
-          className={tagsInputParts.input}
-          placeholder={placeholder}
-          // The template's own static attr: authored markup always had it, React never wrote it.
-          type="text"
-        />
+              );
+            })}
+          </span>
+          <input
+            {...api.getInputProps()}
+            aria-label={label}
+            className={tagsInputParts.input}
+            placeholder={placeholder}
+            // The template's own static attr: authored markup always had it, React never wrote it.
+            type="text"
+          />
+        </div>
+        {/* Clears every tag at once, the same system-owned Button + Icon realization Combobox's own
+            clear is. Zag hides it for us: no tags, nothing to clear. */}
+        <Button
+          {...api.getClearTriggerProps()}
+          className={tagsInputParts.clear}
+          iconOnly
+          size="xs"
+          variant="ghost"
+        >
+          <Icon name="close" size="sm" />
+        </Button>
       </div>
       <input {...api.getHiddenInputProps()} className={tagsInputParts.hidden} />
     </div>

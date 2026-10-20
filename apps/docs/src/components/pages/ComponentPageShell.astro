@@ -56,6 +56,9 @@ interface Props {
    *  surveys several contracts at once or documents a pattern with none of its own: Referencia and
    *  Cambios drop out rather than reading a contract that does not describe the page. */
   contractId?: string;
+  /** Which of the contract's React exports THIS page imports. Required when several pages share one
+   *  contract (the Tile family): without it the import lists every export, and grows with each one added. */
+  importNames?: string[];
   /** Steps a component adds after the generated Vanilla ones (Button's icon set), drawn inside the same Procedure. */
   vanillaInstallSteps?: InstallStep[];
   /** The same for the React half (an extra package the component needs, say). */
@@ -80,6 +83,10 @@ interface Props {
    *  this is a per-page callout, not the catalog's own maturity axis (see `navigation.ts`'s
    *  `status`), so adding it here never lights up any other page. */
   badge?: string;
+  /** Href of this component's `/debug/<name>-break` harness, when one exists. Renders as a small
+   *  link beside the title, dev-only (`import.meta.env.DEV`): astro build runs with
+   *  NODE_ENV=production, so it never ships, same as the harness page itself 404ing out of prod. */
+  breakHarness?: string;
   /** Selector for the roots this page's appearance menu retunes. Scoped to this page's previews. */
   appearanceTargetSelector?: string;
   /**
@@ -110,6 +117,7 @@ const {
   title,
   description,
   contractId,
+  importNames,
   vanillaInstallSteps = [],
   reactInstallSteps = [],
   extraSheets = [],
@@ -120,6 +128,7 @@ const {
   testFiles,
   hideVanillaMount = true,
   badge,
+  breakHarness,
   appearanceTargetSelector,
   untitledCode = false,
   hookPlayground,
@@ -206,6 +215,14 @@ const vanillaMount = mountFact;
    binding and nothing else (`scripts/generate-css-reexports.ts`); core is never named. */
 const vanillaInstallCommand = "pnpm add @skryensya/vanilla";
 const viaBinding = (binding: "react" | "vanilla", sheet: string) => sheet.replace("@skryensya/core/", `@skryensya/${binding}/css/`);
+/* A named-import list wide enough (dialog-stack: 12 names) overflowed `.sk-code-preview`'s own
+   scroll fix with one unbroken line; Prettier's own line break (one name per line past its 80-col
+   default) avoids the scroll instead of just containing it. */
+const importStatement = (names: readonly string[], entry: string) => {
+  const oneLine = `import { ${names.join(", ")} } from "${entry}";`;
+  if (names.length <= 1 || oneLine.length <= 80) return oneLine;
+  return `import {\n${names.map((name) => `  ${name},`).join("\n")}\n} from "${entry}";`;
+};
 const sheets = install?.css.files ?? derivedStyleGroups.map((group) => `@skryensya/core/${group.file}`);
 /** The stylesheet the component names; the others load through its own `@import`s. */
 const ownSheet = install?.css.entry ?? sheets.at(-1);
@@ -221,8 +238,9 @@ await initComponents(container);`;
 const vanillaMountSnippet = vanillaMount
   ? `import { ${vanillaMount.mount} } from "${vanillaMount.entrypoint}";\n\n// ${t("install.mountAll")}\n${vanillaMount.mount}();\n\n// ${t("install.mountOne")}\n${vanillaMount.mount}(document.querySelector("${vanillaMount.selector}"));`
   : null;
+const reactNames = importNames?.length ? install?.react?.names.filter((name) => importNames.includes(name)) : install?.react?.names;
 const reactSnippet = install?.react
-  ? `import { ${install.react.names.join(", ")} } from "${install.react.entry}";\nimport "${viaBinding("react", ownSheet!)}";${extraSheets.map((sheet) => `\nimport "${viaBinding("react", sheet)}";`).join("")}`
+  ? `${importStatement(reactNames ?? [], install.react.entry)}\nimport "${viaBinding("react", ownSheet!)}";${extraSheets.map((sheet) => `\nimport "${viaBinding("react", sheet)}";`).join("")}`
   : null;
 const autoLink = `<a href="${localizePath("/automatic-mounting", locale)}">${t("vanilla.autoLinkLabel")}</a>`;
 
@@ -418,7 +436,9 @@ const relatedComponents = chosen
           {badge && (
             <span class="sk-badge docs-component-hero__badge" data-tone="warning">{badge}</span>
           )}
-
+          {import.meta.env.DEV && breakHarness && (
+            <a href={breakHarness} class="docs-component-hero__break-link">break harness →</a>
+          )}
         </div>
       </header>
     </div>

@@ -6,10 +6,30 @@ import {
   type RatingSymbolSize,
 } from "@skryensya/core/rating";
 import { normalizeProps, useMachine } from "@zag-js/react";
-import { useId, useRef, type ReactNode } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState, type HTMLAttributes, type ReactNode } from "react";
+import { dev, devTicket } from "../dev-warning.js";
 
 /* Derived, never restated: the defaults live in the contract. */
 const { itemLabel: itemLabelOption, max: maxOption, symbolSize: symbolSizeOption } = ratingContract.options;
+
+/*
+ * Found on the break harness (`/debug/rating-break`): the contract declares `defaultValue` (and
+ * `value`, in its controlled form) `integer: true` - the input is whole steps only, the contract's
+ * own note on why. Verified against the real Zag machine rather than assumed: a fractional
+ * defaultValue does NOT leave the strip blank, it rounds (3.5 renders 4 stars checked) - but the
+ * HIDDEN FORM INPUT still carries the raw fractional value, so what a reader sees and what a form
+ * submits disagree. Dev-only, console-only, value left exactly as given - same posture as
+ * Pagination's own non-integer warning.
+ */
+function warnNonIntegerRatingValue(value: number | undefined): void {
+  if (!dev || value === undefined || Number.isInteger(value)) return;
+  console.error(
+    ...devTicket("<Rating>", {
+      issue: `received a non-integer value (${value}).`,
+      why: `The input is whole steps only; the visible strip rounds it, but the hidden form field still submits ${value}.`,
+    }),
+  );
+}
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
@@ -27,6 +47,7 @@ export type RatingProps = {
   /** Each step's own name, with `{value}` for its number. See the contract's own note on the default. */
   itemLabel?: string;
   className?: string;
+  dir?: HTMLAttributes<HTMLDivElement>["dir"];
   onValueChange?: (details: { value: number }) => void;
 };
 
@@ -49,10 +70,28 @@ export function Rating({
   readOnly,
   symbolSize = symbolSizeOption.default,
   value,
+  dir,
 }: RatingProps) {
+  // Effect, not a direct render-body call: client-only, post-mount, straight into the browser's
+  // own console - same reasoning as Kbd's own warnEmptyKbd.
+  useEffect(() => {
+    warnNonIntegerRatingValue(defaultValue);
+    warnNonIntegerRatingValue(value);
+  }, [defaultValue, value]);
+
   const generatedId = useId();
   const resolvedId = id ?? generatedId;
   const rootRef = useRef<HTMLDivElement>(null);
+  const [direction, setDirection] = useState<"ltr" | "rtl">(dir === "rtl" ? "rtl" : "ltr");
+  useLayoutEffect(() => {
+    const inherited = dir ? rootRef.current : rootRef.current?.parentElement;
+    const resolved = dir === "rtl" || dir === "ltr"
+      ? dir
+      : getComputedStyle(inherited ?? document.documentElement).direction === "rtl"
+        ? "rtl"
+        : "ltr";
+    setDirection(resolved);
+  }, [dir]);
 
   /*
    * SPREAD, NOT `value: undefined`, and this is not style.
@@ -66,6 +105,7 @@ export function Rating({
   const service = useMachine(ratingGroup.machine, {
     id: resolvedId,
     name,
+    dir: direction,
     count: max,
     ...(value === undefined ? {} : { value }),
     ...(defaultValue === undefined ? {} : { defaultValue }),
@@ -91,6 +131,7 @@ export function Rating({
   return (
     <div
       {...api.getRootProps()}
+      dir={dir ?? direction}
       className={cx(ratingParts.root, className)}
       data-disabled={disabled ? "" : undefined}
       data-readonly={readOnly ? "" : undefined}

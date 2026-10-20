@@ -78,9 +78,17 @@ export function CodePreview({
       data-appearance={appearance}
       {...{
         [codePreviewAttrs.root]: "",
-        // `expanded` is the enhancer's bookkeeping, written when the control is used rather than
-        // at rest; so this binding does not claim it either, or the two disagree before any click.
-        ...(collapsible ? { [codePreviewAttrs.collapsible]: "" } : {}),
+        /*
+         * `expanded` was left unwritten here on the theory that the Vanilla enhancer would supply
+         * it - but that enhancer only runs for the Vanilla binding (packages/vanilla's own
+         * code-preview.ts), never for React. With the attribute absent, the CSS height-clamp
+         * selector (`[data-sk-code-preview-expanded="false"]`) never matched, so a long block
+         * rendered in full on first paint and the first click only flipped the button's label, not
+         * the height - a real bug, found reading the two sides disagree, not a layout nit. React
+         * already owns `expanded` as its own state, so it writes the attribute itself instead of
+         * waiting on a script that was never going to run for this binding.
+         */
+        ...(collapsible ? { [codePreviewAttrs.collapsible]: "", [codePreviewAttrs.expanded]: String(expanded) } : {}),
         ...(lines !== undefined ? { [codePreviewAttrs.lines]: String(lines) } : {}),
         ...(previewLines !== undefined ? { [codePreviewAttrs.previewLines]: String(previewLines) } : {}),
         ...rootAttrs,

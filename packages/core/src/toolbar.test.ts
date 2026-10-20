@@ -56,4 +56,13 @@ describe("resolveToolbarKey. Edge cases", () => {
   it("an unhandled key resolves to none", () => {
     expect(resolveToolbarKey({ key: "Escape", currentIndex: 1, itemCount: 4, orientation: "horizontal", loopFocus: true })).toEqual({ kind: "none" });
   });
+
+  it("swaps ArrowLeft/ArrowRight under dir: \"rtl\", horizontal only", () => {
+    /* Found as a real bug: this never took a direction at all, so ArrowRight always meant "next
+       array index" regardless of which way the bar reads. Vertical is unaffected - Up/Down are
+       unambiguous either way. */
+    expect(resolveToolbarKey({ key: "ArrowRight", currentIndex: 1, itemCount: 4, orientation: "horizontal", loopFocus: true, dir: "rtl" })).toEqual({ kind: "move", index: 0 });
+    expect(resolveToolbarKey({ key: "ArrowLeft", currentIndex: 1, itemCount: 4, orientation: "horizontal", loopFocus: true, dir: "rtl" })).toEqual({ kind: "move", index: 2 });
+    expect(resolveToolbarKey({ key: "ArrowDown", currentIndex: 1, itemCount: 4, orientation: "vertical", loopFocus: true, dir: "rtl" })).toEqual({ kind: "move", index: 2 });
+  });
 });

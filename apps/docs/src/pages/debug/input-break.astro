@@ -1,0 +1,32 @@
+---
+/* Dev-only stress harness for Input, Textarea, and NativeInput. */
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
+import "@skryensya/core/tokens.scss";
+import "@skryensya/core/components/form-field.css";
+import "@skryensya/core/components/input.css";
+import "../../styles/site.css";
+import { InputBreak } from "../../components/react-demos/debug-input-break";
+import DebugShell from "../../components/DebugShell.astro";
+
+---
+
+<DebugShell title="Input" docsHref="/components/input">
+  <div class="break-page" data-toc-transparent>
+    <header>
+      <h1>break: Input</h1>
+      <p class="break-intro">Long labels and values, a realistic pasted support note, and a native date control.</p>
+    </header>
+    <InputBreak client:load />
+  </div>
+</DebugShell>
+
+<style is:global>
+  .break-form {
+    box-sizing: border-box;
+    inline-size: min(100%, 28rem);
+    min-inline-size: 0;
+  }
+</style>

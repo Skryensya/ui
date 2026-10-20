@@ -24,6 +24,7 @@ const t = useTranslations(getLocale(Astro.url));
 ---
 
 <ComponentPageShell
+  breakHarness="/debug/slider-break"
   hookPlayground={{ tree: sliderTree(t) }}
   title="Slider"
   description={t("sliderPage.description")}

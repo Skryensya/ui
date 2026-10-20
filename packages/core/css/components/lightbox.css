@@ -221,6 +221,12 @@
     font-variant-numeric: tabular-nums;
     line-height: var(--font-line-height-body);
     white-space: nowrap;
+    /* "1 / 7" is built as a plain string with Latin digits and no bidi markup of its own (core's
+       lightbox-controller.ts); under an RTL ambient direction the Unicode bidi algorithm reorders
+       it to read "7 / 1" - found as a real bug, not a layout nit. Isolating it in its own LTR run
+       keeps the digit order fixed regardless of the surrounding direction. */
+    direction: ltr;
+    unicode-bidi: isolate;
   }
 
   .sk-lightbox__actions {
@@ -344,6 +350,15 @@
     justify-self: end;
   }
 
+  /* `justify-self: start`/`end` already flip the buttons' POSITION under RTL; the chevron glyph
+     inside each is a fixed `chevron-left`/`chevron-right` icon name that does not follow - found as
+     a real bug, the button that now sits on the visual right still pointed left. Flipped in place
+     rather than swapping icon names, so the same two icons keep being the only ones this pair ever
+     draws. */
+  .sk-lightbox__nav .sk-icon:dir(rtl) {
+    transform: scaleX(-1);
+  }
+
   /* Wide enough to give the nav its own margin: the photo stops short of the buttons instead of
      sliding under them. On a phone every pixel is the photo's, and the buttons float over it. */
   @media (min-width: 48rem) {
@@ -416,7 +431,7 @@
    * measure where it will be the moment the lightbox opens. The placeholder gets the PHOTO's
    * box too, not its own square thumbnail's.
    */
-  .sk-lightbox :is(.sk-lightbox__image, .sk-lightbox__placeholder)[data-sk-sized] {
+  .sk-lightbox :is(.sk-lightbox__image, .sk-lightbox__placeholder, .sk-lightbox__video, .sk-video-player)[data-sk-sized] {
     inline-size: min(
       100cqi,
       var(--sk-lightbox-image-width, 100cqi),
@@ -430,6 +445,46 @@
     box-shadow: var(--sk-lightbox-image-shadow);
     transform-origin: 50% 50%;
     will-change: transform;
+  }
+
+  /*
+   * A VIDEO, in the place of the photo: the same box, fitted the same way (its known size reserves it, and it never leaves the
+   * stage), with its own controls. It is not loose on the stage like a photo: a press on a player belongs to the player, so it has
+   * no grab cursor, no drag offset and no zoom. Closed, or with no source, it is not drawn.
+   */
+  .sk-lightbox__video {
+    grid-area: 1 / 1;
+    inline-size: auto;
+    block-size: auto;
+    max-inline-size: 100%;
+    max-block-size: 100%;
+    object-fit: contain;
+    background: black;
+    border-radius: var(--sk-lightbox-image-radius);
+    box-shadow: var(--sk-lightbox-image-shadow);
+  }
+
+  /*
+   * THE SYSTEM'S OWN PLAYER, when the page authored one in the `video` slot: it takes the photo's place in the same box (its known
+   * size reserves it, as for a photo), carries the lightbox's rounding and shadow, and keeps its own bar, keys and captions. It is
+   * not loose on the stage either: a press on a player belongs to the player. `display: grid` is the player's, and beats the UA's
+   * `[hidden]`, so the rule that puts it away says so.
+   */
+  .sk-lightbox__stage > .sk-video-player {
+    grid-area: 1 / 1;
+    max-inline-size: 100%;
+    max-block-size: 100%;
+    --sk-video-player-radius: var(--sk-lightbox-image-radius);
+    box-shadow: var(--sk-lightbox-image-shadow);
+  }
+
+  .sk-lightbox__stage > .sk-video-player[hidden] {
+    display: none;
+  }
+
+  .sk-lightbox:not([open]) .sk-lightbox__video,
+  .sk-lightbox .sk-lightbox__video:not([src]) {
+    visibility: hidden;
   }
 
   /*

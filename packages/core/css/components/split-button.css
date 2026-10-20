@@ -84,6 +84,15 @@
     align-items: stretch;
     background: var(--sk-split-button-wash) transparent;
     box-shadow: var(--sk-split-button-shadow);
+    /*
+     * Button's own `min-inline-size: 0; max-inline-size: 100%` lets ITS label clip inside a
+     * shrunk button - but this wrapper had no such floor/ceiling of its own, so the group grew to
+     * 369-393px in a 229px container (worst-case label, loading state) with the trigger segment
+     * pushed out of view. Same pair of rules, one level up, so the primary segment's own clip can
+     * actually take effect once the group is asked to shrink.
+     */
+    min-inline-size: 0;
+    max-inline-size: 100%;
   }
   /*
    * Neither half casts its own shadow once the group above does: `:is([data-weld-start],

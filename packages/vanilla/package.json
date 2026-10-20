@@ -250,10 +250,6 @@
       "types": "./src/components/breadcrumb.ts",
       "default": "./src/components/breadcrumb.ts"
     },
-    "./chart": {
-      "types": "./src/components/chart.ts",
-      "default": "./src/components/chart.ts"
-    },
     "./data-grid": {
       "types": "./src/components/data-grid.ts",
       "default": "./src/components/data-grid.ts"
@@ -310,17 +306,9 @@
       "types": "./src/components/number-field.ts",
       "default": "./src/components/number-field.ts"
     },
-    "./folder": {
-      "types": "./src/components/folder.ts",
-      "default": "./src/components/folder.ts"
-    },
     "./feed": {
       "types": "./src/components/feed.ts",
       "default": "./src/components/feed.ts"
-    },
-    "./dock": {
-      "types": "./src/components/dock.ts",
-      "default": "./src/components/dock.ts"
     },
     "./toolbar": {
       "types": "./src/components/toolbar.ts",
@@ -364,6 +352,7 @@
   },
   "dependencies": {
     "@skryensya/core": "workspace:*",
+    "@tanstack/virtual-core": "^3.17.11",
     "@zag-js/svelte": "^1.43.3",
     "@zag-js/vanilla": "^1.43.3",
     "motion": "12.23.24",

@@ -3,13 +3,21 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "c81881cd8cf51eb5"
+surface: "ae8a524e3ea39cb4"
 entries:
+  - date: 2026-10-17
+    kind: feature
+    es:
+      title: "collapsible={false} para un índice siempre abierto, y wrap para etiquetas largas"
+      body: "collapsible={false} fija expandedValue en todas las ramas y oculta el chevron, para un índice de secciones en vez de un explorador. wrap deja que una etiqueta larga pase a una segunda línea en vez de truncar con puntos suspensivos."
+    en:
+      title: "collapsible={false} for an always-open index, and wrap for long labels"
+      body: "collapsible={false} pins expandedValue to every branch and hides the chevron, for a section outline instead of a file explorer. wrap lets a long label move to a second line instead of truncating with an ellipsis."
   - date: 2026-10-01
     kind: feature
     es:
       title: Primera versión
-      body: Explora jerarquías anidadas mediante ramas expandibles.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Explores nested hierarchies through expandable branches.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

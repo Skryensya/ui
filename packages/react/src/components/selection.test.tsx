@@ -137,6 +137,31 @@ describe("selection controls", () => {
     expect(parent.getAttribute("aria-controls")).toBe([read!.id, write!.id, admin!.id].join(" "));
   });
 
+  it("warns in development when two items share a value", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    render(
+      <CheckboxGroup
+        items={[
+          { value: "design", label: "Design" },
+          { value: "design", label: "Design (again)" },
+        ]}
+        label="Topics"
+        name="topics"
+      />,
+    );
+
+    expect(spy.mock.calls.at(-1)?.[0]).toMatch(/shar(e|ing) the same value/i);
+    spy.mockRestore();
+  });
+
+  it("does not warn when every item's value is unique", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    render(<CheckboxGroup items={permissions} label="Permissions" name="permissions" />);
+
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
   it("lets the browser own uncontrolled RadioGroup selection and reports it", () => {
     const onValueChange = vi.fn();
     const ui = render(
@@ -171,6 +196,31 @@ describe("selection controls", () => {
     expect((ui.getByRole("radio", { name: "Pro" }) as HTMLInputElement).disabled).toBe(true);
   });
 
+  it("warns in development when two RadioGroup items share a value", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    render(
+      <RadioGroup
+        items={[
+          { value: "basic", label: "Basic" },
+          { value: "basic", label: "Basic (again)" },
+        ]}
+        label="Plan"
+        name="plan"
+      />,
+    );
+
+    expect(spy.mock.calls.at(-1)?.[0]).toMatch(/shar(e|ing) the same value/i);
+    spy.mockRestore();
+  });
+
+  it("does not warn when every RadioGroup item's value is unique", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    render(<RadioGroup items={[{ value: "basic", label: "Basic" }, { value: "pro", label: "Pro" }]} label="Plan" name="plan" />);
+
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
   it("writes the Switch's appearance on its label, the element that paints", () => {
     const ui = render(
       <>
@@ -192,6 +242,22 @@ describe("selection controls", () => {
     expect(control.checked).toBe(true);
     fireEvent.click(control);
     expect(onCheckedChange).toHaveBeenCalledWith({ checked: false });
+  });
+
+  it("warns in development when a Switch has no accessible name", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    render(<Switch defaultChecked />);
+
+    expect(spy.mock.calls.at(-1)?.[0]).toMatch(/no accessible name/i);
+    spy.mockRestore();
+  });
+
+  it("does not warn when a Switch is named by aria-label alone", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    render(<Switch aria-label="Deploy automatically" defaultChecked />);
+
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
   });
 });
 

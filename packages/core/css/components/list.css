@@ -132,6 +132,8 @@
     font-size: var(--sk-list-title-font-size);
     font-weight: var(--sk-list-title-font-weight);
     line-height: var(--font-line-height-heading);
+    /* Shrinkable (`min-inline-size: 0`) isn't wrappable on its own for an unbroken long title. */
+    overflow-wrap: anywhere;
   }
 
   .sk-list__description {
@@ -141,6 +143,7 @@
     font-size: var(--sk-list-description-font-size);
     font-weight: var(--font-weight-body);
     line-height: var(--font-line-height-body);
+    overflow-wrap: anywhere;
   }
 
   /* Shrinks and wraps (right-aligned) when it holds more than one thing, so a figure and its badge

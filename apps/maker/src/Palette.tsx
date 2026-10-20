@@ -56,7 +56,7 @@ import type { Maker } from "./state";
 const COMMON: readonly string[] = ["Heading", "Text", "Button.action", "Stack", "Inline", "Box"];
 
 const compiled = index as unknown as Parameters<typeof discover>[0];
-const makerHiddenContracts = new Set(["annotation", "chart", "diagram", "expressive-avatar"]);
+const makerHiddenContracts = new Set(["annotation", "diagram", "expressive-avatar"]);
 const makerVisible = (ref: SignatureRef) => !makerHiddenContracts.has(ref.contract);
 const thumbnailSrc = (ref: SignatureRef, scheme: "light" | "dark", variant?: string) =>
   `/component-thumbnails/${ref.contract}-${ref.signature.replace(/[^a-z0-9]+/gi, "-")}${variant ? `--${variant}` : ""}-${scheme}.png`;

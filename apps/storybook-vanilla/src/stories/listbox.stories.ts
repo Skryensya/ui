@@ -5,12 +5,13 @@ import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/listbox.css";
 import * as demos from "@docs/demos/listbox";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Listbox", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.listboxAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.listboxAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Plain: StoryObj = treeStory(demos.listboxPlainTree);
 export const Single: StoryObj = treeStory(demos.listboxSingleTree);
 export const Multiple: StoryObj = treeStory(demos.listboxMultipleTree);
 export const Horizontal: StoryObj = treeStory(demos.listboxHorizontalTree);
-export const Plain: StoryObj = treeStory(demos.listboxPlainTree);

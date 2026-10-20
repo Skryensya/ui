@@ -30,9 +30,7 @@ export const statMessages = {
 
     "statPage.content1": "Nombra la cifra con lo que mide: «Ingresos del mes», no «Total».",
 
-    "statPage.whenNot3": 'Para una medida dentro de un rango: usa <a href="/es/componentes/meter">Meter</a>.',
-
-    "statPage.whenNot2": 'Para la evolución en el tiempo: usa <a href="/es/componentes/charts">Charts</a>.',
+    "statPage.whenNot2": 'Para una medida dentro de un rango: usa <a href="/es/componentes/meter">Meter</a>.',
 
     "statPage.whenNot1": 'Para muchas cifras que se comparan: usa <a href="/es/componentes/table">Table</a>.',
 
@@ -102,9 +100,7 @@ export const statMessages = {
 
     "statPage.content1": "Name the figure by what it measures: “Monthly revenue”, not “Total”.",
 
-    "statPage.whenNot3": 'For a measurement within a range: use <a href="/components/meter">Meter</a>.',
-
-    "statPage.whenNot2": 'For change over time: use <a href="/components/charts">Charts</a>.',
+    "statPage.whenNot2": 'For a measurement within a range: use <a href="/components/meter">Meter</a>.',
 
     "statPage.whenNot1": 'For many figures compared with each other: use <a href="/components/table">Table</a>.',
 

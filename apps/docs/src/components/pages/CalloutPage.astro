@@ -36,6 +36,7 @@ const doDontSpecimen = (tree: UsageTree, inlineSize = "28rem"): UsageTree => ({
 ---
 
 <ComponentPageShell
+  breakHarness="/debug/callout-break"
   hookPlayground={{ tree: calloutNeutralTree(t) }}
   title="Callout"
   description={t("callout.description")}
@@ -56,6 +57,7 @@ const doDontSpecimen = (tree: UsageTree, inlineSize = "28rem"): UsageTree => ({
       title={t("callout.prop.tone.title")}
       description={t("callout.prop.tone.body")}
       explain={explain("tone", ["neutral", "info", "success", "warning", "danger"])}
+      measure="30rem"
       stageMinBlockSize="12rem"
       storybookTitle="Components/Callout"
       storybookStory="Neutral"

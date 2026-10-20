@@ -27,7 +27,6 @@ COPY apps/docs/package.json ./apps/docs/package.json
 COPY apps/eval-viewer/package.json ./apps/eval-viewer/package.json
 COPY packages/ai-compiler/package.json ./packages/ai-compiler/package.json
 COPY packages/ai-gates/package.json ./packages/ai-gates/package.json
-COPY packages/charts/package.json ./packages/charts/package.json
 COPY packages/core/package.json ./packages/core/package.json
 COPY packages/devtools/package.json ./packages/devtools/package.json
 COPY packages/icons-lucide/package.json ./packages/icons-lucide/package.json

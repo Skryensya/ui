@@ -7,9 +7,11 @@ Navbar:
   avoidWhen:
     - "the navigation goes on the side; that is a Sidebar"
     - "a multi-column category panel is needed; that is Megamenu"
+    - "a dense, ~24px application chrome bar (menus, undo, save state) is needed, not a page header; that is AppBar on its own, not inside a Navbar"
   alternatives:
     - Sidebar
     - Megamenu
+    - AppBar
 
 NavbarBrand:
   useWhen:

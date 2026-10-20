@@ -5,11 +5,20 @@
 # hash.
 surface: "1ad3b653a2947bc0"
 entries:
+  - date: 2026-10-18
+    kind: bugfix
+    target: layout
+    es:
+      title: "columns ya cae a stacked según el contenedor, no la ventana"
+      body: "El retroceso a stacked por debajo de 36rem leía el viewport (@media), no el contenedor: una lista columns dentro de un panel o rail angosto en una página ancha nunca caía, y la columna de término de ancho fijo desbordaba el panel. Ahora es @container, siguiendo la decisión 35 que ya sigue el resto del sistema."
+    en:
+      title: "columns now falls back to stacked by its container, not the window"
+      body: "The fallback to stacked below 36rem read the viewport (@media), not the container: a columns list inside a narrow panel or rail on an otherwise wide page never fell back, and the fixed-width term column overflowed the panel. It is now @container, following decision 35, which the rest of the system already does."
   - date: 2026-10-01
     kind: feature
     es:
       title: Primera versión
-      body: Muestra los datos de un registro como pares de nombre y valor.
+      body: "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple."
     en:
       title: First release
-      body: Shows one record's details as name-and-value pairs.
+      body: "Published for the first time, with its contract, a React binding and a stylesheet for plain markup."

@@ -1,11 +1,5 @@
 <script lang="ts">
-  import {
-    anchoredParts,
-    anchorNameFor,
-    bindAnchor,
-    stripPositioningStyle,
-    supportsAnchorPositioning,
-  } from "@skryensya/core/anchored";
+  import { anchoredParts, anchoredPositioning } from "@skryensya/core/anchored";
   import { tooltip } from "@skryensya/core/machines";
   import {
     tooltipDefaultPlacement,
@@ -14,7 +8,6 @@
     type TooltipPlacement,
   } from "@skryensya/core/tooltip";
   import { normalizeProps, useMachine } from "@zag-js/svelte";
-  import { onDestroy } from "svelte";
   import { bindParts, type PartBinding } from "../runtime/bind-part.svelte";
   import { getRoot, uniqueId } from "../runtime/svelte-hydrate";
 
@@ -74,8 +67,7 @@
     openDelay: numberAttr("data-open-delay"),
     closeDelay: numberAttr("data-close-delay"),
     interactive,
-    // Only matters on the JS fallback: with anchors, `position-area` already placed it and Zag does not position.
-    positioning: { placement: tooltipPlacementToZag[placement] },
+    positioning: { placement: tooltipPlacementToZag[placement], ...anchoredPositioning },
     disabled: root.hasAttribute("data-disabled"),
     onOpenChange(details: { open: boolean }) {
       root.dispatchEvent(
@@ -86,28 +78,6 @@
 
   const api = $derived(tooltip.connect(service, normalizeProps));
 
-  /*
-   * The anchor positioning path, which now belongs to the Anchoring pattern (ADR-25). When the browser
-   * has the API, the one that places is the BROWSER: we wire a unique name between the trigger and the
-   * positioner, and we do NOT pass the positioner the inline `style` Zag brings, because that would be
-   * two positioning engines fighting. Without the API, Zag's `style` passes through untouched and it positions.
-   *
-   * The name goes on BOTH elements and is not inherited from the root: in React the positioner is
-   * portaled to the body, and this enhancer uses the same helper so both layers behave the same.
-   */
-  const anchored = supportsAnchorPositioning();
-  let unbindAnchor: (() => void) | undefined;
-
-  if (anchored && trigger) {
-    unbindAnchor = bindAnchor(trigger, positioner, anchorNameFor(root.id));
-  }
-
-  /*
-   * `stripPositioningStyle` composes INTO the positioner's props thunk rather than becoming a kind of
-   * binding. The anchor trio divides cleanly: `supportsAnchorPositioning` and `bindAnchor` are one-time
-   * setup with their own teardown, and only this one is per-patch - so it is a props transform, which
-   * `bindParts` already takes.
-   */
   const bindings: PartBinding[] = [
     {
       part: "trigger",
@@ -118,10 +88,7 @@
     {
       part: "positioner",
       node: () => positioner,
-      props: () => {
-        const props = api.getPositionerProps();
-        return anchored ? stripPositioningStyle(props) : props;
-      },
+      props: () => api.getPositionerProps(),
     },
     {
       part: "content",
@@ -137,15 +104,9 @@
       },
     },
     /*
-     * ON THE BROWSER PATH NOTHING IS WRITTEN TO THE ARROW: the stylesheet places it against the same
-     * anchor, and it reads its open state from the content with `:has()`. Hence `node()` returning null
-     * when `anchored` - the absence is the binding.
-     *
-     * On the fallback it is written, because there the machine places it: `getArrowProps` marks it as
-     * `[data-part=arrow]`, which is how `@zag-js/popper` finds it to move it, and `data-side` (the side
-     * the machine RESOLVED) is what the stylesheet reads to rotate it. That side is firm data only
-     * here: on the other path the browser decides where the box ended up, and the machine's opinion may
-     * not match.
+     * The arrow takes the machine's props: `getArrowProps` marks it as `[data-part=arrow]`, which is how
+     * `@zag-js/popper` finds it to move it, and `data-side` (the side the machine RESOLVED) is what the
+     * stylesheet reads to rotate it.
      *
      * LAST IN THE ARRAY ON PURPOSE. The side is read off the content, which is patched above, so this
      * reads a value already on the node instead of a second props object, which is what keeps this
@@ -153,7 +114,7 @@
      */
     {
       part: "arrow",
-      node: () => (anchored ? null : arrow),
+      node: () => arrow,
       props: () => api.getArrowProps(),
       after: (node) => {
         const side = content?.getAttribute("data-side");
@@ -164,6 +125,4 @@
 
   bindParts(bindings);
 
-  // `bindAnchor`'s teardown is the enhancer's own: it was set up once, before any patch.
-  onDestroy(() => unbindAnchor?.());
 </script>

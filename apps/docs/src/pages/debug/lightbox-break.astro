@@ -1,0 +1,39 @@
+---
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
+import "@skryensya/core/tokens.scss";
+import "@skryensya/core/components/lightbox.css";
+import "@skryensya/core/patterns/scroll-lock.css";
+import "@skryensya/core/patterns/visually-hidden.css";
+import "../../styles/site.css";
+import { LightboxBreak } from "../../components/react-demos/debug-lightbox-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+
+<DebugShell title="Lightbox">
+  <LightboxBreak client:only="react" />
+</DebugShell>
+
+<style is:global>
+  .break-lightbox-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 6rem), 1fr));
+    gap: var(--space-inline-sm);
+    inline-size: 100%;
+  }
+
+  .break-lightbox-thumb {
+    display: block;
+    inline-size: 100%;
+    aspect-ratio: 1;
+    border-radius: var(--radius-control);
+    object-fit: cover;
+  }
+
+  .break-lightbox-empty {
+    margin: 0 0 var(--space-stack-sm);
+    color: var(--color-text-secondary);
+  }
+</style>

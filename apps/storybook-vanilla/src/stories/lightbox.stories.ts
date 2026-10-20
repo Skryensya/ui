@@ -4,18 +4,21 @@ import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/lightbox.css";
 import "@skryensya/core/components/loader.css";
 import "@skryensya/core/components/typography.css";
+import "@skryensya/core/components/video-player.css";
 import "@skryensya/core/patterns/image-frame.css";
 import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/media-overlay.css";
 import "@skryensya/core/patterns/scroll-lock.css";
 import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/lightbox";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+const { lightboxDemoCss } = demos;
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Lightbox", tags: ["autodocs"] } satisfies Meta;
 
-export const Gallery: StoryObj = treeStory(demos.lightboxGalleryTree);
-export const Single: StoryObj = treeStory(demos.lightboxSingleTree);
-export const Caption: StoryObj = treeStory(demos.lightboxCaptionTree);
-export const Tiny: StoryObj = treeStory(demos.lightboxTinyTree);
-export const Loop: StoryObj = treeStory(demos.lightboxLoopTree);
+export const Gallery: StoryObj = treeStory(demos.lightboxGalleryTree, { decorators: [withCss(lightboxDemoCss)] });
+export const Single: StoryObj = treeStory(demos.lightboxSingleTree, { decorators: [withCss(lightboxDemoCss)] });
+export const Caption: StoryObj = treeStory(demos.lightboxCaptionTree, { decorators: [withCss(lightboxDemoCss)] });
+export const Tiny: StoryObj = treeStory(demos.lightboxTinyTree, { decorators: [withCss(lightboxDemoCss)] });
+export const Loop: StoryObj = treeStory(demos.lightboxLoopTree, { decorators: [withCss(lightboxDemoCss)] });
+export const Video: StoryObj = treeStory(demos.lightboxVideoTree, { decorators: [withCss(lightboxDemoCss)] });

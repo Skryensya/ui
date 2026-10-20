@@ -10,12 +10,15 @@ import buttonCss from "../../core/css/components/button.css?raw";
 import checkboxCss from "../../core/css/components/checkbox.css?raw";
 import iconCss from "../../core/css/patterns/icon.css?raw";
 import stateLayerCss from "../../core/css/patterns/state-layer.css?raw";
+import popoverCss from "../../core/css/components/popover.css?raw";
+import anchoredCss from "../../core/css/patterns/anchored.css?raw";
+import { placeAnchored } from "@skryensya/core/anchored";
 import { createHitAreaOverlay } from "./overlay";
 import { createMotionSlowMo } from "./motion";
 import { createFocusOrderOverlay } from "./focus-order";
 import { createFpsMeter } from "./fps";
-import { createPreviewMetrics } from "./preview-metrics";
-import { clampPosition, exceedsDragThreshold, panelEdge } from "./geometry";
+import { createPreviewIds } from "./preview-ids";
+import { clampPosition, exceedsDragThreshold } from "./geometry";
 
 /*
  * Written by `apps/docs`'s `Base.astro`, right after its own `initComponents()` call resolves -
@@ -72,23 +75,19 @@ const LAYOUT_STYLES = `
   }
   .toggle { cursor: grab; }
   .toggle[data-dragging] { cursor: grabbing; }
+  /* Everything else (surface, border, radius, padding, elevation, open/close fade, placement) is
+     the real \`sk-popover\`/\`sk-anchored\` CSS injected below; this is only what this panel's own
+     content needs on top of that generic surface. A grid of one implicit column, not reliance on
+     each row's own block-level display: \`sk-popover__positioner\`'s \`inline-size: max-content\`
+     shrink-wraps to its widest UNWRAPPED line, and an inline-flex row (\`.sk-checkbox\`, from
+     checkbox.css) is content \`.panel\` does not own the display of, so two of them were landing
+     side by side instead of stacking, exactly backwards from "Hit areas"/"Safety triangle" etc.
+     being a column of independent checks. Grid placement does not care what each item's OWN
+     display is, every child lands in its own row regardless. */
   .panel {
-    position: absolute;
-    right: 0;
+    display: grid;
     min-inline-size: 180px;
-    background: var(--color-bg-surface, #18181b);
-    color: var(--color-text-primary, #f4f4f5);
-    border: 1px solid var(--color-border-default, rgba(255, 255, 255, 0.12));
-    border-radius: var(--radius-surface, 10px);
-    /* \`--space-inset-*\`, not literal px: these already scale with \`--sk-density\`, so a page running
-       a compact demo shows a correspondingly tighter panel instead of one fixed size regardless of
-       the density the rest of the page is proving out. */
-    padding: var(--space-inset-sm, 8px) var(--space-inset-md, 16px);
-    box-shadow: var(--elevation-raised, 0 8px 24px rgba(0, 0, 0, 0.4));
   }
-  .panel[data-edge="bottom"] { top: calc(100% + var(--space-stack-xs, 8px)); }
-  .panel[data-edge="top"] { bottom: calc(100% + var(--space-stack-xs, 8px)); }
-  .panel[hidden] { display: none; }
   .title {
     margin: 0 0 var(--space-stack-xs, 8px);
     font-weight: 600;
@@ -242,38 +241,51 @@ export function mountDebugPanel(options: DebugPanelOptions = {}): DebugPanelHand
   const shadow = host.attachShadow({ mode: "open" });
 
   const style = document.createElement("style");
-  style.textContent = `${buttonCss}\n${checkboxCss}\n${iconCss}\n${stateLayerCss}\n${LAYOUT_STYLES}`;
+  style.textContent = `${buttonCss}\n${checkboxCss}\n${iconCss}\n${stateLayerCss}\n${popoverCss}\n${anchoredCss}\n${LAYOUT_STYLES}`;
   shadow.appendChild(style);
 
   const root = document.createElement("div");
   root.className = "root";
   shadow.appendChild(root);
 
+  const PANEL_ID = "sk-devtools-panel";
+
   const toggle = document.createElement("button");
   toggle.type = "button";
-  toggle.className = "sk-button sk-interactive toggle";
+  toggle.className = "sk-button sk-interactive sk-anchor toggle";
   toggle.setAttribute("data-sk-button", "");
   toggle.setAttribute("data-variant", "neutral");
   toggle.setAttribute("data-size", "sm");
   toggle.setAttribute("data-icon-only", "");
+  toggle.setAttribute("data-appearance", "tactile");
   toggle.setAttribute("aria-label", options.toggleLabel ?? "skryensya/ui debug panel");
   toggle.setAttribute("aria-expanded", "false");
+  toggle.setAttribute("popovertarget", PANEL_ID);
   /*
-   * An inline SVG, not the 🐞 emoji this used to be: an emoji glyph renders as a DIFFERENT icon on
-   * every platform (a literal ladybug on some, a generic insect on others, missing entirely on a
-   * system with no color-emoji font), which is a strange first impression for a design-system tool
-   * to make. `currentColor` + the same `viewBox="0 0 24 24"`/2px-stroke convention as the checkbox
-   * glyph above (and every icon this design system ships) means it also inherits the button's own
-   * `color`, so it repaints correctly across every variant and scheme this panel already tracks.
+   * A BUG, not the waveform this used to be: an unambiguous shape for a debug tool, drawn in-house
+   * rather than pulled from a vendor set (this package inlines its own SVGs; see the file header),
+   * so there is no emoji-across-platforms problem either. Same `sk-icon` class and `viewBox="0 0 24
+   * 24"`/2px-stroke convention as every icon this design system ships, so it sizes itself off
+   * `--size-icon-*` (via the injected `icon.css`, same as the button's `sm` size already resolves
+   * for any other icon) instead of a hardcoded pixel box, and repaints in `currentColor`.
    */
   toggle.innerHTML =
-    '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 12h4l2-7 4 14 3-9 2 2h5"></path></svg>';
+    '<svg class="sk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="5" r="2"></circle><path d="M12 7v3"></path><rect x="6" y="10" width="12" height="10" rx="5"></rect><path d="M12 10v10"></path><path d="M3 13l3 1M21 13l-3 1"></path><path d="M3 19l3-1M21 19l-3-1"></path></svg>';
   root.appendChild(toggle);
 
+  /*
+   * THE REAL POPOVER SURFACE (`Popover.bare`'s own composition, `core/src/popover.ts`): a native
+   * `[popover]` box placed by the kit's own popper (`placeAnchored`, below), not a hand-rolled
+   * absolutely-positioned div. That buys real behaviour this panel used to do without: light-dismiss
+   * on an outside click, Escape to close, top-layer painting above everything else on the page, and
+   * a popper that FLIPS to the other edge when there is not enough room, instead of the one-shot
+   * `panelEdge` guess this used to make from the toggle's position at open time alone.
+   */
   const panel = document.createElement("div");
-  panel.className = "panel";
-  panel.dataset.edge = "bottom";
-  panel.hidden = true;
+  panel.id = PANEL_ID;
+  panel.className = "panel sk-popover__positioner sk-popover__content sk-anchored";
+  panel.setAttribute("popover", "auto");
+  panel.setAttribute("data-sk-placement", "block-start");
   root.appendChild(panel);
 
   const title = document.createElement("p");
@@ -385,40 +397,52 @@ export function mountDebugPanel(options: DebugPanelOptions = {}): DebugPanelHand
   const { row: focusOrderRow } = persistedToggle("focus-order", "Focus order", focusOrderOverlay);
   panel.appendChild(focusOrderRow);
 
-  /*
-   * PREVIEW METRICS. Like the FPS meter, the checkbox is only a remote control: the readings render
-   * as real light-DOM lines under each preview card (see `preview-metrics.ts`), because the thing
-   * being watched is a load sequence that plays out while this panel is shut.
-   */
-  const previewMetrics = createPreviewMetrics();
-  const { row: previewMetricsRow } = persistedToggle("preview-metrics", "Preview metrics", previewMetrics);
-  panel.appendChild(previewMetricsRow);
+  /* PREVIEW IDS. A remote control like the checks above: the numbers are badges on the cards themselves (`preview-ids.ts`). */
+  const previewIds = createPreviewIds();
+  const { row: previewIdsRow } = persistedToggle("preview-ids", "Preview ids", previewIds);
+  panel.appendChild(previewIdsRow);
 
   /*
    * OPEN/CLOSED IS STATE TOO, and it persists for the same reason the checks do: someone working
    * through a run of pages with the panel open should not have to re-open it on every navigation.
-   * One function owns the three things that must move together. The `hidden` flag, the button's
-   * `aria-expanded`, and which edge the panel grows from, so restoring at mount and toggling on
-   * click cannot drift apart.
+   *
+   * The open/close ACT itself is the browser's: `popovertarget` above already wires the toggle
+   * button to show and hide this exact panel, with no click handler of this file's own. What is
+   * left to do here, on the panel's own native `toggle` event, is the three things that are this
+   * file's business and not the platform's: start/stop the popper placement (a popover with
+   * nothing placing it just sits at the DOM origin), mirror `aria-expanded` onto the toggle, and
+   * persist the open state across navigation.
    */
-  function setPanelOpen(open: boolean): void {
-    panel.hidden = !open;
+  let stopPlacement: (() => void) | null = null;
+
+  panel.addEventListener("toggle", (event) => {
+    const open = (event as ToggleEvent).newState === "open";
     toggle.setAttribute("aria-expanded", String(open));
-    if (!open) return;
-    // Open UPWARD by default; flip below only when the panel would not fit above the button.
-    // The threshold itself is `panelEdge` (`./geometry.ts`, pure, tested there).
-    const spaceAbove = toggle.getBoundingClientRect().top;
-    panel.dataset.edge = panelEdge(spaceAbove, 220);
-  }
+    if (open) {
+      // Open UPWARD by default; the popper itself flips to the other edge when the panel would
+      // not fit above the button, re-measuring every frame so a drag of the toggle cannot leave
+      // the panel stranded at a stale position.
+      stopPlacement = placeAnchored(toggle, panel, { placement: "block-start", strategy: "fixed" });
+    } else {
+      stopPlacement?.();
+      stopPlacement = null;
+    }
+    try {
+      if (open) localStorage.setItem(PANEL_OPEN_KEY, "1");
+      else localStorage.removeItem(PANEL_OPEN_KEY);
+    } catch {
+      /* private mode. The panel just opens closed again next time */
+    }
+  });
 
   document.body.appendChild(host);
 
-  /* After `appendChild`: the edge decision above measures the toggle, and a detached element
-   * measures 0, which would pin the panel to "bottom" on every restore regardless of room. */
+  /* After `appendChild`: a popover on a detached element throws instead of opening. */
   try {
-    if (localStorage.getItem(PANEL_OPEN_KEY) === "1") setPanelOpen(true);
+    if (localStorage.getItem(PANEL_OPEN_KEY) === "1") panel.showPopover();
   } catch {
-    /* private mode. Opens closed, the same default a first-time reader gets */
+    /* private mode, or the browser declined (already open, not connected yet). Opens closed,
+       the same default a first-time reader gets. */
   }
 
   /*
@@ -493,26 +517,21 @@ export function mountDebugPanel(options: DebugPanelOptions = {}): DebugPanelHand
 
   toggle.addEventListener("click", (event) => {
     if (dragged) {
-      // The click that follows a drag's pointerup: real, but not what a reader meant.
+      // The click that follows a drag's pointerup: real, but not what a reader meant. Cancelling
+      // it also cancels the native `popovertarget` toggle that click would otherwise trigger.
       event.preventDefault();
       dragged = false;
-      return;
-    }
-    setPanelOpen(panel.hidden);
-    try {
-      if (panel.hidden) localStorage.removeItem(PANEL_OPEN_KEY);
-      else localStorage.setItem(PANEL_OPEN_KEY, "1");
-    } catch {
-      /* private mode. The panel just opens closed again next time */
     }
   });
 
   return {
     unmount(): void {
+      stopPlacement?.();
       hitAreaOverlay.stop();
       motionSlowMo.stop();
       focusOrderOverlay.stop();
       fpsMeter.stop();
+      previewIds.stop();
       host.remove();
     },
   };

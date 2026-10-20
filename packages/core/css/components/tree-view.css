@@ -364,6 +364,22 @@
     white-space: nowrap;
   }
 
+  /* `wrap`: the opt-out for the reasoning above, when the tree's own labels are not filenames - a
+     section outline's titles, say, where cutting a long one is the worse reading. */
+  .sk-tree-view[data-wrap] .sk-tree-view__item-text,
+  .sk-tree-view[data-wrap] .sk-tree-view__branch-text {
+    overflow: visible;
+    text-overflow: unset;
+    white-space: normal;
+  }
+
+  /* `collapsible={false}`: every branch stays expanded (the binding controls `expandedValue` to the
+     full set and ignores attempts to change it), so the chevron would promise a collapse that can
+     never happen. */
+  .sk-tree-view[data-collapsible="false"] .sk-tree-view__branch-indicator {
+    display: none;
+  }
+
   /*
    * `color` on the SLOT, not on the row: the label keeps `--color-text-primary` from the root while
    * the marker sits a tone under it. `color` rather than `fill`/`stroke`, because the glyph draws

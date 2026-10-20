@@ -3,8 +3,17 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "756fcd30528d81c6"
+surface: "ed1e50dbea78c58d"
 entries:
+  - date: 2026-10-17
+    kind: feature
+    target: name
+    es:
+      title: Tres roles de icono para la navegación por archivos
+      body: Nuevos roles <code>home</code>, <code>file-text</code> y <code>folder-open</code>, dibujados por los tres sets publicados (Lucide, Material, Phosphor).
+    en:
+      title: Three icon roles for file navigation
+      body: New roles <code>home</code>, <code>file-text</code> and <code>folder-open</code>, drawn by all three published sets (Lucide, Material, Phosphor).
   - date: 2026-10-02
     kind: feature
     target: name
@@ -36,7 +45,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Representa acciones y conceptos con iconografía consistente.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Represents actions and concepts with consistent iconography.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

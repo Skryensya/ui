@@ -1,0 +1,28 @@
+---
+/* Dev-only stress harness for native and enhanced DatePicker. */
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
+import "@skryensya/core/tokens.scss";
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/calendar.css";
+import "@skryensya/core/components/date-picker.css";
+import "@skryensya/core/patterns/anchored.css";
+import "@skryensya/core/patterns/scrollbar.css";
+import "../../styles/site.css";
+import { DatePickerBreak } from "../../components/react-demos/debug-date-picker-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+
+<DebugShell title="DatePicker" docsHref="/components/date-picker">
+  <DatePickerBreak client:only="react" />
+</DebugShell>
+
+<style is:global>
+  .break-date-picker-fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-stack-md);
+  }
+</style>

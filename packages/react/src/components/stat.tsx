@@ -52,19 +52,24 @@ export function Stat({
   ...props
 }: StatProps) {
   const metric = count ?? value;
+  // Gated on the METRIC being numeric, not on `count` being separately given: `count` exists for
+  // the authored-text/vanilla path (a pre-formatted `value` string plus the raw number beside
+  // it), but a plain `<Stat value={82} suffix="%" />` - everything this prop list otherwise
+  // invites - is numeric too, and `suffix`/`locale`/`fractionDigits`/`format` are not re-scoped
+  // to that one other path.
   const countFormat = useMemo(() => {
     if (format) return format;
-    if (count === undefined) return undefined;
+    if (typeof metric !== "number") return undefined;
     const formatter = new Intl.NumberFormat(locale, {
       maximumFractionDigits: fractionDigits,
       minimumFractionDigits: fractionDigits,
     });
     return (n: number) => `${formatter.format(n)}${suffix}`;
-  }, [count, format, fractionDigits, locale, suffix]);
+  }, [metric, format, fractionDigits, locale, suffix]);
   const animated = Boolean(animate) && typeof metric === "number" && Number.isFinite(metric);
   const options: StatAnimateOptions = typeof animate === "object" && animate ? animate : {};
   const staticValue =
-    count !== undefined && typeof metric === "number" && countFormat
+    typeof metric === "number" && countFormat
       ? countFormat(metric)
       : metric;
 

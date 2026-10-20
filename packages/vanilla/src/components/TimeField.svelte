@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { anchorNameFor, bindAnchor, stripPositioningStyle, supportsAnchorPositioning } from "@skryensya/core/anchored";
   import { select } from "@skryensya/core/machines";
   import { timeFieldContract, timeFieldEvents } from "@skryensya/core/time-field";
-  import { selectParts } from "@skryensya/core/select";
+  import { selectParts, selectPositioning } from "@skryensya/core/select";
   import {
     formatTimeValue,
     generateTimeOptions,
@@ -166,14 +165,12 @@
     itemToValue: (item) => item.value,
   });
   const pickerId = `${idBase}-options`;
-  const anchorName = supportsAnchorPositioning() ? anchorNameFor(pickerId) : null;
-  let unbindAnchor: (() => void) | undefined;
 
   const pickerService = useMachine(select.machine, () => ({
     id: pickerId,
     collection,
     value: canonical ? [formatTimeValue(canonical)] : [],
-    positioning: { sameWidth: false },
+    positioning: { ...selectPositioning, sameWidth: false },
     onValueChange(details: { value: string[] }) {
       const next = details.value[0];
       if (next === undefined) return;
@@ -212,19 +209,7 @@
     {
       part: "positioner",
       node: () => positionerEl,
-      // On the anchor path, CSS owns placement (`select.css`), so drop Zag's inline positioning styles
-      // entirely. The same reasoning `Select.svelte` gives for the identical line: leaving them would
-      // fight the browser's own positioner.
-      props: () => {
-        const props = pickerApi.getPositionerProps();
-        return anchorName ? stripPositioningStyle(props) : props;
-      },
-      after: (node) => {
-        // Re-asserted here, not once at mount: the positioner's patch rewrites its inline style every
-        // render, dropping the hook set earlier. Stamping right after keeps it stable across every
-        // open/close. Idempotent, so repeating it is free.
-        if (anchorName && controlEl) unbindAnchor = bindAnchor(controlEl, node, anchorName);
-      },
+      props: () => pickerApi.getPositionerProps(),
     },
     {
       part: "content",
@@ -263,7 +248,6 @@
 
   bindParts(pickerBindings);
 
-  onDestroy(() => unbindAnchor?.());
 
   /*
    * EXTERNAL DRIVERS. `root.dataset.value` is read once, above, at mount. The same "authored
@@ -382,14 +366,20 @@
         commit({ ...segments, [type]: current === undefined ? max : wrapStep(current, -step, min, max) });
         return;
       }
+      /*
+       * ArrowLeft/ArrowRight name a screen side; `moveFocus`'s own `direction` is a step through
+       * `segmentOrder` (the locale's array order), and the two stop agreeing under `dir: "rtl"` -
+       * the segment one array-step forward sits to the LEFT on screen, not the right. Same bug
+       * found and fixed the same way in the React binding.
+       */
       case "ArrowLeft":
+      case "ArrowRight": {
         event.preventDefault();
-        moveFocus(type, -1);
+        const rtl = getComputedStyle(controlEl ?? root).direction === "rtl";
+        const forward = rtl ? "ArrowLeft" : "ArrowRight";
+        moveFocus(type, event.key === forward ? 1 : -1);
         return;
-      case "ArrowRight":
-        event.preventDefault();
-        moveFocus(type, 1);
-        return;
+      }
       case "Home":
         event.preventDefault();
         buffer = null;

@@ -1,5 +1,5 @@
 import type { Snippet } from "../snippet.js";
-import { avatar, band, button, field, heading, iconButton, inline, input, itemList, main, navbar, skipLink, table, tag, text } from "./kit.js";
+import { avatar, badge, band, button, field, heading, iconButton, inline, input, itemList, main, navbar, skipLink, table, text } from "./kit.js";
 
 /*
  * PATTERN: an issue tracker's list view (what Linear, Jira and GitHub Issues converge on): a filter row
@@ -11,7 +11,7 @@ export const issueTrackerPattern: Snippet = {
   intent: "A work-item list: search and filters on top, a dense table of issues with status, priority and owner, and a pager.",
   notes: [
     "Pattern: the dense list view. The data is a table because the reader compares rows by column (status, priority, owner); the filters are above it, grouped as one labelled toolbar, and the count of results is stated in words so a filter that empties the list is not a silent blank.",
-    "Accessibility, kept over style: status and priority are words inside a `Tag`, never a coloured dot alone (colour is a second channel, not the only one); the title cell is the row header, so a screen reader announces the issue name with each cell; the search field has a visible label (hidden labels are allowed only when a visible one would repeat the heading); the filter group is a `Segmented` with a label and the sort control is a labelled `Select`.",
+    "Accessibility, kept over style: status and priority are words inside a `Badge`, never a coloured dot alone (colour is a second channel, not the only one) — and `Badge`, not `Tag`, because neither is something the reader removes or navigates from in place; the title cell is the row header, so a screen reader announces the issue name with each cell; the search field has a visible label (hidden labels are allowed only when a visible one would repeat the heading); the filter group is a `Segmented` with a label and the sort control is a labelled `Select`.",
     "What the pattern does not do: no infinite scroll with no end (a pager gives the reader a place and a way back) and no row that is clickable as a whole with a second click target inside it.",
   ],
   tree: {
@@ -48,10 +48,10 @@ export const issueTrackerPattern: Snippet = {
                 "Open issues",
                 ["Issue", "Status", "Priority", "Owner"],
                 [
-                  ["WID-142 Keyboard focus is lost after closing the dialog", tag("In progress", "accent"), tag("High", "danger"), "Priya Nair"],
-                  ["WID-139 Table header overlaps the first row on Safari", tag("To do"), tag("Medium", "warning"), "Marcus Webb"],
-                  ["WID-131 Document the theming hooks", tag("In review", "accent"), tag("Low"), "Helena Park"],
-                  ["WID-127 Sidebar flickers on first paint", tag("Done", "success"), tag("Medium", "warning"), "Priya Nair"],
+                  ["WID-142 Keyboard focus is lost after closing the dialog", badge("In progress", "accent"), badge("High", "danger"), "Priya Nair"],
+                  ["WID-139 Table header overlaps the first row on Safari", badge("To do"), badge("Medium", "warning"), "Marcus Webb"],
+                  ["WID-131 Document the theming hooks", badge("In review", "accent"), badge("Low"), "Helena Park"],
+                  ["WID-127 Sidebar flickers on first paint", badge("Done", "success"), badge("Medium", "warning"), "Priya Nair"],
                 ],
               ),
               {

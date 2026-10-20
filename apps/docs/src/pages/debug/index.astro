@@ -1,0 +1,435 @@
+---
+/*
+ * Diagnostic only: an index of the break harnesses under /debug (same convention as
+ * button-break.astro and box-break.astro — one page per component, each the REAL
+ * `@skryensya/react` component under one stress scenario per row).
+ *
+ * The counts below are hand-kept, not derived. Update an entry when a harness gains or fixes a
+ * reproducible issue so readers can see what's still open without opening every page.
+ *
+ * Not linked from the site nav. `noindex`, like every other /debug page. 404s out of the
+ * production build (see button-break.astro's own comment on why).
+ */
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
+import "@skryensya/core/tokens.scss";
+import "../../styles/site.css";
+import { openBreakFindings } from "../../lib/break-findings";
+import { getBreakCoverage } from "../../lib/debug-coverage";
+import { componentItems } from "../../lib/navigation";
+import { catalogBreaks } from "../../lib/debug-catalog";
+
+const harnesses = [
+  ...catalogBreaks.map((entry) => ({
+    href: entry.href,
+    name: componentItems.find(({ href }) => href === entry.docsHref)?.label ?? entry.id,
+    fixed: 0,
+    open: openBreakFindings(entry.id),
+  })),
+  { href: "/debug/state-button-break", name: "StateButton", fixed: 0, open: openBreakFindings("state-button") },
+  { href: "/debug/split-button-break", name: "SplitButton", fixed: 0, open: openBreakFindings("split-button") },
+  { href: "/debug/clipboard-break", name: "Clipboard", fixed: 0, open: openBreakFindings("clipboard") },
+  { href: "/debug/code-preview-break", name: "CodePreview", fixed: 0, open: openBreakFindings("code-preview") },
+  { href: "/debug/details-break", name: "Details", fixed: 0, open: openBreakFindings("details") },
+  { href: "/debug/comparison-table-break", name: "ComparisonTable", fixed: 0, open: openBreakFindings("comparison-table") },
+  { href: "/debug/comment-thread-break", name: "CommentThread", fixed: 0, open: openBreakFindings("comment-thread") },
+  { href: "/debug/feed-break", name: "Feed", fixed: 0, open: openBreakFindings("feed") },
+  { href: "/debug/image-frame-break", name: "ImageFrame", fixed: 0, open: openBreakFindings("image-frame") },
+  { href: "/debug/breadcrumb-break", name: "Breadcrumb", fixed: 0, open: [] },
+  {
+    href: "/debug/tabs-break", name: "Tabs", fixed: 0,
+    open: openBreakFindings("tabs"),
+  },
+  {
+    href: "/debug/segmented-break", name: "SegmentedControl", fixed: 0,
+    open: openBreakFindings("segmented"),
+  },
+  {
+    href: "/debug/steps-break", name: "Steps", fixed: 0,
+    open: openBreakFindings("steps"),
+  },
+  {
+    href: "/debug/procedure-break", name: "Procedure", fixed: 0,
+    open: openBreakFindings("procedure"),
+  },
+  {
+    href: "/debug/toolbar-break", name: "Toolbar", fixed: 0,
+    open: openBreakFindings("toolbar"),
+  },
+  {
+    href: "/debug/menubar-break", name: "Menubar", fixed: 0,
+    open: openBreakFindings("menubar"),
+  },
+  { href: "/debug/dialog-break", name: "Dialog", fixed: 0, open: [] },
+  {
+    href: "/debug/message-break", name: "Message", fixed: 0,
+    open: openBreakFindings("message"),
+  },
+  { href: "/debug/form-field-break", name: "FormField", fixed: 0, open: [] },
+  {
+    href: "/debug/otp-input-break", name: "OtpInput", fixed: 0,
+    open: openBreakFindings("otp-input"),
+  },
+  { href: "/debug/password-input-break", name: "PasswordInput", fixed: 0, open: [] },
+  {
+    href: "/debug/nav-list-break", name: "NavList", fixed: 0,
+    open: openBreakFindings("nav-list"),
+  },
+  {
+    href: "/debug/content-break",
+    name: "Text / Heading / Link",
+    fixed: 2,
+    open: openBreakFindings("content"),
+  },
+  {
+    href: "/debug/input-break",
+    name: "Input / Textarea",
+    fixed: 1,
+    open: openBreakFindings("input"),
+  },
+  {
+    href: "/debug/file-upload-break",
+    name: "Drop zone",
+    fixed: 1,
+    open: openBreakFindings("file-upload"),
+  },
+  {
+    href: "/debug/combobox-break",
+    name: "Combobox",
+    fixed: 1,
+    open: openBreakFindings("combobox"),
+  },
+  {
+    href: "/debug/carousel-break",
+    name: "Carousel",
+    fixed: 0,
+    open: openBreakFindings("carousel"),
+  },
+  {
+    href: "/debug/data-grid-break",
+    name: "Data Grid",
+    fixed: 0,
+    open: [],
+  },
+  {
+    href: "/debug/calendar-break",
+    name: "Calendar",
+    fixed: 0,
+    open: openBreakFindings("calendar"),
+  },
+  {
+    href: "/debug/command-palette-break",
+    name: "CommandPalette",
+    fixed: 0,
+    open: [],
+  },
+  {
+    href: "/debug/select-break",
+    name: "NativeSelect / Select",
+    fixed: 6,
+    open: openBreakFindings("select"),
+  },
+  {
+    href: "/debug/date-picker-break",
+    name: "DatePicker",
+    fixed: 0,
+    open: openBreakFindings("date-picker"),
+  },
+  {
+    href: "/debug/number-field-break",
+    name: "NumberField",
+    fixed: 0,
+    open: [],
+  },
+  {
+    href: "/debug/time-field-break",
+    name: "TimeField",
+    fixed: 1,
+    open: openBreakFindings("time-field"),
+  },
+  {
+    href: "/debug/tags-input-break",
+    name: "TagsInput",
+    fixed: 0,
+    open: [],
+  },
+  {
+    href: "/debug/user-select-break",
+    name: "UserSelect",
+    fixed: 0,
+    open: openBreakFindings("user-select"),
+  },
+  {
+    href: "/debug/table-break",
+    name: "Table",
+    fixed: 0,
+    open: [],
+  },
+  {
+    href: "/debug/tree-view-break",
+    name: "TreeView",
+    fixed: 0,
+    open: [],
+  },
+  {
+    href: "/debug/tooltip-break",
+    name: "Tooltip",
+    fixed: 1,
+    open: openBreakFindings("tooltip"),
+  },
+  {
+    href: "/debug/lightbox-break",
+    name: "Lightbox",
+    fixed: 0,
+    open: openBreakFindings("lightbox"),
+  },
+  {
+    href: "/debug/menu-break",
+    name: "Menu",
+    fixed: 1,
+    open: openBreakFindings("menu"),
+  },
+  {
+    href: "/debug/list-break",
+    name: "List",
+    fixed: 0,
+    open: [],
+  },
+  {
+    href: "/debug/listbox-break",
+    name: "Listbox",
+    fixed: 0,
+    open: openBreakFindings("listbox"),
+  },
+  {
+    href: "/debug/popover-break",
+    name: "Popover",
+    fixed: 0,
+    open: openBreakFindings("popover"),
+  },
+  {
+    href: "/debug/button-break",
+    name: "Button",
+    fixed: 11,
+    open: [],
+  },
+  {
+    href: "/debug/box-break",
+    name: "Box",
+    fixed: 0,
+    open: [],
+  },
+  {
+    href: "/debug/badge-break",
+    name: "Badge",
+    fixed: 5,
+    open: [],
+  },
+  {
+    href: "/debug/tag-break",
+    name: "Tag",
+    fixed: 2,
+    open: [],
+  },
+  {
+    href: "/debug/checkbox-break",
+    name: "Checkbox",
+    fixed: 1,
+    open: [],
+  },
+  {
+    href: "/debug/avatar-break",
+    name: "Avatar",
+    fixed: 4,
+    open: [],
+  },
+  {
+    href: "/debug/callout-break",
+    name: "Callout",
+    fixed: 1,
+    open: [],
+  },
+  {
+    href: "/debug/separator-break",
+    name: "Separator",
+    fixed: 2,
+    open: [],
+  },
+  {
+    href: "/debug/selection-break",
+    name: "Switch / Radio",
+    fixed: 3,
+    open: [],
+  },
+  {
+    href: "/debug/kbd-break",
+    name: "Kbd",
+    fixed: 1,
+    open: [],
+  },
+  {
+    href: "/debug/pagination-break",
+    name: "Pagination",
+    fixed: 3,
+    open: openBreakFindings("pagination"),
+  },
+  {
+    href: "/debug/loader-break",
+    name: "Loader",
+    fixed: 1,
+    open: [],
+  },
+  {
+    href: "/debug/meter-break",
+    name: "Meter",
+    fixed: 2,
+    open: [],
+  },
+  {
+    href: "/debug/progress-break",
+    name: "Progress",
+    fixed: 0,
+    open: [],
+  },
+  {
+    href: "/debug/quote-break",
+    name: "Quote",
+    fixed: 1,
+    open: [],
+  },
+  {
+    href: "/debug/empty-state-break",
+    name: "EmptyState",
+    fixed: 2,
+    open: [],
+  },
+  {
+    href: "/debug/description-list-break",
+    name: "DescriptionList",
+    fixed: 1,
+    open: [],
+  },
+  {
+    href: "/debug/slider-break",
+    name: "Slider",
+    fixed: 2,
+    open: [],
+  },
+  {
+    href: "/debug/stat-break",
+    name: "Stat",
+    fixed: 1,
+    open: [],
+  },
+  {
+    href: "/debug/rating-break",
+    name: "Rating",
+    fixed: 2,
+    open: [],
+  },
+  {
+    href: "/debug/accordion-break",
+    name: "Accordion",
+    fixed: 1,
+    open: [],
+  },
+  {
+    href: "/debug/timeline-break",
+    name: "Timeline",
+    fixed: 1,
+    open: [],
+  },
+];
+
+const coverage = getBreakCoverage(harnesses, componentItems);
+
+import DebugShell from "../../components/DebugShell.astro";
+---
+
+<DebugShell title="Index">
+<style is:global>
+      .break-index {
+        max-inline-size: 80rem;
+        margin-inline: auto;
+        padding: var(--space-inset-lg);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-stack-lg);
+      }
+      .break-index__progress {
+        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
+      }
+      .break-index__grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+        gap: var(--space-inline-md);
+      }
+      .break-index__row {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-stack-xs);
+        min-inline-size: 0;
+        padding: var(--space-inset-md);
+        border: 1px solid var(--color-border-subtle);
+        border-radius: var(--radius-surface);
+        background: var(--color-bg-surface);
+      }
+      .break-index__head {
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: var(--space-inline-sm);
+      }
+      .break-index__head a {
+        font-size: var(--font-size-body);
+        overflow-wrap: anywhere;
+      }
+      .break-index__count {
+        font-size: var(--font-size-caption);
+        color: var(--color-text-secondary);
+      }
+      .break-index__open {
+        margin: 0;
+        padding-inline-start: var(--space-inset-md);
+        font-size: var(--font-size-caption);
+        color: var(--color-text-danger);
+      }
+      .break-index__clean {
+        margin: 0;
+        font-size: var(--font-size-caption);
+        color: var(--color-text-success);
+      }
+    </style>
+<div class="break-index">
+      <header>
+        <h1>break: index <span class="break-index__progress" data-break-coverage>{coverage.covered}/{coverage.total}</span></h1>
+        <p>Componentes documentados con harness · {harnesses.length} páginas de break. No indica que estén libres de errores ni completamente validados.</p>
+        <p>All component stress harnesses. Open a page to inspect its worst-case fixtures and findings.</p>
+      </header>
+      <div class="break-index__grid">
+      {
+        harnesses.map((h) => (
+          <section class="break-index__row">
+            <h2 class="break-index__head">
+              <a href={h.href}>{h.name} →</a>
+              <span class="break-index__count">
+                {h.fixed} fixed{h.open.length > 0 ? `, ${h.open.length} open` : ""}
+              </span>
+            </h2>
+            {h.open.length > 0 ? (
+              <ul class="break-index__open">
+                {h.open.map((item) => <li>{item}</li>)}
+              </ul>
+            ) : (
+              <p class="break-index__clean">No open findings recorded; not a complete pass.</p>
+            )}
+          </section>
+        ))
+      }
+      </div>
+    </div>
+</DebugShell>

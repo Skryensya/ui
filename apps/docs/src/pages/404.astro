@@ -1,7 +1,7 @@
 ---
 /*
  * The route. Everything about the page is in `NotFoundPage.astro`, which both languages render:
- * this file exists to own the URL and to ask the layout for the full index in the rail.
+ * this file exists to own the URL and to ask the layout for no rail at all.
  */
 import Base from "../layouts/Base.astro";
 import NotFoundPage from "../components/pages/NotFoundPage.astro";
@@ -10,6 +10,6 @@ import { getLocale, useTranslations } from "../i18n";
 const t = useTranslations(getLocale(Astro.url));
 ---
 
-<Base railIndex title={t("notFound.title")} description={t("notFound.description")}>
+<Base fullBleed title={t("notFound.title")} description={t("notFound.description")}>
   <NotFoundPage />
 </Base>

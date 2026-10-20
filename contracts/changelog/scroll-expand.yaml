@@ -9,7 +9,7 @@ entries:
     kind: feature
     es:
       title: Componente nuevo
-      body: Un contenedor que se abre desde una ventana pequeña hasta llenar la caja al hacer scroll, o al revés.
+      body: "Se suma a la librería, con su contrato, un binding de React y una hoja de estilos para marcado simple."
     en:
       title: New component
-      body: A container that opens from a small window to fill the box as you scroll, or the other way round.
+      body: "Added to the library, with its contract, a React binding and a stylesheet for plain markup."

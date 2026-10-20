@@ -33,6 +33,13 @@
     display: flex;
     gap: var(--sk-tabs-list-gap);
     border-block-end: 1px solid var(--sk-tabs-list-border-color);
+    /* Nothing scrolled or clipped an oversized strip: 24 tabs ran to ~1,955px in a 229px
+       container, dragging the panel wide with it. The tablist is the one place that should
+       scroll on its own, independent of the panel. */
+    min-inline-size: 0;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
   }
 
   .sk-tabs__trigger {

@@ -52,17 +52,34 @@ describe("Combobox", () => {
     );
   });
 
-  it("spends the query on each chip when multiple", async () => {
+  it("spends the query on each Tag when multiple", async () => {
     const { ui, input } = setup({ multiple: true });
 
     fireEvent.click(input);
     fireEvent.change(input, { target: { value: "arg" } });
     fireEvent.click(await ui.findByRole("option", { name: "Argentina" }));
 
-    // The chip carries the answer, so the input is free for the next search. On the whole list.
+    // The Tag carries the answer, so the input is free for the next search. On the whole list.
     await waitFor(() => expect(input.value).toBe(""));
     expect(ui.getAllByRole("option")).toHaveLength(items.length);
-    expect(ui.getByRole("listitem").textContent).toContain("Argentina");
+    const tag = ui.getByRole("listitem");
+    expect(tag.classList.contains("sk-tag")).toBe(true);
+    expect(tag.getAttribute("data-removable")).toBe("");
+    expect(tag.textContent).toContain("Argentina");
+    expect(tag.querySelector(".sk-tag__label")?.getAttribute("title")).toBe("Argentina");
+  });
+
+  it("removes a selected Tag and disables its remove action with the field", async () => {
+    const { ui } = setup({ multiple: true, defaultValue: ["argentina"] });
+
+    fireEvent.click(ui.getByRole("button", { name: "Quitar Argentina" }));
+    await waitFor(() => expect(ui.queryByRole("listitem")).toBeNull());
+    ui.unmount();
+
+    const disabled = setup({ multiple: true, defaultValue: ["argentina"], disabled: true });
+    expect(disabled.ui.getByRole("listitem").getAttribute("aria-disabled")).toBe("true");
+    const remove = disabled.ui.getByRole("button", { name: "Quitar Argentina" }) as HTMLButtonElement;
+    expect(remove.disabled).toBe(true);
   });
 
   it("marks the highlight as keyboard-driven so the option can carry the focus ring", async () => {
@@ -127,7 +144,7 @@ describe("Combobox", () => {
     ).toBe(false);
   });
 
-  it("keeps aria-selected tied to the chosen chips when multiple, not the highlight", async () => {
+  it("keeps aria-selected tied to the chosen Tags when multiple, not the highlight", async () => {
     const { ui, input } = setup({ multiple: true });
 
     fireEvent.click(input);
@@ -147,7 +164,7 @@ describe("Combobox", () => {
 
     fireEvent.click(ui.getByRole("option", { name: "Argelia" }));
 
-    // Choosing it as a chip is what turns aria-selected on: with chips, it means "part of the
+    // Choosing it as a Tag is what turns aria-selected on: with Tags, it means "part of the
     // chosen set" (`aria-multiselectable="true"`), not "currently previewed".
     await waitFor(() =>
       expect(
@@ -183,5 +200,33 @@ describe("Combobox", () => {
       value: ["argentina"],
     });
     expect(onValue).toHaveBeenCalledWith({ value: ["argentina"] });
+  });
+
+  it("accepts Select's own options shape as an alias for items", async () => {
+    const ui = render(<Combobox label="País" options={items} />);
+    const input = ui.getByRole("combobox", { name: "País" });
+    fireEvent.click(input);
+    fireEvent.keyDown(input, { key: "ArrowDown" });
+    await waitFor(() => expect(ui.getAllByRole("option")).toHaveLength(items.length));
+  });
+
+  it("prefers items over options when both are given", async () => {
+    const ui = render(
+      <Combobox
+        items={[{ value: "chile", label: "Chile" }]}
+        label="País"
+        options={items}
+      />,
+    );
+    const input = ui.getByRole("combobox", { name: "País" });
+    fireEvent.click(input);
+    fireEvent.keyDown(input, { key: "ArrowDown" });
+    await waitFor(() => expect(ui.getAllByRole("option")).toHaveLength(1));
+  });
+
+  it("accepts aria-label as a hidden accessible name, with no visible label", () => {
+    const ui = render(<Combobox aria-label="País" items={items} />);
+    expect(ui.getByRole("combobox", { name: "País" })).toBeTruthy();
+    expect(ui.container.querySelector("label")).toBeNull();
   });
 });

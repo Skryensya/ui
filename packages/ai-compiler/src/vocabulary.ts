@@ -26,6 +26,7 @@ export const vocabulary = {
   descendants:
     "Per group, at least `min` of the `of` signatures (counted together) sit anywhere below this node, through every slot and collection entry.",
   pairs: "The option on the child composed into slot `a` equals the option on the child in slot `b`; a side with no value or default takes the other side's default.",
+  slotImplies: "When the child in `when.slot` has `when.option` equal to `when.equals`, the child in `then.slot` must have `then.option` equal to `then.equals`. One-way, unlike `pairs`: the reverse need not hold. A side with no value takes its own default.",
   between: "A number bounded by other options of the same node, inclusive; an omitted bound reads as its default.",
   keyOf: "A string naming entries of the signature's own keyed collection (`many`: space- or comma-separated); recursive collections are searched at every depth.",
   refersTo: "A string equal to the named option of some node of the named contract elsewhere in the same tree.",
@@ -78,7 +79,7 @@ export const vocabulary = {
    * move the gate. See `packages/ai-compiler/src/surface.ts`.
    */
   contractSurface:
-    "Changelog `surface` hashes the public contract: css, parts, options (type/values/default/attr/prop/constraints/computedInput/…), events, eventDetails, a11y, hooks, hookSheets, outputHooks, authoredAttrs, systemOwned, and per signature host, option lists, requires/forbids/groups, parents, notInside, descendants, implies/excludes/pairs, slots, mount, portals, hitTesting, forward, compose, deprecated. Excludes template (also/attrs/attrsWhen/optionAttrs/…), wiring, because, intent, react, category, and option.machineInput.",
+    "Changelog `surface` hashes the public contract: css, parts, options (type/values/default/attr/prop/constraints/computedInput/…), events, eventDetails, a11y, hooks, hookSheets, outputHooks, authoredAttrs, systemOwned, and per signature host, option lists, requires/forbids/groups, parents, notInside, descendants, implies/excludes/pairs/slotImplies, slots, mount, portals, hitTesting, forward, compose, deprecated. Excludes template (also/attrs/attrsWhen/optionAttrs/…), wiring, because, intent, react, category, and option.machineInput.",
   severities: {
     error: "The tree is invalid.",
     advisory: "The rule cannot be settled from the tree alone, or the shape is legal but usually a mistake.",

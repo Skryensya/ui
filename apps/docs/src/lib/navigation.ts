@@ -98,18 +98,13 @@ export type NavigationSection = {
 export type NavigationSectionId = "foundations" | "components" | "catalog" | "templates";
 
 /** Component inventory. The catalog groups this single source by task below. */
-const componentItems = [
+export const componentItems = [
   {
     href: "/components/accordion",
     label: "Accordion",
     aliases: [
       "acordeón",
       "acordeon",
-      "tarjeta expandible",
-      "tarjeta desplegable",
-      "expandable tile",
-      "expansible tile",
-      "expandabletile",
       "details",
       "summary",
       "details nativo",
@@ -234,17 +229,29 @@ const componentItems = [
   },
   { href: "/components/box", label: "Box", aliases: ["caja"] },
   {
-    href: "/components/tile",
-    label: "Tile",
-    aliases: [
-      "baldosa",
-      "superficie interactiva",
-      "interactive surface",
-      "tile link",
-      "tile button",
-      "tile checkbox",
-      "expandable tile",
-    ],
+    href: "/components/tile-link",
+    label: "TileLink",
+    aliases: ["baldosa", "enlace tarjeta", "tarjeta enlace", "link card", "card link", "tile link"],
+  },
+  {
+    href: "/components/tile-checkbox",
+    label: "TileCheckbox",
+    aliases: ["casilla tarjeta", "checkbox card", "card checkbox", "tile checkbox"],
+  },
+  {
+    href: "/components/tile-switch",
+    label: "TileSwitch",
+    aliases: ["interruptor tarjeta", "switch card", "card switch", "tile switch"],
+  },
+  {
+    href: "/components/tile-radio-group",
+    label: "TileRadioGroup",
+    aliases: ["opción tarjeta", "opciones tarjeta", "radio card", "radio cards", "tile radio"],
+  },
+  {
+    href: "/components/expandable-tile",
+    label: "ExpandableTile",
+    aliases: ["tarjeta plegable", "tarjeta desplegable", "expandable tile", "expansible tile", "disclosure card"],
   },
   {
     href: "/components/footer",
@@ -286,6 +293,7 @@ const componentItems = [
   {
     href: "/components/carousel",
     label: "Carousel",
+    trailing: "Beta",
     aliases: [
       "carrusel",
       "carousel",
@@ -319,31 +327,6 @@ const componentItems = [
     label: "Audio Player",
     trailing: "Beta",
     aliases: ["audio player", "audio-player", "audio", "reproductor de audio", "music player", "reproductor de música", "reproductor de musica", "podcast", "podcast player", "playlist", "lista de reproducción", "lista de reproduccion", "waveform", "forma de onda", "pista", "track", "mp3", "canción", "cancion"],
-  },
-  {
-    href: "/components/charts",
-    label: "Charts",
-    aliases: [
-      "chart",
-      "charts",
-      "gráfico",
-      "grafico",
-      "gráficos",
-      "graficos",
-      "gráfica",
-      "grafica",
-      "visualización de datos",
-      "visualizacion de datos",
-      "data viz",
-      "barras",
-      "bar chart",
-      "líneas",
-      "lineas",
-      "line chart",
-      "área",
-      "area chart",
-      "tanstack charts",
-    ],
   },
   {
     href: "/components/checkbox",
@@ -504,11 +487,6 @@ const componentItems = [
       "aspect-ratio",
       "ratio",
     ],
-  },
-  {
-    href: "/components/sticker",
-    label: "Sticker",
-    aliases: ["sticker", "calcomanía", "calcomania", "pegatina", "die-cut", "troquelado", "decal", "peel", "despegar"],
   },
   {
     href: "/components/morph-stack",
@@ -819,6 +797,7 @@ const componentItems = [
   {
     href: "/components/toast",
     label: "Toast",
+    trailing: "Beta",
     aliases: ["notificación", "notificacion", "aviso transitorio"],
   },
   { href: "/components/tooltip", label: "Tooltip", aliases: ["globo", "ayuda contextual", "descripción", "descripcion", "hint"] },
@@ -873,6 +852,7 @@ const componentItems = [
   {
     href: "/components/user-select",
     label: "UserSelect",
+    trailing: "Beta",
     aliases: [
       "selector de usuarios",
       "seleccionar personas",
@@ -909,16 +889,19 @@ const componentItems = [
   {
     href: "/components/date-picker",
     label: "DatePicker",
+    trailing: "Beta",
     aliases: ["fecha", "selector de fecha", "date range", "campo de fecha"],
   },
   {
     href: "/components/color-picker",
     label: "ColorPicker",
+    trailing: "Beta",
     aliases: ["selector de color", "color picker", "swatch", "rgb", "hsl", "oklch", "presets de color"],
   },
   {
     href: "/components/calendar",
     label: "Calendar",
+    trailing: "Beta",
     aliases: ["calendario", "grid de fecha", "mes", "vista de año", "década"],
   },
   {
@@ -929,12 +912,8 @@ const componentItems = [
   {
     href: "/components/editor",
     label: "Editor",
+    trailing: "Beta",
     aliases: ["editor de texto enriquecido", "wysiwyg", "rich text", "prosemirror", "editor de contenido"],
-  },
-  {
-    href: "/components/folder",
-    label: "Folder",
-    aliases: ["carpeta", "folder", "pestaña", "pestana", "tab surface", "pila de carpetas"],
   },
   {
     href: "/components/drop-zone",
@@ -1012,6 +991,11 @@ const componentItems = [
     aliases: ["botón dividido", "boton dividido", "acción con menú"],
   },
   {
+    href: "/components/tile-button",
+    label: "TileButton",
+    aliases: ["tile button", "botón tarjeta", "boton tarjeta", "tarjeta de acción", "action card", "card button"],
+  },
+  {
     href: "/components/time-field",
     label: "TimeField",
     aliases: [
@@ -1023,11 +1007,6 @@ const componentItems = [
       "campo segmentado",
       "segmented input",
     ],
-  },
-  {
-    href: "/components/dock",
-    label: "Dock",
-    aliases: ["lanzador de acciones", "action launcher", "icon actions"],
   },
   {
     href: "/components/toolbar",
@@ -1084,11 +1063,11 @@ const allComponentNavigation = [
       "/components/button",
       "/components/clipboard",
       "/components/command-palette",
-      "/components/dock",
       "/components/menu",
       "/components/menubar",
       "/components/split-button",
       "/components/state-button",
+      "/components/tile-button",
       "/components/toolbar",
     ),
   },
@@ -1117,6 +1096,9 @@ const allComponentNavigation = [
       "/components/slider",
       "/components/switch",
       "/components/tags-input",
+      "/components/tile-checkbox",
+      "/components/tile-radio-group",
+      "/components/tile-switch",
       "/components/time-field",
       "/components/user-select",
     ),
@@ -1137,6 +1119,7 @@ const allComponentNavigation = [
       "/components/skip-link",
       "/components/steps",
       "/components/tabs",
+      "/components/tile-link",
       "/components/toc",
     ),
   },
@@ -1145,7 +1128,6 @@ const allComponentNavigation = [
     group: "group.componentData",
     blurb: "group.componentData.blurb",
     items: componentGroupItems(
-      "/components/charts",
       "/components/comparison-table",
       "/components/data-grid",
       "/components/description-list",
@@ -1191,11 +1173,10 @@ const allComponentNavigation = [
       "/components/changelog",
       "/components/comment-thread",
       "/components/feed",
-      "/components/folder",
       "/components/list",
       "/components/message",
       "/components/procedure",
-      "/components/tile",
+      "/components/expandable-tile",
       "/components/timeline",
       "/components/tree-view",
     ),
@@ -1265,7 +1246,6 @@ const allComponentNavigation = [
       "/components/media-overlay",
       "/components/morph-stack",
       "/components/qr-code",
-      "/components/sticker",
       "/components/video-player",
       "/components/audio-player",
     ),

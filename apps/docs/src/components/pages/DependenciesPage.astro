@@ -62,7 +62,7 @@ const groups: readonly Group[] = [
       {
         id: "react",
         name: "react, react-dom",
-        used: "react, charts",
+        used: "react",
         why: {
           es: "Son peer dependencies (>=19), no dependencias: el consumidor ya tiene React y el sistema no puede traer una segunda copia sin romper hooks y contexto. Se pide 19 como piso porque el binding lo asume.",
           en: "Peer dependencies (>=19), not dependencies: the consumer already has React, and the system cannot bring a second copy without breaking hooks and context. 19 is the floor because the binding assumes it.",
@@ -112,15 +112,6 @@ const groups: readonly Group[] = [
         why: {
           es: "Un editor de texto enriquecido es modelo de documento, selección, historial y transformaciones, no un contenteditable con botones. ProseMirror resuelve eso con un esquema explícito, y el editor queda en su propio paquete opcional para que quien no lo use no pague su peso.",
           en: "A rich-text editor is a document model, selection, history and transforms, not a contenteditable with buttons. ProseMirror solves that with an explicit schema, and the editor sits in its own optional package so anyone not using it does not pay for it.",
-        },
-      },
-      {
-        id: "tanstack-charts",
-        name: "@tanstack/charts",
-        used: "charts",
-        why: {
-          es: "Es el motor de gráficos detrás de @skryensya/charts. Se declara como peer opcional y con versión fija porque el sistema aporta la apariencia (tokens y paleta) y no reimplementa escalas, ejes ni layout.",
-          en: "The charting engine behind @skryensya/charts. It is an optional peer with a pinned version because the system supplies the look (tokens and palette) and does not reimplement scales, axes or layout.",
         },
       },
     ],

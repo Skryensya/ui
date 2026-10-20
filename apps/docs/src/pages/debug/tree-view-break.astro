@@ -1,0 +1,22 @@
+---
+/* Dev-only stress harness for TreeView depth, node labels, selection and collection size. */
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
+import "@skryensya/core/components/tree-view.css";
+import "../../styles/site.css";
+import { TreeViewBreak } from "../../components/react-demos/debug-tree-view-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+
+<DebugShell title="TreeView" docsHref="/components/tree-view">
+  <TreeViewBreak client:only="react" />
+</DebugShell>
+
+<style is:global>
+  .break-tree-viewport {
+    max-block-size: min(70vh, 42rem);
+    overflow: auto;
+  }
+</style>

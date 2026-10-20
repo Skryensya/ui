@@ -23,6 +23,15 @@
     inset-block-end: var(--space-inset-lg);
     inset-inline-end: var(--space-inset-lg);
     inline-size: min(24rem, calc(100vw - (var(--space-inset-lg) * 2)));
+    /*
+     * Unlike DialogStack (which clamps its visual depth to 3), nothing here capped how many
+     * toasts can stack: eight or more at once grows the region past the viewport with no scroll,
+     * instead of the oldest ones just scrolling out of reach. Each toast still announces and
+     * dismisses individually; this only stops the region itself from overflowing the screen.
+     */
+    max-block-size: calc(100vh - 2 * var(--space-inset-lg));
+    overflow-y: auto;
+    scrollbar-width: none;
   }
 
   /* EVERY toast gets the raised shadow so a banner callout reads as overlay chrome floating over the
@@ -158,7 +167,11 @@
    * instead of level with the title. The attribute (already on every toast, `data-sk-toast=""`)
    * costs one more compound and settles it outright: (0,4,0) beats callout's (0,3,0) regardless of
    * which file loads second. */
-  .sk-toast-region > .sk-callout[data-sk-toast] .sk-callout__actions {
+  /* Only for exactly ONE action: the compact, beside-the-message placement this override exists
+     for. Two or more actions fall through to callout.css's own row below the message instead -
+     the auto column sized to fit two buttons squeezed the message text column down to a handful
+     of characters, which a single compact action's own narrower column never did. */
+  .sk-toast-region > .sk-callout[data-sk-toast]:not(:has(.sk-callout__actions > :nth-child(2))) .sk-callout__actions {
     grid-column: auto;
     justify-content: end;
   }

@@ -29,6 +29,10 @@
       "types": "./src/command-palette-playground.ts",
       "default": "./src/command-palette-playground.ts"
     },
+    "./tag-interactions": {
+      "types": "./src/tag-interactions.ts",
+      "default": "./src/tag-interactions.ts"
+    },
     "./controls": {
       "types": "./src/controls.ts",
       "default": "./src/controls.ts"

@@ -28,7 +28,7 @@
     --sk-input-radius: var(--radius-control);
     /* Density can tighten the layout around a field, never its native touch target. */
     --sk-input-height: max(var(--size-control-md), var(--size-touch-target));
-    --sk-input-padding-x: var(--space-inset-sm);
+    --sk-input-padding-x: var(--space-inset-md);
     --sk-input-padding-y: var(--space-inset-xs);
     --sk-input-gap: var(--space-inline-sm);
     --sk-input-font-size: var(--font-size-body);
@@ -63,13 +63,15 @@
   .sk-input[data-size="sm"] {
     --sk-input-height: max(var(--size-control-sm), var(--size-touch-target));
     --sk-input-font-size: var(--font-size-body-sm);
-    --sk-input-padding-x: var(--space-inset-xs);
+    /* The side inset equals the air above and below one line of text, so the small field sits in an
+       even frame (it was 8px beside ~11px). */
+    --sk-input-padding-x: calc((var(--sk-input-height) - var(--sk-input-font-size) * var(--sk-input-line-height)) / 2);
   }
 
   .sk-input[data-size="lg"] {
     --sk-input-height: max(var(--size-control-lg), var(--size-touch-target));
     --sk-input-font-size: var(--font-size-body-lg);
-    --sk-input-padding-x: var(--space-inset-md);
+    --sk-input-padding-x: var(--space-inset-lg);
   }
 
   .sk-input[aria-invalid="true"] {
@@ -108,6 +110,22 @@
     block-size: auto;
     min-block-size: calc(var(--sk-input-height) * 3);
     resize: vertical;
+    /* A text area scrolls inside its own surface; don't inherit the page's opaque scrollbar track. */
+    scrollbar-color: var(--sk-input-border-color) transparent;
+  }
+
+  textarea.sk-input::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* `field-sizing: content` is unsupported browsers' plain fixed-height textarea, not a broken one:
+   * everything above still applies, this only adds growth where the engine understands it. */
+  textarea.sk-input[data-auto-size] {
+    --sk-textarea-autosize-max-block-size: 40vh;
+
+    field-sizing: content;
+    max-block-size: var(--sk-textarea-autosize-max-block-size);
+    resize: none;
   }
 
   @media (forced-colors: active) {
@@ -262,6 +280,20 @@
     background: var(--frost-glass, var(--sk-input-bg));
     -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-sm)) saturate(var(--frost-saturate));
     backdrop-filter: var(--frost-on) blur(var(--frost-blur-sm)) saturate(var(--frost-saturate));
+  }
+
+  /* GHOST: no container at all. Written after the appearances and at the same `:where()` specificity, so it wins over their paint
+   * and loses to every state (invalid keeps its danger edge, disabled its own paint). The focus ring is untouched. */
+  .sk-input:where([data-variant="ghost"]) {
+    --sk-input-bg: transparent;
+    --sk-input-wash: none;
+    --sk-input-shadow: none;
+    --sk-input-radius: 0;
+    --sk-input-border-color: transparent;
+
+    background: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
 
   @media (forced-colors: active) {

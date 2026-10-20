@@ -38,6 +38,7 @@ function connect(root: HTMLElement): () => void {
       itemCount: stops.length,
       orientation,
       loopFocus,
+      dir: getComputedStyle(root).direction === "rtl" ? "rtl" : "ltr",
     });
     if (action.kind === "none") return;
     event.preventDefault();

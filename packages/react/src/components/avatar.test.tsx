@@ -93,6 +93,35 @@ describe("AvatarGroup", () => {
     expect(ui.getByText("+2")).toBeTruthy();
   });
 
+  it("collapses every avatar behind the count when max is 0, not treated as no cap", () => {
+    const ui = render(
+      <AvatarGroup max={0}>
+        <Avatar name="A A" />
+        <Avatar name="B B" />
+      </AvatarGroup>,
+    );
+    expect(ui.queryAllByRole("img")).toHaveLength(0);
+    expect(ui.getByText("+2")).toBeTruthy();
+  });
+
+  it("ignores a static overflow label once max says nothing actually overflowed", () => {
+    const ui = render(
+      <AvatarGroup max={5} overflow="+99 more">
+        <Avatar name="A A" />
+      </AvatarGroup>,
+    );
+    expect(ui.queryByText("+99 more")).toBeNull();
+  });
+
+  it("still uses the static overflow label when there is no max to count against", () => {
+    const ui = render(
+      <AvatarGroup overflow="+40 more">
+        <Avatar name="A A" />
+      </AvatarGroup>,
+    );
+    expect(ui.getByText("+40 more")).toBeTruthy();
+  });
+
   it("exposes itself as a named group when a label is given", () => {
     const ui = render(
       <AvatarGroup label="Reviewers">

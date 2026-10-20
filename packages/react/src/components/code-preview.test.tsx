@@ -40,10 +40,30 @@ describe("CodePreview", () => {
     expect(root.getAttribute("data-sk-code-preview-collapsible")).toBe("");
     expect(root.getAttribute("data-sk-code-preview-lines")).toBe("62");
     expect(root.getAttribute("data-sk-code-preview-preview-lines")).toBe("20");
-    // `expanded` is written when the control is used, so nothing claims it at rest.
-    expect(root.hasAttribute("data-sk-code-preview-expanded")).toBe(false);
     // The count comes from a rendered height, which does not exist without a layout.
     expect(root.querySelector(".sk-code-preview__toggle-count")?.textContent).toBe("");
+  });
+
+  it("writes its own expanded state onto the root, so the height-clamp CSS matches on first paint", () => {
+    /*
+     * Found as a real bug: `expanded` used to be left unwritten on the theory that a Vanilla
+     * enhancer would supply it, but that enhancer never runs for the React binding. With the
+     * attribute absent, `[data-sk-code-preview-expanded="false"]` never matched, so a long block
+     * rendered in full at rest and the first click only flipped the label, not the height.
+     */
+    const ui = render(
+      <CodePreview collapsible lines={1002} previewLines={20}>
+        <pre>código</pre>
+      </CodePreview>,
+    );
+    const root = ui.container.querySelector(".sk-code-preview")!;
+    const toggle = ui.getByRole("button");
+
+    expect(root.getAttribute("data-sk-code-preview-expanded")).toBe("false");
+
+    fireEvent.click(toggle);
+
+    expect(root.getAttribute("data-sk-code-preview-expanded")).toBe("true");
   });
 
   it("flips the disclosure control's own label and state", () => {

@@ -591,9 +591,45 @@
   }
 
   @container (width < 52rem) {
-    .sk-app-shell > :is(aside, .sk-sidebar) {
+    .sk-app-shell:not([data-sidebar-persistent]) > :is(aside, .sk-sidebar) {
       display: none;
     }
+  }
+
+  /*
+   * `sidebarPersistent`: the exact rules the `>= 52rem` container query below applies, at any
+   * width instead - a desktop-in-the-browser app's rail does not become optional just because the
+   * window got narrow. Duplicated rather than widening the query itself, so the common (phone-below-
+   * 52rem) case keeps reading as one query with one meaning.
+   */
+  .sk-app-shell[data-sidebar-persistent] {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .sk-app-shell[data-sidebar-persistent] > :is(aside, .sk-sidebar) {
+    grid-column: 1;
+    grid-row: 2;
+    block-size: auto;
+  }
+
+  .sk-app-shell[data-sidebar-persistent] > :is(main, .sk-main) {
+    grid-column: 2;
+  }
+
+  .sk-app-shell[data-sidebar-persistent] > :is(main, .sk-main) ~ :is(aside, .sk-sidebar) {
+    grid-column: 3;
+  }
+
+  .sk-app-shell[data-sidebar-persistent][data-scroll="regions"] {
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    block-size: var(--sk-app-shell-block-size);
+    min-block-size: 0;
+    overflow: hidden;
+  }
+
+  .sk-app-shell[data-sidebar-persistent][data-scroll="regions"] > :is(main, .sk-main) {
+    overflow: auto;
+    overscroll-behavior: contain;
   }
 
   /* Pinned while the page scrolls under it. The header brings its own surface; the shell only lifts it. */

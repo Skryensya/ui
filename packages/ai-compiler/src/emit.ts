@@ -569,6 +569,11 @@ function renderTemplate(
  */
 function hostElement(node: ContractTemplate, ctx: NodeContext): string {
   const fixed = node.element!;
+  if (node.elementOption) {
+    const option = ctx.contract.options[node.elementOption];
+    const value = ctx.tree.options?.[node.elementOption];
+    return typeof value === "string" && option?.values?.includes(value) ? value : fixed;
+  }
   if (!node.host) return fixed;
   for (const [name, option] of signatureOptions(ctx.contract, ctx.signature)) {
     if (!option.element) continue;
@@ -634,7 +639,7 @@ function supplied(
     const option = ctx.tree.options?.[name];
     return (
       (option !== undefined && option !== false) ||
-      slotItems(filled[name]).length > 0 ||
+      slotItems(filled[name]).some((item) => typeof item !== "string" || item.trim().length > 0) ||
       // A collection slot's entries are `ItemInput`s, which `slotItems` deliberately excludes (they
       // are not children); `whenGiven` on a collection slot. MenubarItem's own `items`, gating
       // whether it has a dropdown at all. Needs the other half of the same content to count too.

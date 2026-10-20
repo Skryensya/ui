@@ -9,6 +9,7 @@
 import { renderIconBox, type IconData, type IconSet, type IconSize, type StableIconName, iconContract } from "@skryensya/core/icon";
 import { lucideIcons } from "@skryensya/icons-lucide";
 import { createContext, useContext, type ReactNode, type SVGAttributes } from "react";
+import { a11yWarnRef, dev, devTicket } from "../dev-warning.js";
 
 /* Derived, never restated: the default lives in the contract. */
 const { size: sizeOption } = iconContract.options;
@@ -69,6 +70,8 @@ type IconBaseProps = Omit<
    */
   label?: string;
   size?: IconSize;
+  /** Set false when this icon conveys meaning on its own; then `label` is required. */
+  decorative?: boolean;
 };
 
 /*
@@ -84,11 +87,37 @@ type IconBaseProps = Omit<
 export type IconProps = IconBaseProps &
   ({ name: StableIconName; data?: never } | { data: IconData; name?: never });
 
-export function Icon({ name, data, label, size = sizeOption.default, className, ...props }: IconProps) {
+export function Icon({ name, data, label, decorative = true, size = sizeOption.default, className, ...props }: IconProps) {
+  const missingLabel = decorative === false && !label;
+  if (dev && missingLabel) {
+    console.error(...devTicket("<Icon>", {
+      issue: "is marked meaningful (`decorative={false}`) but has no accessible name.",
+      why: "A meaningful icon needs a label for assistive technology.",
+      fix: 'Add `label="…"` or leave it decorative.',
+    }));
+  }
   // The context always has a set: Lucide by default, or whichever an IconSetProvider higher up binds.
   // `data` does not read the context, it is project geometry, portable without a set (decision 15).
   const set = useContext(IconSetContext);
   const icon = name !== undefined ? set[name] : data!;
+
+  /*
+   * `name`'s type is the closed vocabulary (`StableIconName`), which `validate_ui` checks for a tree
+   * built through the contract tooling - but a `name` computed at runtime (from an API, a CMS field)
+   * reaches this component as a plain string with the type erased, and a set is never obliged to
+   * draw every stable name. Caught here, not left to crash: `icon.attrs`/`.viewBox`/`.body` below
+   * would otherwise throw on `undefined`, which is what an unrecognized name did the first time this
+   * contract was exercised (see the comment on `iconContract.options.name` in core).
+   */
+  if (!icon) {
+    if (dev) {
+      console.error(...devTicket("<Icon>", {
+        issue: `name "${name}" has no drawing in the active set.`,
+        fix: "Check the name against the active IconSetProvider's set, or fall back to a known name.",
+      }));
+    }
+    return null;
+  }
 
   // The box is computed once, in core, as data: presentation are the set's attrs (without the keys the
   // box reserves), box is what the binding dictates. This component is only the adapter to JSX.
@@ -115,6 +144,7 @@ export function Icon({ name, data, label, size = sizeOption.default, className, 
     <svg
       {...presentationProps}
       {...props}
+      ref={a11yWarnRef(missingLabel)}
       {...boxProps}
       // The body is trusted by contract: authored or build-time geometry, never from a user or an API
       // (decision 15, "the stated cost"). Today that is a type convention, not a rule the validator

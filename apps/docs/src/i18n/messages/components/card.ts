@@ -50,7 +50,7 @@ export const cardMessages = {
     "cardPage.contract2": "Box y Tile parten de la misma superficie, borde, radio y padding. Tile agrega el state layer: la diferencia aparece al pasar, enfocar o presionar.",
 
     "cardPage.contract1": "No existen <code>sk-card</code>, <code>@skryensya/react/card</code> ni <code>components/card.css</code>: importa las piezas que la card usa.",
-    "cardPage.lede": 'Una card agrupa el contenido sobre un solo tema (un producto, una noticia, una métrica) en una superficie que se compara con sus vecinas. No es un componente: se compone con <a href="/es/componentes/box">Box</a> o con <a href="/es/componentes/tile">Tile</a>, según lo que hace la superficie.',
+    "cardPage.lede": 'Una card agrupa el contenido sobre un solo tema (un producto, una noticia, una métrica) en una superficie que se compara con sus vecinas. No es un componente: se compone con <a href="/es/componentes/box">Box</a> o con <a href="/es/componentes/tile-link">TileLink</a>, según lo que hace la superficie.',
     "cardPage.chooseTitle": "Raíz: la elige el comportamiento",
     "cardPage.chooseBody": "«Card» describe una forma, no lo que hace. Empieza por la interacción y después compón el contenido con Stack, Heading, Text, Badge o Stat.",
     "cardPage.tableHeadSurface": "La superficie…",
@@ -163,7 +163,7 @@ export const cardMessages = {
     "cardPage.contract2": "Box and Tile start from the same surface, border, radius and padding. Tile adds the state layer: the difference shows on hover, focus or press.",
 
     "cardPage.contract1": "There is no <code>sk-card</code>, <code>@skryensya/react/card</code> or <code>components/card.css</code>: import the pieces the card uses.",
-    "cardPage.lede": 'A card groups content about one subject (a product, a story, a metric) on a surface people compare with its neighbors. It is not a component: it is composed from <a href="/components/box">Box</a> or <a href="/components/tile">Tile</a>, depending on what the surface does.',
+    "cardPage.lede": 'A card groups content about one subject (a product, a story, a metric) on a surface people compare with its neighbors. It is not a component: it is composed from <a href="/components/box">Box</a> or <a href="/components/tile-link">TileLink</a>, depending on what the surface does.',
     "cardPage.chooseTitle": "Root: behavior chooses it",
     "cardPage.chooseBody": "“Card” describes a shape, not what it does. Start from the interaction, then compose the content with Stack, Heading, Text, Badge or Stat.",
     "cardPage.tableHeadSurface": "The surface…",

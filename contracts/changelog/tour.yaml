@@ -9,7 +9,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Recorre la interfaz paso a paso, resaltando un elemento a la vez sin bloquear la página.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Walks through an interface step by step, highlighting one element at a time without blocking the page.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

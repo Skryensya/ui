@@ -11,11 +11,13 @@ import "@skryensya/core/patterns/image-frame.css";
 import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/media-overlay.css";
 import * as demos from "@docs/demos/image-cropper";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+const { imageCropperAnatomyCss } = demos;
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Image Cropper", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.imageCropperAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.imageCropperAnatomyTree, { decorators: [withCss(imageCropperAnatomyCss)] });
+export const Flow: StoryObj = treeStory(demos.imageCropperFlowTree);
 export const Default: StoryObj = treeStory(demos.imageCropperTree);
 export const Avatar: StoryObj = treeStory(demos.imageCropperAvatarTree);
 export const Free: StoryObj = treeStory(demos.imageCropperFreeTree);
@@ -26,4 +28,3 @@ export const ReadOnly: StoryObj = treeStory(demos.imageCropperReadOnlyTree);
 export const Disabled: StoryObj = treeStory(demos.imageCropperDisabledTree);
 export const Error: StoryObj = treeStory(demos.imageCropperErrorTree);
 export const Bare: StoryObj = treeStory(demos.imageCropperBareTree);
-export const Flow: StoryObj = treeStory(demos.imageCropperFlowTree);

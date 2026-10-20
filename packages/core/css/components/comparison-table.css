@@ -13,6 +13,32 @@
  * things compared share the rest of the width evenly instead of the widest cell deciding.
  */
 @layer components {
+  /*
+   * THE SCROLL WRAPPER, opt-in (`ComparisonTableScroll`). `table-layout` stays `auto` below so
+   * columns size to their text, and in every real layout engine that means `overflow`/`max-
+   * inline-size` on the `<table>` itself cannot cap its width - confirmed live, not a guess: a
+   * 4-column comparison still measured 816px inside a 229px container with those properties set
+   * directly on `.sk-comparison-table`. This box is the one that actually shrinks and scrolls,
+   * same reasoning as `.sk-table-scroll`.
+   */
+  .sk-comparison-table-scroll {
+    inline-size: 100%;
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-color:
+      color-mix(in oklab, var(--color-text-primary) 30%, transparent)
+      color-mix(in oklab, var(--color-text-primary) 8%, transparent);
+    scrollbar-width: thin;
+  }
+
+  .sk-comparison-table-scroll:focus-visible {
+    border-radius: var(--radius-surface);
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+  }
+
   .sk-comparison-table {
     --sk-comparison-table-border-color: var(--color-border-subtle);
     --sk-comparison-table-cell-padding-block: var(--space-inset-sm);

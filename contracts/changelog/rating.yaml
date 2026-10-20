@@ -18,7 +18,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: "Una puntuación en una escala corta: el control con que se elige y la lectura del promedio."
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: "A score on a short scale: the control that sets one and the reading of the average."
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

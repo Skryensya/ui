@@ -11,7 +11,7 @@ describe("SliderRange React contracts", () => {
     const max = ui.getByRole("slider", { name: "Máximo" });
     expect(min.getAttribute("aria-valuenow")).toBe("20");
     expect(max.getAttribute("aria-valuenow")).toBe("80");
-    expect(ui.container.querySelector("[data-sk-slider-range]")).not.toBeNull();
+    expect(ui.container.querySelector("[data-sk-slider-range]")?.getAttribute("data-sk-slider-range-ready")).toBe("true");
   });
 
   it("bounds each thumb's max/min at the other's CURRENT value", () => {

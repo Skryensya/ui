@@ -160,6 +160,7 @@ import {
 } from "../i18n";
 import { skipLinkParts } from "@skryensya/core/skip-link";
 import { backToTopParts } from "@skryensya/core/back-to-top";
+import { frostBackdrop, frostBackdropMotion } from "../lib/frost-backdrop";
 import { STORAGE_KEY } from "@skryensya/core/storage";
 import {
   colorModePreference,
@@ -189,16 +190,6 @@ interface Props {
   description?: string;
   /** Full-width tool layout: drop the docs rail, toc, page-nav and footer, render the slot alone. */
   fullBleed?: boolean;
-  /**
-   * This page belongs to no section, so the rail shows the WHOLE index instead of one section.
-   *
-   * `currentSection` below falls back to `navigation[0]` when nothing matches the path, which is
-   * right for a page that sits inside a section the matcher simply missed, and wrong for a page that
-   * genuinely has no place in the index: the 404, where the reader is lost and the rail answered
-   * "Primeros pasos" as if that were where they had been. Opting in is per-page and explicit, so
-   * nothing else changes shape.
-   */
-  railIndex?: boolean;
   /** Content geometry inside the docs shell. Grid keeps the shell rails but exposes named content spans. */
   documentLayout?: "column" | "grid";
   /**
@@ -207,15 +198,19 @@ interface Props {
    * structure the page chose; a page with tabs cannot have content the tabs don't own.
    */
   hideVanillaMount?: boolean;
+  /** Use the docs chrome for a hidden diagnostic page, without the section sidebar. */
+  debugPage?: boolean;
+  noIndex?: boolean;
 }
 
 const {
   title,
   description,
   fullBleed = false,
-  railIndex = false,
   documentLayout = "column",
   hideVanillaMount = false,
+  debugPage = false,
+  noIndex = false,
 } = Astro.props;
 const path = Astro.url.pathname.replace(/\/$/, "") || "/";
 
@@ -377,7 +372,7 @@ const belongsToFoundations =
   canonical === "/foundations" ||
   canonical.startsWith("/referencia/") ||
   (foundationsSection?.groups.some((group) => group.items.some((item) => item.href === path)) ?? false);
-const sectionNavigation = (railIndex ? navigation : [currentSection]) satisfies readonly NavigationSection[];
+const sectionNavigation = [currentSection] satisfies readonly NavigationSection[];
 const isGlobalItemCurrent = (href: string): boolean => {
   const itemCanonical = canonicalPath(href);
   if (itemCanonical === "/components") return canonical === "/components" || (canonical.startsWith("/components/") || canonical.startsWith("/componentes/"));
@@ -400,7 +395,10 @@ const isGlobalItemCurrent = (href: string): boolean => {
  * The full-bleed layout has no toc and no page furniture, so it keeps the plain `<slot />`: nothing
  * would read the index, and rendering the slot twice is the one way to get this wrong.
  */
-const scanned = fullBleed ? null : indexDocument(await Astro.slots.render("default"));
+const pageHtml = fullBleed ? null : await Astro.slots.render("default");
+const scanned = pageHtml
+  ? indexDocument(debugPage ? pageHtml.replaceAll("<astro-island", '<astro-island data-toc-transparent') : pageHtml)
+  : null;
 /*
  * Component pages put their outline inside the hero-tab panels, so a top-level heading scan sees
  * nothing. The default tab is `usage` and is known at build: index THAT panel the same way the
@@ -556,6 +554,7 @@ const PALETTE_PRESETS = palettePresets(locale);
     </script>
 
     <title>{title} · skryensya/ui</title>
+    {noIndex && <meta name="robots" content="noindex" />}
     {description && <meta name="description" content={description} />}
     {/* Each translation of this page announces the others, so a crawler treats them as one document
         in two languages rather than as duplicates competing with each other. */}
@@ -764,6 +763,7 @@ const PALETTE_PRESETS = palettePresets(locale);
       * so it is live at first paint, and `ensureFocusOrderStyleTag()` finds it by this same id and
       * no-ops when the panel eventually mounts.
       */}
+    <style set:html={`:root { --docs-frost-backdrop: ${frostBackdrop}; --docs-frost-backdrop-motion: ${frostBackdropMotion}; }`} />
     {import.meta.env.DEV && (
       <style id="sk-devtools-focus-order-style" set:html={FOCUS_ORDER_CSS} />
     )}
@@ -1205,7 +1205,7 @@ const PALETTE_PRESETS = palettePresets(locale);
         }
       })();
     </script>
-    <div class="shell sk-wrapper" data-document-layout={documentLayout} data-size="lg">
+    <div class="shell sk-wrapper" data-document-layout={documentLayout} data-debug-page={debugPage ? "" : undefined} data-size="lg">
       {/*
         The rail is the component, enhanced: `data-sk-sidebar` is what runs the resize behaviour over
         the authored markup. It has no trigger and does not want one, the index is the page's
@@ -1330,13 +1330,15 @@ const PALETTE_PRESETS = palettePresets(locale);
       >
         <Fragment set:html={documentIndex!.html} />
         {!hideVanillaMount && vanillaMount && <VanillaMount {...vanillaMount} />}
-        <hr
-          class="sk-separator"
-          data-orientation="horizontal"
-          aria-orientation="horizontal"
-          data-tone="subtle"
-          data-spacing="lg"
-        >
+        {!debugPage && (
+          <hr
+            class="sk-separator"
+            data-orientation="horizontal"
+            aria-orientation="horizontal"
+            data-tone="subtle"
+            data-spacing="lg"
+          >
+        )}
         {/*
           ABOVE the prev/next nav, and above the site colophon in `.docs-footer` below it. Reading
           order is the argument: "something is wrong with THIS page" belongs while the reader is
@@ -1363,7 +1365,7 @@ const PALETTE_PRESETS = palettePresets(locale);
           `data-sk-report-issue(-environment)` are what `report-issue.ts` reads to append the one
           thing the server cannot know, browser + viewport, once JS runs.
         */}
-        <div class="docs-report-issue">
+        {!debugPage && <div class="docs-report-issue">
           <h2>{t("footer.reportIssue.title")}</h2>
           {/*
             THE PROSE SETS UP, THE CONTROL CLOSES. The sentence says what pressing it does - it opens
@@ -1411,7 +1413,7 @@ const PALETTE_PRESETS = palettePresets(locale);
             <span>{t("footer.reportIssue.label")}</span>
             <Fragment set:html={reportIssueIcon} />
           </a>
-        </div>
+        </div>}
         {
           currentNavIndex >= 0 && (
             <nav class="docs-page-nav" aria-label={t("nav.between")}>
@@ -1455,9 +1457,11 @@ const PALETTE_PRESETS = palettePresets(locale);
           page's global `<SiteFooter>`, so this stays a small document colophon rather than a second
           site navigation band.
         */}
-        <div class="docs-footer">
-          <p set:html={t("footer.body", { core: "<code>@skryensya/core</code>" })} />
-        </div>
+        {!debugPage && (
+          <div class="docs-footer">
+            <p set:html={t("footer.body", { core: "<code>@skryensya/core</code>" })} />
+          </div>
+        )}
       </main>
       </div>
 
@@ -1628,7 +1632,6 @@ const PALETTE_PRESETS = palettePresets(locale);
       <div class="sk-empty-state" data-probe-for="sk-empty-state"></div>
       <div class="sk-file-upload" data-probe-for="sk-file-upload"></div>
       <div class="sk-image-frame" data-probe-for="sk-image-frame"></div>
-      <span class="sk-sticker" data-probe-for="sk-sticker"></span>
       <ul class="sk-list" data-probe-for="sk-list"></ul>
       <div class="sk-loader" data-probe-for="sk-loader"></div>
       <div class="sk-menu" data-probe-for="sk-menu"></div>

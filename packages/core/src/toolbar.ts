@@ -71,13 +71,23 @@ export const toolbarContract = {
     },
     /** Names a ToolbarGroup, when the bar holds more than one kind of control. */
     groupLabel: { type: "string", attr: "aria-label", prop: "label" },
+    /**
+     * How the bar's own controls share its main axis. `start` is the default (shrink to content);
+     * `between` is a footer's "Previous … Next" spread, the case that asked for this.
+     */
+    justify: {
+      type: "enum",
+      values: ["start", "center", "end", "between"],
+      default: "start",
+      attr: "data-justify",
+    },
   },
 
   signatures: {
     Toolbar: {
       intent: ["bar-of-controls", "editor-toolbar", "grouped-actions"],
       host: { element: "div" },
-      options: ["orientation", "label", "loopFocus", "appearance"],
+      options: ["orientation", "label", "loopFocus", "appearance", "justify"],
       requires: ["label"],
       /** Host id / a11y; label stays the option. */
       forward: ["id", "aria-*"],
@@ -140,11 +150,15 @@ export function resolveToolbarKey(params: {
   readonly itemCount: number;
   readonly orientation: ToolbarOrientation;
   readonly loopFocus: boolean;
+  /** Only meaningful for `"horizontal"`: which key moves toward the END of the bar. Defaults to
+   * LTR's own "ArrowRight" - found as a real bug, this never took a direction at all. */
+  readonly dir?: "ltr" | "rtl";
 }): ToolbarAction {
-  const { key, currentIndex, itemCount, orientation, loopFocus } = params;
+  const { key, currentIndex, itemCount, orientation, loopFocus, dir = "ltr" } = params;
   if (itemCount < 1) return { kind: "none" };
-  const previous = orientation === "horizontal" ? "ArrowLeft" : "ArrowUp";
-  const next = orientation === "horizontal" ? "ArrowRight" : "ArrowDown";
+  const rtl = orientation === "horizontal" && dir === "rtl";
+  const previous = orientation === "horizontal" ? (rtl ? "ArrowRight" : "ArrowLeft") : "ArrowUp";
+  const next = orientation === "horizontal" ? (rtl ? "ArrowLeft" : "ArrowRight") : "ArrowDown";
   if (![previous, next, "Home", "End"].includes(key)) return { kind: "none" };
 
   let index =

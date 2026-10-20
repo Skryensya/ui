@@ -12,12 +12,22 @@ import {
 } from "@skryensya/core/user-select";
 import { normalizeProps, Portal, useMachine } from "@zag-js/react";
 import { useId, useMemo, useRef, useState, type KeyboardEvent, type RefObject } from "react";
-import { useAnchored } from "./anchored.js";
+import { anchorProps, positionerProps } from "./anchored.js";
 import { Avatar, AvatarGroup } from "./avatar.js";
 import { Icon } from "./icon.js";
 import { Loader } from "./loader.js";
+import { useVirtualizer } from "./virtualizer.js";
 
 const cx = (...classes: Array<string | undefined>) => classes.filter(Boolean).join(" ");
+
+/* A name line plus an email line, `--space-inset-xs sm` padding: wider than Select's single-line
+ * `--size-touch-target` row, and only ever a starting guess - `measureElement` below corrects it
+ * once a row with or without an email actually paints. */
+const ESTIMATED_ROW_SIZE = 60;
+/* `[data-sk-user-select-list]`'s own `gap: 2px` (`user-select.css`): irrelevant to a normal-flow
+ * row, but an absolutely positioned one needs it added back, so it is handed to the virtualizer's
+ * own `gap` option rather than baked into each row's own offset by hand. */
+const ROW_GAP = 2;
 
 const { variant: variantOption } = userSelectContract.options;
 
@@ -107,6 +117,9 @@ export function UserSelect({
   const searchRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState("");
+  // True from a pointer press on the trigger until the first key or blur in the search field: the
+  // search takes focus on open, and a click should not paint the keyboard's ring on it.
+  const [pointerOpened, setPointerOpened] = useState(false);
 
   const labels: UserSelectLabels = {
     ...userSelectLabels,
@@ -156,6 +169,21 @@ export function UserSelect({
     [filteredUsers],
   );
 
+  /*
+   * Only the rows near the viewport are ever mounted - `getListProps()`'s own div renders
+   * `rowVirtualizer.getVirtualItems()`, not `filteredUsers`, below. Same mechanism as `Select`'s
+   * own (`select.tsx`): `scrollToIndexFn` is how the machine tells the virtualizer to bring a
+   * highlighted-but-unmounted row (arrow keys, typeahead) into view.
+   */
+  const rowVirtualizer = useVirtualizer<HTMLDivElement, HTMLDivElement>({
+    count: filteredUsers.length,
+    getScrollElement: () => listRef.current,
+    estimateSize: () => ESTIMATED_ROW_SIZE,
+    gap: ROW_GAP,
+    overscan: 8,
+    getItemKey: (index) => filteredUsers[index]!.id,
+  });
+
   const service = useMachine(select.machine, {
     id: machineId,
     collection,
@@ -173,6 +201,12 @@ export function UserSelect({
     disabled,
     ...(valueProp ? { value: [...valueProp] } : { defaultValue: initialValue }),
     positioning: selectPositioning,
+    scrollToIndexFn(details) {
+      rowVirtualizer.scrollToIndex(details.index, {
+        align: "auto",
+        behavior: details.immediate ? "auto" : "smooth",
+      });
+    },
     // The clear button's accessible name is its visible text, not Zag's own "Clear value".
     translations: { clearTriggerLabel: label("clear") },
     onValueChange(details: { value: string[] }) {
@@ -190,7 +224,6 @@ export function UserSelect({
     },
   });
   const api = select.connect(service, normalizeProps);
-  const anchor = useAnchored(machineId);
 
   const value = api.value;
   const valueRef = useRef(value);
@@ -214,6 +247,7 @@ export function UserSelect({
   // this component's search behavior has to diverge from a plain reused listbox, and only for that
   // one key; Enter, the arrows, Home and End all still reach it and drive the list untouched.
   const handleSearchKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    setPointerOpened(false);
     if (event.key === " ") event.stopPropagation();
   };
 
@@ -257,7 +291,8 @@ export function UserSelect({
       <div {...api.getControlProps()} className={selectParts.control} {...{ [selectAttrs.control]: "" }}>
         <button
           {...api.getTriggerProps()}
-          {...anchor.anchor(`${selectParts.trigger} sk-interactive`)}
+          onPointerDownCapture={() => setPointerOpened(true)}
+          {...anchorProps(`${selectParts.trigger} sk-interactive`)}
           {...{ [selectAttrs.trigger]: "" }}
           aria-label={selectionLabel}
           aria-labelledby={undefined}
@@ -303,7 +338,7 @@ export function UserSelect({
       </div>
       <Portal container={container}>
         <div
-          {...anchor.positioner(api.getPositionerProps(), selectParts.positioner)}
+          {...positionerProps(api.getPositionerProps(), selectParts.positioner)}
           {...{ [selectAttrs.positioner]: "" }}
         >
           <div {...api.getContentProps()} className={selectParts.content} {...{ [selectAttrs.content]: "" }}>
@@ -312,14 +347,36 @@ export function UserSelect({
               aria-label={searchPlaceholder}
               className="sk-input"
               data-size="sm"
+              data-variant="ghost"
               disabled={disabled}
               onChange={(event) => setQuery(event.target.value)}
+              data-focus-pointer={pointerOpened ? "" : undefined}
+              onBlur={() => setPointerOpened(false)}
               onKeyDown={handleSearchKeyDown}
               placeholder={searchPlaceholder}
               ref={searchRef}
               type="search"
               {...{ [userSelectAttrs.search]: "" }}
             />
+            <button
+              aria-label={label("clearSearch")}
+              className="sk-button sk-interactive"
+              data-icon-only=""
+              data-size="xs"
+              data-variant="ghost"
+              hidden={query.length === 0}
+              onClick={() => {
+                setQuery("");
+                if (searchRef.current) {
+                  searchRef.current.value = "";
+                  searchRef.current.focus();
+                }
+              }}
+              type="button"
+              {...{ [userSelectAttrs.searchClear]: "" }}
+            >
+              <Icon name="close" size="sm" />
+            </button>
             <div
               aria-atomic="true"
               className={cx(comboboxParts.status, "sk-visually-hidden")}
@@ -342,41 +399,57 @@ export function UserSelect({
               ref={listRef}
               hidden={loading}
               tabIndex={-1}
+              style={{ position: "relative" }}
               {...{ [userSelectAttrs.list]: "" }}
             >
-              {filteredUsers.map((user) => (
-                <div
-                  {...api.getItemProps({ item: user })}
-                  className={cx(selectParts.item, "sk-interactive")}
-                  key={user.id}
-                  {...{ [selectAttrs.item]: "" }}
-                >
-                  {/* Decorative: the option's own `aria-selected` is the state; this box only shows it.
-                      Checked from the row's `data-state` in CSS, so it needs no state of its own. */}
-                  <span aria-hidden="true" className={selectionParts.checkbox} {...{ [userSelectAttrs.check]: "" }}>
-                    <span className={selectionParts.checkboxControl}>
-                      <span className={selectionParts.checkboxIndicator} data-state="checked">
-                        <Icon name="check" size="sm" />
+              {/* A real row, in normal flow (unlike the ones below), so its height is what gives the
+                  scroll surface something to scroll THROUGH - same reasoning as `Select`'s own. */}
+              <div aria-hidden="true" style={{ height: rowVirtualizer.getTotalSize() }} />
+              {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                const user = filteredUsers[virtualRow.index]!;
+                return (
+                  <div
+                    {...api.getItemProps({ item: user })}
+                    className={cx(selectParts.item, "sk-interactive")}
+                    key={virtualRow.key}
+                    data-index={virtualRow.index}
+                    ref={rowVirtualizer.measureElement}
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      insetInlineStart: 0,
+                      inlineSize: "100%",
+                      transform: `translateY(${virtualRow.start}px)`,
+                    }}
+                    {...{ [selectAttrs.item]: "" }}
+                  >
+                    {/* Decorative: the option's own `aria-selected` is the state; this box only shows it.
+                        Checked from the row's `data-state` in CSS, so it needs no state of its own. */}
+                    <span aria-hidden="true" className={selectionParts.checkbox} {...{ [userSelectAttrs.check]: "" }}>
+                      <span className={selectionParts.checkboxControl}>
+                        <span className={selectionParts.checkboxIndicator} data-state="checked">
+                          <Icon name="check" size="sm" />
+                        </span>
                       </span>
                     </span>
-                  </span>
-                  <span className="sk-inline" data-align="center" data-gap="sm" data-wrap="false">
-                    {avatarOf(user)}
-                    <span className={comboboxParts.itemCopy}>
-                      <span
-                        {...api.getItemTextProps({ item: user })}
-                        className={selectParts.itemText}
-                        {...{ [selectAttrs.itemText]: "" }}
-                      >
-                        {user.name}
+                    <span className="sk-inline" data-align="center" data-gap="sm" data-wrap="false">
+                      {avatarOf(user)}
+                      <span className={comboboxParts.itemCopy}>
+                        <span
+                          {...api.getItemTextProps({ item: user })}
+                          className={selectParts.itemText}
+                          {...{ [selectAttrs.itemText]: "" }}
+                        >
+                          {user.name}
+                        </span>
+                        {user.email ? (
+                          <span className={cx(selectParts.itemText, comboboxParts.itemDescription)}>{user.email}</span>
+                        ) : null}
                       </span>
-                      {user.email ? (
-                        <span className={cx(selectParts.itemText, comboboxParts.itemDescription)}>{user.email}</span>
-                      ) : null}
                     </span>
-                  </span>
-                </div>
-              ))}
+                  </div>
+                );
+              })}
               <div
                 className={comboboxParts.empty}
                 hidden={filteredUsers.length > 0}

@@ -68,7 +68,7 @@ export const heroWithVideoDemoSnippet: Snippet = {
                 contract: "image-frame",
                 signature: "ImageFrame",
                 options: {
-                  src: "https://picsum.photos/seed/video-demo-thumb/960/540",
+                  src: "/demos/satin/satin-lilac-16x9.jpg",
                   alt: "A paused preview of the product demo, ready to play",
                   aspect: "16/9",
                   radius: "surface",

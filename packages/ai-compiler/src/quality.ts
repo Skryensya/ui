@@ -332,7 +332,7 @@ const rules: readonly Rule[] = [
   /* ── forms ──────────────────────────────────────────────────────────────────────────────────── */
   (all) =>
     all
-      .filter(({ node }) => node.signature === "FormField" && node.options?.labelHidden === true)
+      .filter(({ node }) => node.signature === "FormField" && node.options?.labelVisuallyHidden === true)
       .map(({ path }) => ({
         rule: "hidden-label",
         severity: "warn" as const,

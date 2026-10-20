@@ -4,7 +4,8 @@ import { normalizeHex } from "@skryensya/core/color";
 import { colorPicker } from "@skryensya/core/machines";
 import { normalizeProps, Portal, useMachine, type PropTypes } from "@zag-js/react";
 import { useId, useRef, useState, type RefObject } from "react";
-import { useAnchored } from "./anchored.js";
+import { anchoredPositioning } from "@skryensya/core/anchored";
+import { anchorProps, positionerProps } from "./anchored.js";
 
 // Without depending on `@zag-js/color-picker` directly (react does not bring it as a dependency of its
 // own, core only re-exports it via `machines.ts`): the `api`'s type comes from the same `connect`
@@ -62,6 +63,7 @@ function useColorPicker({
   const generatedId = useId();
   const resolvedId = id ?? generatedId;
   const service = useMachine(colorPicker.machine, {
+    positioning: { placement: "bottom-start", ...anchoredPositioning },
     id: resolvedId,
     name,
     value: value !== undefined ? colorPicker.parse(value) : undefined,
@@ -103,7 +105,6 @@ function ColorPickerField({
   swatches?: readonly string[];
   triggerLabel?: string;
 }) {
-  const anchor = useAnchored(resolvedId);
 
   return (
     <div
@@ -125,7 +126,7 @@ function ColorPickerField({
           assistive tech. `getHiddenInputProps()` does not add it; the vanilla binding gets it for free
           from the authored template's own `attrs`, so this restates it explicitly for React too. */}
       <input {...api.getHiddenInputProps()} aria-hidden="true" className={colorPickerParts.hiddenInput} />
-      <div {...api.getControlProps()} {...anchor.anchor(colorPickerParts.control)}>
+      <div {...api.getControlProps()} {...anchorProps(colorPickerParts.control)}>
         {/*
          * Zag ALWAYS sends an `aria-labelledby` (pointing at the field's label) in addition to its own
          * `aria-label` ("select color. current color is ..."); `aria-labelledby` beats `aria-label` in
@@ -141,11 +142,15 @@ function ColorPickerField({
           type="button"
         >
           <span className={colorPickerParts.swatch} />
-          {showValue ? <span className={colorPickerParts.value}>{api.valueAsString}</span> : null}
+          {showValue ? (
+            <span className={colorPickerParts.value} title={api.valueAsString}>
+              {api.valueAsString}
+            </span>
+          ) : null}
         </button>
       </div>
       <Portal container={container}>
-        <div {...anchor.positioner(api.getPositionerProps(), colorPickerParts.positioner)}>
+        <div {...positionerProps(api.getPositionerProps(), colorPickerParts.positioner)}>
           <div {...api.getContentProps()} className={colorPickerParts.content}>
             <ColorPickerPanelBody api={api} anatomy={anatomy} swatches={swatches} />
           </div>

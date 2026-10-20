@@ -53,6 +53,12 @@ export const emptyStateMessages = {
 
     "emptyState.firstBody": "La lista todavía no existe, así que el botón crea lo primero.",
 
+    "emptyState.pageTitle": "Cuando es toda la página",
+    "emptyState.pageBody": "Un 404 o una bandeja vacía no tienen otro encabezado: el título es el <code>h1</code> (<code>headingElement=\"h1\"</code>) y el tamaño se ajusta con el hook, no con el nivel.",
+    "demo.emptyState.page.title": "Esta página no existe",
+    "demo.emptyState.page.description": "El enlace pudo cambiar. Vuelve al inicio o busca lo que necesitabas.",
+    "demo.emptyState.page.home": "Ir al inicio",
+    "demo.emptyState.page.search": "Buscar",
     "emptyState.firstTitle": "Primera vez: la acción que lo llena",
 
     "emptyState.lede": "EmptyState explica por qué una lista o una región no tiene nada que mostrar y ofrece el siguiente paso: crear el primer proyecto, limpiar un filtro. Ocupa el lugar del contenido que falta.",
@@ -131,6 +137,12 @@ export const emptyStateMessages = {
 
     "emptyState.firstBody": "The list does not exist yet, so the button creates the first item.",
 
+    "emptyState.pageTitle": "When it is the whole page",
+    "emptyState.pageBody": "A 404 or an empty inbox has no other heading: the title is the <code>h1</code> (<code>headingElement=\"h1\"</code>) and the size is set by the hook, not by the level.",
+    "demo.emptyState.page.title": "This page does not exist",
+    "demo.emptyState.page.description": "The link may have changed. Go back home or search for what you needed.",
+    "demo.emptyState.page.home": "Go home",
+    "demo.emptyState.page.search": "Search",
     "emptyState.firstTitle": "First time: the action that fills it",
 
     "emptyState.lede": "EmptyState explains why a list or region has nothing to show and offers the next step: create the first project, clear a filter. It takes the place of the missing content.",

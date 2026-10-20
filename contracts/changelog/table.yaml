@@ -3,13 +3,22 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "cf6a3e82cfca9eb8"
+surface: "992e4a0c5cf49f06"
 entries:
+  - date: 2026-10-17
+    kind: feature
+    target: TableHeader
+    es:
+      title: "Encabezados ordenables, y una columna sin nombre visible"
+      body: "sortable envuelve el contenido en un botón con flecha de dirección y aria-sort; onSortChange avisa el clic, ordenar sigue siendo tuyo. visuallyHidden mantiene el nombre accesible de una columna de solo-iconos sin gastar su ancho en él."
+    en:
+      title: "Sortable headers, and a column with no visible name"
+      body: "sortable wraps the content in a button with a direction arrow and aria-sort; onSortChange reports the click, sorting stays yours. visuallyHidden keeps an icon-only column's accessible name without spending its width on it."
   - date: 2026-10-01
     kind: feature
     es:
       title: Primera versión
-      body: Compara datos estructurados en filas y columnas.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Compares structured data across rows and columns.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

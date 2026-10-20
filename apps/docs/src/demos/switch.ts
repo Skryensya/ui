@@ -20,7 +20,7 @@ export const switchAnatomyTree = (t: Translate): UsageTree => ({
       namePart(".sk-switch", "block-start", { mark: "bracket" }),
       namePart(".sk-switch__input", "inline-start"),
       namePart(".sk-switch__control", "inline-start", { ringPlacement: "offset", ringDistance: 2 }),
-      namePart(".sk-switch__thumb", "inline-end"),
+      namePart(".sk-switch__thumb", "block-end"),
       namePart(".sk-switch__label", "inline-end", { ringPlacement: "offset", ringDistance: 2 }),
     ],
   },

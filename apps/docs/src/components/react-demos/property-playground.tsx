@@ -34,6 +34,8 @@ export interface PropertyPlaygroundProps {
   /** What each value is called on its segment. */
   labels: Record<string, string>;
   controlLabel: string;
+  /** Accessible name for the specimen group, separate from its property control. */
+  specimenLabel?: string;
   /** What each value is for, shown under the example for the one that is chosen. Trusted HTML. */
   explain?: Partial<Record<string, string>>;
   /**
@@ -61,7 +63,7 @@ export interface PropertyPlaygroundProps {
   keepFrames?: boolean;
 }
 
-export function PropertyPlayground({ tree, optionName, trees, measure, toggleLabel, target = [], values, boolean, onValue, defaultValue, labels, controlLabel, explain, remountOnChange = true, frame, isolatedFrame, keepFrames = false }: PropertyPlaygroundProps) {
+export function PropertyPlayground({ tree, optionName, trees, measure, toggleLabel, target = [], values, boolean, onValue, defaultValue, labels, controlLabel, specimenLabel, explain, remountOnChange = true, frame, isolatedFrame, keepFrames = false }: PropertyPlaygroundProps) {
   const [value, setValue] = useState(defaultValue);
   const [present, setPresent] = useState(true);
   const render = useRenderedTree(trees ? Object.values(trees) : tree);
@@ -88,6 +90,7 @@ export function PropertyPlayground({ tree, optionName, trees, measure, toggleLab
   };
   const liveTree: UsageTree = treeFor(value);
   const explanation = explain?.[value];
+  const specimen = render ? (measure ? <div style={{ inlineSize: "100%", maxInlineSize: measure }}>{render(liveTree)}</div> : render(liveTree)) : null;
   /* A frame that arrives after the page's own stage pass (every variant but the first) is not found by it, so it is started here:
      the doc the frame was built with becomes its `srcdoc`, and the frame's own runtime sizes it. */
   useEffect(() => {
@@ -156,7 +159,7 @@ export function PropertyPlayground({ tree, optionName, trees, measure, toggleLab
           /* The shell around the card (`UsagePreview`) is what the enhancer zooms; this is the fixed screen inside it. */
           hydrated && <TreeDemo key={value} tree={liveTree} frameOptions={{ screen: frame.screen, flush: frame.flush, css: frame.css, viewport: frame.viewport, minHeight: frame.minHeight }} />
         ) : render ? (
-          measure ? <div style={{ inlineSize: "100%", maxInlineSize: measure }}>{render(liveTree)}</div> : render(liveTree)
+          specimenLabel ? <div role="group" aria-label={specimenLabel}>{specimen}</div> : specimen
         ) : null}
       </div>
       {frame?.note && frame.width && (

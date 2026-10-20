@@ -158,26 +158,30 @@
   }
 
   /*
+   * NO `data-state` IS `auto`. The contract defaults `state` to `auto`, but authored markup and the emitted
+   * examples omit a default, and a selector that only knew `[data-state="auto"]` left those stacks closed under
+   * the pointer forever. `:where()` keeps the specificity the explicit attribute had.
+   *
    * `auto` answers to a hand and not to a finger: hover is only trusted where it exists (a tap on a touch screen would
    * open the stack and never close it), and focus inside keeps it open for a keyboard reader on any device.
    */
   @media (hover: hover) and (pointer: fine) {
-    .sk-morph-stack[data-state="auto"]:hover {
+    .sk-morph-stack:where(:not([data-state]), [data-state="auto"]):hover {
       --morph-open: 1;
     }
 
-    .sk-morph-stack[data-state="auto"]:hover .sk-morph-stack__stage,
-    .sk-morph-stack[data-state="auto"]:hover :is(.sk-morph-stack__deepest, .sk-morph-stack__back, .sk-morph-stack__front, .sk-morph-stack__nearest) {
+    .sk-morph-stack:where(:not([data-state]), [data-state="auto"]):hover .sk-morph-stack__stage,
+    .sk-morph-stack:where(:not([data-state]), [data-state="auto"]):hover :is(.sk-morph-stack__deepest, .sk-morph-stack__back, .sk-morph-stack__front, .sk-morph-stack__nearest) {
       transition-duration: var(--motion-expand-duration);
       transition-timing-function: var(--motion-expand-easing);
     }
 
-    .sk-morph-stack[data-state="auto"]:hover :is(.sk-morph-stack__deepest, .sk-morph-stack__back, .sk-morph-stack__front, .sk-morph-stack__nearest) {
+    .sk-morph-stack:where(:not([data-state]), [data-state="auto"]):hover :is(.sk-morph-stack__deepest, .sk-morph-stack__back, .sk-morph-stack__front, .sk-morph-stack__nearest) {
       transition-delay: calc(var(--motion-expand-duration) * var(--sk-morph-stack-stagger) * var(--morph-wait));
     }
   }
 
-  .sk-morph-stack[data-state="auto"]:focus-within {
+  .sk-morph-stack:where(:not([data-state]), [data-state="auto"]):focus-within {
     --morph-open: 1;
   }
 

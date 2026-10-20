@@ -1,0 +1,113 @@
+---
+/*
+ * Diagnostic only: a `break` harness for Progress. One scenario per row, the REAL
+ * `@skryensya/react` Progress in each, labels and nothing else around it.
+ *
+ * The environment is the site's own: `tokens.scss`, `components/progress.css` and
+ * `styles/site.css`, the same ones the docs shell imports. No fonts, colours or token overrides
+ * of this page's own - a progress bar observed under those is a different progress bar.
+ *
+ * Not linked from the site nav. `noindex`, like `/debug/layout-grid-rail`.
+ *
+ * Dev-only: `astro build` runs with NODE_ENV=production (see astro.config.ts), so this 404s out of
+ * the static build instead of shipping the break-* classes and the ProgressBreak island into dist.
+ */
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
+import "@skryensya/core/tokens.scss";
+import "@skryensya/core/components/progress.css";
+import "../../styles/site.css";
+import { ProgressBreak } from "../../components/react-demos/debug-progress-break";
+
+import DebugShell from "../../components/DebugShell.astro";
+---
+
+<DebugShell title="Progress">
+<style is:global>
+      .break-page {
+        padding: var(--space-inset-lg);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-stack-xl);
+      }
+      .break-intro {
+        max-inline-size: 60ch;
+        color: var(--color-text-secondary);
+      }
+      .break-group {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-stack-lg);
+        padding-block-start: var(--space-stack-md);
+        border-block-start: 1px solid var(--color-border-subtle);
+      }
+      .break-group__title {
+        margin: 0;
+        font-family: var(--font-family-mono);
+        font-size: var(--font-size-body-sm);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--color-text-secondary);
+      }
+      .break-case {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-stack-xs);
+      }
+      .break-case__label {
+        margin: 0;
+        font-family: var(--font-family-mono);
+        font-size: var(--font-size-caption);
+        color: var(--color-text-primary);
+      }
+      .break-case__note {
+        margin: 0;
+        font-size: var(--font-size-caption);
+        color: var(--color-text-secondary);
+      }
+      .break-case__broke {
+        margin: 0;
+        font-family: var(--font-family-mono);
+        font-size: var(--font-size-caption);
+        color: var(--color-text-danger);
+      }
+      .break-case__fixed {
+        margin: 0;
+        font-family: var(--font-family-mono);
+        font-size: var(--font-size-caption);
+        color: var(--color-text-success);
+      }
+      .break-case__stage {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-stack-sm);
+        inline-size: 100%;
+        max-inline-size: 28rem;
+      }
+      .break-stack {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-stack-sm);
+      }
+      .break-rtl {
+        display: flex;
+        gap: var(--space-inline-sm);
+        inline-size: 100%;
+        max-inline-size: 28rem;
+      }
+    </style>
+<div class="break-page" data-toc-transparent>
+  <header>
+    <h1>break: Progress</h1>
+    <p class="break-intro">
+One scenario per row, the real <code>@skryensya/react</code> Progress in each. Toggle
+OS dark mode, forced colors, 200% zoom and reduced motion while this page is open: those
+are viewing modes, so the page renders nothing for them.
+    </p>
+  </header>
+  <ProgressBreak client:load />
+</div>
+</DebugShell>

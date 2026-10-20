@@ -1,11 +1,20 @@
 # What changed in resizable, in the words its users read. Only appended to, never rewritten.
-surface: "0bbb2d79cad26062"
+surface: "feaa061bee14e004"
 entries:
+  - date: 2026-10-17
+    kind: feature
+    target: Resizable.Panel
+    es:
+      title: "minInlineSize / minBlockSize: un piso absoluto, no solo porcentual"
+      body: "minSize sigue siendo un porcentaje del grupo; minInlineSize/minBlockSize (\"22rem\", \"320px\") son un piso absoluto adicional, para un panel que necesita un ancho mínimo fijo sin importar cuánto se angoste la ventana."
+    en:
+      title: "minInlineSize / minBlockSize: an absolute floor, not only a percentage"
+      body: "minSize stays a percentage of the group; minInlineSize/minBlockSize (\"22rem\", \"320px\") are an additional absolute floor, for a panel that needs a fixed minimum width no matter how narrow the window gets."
   - date: 2026-10-07
     kind: feature
     es:
       title: Componente nuevo
-      body: Reparte una caja entre paneles y deja arrastrar la barra que hay entre cada par.
+      body: "Se suma a la librería, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: New component
-      body: Shares one box between panels and lets you drag the bar between each pair.
+      body: "Added to the library, with its contract, a React binding and a Vanilla mount."

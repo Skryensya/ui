@@ -1,0 +1,12 @@
+---
+/* Dev-only stress harness for CommandPalette search and result density. */
+if (import.meta.env.PROD) return new Response(null, { status: 404 });
+import "@skryensya/core/components/dialog.css";
+import "@skryensya/core/components/command-palette.css";
+import "../../styles/site.css";
+import { CommandPaletteBreak } from "../../components/react-demos/debug-command-palette-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+<DebugShell title="CommandPalette" docsHref="/components/command-palette">
+  <CommandPaletteBreak client:only="react" />
+</DebugShell>

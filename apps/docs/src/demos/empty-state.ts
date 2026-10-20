@@ -171,3 +171,23 @@ export const emptyStateSearchTree = (t: Translate): UsageTree => ({
     actions: { contract: "button", signature: "Button.action", options: { variant: "soft" }, children: t("demo.emptyState.searchAction") },
   },
 });
+
+/*
+ * A STATE THAT IS THE WHOLE PAGE: a 404, an inbox with nothing in it. No other heading exists, so the title is the
+ * page's `h1` (the level is the outline, the size is the hook) and the actions say where to go next.
+ */
+export const emptyStatePageTree = (t: Translate): UsageTree => ({
+  contract: "empty-state",
+  signature: "EmptyState",
+  options: { headingElement: "h1" },
+  attrs: { style: "--sk-empty-state-title-size: var(--font-size-display-sm); --sk-empty-state-max-inline-size: 36rem;" },
+  slots: {
+    icon: { contract: "icon", signature: "Icon", options: { name: "search" } },
+    title: t("demo.emptyState.page.title"),
+    description: t("demo.emptyState.page.description"),
+    actions: [
+      { contract: "button", signature: "Button.navigation", options: { href: "#", tone: "accent" }, children: t("demo.emptyState.page.home") },
+      { contract: "button", signature: "Button.action", options: { variant: "ghost" }, children: t("demo.emptyState.page.search") },
+    ],
+  },
+});

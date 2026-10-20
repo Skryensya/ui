@@ -1,4 +1,5 @@
-import { tableParts, tableContract } from "@skryensya/core/table";
+import { tableParts, tableContract, tableEvents } from "@skryensya/core/table";
+import type { OptionValue } from "@skryensya/core/contract";
 
 /* Derived, never restated: the default lives in the contract. */
 const { stickyColumn: stickyColumnOption, stickyHeader: stickyHeaderOption, resizableColumns: resizableColumnsOption, scope: scopeOption } = tableContract.options;
@@ -8,6 +9,7 @@ import {
 } from "@skryensya/core/splitter";
 import { contentBoxWidth } from "@skryensya/core/splitter-dom";
 import { ColumnResizer } from "./column-resizer.js";
+import { Icon } from "./icon.js";
 import {
   Children,
   cloneElement,
@@ -88,7 +90,19 @@ export type TableHeadProps = WithChildren<HTMLAttributes<HTMLTableSectionElement
 export type TableFooterProps = WithChildren<HTMLAttributes<HTMLTableSectionElement>>;
 export type TableBodyProps = WithChildren<HTMLAttributes<HTMLTableSectionElement>>;
 export type TableRowProps = WithChildren<HTMLAttributes<HTMLTableRowElement>>;
-export type TableHeaderProps = WithChildren<ThHTMLAttributes<HTMLTableCellElement>>;
+export type TableHeaderProps = WithChildren<ThHTMLAttributes<HTMLTableCellElement>> & {
+  /** Wraps `children` in a button and adds the direction arrow. Sorting the rows is still yours. */
+  sortable?: boolean;
+  /** Straight onto `aria-sort`. Omit for an unsortable header; use `"none"` for sortable-but-unsorted. */
+  sortDirection?: OptionValue<typeof tableContract.options.sortDirection>;
+  /** The sort button's accessible name, when the header's own text is not enough on its own. */
+  sortLabel?: string;
+  /** Fires when the sort button is activated. Which direction comes next is yours to decide. */
+  onSortChange?: () => void;
+  /** The column's name exists for a screen reader and takes no space on screen. For a column every
+   * row answers with icon-only buttons, where a visible name would repeat down every row. */
+  visuallyHidden?: boolean;
+};
 export type TableCellProps = WithChildren<TdHTMLAttributes<HTMLTableCellElement>>;
 
 export const TableScroll = forwardRef<
@@ -395,18 +409,68 @@ export function TableRow(publicProps: TableRowProps) {
  * comment there: never author-set. */
 type InjectedTableHeaderProps = TableHeaderProps & { columnIndex?: number; columnCount?: number };
 
+/** Both arrows always render; `table.css` shows exactly the one `aria-sort` names. */
+function SortIndicator() {
+  return (
+    <span aria-hidden="true" className={tableParts.sortIndicator}>
+      <span data-state="ascending">
+        <Icon name="arrow-up" size="sm" />
+      </span>
+      <span data-state="descending">
+        <Icon name="arrow-down" size="sm" />
+      </span>
+      <span data-state="none">
+        <Icon name="arrow-up" size="sm" />
+      </span>
+    </span>
+  );
+}
+
 export function TableHeader(publicProps: TableHeaderProps) {
-  const { children, className, scope = scopeOption.default, columnIndex, columnCount, ...props } =
-    publicProps as InjectedTableHeaderProps;
+  const {
+    children,
+    className,
+    scope = scopeOption.default,
+    sortable,
+    sortDirection,
+    sortLabel,
+    onSortChange,
+    visuallyHidden,
+    columnIndex,
+    columnCount,
+    ...props
+  } = publicProps as InjectedTableHeaderProps;
+  const label = visuallyHidden ? <span className="sk-visually-hidden">{children}</span> : children;
   const context = useContext(TableContext);
   const headerRef = useRef<HTMLTableCellElement>(null);
   // Never the LAST column; see `resolveColumnResize`'s own doc: a handle there would have no next
   // neighbor to redistribute width with.
   const resizable =
     Boolean(context?.resizableColumns) && columnIndex !== undefined && columnCount !== undefined && columnIndex < columnCount - 1;
+
+  const handleSortActivate = () => {
+    onSortChange?.();
+    headerRef.current?.dispatchEvent(new CustomEvent(tableEvents.sortChange, { bubbles: true, detail: {} }));
+  };
+
   return (
-    <th {...props} className={cx(tableParts.header, className)} ref={headerRef} scope={scope}>
-      {children}
+    <th
+      {...props}
+      {...(sortDirection ? { "aria-sort": sortDirection } : null)}
+      className={cx(tableParts.header, className)}
+      data-sortable={sortable ? "" : undefined}
+      data-visually-hidden={visuallyHidden ? "" : undefined}
+      ref={headerRef}
+      scope={scope}
+    >
+      {sortable ? (
+        <button aria-label={sortLabel} className={tableParts.sortButton} onClick={handleSortActivate} type="button">
+          {label}
+          <SortIndicator />
+        </button>
+      ) : (
+        label
+      )}
       {resizable ? <TableColumnResizer columnIndex={columnIndex!} headerRef={headerRef} /> : null}
     </th>
   );

@@ -37,6 +37,9 @@ export const dialogContract = {
     "--sk-dialog-border-width",
     "--sk-dialog-brutalist-offset",
     "--sk-dialog-elevation",
+    /** Set to `0s` for a close with no animated exit. Enter is untouched; only close reads these. */
+    "--sk-dialog-exit-duration",
+    "--sk-dialog-exit-easing",
     "--sk-dialog-fg",
     "--sk-dialog-footer-border-color",
     "--sk-dialog-footer-gap",

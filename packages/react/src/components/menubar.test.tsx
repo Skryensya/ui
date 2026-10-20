@@ -64,6 +64,21 @@ describe("Menubar React contracts, dropdowns as real Menu instances", () => {
     expect(archivo!.getAttribute("aria-expanded")).toBe("false");
   });
 
+  it("follows the visual direction under dir=\"rtl\", not array order", async () => {
+    /* Found as a real bug: `resolveMenubarKey` never took a direction at all, so ArrowRight
+       always moved to the next array entry even when that entry sits to the LEFT on screen. */
+    const ui = render(
+      <div dir="rtl">
+        <Fixture />
+      </div>,
+    );
+    const [archivo, editar] = triggers(ui);
+    archivo!.focus();
+    fireEvent.keyDown(ui.getByRole("menubar"), { key: "ArrowRight" });
+    await tick();
+    expect(document.activeElement).not.toBe(editar);
+  });
+
   it("clicking a trigger opens its own dropdown via Zag", async () => {
     const ui = render(<Fixture />);
     const [archivo] = triggers(ui);

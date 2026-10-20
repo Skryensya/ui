@@ -111,6 +111,9 @@
     align-items: baseline;
     column-gap: var(--sk-quote-attribution-gap);
     min-inline-size: 0;
+    /* Wrapping the row onto a new line (above) doesn't give an unbroken long name or work title
+       anywhere to break WITHIN its own line; inherited by the name and `<cite>` text below. */
+    overflow-wrap: anywhere;
   }
 
   /*

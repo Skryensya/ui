@@ -1,0 +1,17 @@
+---
+/* Dev-only stress harness for NumberField boundaries, locales and labels. */
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
+import "@skryensya/core/tokens.scss";
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/number-field.css";
+import "../../styles/site.css";
+import { NumberFieldBreak } from "../../components/react-demos/debug-number-field-break";
+import DebugShell from "../../components/DebugShell.astro";
+---
+
+<DebugShell title="NumberField" docsHref="/components/number-field">
+  <NumberFieldBreak client:only="react" />
+</DebugShell>

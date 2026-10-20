@@ -69,6 +69,8 @@ export const inputContract = {
     "--sk-input-readonly-border-color",
     "--sk-input-shadow",
     "--sk-input-wash",
+    /* `Textarea` only, see its `autoSize` option. */
+    "--sk-textarea-autosize-max-block-size",
   ],
 
   options: {
@@ -83,8 +85,25 @@ export const inputContract = {
       values: ["plain", "brutalist", "frosted"],
       attr: "data-appearance",
     },
+    /**
+     * `ghost` is the field with NO visible container, Button's word for "ink only": no fill, edge, well or radius, the text and
+     * the caret alone. For a field that lives inside a surface that already frames it (a menu's search, a toolbar, a command
+     * bar). Every state still outranks it: an invalid ghost field keeps its danger edge, and the focus ring is unchanged.
+     * Absent means the ordinary boxed field.
+     */
+    variant: { type: "enum", values: ["ghost"], attr: "data-variant" },
     /** Named `controlSize` in the binding: `size` is already a native attribute of `<input>`. */
     controlSize: { type: "enum", values: ["sm", "md", "lg"], attr: "data-size" },
+    /**
+     * `Textarea` only: grows with its content instead of a fixed `rows`, via `field-sizing: content`
+     * (Chromium/Edge today; a browser without it keeps the plain fixed-height box, not a broken one).
+     * Caps at `--sk-textarea-autosize-max-block-size` rather than a row count: a height in the
+     * consumer's own unit is one hook, where converting a row count to a height needs the control's
+     * exact line-height and padding anyway, so the row count would still bottom out at the same hook.
+     * `resize` turns off: the box already tracks its content, and a drag handle next to a box that
+     * resizes itself is a second, conflicting way to do the same thing.
+     */
+    autoSize: { type: "boolean", default: false, attr: "data-auto-size", trueValue: "" },
     /**
      * The native type. Its default is declared here rather than left implicit: React writes
      * type="text" and authored markup omitting it would read as a divergence at G2 that is not one.
@@ -136,7 +155,7 @@ export const inputContract = {
     Input: {
       intent: ["text-entry", "single-line-input", "email", "password", "search-field"],
       host: { element: "input" },
-      options: ["controlSize", "type", "name", "placeholder", "disabled", "format", "country", "errorLabel", "appearance"],
+      options: ["controlSize", "type", "name", "placeholder", "disabled", "format", "country", "errorLabel", "appearance", "variant"],
       /*
        * NO `mount` ATTRIBUTE, unlike most enhanced signatures, and it is worth saying why rather
        * than reading as an omission. `format` already writes `data-format`, which is the only state
@@ -171,7 +190,7 @@ export const inputContract = {
     NativeInput: {
       intent: ["styled-native-input", "platform-control", "native-time-input"],
       host: { element: "input" },
-      options: ["controlSize", "type", "name", "disabled", "appearance"],
+      options: ["controlSize", "type", "name", "disabled", "appearance", "variant"],
       forward: ["id", "readonly", "value", "autocomplete", "required", "maxlength", "minlength", "pattern", "min", "max", "step", "aria-*"],
       /*
        * `type` is the whole point of this signature: without it NativeInput is just Input that
@@ -187,7 +206,7 @@ export const inputContract = {
     Textarea: {
       intent: ["multi-line-input", "long-text", "comment", "description-entry"],
       host: { element: "textarea" },
-      options: ["controlSize", "name", "placeholder", "disabled", "appearance"],
+      options: ["controlSize", "name", "placeholder", "disabled", "appearance", "variant", "autoSize"],
       forward: ["id", "readonly", "value", "autocomplete", "required", "maxlength", "minlength", "rows", "cols", "aria-*"],
       parents: ["FormField"],
       slots: {},

@@ -8,10 +8,11 @@ import "@skryensya/core/components/switch.css";
 import "@skryensya/core/components/tile.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/switch";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Switch", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.switchAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.switchAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(demos.switchTree);
 export const TileSwitch: StoryObj = treeStory(demos.tileSwitchTree);

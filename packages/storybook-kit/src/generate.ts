@@ -197,7 +197,7 @@ export async function generateStories({ app, check = false }: GenerateOptions): 
         }
       }
       const previews: { tree: string; css?: string; cssFrom?: string }[] = [];
-      for (const [block] of source.matchAll(/<ComponentPreview\b[\s\S]*?\/>/g)) {
+      for (const [block] of source.matchAll(/<(?:Component|Usage)Preview\b[\s\S]*?\/>/g)) {
         const tree = /tree=\{\s*(\w+)/.exec(block)?.[1];
         if (!tree) continue;
         const css = /\bcss=\{\s*(\w+)\s*\}/.exec(block)?.[1];

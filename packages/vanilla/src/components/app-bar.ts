@@ -52,7 +52,8 @@ function connect(root: HTMLElement): () => void {
     const focused = menus.findIndex((entry) => entry.trigger === active);
     const open = openIndex(menus);
     const current = focused !== -1 ? focused : open !== -1 ? open : Math.max(0, menus.findIndex((entry) => entry.trigger.tabIndex === 0));
-    const action = resolveAppBarKey({ key: event.key, index: current, count: menus.length, open: open !== -1 });
+    const dir = getComputedStyle(menubar).direction === "rtl" ? "rtl" : "ltr";
+    const action = resolveAppBarKey({ key: event.key, index: current, count: menus.length, open: open !== -1, dir });
     if (action.kind === "none") return;
     event.preventDefault();
     event.stopPropagation();

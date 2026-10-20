@@ -18,3 +18,13 @@ Tag.link:
   alternatives:
     - Link
     - Button.navigation
+
+Tag.toggle:
+  useWhen:
+    - "a choice chip the reader selects or deselects by clicking it: a filter they can turn on and off"
+  avoidWhen:
+    - "it also has to be removable or navigate; a toggle tag is a real button and cannot contain another button or be an anchor"
+    - "there are several mutually exclusive choices in one group; that is Segmented or a radio group, not a set of independent toggles"
+  alternatives:
+    - Segmented
+    - Checkbox

@@ -13,14 +13,13 @@ import "@skryensya/core/components/annotation.css";
 import "../../examples/likert.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
-import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
 import { radioGroupDontLongTree, radioGroupDontManyTree, radioGroupSpreadTarget, radioGroupSpreadTree, radioGroupDisabledTree, radioGroupOptionStateTree } from "../../demos/radio-group";
-import { radioGroupAnatomyTree, radioGroupLikertTree, radioGroupMatrixTree, radioGroupTree, tileRadioGroupAnatomyTree, tileRadioGroupTree } from "../../demos/radio-group";
+import { radioGroupAnatomyTree, radioGroupLikertTree, radioGroupMatrixTree, radioGroupTree, tileRadioGroupTree } from "../../demos/radio-group";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
@@ -28,27 +27,16 @@ const t = useTranslations(getLocale(Astro.url));
 const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`radioGroupPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
-const tileRadioGroupVanilla = `import { initComponents } from "@skryensya/vanilla/auto";
-
-// The root is authored with data-sk-tile-radio-group (data-name, data-default-value),
-// and each option with data-part="item" + an input[type=radio] with its value.
-// initComponents hydrates it with the @zag-js/radio-group machine (the same one React uses).
-await initComponents();
-
-const root = document.querySelector("[data-sk-tile-radio-group]");
-root.addEventListener("sk:tilevaluechange", (event) => {
-  console.log(event.detail.value);
-});`;
 ---
 
 <ComponentPageShell
+  breakHarness="/debug/selection-break"
   hookPlayground={{ tree: radioGroupTree(t), fit: true }}
   title="RadioGroup"
   description={t("radioGroupPage.description")}
   contractId="radio-group"
   appearanceTargetSelector=".sk-radio"
   styleGroups={[{ file: "components/radio-group.css", probe: "sk-radio-group" }]}
-  testFiles={["packages/vanilla/src/components/tile-radio-group.svelte.test.ts"]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} />
@@ -98,9 +86,6 @@ root.addEventListener("sk:tilevaluechange", (event) => {
     <UsagePreview tree={radioGroupLikertTree(t)} title={t("radioGroupPage.likertTitle")} description={t("radioGroupPage.likertBody")} caption={t("radioGroupPage.likertLabel")} storybookTitle="Components/RadioGroup" storybookStory="Likert" />
     <UsagePreview tree={radioGroupMatrixTree(t)} title={t("radioGroupPage.matrixTitle")} description={t("radioGroupPage.matrixTable")} caption={t("radioGroupPage.matrixLabel")} storybookTitle="Components/RadioGroup" storybookStory="Matrix" />
     <UsagePreview tree={radioGroupOptionStateTree(t)} title={t("radioGroupPage.statesTitle")} description={t("radioGroupPage.statesBody")} storybookTitle="Components/RadioGroup" storybookStory="OptionState" />
-    <UsagePreview tree={tileRadioGroupTree(t)} title={t("radioGroupPage.tileTitle")} description={t("radioGroupPage.tileBody1")} storybookTitle="Components/RadioGroup" storybookStory="TileRadioGroup" />
-    <p set:html={t("radioGroupPage.tileBody2")} />
-    <CodeBlock code={tileRadioGroupVanilla} label="JavaScript" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
@@ -114,14 +99,6 @@ root.addEventListener("sk:tilevaluechange", (event) => {
       tree={radioGroupAnatomyTree(t)}
       css={annotationDemoCss}
       label={t("radioGroupPage.anatomyPreviewLabel")}
-      bare
-    />
-    <h4>{t("radioGroupPage.tileAnatomyTitle")}</h4>
-    <p set:html={t("radioGroupPage.tileAnatomyBody")} />
-    <UsagePreview
-      tree={tileRadioGroupAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("radioGroupPage.tileAnatomyPreviewLabel")}
       bare
     />
   </Fragment>

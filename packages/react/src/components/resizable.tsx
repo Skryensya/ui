@@ -112,6 +112,15 @@ export type ResizablePanelProps = HTMLAttributes<HTMLDivElement> & {
   collapsible?: boolean;
   /** What it collapses to, as a percentage. 0 (the default) closes it; a small number leaves a rail. */
   collapsedSize?: number;
+  /**
+   * An absolute CSS floor (`"22rem"`, `"320px"`), ON TOP OF `minSize`: the drag still computes a
+   * percentage of the group's current pixel width, so the same percentage floor is a different
+   * absolute width in a wide window and a narrow one. `Sidebar`'s `minInlineSize`/`maxInlineSize` by
+   * the same reasoning.
+   */
+  minInlineSize?: string;
+  /** The cross-axis sibling of `minInlineSize`, for a `direction="vertical"` group. */
+  minBlockSize?: string;
 };
 
 export type ResizableHandleProps = Omit<HTMLAttributes<HTMLDivElement>, "children" | "aria-label"> & {
@@ -282,7 +291,19 @@ const ResizableRoot = forwardRef<HTMLDivElement, ResizableProps>(function Resiza
 });
 
 const ResizablePanel = forwardRef<HTMLDivElement, ResizablePanelProps>(function ResizablePanel(
-  { children, className, collapsedSize: _collapsedSize, collapsible: _collapsible, maxSize: _max, minSize: _min, size: _size, style, ...props },
+  {
+    children,
+    className,
+    collapsedSize: _collapsedSize,
+    collapsible: _collapsible,
+    maxSize: _max,
+    minBlockSize,
+    minInlineSize,
+    minSize: _min,
+    size: _size,
+    style,
+    ...props
+  },
   ref,
 ) {
   const context = useContext(ResizableContext);
@@ -300,7 +321,14 @@ const ResizablePanel = forwardRef<HTMLDivElement, ResizablePanelProps>(function 
       /* Closed to nothing, its content is no longer there to reach: out of the tab order and the reading order.
          A rail (a collapsed size above zero) keeps its content, which is the point of a rail. */
       inert={collapsed && (spec?.collapsedSize ?? 0) === 0 ? true : undefined}
-      style={{ ...style, [resizableProperties.size]: context?.sizes[index] ?? 1 } as CSSProperties}
+      style={
+        {
+          ...style,
+          [resizableProperties.size]: context?.sizes[index] ?? 1,
+          ...(minInlineSize ? { "--sk-resizable-panel-min-inline-size": minInlineSize } : null),
+          ...(minBlockSize ? { "--sk-resizable-panel-min-block-size": minBlockSize } : null),
+        } as CSSProperties
+      }
     >
       {children}
     </div>

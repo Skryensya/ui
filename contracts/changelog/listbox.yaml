@@ -9,7 +9,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Muestra todas las opciones a la vez para elegir una o varias en el lugar.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Shows every option at once to choose one or several in place.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."

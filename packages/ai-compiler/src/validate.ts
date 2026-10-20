@@ -86,6 +86,7 @@ function walk(
   checkExcludes(signature, tree, path, problems);
   checkImplies(signature, tree, path, problems);
   checkPairs(signature, tree, path, problems);
+  checkSlotImplies(signature, tree, path, problems);
   checkBetween(contract, signature, tree, path, problems);
   checkDeprecatedValues(contract, signature, tree, path, problems);
   checkRequiresForbids(signature, tree, path, problems);
@@ -723,6 +724,28 @@ function checkPairs(signature: ContractSignature, tree: UsageTree, path: string,
   }
 }
 
+function checkSlotImplies(signature: ContractSignature, tree: UsageTree, path: string, problems: Problem[]): void {
+  const side = (ref: { slot: string; option: string }) => {
+    const child = slotItems(slotsOf(tree)[ref.slot]).find(isUsageTree);
+    if (!child) return undefined;
+    const explicit = child.options?.[ref.option];
+    const fallback = getContract(child.contract)?.options[ref.option]?.default;
+    return String(explicit ?? fallback);
+  };
+  for (const rule of signature.slotImplies ?? []) {
+    const when = side(rule.when);
+    if (when !== rule.when.equals) continue;
+    const then = side(rule.then);
+    if (then === rule.then.equals) continue;
+    problems.push({
+      path,
+      rule: "missing-implied",
+      severity: "error",
+      message: `${rule.when.slot} ${rule.when.option}="${rule.when.equals}" requires ${rule.then.slot} ${rule.then.option}="${rule.then.equals}" (got "${then}"); otherwise the other half stays active while this one is busy.`,
+    });
+  }
+}
+
 function checkDeprecatedValues(
   contract: ComponentContract,
   signature: ContractSignature,
@@ -826,7 +849,7 @@ const URL_ATTRS: ReadonlySet<string> = new Set(["href", "src", "action", "formac
 const SAFE_SCHEMES: ReadonlySet<string> = new Set(["http", "https", "mailto", "tel"]);
 /*
  * An inline image is content, not a destination: `data:image/…` where the attribute loads an image
- * (a Sticker ships its artwork that way) and never where it navigates. No contract renders an
+ * and never where it navigates. No contract renders an
  * iframe, embed or object, the elements where a `src` could load a document instead.
  */
 const IMAGE_ATTRS: ReadonlySet<string> = new Set(["src", "poster", "srcset"]);

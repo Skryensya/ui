@@ -472,7 +472,9 @@ const reactEnhancers = [
 
 async function mountReactEnhancers(host: Element): Promise<void> {
   await Promise.all(reactEnhancers.map(async ({ selector, load }) => {
-    const roots = host.querySelectorAll<HTMLElement>(selector);
+    // A blueprint inside a <template> (React renders its children as real nodes) is cloned and
+    // mounted per use; mounting the blueprint itself runs its timeout and the clones inherit that state.
+    const roots = [...host.querySelectorAll<HTMLElement>(selector)].filter((root) => !root.closest("template"));
     if (roots.length === 0) return;
 
     const mount = await load();

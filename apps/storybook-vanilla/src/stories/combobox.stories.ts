@@ -3,6 +3,7 @@
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/combobox.css";
 import "@skryensya/core/components/form-field.css";
+import "@skryensya/core/components/tag.css";
 import "@skryensya/core/patterns/anchored.css";
 import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/combobox";
@@ -10,6 +11,6 @@ import { treeStory, localeOf, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Combobox", tags: ["autodocs"] } satisfies Meta;
 
-export const Default: StoryObj = treeStory((t) => demos.comboboxTree(t, localeOf(t)));
 export const Single: StoryObj = treeStory((t) => demos.comboboxSingleTree(t, localeOf(t)));
 export const Multiple: StoryObj = treeStory((t) => demos.comboboxMultipleTree(t, localeOf(t)));
+export const Default: StoryObj = treeStory((t) => demos.comboboxTree(t, localeOf(t)));

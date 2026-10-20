@@ -11,6 +11,8 @@
  * the same knob Badge uses, for a shortcut that has to shout. At rest the key sits raised; a key
  * being held down is INFORMATION and the fill changes, the shadow sinks inward.
  */
+@import url("../patterns/a11y-warn.css");
+
 @layer components {
   .sk-kbd {
     --sk-kbd-bg: var(--color-bg-surface-raised);

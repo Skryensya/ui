@@ -146,7 +146,7 @@ const faces = [
     children: [
       { element: "span", attrs: { [clipboardAttrs.feedbackText]: "copied" }, textFromOption: "copiedLabel" },
       { element: "span", attrs: { [clipboardAttrs.feedbackText]: "error" }, textFromOption: "errorLabel" },
-      { element: "span", also: ["sk-anchored-arrow"], attrs: { "aria-hidden": "true" } },
+      { element: "span", also: ["sk-anchored-arrow"], attrs: { "data-part": "arrow", "aria-hidden": "true" } },
     ],
   },
 ] as const;

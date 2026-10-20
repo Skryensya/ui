@@ -12,7 +12,8 @@ import {
 import { clipboard } from "@skryensya/core/machines";
 import { normalizeProps, useMachine } from "@zag-js/react";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
-import { useAnchored } from "./anchored.js";
+import { placeAnchored } from "@skryensya/core/anchored";
+import { anchorProps, positionerProps } from "./anchored.js";
 import { Icon } from "./icon.js";
 
 export type { ClipboardStatus } from "@skryensya/core/clipboard";
@@ -142,11 +143,20 @@ function Trigger({
   target?: string;
   value?: string;
 }) {
-  const anchored = useAnchored(id);
   const { onClick: _machineCopy, ...triggerProps } = clip.api.getTriggerProps();
   const error = clip.status === "error";
-  const anchor = anchored.anchor(`${clipboardParts.trigger} sk-button sk-interactive sk-icon-toggle`);
-  const flag = anchored.positioner({}, clipboardParts.feedback);
+  const anchor = anchorProps(`${clipboardParts.trigger} sk-button sk-interactive sk-icon-toggle`);
+  const flag = positionerProps({}, clipboardParts.feedback);
+  const flagRef = useRef<HTMLSpanElement>(null);
+  /* No Zag machine places the flag: the popper does, from the moment the copy lands to the moment the
+     machine goes back to idle. */
+  const copied = clip.api.copied;
+  useEffect(() => {
+    const trigger = clip.trigger.current;
+    const box = flagRef.current;
+    if (!copied || !trigger || !box) return;
+    return placeAnchored(trigger, box, { placement: "block-start" });
+  }, [copied, clip.trigger]);
   return (
     <button
       {...triggerProps}
@@ -179,11 +189,12 @@ function Trigger({
         {...flag}
         aria-hidden="true"
         data-sk-placement="block-start"
+        ref={flagRef}
         data-state={clip.api.copied ? "open" : undefined}
       >
         <span {...{ [clipboardAttrs.feedbackText]: "copied" }}>{copiedLabel}</span>
         <span {...{ [clipboardAttrs.feedbackText]: "error" }}>{errorLabel}</span>
-        <span aria-hidden="true" className="sk-anchored-arrow" />
+        <span aria-hidden="true" className="sk-anchored-arrow" data-part="arrow" />
       </span>
     </button>
   );

@@ -19,25 +19,13 @@ if (import.meta.env.PROD) {
 import "@skryensya/core/tokens.scss";
 import "@skryensya/core/patterns/box.css";
 import "../../styles/site.css";
-import { siteIconSet } from "../../icons";
 import { BoxBreak } from "../../components/react-demos/debug-box-break";
+
+import DebugShell from "../../components/DebugShell.astro";
 ---
 
-<!doctype html>
-<html
-  lang="en"
-  class="sk-scrollbar"
-  data-scheme="system"
-  data-icon-set={siteIconSet}
-  data-radius="md"
-  style="--sk-density: 1"
->
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="noindex" />
-    <title>break: box</title>
-    <style is:global>
+<DebugShell title="Box">
+<style is:global>
       .break-page {
         padding: var(--space-inset-lg);
         display: flex;
@@ -121,20 +109,17 @@ import { BoxBreak } from "../../components/react-demos/debug-box-break";
         font-size: var(--font-size-body-sm);
       }
     </style>
-  </head>
-  <body>
-    <div class="break-page">
-      <header>
-        <h1>break: Box</h1>
-        <p class="break-intro">
-          One scenario per row, the real <code>@skryensya/react</code> Box in each. Dashed outlines
-          are the container the scenario renders inside, not part of the component. Toggle OS dark
-          mode and forced colors while this page is open: those are viewing modes, so the page
-          renders nothing for them. Box's `raised`/`sunken` surfaces are the ones with a specific
-          forced-colors carve-out in `patterns/box.css`, worth checking by hand.
-        </p>
-      </header>
-      <BoxBreak client:load />
-    </div>
-  </body>
-</html>
+<div class="break-page" data-toc-transparent>
+  <header>
+    <h1>break: Box</h1>
+    <p class="break-intro">
+One scenario per row, the real <code>@skryensya/react</code> Box in each. Dashed outlines
+are the container the scenario renders inside, not part of the component. Toggle OS dark
+mode and forced colors while this page is open: those are viewing modes, so the page
+renders nothing for them. Box's `raised`/`sunken` surfaces are the ones with a specific
+forced-colors carve-out in `patterns/box.css`, worth checking by hand.
+    </p>
+  </header>
+  <BoxBreak client:load />
+</div>
+</DebugShell>

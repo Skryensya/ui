@@ -1,17 +1,14 @@
+import { satin } from "../lib/satin";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
 import { anatomyCanvas, anatomyHints, namePart } from "./annotation-parts";
 
 /**
- * A dummyimage.com placeholder, 800×500. Same measure the old local asset had, so every demo
- * below that crops/positions it (`imageFrameAspectTree`, `imageFrameFitTree`,
- * `imageFramePositionTree`) keeps the exact same math, only the source pixels changed. It is no
- * longer an intentionally asymmetric photo (a disc top-left, a block bottom-right, drawn specifically
- * so `imageFramePositionTree`'s three crops read as visibly different corners of ONE picture): a flat
- * placeholder generator cannot draw that, so that one demo's three specimens now differ only in
- * label position, not in what part of a photo survived. A real loss, accepted deliberately.
+ * One of the docs' satin placeholders (`lib/satin.ts`), 16:9. Every demo below crops or positions it
+ * (`imageFrameAspectTree`, `imageFrameFitTree`, `imageFramePositionTree`), and the folds give each crop
+ * something different to show: unlike a flat placeholder, a corner of it reads as a different corner.
  */
-export const DEMO_IMAGE_FRAME_SRC = "https://dummyimage.com/800x500/9ca3af/374151.png";
+export const DEMO_IMAGE_FRAME_SRC = satin("graphite");
 
 /*
  * Frame, media, and an optional caption wash: every part the contract can emit. Caption and gradient

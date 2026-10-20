@@ -126,6 +126,9 @@
     text-align: center;
     text-wrap: balance;
     white-space: pre-line;
+    /* The box above caps its width, but a cap doesn't give an unbroken caption line (a URL in an
+       auto-generated caption) anywhere to break - it still ran past the box without this. */
+    overflow-wrap: anywhere;
     pointer-events: none;
     transition: margin-block-end var(--sk-video-player-fade-duration) var(--motion-state-change-easing);
   }

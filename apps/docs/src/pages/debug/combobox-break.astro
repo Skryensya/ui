@@ -1,0 +1,26 @@
+---
+/* Dev-only stress harness for Combobox: the real country picker and its full source dataset. */
+if (import.meta.env.PROD) {
+  return new Response(null, { status: 404 });
+}
+
+import "@skryensya/core/tokens.scss";
+import "@skryensya/core/components/combobox.css";
+import "@skryensya/core/components/tag.css";
+import "@skryensya/core/components/form-field.css";
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/patterns/anchored.css";
+import "@skryensya/core/patterns/scrollbar.css";
+import "../../styles/site.css";
+import { ComboboxBreak } from "../../components/react-demos/debug-combobox-break";
+import DebugShell from "../../components/DebugShell.astro";
+
+---
+
+<DebugShell title="Combobox">
+  <ComboboxBreak client:only="react" />
+</DebugShell>
+
+<style is:global>
+  .break-w-18rem { inline-size: min(18rem, 100%); }
+</style>

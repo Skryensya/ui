@@ -13,10 +13,14 @@
     --sk-empty-state-description-color: var(--color-text-secondary);
     --sk-empty-state-actions-gap: var(--space-inline-sm);
 
+    box-sizing: border-box;
     display: grid;
+    place-content: center;
     justify-items: center;
     gap: var(--sk-empty-state-gap);
+    min-block-size: 100%;
     max-inline-size: var(--sk-empty-state-max-inline-size);
+    margin-inline: auto;
     padding: var(--sk-empty-state-padding);
     color: var(--sk-empty-state-fg);
     text-align: center;
@@ -29,15 +33,23 @@
     border-radius: var(--sk-empty-state-icon-radius);
     background: var(--sk-empty-state-icon-bg);
     color: var(--sk-empty-state-icon-fg);
+    /* Found on the break harness (`/debug/empty-state-break`), same gap Callout's own icon slot
+     * had: the contract restricts this to a system Icon, but the React prop (`icon?: ReactNode`)
+     * is looser, so a fixed-size box with no overflow guard let oversized content spill past it. */
+    overflow: hidden;
   }
   .sk-empty-state__title {
     margin: 0;
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
     font-size: var(--sk-empty-state-title-size);
     line-height: var(--font-line-height-heading);
     text-wrap: balance;
   }
   .sk-empty-state__description {
     margin: 0;
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
     color: var(--sk-empty-state-description-color);
     text-wrap: pretty;
   }

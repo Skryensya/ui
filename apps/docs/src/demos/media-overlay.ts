@@ -1,13 +1,14 @@
+import { satin } from "../lib/satin";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
 import { anatomyCanvas, anatomyHints, namePart } from "./annotation-parts";
 
 /**
- * Offline media every demo on the MediaOverlay page uses: the Lightbox demos' fjord photo. A real
+ * Offline media every demo on the MediaOverlay page uses: one of the docs' satin placeholders (`lib/satin.ts`). A real
  * photograph is what the wash is for, and its bright sky and dark water are the case where legible
  * type over an image needs the gradient.
  */
-export const DEMO_MEDIA_OVERLAY_SRC = "/demos/lightbox/fjord.jpg";
+export const DEMO_MEDIA_OVERLAY_SRC = satin("blue");
 
 /*
  * Both demos convert once ImageFrame grew a `caption` slot: the wash is not a second media source,

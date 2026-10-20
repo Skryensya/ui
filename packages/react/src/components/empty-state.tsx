@@ -1,4 +1,4 @@
-import { emptyStateParts } from "@skryensya/core/empty-state";
+import { emptyStateParts, type EmptyStateOptions } from "@skryensya/core/empty-state";
 import type { ReactNode } from "react";
 
 export type EmptyStateProps = {
@@ -7,11 +7,14 @@ export type EmptyStateProps = {
   description?: ReactNode;
   icon?: ReactNode;
   actions?: ReactNode;
+  /** The title's heading level. `h1` when the state is the whole page; `h2` (the default) inside one. */
+  headingElement?: EmptyStateOptions["headingElement"];
 };
 
 export function EmptyState({
   actions,
   description,
+  headingElement: Heading = "h2",
   icon,
   title,
 }: EmptyStateProps) {
@@ -22,7 +25,7 @@ export function EmptyState({
           {icon}
         </div>
       ) : null}
-      <h2 className={emptyStateParts.title}>{title}</h2>
+      <Heading className={emptyStateParts.title}>{title}</Heading>
       {description ? (
         <div className={emptyStateParts.description}>{description}</div>
       ) : null}

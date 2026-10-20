@@ -9,7 +9,7 @@ entries:
     kind: feature
     es:
       title: Componente nuevo
-      body: Un reproductor de audio con los controles del sistema, con portada, forma de onda y una lista de pistas.
+      body: "Se suma a la librería, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: New component
-      body: An audio player with the system's controls, with a cover, a waveform and a list of tracks.
+      body: "Added to the library, with its contract, a React binding and a Vanilla mount."

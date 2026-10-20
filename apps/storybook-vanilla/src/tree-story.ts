@@ -6,6 +6,7 @@ import { mountComponentsWithIcons } from "@skryensya/vanilla/auto";
 import type { Translate } from "@docs/i18n";
 import { isLocale, translator } from "@skryensya/storybook-kit/translate";
 import { wireCommandPaletteDemo } from "@skryensya/storybook-kit/command-palette-playground";
+import { wireTagInteractions } from "@skryensya/storybook-kit/tag-interactions";
 import { rootControls, withRootOptions } from "@skryensya/storybook-kit/controls";
 
 /*
@@ -49,6 +50,7 @@ async function boot(host: HTMLElement): Promise<void> {
 export function render(tree: UsageTree): HTMLElement {
   const host = document.createElement("div");
   host.innerHTML = emitMarkup(tree);
+  wireTagInteractions(host);
   const whenConnected = () => (host.isConnected ? void boot(host) : requestAnimationFrame(whenConnected));
   requestAnimationFrame(whenConnected);
   return host;

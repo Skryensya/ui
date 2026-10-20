@@ -18,7 +18,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Organiza elementos relacionados en filas claras y escaneables.
+      body: "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple."
     en:
       title: First release
-      body: Organizes related items into clear, scannable rows.
+      body: "Published for the first time, with its contract, a React binding and a stylesheet for plain markup."

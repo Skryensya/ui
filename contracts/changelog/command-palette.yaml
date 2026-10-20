@@ -9,7 +9,7 @@ entries:
     kind: feature
     es:
       title: Primera versión
-      body: Encuentra destinos y ejecuta comandos desde el teclado.
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
     en:
       title: First release
-      body: Finds destinations and runs commands from the keyboard.
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."
