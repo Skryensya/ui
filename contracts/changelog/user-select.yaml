@@ -3,8 +3,16 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "a1ff8df53c8ae5c2"
+surface: "709aa83dc68bfd1c"
 entries:
+  - date: 2026-10-19
+    kind: feature
+    es:
+      title: Un botón real para limpiar la búsqueda
+      body: "El campo de búsqueda es type=\"search\": la ✕ nativa del navegador no se puede nombrar ni pintar, así que ahora hay una propia, oculta hasta que hay texto. De paso se documenta --sk-select-padding-x, que el disparador de UserSelect ya sobrescribía (menos aire lateral para que el stack de avatares no flote) sin que el contrato lo listara."
+    en:
+      title: A real button to clear the search
+      body: "The search field is type=\"search\": the browser's own ✕ cannot be named or styled, so there is now a real one, hidden until there is text. Also documents --sk-select-padding-x, which UserSelect's own trigger already overrode (less side padding so the avatar stack doesn't float) without the contract listing it."
   - date: 2026-10-01
     kind: feature
     es:

@@ -138,6 +138,7 @@ export const userSelectContract = {
     valueChange: { detail: { value: "string[]" }, reactProp: "onValueChange", source: "root", trigger: "item" },
   },
   hooks: [
+    "--sk-select-padding-x",
     "--sk-user-select-content-max-block-size",
     "--sk-user-select-content-min-inline-size",
     "--sk-user-select-list-block-size",

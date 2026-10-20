@@ -2752,7 +2752,7 @@ describe("megamenu: labelled bar with edge-to-edge columns", () => {
     expect(contract.events).toEqual({ openChange: "sk:megamenuopenchange" });
     expect(contract.hookSheets).toEqual(["@skryensya/core/patterns/anchored.css"]);
     expect(contract.hooks).toEqual(
-      expect.arrayContaining(["--sk-anchored-size", "--sk-megamenu-bg", "--sk-megamenu-wash"]),
+      expect.arrayContaining(["--sk-anchored-z", "--sk-megamenu-bg", "--sk-megamenu-wash"]),
     );
     const { sheets, unplaced } = sheetsForTree(mega());
     expect(sheets).toContain("@skryensya/core/components/megamenu.css");
@@ -2886,7 +2886,7 @@ describe("menubar: labelled bar of Menu-backed items", () => {
     expect(contract.signatures.MenubarItem.portals).toEqual({ container: true });
     expect(contract.hookSheets).toEqual(["@skryensya/core/patterns/anchored.css"]);
     expect(contract.hooks).toEqual(
-      expect.arrayContaining(["--sk-anchored-size", "--sk-menubar-gap"]),
+      expect.arrayContaining(["--sk-anchored-z", "--sk-menubar-gap"]),
     );
     const { sheets, unplaced } = sheetsForTree(bar());
     expect(sheets).toContain("@skryensya/core/components/menubar.css");
@@ -3811,7 +3811,7 @@ describe("select: native platform control and enhanced listbox", () => {
 
   it("emits a real native select with selected and disabled, not data-* machine attrs", () => {
     const markup = emitMarkup(native());
-    expect(markup).toContain('class="sk-select-native"');
+    expect(markup).toContain('class="sk-select-native sk-scrollbar"');
     expect(markup).toContain("<select");
     expect(markup).toMatch(/\sdisabled/);
     expect(markup).not.toContain("data-disabled");
@@ -5284,7 +5284,7 @@ describe("time-field: a seed the parser can read, and an error that is announced
       "@skryensya/core/patterns/anchored.css",
     ]);
     expect(contract.hooks).toContain("--sk-select-content-max-block-size");
-    expect(contract.hooks).toContain("--sk-anchored-offset");
+    expect(contract.hooks).toContain("--sk-anchored-z");
     const { sheets, unplaced } = sheetsForTree(field({ value: "09:30" }));
     expect(sheets).toContain("@skryensya/core/components/time-field.css");
     expect(sheets).toContain("@skryensya/core/components/select.css");

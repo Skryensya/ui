@@ -3,8 +3,16 @@
 # `surface` es la forma del contrato la última vez que alguien la revisó. Si el compilador dice
 # que no coincide, algo de lo que un consumidor depende se movió: escribe la entrada y pega el
 # hash nuevo.
-surface: "de133eee0c66843d"
+surface: "336af45f437eabc5"
 entries:
+  - date: 2026-10-19
+    kind: bugfix
+    es:
+      title: Se documenta el hook que ya decidía la dirección del relleno
+      body: "<code>--sk-rating-fill-direction</code> ya existía en la hoja de estilos (to right / to left según RTL) pero no estaba en la lista de hooks del contrato: nada avisaba que se podía sobrescribir."
+    en:
+      title: The hook that already decided the fill direction is now documented
+      body: "<code>--sk-rating-fill-direction</code> already existed in the stylesheet (to right / to left depending on RTL) but was missing from the contract's hooks list: nothing said it could be overridden."
   - date: 2026-10-03
     kind: rework
     target: Rating

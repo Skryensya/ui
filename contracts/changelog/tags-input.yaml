@@ -3,8 +3,16 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "dd42dc6543ebfbf0"
+surface: "1f97dcb11077cdf9"
 entries:
+  - date: 2026-10-19
+    kind: feature
+    es:
+      title: Un botón para borrar todos los tags de una vez
+      body: "El mismo botón, en el mismo lugar y con la misma marca que el de Combobox: aparece solo cuando hay algo que borrar y queda fuera del área que envuelve a los tags y la entrada, para no empujarse a su propia línea cuando esa área crece."
+    en:
+      title: A button that clears every tag at once
+      body: "The same button, in the same spot and with the same markup Combobox's own clear is: it shows only when there is something to clear, and sits outside the area the tags and the entry wrap inside, so it never gets pushed onto its own line as that area grows."
   - date: 2026-10-01
     kind: feature
     es:

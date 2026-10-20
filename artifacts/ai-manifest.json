@@ -2,6 +2,25 @@
   "changelogs": {
     "accordion": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "New size option (sm/md) on Details and DetailsGroup: sm tightens the summary's padding and minimum height, for a disclosure sitting inside an already-dense panel (a drawer, a sidebar).",
+              "title": "Details and DetailsGroup get a sm size"
+            },
+            "es": {
+              "body": "Nueva opción size (sm/md) para Details y DetailsGroup: sm reduce el relleno del summary y su alto mínimo, para una disclosure dentro de un panel ya denso (un drawer, un sidebar).",
+              "title": "Details y DetailsGroup tienen un tamaño sm"
+            },
+            "kind": "feature",
+            "target": "Details"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-12",
         "entries": [
           {
@@ -60,6 +79,24 @@
     ],
     "app-bar": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "children moves from text to node on both: an icon beside the word, or a tone of your own, compose fine now. AppBarStatus's plain text (no items) now carries role=\"status\", so a screen reader announces the change on its own. (This entry also covers an unrelated internal cleanup: --sk-anchored-* now lives in the shared positioning config, not in this contract's own hooks.)",
+              "title": "AppBarMenu and AppBarStatus accept a node, and the status announces its own changes"
+            },
+            "es": {
+              "body": "children pasa de texto a nodo en ambos: un icono junto a la palabra, o un tono propio, ya componen. El texto de AppBarStatus (sin items) ahora lleva role=\"status\", así que un lector de pantalla anuncia el cambio solo. (Esta entrada cubre también una limpieza interna no relacionada: --sk-anchored-* vive ahora en la configuración de posicionamiento compartida, no en los hooks propios de este contrato.)",
+              "title": "AppBarMenu y AppBarStatus aceptan un nodo, y el estado anuncia sus cambios"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -99,6 +136,50 @@
       }
     ],
     "avatar": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "max={0} read as \"no cap\" (0 is falsy) and showed everyone; a hand-given overflow showed up even once max already proved nothing was left out. max is now authoritative whenever it is given, including the \"nothing overflowed\" case.",
+              "title": "AvatarGroup: max=0 and a static overflow no longer lie"
+            },
+            "es": {
+              "body": "max={0} se leía como \"sin tope\" (0 es falsy) y mostraba a todos; un overflow dado a mano aparecía igual aunque max ya probara que no sobraba nadie. Ahora max manda cuando está presente, incluido el caso \"nada sobra\".",
+              "title": "AvatarGroup: max=0 y un overflow estático ya no mienten"
+            },
+            "kind": "bugfix",
+            "target": "AvatarGroup"
+          },
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "The ring separating overlapping discs was fixed to --color-bg-surface: right on the plain page, visibly off on a card with surface=\"raised\" or a sunken panel. It is now a hook, like the rest of Avatar's color.",
+              "title": "--sk-avatar-group-ring, a hook for the ring between discs"
+            },
+            "es": {
+              "body": "El anillo que separa discos superpuestos estaba fijo en --color-bg-surface: correcto sobre la página en blanco, visiblemente distinto sobre una card con surface=\"raised\" o un panel sunken. Ahora es un hook, como el resto del color de Avatar.",
+              "title": "--sk-avatar-group-ring, un hook para el anillo entre discos"
+            },
+            "kind": "feature",
+            "target": "AvatarGroup"
+          },
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "avatarInitials took the first UTF-16 unit of each word; an emoji outside the basic plane (a surrogate pair) was split in half and painted a broken glyph (e.g. \"🎨 Priya Shah\" → \"�P\"). It now walks whole code points.",
+              "title": "Correct initials for a name with an emoji glued to the front"
+            },
+            "es": {
+              "body": "avatarInitials tomaba la primera unidad UTF-16 de cada palabra; un emoji fuera del plano básico (un par sustituto) quedaba partido a la mitad y pintaba un glifo roto (ej. \"🎨 Priya Shah\" → \"�P\"). Ahora recorre code points enteros.",
+              "title": "Iniciales correctas para un nombre con un emoji pegado adelante"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-12",
         "entries": [
@@ -267,6 +348,24 @@
     ],
     "breadcrumb": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-19",
+            "en": {
+              "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> and <code>--sk-anchored-size</code> were listed as hooks, but no stylesheet in the library ever declares them, not even the <code>anchored.css</code> pattern they came from: overriding any of them did nothing, silently. Only <code>--sk-anchored-z</code> remains, the one actually in use.",
+              "title": "Eight dead anchoring hooks removed"
+            },
+            "es": {
+              "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> y <code>--sk-anchored-size</code> estaban en la lista de hooks, pero ninguna hoja de estilos de la librería los declara jamás, ni siquiera el patrón <code>anchored.css</code> que los originó: sobrescribir cualquiera de ellos no hacía nada, en silencio. Solo queda <code>--sk-anchored-z</code>, el único que de verdad se usa.",
+              "title": "Se retiran ocho hooks de anchoring que no hacían nada"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -286,6 +385,50 @@
       }
     ],
     "button": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-18",
+            "en": {
+              "body": "The spinner stops floating over the label (visibility never reached a plain-text label, which stayed visible underneath it) and now takes pre's place, in flow. The label stays visible unless loadingText, a new option, replaces it while loading. pre and post hide while loading.",
+              "title": "loading no longer overlays: the spinner goes inline, and loadingText can swap the text"
+            },
+            "es": {
+              "body": "El spinner deja de flotar sobre la etiqueta (visibility nunca alcanzaba una etiqueta de puro texto, que seguía visible debajo) y ahora ocupa el lugar de pre, dentro del flujo. La etiqueta se mantiene visible salvo que se indique loadingText, una opción nueva que la reemplaza mientras loading está activo. pre y post se ocultan mientras carga.",
+              "title": "loading ya no superpone: el spinner entra en línea, y loadingText puede cambiar el texto"
+            },
+            "kind": "feature",
+            "target": "Button.action"
+          },
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "<Button asChild><Link to=...>…</Link></Button> clones the child with Button's classes and data attrs, chaining its own onClick before Button's. pre/post/loading are not available here: they are Button's own anatomy, and the child already is everything that renders.",
+              "title": "asChild: Button's own chrome over a router Link, no hand-rolled onClick"
+            },
+            "es": {
+              "body": "<Button asChild><Link to=...>…</Link></Button> clona el hijo con las clases y atributos de Button, encadenando su propio onClick antes del de Button. pre/post/loading no están disponibles aquí: son la anatomía de Button, y el hijo ya es todo lo que se renderiza.",
+              "title": "asChild: la ropa de Button sobre un Link de router, sin onClick a mano"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "New loading option: sets aria-busy, implies disabled (a second click cannot start a second export) and overlays a Loader without changing the button's width (the label hides with visibility, never unmounts). Button.action only; a link does not wait on anything this component can see.",
+              "title": "loading: busy, not just disabled"
+            },
+            "es": {
+              "body": "Nueva opción loading: pone aria-busy, implica disabled (un segundo clic no arranca una segunda exportación) y superpone un Loader sin cambiar el ancho del botón (el texto se oculta con visibility, nunca se desmonta). Solo en Button.action; un enlace no espera nada que este componente pueda ver.",
+              "title": "loading: ocupado, no solo deshabilitado"
+            },
+            "kind": "feature",
+            "target": "Button.action"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -369,6 +512,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-10-19",
+            "en": {
+              "body": "<code>fade</code> composes FadeEdge to fade the track's two ends, so a peeking slide releases instead of hard-clipping. <code>indicator=\"count\"</code> swaps the dots for a \"2 / 5\" counter.",
+              "title": "Fading edges and a counter in place of dots"
+            },
+            "es": {
+              "body": "<code>fade</code> compone FadeEdge para desvanecer los dos extremos de la pista, así el slide que se asoma se libera en vez de cortarse en seco. <code>indicator=\"count\"</code> cambia los puntos por un contador \"2 / 5\".",
+              "title": "Bordes que se desvanecen y un contador en vez de puntos"
+            },
+            "kind": "feature",
+            "target": "fade"
+          },
           {
             "date": "2026-10-14",
             "en": {
@@ -587,6 +743,18 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-10-19",
+            "en": {
+              "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> and <code>--sk-anchored-size</code> were listed as hooks, but no stylesheet in the library ever declares them, not even the <code>anchored.css</code> pattern they came from: overriding any of them did nothing, silently. Only <code>--sk-anchored-z</code> remains, the one actually in use.",
+              "title": "Eight dead anchoring hooks removed"
+            },
+            "es": {
+              "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> y <code>--sk-anchored-size</code> estaban en la lista de hooks, pero ninguna hoja de estilos de la librería los declara jamás, ni siquiera el patrón <code>anchored.css</code> que los originó: sobrescribir cualquiera de ellos no hacía nada, en silencio. Solo queda <code>--sk-anchored-z</code>, el único que de verdad se usa.",
+              "title": "Se retiran ocho hooks de anchoring que no hacían nada"
+            },
+            "kind": "bugfix"
+          },
+          {
             "date": "2026-10-13",
             "en": {
               "body": "The swatch sits inside the field and the hex is typed beside it, kept in step with the color.",
@@ -645,6 +813,37 @@
       }
     ],
     "combobox": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-19",
+            "en": {
+              "body": "In multiple mode, once max is reached every unchosen option disables (the check stays visible on the ones already picked) and the placeholder drops: nothing invites a search that could not go anywhere.",
+              "title": "max caps how many options can be chosen"
+            },
+            "es": {
+              "body": "En modo multiple, al llegar a max toda opción no elegida se deshabilita (el check sigue visible en las ya elegidas) y el placeholder desaparece: no invita a buscar algo que no puede ir a ningún lado.",
+              "title": "max limita cuántas opciones se pueden elegir"
+            },
+            "kind": "feature",
+            "target": "max"
+          },
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "The React binding accepts options (SelectOption's shape, already a subset of ComboboxItem) as an alias for items, and aria-label/aria-labelledby as a hidden accessible name, the same as Select. The declarative contract still requires a visible label; this is React-binding-specific.",
+              "title": "options and aria-label: Select moves to Combobox without rewriting its options tree"
+            },
+            "es": {
+              "body": "El binding de React acepta options (la forma de SelectOption, ya un subconjunto de ComboboxItem) como alias de items, y aria-label/aria-labelledby como nombre accesible oculto, igual que Select. El contrato declarativo sigue exigiendo un label visible; esto es específico del binding de React.",
+              "title": "options y aria-label: Select migra a Combobox sin reescribir su árbol de opciones"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -726,6 +925,25 @@
     ],
     "comparison-table": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-19",
+            "en": {
+              "body": "The same box TableScroll is, for the same reason: table-layout stays auto, so neither overflow nor max-inline-size on the table itself actually caps it. Opt-in: a two-column comparison in a wide column never needs it.",
+              "title": "ComparisonTableScroll for a wide comparison"
+            },
+            "es": {
+              "body": "La misma caja que TableScroll, para el mismo motivo: table-layout se queda en auto, así que ni overflow ni max-inline-size en el propio table lo limitan de verdad. Es opt-in: una comparación de dos columnas en una columna ancha nunca la necesita.",
+              "title": "ComparisonTableScroll para una comparación ancha"
+            },
+            "kind": "feature",
+            "target": "ComparisonTableScroll"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-12",
         "entries": [
           {
@@ -745,6 +963,38 @@
       }
     ],
     "content": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "toastQueue.show/update/dismiss plus the useToastQueue hook, in @skryensya/react. A consumer no longer hand-writes their own pushToast/patchToast/closeToast for a toast that moves from \"in progress\" to \"done\" or \"failed\". Toast and ToastRegion stay the same components; this is the imperative layer on top.",
+              "title": "toastQueue / useToastQueue: an imperative toast(), no context or provider"
+            },
+            "es": {
+              "body": "toastQueue.show/update/dismiss más el hook useToastQueue, en @skryensya/react. Un consumidor ya no escribe a mano su propio pushToast/patchToast/closeToast para un toast que pasa de \"en curso\" a \"listo\" o \"falló\". Toast y ToastRegion siguen siendo los mismos componentes; esto es la capa imperativa encima.",
+              "title": "toastQueue / useToastQueue: un toast() imperativo, sin contexto ni proveedor"
+            },
+            "kind": "feature",
+            "target": "Toast"
+          },
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "Toast moved actions beside the message so a single one stayed compact; with two, that same auto column widened and left the text ~6 characters wide. With two or more actions, they fall back to their own row under the message, as Callout already does.",
+              "title": "Two actions no longer squeeze the message into a handful of characters"
+            },
+            "es": {
+              "body": "Toast movía las acciones al lado del mensaje para que una sola quedara compacta; con dos, esa misma columna auto se ensanchaba y dejaba el texto en ~6 caracteres de ancho. Con dos o más acciones, vuelven a su propia fila debajo del mensaje, como en Callout.",
+              "title": "Dos acciones ya no aprietan el mensaje a una columna de pocos caracteres"
+            },
+            "kind": "bugfix",
+            "target": "Toast"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -786,6 +1036,24 @@
     ],
     "date-picker": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-19",
+            "en": {
+              "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> and <code>--sk-anchored-size</code> were listed as hooks, but no stylesheet in the library ever declares them, not even the <code>anchored.css</code> pattern they came from: overriding any of them did nothing, silently. Only <code>--sk-anchored-z</code> remains, the one actually in use.",
+              "title": "Eight dead anchoring hooks removed"
+            },
+            "es": {
+              "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> y <code>--sk-anchored-size</code> estaban en la lista de hooks, pero ninguna hoja de estilos de la librería los declara jamás, ni siquiera el patrón <code>anchored.css</code> que los originó: sobrescribir cualquiera de ellos no hacía nada, en silencio. Solo queda <code>--sk-anchored-z</code>, el único que de verdad se usa.",
+              "title": "Se retiran ocho hooks de anchoring que no hacían nada"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -805,6 +1073,25 @@
       }
     ],
     "description-list": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-18",
+            "en": {
+              "body": "The fallback to stacked below 36rem read the viewport (@media), not the container: a columns list inside a narrow panel or rail on an otherwise wide page never fell back, and the fixed-width term column overflowed the panel. It is now @container, following decision 35, which the rest of the system already does.",
+              "title": "columns now falls back to stacked by its container, not the window"
+            },
+            "es": {
+              "body": "El retroceso a stacked por debajo de 36rem leía el viewport (@media), no el contenedor: una lista columns dentro de un panel o rail angosto en una página ancha nunca caía, y la columna de término de ancho fijo desbordaba el panel. Ahora es @container, siguiendo la decisión 35 que ya sigue el resto del sistema.",
+              "title": "columns ya cae a stacked según el contenedor, no la ventana"
+            },
+            "kind": "bugfix",
+            "target": "layout"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -846,6 +1133,24 @@
     ],
     "dialog": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "New pair of hooks (duration/easing) the exit transition reads instead of the shared --motion-exit-duration. At 0s, a dialog closing because the page behind it already navigated does not linger waiting on its own exit.",
+              "title": "--sk-dialog-exit-duration: closing with no animation, in one line"
+            },
+            "es": {
+              "body": "Nuevo par de hooks (duration/easing) que la transición de salida lee en vez de la compartida --motion-exit-duration. En 0s, un diálogo que se cierra porque la página detrás ya navegó no se demora esperando su propia salida.",
+              "title": "--sk-dialog-exit-duration: cerrar sin animación, en una línea"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -865,6 +1170,24 @@
       }
     ],
     "dialog-stack": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "The same escape Dialog gets, for the body and its ::backdrop: at 0s, a close that coincides with a navigation no longer lingers on its own exit.",
+              "title": "--sk-dialog-stack-exit-duration: closing with no animation, in one line"
+            },
+            "es": {
+              "body": "El mismo escape que Dialog, para el body y su ::backdrop: en 0s, un cierre que coincide con una navegación ya no se demora en su propia salida.",
+              "title": "--sk-dialog-stack-exit-duration: cerrar sin animación, en una línea"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-12",
         "entries": [
@@ -886,6 +1209,24 @@
     ],
     "editor": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-19",
+            "en": {
+              "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> and <code>--sk-anchored-size</code> were listed as hooks, but no stylesheet in the library ever declares them, not even the <code>anchored.css</code> pattern they came from: overriding any of them did nothing, silently. Only <code>--sk-anchored-z</code> remains, the one actually in use.",
+              "title": "Eight dead anchoring hooks removed"
+            },
+            "es": {
+              "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> y <code>--sk-anchored-size</code> estaban en la lista de hooks, pero ninguna hoja de estilos de la librería los declara jamás, ni siquiera el patrón <code>anchored.css</code> que los originó: sobrescribir cualquiera de ellos no hacía nada, en silencio. Solo queda <code>--sk-anchored-z</code>, el único que de verdad se usa.",
+              "title": "Se retiran ocho hooks de anchoring que no hacían nada"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -905,6 +1246,24 @@
       }
     ],
     "empty-state": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-14",
+            "en": {
+              "body": "New headingElement option (h1 to h6, h2 by default): a state that is the whole page, like a 404, uses h1.",
+              "title": "Title level"
+            },
+            "es": {
+              "body": "Nueva opción headingElement (h1 a h6, por defecto h2): un estado que es toda la página, como un 404, usa h1.",
+              "title": "Nivel del título"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -1062,6 +1421,24 @@
     ],
     "form-field": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "The name suggested aria-hidden; the label stays in the accessibility tree, only the eye skips it. The attribute moves from data-label-hidden to data-label-visually-hidden.",
+              "title": "labelHidden is renamed to labelVisuallyHidden"
+            },
+            "es": {
+              "body": "El nombre sugería aria-hidden; la etiqueta sigue en el árbol de accesibilidad, solo se oculta a la vista. El atributo pasa de data-label-hidden a data-label-visually-hidden.",
+              "title": "labelHidden se renombra a labelVisuallyHidden"
+            },
+            "kind": "breaking"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -1119,6 +1496,25 @@
       }
     ],
     "icon": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "New roles <code>home</code>, <code>file-text</code> and <code>folder-open</code>, drawn by all three published sets (Lucide, Material, Phosphor).",
+              "title": "Three icon roles for file navigation"
+            },
+            "es": {
+              "body": "Nuevos roles <code>home</code>, <code>file-text</code> y <code>folder-open</code>, dibujados por los tres sets publicados (Lucide, Material, Phosphor).",
+              "title": "Tres roles de icono para la navegación por archivos"
+            },
+            "kind": "feature",
+            "target": "name"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-12",
         "entries": [
@@ -1246,6 +1642,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-10-17",
+            "en": {
+              "body": "New autoSize option (field-sizing: content), capped by --sk-textarea-autosize-max-block-size (40vh by default). A browser without support keeps the plain fixed-height box.",
+              "title": "Textarea grows with its content: autoSize"
+            },
+            "es": {
+              "body": "Nueva opción autoSize (field-sizing: content), con un tope en --sk-textarea-autosize-max-block-size (40vh por defecto). Un navegador sin soporte mantiene la caja de alto fijo de siempre.",
+              "title": "Textarea crece con el contenido: autoSize"
+            },
+            "kind": "feature",
+            "target": "Textarea"
+          },
+          {
             "date": "2026-10-14",
             "en": {
               "body": "Input, Textarea and NativeInput take variant=\"ghost\": the field with no visible container, for use inside a surface that already frames it.",
@@ -1318,6 +1727,25 @@
       }
     ],
     "layout": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "The compact default assumes narrow means a phone; a desktop-in-the-browser app's window can be just as narrow without stopping being a desktop app. sidebarPersistent applies the >=52rem rules (the sidebar and regions scroll) at any width.",
+              "title": "sidebarPersistent keeps the rail at any width"
+            },
+            "es": {
+              "body": "El compacto por defecto asume que angosto significa teléfono; una app de escritorio en el navegador puede ser igual de angosta sin dejar de ser de escritorio. sidebarPersistent aplica las reglas de >=52rem (sidebar y regions) a cualquier ancho.",
+              "title": "sidebarPersistent mantiene el rail a cualquier ancho"
+            },
+            "kind": "feature",
+            "target": "AppShell"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-12",
         "entries": [
@@ -1609,6 +2037,25 @@
     ],
     "loader": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-18",
+            "en": {
+              "body": "Loader only checked label === undefined; a computed status that came up empty still got role=\"status\" and aria-label=\"\", an explicit, empty accessible name on a live region. An empty or whitespace-only label now takes the same decorative path as no label at all.",
+              "title": "label=\"\" falls back to decorative again, not an empty status"
+            },
+            "es": {
+              "body": "Loader solo revisaba label === undefined; un status computado que llegaba como cadena vacía quedaba con role=\"status\" y aria-label=\"\", un nombre accesible explícito y vacío en una región en vivo. Ahora una etiqueta vacía o solo espacios cae en el mismo camino decorativo que no pasar ninguna.",
+              "title": "label=\"\" vuelve a caer en decorativo, no en un status vacío"
+            },
+            "kind": "bugfix",
+            "target": "Loader"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -1712,6 +2159,24 @@
     ],
     "megamenu": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-19",
+            "en": {
+              "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> and <code>--sk-anchored-size</code> were listed as hooks, but no stylesheet in the library ever declares them, not even the <code>anchored.css</code> pattern they came from: overriding any of them did nothing, silently. Only <code>--sk-anchored-z</code> remains, the one actually in use.",
+              "title": "Eight dead anchoring hooks removed"
+            },
+            "es": {
+              "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> y <code>--sk-anchored-size</code> estaban en la lista de hooks, pero ninguna hoja de estilos de la librería los declara jamás, ni siquiera el patrón <code>anchored.css</code> que los originó: sobrescribir cualquiera de ellos no hacía nada, en silencio. Solo queda <code>--sk-anchored-z</code>, el único que de verdad se usa.",
+              "title": "Se retiran ocho hooks de anchoring que no hacían nada"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -1732,6 +2197,24 @@
     ],
     "menu": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-19",
+            "en": {
+              "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> and <code>--sk-anchored-size</code> were listed as hooks, but no stylesheet in the library ever declares them, not even the <code>anchored.css</code> pattern they came from: overriding any of them did nothing, silently. Only <code>--sk-anchored-z</code> remains, the one actually in use.",
+              "title": "Eight dead anchoring hooks removed"
+            },
+            "es": {
+              "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> y <code>--sk-anchored-size</code> estaban en la lista de hooks, pero ninguna hoja de estilos de la librería los declara jamás, ni siquiera el patrón <code>anchored.css</code> que los originó: sobrescribir cualquiera de ellos no hacía nada, en silencio. Solo queda <code>--sk-anchored-z</code>, el único que de verdad se usa.",
+              "title": "Se retiran ocho hooks de anchoring que no hacían nada"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -1751,6 +2234,36 @@
       }
     ],
     "menubar": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-19",
+            "en": {
+              "body": "Switching the top-level item never took a direction: in an RTL menu, the right arrow kept moving toward the screen's right instead of toward the next item in reading order. It now flips based on <code>dir</code>.",
+              "title": "Left/right arrows now respect RTL"
+            },
+            "es": {
+              "body": "El cambio de ítem superior nunca tomaba una dirección: en un menú RTL, la flecha derecha seguía moviendo hacia la derecha de la pantalla en vez de hacia el próximo ítem en el orden de lectura. Ahora invierte según <code>dir</code>.",
+              "title": "Las flechas izquierda/derecha respetan RTL"
+            },
+            "kind": "bugfix"
+          },
+          {
+            "date": "2026-10-19",
+            "en": {
+              "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> and <code>--sk-anchored-size</code> were listed as hooks, but no stylesheet in the library ever declares them, not even the <code>anchored.css</code> pattern they came from: overriding any of them did nothing, silently. Only <code>--sk-anchored-z</code> remains, the one actually in use.",
+              "title": "Eight dead anchoring hooks removed"
+            },
+            "es": {
+              "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> y <code>--sk-anchored-size</code> estaban en la lista de hooks, pero ninguna hoja de estilos de la librería los declara jamás, ni siquiera el patrón <code>anchored.css</code> que los originó: sobrescribir cualquiera de ellos no hacía nada, en silencio. Solo queda <code>--sk-anchored-z</code>, el único que de verdad se usa.",
+              "title": "Se retiran ocho hooks de anchoring que no hacían nada"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-12",
         "entries": [
@@ -1861,6 +2374,25 @@
       }
     ],
     "nav-list": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "New function in @skryensya/core/nav-list. No router assumed, it decides whether an href counts as the current page for the pathname the consumer's own router already returns: exact match, and a nested route counts too, unless href is the root.",
+              "title": "navListLinkIsCurrent: the path comparison, no longer by hand"
+            },
+            "es": {
+              "body": "Función nueva en @skryensya/core/nav-list. Sin asumir ningún router, decide si un href cuenta como la página actual para el pathname que ya devuelve el router del consumidor: coincidencia exacta, y una ruta anidada también cuenta, salvo que href sea la raíz.",
+              "title": "navListLinkIsCurrent: la comparación de ruta, ya no a mano"
+            },
+            "kind": "feature",
+            "target": "NavListLink"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-12",
         "entries": [
@@ -2120,6 +2652,24 @@
     ],
     "popover": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-19",
+            "en": {
+              "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> and <code>--sk-anchored-size</code> were listed as hooks, but no stylesheet in the library ever declares them, not even the <code>anchored.css</code> pattern they came from: overriding any of them did nothing, silently. Only <code>--sk-anchored-z</code> remains, the one actually in use.",
+              "title": "Eight dead anchoring hooks removed"
+            },
+            "es": {
+              "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> y <code>--sk-anchored-size</code> estaban en la lista de hooks, pero ninguna hoja de estilos de la librería los declara jamás, ni siquiera el patrón <code>anchored.css</code> que los originó: sobrescribir cualquiera de ellos no hacía nada, en silencio. Solo queda <code>--sk-anchored-z</code>, el único que de verdad se usa.",
+              "title": "Se retiran ocho hooks de anchoring que no hacían nada"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-12",
         "entries": [
           {
@@ -2257,6 +2807,64 @@
     ],
     "questionnaire": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-18",
+            "en": {
+              "body": "The fallback to one column below 52rem read @media (the window); a Questionnaire embedded in a narrow panel or Dialog on an otherwise wide page never fell back, even with no room for both. It is now @container, following decision 35, which the rest of the system already does; it still resolves correctly even inside a modal <dialog>.",
+              "title": "The two columns fall back to one by the container, not the window"
+            },
+            "es": {
+              "body": "El retroceso a una columna bajo 52rem leía @media (la ventana); un Questionnaire embebido en un panel o un Dialog angosto sobre una página ancha nunca caía a una columna, aunque no tuviera lugar para las dos. Ahora es @container, siguiendo la decisión 35 que ya sigue el resto del sistema; sigue resolviendo bien incluso dentro de un <dialog> modal.",
+              "title": "Las dos columnas caen a una por el contenedor, no por la ventana"
+            },
+            "kind": "bugfix",
+            "target": "progressOrientation"
+          },
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "Every QuestionnaireItem announces itself to Questionnaire no matter how many of your own components wrap it (a wizard step with its own chrome, say); before, the one-level walk of children could not see past the wrapper and the question was left out of the count, navigation and submit. shortcut: a wrapped item interleaved between two direct ones lands grouped after all the direct ones, not between them.",
+              "title": "A QuestionnaireItem wrapped in your own component now counts"
+            },
+            "es": {
+              "body": "Cada QuestionnaireItem se anota a sí mismo ante Questionnaire sin importar cuántos componentes propios lo envuelvan (un paso de wizard con su propia cromática, por ejemplo); antes, el recorrido de un solo nivel de children no veía más allá del envoltorio y la pregunta quedaba fuera de la cuenta, la navegación y el envío. shortcut: un ítem envuelto intercalado entre dos directos queda agrupado después de todos los directos, no entre ellos.",
+              "title": "Un QuestionnaireItem envuelto en un componente propio ya cuenta"
+            },
+            "kind": "feature",
+            "target": "QuestionnaireItem"
+          },
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "Two new slots, shown inside the question as typography.css's own eyebrow role. Read fresh on every question in the group, never deduplicated against the one before: the questionnaire shows one question at a time, so there is no sibling beside it to repeat.",
+              "title": "section / sectionDescription: a question group's own eyebrow"
+            },
+            "es": {
+              "body": "Dos slots nuevos, mostrados dentro de la pregunta como el rol eyebrow de typography.css. Se leen de nuevo en cada pregunta del grupo, nunca deduplicados contra la anterior: el cuestionario muestra una pregunta a la vez, así que no hay un hermano al lado para repetirse.",
+              "title": "section / sectionDescription: el eyebrow de un grupo de preguntas"
+            },
+            "kind": "feature",
+            "target": "QuestionnaireItem"
+          },
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "Before, only onValuesSubmit handed over answers, and only on a valid submit. A draft that saves itself listened to the <form>'s own change and re-read FormData by hand. onValuesChange reports the same value questionnaireValues already computes, on every change.",
+              "title": "onValuesChange: every answer, valid or not, after every change"
+            },
+            "es": {
+              "body": "Antes solo onValuesSubmit entregaba respuestas, y solo al enviar con todo válido. Un borrador que se guarda solo escuchaba el change del <form> y releía FormData a mano. onValuesChange reporta el mismo valor que ya calcula questionnaireValues, en cada cambio.",
+              "title": "onValuesChange: cada respuesta, válida o no, después de cada cambio"
+            },
+            "kind": "feature",
+            "target": "Questionnaire"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-12",
         "entries": [
           {
@@ -2295,6 +2903,25 @@
       }
     ],
     "quote": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-18",
+            "en": {
+              "body": "The caption showed whenever attribution !== undefined || source !== undefined; a computed value that came up \"\" still counted as given, so an empty figcaption appeared (or an empty <cite> when only source was \"\"). An empty string now counts as absent, the same way for attribution, source and image.",
+              "title": "A computed, empty attribution or source no longer leaves an empty caption"
+            },
+            "es": {
+              "body": "La leyenda se mostraba con attribution !== undefined || source !== undefined; un valor calculado que llegaba como \"\" seguía contando como dado, así que aparecía un figcaption vacío (o un <cite> vacío si solo source era \"\"). Ahora una cadena vacía cuenta como ausente, igual para attribution, source e image.",
+              "title": "Un attribution o source calculado y vacío ya no deja una leyenda vacía"
+            },
+            "kind": "bugfix",
+            "target": "Quote"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-12",
         "entries": [
@@ -2355,6 +2982,24 @@
     ],
     "rating": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-19",
+            "en": {
+              "body": "<code>--sk-rating-fill-direction</code> already existed in the stylesheet (to right / to left depending on RTL) but was missing from the contract's hooks list: nothing said it could be overridden.",
+              "title": "The hook that already decided the fill direction is now documented"
+            },
+            "es": {
+              "body": "<code>--sk-rating-fill-direction</code> ya existía en la hoja de estilos (to right / to left según RTL) pero no estaba en la lista de hooks del contrato: nada avisaba que se podía sobrescribir.",
+              "title": "Se documenta el hook que ya decidía la dirección del relleno"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-12",
         "entries": [
           {
@@ -2393,6 +3038,25 @@
       }
     ],
     "resizable": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "minSize stays a percentage of the group; minInlineSize/minBlockSize (\"22rem\", \"320px\") are an additional absolute floor, for a panel that needs a fixed minimum width no matter how narrow the window gets.",
+              "title": "minInlineSize / minBlockSize: an absolute floor, not only a percentage"
+            },
+            "es": {
+              "body": "minSize sigue siendo un porcentaje del grupo; minInlineSize/minBlockSize (\"22rem\", \"320px\") son un piso absoluto adicional, para un panel que necesita un ancho mínimo fijo sin importar cuánto se angoste la ventana.",
+              "title": "minInlineSize / minBlockSize: un piso absoluto, no solo porcentual"
+            },
+            "kind": "feature",
+            "target": "Resizable.Panel"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-12",
         "entries": [
@@ -2494,6 +3158,115 @@
     ],
     "select": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-18",
+            "en": {
+              "body": "The thumb variant that changed the width is removed. Select uses sk-scrollbar without overrides, retaining the full-height track and rounded clipping; the artificial thumb inset is removed.",
+              "title": "Standard kit scrollbar restored"
+            },
+            "es": {
+              "body": "Se retira la variante de thumb que cambiaba el ancho. El select usa sk-scrollbar sin overrides, con track completo y esquinas recortadas; se elimina el inset artificial del thumb.",
+              "title": "Restaurado el scrollbar estándar del kit"
+            },
+            "kind": "bugfix",
+            "target": "Select"
+          },
+          {
+            "date": "2026-10-18",
+            "en": {
+              "body": "The panel adds no scrollbar padding. A shared kit variant insets the thumb by 4 px at each end without shortening the track; unsupported browsers retain the standard scrollbar.",
+              "title": "Full-height track with vertical inset on the thumb only"
+            },
+            "es": {
+              "body": "El panel no añade padding al scrollbar. La variante compartida del kit deja 4 px en los extremos del thumb sin acortar el track; sin soporte se conserva el scrollbar estándar.",
+              "title": "Track completo con separación vertical solo en el thumb"
+            },
+            "kind": "bugfix",
+            "target": "Select"
+          },
+          {
+            "date": "2026-10-18",
+            "en": {
+              "body": "Padding applies to items inside the list. The scrollbar reaches the panel's inner edge while its corners remain clipped.",
+              "title": "Scrollbar flush with the panel, without outer padding"
+            },
+            "es": {
+              "body": "El padding se aplica a los items dentro de la lista. El scrollbar llega al borde interior del panel y sus esquinas siguen recortadas.",
+              "title": "Scrollbar al borde del panel, sin padding exterior"
+            },
+            "kind": "bugfix",
+            "target": "Select"
+          },
+          {
+            "date": "2026-10-18",
+            "en": {
+              "body": "selectedcontent truncates the value with an ellipsis while preserving the picker icon. React installs it after hydration; unsupported browsers keep the classic native control.",
+              "title": "Long values stay on one line without overflowing the field"
+            },
+            "es": {
+              "body": "selectedcontent recorta el valor con puntos suspensivos y deja visible la flecha. React lo instala después de hidratar; sin soporte se conserva el control nativo clásico.",
+              "title": "Valores largos en una sola línea, sin desbordar el campo"
+            },
+            "kind": "bugfix",
+            "target": "Select.native"
+          },
+          {
+            "date": "2026-10-18",
+            "en": {
+              "body": "The outer panel owns padding and border. The list leaves the same gap before the scrollbar without overriding kit styling, including in RTL.",
+              "title": "Symmetric spacing around the list and scrollbar"
+            },
+            "es": {
+              "body": "El panel exterior lleva el padding y el borde. La lista deja la misma separación antes del scrollbar, sin modificar los estilos del kit; también en RTL.",
+              "title": "Espacio simétrico alrededor de la lista y el scrollbar"
+            },
+            "kind": "bugfix",
+            "target": "Select"
+          },
+          {
+            "date": "2026-10-18",
+            "en": {
+              "body": "Native select uses sk-scrollbar, and the enhanced popup adds a rounded clipping panel without changing Zag's scrolling list. Select-specific scrollbar styling is removed.",
+              "title": "Kit scrollbar in both selects"
+            },
+            "es": {
+              "body": "El select nativo usa sk-scrollbar y el desplegable mejorado añade un panel con recorte redondeado sin cambiar la lista que controla Zag. Se eliminan los estilos de scrollbar específicos del select.",
+              "title": "Scrollbar del kit en ambos selects"
+            },
+            "kind": "bugfix"
+          },
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "Select now calls the same useFormFieldControl Input/NativeSelect already do. With no label of its own, the trigger takes the field's id (native association, no aria-labelledby) and no longer paints a second label. With its own label, Select's own pairing stays untouched.",
+              "title": "Inside FormField, one label: Select now inherits id, required and describedBy"
+            },
+            "es": {
+              "body": "Select ahora llama al mismo useFormFieldControl que Input/NativeSelect. Sin label propio, el trigger toma el id del campo (asociación nativa, sin aria-labelledby) y ya no pinta una segunda etiqueta. Con label propio, el emparejamiento de Select con el suyo queda intacto.",
+              "title": "Dentro de FormField, un solo label: Select ya hereda el id, required y describedBy"
+            },
+            "kind": "feature",
+            "target": "Select"
+          },
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "The contract already declared forward: [\"id\", \"aria-*\"], but the React binding silently dropped them. They land on the real trigger; left out, they never touch the aria-labelledby Zag already computes. (This entry also covers an unrelated internal cleanup: the listbox's positioning now uses the shared anchoredPositioning config.)",
+              "title": "aria-label / aria-labelledby, a hidden accessible name"
+            },
+            "es": {
+              "body": "El contrato ya declaraba forward: [\"id\", \"aria-*\"], pero el binding de React los descartaba en silencio. Van al trigger real; si no se pasan, no tocan el aria-labelledby que Zag ya calcula. (Esta entrada cubre también una limpieza interna no relacionada: el posicionamiento de la lista usa ahora anchoredPositioning compartido.)",
+              "title": "aria-label / aria-labelledby, un nombre accesible oculto"
+            },
+            "kind": "feature",
+            "target": "Select"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -2513,6 +3286,25 @@
       }
     ],
     "separator": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "children=\"\" (a computed value that came up empty) still pointed aria-labelledby at a textless span, which gives an explicit, empty accessible name - worse than the nameless \"separator\" this component exists to replace. With no label, it now omits aria-labelledby and lets that same fallback take back over.",
+              "title": "An empty label no longer leaves an empty accessible name"
+            },
+            "es": {
+              "body": "children=\"\" (un valor calculado que resultó vacío) seguía apuntando aria-labelledby a un span sin texto: eso da un nombre accesible explícito y vacío, peor que el \"separator\" sin nombre que este componente existe para reemplazar. Ahora, sin etiqueta, omite aria-labelledby y deja que ese mismo respaldo vuelva a aplicar.",
+              "title": "Una etiqueta vacía ya no deja un nombre accesible vacío"
+            },
+            "kind": "bugfix",
+            "target": "LabelledSeparator"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-12",
         "entries": [
@@ -2664,6 +3456,25 @@
     ],
     "split-button": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-18",
+            "en": {
+              "body": "New rule: when action carries loading, menu must carry disabled. Validated on the tree (an author who breaks it gets an error, not a split button whose menu still opens alternatives for the action already running); the flat-prop React convenience already applies it from its new loading prop.",
+              "title": "A busy action leaves the menu disabled"
+            },
+            "es": {
+              "body": "Nueva regla: si action lleva loading, menu tiene que llevar disabled. Validada en el árbol (un autor que la rompe recibe un error, no un split button donde el menú sigue abriendo alternativas para la acción que ya está en curso); el binding de React de la convención plana ya la aplica solo con la nueva prop loading.",
+              "title": "La acción ocupada deja el menú deshabilitado"
+            },
+            "kind": "feature",
+            "target": "SplitButton"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-12",
         "entries": [
           {
@@ -2701,6 +3512,25 @@
       }
     ],
     "stat": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-18",
+            "en": {
+              "body": "Formatting only turned on when count !== undefined. count exists for the authored-text path (vanilla: a value string plus the raw number beside it); a plain <Stat value={82} suffix=\"%\" /> with no count - the documented React usage - rendered a bare 82, no unit. Formatting now turns on based on whether the value itself is numeric.",
+              "title": "suffix/locale/fractionDigits now apply to a numeric value with no separate count"
+            },
+            "es": {
+              "body": "El formato solo se activaba cuando count !== undefined. count existe para el camino de texto ya escrito (vanilla, un value string más el número crudo al lado); un <Stat value={82} suffix=\"%\" /> sin count — el uso documentado en React — mostraba 82 pelado, sin la unidad. Ahora el formato se activa según si el valor mismo es numérico.",
+              "title": "suffix/locale/fractionDigits ya aplican a un value numérico sin count aparte"
+            },
+            "kind": "bugfix",
+            "target": "Stat"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-12",
         "entries": [
@@ -2796,6 +3626,18 @@
               "title": "Primera versión"
             },
             "kind": "feature"
+          },
+          {
+            "date": "2026-09-26",
+            "en": {
+              "body": "Button's own sheet already paints tactile, brutalist and frosted on the host; data-appearance now forwards the same way data-variant and data-size do, without being its own declared option.",
+              "title": "StateButton forwards data-appearance, like variant and size"
+            },
+            "es": {
+              "body": "La hoja de Button ya pinta tactile, brutalist y frosted en el anfitrión; ahora data-appearance se reenvía igual que data-variant y data-size, sin declararse como option propia.",
+              "title": "StateButton reenvía data-appearance, igual que variant y size"
+            },
+            "kind": "feature"
           }
         ],
         "version": "0.0.1"
@@ -2843,6 +3685,25 @@
     ],
     "table": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "sortable wraps the content in a button with a direction arrow and aria-sort; onSortChange reports the click, sorting stays yours. visuallyHidden keeps an icon-only column's accessible name without spending its width on it.",
+              "title": "Sortable headers, and a column with no visible name"
+            },
+            "es": {
+              "body": "sortable envuelve el contenido en un botón con flecha de dirección y aria-sort; onSortChange avisa el clic, ordenar sigue siendo tuyo. visuallyHidden mantiene el nombre accesible de una columna de solo-iconos sin gastar su ancho en él.",
+              "title": "Encabezados ordenables, y una columna sin nombre visible"
+            },
+            "kind": "feature",
+            "target": "TableHeader"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -2883,6 +3744,24 @@
     ],
     "tabs": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "children becomes optional on each item. One with no children gets neither a panel nor aria-controls: for choosing between two views of shared content (reading value/onValueChange), not for each to own its own section.",
+              "title": "An item with no children is no longer an error: it is the panel-less selector"
+            },
+            "es": {
+              "body": "children pasa a opcional en cada ítem. Uno sin children no recibe panel ni aria-controls: para elegir entre dos vistas de un contenido compartido (leyendo value/onValueChange), no para cada uno tener su propia sección.",
+              "title": "Un ítem sin children ya no es un error: es el selector sin panel propio"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -2903,6 +3782,51 @@
     ],
     "tag": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "<code>aria-disabled</code> on the root (every host understands it, even the <code>span</code>); removable <code>Tag</code> and <code>Tag.toggle</code> also get the real native <code>disabled</code>, on the remove button or on the chip itself. Not on <code>Tag.link</code> — a link cannot be natively disabled either.",
+              "title": "Tag has disabled"
+            },
+            "es": {
+              "body": "<code>aria-disabled</code> en la raíz (todo anfitrión lo entiende, hasta el <code>span</code>); <code>Tag</code> removible y <code>Tag.toggle</code> además reciben el <code>disabled</code> nativo real, en el botón de quitar o en el propio chip. No existe en <code>Tag.link</code> — un enlace tampoco se puede deshabilitar de forma nativa.",
+              "title": "Tag tiene disabled"
+            },
+            "kind": "feature",
+            "target": "disabled"
+          },
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "A third host, beside <code>span</code> (removable) and <code>a</code> (navigates): a real <code>button</code> with <code>selected</code> → <code>aria-pressed</code>, for a filter chip the reader turns on and off. It cannot combine with <code>removable</code> or <code>href</code> — a button cannot nest another button.",
+              "title": "Tag can be selected with Tag.toggle"
+            },
+            "es": {
+              "body": "Un tercer anfitrión, además de <code>span</code> (removible) y <code>a</code> (navega): un <code>button</code> real con <code>selected</code> → <code>aria-pressed</code>, para un chip de filtro que el lector activa y desactiva. No se puede combinar con <code>removable</code> ni <code>href</code> — un botón no puede anidar otro botón.",
+              "title": "Tag se puede seleccionar con Tag.toggle"
+            },
+            "kind": "feature",
+            "target": "Tag.toggle"
+          },
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "Those three belong to Badge (a read-only status report): only <code>neutral</code> and <code>accent</code> remain on Tag, so a removable or navigable chip can no longer be painted as if it were a status badge.",
+              "title": "Tag's tone no longer accepts success, warning or danger"
+            },
+            "es": {
+              "body": "Esos tres pertenecen a Badge (un estado de solo lectura): solo <code>neutral</code> y <code>accent</code> quedan en Tag, así que un chip removible o navegable ya no se puede pintar como si fuera un badge de estado.",
+              "title": "El tono de Tag ya no acepta success, warning ni danger"
+            },
+            "kind": "breaking",
+            "target": "tone"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -2922,6 +3846,24 @@
       }
     ],
     "tags-input": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-19",
+            "en": {
+              "body": "The same button, in the same spot and with the same markup Combobox's own clear is: it shows only when there is something to clear, and sits outside the area the tags and the entry wrap inside, so it never gets pushed onto its own line as that area grows.",
+              "title": "A button that clears every tag at once"
+            },
+            "es": {
+              "body": "El mismo botón, en el mismo lugar y con la misma marca que el de Combobox: aparece solo cuando hay algo que borrar y queda fuera del área que envuelve a los tags y la entrada, para no empujarse a su propia línea cuando esa área crece.",
+              "title": "Un botón para borrar todos los tags de una vez"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -2981,6 +3923,24 @@
     ],
     "time-field": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-19",
+            "en": {
+              "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> and <code>--sk-anchored-size</code> were listed as hooks, but no stylesheet in the library ever declares them, not even the <code>anchored.css</code> pattern they came from: overriding any of them did nothing, silently. Only <code>--sk-anchored-z</code> remains, the one actually in use.",
+              "title": "Eight dead anchoring hooks removed"
+            },
+            "es": {
+              "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> y <code>--sk-anchored-size</code> estaban en la lista de hooks, pero ninguna hoja de estilos de la librería los declara jamás, ni siquiera el patrón <code>anchored.css</code> que los originó: sobrescribir cualquiera de ellos no hacía nada, en silencio. Solo queda <code>--sk-anchored-z</code>, el único que de verdad se usa.",
+              "title": "Se retiran ocho hooks de anchoring que no hacían nada"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -3000,6 +3960,25 @@
       }
     ],
     "timeline": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-18",
+            "en": {
+              "body": "A computed timeLabel (\"\", a relative-time formatter with nothing to say yet) still warranted an empty <time>; same for children=\"\". \"\" now counts as absent. Separately, the narrower rail below 30rem read the viewport (@media), not the container: a history in a narrow panel on a wide page never narrowed.",
+              "title": "An empty timeLabel/children no longer leaves an empty <time> or detail; the rail narrows by container"
+            },
+            "es": {
+              "body": "Un timeLabel calculado (\"\", un formateador relativo sin nada que decir aún) seguía garantizando un <time> vacío; igual con children=\"\". Ahora \"\" cuenta como ausente. Además, el rail angosto por debajo de 30rem leía la ventana (@media), no el contenedor: un historial en un panel angosto sobre una página ancha nunca angostaba.",
+              "title": "timeLabel/children vacíos ya no dejan un <time> o un detalle vacíos; el rail angosta por contenedor"
+            },
+            "kind": "bugfix",
+            "target": "TimelineItem"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -3041,6 +4020,24 @@
     ],
     "toolbar": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "New justify option (start/center/end/between) to spread the bar's controls along its main axis. Also fixes the bar not shrinking as a flex item inside a narrow container, so flex-wrap never got the chance to wrap.",
+              "title": "Spacing the bar's controls with justify, and it no longer refuses to shrink"
+            },
+            "es": {
+              "body": "Nueva opción justify (start/center/end/between) para repartir los controles en el eje principal. También se corrige que la barra no se encogía como ítem flex dentro de un contenedor angosto, así que flex-wrap nunca llegaba a envolver.",
+              "title": "Reparto del espacio con justify, y ya no se aplasta en un contenedor angosto"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -3060,6 +4057,24 @@
       }
     ],
     "tooltip": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-19",
+            "en": {
+              "body": "It was listed as a contract hook, but no Tooltip stylesheet ever declares it: overriding it changed nothing, silently.",
+              "title": "--sk-tooltip-offset removed; it did nothing"
+            },
+            "es": {
+              "body": "Estaba en la lista de hooks del contrato, pero ninguna hoja de estilos de Tooltip lo declara: sobrescribirlo no cambiaba nada, en silencio.",
+              "title": "Se retira el hook --sk-tooltip-offset, que no hacía nada"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -3100,6 +4115,24 @@
       }
     ],
     "tree-view": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-17",
+            "en": {
+              "body": "collapsible={false} pins expandedValue to every branch and hides the chevron, for a section outline instead of a file explorer. wrap lets a long label move to a second line instead of truncating with an ellipsis.",
+              "title": "collapsible={false} for an always-open index, and wrap for long labels"
+            },
+            "es": {
+              "body": "collapsible={false} fija expandedValue en todas las ramas y oculta el chevron, para un índice de secciones en vez de un explorador. wrap deja que una etiqueta larga pase a una segunda línea en vez de truncar con puntos suspensivos.",
+              "title": "collapsible={false} para un índice siempre abierto, y wrap para etiquetas largas"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -3160,6 +4193,24 @@
       }
     ],
     "user-select": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-19",
+            "en": {
+              "body": "The search field is type=\"search\": the browser's own ✕ cannot be named or styled, so there is now a real one, hidden until there is text. Also documents --sk-select-padding-x, which UserSelect's own trigger already overrode (less side padding so the avatar stack doesn't float) without the contract listing it.",
+              "title": "A real button to clear the search"
+            },
+            "es": {
+              "body": "El campo de búsqueda es type=\"search\": la ✕ nativa del navegador no se puede nombrar ni pintar, así que ahora hay una propia, oculta hasta que hay texto. De paso se documenta --sk-select-padding-x, que el disparador de UserSelect ya sobrescribía (menos aire lateral para que el stack de avatares no flote) sin que el contrato lo listara.",
+              "title": "Un botón real para limpiar la búsqueda"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -3557,6 +4608,12 @@
           "part": "native",
           "sheet": "@skryensya/core/components/details.css"
         },
+        "--sk-details-summary-min-block-size": {
+          "default": "var(--size-control-lg)",
+          "output": false,
+          "part": "native",
+          "sheet": "@skryensya/core/components/details.css"
+        },
         "--sk-font-body-sm": {
           "default": "var(--font-size-body-sm)",
           "output": false,
@@ -3695,7 +4752,8 @@
         "--sk-details-gap",
         "--sk-details-heading-gap",
         "--sk-details-indicator-fg",
-        "--sk-details-padding"
+        "--sk-details-padding",
+        "--sk-details-summary-min-block-size"
       ],
       "hookSheets": [
         "@skryensya/core/components/tile.css",
@@ -3756,6 +4814,15 @@
           "default": false,
           "trueValue": "",
           "type": "boolean"
+        },
+        "size": {
+          "attr": "data-size",
+          "default": "md",
+          "type": "enum",
+          "values": [
+            "sm",
+            "md"
+          ]
         },
         "type": {
           "attr": "data-type",
@@ -4086,7 +5153,8 @@
           "options": [
             "name",
             "open",
-            "appearance"
+            "appearance",
+            "size"
           ],
           "react": {
             "from": "@skryensya/react/details",
@@ -4238,7 +5306,8 @@
             "no-runtime-accordion"
           ],
           "options": [
-            "appearance"
+            "appearance",
+            "size"
           ],
           "react": {
             "from": "@skryensya/react/details",
@@ -4817,54 +5886,6 @@
       "category": "actions",
       "css": "@skryensya/core/components/app-bar.css",
       "hookDetails": {
-        "--sk-anchored-align": {
-          "default": "auto",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-arrow-edge": {
-          "default": "calc(\n        var(--sk-anchored-offset) +\n          var(--sk-anchored-arrow-inset, calc(var(--sk-anchored-arrow-size, 8px) * 1.5)) -\n          var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-arrow-near": {
-          "default": "calc(\n        var(--sk-anchored-offset) - var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-justify": {
-          "default": "anchor-center",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-offset": {
-          "default": "0",
-          "output": false,
-          "part": "dropdown",
-          "sheet": "@skryensya/core/components/app-bar.css"
-        },
-        "--sk-anchored-position-area": {
-          "default": "block-end span-all",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-position-try": {
-          "default": "flip-block",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-size": {
-          "default": "max-content",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
         "--sk-anchored-z": {
           "default": "var(--z-popover)",
           "output": false,
@@ -4963,14 +5984,6 @@
         }
       },
       "hooks": [
-        "--sk-anchored-align",
-        "--sk-anchored-arrow-edge",
-        "--sk-anchored-arrow-near",
-        "--sk-anchored-justify",
-        "--sk-anchored-offset",
-        "--sk-anchored-position-area",
-        "--sk-anchored-position-try",
-        "--sk-anchored-size",
         "--sk-anchored-z",
         "--sk-app-bar-bg",
         "--sk-app-bar-block-size",
@@ -5153,7 +6166,7 @@
           },
           "slots": {
             "children": {
-              "accepts": "text",
+              "accepts": "node",
               "required": true
             },
             "items": {
@@ -5434,7 +6447,7 @@
           },
           "slots": {
             "children": {
-              "accepts": "text",
+              "accepts": "node",
               "required": true
             },
             "items": {
@@ -5485,6 +6498,9 @@
             },
             "children": [
               {
+                "attrs": {
+                  "role": "status"
+                },
                 "element": "span",
                 "part": "statusText",
                 "slot": "children",
@@ -6871,6 +7887,12 @@
           "part": "root",
           "sheet": "@skryensya/core/components/avatar.css"
         },
+        "--sk-avatar-group-ring": {
+          "default": "var(--color-bg-surface)",
+          "output": false,
+          "part": "group",
+          "sheet": "@skryensya/core/components/avatar.css"
+        },
         "--sk-avatar-size": {
           "default": "var(--size-control-md)",
           "output": false,
@@ -6885,6 +7907,7 @@
         "--sk-avatar-brutalist-offset-inline",
         "--sk-avatar-brutalist-shadow",
         "--sk-avatar-fg",
+        "--sk-avatar-group-ring",
         "--sk-avatar-size"
       ],
       "id": "avatar",
@@ -8046,54 +9069,6 @@
       "category": "navigation",
       "css": "@skryensya/core/components/breadcrumb.css",
       "hookDetails": {
-        "--sk-anchored-align": {
-          "default": "start",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/components/menu.css"
-        },
-        "--sk-anchored-arrow-edge": {
-          "default": "calc(\n        var(--sk-anchored-offset) +\n          var(--sk-anchored-arrow-inset, calc(var(--sk-anchored-arrow-size, 8px) * 1.5)) -\n          var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-arrow-near": {
-          "default": "calc(\n        var(--sk-anchored-offset) - var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-justify": {
-          "default": "start",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/components/menu.css"
-        },
-        "--sk-anchored-offset": {
-          "default": "var(--space-stack-xs) 0",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/components/menu.css"
-        },
-        "--sk-anchored-position-area": {
-          "default": "block-end span-inline-end",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/components/menu.css"
-        },
-        "--sk-anchored-position-try": {
-          "default": "flip-inline",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/components/menu.css"
-        },
-        "--sk-anchored-size": {
-          "default": "max-content",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
         "--sk-anchored-z": {
           "default": "var(--z-popover)",
           "output": false,
@@ -8198,14 +9173,6 @@
         }
       },
       "hooks": [
-        "--sk-anchored-align",
-        "--sk-anchored-arrow-edge",
-        "--sk-anchored-arrow-near",
-        "--sk-anchored-justify",
-        "--sk-anchored-offset",
-        "--sk-anchored-position-area",
-        "--sk-anchored-position-try",
-        "--sk-anchored-size",
         "--sk-anchored-z",
         "--sk-breadcrumb-current-color",
         "--sk-breadcrumb-current-weight",
@@ -8610,6 +9577,15 @@
           "trueValue": "",
           "type": "boolean"
         },
+        "loading": {
+          "attr": "data-loading",
+          "default": false,
+          "trueValue": "",
+          "type": "boolean"
+        },
+        "loadingText": {
+          "type": "string"
+        },
         "pressed": {
           "attr": "aria-pressed",
           "falseValue": "false",
@@ -8671,6 +9647,9 @@
         }
       },
       "parts": {
+        "label": "sk-button__label",
+        "loader": "sk-button__loader",
+        "loadingLabel": "sk-button__loading-label",
         "post": "sk-button__post",
         "pre": "sk-button__pre",
         "root": "sk-button"
@@ -8726,6 +9705,13 @@
             {
               "of": "icon",
               "systemOwned": true
+            },
+            {
+              "of": "loader",
+              "sheets": [
+                "@skryensya/core/components/loader.css"
+              ],
+              "systemOwned": true
             }
           ],
           "forward": [
@@ -8768,7 +9754,9 @@
             "weldEnd",
             "pressed",
             "disabled",
-            "type"
+            "type",
+            "loading",
+            "loadingText"
           ],
           "react": {
             "from": "@skryensya/react/button",
@@ -8797,6 +9785,15 @@
                 },
                 "given": true,
                 "option": "disabled"
+              },
+              {
+                "attrs": {
+                  "aria-busy": "true",
+                  "aria-disabled": "true",
+                  "disabled": ""
+                },
+                "given": true,
+                "option": "loading"
               }
             ],
             "children": [
@@ -8807,6 +9804,8 @@
                 "whenGiven": "pre"
               },
               {
+                "element": "span",
+                "part": "label",
                 "slot": "children"
               },
               {
@@ -8814,6 +9813,22 @@
                 "part": "post",
                 "slot": "post",
                 "whenGiven": "post"
+              },
+              {
+                "also": [
+                  "sk-loader"
+                ],
+                "attrs": {
+                  "aria-hidden": "true"
+                },
+                "element": "span",
+                "part": "loader"
+              },
+              {
+                "element": "span",
+                "part": "loadingLabel",
+                "textFromOption": "loadingText",
+                "whenGiven": "loadingText"
               }
             ],
             "element": "button",
@@ -9811,13 +10826,13 @@
       },
       "hookDetails": {
         "--sk-carousel-control-bg": {
-          "default": "var(--color-bg-surface)",
+          "default": "light-dark(\n      color-mix(in oklab, var(--color-bg-surface-sunken) 60%, transparent),\n      color-mix(in oklab, var(--color-action-neutral) 42%, transparent)\n    )",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/carousel.css"
         },
         "--sk-carousel-control-border": {
-          "default": "var(--color-border-default)",
+          "default": "light-dark(\n      color-mix(in oklab, var(--color-border-subtle) 60%, transparent),\n      color-mix(in oklab, var(--color-border-subtle) 70%, transparent)\n    )",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/carousel.css"
@@ -9834,8 +10849,14 @@
           "part": "root",
           "sheet": "@skryensya/core/components/carousel.css"
         },
+        "--sk-carousel-control-radius": {
+          "default": "var(--radius-pill)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/carousel.css"
+        },
         "--sk-carousel-control-size": {
-          "default": "max(var(--size-control-md), var(--size-touch-target))",
+          "default": "var(--size-control-sm)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/carousel.css"
@@ -9923,6 +10944,7 @@
         "--sk-carousel-control-bg",
         "--sk-carousel-control-border",
         "--sk-carousel-control-disabled-fg",
+        "--sk-carousel-control-radius",
         "--sk-carousel-control-fg",
         "--sk-carousel-control-size",
         "--sk-carousel-dot-active-color",
@@ -9974,6 +10996,20 @@
           "styleProperty": "--sk-carousel-edge-padding",
           "type": "string"
         },
+        "fade": {
+          "attr": "data-fade-edge",
+          "default": false,
+          "trueValue": "",
+          "type": "boolean"
+        },
+        "indicator": {
+          "attr": "data-indicator",
+          "type": "enum",
+          "values": [
+            "dots",
+            "count"
+          ]
+        },
         "loop": {
           "attr": "data-loop",
           "default": false,
@@ -10024,6 +11060,7 @@
         "autoplay": "sk-carousel__autoplay",
         "button": "sk-carousel__button",
         "controls": "sk-carousel__controls",
+        "count": "sk-carousel__count",
         "dot": "sk-carousel__dot",
         "dots": "sk-carousel__dots",
         "root": "sk-carousel",
@@ -10075,6 +11112,8 @@
             "slideSize",
             "orientation",
             "controls",
+            "indicator",
+            "fade",
             "mouseDrag",
             "align",
             "slidesPerMove",
@@ -10142,7 +11181,8 @@
         "button",
         "autoplay",
         "dots",
-        "dot"
+        "dot",
+        "count"
       ]
     },
     "changelog": {
@@ -11335,7 +12375,7 @@
           "sheet": "@skryensya/core/components/copy-button.css"
         },
         "--sk-copy-button-feedback-wash": {
-          "default": "var(--elevation-wash-raised)",
+          "default": "none",
           "output": false,
           "part": "trigger",
           "sheet": "@skryensya/core/components/copy-button.css"
@@ -11628,7 +12668,8 @@
                               "sk-anchored-arrow"
                             ],
                             "attrs": {
-                              "aria-hidden": "true"
+                              "aria-hidden": "true",
+                              "data-part": "arrow"
                             },
                             "element": "span"
                           }
@@ -11784,7 +12825,8 @@
                       "sk-anchored-arrow"
                     ],
                     "attrs": {
-                      "aria-hidden": "true"
+                      "aria-hidden": "true",
+                      "data-part": "arrow"
                     },
                     "element": "span"
                   }
@@ -12429,54 +13471,6 @@
         "valueChange": "sk:colorpickervaluechange"
       },
       "hookDetails": {
-        "--sk-anchored-align": {
-          "default": "auto",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/color-picker.css"
-        },
-        "--sk-anchored-arrow-edge": {
-          "default": "calc(\n        var(--sk-anchored-offset) +\n          var(--sk-anchored-arrow-inset, calc(var(--sk-anchored-arrow-size, 8px) * 1.5)) -\n          var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-arrow-near": {
-          "default": "calc(\n        var(--sk-anchored-offset) - var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-justify": {
-          "default": "start",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/color-picker.css"
-        },
-        "--sk-anchored-offset": {
-          "default": "var(--space-stack-xs) 0",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/color-picker.css"
-        },
-        "--sk-anchored-position-area": {
-          "default": "block-end span-inline-end",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/color-picker.css"
-        },
-        "--sk-anchored-position-try": {
-          "default": "flip-block",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/color-picker.css"
-        },
-        "--sk-anchored-size": {
-          "default": "max-content",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
         "--sk-anchored-z": {
           "default": "var(--z-popover)",
           "output": false,
@@ -12641,14 +13635,6 @@
         }
       },
       "hooks": [
-        "--sk-anchored-align",
-        "--sk-anchored-arrow-edge",
-        "--sk-anchored-arrow-near",
-        "--sk-anchored-justify",
-        "--sk-anchored-offset",
-        "--sk-anchored-position-area",
-        "--sk-anchored-position-try",
-        "--sk-anchored-size",
         "--sk-anchored-z",
         "--sk-color-picker-area-block-size",
         "--sk-color-picker-area-radius",
@@ -13279,54 +14265,6 @@
         "valueChange": "sk:comboboxvaluechange"
       },
       "hookDetails": {
-        "--sk-anchored-align": {
-          "default": "auto",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/combobox.css"
-        },
-        "--sk-anchored-arrow-edge": {
-          "default": "calc(\n        var(--sk-anchored-offset) +\n          var(--sk-anchored-arrow-inset, calc(var(--sk-anchored-arrow-size, 8px) * 1.5)) -\n          var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-arrow-near": {
-          "default": "calc(\n        var(--sk-anchored-offset) - var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-justify": {
-          "default": "start",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/combobox.css"
-        },
-        "--sk-anchored-offset": {
-          "default": "var(--space-stack-xs) 0",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/combobox.css"
-        },
-        "--sk-anchored-position-area": {
-          "default": "block-end span-inline-end",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/combobox.css"
-        },
-        "--sk-anchored-position-try": {
-          "default": "flip-block",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/combobox.css"
-        },
-        "--sk-anchored-size": {
-          "default": "anchor-size(width)",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/combobox.css"
-        },
         "--sk-anchored-z": {
           "default": "var(--z-popover)",
           "output": false,
@@ -13412,7 +14350,7 @@
           "sheet": "@skryensya/core/components/combobox.css"
         },
         "--sk-combobox-padding-x": {
-          "default": "var(--space-inset-sm)",
+          "default": "var(--space-inset-md)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/combobox.css"
@@ -13443,14 +14381,6 @@
         }
       },
       "hooks": [
-        "--sk-anchored-align",
-        "--sk-anchored-arrow-edge",
-        "--sk-anchored-arrow-near",
-        "--sk-anchored-justify",
-        "--sk-anchored-offset",
-        "--sk-anchored-position-area",
-        "--sk-anchored-position-try",
-        "--sk-anchored-size",
         "--sk-anchored-z",
         "--sk-combobox-bg",
         "--sk-combobox-border-color",
@@ -13497,6 +14427,13 @@
           "default": false,
           "trueValue": "",
           "type": "boolean"
+        },
+        "max": {
+          "attr": "data-max",
+          "integer": true,
+          "machineInput": true,
+          "min": 1,
+          "type": "number"
         },
         "multiple": {
           "attr": "data-multiple",
@@ -13583,6 +14520,13 @@
             {
               "of": "icon",
               "systemOwned": true
+            },
+            {
+              "of": "tag",
+              "sheets": [
+                "@skryensya/core/components/tag.css"
+              ],
+              "systemOwned": true
             }
           ],
           "forward": [
@@ -13609,6 +14553,7 @@
             "required",
             "readOnly",
             "multiple",
+            "max",
             "allowCustomValue",
             "appearance"
           ],
@@ -13713,7 +14658,7 @@
                     ],
                     "attrs": {
                       "data-icon-only": "",
-                      "data-size": "sm",
+                      "data-size": "xs",
                       "data-variant": "ghost",
                       "type": "button"
                     },
@@ -13731,8 +14676,15 @@
                     "part": "clear"
                   },
                   {
+                    "also": [
+                      "sk-button",
+                      "sk-interactive"
+                    ],
                     "attrs": {
-                      "aria-hidden": "true"
+                      "data-icon-only": "",
+                      "data-size": "sm",
+                      "data-variant": "ghost",
+                      "type": "button"
                     },
                     "children": [
                       {
@@ -13766,7 +14718,7 @@
                         "element": "span"
                       }
                     ],
-                    "element": "span",
+                    "element": "button",
                     "mount": "data-sk-combobox-trigger",
                     "part": "trigger"
                   }
@@ -15732,6 +16684,12 @@
           "markup": true,
           "portals": false,
           "react": "@skryensya/react/comparison-table#ComparisonTable"
+        },
+        "ComparisonTableScroll": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/comparison-table#ComparisonTableScroll"
         }
       },
       "category": "data",
@@ -15810,7 +16768,8 @@
         "cornerLabel": "sk-comparison-table__corner-label",
         "root": "sk-comparison-table",
         "row": "sk-comparison-table__row",
-        "rowHeader": "sk-comparison-table__row-header"
+        "rowHeader": "sk-comparison-table__row-header",
+        "scroll": "sk-comparison-table-scroll"
       },
       "semantics": {
         "ComparisonCell": {
@@ -15861,6 +16820,18 @@
             "two to four things are set side by side on the same few aspects: two components, three plans, an old and a new behaviour",
             "the reader has to decide between them, and the answer is in how the columns differ row by row",
             "every cell is short: a phrase, a bit of code, a link"
+          ]
+        },
+        "ComparisonTableScroll": {
+          "alternatives": [
+            "ComparisonTable"
+          ],
+          "avoidWhen": [
+            "the comparison is narrow and its container has a fixed width; there the wrapper adds nothing"
+          ],
+          "useWhen": [
+            "almost always: a comparison inside a flex or a grid pushes the column out and breaks the surface, and this is the box that shrinks in its place",
+            "the comparison is wider than its space and has to scroll sideways"
           ]
         }
       },
@@ -16063,6 +17034,36 @@
             "element": "table",
             "host": true,
             "part": "root"
+          }
+        },
+        "ComparisonTableScroll": {
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "scrollable-comparison-table",
+            "wide-comparison",
+            "comparison-that-does-not-blow-the-layout"
+          ],
+          "options": [],
+          "react": {
+            "from": "@skryensya/react/comparison-table",
+            "name": "ComparisonTableScroll"
+          },
+          "slots": {
+            "children": {
+              "accepts": "signature",
+              "of": [
+                "ComparisonTable"
+              ],
+              "required": true
+            }
+          },
+          "template": {
+            "element": "div",
+            "host": true,
+            "part": "scroll",
+            "slot": "children"
           }
         }
       }
@@ -16787,54 +17788,6 @@
         "valueChange": "sk:datepickervaluechange"
       },
       "hookDetails": {
-        "--sk-anchored-align": {
-          "default": "auto",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/date-picker.css"
-        },
-        "--sk-anchored-arrow-edge": {
-          "default": "calc(\n        var(--sk-anchored-offset) +\n          var(--sk-anchored-arrow-inset, calc(var(--sk-anchored-arrow-size, 8px) * 1.5)) -\n          var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-arrow-near": {
-          "default": "calc(\n        var(--sk-anchored-offset) - var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-justify": {
-          "default": "start",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/date-picker.css"
-        },
-        "--sk-anchored-offset": {
-          "default": "var(--space-stack-xs) 0",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/date-picker.css"
-        },
-        "--sk-anchored-position-area": {
-          "default": "block-end span-inline-end",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/date-picker.css"
-        },
-        "--sk-anchored-position-try": {
-          "default": "flip-block",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/date-picker.css"
-        },
-        "--sk-anchored-size": {
-          "default": "max-content",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
         "--sk-anchored-z": {
           "default": "var(--z-popover)",
           "output": false,
@@ -16969,14 +17922,6 @@
         }
       },
       "hooks": [
-        "--sk-anchored-align",
-        "--sk-anchored-arrow-edge",
-        "--sk-anchored-arrow-near",
-        "--sk-anchored-justify",
-        "--sk-anchored-offset",
-        "--sk-anchored-position-area",
-        "--sk-anchored-position-try",
-        "--sk-anchored-size",
         "--sk-anchored-z",
         "--sk-date-picker-affordance-color",
         "--sk-date-picker-backdrop-bg",
@@ -18450,6 +19395,18 @@
           "part": "root",
           "sheet": "@skryensya/core/components/dialog.css"
         },
+        "--sk-dialog-exit-duration": {
+          "default": "var(--motion-exit-duration)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dialog.css"
+        },
+        "--sk-dialog-exit-easing": {
+          "default": "var(--motion-exit-easing)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dialog.css"
+        },
         "--sk-dialog-fg": {
           "default": "var(--color-text-primary)",
           "output": false,
@@ -18512,6 +19469,8 @@
         "--sk-dialog-border-width",
         "--sk-dialog-brutalist-offset",
         "--sk-dialog-elevation",
+        "--sk-dialog-exit-duration",
+        "--sk-dialog-exit-easing",
         "--sk-dialog-fg",
         "--sk-dialog-footer-border-color",
         "--sk-dialog-footer-gap",
@@ -18861,6 +19820,18 @@
           "part": "root",
           "sheet": "@skryensya/core/components/dialog-stack.css"
         },
+        "--sk-dialog-stack-exit-duration": {
+          "default": "var(--motion-exit-duration)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dialog-stack.css"
+        },
+        "--sk-dialog-stack-exit-easing": {
+          "default": "var(--motion-exit-easing)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/dialog-stack.css"
+        },
         "--sk-dialog-stack-gap": {
           "default": "var(--space-stack-xs)",
           "output": false,
@@ -18894,7 +19865,9 @@
         "--sk-dialog-stack-radius",
         "--sk-dialog-stack-padding",
         "--sk-dialog-stack-elevation",
-        "--sk-dialog-stack-backdrop-bg"
+        "--sk-dialog-stack-backdrop-bg",
+        "--sk-dialog-stack-exit-duration",
+        "--sk-dialog-stack-exit-easing"
       ],
       "id": "dialog-stack",
       "options": {
@@ -19519,54 +20492,6 @@
         "ready": "sk:editorready"
       },
       "hookDetails": {
-        "--sk-anchored-align": {
-          "default": "auto",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-arrow-edge": {
-          "default": "calc(\n        var(--sk-anchored-offset) +\n          var(--sk-anchored-arrow-inset, calc(var(--sk-anchored-arrow-size, 8px) * 1.5)) -\n          var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-arrow-near": {
-          "default": "calc(\n        var(--sk-anchored-offset) - var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-justify": {
-          "default": "anchor-center",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-offset": {
-          "default": "var(--space-stack-xs)",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-position-area": {
-          "default": "block-end span-all",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-position-try": {
-          "default": "flip-block",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-size": {
-          "default": "max-content",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
         "--sk-anchored-z": {
           "default": "var(--z-popover)",
           "output": false,
@@ -19641,14 +20566,6 @@
         }
       },
       "hooks": [
-        "--sk-anchored-align",
-        "--sk-anchored-arrow-edge",
-        "--sk-anchored-arrow-near",
-        "--sk-anchored-justify",
-        "--sk-anchored-offset",
-        "--sk-anchored-position-area",
-        "--sk-anchored-position-try",
-        "--sk-anchored-size",
         "--sk-anchored-z",
         "--sk-editor-placeholder-fg",
         "--sk-editor-pressed-bg",
@@ -19959,7 +20876,21 @@
         "--sk-empty-state-title-size"
       ],
       "id": "empty-state",
-      "options": {},
+      "options": {
+        "headingElement": {
+          "default": "h2",
+          "prop": "headingElement",
+          "type": "enum",
+          "values": [
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6"
+          ]
+        }
+      },
       "parts": {
         "actions": "sk-empty-state__actions",
         "description": "sk-empty-state__description",
@@ -19995,7 +20926,9 @@
             "empty-list",
             "first-run"
           ],
-          "options": [],
+          "options": [
+            "headingElement"
+          ],
           "react": {
             "from": "@skryensya/react/empty-state",
             "name": "EmptyState"
@@ -20035,6 +20968,7 @@
               },
               {
                 "element": "h2",
+                "elementOption": "headingElement",
                 "part": "title",
                 "slot": "title"
               },
@@ -21428,8 +22362,8 @@
           "trueValue": "",
           "type": "boolean"
         },
-        "labelHidden": {
-          "attr": "data-label-hidden",
+        "labelVisuallyHidden": {
+          "attr": "data-label-visually-hidden",
           "default": false,
           "trueValue": "",
           "type": "boolean"
@@ -21455,7 +22389,7 @@
             "Input"
           ],
           "avoidWhen": [
-            "the control carries no label at all; then the control itself carries aria-label and there is no FormField (labelHidden is NOT this: the slot is still required)",
+            "the control carries no label at all; then the control itself carries aria-label and there is no FormField (labelVisuallyHidden is NOT this: the slot is still required)",
             "the aim is to mark it invalid without saying why; the error's presence is what invalidates, and color is never the only signal",
             "the control already brings its own label wired by its machine, like NumberField or Combobox; wrapping it would add a second `for` competing with the first"
           ],
@@ -21463,7 +22397,7 @@
             "a control needs a label, and it almost always does",
             "a validation message has to be shown next to the control",
             "a short hint is needed before the user types",
-            "the label has to exist for the screen reader but the composition already says it visually: labelHidden clips it without dropping the for"
+            "the label has to exist for the screen reader but the composition already says it visually: labelVisuallyHidden clips it without dropping the for"
           ]
         }
       },
@@ -21485,7 +22419,7 @@
           "options": [
             "required",
             "disabled",
-            "labelHidden"
+            "labelVisuallyHidden"
           ],
           "react": {
             "from": "@skryensya/react/form-field",
@@ -21876,7 +22810,10 @@
             "upload",
             "download",
             "file",
+            "file-text",
             "folder",
+            "folder-open",
+            "home",
             "settings",
             "user",
             "visibility",
@@ -22995,7 +23932,7 @@
           "sheet": "@skryensya/core/components/input.css"
         },
         "--sk-input-padding-x": {
-          "default": "var(--space-inset-sm)",
+          "default": "var(--space-inset-md)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/input.css"
@@ -23041,6 +23978,12 @@
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/input.css"
+        },
+        "--sk-textarea-autosize-max-block-size": {
+          "default": "40vh",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/input.css"
         }
       },
       "hooks": [
@@ -23064,7 +24007,8 @@
         "--sk-input-readonly-bg",
         "--sk-input-readonly-border-color",
         "--sk-input-shadow",
-        "--sk-input-wash"
+        "--sk-input-wash",
+        "--sk-textarea-autosize-max-block-size"
       ],
       "id": "input",
       "options": {
@@ -23076,6 +24020,12 @@
             "brutalist",
             "frosted"
           ]
+        },
+        "autoSize": {
+          "attr": "data-auto-size",
+          "default": false,
+          "trueValue": "",
+          "type": "boolean"
         },
         "controlSize": {
           "attr": "data-size",
@@ -23311,7 +24261,8 @@
             "placeholder",
             "disabled",
             "appearance",
-            "variant"
+            "variant",
+            "autoSize"
           ],
           "parents": [
             "FormField"
@@ -23851,6 +24802,12 @@
             "expanded"
           ]
         },
+        "sidebarPersistent": {
+          "attr": "data-sidebar-persistent",
+          "default": false,
+          "trueValue": "",
+          "type": "boolean"
+        },
         "stackJustify": {
           "attr": "data-justify",
           "prop": "justify",
@@ -23998,7 +24955,8 @@
           "options": [
             "shellHeight",
             "scroll",
-            "stickyHeader"
+            "stickyHeader",
+            "sidebarPersistent"
           ],
           "react": {
             "from": "@skryensya/react/layout",
@@ -24025,7 +24983,8 @@
             "options": [
               "shellHeight",
               "scroll",
-              "stickyHeader"
+              "stickyHeader",
+              "sidebarPersistent"
             ],
             "part": "appShell",
             "slot": "children"
@@ -26928,54 +27887,6 @@
         "openChange": "sk:megamenuopenchange"
       },
       "hookDetails": {
-        "--sk-anchored-align": {
-          "default": "auto",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-arrow-edge": {
-          "default": "calc(\n        var(--sk-anchored-offset) +\n          var(--sk-anchored-arrow-inset, calc(var(--sk-anchored-arrow-size, 8px) * 1.5)) -\n          var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-arrow-near": {
-          "default": "calc(\n        var(--sk-anchored-offset) - var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-justify": {
-          "default": "center",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/megamenu.css"
-        },
-        "--sk-anchored-offset": {
-          "default": "var(--space-stack-xs) 0",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/megamenu.css"
-        },
-        "--sk-anchored-position-area": {
-          "default": "block-end span-all",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/megamenu.css"
-        },
-        "--sk-anchored-position-try": {
-          "default": "flip-block",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-size": {
-          "default": "min(calc(anchor-size(width) - 2 * var(--sk-megamenu-gutter)), var(--size-wrapper-md))",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/megamenu.css"
-        },
         "--sk-anchored-z": {
           "default": "var(--z-popover)",
           "output": false,
@@ -27026,14 +27937,6 @@
         }
       },
       "hooks": [
-        "--sk-anchored-align",
-        "--sk-anchored-arrow-edge",
-        "--sk-anchored-arrow-near",
-        "--sk-anchored-justify",
-        "--sk-anchored-offset",
-        "--sk-anchored-position-area",
-        "--sk-anchored-position-try",
-        "--sk-anchored-size",
         "--sk-anchored-z",
         "--sk-megamenu-bg",
         "--sk-megamenu-border-color",
@@ -27272,54 +28175,6 @@
         "select": "sk:menuselect"
       },
       "hookDetails": {
-        "--sk-anchored-align": {
-          "default": "start",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/menu.css"
-        },
-        "--sk-anchored-arrow-edge": {
-          "default": "calc(\n        var(--sk-anchored-offset) +\n          var(--sk-anchored-arrow-inset, calc(var(--sk-anchored-arrow-size, 8px) * 1.5)) -\n          var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-arrow-near": {
-          "default": "calc(\n        var(--sk-anchored-offset) - var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-justify": {
-          "default": "start",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/menu.css"
-        },
-        "--sk-anchored-offset": {
-          "default": "var(--space-stack-xs) 0",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/menu.css"
-        },
-        "--sk-anchored-position-area": {
-          "default": "block-end span-inline-end",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/menu.css"
-        },
-        "--sk-anchored-position-try": {
-          "default": "flip-inline",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/menu.css"
-        },
-        "--sk-anchored-size": {
-          "default": "max-content",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
         "--sk-anchored-z": {
           "default": "var(--z-popover)",
           "output": false,
@@ -27388,14 +28243,6 @@
         }
       },
       "hooks": [
-        "--sk-anchored-align",
-        "--sk-anchored-arrow-edge",
-        "--sk-anchored-arrow-near",
-        "--sk-anchored-justify",
-        "--sk-anchored-offset",
-        "--sk-anchored-position-area",
-        "--sk-anchored-position-try",
-        "--sk-anchored-size",
         "--sk-anchored-z",
         "--sk-menu-bg",
         "--sk-menu-border-color",
@@ -27902,54 +28749,6 @@
       "category": "actions",
       "css": "@skryensya/core/components/menubar.css",
       "hookDetails": {
-        "--sk-anchored-align": {
-          "default": "auto",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-arrow-edge": {
-          "default": "calc(\n        var(--sk-anchored-offset) +\n          var(--sk-anchored-arrow-inset, calc(var(--sk-anchored-arrow-size, 8px) * 1.5)) -\n          var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-arrow-near": {
-          "default": "calc(\n        var(--sk-anchored-offset) - var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-justify": {
-          "default": "anchor-center",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-offset": {
-          "default": "var(--space-stack-xs)",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-position-area": {
-          "default": "block-end span-all",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-position-try": {
-          "default": "flip-block",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-size": {
-          "default": "max-content",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
         "--sk-anchored-z": {
           "default": "var(--z-popover)",
           "output": false,
@@ -27964,14 +28763,6 @@
         }
       },
       "hooks": [
-        "--sk-anchored-align",
-        "--sk-anchored-arrow-edge",
-        "--sk-anchored-arrow-near",
-        "--sk-anchored-justify",
-        "--sk-anchored-offset",
-        "--sk-anchored-position-area",
-        "--sk-anchored-position-try",
-        "--sk-anchored-size",
         "--sk-anchored-z",
         "--sk-menubar-gap"
       ],
@@ -30030,11 +30821,13 @@
         "Navbar": {
           "alternatives": [
             "Sidebar",
-            "Megamenu"
+            "Megamenu",
+            "AppBar"
           ],
           "avoidWhen": [
             "the navigation goes on the side; that is a Sidebar",
-            "a multi-column category panel is needed; that is Megamenu"
+            "a multi-column category panel is needed; that is Megamenu",
+            "a dense, ~24px application chrome bar (menus, undo, save state) is needed, not a page header; that is AppBar on its own, not inside a Navbar"
           ],
           "useWhen": [
             "the app needs a top bar with a brand and actions",
@@ -32197,54 +32990,6 @@
       "category": "overlays",
       "css": "@skryensya/core/components/popover.css",
       "hookDetails": {
-        "--sk-anchored-align": {
-          "default": "auto",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-arrow-edge": {
-          "default": "calc(\n        var(--sk-anchored-offset) +\n          var(--sk-anchored-arrow-inset, calc(var(--sk-anchored-arrow-size, 8px) * 1.5)) -\n          var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-arrow-near": {
-          "default": "calc(\n        var(--sk-anchored-offset) - var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-justify": {
-          "default": "anchor-center",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-offset": {
-          "default": "var(--space-stack-xs)",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-position-area": {
-          "default": "block-end span-all",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-position-try": {
-          "default": "flip-block",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-size": {
-          "default": "max-content",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
         "--sk-anchored-z": {
           "default": "var(--z-popover)",
           "output": false,
@@ -32295,14 +33040,6 @@
         }
       },
       "hooks": [
-        "--sk-anchored-align",
-        "--sk-anchored-arrow-edge",
-        "--sk-anchored-arrow-near",
-        "--sk-anchored-justify",
-        "--sk-anchored-offset",
-        "--sk-anchored-position-area",
-        "--sk-anchored-position-try",
-        "--sk-anchored-size",
         "--sk-anchored-z",
         "--sk-popover-bg",
         "--sk-popover-border-color",
@@ -33610,6 +34347,12 @@
           "part": "root",
           "sheet": "@skryensya/core/components/questionnaire.css"
         },
+        "--sk-questionnaire-padding-block": {
+          "default": "var(--space-inset-lg)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/questionnaire.css"
+        },
         "--sk-questionnaire-rail": {
           "default": "12rem",
           "output": false,
@@ -33665,6 +34408,7 @@
         "--sk-questionnaire-item-gap",
         "--sk-questionnaire-measure",
         "--sk-questionnaire-rail",
+        "--sk-questionnaire-padding-block",
         "--sk-questionnaire-shortcut-fg",
         "--sk-questionnaire-shortcut-gap",
         "--sk-questionnaire-shortcut-gutter",
@@ -33890,6 +34634,9 @@
         "progress": "sk-questionnaire__progress",
         "root": "sk-questionnaire",
         "scale": "sk-questionnaire__scale",
+        "section": "sk-questionnaire__section",
+        "sectionDescription": "sk-questionnaire__section-description",
+        "sectionTitle": "sk-questionnaire__section-title",
         "shortcut": "sk-questionnaire__shortcut",
         "skip": "sk-questionnaire__skip",
         "submit": "sk-questionnaire__submit",
@@ -34261,6 +35008,12 @@
             "description": {
               "accepts": "text"
             },
+            "section": {
+              "accepts": "text"
+            },
+            "sectionDescription": {
+              "accepts": "text"
+            },
             "title": {
               "accepts": "text",
               "required": true
@@ -34268,6 +35021,24 @@
           },
           "template": {
             "children": [
+              {
+                "children": [
+                  {
+                    "element": "p",
+                    "part": "sectionTitle",
+                    "slot": "section"
+                  },
+                  {
+                    "element": "p",
+                    "part": "sectionDescription",
+                    "slot": "sectionDescription",
+                    "whenGiven": "sectionDescription"
+                  }
+                ],
+                "element": "div",
+                "part": "section",
+                "whenGiven": "section"
+              },
               {
                 "element": "legend",
                 "part": "title",
@@ -35466,6 +36237,12 @@
           "part": "symbols",
           "sheet": "@skryensya/core/components/rating.css"
         },
+        "--sk-rating-fill-direction": {
+          "default": "to right",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/rating.css"
+        },
         "--sk-rating-gap": {
           "default": "var(--space-inline-xs)",
           "output": false,
@@ -35517,6 +36294,7 @@
       },
       "hooks": [
         "--sk-rating-fill",
+        "--sk-rating-fill-direction",
         "--sk-rating-gap",
         "--sk-rating-max",
         "--sk-rating-off-color",
@@ -35862,6 +36640,18 @@
           "part": "root",
           "sheet": "@skryensya/core/components/resizable.css"
         },
+        "--sk-resizable-panel-min-block-size": {
+          "default": "0",
+          "output": false,
+          "part": "panel",
+          "sheet": "@skryensya/core/components/resizable.css"
+        },
+        "--sk-resizable-panel-min-inline-size": {
+          "default": "0",
+          "output": false,
+          "part": "panel",
+          "sheet": "@skryensya/core/components/resizable.css"
+        },
         "--sk-resizable-size": {
           "default": "50",
           "output": true,
@@ -35874,6 +36664,8 @@
         "--sk-resizable-handle-color",
         "--sk-resizable-handle-hit",
         "--sk-resizable-handle-line",
+        "--sk-resizable-panel-min-block-size",
+        "--sk-resizable-panel-min-inline-size",
         "--sk-resizable-size"
       ],
       "id": "resizable",
@@ -35913,6 +36705,14 @@
           "max": 100,
           "min": 0,
           "type": "number"
+        },
+        "minBlockSize": {
+          "styleProperty": "--sk-resizable-panel-min-block-size",
+          "type": "string"
+        },
+        "minInlineSize": {
+          "styleProperty": "--sk-resizable-panel-min-inline-size",
+          "type": "string"
         },
         "minSize": {
           "attr": "data-min-size",
@@ -36092,7 +36892,9 @@
             "minSize",
             "maxSize",
             "collapsible",
-            "collapsedSize"
+            "collapsedSize",
+            "minInlineSize",
+            "minBlockSize"
           ],
           "parents": [
             "Resizable"
@@ -37048,54 +37850,6 @@
         "valueChange": "sk:selectvaluechange"
       },
       "hookDetails": {
-        "--sk-anchored-align": {
-          "default": "auto",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/select.css"
-        },
-        "--sk-anchored-arrow-edge": {
-          "default": "calc(\n        var(--sk-anchored-offset) +\n          var(--sk-anchored-arrow-inset, calc(var(--sk-anchored-arrow-size, 8px) * 1.5)) -\n          var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-arrow-near": {
-          "default": "calc(\n        var(--sk-anchored-offset) - var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-justify": {
-          "default": "start",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/select.css"
-        },
-        "--sk-anchored-offset": {
-          "default": "var(--space-stack-xs) 0",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/select.css"
-        },
-        "--sk-anchored-position-area": {
-          "default": "block-end span-inline-end",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/select.css"
-        },
-        "--sk-anchored-position-try": {
-          "default": "flip-block, flip-inline, flip-block flip-inline",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/select.css"
-        },
-        "--sk-anchored-size": {
-          "default": "anchor-size(width)",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/select.css"
-        },
         "--sk-anchored-z": {
           "default": "var(--z-popover)",
           "output": false,
@@ -37217,7 +37971,7 @@
           "sheet": "@skryensya/core/components/select.css"
         },
         "--sk-select-padding-x": {
-          "default": "var(--space-inset-sm)",
+          "default": "var(--space-inset-md)",
           "output": false,
           "part": "native",
           "sheet": "@skryensya/core/components/select.css"
@@ -37248,14 +38002,6 @@
         }
       },
       "hooks": [
-        "--sk-anchored-align",
-        "--sk-anchored-arrow-edge",
-        "--sk-anchored-arrow-near",
-        "--sk-anchored-justify",
-        "--sk-anchored-offset",
-        "--sk-anchored-position-area",
-        "--sk-anchored-position-try",
-        "--sk-anchored-size",
         "--sk-anchored-z",
         "--sk-select-bg",
         "--sk-select-border-color",
@@ -37347,6 +38093,7 @@
         "itemText": "sk-select__item-text",
         "label": "sk-select__label",
         "native": "sk-select-native",
+        "panel": "sk-select__panel",
         "positioner": "sk-select__positioner",
         "root": "sk-select",
         "trigger": "sk-select__trigger",
@@ -37567,43 +38314,52 @@
                     "children": [
                       {
                         "also": [
-                          "sk-interactive"
+                          "sk-scrollbar"
                         ],
                         "children": [
                           {
-                            "element": "span",
-                            "itemSlot": "label",
-                            "mount": "data-sk-select-item-text",
-                            "part": "itemText"
-                          },
-                          {
+                            "also": [
+                              "sk-interactive"
+                            ],
                             "children": [
                               {
-                                "attrs": {
-                                  "data-sk-icon": "check",
-                                  "data-sk-icon-size": "md"
-                                },
-                                "element": "span"
+                                "element": "span",
+                                "itemSlot": "label",
+                                "mount": "data-sk-select-item-text",
+                                "part": "itemText"
+                              },
+                              {
+                                "children": [
+                                  {
+                                    "attrs": {
+                                      "data-sk-icon": "check",
+                                      "data-sk-icon-size": "md"
+                                    },
+                                    "element": "span"
+                                  }
+                                ],
+                                "element": "span",
+                                "mount": "data-sk-select-item-indicator",
+                                "part": "itemIndicator"
                               }
                             ],
-                            "element": "span",
-                            "mount": "data-sk-select-item-indicator",
-                            "part": "itemIndicator"
+                            "element": "li",
+                            "itemOptions": [
+                              "value",
+                              "disabled"
+                            ],
+                            "mount": "data-sk-select-item",
+                            "part": "item",
+                            "repeat": "items"
                           }
                         ],
-                        "element": "li",
-                        "itemOptions": [
-                          "value",
-                          "disabled"
-                        ],
-                        "mount": "data-sk-select-item",
-                        "part": "item",
-                        "repeat": "items"
+                        "element": "ul",
+                        "mount": "data-sk-select-content",
+                        "part": "content"
                       }
                     ],
-                    "element": "ul",
-                    "mount": "data-sk-select-content",
-                    "part": "content"
+                    "element": "div",
+                    "part": "panel"
                   }
                 ],
                 "element": "div",
@@ -37670,7 +38426,21 @@
             }
           },
           "template": {
+            "also": [
+              "sk-scrollbar"
+            ],
             "children": [
+              {
+                "attrs": {
+                  "type": "button"
+                },
+                "children": [
+                  {
+                    "element": "selectedcontent"
+                  }
+                ],
+                "element": "button"
+              },
               {
                 "element": "option",
                 "itemOptions": [
@@ -37878,14 +38648,16 @@
               {
                 "element": "span",
                 "part": "label",
-                "slot": "children"
+                "slot": "children",
+                "whenGiven": "children"
               },
               {
                 "attrs": {
                   "aria-hidden": "true"
                 },
                 "element": "span",
-                "part": "rule"
+                "part": "rule",
+                "whenGiven": "children"
               }
             ],
             "element": "div",
@@ -39546,6 +40318,20 @@
             "from": "@skryensya/react/split-button",
             "name": "SplitButton"
           },
+          "slotImplies": [
+            {
+              "then": {
+                "equals": "true",
+                "option": "disabled",
+                "slot": "menu"
+              },
+              "when": {
+                "equals": "true",
+                "option": "loading",
+                "slot": "action"
+              }
+            }
+          ],
           "slots": {
             "action": {
               "accepts": "signature",
@@ -40043,7 +40829,10 @@
                       "upload",
                       "download",
                       "file",
+                      "file-text",
                       "folder",
+                      "folder-open",
+                      "home",
                       "settings",
                       "user",
                       "visibility",
@@ -40703,6 +41492,17 @@
       },
       "category": "data",
       "css": "@skryensya/core/components/table.css",
+      "eventDetails": {
+        "sortChange": {
+          "detail": {},
+          "reactProp": "onSortChange",
+          "source": "header",
+          "trigger": "sortButton"
+        }
+      },
+      "events": {
+        "sortChange": "sk:tablesortchange"
+      },
       "hookDetails": {
         "--sk-table-bg": {
           "default": "var(--color-bg-surface)",
@@ -40924,6 +41724,27 @@
             "row"
           ]
         },
+        "sortable": {
+          "attr": "data-sortable",
+          "default": false,
+          "machineInput": true,
+          "trueValue": "",
+          "type": "boolean"
+        },
+        "sortDirection": {
+          "attr": "aria-sort",
+          "type": "enum",
+          "values": [
+            "ascending",
+            "descending",
+            "none"
+          ]
+        },
+        "sortLabel": {
+          "attr": "aria-label",
+          "prop": "sortLabel",
+          "type": "string"
+        },
         "stickyColumn": {
           "attr": "data-sticky-column",
           "default": false,
@@ -40932,6 +41753,12 @@
         },
         "stickyHeader": {
           "attr": "data-sticky-header",
+          "default": false,
+          "trueValue": "",
+          "type": "boolean"
+        },
+        "visuallyHidden": {
+          "attr": "data-visually-hidden",
           "default": false,
           "trueValue": "",
           "type": "boolean"
@@ -40947,7 +41774,9 @@
         "header": "sk-table__header",
         "root": "sk-table",
         "row": "sk-table__row",
-        "scroll": "sk-table-scroll"
+        "scroll": "sk-table-scroll",
+        "sortButton": "sk-table__sort-button",
+        "sortIndicator": "sk-table__sort-indicator"
       },
       "semantics": {
         "Table": {
@@ -41234,12 +42063,17 @@
           "intent": [
             "column-header",
             "row-header",
-            "grouped-header"
+            "grouped-header",
+            "sortable-column-header"
           ],
           "options": [
             "scope",
             "colspan",
-            "rowspan"
+            "rowspan",
+            "sortable",
+            "sortDirection",
+            "sortLabel",
+            "visuallyHidden"
           ],
           "parents": [
             "TableRow"
@@ -41255,10 +42089,86 @@
             }
           },
           "template": {
+            "children": [
+              {
+                "also": [
+                  "sk-interactive"
+                ],
+                "attrs": {
+                  "data-sk-table-sort-button": "",
+                  "type": "button"
+                },
+                "children": [
+                  {
+                    "slot": "children"
+                  },
+                  {
+                    "attrs": {
+                      "aria-hidden": "true"
+                    },
+                    "children": [
+                      {
+                        "attrs": {
+                          "data-state": "ascending"
+                        },
+                        "children": [
+                          {
+                            "attrs": {
+                              "data-sk-icon": "arrow-up",
+                              "data-sk-icon-size": "sm"
+                            },
+                            "element": "span"
+                          }
+                        ],
+                        "element": "span"
+                      },
+                      {
+                        "attrs": {
+                          "data-state": "descending"
+                        },
+                        "children": [
+                          {
+                            "attrs": {
+                              "data-sk-icon": "arrow-down",
+                              "data-sk-icon-size": "sm"
+                            },
+                            "element": "span"
+                          }
+                        ],
+                        "element": "span"
+                      },
+                      {
+                        "attrs": {
+                          "data-state": "none"
+                        },
+                        "children": [
+                          {
+                            "attrs": {
+                              "data-sk-icon": "arrow-up",
+                              "data-sk-icon-size": "sm"
+                            },
+                            "element": "span"
+                          }
+                        ],
+                        "element": "span"
+                      }
+                    ],
+                    "element": "span",
+                    "part": "sortIndicator"
+                  }
+                ],
+                "element": "button",
+                "part": "sortButton",
+                "whenGiven": "sortable"
+              },
+              {
+                "slot": "children",
+                "whenMissing": "sortable"
+              }
+            ],
             "element": "th",
             "host": true,
-            "part": "header",
-            "slot": "children"
+            "part": "header"
           }
         },
         "TableRow": {
@@ -42224,8 +43134,7 @@
                 },
                 "slots": {
                   "children": {
-                    "accepts": "node",
-                    "required": true
+                    "accepts": "node"
                   },
                   "label": {
                     "accepts": "node",
@@ -42278,7 +43187,8 @@
                 ],
                 "itemSlot": "children",
                 "part": "content",
-                "repeat": "items"
+                "repeat": "items",
+                "whenItemSlotGiven": "children"
               }
             ],
             "element": "div",
@@ -42311,6 +43221,12 @@
           "react": "@skryensya/react/tag#Tag"
         },
         "Tag.link": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/tag#Tag"
+        },
+        "Tag.toggle": {
           "enhancer": null,
           "markup": true,
           "portals": false,
@@ -42388,6 +43304,12 @@
             "brutalist"
           ]
         },
+        "disabled": {
+          "attr": "aria-disabled",
+          "default": false,
+          "trueValue": "true",
+          "type": "boolean"
+        },
         "href": {
           "attr": "href",
           "type": "string"
@@ -42403,16 +43325,19 @@
           "default": "Remove",
           "type": "string"
         },
+        "selected": {
+          "attr": "aria-pressed",
+          "falseValue": "false",
+          "trueValue": "true",
+          "type": "boolean"
+        },
         "tone": {
           "attr": "data-tone",
           "default": "neutral",
           "type": "enum",
           "values": [
             "neutral",
-            "accent",
-            "success",
-            "warning",
-            "danger"
+            "accent"
           ]
         }
       },
@@ -42445,6 +43370,19 @@
           ],
           "useWhen": [
             "a label that navigates to a facet, a topic or a keyword"
+          ]
+        },
+        "Tag.toggle": {
+          "alternatives": [
+            "Segmented",
+            "Checkbox"
+          ],
+          "avoidWhen": [
+            "it also has to be removable or navigate; a toggle tag is a real button and cannot contain another button or be an anchor",
+            "there are several mutually exclusive choices in one group; that is Segmented or a radio group, not a set of independent toggles"
+          ],
+          "useWhen": [
+            "a choice chip the reader selects or deselects by clicking it: a filter they can turn on and off"
           ]
         }
       },
@@ -42483,7 +43421,8 @@
             "tone",
             "removable",
             "removeLabel",
-            "appearance"
+            "appearance",
+            "disabled"
           ],
           "react": {
             "from": "@skryensya/react/tag",
@@ -42516,6 +43455,15 @@
                   "data-variant": "ghost",
                   "type": "button"
                 },
+                "attrsWhen": [
+                  {
+                    "attrs": {
+                      "disabled": ""
+                    },
+                    "equals": "true",
+                    "option": "disabled"
+                  }
+                ],
                 "children": [
                   {
                     "attrs": {
@@ -42541,7 +43489,8 @@
         "Tag.link": {
           "forbids": [
             "removable",
-            "removeLabel"
+            "removeLabel",
+            "disabled"
           ],
           "forward": [
             "id",
@@ -42591,6 +43540,75 @@
               }
             ],
             "element": "a",
+            "host": true,
+            "part": "root"
+          }
+        },
+        "Tag.toggle": {
+          "forbids": [
+            "removable",
+            "removeLabel",
+            "href"
+          ],
+          "forward": [
+            "id",
+            "aria-*"
+          ],
+          "host": {
+            "element": "button",
+            "when": {
+              "href": "absent",
+              "selected": "present"
+            }
+          },
+          "intent": [
+            "filter-chip",
+            "choice-chip",
+            "selectable-keyword"
+          ],
+          "options": [
+            "tone",
+            "selected",
+            "appearance",
+            "disabled"
+          ],
+          "react": {
+            "from": "@skryensya/react/tag",
+            "name": "Tag"
+          },
+          "requires": [
+            "selected"
+          ],
+          "slots": {
+            "children": {
+              "accepts": "text",
+              "required": true
+            }
+          },
+          "template": {
+            "also": [
+              "sk-interactive"
+            ],
+            "attrs": {
+              "type": "button"
+            },
+            "attrsWhen": [
+              {
+                "attrs": {
+                  "disabled": ""
+                },
+                "equals": "true",
+                "option": "disabled"
+              }
+            ],
+            "children": [
+              {
+                "element": "span",
+                "part": "label",
+                "slot": "children"
+              }
+            ],
+            "element": "button",
             "host": true,
             "part": "root"
           }
@@ -42648,6 +43666,12 @@
         },
         "--sk-tags-input-border-width": {
           "default": "1px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/tags-input.css"
+        },
+        "--sk-tags-input-clear-offset": {
+          "default": "calc(\n      (\n          max(var(--size-control-md), var(--size-touch-target)) - var(--size-control-xs) -\n            2 * var(--sk-tags-input-border-width)\n        ) / 2\n    )",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/tags-input.css"
@@ -42731,6 +43755,7 @@
         "--sk-tags-input-bg",
         "--sk-tags-input-border-color",
         "--sk-tags-input-border-width",
+        "--sk-tags-input-clear-offset",
         "--sk-tags-input-disabled-bg",
         "--sk-tags-input-disabled-border-color",
         "--sk-tags-input-gap",
@@ -42827,6 +43852,7 @@
         }
       },
       "parts": {
+        "clear": "sk-tags-input__clear",
         "control": "sk-tags-input__control",
         "hidden": "sk-tags-input__hidden",
         "input": "sk-tags-input__input",
@@ -42836,7 +43862,8 @@
         "preview": "sk-tags-input__item-preview",
         "remove": "sk-tags-input__item-remove",
         "root": "sk-tags-input",
-        "text": "sk-tags-input__item-text"
+        "text": "sk-tags-input__item-text",
+        "value": "sk-tags-input__value"
       },
       "semantics": {
         "TagsInput": {
@@ -42866,6 +43893,17 @@
               "sheets": [
                 "@skryensya/core/components/tag.css"
               ],
+              "systemOwned": true
+            },
+            {
+              "of": "button",
+              "sheets": [
+                "@skryensya/core/components/button.css"
+              ],
+              "systemOwned": true
+            },
+            {
+              "of": "icon",
               "systemOwned": true
             }
           ],
@@ -42932,97 +43970,128 @@
                       {
                         "children": [
                           {
-                            "attrsFromItemSlot": {
-                              "data-value": "label"
-                            },
                             "children": [
                               {
-                                "also": [
-                                  "sk-tag"
-                                ],
-                                "attrs": {
-                                  "data-removable": ""
+                                "attrsFromItemSlot": {
+                                  "data-value": "label"
                                 },
                                 "children": [
                                   {
                                     "also": [
-                                      "sk-tag__label"
-                                    ],
-                                    "element": "span",
-                                    "itemSlot": "label",
-                                    "mount": "data-sk-tags-input-item-text",
-                                    "part": "text"
-                                  },
-                                  {
-                                    "also": [
-                                      "sk-tag__remove",
-                                      "sk-button",
-                                      "sk-interactive"
+                                      "sk-tag"
                                     ],
                                     "attrs": {
-                                      "data-appearance": "plain",
-                                      "data-icon-only": "",
-                                      "data-size": "sm",
-                                      "data-sk-button": "",
-                                      "data-tone": "neutral",
-                                      "data-variant": "ghost",
-                                      "type": "button"
+                                      "data-removable": ""
                                     },
                                     "children": [
                                       {
+                                        "also": [
+                                          "sk-tag__label"
+                                        ],
+                                        "element": "span",
+                                        "itemSlot": "label",
+                                        "mount": "data-sk-tags-input-item-text",
+                                        "part": "text"
+                                      },
+                                      {
+                                        "also": [
+                                          "sk-tag__remove",
+                                          "sk-button",
+                                          "sk-interactive"
+                                        ],
                                         "attrs": {
-                                          "data-sk-icon": "close",
-                                          "data-sk-icon-size": "md"
+                                          "data-appearance": "plain",
+                                          "data-icon-only": "",
+                                          "data-size": "sm",
+                                          "data-sk-button": "",
+                                          "data-tone": "neutral",
+                                          "data-variant": "ghost",
+                                          "type": "button"
                                         },
-                                        "element": "span"
+                                        "children": [
+                                          {
+                                            "attrs": {
+                                              "data-sk-icon": "close",
+                                              "data-sk-icon-size": "md"
+                                            },
+                                            "element": "span"
+                                          }
+                                        ],
+                                        "element": "button",
+                                        "mount": "data-sk-tags-input-item-remove",
+                                        "options": [
+                                          "removeLabel"
+                                        ],
+                                        "part": "remove"
                                       }
                                     ],
-                                    "element": "button",
-                                    "mount": "data-sk-tags-input-item-remove",
-                                    "options": [
-                                      "removeLabel"
-                                    ],
-                                    "part": "remove"
+                                    "element": "span",
+                                    "mount": "data-sk-tags-input-item-preview",
+                                    "part": "preview"
+                                  },
+                                  {
+                                    "attrs": {
+                                      "hidden": "",
+                                      "type": "text"
+                                    },
+                                    "element": "input",
+                                    "mount": "data-sk-tags-input-item-input",
+                                    "part": "itemInput"
                                   }
                                 ],
                                 "element": "span",
-                                "mount": "data-sk-tags-input-item-preview",
-                                "part": "preview"
-                              },
-                              {
-                                "attrs": {
-                                  "hidden": "",
-                                  "type": "text"
-                                },
-                                "element": "input",
-                                "mount": "data-sk-tags-input-item-input",
-                                "part": "itemInput"
+                                "mount": "data-sk-tags-input-item",
+                                "part": "item"
                               }
                             ],
-                            "element": "span",
-                            "mount": "data-sk-tags-input-item",
-                            "part": "item"
+                            "repeat": "items"
                           }
                         ],
-                        "repeat": "items"
+                        "element": "span",
+                        "mount": "data-sk-tags-input-items",
+                        "part": "list"
+                      },
+                      {
+                        "attrs": {
+                          "autocomplete": "off",
+                          "type": "text"
+                        },
+                        "element": "input",
+                        "mount": "data-sk-tags-input-input",
+                        "options": [
+                          "label",
+                          "placeholder"
+                        ],
+                        "part": "input"
                       }
                     ],
-                    "element": "span",
-                    "mount": "data-sk-tags-input-items",
-                    "part": "list"
+                    "element": "div",
+                    "mount": "data-sk-tags-input-value",
+                    "part": "value"
                   },
                   {
-                    "attrs": {
-                      "autocomplete": "off",
-                      "type": "text"
-                    },
-                    "element": "input",
-                    "mount": "data-sk-tags-input-input",
-                    "options": [
-                      "label",
-                      "placeholder"
+                    "also": [
+                      "sk-button",
+                      "sk-interactive"
                     ],
-                    "part": "input"
+                    "attrs": {
+                      "data-icon-only": "",
+                      "data-size": "xs",
+                      "data-variant": "ghost",
+                      "type": "button"
+                    },
+                    "children": [
+                      {
+                        "attrs": {
+                          "data-sk-icon": "close",
+                          "data-sk-icon-size": "sm"
+                        },
+                        "element": "span"
+                      }
+                    ],
+                    "element": "button",
+                    "mount": "data-sk-tags-input-clear",
+                    "part": "clear"
                   }
                 ],
                 "element": "div",
@@ -44247,54 +45316,6 @@
         "valueChange": "sk:timefieldvaluechange"
       },
       "hookDetails": {
-        "--sk-anchored-align": {
-          "default": "auto",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/components/select.css"
-        },
-        "--sk-anchored-arrow-edge": {
-          "default": "calc(\n        var(--sk-anchored-offset) +\n          var(--sk-anchored-arrow-inset, calc(var(--sk-anchored-arrow-size, 8px) * 1.5)) -\n          var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-arrow-near": {
-          "default": "calc(\n        var(--sk-anchored-offset) - var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-justify": {
-          "default": "start",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/components/select.css"
-        },
-        "--sk-anchored-offset": {
-          "default": "var(--space-stack-xs) 0",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/components/select.css"
-        },
-        "--sk-anchored-position-area": {
-          "default": "block-end span-inline-end",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/components/select.css"
-        },
-        "--sk-anchored-position-try": {
-          "default": "flip-block, flip-inline, flip-block flip-inline",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/components/select.css"
-        },
-        "--sk-anchored-size": {
-          "default": "anchor-size(width)",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/components/select.css"
-        },
         "--sk-anchored-z": {
           "default": "var(--z-popover)",
           "output": false,
@@ -44416,7 +45437,7 @@
           "sheet": "@skryensya/core/components/select.css"
         },
         "--sk-select-padding-x": {
-          "default": "var(--space-inset-sm)",
+          "default": "var(--space-inset-md)",
           "output": false,
           "part": null,
           "sheet": "@skryensya/core/components/select.css"
@@ -44537,14 +45558,6 @@
         }
       },
       "hooks": [
-        "--sk-anchored-align",
-        "--sk-anchored-arrow-edge",
-        "--sk-anchored-arrow-near",
-        "--sk-anchored-justify",
-        "--sk-anchored-offset",
-        "--sk-anchored-position-area",
-        "--sk-anchored-position-try",
-        "--sk-anchored-size",
         "--sk-anchored-z",
         "--sk-select-bg",
         "--sk-select-border-color",
@@ -45408,6 +46421,17 @@
           "prop": "label",
           "type": "string"
         },
+        "justify": {
+          "attr": "data-justify",
+          "default": "start",
+          "type": "enum",
+          "values": [
+            "start",
+            "center",
+            "end",
+            "between"
+          ]
+        },
         "label": {
           "attr": "aria-label",
           "type": "string"
@@ -45480,7 +46504,8 @@
             "orientation",
             "label",
             "loopFocus",
-            "appearance"
+            "appearance",
+            "justify"
           ],
           "react": {
             "from": "@skryensya/react/toolbar",
@@ -45590,54 +46615,6 @@
         "openChange": "sk:tooltipopenchange"
       },
       "hookDetails": {
-        "--sk-anchored-align": {
-          "default": "auto",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-arrow-edge": {
-          "default": "calc(\n        var(--sk-anchored-offset) +\n          var(--sk-anchored-arrow-inset, calc(var(--sk-anchored-arrow-size, 8px) * 1.5)) -\n          var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-arrow-near": {
-          "default": "calc(\n        var(--sk-anchored-offset) - var(--sk-anchored-arrow-size, 8px) / 2\n      )",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-justify": {
-          "default": "anchor-center",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-anchored-offset": {
-          "default": "var(--sk-tooltip-offset, var(--space-stack-xs))",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/tooltip.css"
-        },
-        "--sk-anchored-position-area": {
-          "default": "block-start span-all",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/tooltip.css"
-        },
-        "--sk-anchored-position-try": {
-          "default": "flip-block",
-          "output": false,
-          "part": "positioner",
-          "sheet": "@skryensya/core/components/tooltip.css"
-        },
-        "--sk-anchored-size": {
-          "default": "max-content",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
         "--sk-anchored-z": {
           "default": "var(--z-popover)",
           "output": false,
@@ -45668,12 +46645,6 @@
           "part": "root",
           "sheet": "@skryensya/core/components/tooltip.css"
         },
-        "--sk-tooltip-offset": {
-          "default": "var(--space-stack-xs)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/tooltip.css"
-        },
         "--sk-tooltip-padding": {
           "default": "var(--space-inset-sm)",
           "output": false,
@@ -45700,20 +46671,11 @@
         }
       },
       "hooks": [
-        "--sk-anchored-align",
-        "--sk-anchored-arrow-edge",
-        "--sk-anchored-arrow-near",
-        "--sk-anchored-justify",
-        "--sk-anchored-offset",
-        "--sk-anchored-position-area",
-        "--sk-anchored-position-try",
-        "--sk-anchored-size",
         "--sk-anchored-z",
         "--sk-tooltip-bg",
         "--sk-tooltip-fg",
         "--sk-tooltip-font-size",
         "--sk-tooltip-max-inline-size",
-        "--sk-tooltip-offset",
         "--sk-tooltip-padding",
         "--sk-tooltip-radius",
         "--sk-tooltip-shadow",
@@ -46649,6 +47611,12 @@
       ],
       "id": "tree-view",
       "options": {
+        "collapsible": {
+          "attr": "data-collapsible",
+          "default": true,
+          "falseValue": "false",
+          "type": "boolean"
+        },
         "defaultExpandedValue": {
           "attr": "data-expanded-value",
           "keyOf": {
@@ -46681,6 +47649,12 @@
             "single",
             "multiple"
           ]
+        },
+        "wrap": {
+          "attr": "data-wrap",
+          "default": false,
+          "trueValue": "",
+          "type": "boolean"
         }
       },
       "parts": {
@@ -46738,7 +47712,9 @@
             "label",
             "selectionMode",
             "defaultExpandedValue",
-            "defaultSelectedValue"
+            "defaultSelectedValue",
+            "collapsible",
+            "wrap"
           ],
           "react": {
             "from": "@skryensya/react/tree-view",
@@ -48023,6 +48999,12 @@
         "valueChange": "sk:userselectvaluechange"
       },
       "hookDetails": {
+        "--sk-select-padding-x": {
+          "default": "var(--space-inset-sm)",
+          "output": false,
+          "part": "trigger",
+          "sheet": "@skryensya/core/components/user-select.css"
+        },
         "--sk-user-select-content-max-block-size": {
           "default": "22rem",
           "output": false,
@@ -48043,6 +49025,7 @@
         }
       },
       "hooks": [
+        "--sk-select-padding-x",
         "--sk-user-select-content-max-block-size",
         "--sk-user-select-content-min-inline-size",
         "--sk-user-select-list-block-size"
@@ -48355,6 +49338,30 @@
                         },
                         "element": "input",
                         "mount": "data-sk-user-select-search"
+                      },
+                      {
+                        "also": [
+                          "sk-button",
+                          "sk-interactive"
+                        ],
+                        "attrs": {
+                          "data-icon-only": "",
+                          "data-size": "xs",
+                          "data-variant": "ghost",
+                          "hidden": "",
+                          "type": "button"
+                        },
+                        "children": [
+                          {
+                            "attrs": {
+                              "data-sk-icon": "close",
+                              "data-sk-icon-size": "sm"
+                            },
+                            "element": "span"
+                          }
+                        ],
+                        "element": "button",
+                        "mount": "data-sk-user-select-search-clear"
                       },
                       {
                         "also": [
@@ -50836,7 +51843,7 @@
     "working": "0.0.3"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "85af09bba37eccc7",
+  "sourceHash": "ce6e6446ae3ca442",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",
@@ -50844,7 +51851,7 @@
     "between": "A number bounded by other options of the same node, inclusive; an omitted bound reads as its default.",
     "childAttrs": "Slot `childAttrs` names attributes a direct child may carry on its own host (LayoutGrid `data-width`). Authored on the child via UsageTree `attrs`; values are checked against each option.",
     "compose": "Signature `compose` lists families this signature borrows (`of` = contract id) via `also` / baked chrome / binding injection. Optional `sheets` must exist in the CSS corpus; `systemOwned: true` means the composed markup is not an authored UsageTree child.",
-    "contractSurface": "Changelog `surface` hashes the public contract: css, parts, options (type/values/default/attr/prop/constraints/computedInput/…), events, eventDetails, a11y, hooks, hookSheets, outputHooks, authoredAttrs, systemOwned, and per signature host, option lists, requires/forbids/groups, parents, notInside, descendants, implies/excludes/pairs, slots, mount, portals, hitTesting, forward, compose, deprecated. Excludes template (also/attrs/attrsWhen/optionAttrs/…), wiring, because, intent, react, category, and option.machineInput.",
+    "contractSurface": "Changelog `surface` hashes the public contract: css, parts, options (type/values/default/attr/prop/constraints/computedInput/…), events, eventDetails, a11y, hooks, hookSheets, outputHooks, authoredAttrs, systemOwned, and per signature host, option lists, requires/forbids/groups, parents, notInside, descendants, implies/excludes/pairs/slotImplies, slots, mount, portals, hitTesting, forward, compose, deprecated. Excludes template (also/attrs/attrsWhen/optionAttrs/…), wiring, because, intent, react, category, and option.machineInput.",
     "descendants": "Per group, at least `min` of the `of` signatures (counted together) sit anywhere below this node, through every slot and collection entry.",
     "element": "An enum whose value is the host element's tag instead of an attribute.",
     "events": {
@@ -50876,6 +51883,7 @@
       "advisory": "The rule cannot be settled from the tree alone, or the shape is legal but usually a mistake.",
       "error": "The tree is invalid."
     },
+    "slotImplies": "When the child in `when.slot` has `when.option` equal to `when.equals`, the child in `then.slot` must have `then.option` equal to `then.equals`. One-way, unlike `pairs`: the reverse need not hold. A side with no value takes its own default.",
     "slotRules": {
       "cardinality": "Per signature: `one` exactly one, `optional` at most one, `many` any number.",
       "countWhere": "How many collection entries may have `option` equal to `equals`.",

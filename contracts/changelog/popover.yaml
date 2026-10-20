@@ -3,8 +3,16 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "d75c29f8f816fb0c"
+surface: "89b4e78e48bc6a3b"
 entries:
+  - date: 2026-10-19
+    kind: bugfix
+    es:
+      title: Se retiran ocho hooks de anchoring que no hacían nada
+      body: "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> y <code>--sk-anchored-size</code> estaban en la lista de hooks, pero ninguna hoja de estilos de la librería los declara jamás, ni siquiera el patrón <code>anchored.css</code> que los originó: sobrescribir cualquiera de ellos no hacía nada, en silencio. Solo queda <code>--sk-anchored-z</code>, el único que de verdad se usa."
+    en:
+      title: Eight dead anchoring hooks removed
+      body: "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> and <code>--sk-anchored-size</code> were listed as hooks, but no stylesheet in the library ever declares them, not even the <code>anchored.css</code> pattern they came from: overriding any of them did nothing, silently. Only <code>--sk-anchored-z</code> remains, the one actually in use."
   - date: 2026-10-02
     kind: bugfix
     target: arrow

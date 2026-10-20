@@ -3,11 +3,19 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "5da66e1cdc979876"
+surface: "ea04f7175264f091"
 entries:
+  - date: 2026-10-19
+    kind: feature
+    target: max
+    es:
+      title: max limita cuántas opciones se pueden elegir
+      body: "En modo multiple, al llegar a max toda opción no elegida se deshabilita (el check sigue visible en las ya elegidas) y el placeholder desaparece: no invita a buscar algo que no puede ir a ningún lado."
+    en:
+      title: max caps how many options can be chosen
+      body: "In multiple mode, once max is reached every unchosen option disables (the check stays visible on the ones already picked) and the placeholder drops: nothing invites a search that could not go anywhere."
   - date: 2026-10-17
     kind: feature
-    target: Combobox (React)
     es:
       title: "options y aria-label: Select migra a Combobox sin reescribir su árbol de opciones"
       body: "El binding de React acepta options (la forma de SelectOption, ya un subconjunto de ComboboxItem) como alias de items, y aria-label/aria-labelledby como nombre accesible oculto, igual que Select. El contrato declarativo sigue exigiendo un label visible; esto es específico del binding de React."

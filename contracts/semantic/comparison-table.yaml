@@ -1,5 +1,14 @@
 # The structure lives in packages/core/src/comparison-table.ts. Here, only why it is chosen.
 
+ComparisonTableScroll:
+  useWhen:
+    - "almost always: a comparison inside a flex or a grid pushes the column out and breaks the surface, and this is the box that shrinks in its place"
+    - "the comparison is wider than its space and has to scroll sideways"
+  avoidWhen:
+    - "the comparison is narrow and its container has a fixed width; there the wrapper adds nothing"
+  alternatives:
+    - ComparisonTable
+
 ComparisonTable:
   useWhen:
     - "two to four things are set side by side on the same few aspects: two components, three plans, an old and a new behaviour"

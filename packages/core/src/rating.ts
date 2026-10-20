@@ -100,6 +100,7 @@ export const ratingContract = {
   },
   hooks: [
     "--sk-rating-fill",
+    "--sk-rating-fill-direction",
     "--sk-rating-gap",
     "--sk-rating-max",
     "--sk-rating-off-color",

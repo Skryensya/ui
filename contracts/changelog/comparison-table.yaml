@@ -3,8 +3,17 @@
 # `surface` es la forma del contrato la última vez que alguien la revisó. Si el compilador dice
 # que no coincide, algo de lo que un consumidor depende se movió: escribe la entrada y pega el
 # hash nuevo.
-surface: "58c46b1c0d4ac6a5"
+surface: "a20dca3bcd64227f"
 entries:
+  - date: 2026-10-19
+    kind: feature
+    target: ComparisonTableScroll
+    es:
+      title: ComparisonTableScroll para una comparación ancha
+      body: "La misma caja que TableScroll, para el mismo motivo: table-layout se queda en auto, así que ni overflow ni max-inline-size en el propio table lo limitan de verdad. Es opt-in: una comparación de dos columnas en una columna ancha nunca la necesita."
+    en:
+      title: ComparisonTableScroll for a wide comparison
+      body: "The same box TableScroll is, for the same reason: table-layout stays auto, so neither overflow nor max-inline-size on the table itself actually caps it. Opt-in: a two-column comparison in a wide column never needs it."
   - date: 2026-10-02
     kind: feature
     es:

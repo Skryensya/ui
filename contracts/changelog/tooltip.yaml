@@ -3,8 +3,16 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "ea6bdc9c9a9c24ea"
+surface: "4316ecc63a91a121"
 entries:
+  - date: 2026-10-19
+    kind: bugfix
+    es:
+      title: Se retira el hook --sk-tooltip-offset, que no hacía nada
+      body: "Estaba en la lista de hooks del contrato, pero ninguna hoja de estilos de Tooltip lo declara: sobrescribirlo no cambiaba nada, en silencio."
+    en:
+      title: --sk-tooltip-offset removed; it did nothing
+      body: "It was listed as a contract hook, but no Tooltip stylesheet ever declares it: overriding it changed nothing, silently."
   - date: 2026-10-01
     kind: feature
     es:

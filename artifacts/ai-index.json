@@ -1350,6 +1350,26 @@
       "signatures": [
         {
           "alternatives": [
+            "ComparisonTable"
+          ],
+          "avoidWhen": [
+            "the comparison is narrow and its container has a fixed width; there the wrapper adds nothing"
+          ],
+          "host": "div",
+          "id": "ComparisonTableScroll",
+          "intent": [
+            "scrollable-comparison-table",
+            "wide-comparison",
+            "comparison-that-does-not-blow-the-layout"
+          ],
+          "parents": [],
+          "useWhen": [
+            "almost always: a comparison inside a flex or a grid pushes the column out and breaks the surface, and this is the box that shrinks in its place",
+            "the comparison is wider than its space and has to scroll sideways"
+          ]
+        },
+        {
+          "alternatives": [
             "Table",
             "DescriptionList",
             "DataGrid"
@@ -2173,7 +2193,7 @@
             "Input"
           ],
           "avoidWhen": [
-            "the control carries no label at all; then the control itself carries aria-label and there is no FormField (labelHidden is NOT this: the slot is still required)",
+            "the control carries no label at all; then the control itself carries aria-label and there is no FormField (labelVisuallyHidden is NOT this: the slot is still required)",
             "the aim is to mark it invalid without saying why; the error's presence is what invalidates, and color is never the only signal",
             "the control already brings its own label wired by its machine, like NumberField or Combobox; wrapping it would add a second `for` competing with the first"
           ],
@@ -2190,7 +2210,7 @@
             "a control needs a label, and it almost always does",
             "a validation message has to be shown next to the control",
             "a short hint is needed before the user types",
-            "the label has to exist for the screen reader but the composition already says it visually: labelHidden clips it without dropping the for"
+            "the label has to exist for the screen reader but the composition already says it visually: labelVisuallyHidden clips it without dropping the for"
           ]
         }
       ]
@@ -3418,11 +3438,13 @@
         {
           "alternatives": [
             "Sidebar",
-            "Megamenu"
+            "Megamenu",
+            "AppBar"
           ],
           "avoidWhen": [
             "the navigation goes on the side; that is a Sidebar",
-            "a multi-column category panel is needed; that is Megamenu"
+            "a multi-column category panel is needed; that is Megamenu",
+            "a dense, ~24px application chrome bar (menus, undo, save state) is needed, not a page header; that is AppBar on its own, not inside a Navbar"
           ],
           "host": "header",
           "id": "Navbar",
@@ -5030,7 +5052,8 @@
           "intent": [
             "column-header",
             "row-header",
-            "grouped-header"
+            "grouped-header",
+            "sortable-column-header"
           ],
           "parents": [
             "TableRow"
@@ -5253,6 +5276,27 @@
           "parents": [],
           "useWhen": [
             "a label that navigates to a facet, a topic or a keyword"
+          ]
+        },
+        {
+          "alternatives": [
+            "Segmented",
+            "Checkbox"
+          ],
+          "avoidWhen": [
+            "it also has to be removable or navigate; a toggle tag is a real button and cannot contain another button or be an anchor",
+            "there are several mutually exclusive choices in one group; that is Segmented or a radio group, not a set of independent toggles"
+          ],
+          "host": "button",
+          "id": "Tag.toggle",
+          "intent": [
+            "filter-chip",
+            "choice-chip",
+            "selectable-keyword"
+          ],
+          "parents": [],
+          "useWhen": [
+            "a choice chip the reader selects or deselects by clicking it: a filter they can turn on and off"
           ]
         }
       ]
@@ -6308,5 +6352,5 @@
     }
   ],
   "schemaVersion": "2.3",
-  "sourceHash": "85af09bba37eccc7"
+  "sourceHash": "ce6e6446ae3ca442"
 }

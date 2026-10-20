@@ -113,6 +113,7 @@ export const tagsInputContract = {
     "--sk-tags-input-bg",
     "--sk-tags-input-border-color",
     "--sk-tags-input-border-width",
+    "--sk-tags-input-clear-offset",
     "--sk-tags-input-disabled-bg",
     "--sk-tags-input-disabled-border-color",
     "--sk-tags-input-gap",

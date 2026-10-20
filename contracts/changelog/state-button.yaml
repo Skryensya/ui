@@ -3,8 +3,16 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "8f404d1c3e808737"
+surface: "9d1cbd0dabf84fdc"
 entries:
+  - date: 2026-09-26
+    kind: feature
+    es:
+      title: StateButton reenvía data-appearance, igual que variant y size
+      body: "La hoja de Button ya pinta tactile, brutalist y frosted en el anfitrión; ahora data-appearance se reenvía igual que data-variant y data-size, sin declararse como option propia."
+    en:
+      title: StateButton forwards data-appearance, like variant and size
+      body: "Button's own sheet already paints tactile, brutalist and frosted on the host; data-appearance now forwards the same way data-variant and data-size do, without being its own declared option."
   - date: 2026-10-02
     kind: feature
     es:

@@ -3,8 +3,17 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "f9b4ed26d728ac87"
+surface: "ad12d94697fc6aed"
 entries:
+  - date: 2026-10-19
+    kind: feature
+    target: fade
+    es:
+      title: Bordes que se desvanecen y un contador en vez de puntos
+      body: "<code>fade</code> compone FadeEdge para desvanecer los dos extremos de la pista, así el slide que se asoma se libera en vez de cortarse en seco. <code>indicator=\"count\"</code> cambia los puntos por un contador \"2 / 5\"."
+    en:
+      title: Fading edges and a counter in place of dots
+      body: "<code>fade</code> composes FadeEdge to fade the track's two ends, so a peeking slide releases instead of hard-clipping. <code>indicator=\"count\"</code> swaps the dots for a \"2 / 5\" counter."
   - date: 2026-10-01
     kind: feature
     es:

@@ -150,7 +150,6 @@ export const tooltipContract = {
     "--sk-tooltip-fg",
     "--sk-tooltip-font-size",
     "--sk-tooltip-max-inline-size",
-    "--sk-tooltip-offset",
     "--sk-tooltip-padding",
     "--sk-tooltip-radius",
     "--sk-tooltip-shadow",
