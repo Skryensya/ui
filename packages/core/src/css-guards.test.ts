@@ -152,18 +152,18 @@ describe("button brutalist appearance", () => {
     expect(offenders.map(({ selector }) => selector)).toEqual([]);
   });
 
-  /* Hover and press move the travel, and only press may add the transform: a `translate` at rest or
-   * on hover cuts the xs/sm touch target back to the face (see the comment in button.css). */
-  it("moves only the travel on hover and press, and transforms only while pressed", () => {
+  /* Hover and press move the travel and nothing else: the face and shadow both read it, and a
+   * `translate` anywhere cuts the xs/sm touch target back to the face (see the comment in button.css). */
+  it("moves only the travel on hover and press, and never transforms", () => {
     const interactive = rules.filter(({ selector }) => /:hover|:active/.test(selector) && !/forced/.test(selector));
     expect(interactive.length).toBeGreaterThan(0);
     for (const { selector, body } of interactive) {
       const properties = [...body.matchAll(/([-\w]+)\s*:/g)].map(([, name]) => name);
       if (/:active/.test(selector) && properties.includes("translate") && !properties.includes("--brutalist-travel")) continue;
-      expect(properties, selector).toEqual(/:active/.test(selector) ? ["--brutalist-travel", "translate"] : ["--brutalist-travel"]);
+      expect(properties, selector).toEqual(["--brutalist-travel"]);
       expect(selector, selector).toMatch(/:not\(:disabled\):not\(\[aria-disabled="true"\]\)/);
     }
-    const atRest = rules.filter(({ selector, body }) => !/:active/.test(selector) && /(^|[\s;])translate\s*:/.test(body));
+    const atRest = rules.filter(({ body }) => /(^|[\s;])translate\s*:/.test(body));
     expect(atRest.map(({ selector }) => selector)).toEqual([]);
   });
 

@@ -28,6 +28,13 @@
 @import url("./loader.css");
 @import url("../patterns/a11y-warn.css");
 
+/* The brutalist press is ONE animated number: face and shadow both read it, so they cannot drift. */
+@property --brutalist-travel {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
 @layer components {
   .sk-button {
     --sk-button-bg: var(--color-action-neutral);
@@ -151,9 +158,14 @@
       translate var(--motion-feedback-duration) var(--motion-feedback-easing);
   }
 
+  /* The `display` above would beat the UA's `[hidden] { display: none }`: a hidden button stays hidden. */
+  .sk-button[hidden] {
+    display: none;
+  }
+
   /*
-   * Press feedback, STANDALONE buttons only. A welded button (`data-weld-start`/`data-weld-end`:
-   * split-button's two halves, a segmented group's members) shares an edge with its neighbor, and
+   * Press feedback, STANDALONE buttons only. A ButtonGroup member (directly, or as a Menu/Popover/Tooltip
+   * trigger: `button-group.css`) shares an edge with its neighbor, and
    * `scale` shrinks around the button's OWN center. The welded edge would pull away from the
    * neighbor's touching edge, opening a gap at the seam instead of reading as one control
    * squeezing. `:not(:disabled)`/`:not([aria-disabled])` for the same reason checkbox.css guards
@@ -161,7 +173,7 @@
    * guards live in one selector rather than a later override rule, so there is no specificity
    * order to get wrong between them.
    */
-  .sk-button:active:not(:disabled):not([aria-disabled="true"]):not([data-weld-start]):not([data-weld-end]):not([data-appearance="tactile"], [data-appearance="brutalist"], [data-appearance="frosted"]) {
+  .sk-button:active:not(:disabled):not([aria-disabled="true"]):not(.sk-button-group > *, .sk-button-group > * > *, .sk-button-group > .sk-tooltip > * > *, .sk-button-group > .sk-tooltip > * > * > *):not([data-appearance="tactile"], [data-appearance="brutalist"], [data-appearance="frosted"]) {
     scale: var(--motion-press-scale);
     /* Pairs with the squeeze: every variant but `ghost` carries `--elevation-raised` at rest, and
      * flattening it to `--elevation-flat` (`none`) while pressed reads as the button meeting the
@@ -600,19 +612,19 @@
    * spent here; the offset is a drawn mark attached to the control.
    *
    * ONE FORMULA FOR EVERY STATE. The states below move a single internal `--brutalist-travel`
-   * (0 at rest, negative grows the shadow, positive presses). The visible shadow is
+   * (0 at rest and on hover, positive presses). The visible shadow is
    * `offset × (1 - travel)` and, while pressed, the face moves by whatever the shadow gave up, so
    * the shadow's far edge stays put: the face slides toward a fixed hole. `box-shadow` is declared
-   * once, here, so a container that clears a welded half's shadow (split-button.css does) wins in
+   * once, here, so a container that clears a group member's shadow (button-group.css does) wins in
    * every state instead of losing to a :hover or :active rule with more specificity.
    *
    * NO TRANSFORM AT REST OR ON HOVER. Any `translate` other than `none`, even `0 0`, makes Chrome
    * hit-test the host against its clip without `overflow-clip-margin`, which cuts the `::after`
    * touch target back to the face: measured, an `xs` brutalist stopped answering 6px outside its
-   * face. So hover grows the offset without lifting the face, and `translate` exists only while
-   * `:active`, the same trade plain's own `scale` squeeze already makes mid-press.
+   * face. So hover changes nothing, and the face moves by `left`/`top`
+   * on its relative box, never `translate`.
    *
-   * WHOLE PIXELS, via round(): a hard edge at 3.75px antialiases into the soft shadow this appearance
+   * WHOLE PIXELS AT REST, via round() on the offsets: a hard edge at 3.75px antialiases into the soft shadow this appearance
    * exists not to be. The remaining shadow never drops below 1px while there is an offset at all, so a
    * press never swallows the face into its shadow completely.
    *
@@ -626,7 +638,7 @@
    */
   .sk-button[data-appearance="brutalist"] {
     /* The edge keeps plain's own width, so switching appearance never changes the button's size (and
-     * split-button's 1px seam overlap still holds); the weight comes from the ink and the offset. */
+     * a ButtonGroup's 1px seam overlap still holds); the weight comes from the ink and the offset. */
     --sk-button-wash: none;
     /* The ink that draws the construction, and it is BLACK in both modes: a shadow is dark, whatever
      * the page is. text-primary would have been the obvious token and it is wrong in dark, where it
@@ -642,29 +654,36 @@
     --brutalist-travel: 0;
     /* Disabled scales the whole construction down rather than inventing a second geometry. */
     --brutalist-reach: 1;
+    /* Press travel only. The shared feedback easing (0.2, 0, 0, 1) front-loads a third of a 4px move
+     * into one frame; this launches softer and still lands under the finger. Face and shadow share
+     * it, so their sum stays constant and the far edge never wobbles. */
+    --brutalist-press-easing: cubic-bezier(0.3, 0, 0.2, 1);
     --brutalist-offset-inline: round(nearest, calc(var(--sk-button-brutalist-offset-inline) * var(--brutalist-reach)), 1px);
     --brutalist-offset-block: round(nearest, calc(var(--sk-button-brutalist-offset-block) * var(--brutalist-reach)), 1px);
     --brutalist-shadow-inline: max(
       min(var(--brutalist-offset-inline), 1px),
-      round(nearest, calc(var(--brutalist-offset-inline) * (1 - var(--brutalist-travel))), 1px)
+      calc(var(--brutalist-offset-inline) * (1 - var(--brutalist-travel)))
     );
     --brutalist-shadow-block: max(
       min(var(--brutalist-offset-block), 1px),
-      round(nearest, calc(var(--brutalist-offset-block) * (1 - var(--brutalist-travel))), 1px)
+      calc(var(--brutalist-offset-block) * (1 - var(--brutalist-travel)))
     );
     border-color: var(--sk-button-brutalist-edge);
     box-shadow: calc(var(--brutalist-shadow-inline) * var(--brutalist-direction)) var(--brutalist-shadow-block) 0
       var(--sk-button-brutalist-shadow);
-    /* Face and shadow on ONE tempo. The base transitions box-shadow at state-change speed and
-     * translate at feedback speed; split like that, the face outruns its own shadow mid-press and
-     * the fixed far edge visibly wobbles. Reduced motion needs no block of its own: the feedback
-     * token already goes instant under it, so the pressed state lands immediately. */
+    /* The face moves by whatever the shadow gives up, and BOTH come from `--brutalist-travel`, the one
+     * thing that transitions. `translate` would run on the compositor and `box-shadow` on the main
+     * thread, so a fast second click retargeted them separately and the far edge tore; one number
+     * read by both lands them on the same frame. The face moves with `left`/`top` on the relative
+     * box, not `translate`, because a `translate` that is not `none` cuts the touch target (above).
+     * Reduced motion needs no block of its own: the feedback duration token already goes instant. */
+    left: calc((var(--brutalist-offset-inline) - var(--brutalist-shadow-inline)) * var(--brutalist-direction));
+    top: calc(var(--brutalist-offset-block) - var(--brutalist-shadow-block));
     transition:
       background-color var(--motion-state-change-duration) var(--motion-state-change-easing),
       border-color var(--motion-state-change-duration) var(--motion-state-change-easing),
       color var(--motion-state-change-duration) var(--motion-state-change-easing),
-      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing),
-      translate var(--motion-feedback-duration) var(--motion-feedback-easing);
+      --brutalist-travel var(--motion-feedback-duration) var(--brutalist-press-easing);
   }
 
   .sk-button[data-appearance="brutalist"]:dir(rtl) {
@@ -700,21 +719,11 @@
   }
 
 
-  /* Hover reaches a notch further: the same hard offset, one pixel longer. No glow, no lift. */
-  @media (any-hover: hover) {
-    .sk-button[data-appearance="brutalist"]:hover:not(:disabled):not([aria-disabled="true"]) {
-      --brutalist-travel: -0.25;
-    }
-  }
-
   /* Press drives the face most of the way home. aria-pressed is deliberately absent from these two
    * rules: a toggle that is ON keeps its rest offset and is told apart by the pressed paint above,
    * and it still travels when clicked again, because `:active` is the finger and not the state. */
   .sk-button[data-appearance="brutalist"]:active:not(:disabled):not([aria-disabled="true"]) {
     --brutalist-travel: 0.8;
-    translate:
-      calc((var(--brutalist-offset-inline) - var(--brutalist-shadow-inline)) * var(--brutalist-direction))
-      calc(var(--brutalist-offset-block) - var(--brutalist-shadow-block));
   }
 
   /*
@@ -889,45 +898,6 @@
     overflow: visible;
   }
 
-  /*
-   * WELDING. A button glued to a neighbor on one (or both) sides loses that edge's own rounding
-   * AND that edge's own border color, a THIRD axis again, orthogonal to variant/size/icon-only:
-   * any button can be welded. The border matters as much as the radius: `neutral`/`subtle`/
-   * `soft` all paint a real border, and leaving it on the welded edge sits a second line
-   * right next to whatever the neighbor paints on ITS OWN touching edge. Two competing lines at
-   * one seam instead of one. `primary`/`danger`/`ghost` never showed this (their own border is
-   * already transparent), which is exactly why it went unnoticed until a `neutral`-on-`neutral`
-   * example painted it. This is what a split button's primary half and its menu trigger are
-   * welded with (`weldEnd` on the primary, `weldStart` on the trigger), and equally what a
-   * 3+-segment group's own middle members need (both at once). The mechanism lives here, once,
-   * rather than as bespoke CSS in whatever composes the group: a split button's own root has no
-   * fill, radius, or border logic of its own to write, because the two buttons it welds already
-   * carry it themselves.
-   */
-  .sk-button[data-weld-start] {
-    border-start-start-radius: 0;
-    border-end-start-radius: 0;
-    border-inline-start-color: transparent;
-  }
-  .sk-button[data-weld-end] {
-    border-start-end-radius: 0;
-    border-end-end-radius: 0;
-    border-inline-end-color: transparent;
-  }
-
-  /*
-   * A WELDED BRUTALIST GROUP still presses like a brutalist button: down and toward inline-end
-   * (mirrored in RTL). SplitButton owns the shared outer shadow; Button keeps the same diagonal
-   * face travel so the action feedback does not flatten into a plain vertical drop.
-   *
-   * The SEAM is one line, drawn by the member that welds on its start: the weld rules above clear
-   * both touching edges, which leaves a flat group with no division at all once the edge is the
-   * construction's own ink. The leading member's end stays clear, so the line is never doubled.
-   */
-  .sk-button[data-appearance="brutalist"][data-weld-start] {
-    border-inline-start-color: var(--sk-button-brutalist-edge);
-  }
-
   /* Sizes key off data-size, an ORTHOGONAL axis to data-variant, so an accent button can also
    * be small. (The old build collapsed these onto data-variant, which silently broke sizing.) */
   /* React serializes its md default explicitly. Keep this rule explicit too; the base declarations
@@ -1040,7 +1010,9 @@
    * fully visible underneath it; `sk-button__label` below is the fix). `order: -1` is what moves it
    * to the front without reordering the DOM: `pre`/`post` stay where the contract puts them.
    */
-  .sk-button__loader {
+  /* `.sk-button` in front so the hide outranks `.sk-loader { display }` (same element, same layer)
+     whatever order a page imports loader.css in: a second, later copy of it kept every spinner on. */
+  .sk-button .sk-button__loader {
     display: none;
     flex-shrink: 0;
     align-items: center;
@@ -1205,7 +1177,7 @@
     }
 
     .sk-button[data-appearance="brutalist"]:active:not(:disabled):not([aria-disabled="true"]) {
-      translate: none;
+      --brutalist-travel: 0;
     }
 
     /* Frosted keeps nothing of the material here: the UA would keep the face's alpha (forced colors

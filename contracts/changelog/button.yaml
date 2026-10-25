@@ -3,8 +3,16 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "c022e2a0c84de9ea"
+surface: "11c380b4851f4030"
 entries:
+  - date: 2026-10-23
+    kind: breaking
+    es:
+      title: "Sin weldStart y weldEnd: la soldadura es del ButtonGroup"
+      body: "Se eliminan weldStart y weldEnd. Para unir controles, ponlos dentro de un ButtonGroup: el grupo cuadra las esquinas según la posición. Receta en docs/migrations/0001-split-button-to-button-group.md."
+    en:
+      title: "No more weldStart and weldEnd: ButtonGroup owns the weld"
+      body: "weldStart and weldEnd are removed. To join controls, put them inside a ButtonGroup: the group squares the corners by position. Recipe in docs/migrations/0001-split-button-to-button-group.md."
   - date: 2026-10-18
     kind: feature
     target: Button.action

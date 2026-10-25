@@ -45,7 +45,7 @@
    * Keep the host stable; the icon-toggle faces and shared state layer still provide feedback.
    * Match Button's guarded press specificity so this invariant also holds for physical skins. */
   .sk-copy-button.sk-button[data-icon-only],
-  .sk-copy-button.sk-button[data-icon-only]:is(:hover, :active, :focus-visible):not(:disabled):not([aria-disabled="true"]):not([data-weld-start]):not([data-weld-end]) {
+  .sk-copy-button.sk-button[data-icon-only]:is(:hover, :active, :focus-visible):not(:disabled):not([aria-disabled="true"]):not(.sk-button-group > *, .sk-button-group > * > *, .sk-button-group > .sk-tooltip > * > *, .sk-button-group > .sk-tooltip > * > * > *) {
     scale: none;
     translate: none;
   }

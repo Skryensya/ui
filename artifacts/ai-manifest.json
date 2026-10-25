@@ -5,6 +5,18 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-10-24",
+            "en": {
+              "body": "Vanilla markup left out `aria-level` when `headingLevel` stayed at its default, and a `role=\"heading\"` with no level is invalid ARIA. It is now always written (3 by default).",
+              "title": "The trigger heading always states its level"
+            },
+            "es": {
+              "body": "El markup de Vanilla omitía `aria-level` cuando `headingLevel` quedaba en su valor por defecto, y un `role=\"heading\"` sin nivel es ARIA inválido. Ahora siempre se escribe (3 por defecto).",
+              "title": "El encabezado del trigger siempre declara su nivel"
+            },
+            "kind": "bugfix"
+          },
+          {
             "date": "2026-10-17",
             "en": {
               "body": "New size option (sm/md) on Details and DetailsGroup: sm tightens the summary's padding and minimum height, for a disclosure sitting inside an already-dense panel (a drawer, a sidebar).",
@@ -389,6 +401,18 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-10-23",
+            "en": {
+              "body": "weldStart and weldEnd are removed. To join controls, put them inside a ButtonGroup: the group squares the corners by position. Recipe in docs/migrations/0001-split-button-to-button-group.md.",
+              "title": "No more weldStart and weldEnd: ButtonGroup owns the weld"
+            },
+            "es": {
+              "body": "Se eliminan weldStart y weldEnd. Para unir controles, ponlos dentro de un ButtonGroup: el grupo cuadra las esquinas según la posición. Receta en docs/migrations/0001-split-button-to-button-group.md.",
+              "title": "Sin weldStart y weldEnd: la soldadura es del ButtonGroup"
+            },
+            "kind": "breaking"
+          },
+          {
             "date": "2026-10-18",
             "en": {
               "body": "The spinner stops floating over the label (visibility never reached a plain-text label, which stayed visible underneath it) and now takes pre's place, in flow. The label stays visible unless loadingText, a new option, replaces it while loading. pre and post hide while loading.",
@@ -440,6 +464,86 @@
             },
             "es": {
               "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
+              "title": "Primera versión"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.1"
+      }
+    ],
+    "button-group": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-24",
+            "en": {
+              "body": "The group draws a thin line between members even without a ButtonGroupSeparator. New separator option: full (whole height, the default) or inset (a shorter centred line, with a ButtonGroupSeparator between each pair).",
+              "title": "The divider between members is always visible"
+            },
+            "es": {
+              "body": "El grupo dibuja una línea fina entre miembros aunque no haya ButtonGroupSeparator. Nueva opción separator: full (alto completo, por defecto) o inset (línea corta y centrada, con un ButtonGroupSeparator entre cada par).",
+              "title": "El divisor entre miembros siempre se ve"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-10-23",
+            "en": {
+              "body": "The component is now ButtonGroup and the group welds its members by position: weldStart, weldEnd, triggerWeldStart and triggerWeldEnd are gone. A split button is a ButtonGroup of a Button and a Menu; SplitButton and SplitButtonVertical are removed. New parts: ButtonGroupSeparator, ButtonGroupText and ButtonGroupLabel, and Input, Select and Popover members. Migration recipe in docs/migrations/0001-split-button-to-button-group.md.",
+              "title": "SplitButton becomes ButtonGroup"
+            },
+            "es": {
+              "body": "El componente se llama ButtonGroup y la soldadura la hace el grupo según la posición: weldStart, weldEnd, triggerWeldStart y triggerWeldEnd ya no existen. Un split button es un ButtonGroup con un Button y un Menu; SplitButton y SplitButtonVertical se eliminan. Nuevas piezas: ButtonGroupSeparator, ButtonGroupText y ButtonGroupLabel, y miembros Input, Select y Popover. Receta de migración en docs/migrations/0001-split-button-to-button-group.md.",
+              "title": "SplitButton pasa a ser ButtonGroup"
+            },
+            "kind": "breaking"
+          },
+          {
+            "date": "2026-10-18",
+            "en": {
+              "body": "New rule: when action carries loading, menu must carry disabled. Validated on the tree (an author who breaks it gets an error, not a split button whose menu still opens alternatives for the action already running); the flat-prop React convenience already applies it from its new loading prop.",
+              "title": "A busy action leaves the menu disabled"
+            },
+            "es": {
+              "body": "Nueva regla: si action lleva loading, menu tiene que llevar disabled. Validada en el árbol (un autor que la rompe recibe un error, no un split button donde el menú sigue abriendo alternativas para la acción que ya está en curso); el binding de React de la convención plana ya la aplica solo con la nueva prop loading.",
+              "title": "La acción ocupada deja el menú deshabilitado"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
+        "date": "2026-10-12",
+        "entries": [
+          {
+            "date": "2026-10-09",
+            "en": {
+              "body": "New signature <code>SplitButtonVertical</code>: two icon buttons welded one above the other, with no menu, for a pair like zoom in and out. The two halves still share variant, tone and size.",
+              "title": "A vertical variant for two actions that are a pair"
+            },
+            "es": {
+              "body": "Nueva firma <code>SplitButtonVertical</code>: dos botones de icono soldados uno sobre otro, sin menú, para un par como acercar y alejar. Las dos mitades siguen compartiendo variante, tono y tamaño.",
+              "title": "Una variante vertical para dos acciones que son un par"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.2"
+      },
+      {
+        "date": "2026-10-01",
+        "entries": [
+          {
+            "date": "2026-10-01",
+            "en": {
+              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
+              "title": "First release"
+            },
+            "es": {
+              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -1207,44 +1311,6 @@
         "version": "0.0.2"
       }
     ],
-    "editor": [
-      {
-        "date": null,
-        "entries": [
-          {
-            "date": "2026-10-19",
-            "en": {
-              "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> and <code>--sk-anchored-size</code> were listed as hooks, but no stylesheet in the library ever declares them, not even the <code>anchored.css</code> pattern they came from: overriding any of them did nothing, silently. Only <code>--sk-anchored-z</code> remains, the one actually in use.",
-              "title": "Eight dead anchoring hooks removed"
-            },
-            "es": {
-              "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> y <code>--sk-anchored-size</code> estaban en la lista de hooks, pero ninguna hoja de estilos de la librería los declara jamás, ni siquiera el patrón <code>anchored.css</code> que los originó: sobrescribir cualquiera de ellos no hacía nada, en silencio. Solo queda <code>--sk-anchored-z</code>, el único que de verdad se usa.",
-              "title": "Se retiran ocho hooks de anchoring que no hacían nada"
-            },
-            "kind": "bugfix"
-          }
-        ],
-        "version": "0.0.3-dev"
-      },
-      {
-        "date": "2026-10-01",
-        "entries": [
-          {
-            "date": "2026-10-01",
-            "en": {
-              "body": "Published for the first time, with its contract, a React binding and a Vanilla mount.",
-              "title": "First release"
-            },
-            "es": {
-              "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
-              "title": "Primera versión"
-            },
-            "kind": "feature"
-          }
-        ],
-        "version": "0.0.1"
-      }
-    ],
     "empty-state": [
       {
         "date": null,
@@ -1579,26 +1645,6 @@
         "version": "0.0.1"
       }
     ],
-    "image-cropper": [
-      {
-        "date": "2026-10-12",
-        "entries": [
-          {
-            "date": "2026-10-08",
-            "en": {
-              "body": "Added to the library, with its contract, a React binding and a Vanilla mount.",
-              "title": "New component"
-            },
-            "es": {
-              "body": "Se suma a la librería, con su contrato, un binding de React y un montaje en Vanilla.",
-              "title": "Componente nuevo"
-            },
-            "kind": "feature"
-          }
-        ],
-        "version": "0.0.2"
-      }
-    ],
     "image-frame": [
       {
         "date": "2026-10-12",
@@ -1641,6 +1687,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-10-24",
+            "en": {
+              "body": "Besides FormField, Input now accepts ButtonGroup as its parent, welded to the button that acts on it. Inside the group, name it with aria-label or a ButtonGroupLabel.",
+              "title": "Input can sit inside a ButtonGroup"
+            },
+            "es": {
+              "body": "Además de FormField, ahora Input acepta ButtonGroup como padre: se suelda al botón que actúa sobre él. Dentro del grupo, nómbralo con aria-label o con un ButtonGroupLabel.",
+              "title": "Input puede ir dentro de un ButtonGroup"
+            },
+            "kind": "feature",
+            "target": "Input"
+          },
           {
             "date": "2026-10-17",
             "en": {
@@ -2017,6 +2076,24 @@
     ],
     "listbox": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-23",
+            "en": {
+              "body": "Shorter rows and smaller text; the chosen option is filled with the accent color (`--sk-listbox-item-selected-bg`), and `indicator=\"none\"` marks it by that fill alone, without the check. Each option takes a description under its name, announced separately. `deselectable` lets single mode clear its choice, and `loopFocus` wraps the arrow keys.",
+              "title": "More compact, solid selection, option descriptions"
+            },
+            "es": {
+              "body": "Filas más bajas y texto más chico; la opción elegida se rellena con el color de acento (`--sk-listbox-item-selected-bg`) y `indicator=\"none\"` la marca sólo con ese relleno, sin el check. Cada opción acepta una descripción bajo su nombre, anunciada aparte. `deselectable` deja quitar la elección en modo single y `loopFocus` hace que las flechas den la vuelta.",
+              "title": "Más compacto, selección sólida, descripción por opción"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -2199,6 +2276,18 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-10-23",
+            "en": {
+              "body": "triggerWeldStart and triggerWeldEnd are removed. To join controls, put them inside a ButtonGroup: the group squares the corners by position. Recipe in docs/migrations/0001-split-button-to-button-group.md.",
+              "title": "No more triggerWeldStart and triggerWeldEnd: ButtonGroup owns the weld"
+            },
+            "es": {
+              "body": "Se eliminan triggerWeldStart y triggerWeldEnd. Para unir controles, ponlos dentro de un ButtonGroup: el grupo cuadra las esquinas según la posición. Receta en docs/migrations/0001-split-button-to-button-group.md.",
+              "title": "Sin triggerWeldStart y triggerWeldEnd: la soldadura es del ButtonGroup"
+            },
+            "kind": "breaking"
+          },
           {
             "date": "2026-10-19",
             "en": {
@@ -3446,63 +3535,6 @@
             },
             "es": {
               "body": "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla.",
-              "title": "Primera versión"
-            },
-            "kind": "feature"
-          }
-        ],
-        "version": "0.0.1"
-      }
-    ],
-    "split-button": [
-      {
-        "date": null,
-        "entries": [
-          {
-            "date": "2026-10-18",
-            "en": {
-              "body": "New rule: when action carries loading, menu must carry disabled. Validated on the tree (an author who breaks it gets an error, not a split button whose menu still opens alternatives for the action already running); the flat-prop React convenience already applies it from its new loading prop.",
-              "title": "A busy action leaves the menu disabled"
-            },
-            "es": {
-              "body": "Nueva regla: si action lleva loading, menu tiene que llevar disabled. Validada en el árbol (un autor que la rompe recibe un error, no un split button donde el menú sigue abriendo alternativas para la acción que ya está en curso); el binding de React de la convención plana ya la aplica solo con la nueva prop loading.",
-              "title": "La acción ocupada deja el menú deshabilitado"
-            },
-            "kind": "feature",
-            "target": "SplitButton"
-          }
-        ],
-        "version": "0.0.3-dev"
-      },
-      {
-        "date": "2026-10-12",
-        "entries": [
-          {
-            "date": "2026-10-09",
-            "en": {
-              "body": "New signature <code>SplitButtonVertical</code>: two icon buttons welded one above the other, with no menu, for a pair like zoom in and out. The two halves still share variant, tone and size.",
-              "title": "A vertical variant for two actions that are a pair"
-            },
-            "es": {
-              "body": "Nueva firma <code>SplitButtonVertical</code>: dos botones de icono soldados uno sobre otro, sin menú, para un par como acercar y alejar. Las dos mitades siguen compartiendo variante, tono y tamaño.",
-              "title": "Una variante vertical para dos acciones que son un par"
-            },
-            "kind": "feature"
-          }
-        ],
-        "version": "0.0.2"
-      },
-      {
-        "date": "2026-10-01",
-        "entries": [
-          {
-            "date": "2026-10-01",
-            "en": {
-              "body": "Published for the first time, with its contract, a React binding and a stylesheet for plain markup.",
-              "title": "First release"
-            },
-            "es": {
-              "body": "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple.",
               "title": "Primera versión"
             },
             "kind": "feature"
@@ -4803,7 +4835,8 @@
           "integer": true,
           "max": 6,
           "min": 1,
-          "type": "number"
+          "type": "number",
+          "writeDefault": true
         },
         "name": {
           "attr": "name",
@@ -9632,18 +9665,6 @@
             "soft",
             "ghost"
           ]
-        },
-        "weldEnd": {
-          "attr": "data-weld-end",
-          "default": false,
-          "trueValue": "",
-          "type": "boolean"
-        },
-        "weldStart": {
-          "attr": "data-weld-start",
-          "default": false,
-          "trueValue": "",
-          "type": "boolean"
         }
       },
       "parts": {
@@ -9750,8 +9771,6 @@
             "appearance",
             "size",
             "iconOnly",
-            "weldStart",
-            "weldEnd",
             "pressed",
             "disabled",
             "type",
@@ -9877,8 +9896,6 @@
             "appearance",
             "size",
             "iconOnly",
-            "weldStart",
-            "weldEnd",
             "href"
           ],
           "react": {
@@ -9924,6 +9941,293 @@
             "element": "a",
             "host": true,
             "part": "root"
+          }
+        }
+      }
+    },
+    "button-group": {
+      "bindings": {
+        "ButtonGroup": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/button-group#ButtonGroup"
+        },
+        "ButtonGroupLabel": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/button-group#ButtonGroupLabel"
+        },
+        "ButtonGroupSeparator": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/button-group#ButtonGroupSeparator"
+        },
+        "ButtonGroupText": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/button-group#ButtonGroupText"
+        }
+      },
+      "category": "actions",
+      "css": "@skryensya/core/components/button-group.css",
+      "hookDetails": {
+        "--sk-button-group-brutalist-offset": {
+          "default": "5px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/button-group.css"
+        },
+        "--sk-button-group-gap": {
+          "default": "var(--space-inline-sm)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/button-group.css"
+        },
+        "--sk-button-group-separator-color": {
+          "default": "color-mix(in oklab, currentColor 30%, transparent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/button-group.css"
+        },
+        "--sk-button-group-separator-inset": {
+          "default": "60%",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/button-group.css"
+        },
+        "--sk-button-group-shadow": {
+          "default": "var(--elevation-raised)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/button-group.css"
+        },
+        "--sk-button-group-text-bg": {
+          "default": "var(--color-bg-well)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/button-group.css"
+        },
+        "--sk-button-group-wash": {
+          "default": "var(--elevation-wash-raised)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/button-group.css"
+        }
+      },
+      "hooks": [
+        "--sk-button-group-brutalist-offset",
+        "--sk-button-group-gap",
+        "--sk-button-group-separator-color",
+        "--sk-button-group-separator-inset",
+        "--sk-button-group-shadow",
+        "--sk-button-group-text-bg",
+        "--sk-button-group-wash"
+      ],
+      "id": "button-group",
+      "options": {
+        "htmlFor": {
+          "attr": "for",
+          "prop": "htmlFor",
+          "type": "string"
+        },
+        "label": {
+          "attr": "aria-label",
+          "type": "string"
+        },
+        "orientation": {
+          "attr": "data-orientation",
+          "default": "horizontal",
+          "type": "enum",
+          "values": [
+            "horizontal",
+            "vertical"
+          ]
+        },
+        "separator": {
+          "attr": "data-separator",
+          "default": "full",
+          "type": "enum",
+          "values": [
+            "full",
+            "inset"
+          ]
+        }
+      },
+      "parts": {
+        "root": "sk-button-group",
+        "separator": "sk-button-group__separator",
+        "text": "sk-button-group__text"
+      },
+      "semantics": {
+        "ButtonGroup": {
+          "alternatives": [
+            "Toolbar",
+            "Segmented",
+            "Inline"
+          ],
+          "avoidWhen": [
+            "the buttons toggle state or pick one option; that is Segmented",
+            "many controls should be one Tab stop with arrow keys between them; that is Toolbar",
+            "the actions are unrelated, or there is a single action; separate Buttons in an Inline say that better",
+            "the members have different variants or sizes; a joined shape with mixed faces reads as broken"
+          ],
+          "useWhen": [
+            "a few related actions should read as one control: Archive, Report, Snooze",
+            "a split button: one main action as a Button and its variants behind a Menu with triggerIconOnly and triggerLabel, both with the same variant, tone and size",
+            "two icon actions are a pair, one above the other (orientation vertical): zoom in and out",
+            "an Input, Select or ButtonGroupText joined to the Button that acts on it: search, a URL with its prefix, an amount with its currency",
+            "a row of groups with space between them: a ButtonGroup whose children are ButtonGroups"
+          ]
+        },
+        "ButtonGroupLabel": {
+          "useWhen": [
+            "the input in the group needs a visible label joined to it; htmlFor is its id"
+          ]
+        },
+        "ButtonGroupSeparator": {
+          "useWhen": [
+            "two solid members touch: a solid fill has no border, so without this the seam disappears"
+          ]
+        },
+        "ButtonGroupText": {
+          "useWhen": [
+            "static text joined to a control: a prefix like https://, a unit, a count"
+          ]
+        }
+      },
+      "signatures": {
+        "ButtonGroup": {
+          "forward": [
+            "id",
+            "dir",
+            "aria-*"
+          ],
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "grouped-actions",
+            "joined-buttons",
+            "input-with-button",
+            "paired-vertical-actions",
+            "split-button",
+            "primary-action-with-alternatives",
+            "save-and-save-as"
+          ],
+          "options": [
+            "orientation",
+            "separator",
+            "label"
+          ],
+          "react": {
+            "from": "@skryensya/react/button-group",
+            "name": "ButtonGroup"
+          },
+          "slots": {
+            "children": {
+              "accepts": "node",
+              "required": true
+            }
+          },
+          "template": {
+            "attrs": {
+              "role": "group"
+            },
+            "element": "div",
+            "host": true,
+            "part": "root",
+            "slot": "children"
+          }
+        },
+        "ButtonGroupLabel": {
+          "host": {
+            "element": "label"
+          },
+          "intent": [
+            "label-an-input-in-a-group"
+          ],
+          "options": [
+            "htmlFor"
+          ],
+          "parents": [
+            "ButtonGroup"
+          ],
+          "react": {
+            "from": "@skryensya/react/button-group",
+            "name": "ButtonGroupLabel"
+          },
+          "requires": [
+            "htmlFor"
+          ],
+          "slots": {
+            "children": {
+              "accepts": "text",
+              "required": true
+            }
+          },
+          "template": {
+            "element": "label",
+            "host": true,
+            "part": "text",
+            "slot": "children"
+          }
+        },
+        "ButtonGroupSeparator": {
+          "host": {
+            "element": "span"
+          },
+          "intent": [
+            "divide-joined-buttons"
+          ],
+          "options": [],
+          "parents": [
+            "ButtonGroup"
+          ],
+          "react": {
+            "from": "@skryensya/react/button-group",
+            "name": "ButtonGroupSeparator"
+          },
+          "slots": {},
+          "template": {
+            "attrs": {
+              "aria-hidden": "true"
+            },
+            "element": "span",
+            "host": true,
+            "part": "separator"
+          }
+        },
+        "ButtonGroupText": {
+          "host": {
+            "element": "span"
+          },
+          "intent": [
+            "static-text-in-a-group",
+            "input-prefix"
+          ],
+          "options": [],
+          "parents": [
+            "ButtonGroup"
+          ],
+          "react": {
+            "from": "@skryensya/react/button-group",
+            "name": "ButtonGroupText"
+          },
+          "slots": {
+            "children": {
+              "accepts": "node",
+              "required": true
+            }
+          },
+          "template": {
+            "element": "span",
+            "host": true,
+            "part": "text",
+            "slot": "children"
           }
         }
       }
@@ -20452,337 +20756,6 @@
         }
       }
     },
-    "editor": {
-      "bindings": {
-        "Editor": {
-          "enhancer": "data-sk-editor",
-          "markup": true,
-          "portals": false,
-          "react": "@skryensya/react/editor#Editor"
-        }
-      },
-      "category": "forms",
-      "css": "@skryensya/core/components/editor.css",
-      "eventDetails": {
-        "change": {
-          "detail": {
-            "doc": "ProseMirrorNode",
-            "html": "string",
-            "markdown": "string"
-          },
-          "reactDetail": "EditorValue",
-          "reactProp": "onChange",
-          "source": "root",
-          "trigger": "content"
-        },
-        "ready": {
-          "detail": {
-            "getHTML": "() => string",
-            "getJSON": "() => ProseMirrorNode",
-            "getMarkdown": "() => string",
-            "setContent": "(html: string) => void",
-            "view": "EditorView"
-          },
-          "reactProp": false,
-          "source": "root"
-        }
-      },
-      "events": {
-        "change": "sk:editorchange",
-        "ready": "sk:editorready"
-      },
-      "hookDetails": {
-        "--sk-anchored-z": {
-          "default": "var(--z-popover)",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/patterns/anchored.css"
-        },
-        "--sk-editor-placeholder-fg": {
-          "default": "var(--color-text-tertiary)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/editor.css"
-        },
-        "--sk-editor-pressed-bg": {
-          "default": "color-mix(in oklab, var(--color-bg-accent-subtle) 55%, var(--color-bg-surface-raised))",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/editor.css"
-        },
-        "--sk-editor-pressed-fg": {
-          "default": "var(--color-text-accent)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/editor.css"
-        },
-        "--sk-editor-toolbar-bg": {
-          "default": "var(--color-bg-surface-sunken)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/editor.css"
-        },
-        "--sk-popover-bg": {
-          "default": "var(--color-bg-surface-overlay)",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/components/popover.css"
-        },
-        "--sk-popover-border-color": {
-          "default": "var(--color-border-subtle)",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/components/popover.css"
-        },
-        "--sk-popover-fg": {
-          "default": "var(--color-text-primary)",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/components/popover.css"
-        },
-        "--sk-popover-padding": {
-          "default": "var(--space-inset-md)",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/components/popover.css"
-        },
-        "--sk-popover-radius": {
-          "default": "var(--radius-surface)",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/components/popover.css"
-        },
-        "--sk-popover-shadow": {
-          "default": "var(--elevation-overlay)",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/components/popover.css"
-        },
-        "--sk-popover-wash": {
-          "default": "var(--elevation-wash-overlay)",
-          "output": false,
-          "part": null,
-          "sheet": "@skryensya/core/components/popover.css"
-        }
-      },
-      "hooks": [
-        "--sk-anchored-z",
-        "--sk-editor-placeholder-fg",
-        "--sk-editor-pressed-bg",
-        "--sk-editor-pressed-fg",
-        "--sk-editor-toolbar-bg",
-        "--sk-popover-bg",
-        "--sk-popover-border-color",
-        "--sk-popover-fg",
-        "--sk-popover-padding",
-        "--sk-popover-radius",
-        "--sk-popover-shadow",
-        "--sk-popover-wash"
-      ],
-      "hookSheets": [
-        "@skryensya/core/components/popover.css",
-        "@skryensya/core/patterns/anchored.css"
-      ],
-      "id": "editor",
-      "options": {
-        "autofocus": {
-          "attr": "data-autofocus",
-          "default": false,
-          "machineInput": true,
-          "prop": "autoFocus",
-          "trueValue": "",
-          "type": "boolean"
-        },
-        "defaultValue": {
-          "attr": "data-default-value",
-          "machineInput": true,
-          "type": "string"
-        },
-        "disabled": {
-          "attr": "data-disabled",
-          "default": false,
-          "machineInput": true,
-          "trueValue": "",
-          "type": "boolean"
-        },
-        "label": {
-          "attr": "aria-label",
-          "type": "string"
-        },
-        "name": {
-          "attr": "data-name",
-          "machineInput": true,
-          "type": "string"
-        },
-        "placeholder": {
-          "attr": "data-placeholder",
-          "machineInput": true,
-          "type": "string"
-        },
-        "readOnly": {
-          "attr": "data-readonly",
-          "default": false,
-          "machineInput": true,
-          "trueValue": "",
-          "type": "boolean"
-        },
-        "toolbarCompact": {
-          "attr": "data-toolbar-compact",
-          "default": false,
-          "prop": "compact",
-          "trueValue": "",
-          "type": "boolean"
-        },
-        "toolbarLabel": {
-          "attr": "aria-label",
-          "default": "Text formatting",
-          "type": "string"
-        }
-      },
-      "parts": {
-        "content": "sk-editor__content",
-        "hiddenInput": "sk-editor__hidden-input",
-        "root": "sk-editor",
-        "toolbarButton": "sk-editor__toolbar-button"
-      },
-      "semantics": {
-        "Editor": {
-          "alternatives": [
-            "Textarea"
-          ],
-          "avoidWhen": [
-            "the field is a single line, or needs no formatting at all: Input/Textarea is enough there"
-          ],
-          "useWhen": [
-            "styled text is needed - bold, lists, headings, quotes - not only plain text",
-            "the formatting toolbar should come ready, without composing it by hand"
-          ]
-        }
-      },
-      "signatures": {
-        "Editor": {
-          "compose": [
-            {
-              "of": "button",
-              "sheets": [
-                "@skryensya/core/components/button.css"
-              ],
-              "systemOwned": true
-            },
-            {
-              "of": "icon",
-              "systemOwned": true
-            },
-            {
-              "of": "toolbar",
-              "sheets": [
-                "@skryensya/core/components/toolbar.css"
-              ],
-              "systemOwned": true
-            },
-            {
-              "of": "popover",
-              "sheets": [
-                "@skryensya/core/components/popover.css"
-              ],
-              "systemOwned": true
-            },
-            {
-              "of": "input",
-              "sheets": [
-                "@skryensya/core/components/input.css"
-              ],
-              "systemOwned": true
-            }
-          ],
-          "host": {
-            "element": "div"
-          },
-          "intent": [
-            "rich-text-field",
-            "wysiwyg-editor",
-            "formatted-content",
-            "editor-with-toolbar"
-          ],
-          "mount": "data-sk-editor",
-          "options": [
-            "name",
-            "defaultValue",
-            "placeholder",
-            "readOnly",
-            "disabled",
-            "autofocus",
-            "label",
-            "toolbarLabel",
-            "toolbarCompact"
-          ],
-          "react": {
-            "from": "@skryensya/react/editor",
-            "name": "Editor"
-          },
-          "slots": {},
-          "template": {
-            "children": [
-              {
-                "also": [
-                  "sk-toolbar"
-                ],
-                "attrs": {
-                  "data-appearance": "plain",
-                  "role": "toolbar"
-                },
-                "element": "div",
-                "mount": "data-sk-toolbar",
-                "optionAttrs": {
-                  "toolbarLabel": "aria-label"
-                },
-                "options": [
-                  "toolbarLabel"
-                ]
-              },
-              {
-                "attrs": {
-                  "aria-hidden": "true",
-                  "style": "border:0;clip:rect(0 0 0 0);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;white-space:nowrap;word-wrap:normal;",
-                  "tabindex": "-1"
-                },
-                "element": "textarea",
-                "mount": "data-sk-editor-hidden-input",
-                "optionAttrs": {
-                  "name": "name"
-                },
-                "options": [
-                  "name"
-                ],
-                "part": "hiddenInput"
-              },
-              {
-                "also": [
-                  "sk-input"
-                ],
-                "attrs": {
-                  "aria-multiline": "true",
-                  "role": "textbox",
-                  "tabindex": "0"
-                },
-                "element": "div",
-                "mount": "data-sk-editor-content",
-                "options": [
-                  "label"
-                ],
-                "part": "content"
-              }
-            ],
-            "element": "div",
-            "host": true,
-            "part": "root"
-          }
-        }
-      },
-      "systemOwned": [
-        "toolbarButton"
-      ]
-    },
     "empty-state": {
       "bindings": {
         "EmptyState": {
@@ -22892,659 +22865,6 @@
         }
       }
     },
-    "image-cropper": {
-      "a11y": [
-        {
-          "because": "The stage is described by what the picture shows, so it needs an alt, empty only when the picture is decoration. The component never invents one.",
-          "requiresOneOf": [
-            "alt"
-          ],
-          "when": {
-            "src": "present"
-          }
-        }
-      ],
-      "bindings": {
-        "ImageCropper": {
-          "enhancer": "data-sk-image-cropper",
-          "markup": true,
-          "portals": false,
-          "react": "@skryensya/react/image-cropper#ImageCropper"
-        }
-      },
-      "category": "content",
-      "css": "@skryensya/core/components/image-cropper.css",
-      "eventDetails": {
-        "aspectChange": {
-          "detail": {
-            "aspect": "ImageCropperAspect"
-          },
-          "reactDetail": "ImageCropperAspect",
-          "reactProp": "onAspectChange",
-          "source": "root",
-          "trigger": "control"
-        },
-        "cancel": {
-          "detail": {},
-          "reactDetail": "void",
-          "reactProp": "onCancel",
-          "source": "root",
-          "trigger": "control"
-        },
-        "confirm": {
-          "detail": {
-            "aspect": "number | null",
-            "crop": "ImageCropperCrop",
-            "exportBlob": "(options?: ImageCropperExportOptions) => Promise<Blob>",
-            "exportCanvas": "(options?: ImageCropperExportOptions) => Promise<HTMLCanvasElement>",
-            "shape": "ImageCropperShapeOption",
-            "value": "ImageCropperValue"
-          },
-          "reactDetail": "ImageCropperConfirmDetails",
-          "reactProp": "onCropConfirm",
-          "source": "root",
-          "trigger": "control"
-        },
-        "error": {
-          "detail": {
-            "error": "ImageCropperError"
-          },
-          "reactDetail": "ImageCropperError",
-          "reactProp": "onError",
-          "source": "root"
-        },
-        "ready": {
-          "detail": {
-            "crop": "ImageCropperCrop",
-            "value": "ImageCropperValue"
-          },
-          "reactDetail": "ImageCropperChangeDetails",
-          "reactProp": "onReady",
-          "source": "root"
-        },
-        "shapeChange": {
-          "detail": {
-            "shape": "ImageCropperShapeOption"
-          },
-          "reactDetail": "ImageCropperShapeOption",
-          "reactProp": "onShapeChange",
-          "source": "root",
-          "trigger": "control"
-        },
-        "valueChange": {
-          "detail": {
-            "crop": "ImageCropperCrop",
-            "value": "ImageCropperValue"
-          },
-          "reactDetail": "ImageCropperChangeDetails",
-          "reactProp": "onValueChange",
-          "source": "root"
-        },
-        "valueChangeEnd": {
-          "detail": {
-            "crop": "ImageCropperCrop",
-            "value": "ImageCropperValue"
-          },
-          "reactDetail": "ImageCropperChangeDetails",
-          "reactProp": "onValueChangeEnd",
-          "source": "root"
-        }
-      },
-      "events": {
-        "aspectChange": "sk:imagecropperaspectchange",
-        "cancel": "sk:imagecroppercancel",
-        "confirm": "sk:imagecropperconfirm",
-        "error": "sk:imagecroppererror",
-        "ready": "sk:imagecropperready",
-        "shapeChange": "sk:imagecroppershapechange",
-        "valueChange": "sk:imagecroppervaluechange",
-        "valueChangeEnd": "sk:imagecroppervaluechangeend"
-      },
-      "hookDetails": {
-        "--sk-image-cropper-bg": {
-          "default": "var(--color-bg-well)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/image-cropper.css"
-        },
-        "--sk-image-cropper-focus-ring": {
-          "default": "var(--focus-ring-color)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/image-cropper.css"
-        },
-        "--sk-image-cropper-frame-color": {
-          "default": "var(--color-border-accent)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/image-cropper.css"
-        },
-        "--sk-image-cropper-frame-width": {
-          "default": "2px",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/image-cropper.css"
-        },
-        "--sk-image-cropper-gap": {
-          "default": "var(--space-stack-md)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/image-cropper.css"
-        },
-        "--sk-image-cropper-grid-color": {
-          "default": "color-mix(in oklab, var(--color-text-on-media) 55%, transparent)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/image-cropper.css"
-        },
-        "--sk-image-cropper-handle-color": {
-          "default": "var(--color-border-accent)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/image-cropper.css"
-        },
-        "--sk-image-cropper-handle-size": {
-          "default": "0.875rem",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/image-cropper.css"
-        },
-        "--sk-image-cropper-overlay": {
-          "default": "var(--color-bg-canvas)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/image-cropper.css"
-        },
-        "--sk-image-cropper-overlay-opacity": {
-          "default": "0.72",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/image-cropper.css"
-        },
-        "--sk-image-cropper-panel-bg": {
-          "default": "var(--color-bg-surface)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/image-cropper.css"
-        },
-        "--sk-image-cropper-preview-size": {
-          "default": "7rem",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/image-cropper.css"
-        },
-        "--sk-image-cropper-radius": {
-          "default": "var(--radius-surface)",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/image-cropper.css"
-        },
-        "--sk-image-cropper-side-size": {
-          "default": "16rem",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/image-cropper.css"
-        },
-        "--sk-image-cropper-stage-aspect-ratio": {
-          "default": "4 / 3",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/image-cropper.css"
-        },
-        "--sk-image-cropper-stage-min-block-size": {
-          "default": "16rem",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/image-cropper.css"
-        }
-      },
-      "hooks": [
-        "--sk-image-cropper-bg",
-        "--sk-image-cropper-radius",
-        "--sk-image-cropper-gap",
-        "--sk-image-cropper-stage-min-block-size",
-        "--sk-image-cropper-stage-aspect-ratio",
-        "--sk-image-cropper-overlay",
-        "--sk-image-cropper-overlay-opacity",
-        "--sk-image-cropper-frame-color",
-        "--sk-image-cropper-frame-width",
-        "--sk-image-cropper-grid-color",
-        "--sk-image-cropper-handle-size",
-        "--sk-image-cropper-handle-color",
-        "--sk-image-cropper-focus-ring",
-        "--sk-image-cropper-panel-bg",
-        "--sk-image-cropper-preview-size",
-        "--sk-image-cropper-side-size"
-      ],
-      "id": "image-cropper",
-      "options": {
-        "alt": {
-          "attr": "data-alt",
-          "machineInput": true,
-          "type": "string"
-        },
-        "aspect": {
-          "attr": "data-aspect",
-          "default": "free",
-          "machineInput": true,
-          "type": "string"
-        },
-        "crossOrigin": {
-          "attr": "data-cross-origin",
-          "machineInput": true,
-          "type": "enum",
-          "values": [
-            "anonymous",
-            "use-credentials"
-          ]
-        },
-        "disabled": {
-          "attr": "data-disabled",
-          "default": false,
-          "machineInput": true,
-          "trueValue": "",
-          "type": "boolean"
-        },
-        "label": {
-          "attr": "aria-label",
-          "type": "string"
-        },
-        "labels": {
-          "attr": "data-labels",
-          "machineInput": true,
-          "type": "string"
-        },
-        "maxZoom": {
-          "attr": "data-max-zoom",
-          "default": 4,
-          "machineInput": true,
-          "min": 1,
-          "type": "number"
-        },
-        "minZoom": {
-          "attr": "data-min-zoom",
-          "default": 1,
-          "machineInput": true,
-          "min": 0.1,
-          "type": "number"
-        },
-        "outputHeight": {
-          "attr": "data-output-height",
-          "machineInput": true,
-          "min": 1,
-          "type": "number"
-        },
-        "outputQuality": {
-          "attr": "data-output-quality",
-          "default": 0.92,
-          "machineInput": true,
-          "max": 1,
-          "min": 0,
-          "type": "number"
-        },
-        "outputType": {
-          "attr": "data-output-type",
-          "default": "image/png",
-          "machineInput": true,
-          "type": "enum",
-          "values": [
-            "image/png",
-            "image/jpeg",
-            "image/webp"
-          ]
-        },
-        "outputWidth": {
-          "attr": "data-output-width",
-          "machineInput": true,
-          "min": 1,
-          "type": "number"
-        },
-        "readOnly": {
-          "attr": "data-read-only",
-          "default": false,
-          "machineInput": true,
-          "trueValue": "",
-          "type": "boolean"
-        },
-        "shape": {
-          "attr": "data-shape",
-          "default": "rectangle",
-          "machineInput": true,
-          "type": "enum",
-          "values": [
-            "rectangle",
-            "circle"
-          ]
-        },
-        "showControls": {
-          "attr": "data-controls",
-          "default": true,
-          "falseValue": "false",
-          "type": "boolean"
-        },
-        "showGrid": {
-          "attr": "data-grid",
-          "default": true,
-          "falseValue": "false",
-          "machineInput": true,
-          "type": "boolean"
-        },
-        "src": {
-          "attr": "data-src",
-          "machineInput": true,
-          "type": "string"
-        },
-        "value": {
-          "attr": "data-value",
-          "machineInput": true,
-          "type": "string"
-        },
-        "wheelZoom": {
-          "attr": "data-wheel-zoom",
-          "default": false,
-          "machineInput": true,
-          "trueValue": "",
-          "type": "boolean"
-        }
-      },
-      "parts": {
-        "actions": "sk-image-cropper__actions",
-        "control": "sk-image-cropper__control",
-        "controls": "sk-image-cropper__controls",
-        "group": "sk-image-cropper__group",
-        "groupLabel": "sk-image-cropper__group-label",
-        "help": "sk-image-cropper__help",
-        "live": "sk-image-cropper__live",
-        "message": "sk-image-cropper__message",
-        "output": "sk-image-cropper__output",
-        "preview": "sk-image-cropper__preview",
-        "previewCanvas": "sk-image-cropper__preview-canvas",
-        "range": "sk-image-cropper__range",
-        "ratioInput": "sk-image-cropper__ratio-input",
-        "root": "sk-image-cropper",
-        "side": "sk-image-cropper__side",
-        "stage": "sk-image-cropper__stage",
-        "surface": "sk-image-cropper__surface",
-        "workspace": "sk-image-cropper__workspace"
-      },
-      "semantics": {
-        "ImageCropper": {
-          "alternatives": [
-            "ImageFrame",
-            "FileUpload",
-            "Canvas"
-          ],
-          "avoidWhen": [
-            "the picture is only displayed in a frame and the browser can crop it for free; ImageFrame fits it with object-fit",
-            "the file has to be chosen or uploaded; FileUpload does that, and the two are joined by the consumer's src, not by this component",
-            "drawing, annotating or filtering is needed; this crops, zooms and rotates and does nothing else to the pixels",
-            "the crop is applied on the server from coordinates and no one needs to see or adjust it; send the crop numbers from a form instead"
-          ],
-          "useWhen": [
-            "a person has to choose which part of a picture is used: a profile photo, a cover, a thumbnail, a product shot cut to a fixed ratio",
-            "the crop must be exact and reproducible: the result is a file at the picture's own resolution, or numbers that describe it, and the same value draws the same crop at any size",
-            "the picture may need turning or straightening before it is cut: zoom, quarter turns and a fine angle are part of the tool",
-            "an avatar is wanted: a circle crop exports a transparent PNG with the circle already cut, not a square to be masked afterwards"
-          ]
-        }
-      },
-      "signatures": {
-        "ImageCropper": {
-          "compose": [
-            {
-              "of": "icon",
-              "systemOwned": true
-            },
-            {
-              "of": "button",
-              "systemOwned": true
-            }
-          ],
-          "forward": [
-            "id",
-            "aria-*"
-          ],
-          "host": {
-            "element": "div"
-          },
-          "intent": [
-            "image-cropper",
-            "crop-image",
-            "avatar-crop",
-            "profile-picture-crop",
-            "cover-image-crop",
-            "rotate-and-zoom-image",
-            "crop-to-aspect-ratio"
-          ],
-          "mount": "data-sk-image-cropper",
-          "options": [
-            "src",
-            "alt",
-            "label",
-            "shape",
-            "aspect",
-            "minZoom",
-            "maxZoom",
-            "value",
-            "disabled",
-            "readOnly",
-            "showGrid",
-            "showControls",
-            "wheelZoom",
-            "outputType",
-            "outputQuality",
-            "outputWidth",
-            "outputHeight",
-            "crossOrigin",
-            "labels"
-          ],
-          "react": {
-            "from": "@skryensya/react/image-cropper",
-            "name": "ImageCropper"
-          },
-          "slots": {},
-          "template": {
-            "attrsWhen": [
-              {
-                "attrs": {
-                  "role": "group"
-                },
-                "given": true,
-                "option": "label"
-              }
-            ],
-            "children": [
-              {
-                "children": [
-                  {
-                    "attrs": {
-                      "aria-label": "Crop area",
-                      "data-sk-image-cropper-label": "stage",
-                      "data-sk-image-cropper-stage": "",
-                      "role": "group",
-                      "tabindex": "0"
-                    },
-                    "children": [
-                      {
-                        "attrs": {
-                          "aria-hidden": "true",
-                          "data-sk-image-cropper-surface": ""
-                        },
-                        "element": "div",
-                        "part": "surface"
-                      },
-                      {
-                        "attrs": {
-                          "data-sk-image-cropper-message": "",
-                          "hidden": ""
-                        },
-                        "element": "p",
-                        "part": "message"
-                      },
-                      {
-                        "children": [
-                          {
-                            "attrs": {
-                              "aria-label": "Zoom",
-                              "data-sk-image-cropper-label": "zoomGroup",
-                              "role": "group"
-                            },
-                            "children": [
-                              {
-                                "attrs": {
-                                  "aria-hidden": "true",
-                                  "data-sk-image-cropper-text": "zoomGroup"
-                                },
-                                "element": "span",
-                                "part": "groupLabel",
-                                "text": "Zoom"
-                              },
-                              {
-                                "also": [
-                                  "sk-button",
-                                  "sk-interactive"
-                                ],
-                                "attrs": {
-                                  "aria-label": "Zoom out",
-                                  "data-icon-only": "",
-                                  "data-size": "sm",
-                                  "data-sk-image-cropper-action": "zoom-out",
-                                  "data-sk-image-cropper-label": "zoomOut",
-                                  "data-variant": "ghost",
-                                  "type": "button"
-                                },
-                                "children": [
-                                  {
-                                    "attrs": {
-                                      "data-sk-icon": "zoom-out",
-                                      "data-sk-icon-size": "sm"
-                                    },
-                                    "element": "span"
-                                  }
-                                ],
-                                "element": "button",
-                                "part": "control"
-                              },
-                              {
-                                "also": [
-                                  "sk-button",
-                                  "sk-interactive"
-                                ],
-                                "attrs": {
-                                  "aria-label": "Zoom in",
-                                  "data-icon-only": "",
-                                  "data-size": "sm",
-                                  "data-sk-image-cropper-action": "zoom-in",
-                                  "data-sk-image-cropper-label": "zoomIn",
-                                  "data-variant": "ghost",
-                                  "type": "button"
-                                },
-                                "children": [
-                                  {
-                                    "attrs": {
-                                      "data-sk-icon": "zoom-in",
-                                      "data-sk-icon-size": "sm"
-                                    },
-                                    "element": "span"
-                                  }
-                                ],
-                                "element": "button",
-                                "part": "control"
-                              }
-                            ],
-                            "element": "div",
-                            "part": "group"
-                          },
-                          {
-                            "attrs": {
-                              "aria-label": "Rotation",
-                              "data-sk-image-cropper-label": "rotationGroup",
-                              "role": "group"
-                            },
-                            "children": [
-                              {
-                                "attrs": {
-                                  "aria-hidden": "true",
-                                  "data-sk-image-cropper-text": "rotationGroup"
-                                },
-                                "element": "span",
-                                "part": "groupLabel",
-                                "text": "Rotation"
-                              },
-                              {
-                                "also": [
-                                  "sk-button",
-                                  "sk-interactive"
-                                ],
-                                "attrs": {
-                                  "aria-label": "Rotate 90 degrees",
-                                  "data-icon-only": "",
-                                  "data-size": "sm",
-                                  "data-sk-image-cropper-action": "rotate-right",
-                                  "data-sk-image-cropper-label": "rotateRight",
-                                  "data-variant": "ghost",
-                                  "type": "button"
-                                },
-                                "children": [
-                                  {
-                                    "attrs": {
-                                      "data-sk-icon": "refresh",
-                                      "data-sk-icon-size": "sm"
-                                    },
-                                    "element": "span"
-                                  }
-                                ],
-                                "element": "button",
-                                "part": "control"
-                              }
-                            ],
-                            "element": "div",
-                            "part": "group"
-                          }
-                        ],
-                        "element": "div",
-                        "part": "controls"
-                      }
-                    ],
-                    "element": "div",
-                    "part": "stage"
-                  },
-                  {
-                    "attrs": {
-                      "data-sk-image-cropper-help": "",
-                      "data-sk-image-cropper-text": "stageHelp"
-                    },
-                    "element": "p",
-                    "part": "help",
-                    "text": "Arrow keys move the image, Shift for larger steps. Plus and minus zoom. Square brackets rotate one degree, R rotates a quarter turn. Zero resets."
-                  }
-                ],
-                "element": "div",
-                "part": "workspace"
-              },
-              {
-                "children": [],
-                "element": "div",
-                "part": "side"
-              },
-              {
-                "attrs": {
-                  "aria-atomic": "true",
-                  "aria-live": "polite",
-                  "data-sk-image-cropper-live": "",
-                  "role": "status"
-                },
-                "element": "div",
-                "part": "live"
-              }
-            ],
-            "element": "div",
-            "host": true,
-            "part": "root"
-          }
-        }
-      }
-    },
     "image-frame": {
       "a11y": [
         {
@@ -24175,7 +23495,8 @@
             "variant"
           ],
           "parents": [
-            "FormField"
+            "FormField",
+            "ButtonGroup"
           ],
           "react": {
             "from": "@skryensya/react/input",
@@ -26635,6 +25956,12 @@
           "part": "root",
           "sheet": "@skryensya/core/components/listbox.css"
         },
+        "--sk-listbox-item-description-fg": {
+          "default": "var(--color-text-secondary)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/listbox.css"
+        },
         "--sk-listbox-item-disabled-fg": {
           "default": "var(--color-text-disabled)",
           "output": false,
@@ -26659,8 +25986,14 @@
           "part": "root",
           "sheet": "@skryensya/core/components/listbox.css"
         },
+        "--sk-listbox-item-selected-bg": {
+          "default": "var(--color-action-accent)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/listbox.css"
+        },
         "--sk-listbox-item-selected-fg": {
-          "default": "var(--color-text-accent)",
+          "default": "var(--color-text-on-accent)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/listbox.css"
@@ -26694,10 +26027,12 @@
         "--sk-listbox-bg",
         "--sk-listbox-border-color",
         "--sk-listbox-gap",
+        "--sk-listbox-item-description-fg",
         "--sk-listbox-item-disabled-fg",
         "--sk-listbox-item-fg",
         "--sk-listbox-item-padding",
         "--sk-listbox-item-radius",
+        "--sk-listbox-item-selected-bg",
         "--sk-listbox-item-selected-fg",
         "--sk-listbox-label-fg",
         "--sk-listbox-max-block-size",
@@ -26706,8 +26041,31 @@
       ],
       "id": "listbox",
       "options": {
+        "deselectable": {
+          "attr": "data-deselectable",
+          "default": false,
+          "machineInput": true,
+          "trueValue": "",
+          "type": "boolean"
+        },
         "disabled": {
           "attr": "data-disabled",
+          "default": false,
+          "machineInput": true,
+          "trueValue": "",
+          "type": "boolean"
+        },
+        "indicator": {
+          "attr": "data-indicator",
+          "default": "check",
+          "type": "enum",
+          "values": [
+            "check",
+            "none"
+          ]
+        },
+        "loopFocus": {
+          "attr": "data-loop-focus",
           "default": false,
           "machineInput": true,
           "trueValue": "",
@@ -26738,6 +26096,7 @@
       "parts": {
         "content": "sk-listbox__content",
         "item": "sk-listbox__item",
+        "itemDescription": "sk-listbox__item-description",
         "itemIndicator": "sk-listbox__item-indicator",
         "itemText": "sk-listbox__item-text",
         "label": "sk-listbox__label",
@@ -26746,6 +26105,7 @@
       "semantics": {
         "Listbox": {
           "alternatives": [
+            "Segmented",
             "Select",
             "Combobox",
             "RadioGroup",
@@ -26754,12 +26114,14 @@
           "avoidWhen": [
             "it is a form field that gets submitted: Listbox has no input and no name; that is Select, RadioGroup or a group of Checkboxes",
             "the options are many or the space is small: an always-open listbox takes as much room as its options; that is Select or Combobox",
+            "a single choice laid in a row: that is Segmented",
             "each row navigates to another page or runs an action: that is NavList or Menu, not a choice"
           ],
           "useWhen": [
             "whoever uses the screen has to see every option while choosing: a view, a few filters, the items they are about to act on",
             "more than one can be chosen, and checking and unchecking without opening anything is faster than a dropdown",
-            "the list is browsed with the keyboard (arrows, type-ahead) and focus has to stay in one place"
+            "the list is browsed with the keyboard (arrows, type-ahead) and focus has to stay in one place",
+            "laid in a row (horizontal) only when several can be chosen: a row of days, a few toggled filters"
           ]
         }
       },
@@ -26788,7 +26150,10 @@
           "options": [
             "selectionMode",
             "orientation",
-            "disabled"
+            "indicator",
+            "disabled",
+            "deselectable",
+            "loopFocus"
           ],
           "react": {
             "from": "@skryensya/react/listbox",
@@ -26821,6 +26186,9 @@
                   "value"
                 ],
                 "slots": {
+                  "description": {
+                    "accepts": "text"
+                  },
                   "label": {
                     "accepts": "text",
                     "required": true
@@ -26857,6 +26225,13 @@
                         "part": "itemText"
                       },
                       {
+                        "element": "span",
+                        "itemSlot": "description",
+                        "mount": "data-sk-listbox-item-description",
+                        "part": "itemDescription",
+                        "whenItemSlotGiven": "description"
+                      },
+                      {
                         "attrs": {
                           "aria-hidden": "true"
                         },
@@ -26864,7 +26239,7 @@
                           {
                             "attrs": {
                               "data-sk-icon": "check",
-                              "data-sk-icon-size": "md"
+                              "data-sk-icon-size": "sm"
                             },
                             "element": "span"
                           }
@@ -28325,18 +27700,6 @@
             "contract": "button",
             "option": "variant"
           }
-        },
-        "triggerWeldEnd": {
-          "attr": "data-weld-end",
-          "default": false,
-          "trueValue": "",
-          "type": "boolean"
-        },
-        "triggerWeldStart": {
-          "attr": "data-weld-start",
-          "default": false,
-          "trueValue": "",
-          "type": "boolean"
         }
       },
       "parts": {
@@ -28404,8 +27767,6 @@
           "options": [
             "label",
             "triggerLabel",
-            "triggerWeldStart",
-            "triggerWeldEnd",
             "triggerVariant",
             "triggerTone",
             "triggerSize",
@@ -28515,8 +27876,6 @@
                 "mount": "data-sk-menu-trigger",
                 "options": [
                   "triggerLabel",
-                  "triggerWeldStart",
-                  "triggerWeldEnd",
                   "triggerVariant",
                   "triggerTone",
                   "triggerSize",
@@ -40181,293 +39540,6 @@
         }
       }
     },
-    "split-button": {
-      "bindings": {
-        "SplitButton": {
-          "enhancer": null,
-          "markup": true,
-          "portals": false,
-          "react": "@skryensya/react/split-button#SplitButton"
-        },
-        "SplitButtonVertical": {
-          "enhancer": null,
-          "markup": true,
-          "portals": false,
-          "react": "@skryensya/react/split-button#SplitButtonVertical"
-        }
-      },
-      "category": "actions",
-      "css": "@skryensya/core/components/split-button.css",
-      "hookDetails": {
-        "--sk-split-button-brutalist-offset": {
-          "default": "5px",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/split-button.css"
-        },
-        "--sk-split-button-shadow": {
-          "default": "none",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/split-button.css"
-        },
-        "--sk-split-button-wash": {
-          "default": "none",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/split-button.css"
-        }
-      },
-      "hooks": [
-        "--sk-split-button-brutalist-offset",
-        "--sk-split-button-shadow",
-        "--sk-split-button-wash"
-      ],
-      "id": "split-button",
-      "options": {
-        "label": {
-          "attr": "aria-label",
-          "type": "string"
-        }
-      },
-      "parts": {
-        "root": "sk-split-button"
-      },
-      "semantics": {
-        "SplitButton": {
-          "alternatives": [
-            "Menu",
-            "Button.action"
-          ],
-          "avoidWhen": [
-            "the actions are not variants of the same thing; that is a Menu alone",
-            "there is a single action: that is a Button"
-          ],
-          "useWhen": [
-            "there is one action almost everyone wants and a few variants of the same action",
-            "the main one should be one click away and the others should take no room",
-            "the action carries weldEnd and the menu trigger triggerWeldStart, with the same variant and size on both halves"
-          ]
-        },
-        "SplitButtonVertical": {
-          "alternatives": [
-            "SplitButton",
-            "Button.action"
-          ],
-          "avoidWhen": [
-            "there is one main action with variants of it behind a menu; that is SplitButton, which is horizontal and carries the menu",
-            "the two actions are unrelated, or one is clearly the primary one; two separate Buttons say that better",
-            "the buttons need labels; the halves are icon-only and a labelled pair is two Buttons in an Inline"
-          ],
-          "useWhen": [
-            "two icon-only actions are a pair, one above the other, and should read as one control: zoom in and out, previous and next, raise and lower",
-            "there is no menu and nothing to choose: both halves are plain actions of the same weight"
-          ]
-        }
-      },
-      "signatures": {
-        "SplitButton": {
-          "forward": [
-            "id",
-            "aria-*"
-          ],
-          "host": {
-            "element": "div"
-          },
-          "intent": [
-            "primary-action-with-alternatives",
-            "default-plus-more",
-            "save-and-save-as"
-          ],
-          "options": [
-            "label"
-          ],
-          "pairs": [
-            {
-              "a": {
-                "option": "variant",
-                "slot": "action"
-              },
-              "b": {
-                "option": "triggerVariant",
-                "slot": "menu"
-              }
-            },
-            {
-              "a": {
-                "option": "tone",
-                "slot": "action"
-              },
-              "b": {
-                "option": "triggerTone",
-                "slot": "menu"
-              }
-            },
-            {
-              "a": {
-                "option": "size",
-                "slot": "action"
-              },
-              "b": {
-                "option": "triggerSize",
-                "slot": "menu"
-              }
-            }
-          ],
-          "react": {
-            "from": "@skryensya/react/split-button",
-            "name": "SplitButton"
-          },
-          "slotImplies": [
-            {
-              "then": {
-                "equals": "true",
-                "option": "disabled",
-                "slot": "menu"
-              },
-              "when": {
-                "equals": "true",
-                "option": "loading",
-                "slot": "action"
-              }
-            }
-          ],
-          "slots": {
-            "action": {
-              "accepts": "signature",
-              "of": [
-                "Button.action"
-              ],
-              "required": true,
-              "restrictOptions": {
-                "weldEnd": [
-                  "true"
-                ],
-                "weldStart": [
-                  "false"
-                ]
-              }
-            },
-            "menu": {
-              "accepts": "signature",
-              "of": [
-                "Menu"
-              ],
-              "required": true,
-              "restrictOptions": {
-                "triggerWeldEnd": [
-                  "false"
-                ],
-                "triggerWeldStart": [
-                  "true"
-                ]
-              }
-            }
-          },
-          "template": {
-            "attrs": {
-              "role": "group"
-            },
-            "children": [
-              {
-                "slot": "action"
-              },
-              {
-                "slot": "menu"
-              }
-            ],
-            "element": "div",
-            "host": true,
-            "part": "root"
-          }
-        },
-        "SplitButtonVertical": {
-          "forward": [
-            "id",
-            "aria-*"
-          ],
-          "host": {
-            "element": "div"
-          },
-          "intent": [
-            "paired-vertical-actions",
-            "zoom-in-and-out"
-          ],
-          "options": [
-            "label"
-          ],
-          "pairs": [
-            {
-              "a": {
-                "option": "variant",
-                "slot": "first"
-              },
-              "b": {
-                "option": "variant",
-                "slot": "second"
-              }
-            },
-            {
-              "a": {
-                "option": "tone",
-                "slot": "first"
-              },
-              "b": {
-                "option": "tone",
-                "slot": "second"
-              }
-            },
-            {
-              "a": {
-                "option": "size",
-                "slot": "first"
-              },
-              "b": {
-                "option": "size",
-                "slot": "second"
-              }
-            }
-          ],
-          "react": {
-            "from": "@skryensya/react/split-button",
-            "name": "SplitButtonVertical"
-          },
-          "slots": {
-            "first": {
-              "accepts": "signature",
-              "of": [
-                "Button.action"
-              ],
-              "required": true
-            },
-            "second": {
-              "accepts": "signature",
-              "of": [
-                "Button.action"
-              ],
-              "required": true
-            }
-          },
-          "template": {
-            "attrs": {
-              "data-orientation": "vertical",
-              "role": "group"
-            },
-            "children": [
-              {
-                "slot": "first"
-              },
-              {
-                "slot": "second"
-              }
-            ],
-            "element": "div",
-            "host": true,
-            "part": "root"
-          }
-        }
-      }
-    },
     "stat": {
       "bindings": {
         "Stat": {
@@ -51843,7 +50915,7 @@
     "working": "0.0.3"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "ce6e6446ae3ca442",
+  "sourceHash": "ceb23c6ebdbaffbc",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

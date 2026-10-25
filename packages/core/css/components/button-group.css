@@ -1,0 +1,436 @@
+/*
+ * TIER 3, BUTTON GROUP: related controls welded flush into one shape. SplitButton is a ButtonGroup
+ * of a Button and a Menu, so it has no sheet of its own.
+ *
+ * The group owns the weld; members carry nothing for it (button-group.ts has the why). A member's
+ * FACE is the element that paints its border: a Button, an Input, a NativeSelect or a
+ * ButtonGroupText is its own face; a Menu or Popover is a wrapper whose face is its trigger Button;
+ * a Tooltip wraps its Button two levels down, and a Select's face is its trigger, also two down. Every weld rule below names those paths,
+ * never a bare descendant: a Popover's close button and a Menu's items are Buttons too, and must
+ * keep their corners.
+ *
+ * A group whose direct children are groups is a spacer row instead (shadcn's nested group): it
+ * welds nothing, casts no shadow, and gaps its groups apart.
+ */
+@layer components {
+  .sk-button-group {
+    /* The pill's own elevation, ONCE, here, not on each member: `box-shadow` has no per-edge
+     * variant the way `border` does, so a welded Button that kept its own `--elevation-raised`
+     * blurred that shadow across the seam it touches. One shadow around the whole silhouette
+     * instead; each member's own is cleared below. */
+    --sk-button-group-shadow: var(--elevation-raised);
+    --sk-button-group-wash: var(--elevation-wash-raised);
+    --sk-button-group-gap: var(--space-inline-sm);
+    /* Ink-relative, not a border token: a solid member paints no border, and a border-coloured line
+     * vanished against its fill. `currentColor` is the member's label ink, so it reads on any face. */
+    --sk-button-group-separator-color: color-mix(in oklab, currentColor 10%, transparent);
+    /* How much of the cross axis an `inset` separator covers. */
+    --sk-button-group-separator-inset: 60%;
+    --sk-button-group-text-bg: var(--color-bg-well);
+
+    /* A `box-shadow` follows its OWN element's radius, so a square wrapper cast a square shadow
+     * around rounded members. Same token the members round with. */
+    border-radius: var(--radius-control);
+
+    display: inline-flex;
+    align-items: stretch;
+    /* Members stretch to the row (a ButtonGroupText, a separator), but the row itself never stretches
+     * to its parent: an icon-only Button keeps its square face, so a stretched row tore the seam. */
+    block-size: fit-content;
+    background: var(--sk-button-group-wash) transparent;
+    box-shadow: var(--sk-button-group-shadow);
+    /* Button's own `min-inline-size: 0; max-inline-size: 100%` lets its label clip, but only once
+     * the group itself is allowed to shrink: without this pair a worst-case label grew the group
+     * to 393px in a 229px container and pushed the trigger out of view. */
+    min-inline-size: 0;
+    max-inline-size: 100%;
+  }
+
+  .sk-button-group[data-orientation="vertical"] {
+    /* Vertical members keep their own shadow (brutalist below); a soft group shadow under a stack
+     * of icon buttons read as a card, not a control. */
+    --sk-button-group-shadow: none;
+    --sk-button-group-wash: none;
+
+    flex-direction: column;
+    align-self: start;
+  }
+
+  /* One column, one width: an icon member under a wider labelled one stretches to it (its square is
+   * the floor, not the size), or the wider member's welded corner hangs over nothing. */
+  .sk-button-group[data-orientation="vertical"] > .sk-button[data-icon-only],
+  .sk-button-group[data-orientation="vertical"] > :is(.sk-menu, .sk-popover) > .sk-button[data-icon-only] {
+    --sk-button-width: auto;
+  }
+
+  /* ── NESTED: a row of groups ─────────────────────────────────────────────────────────────── */
+  .sk-button-group:has(> .sk-button-group) {
+    --sk-button-group-shadow: none;
+    --sk-button-group-wash: none;
+
+    flex-wrap: wrap;
+    gap: var(--sk-button-group-gap);
+  }
+
+  /* ── THE WELD ────────────────────────────────────────────────────────────────────────────── *
+   * `:not(:has(> .sk-button-group))` on every rule: a spacer row's children are groups, which weld
+   * themselves. Logical corners, so `dir="rtl"` needs no rule of its own. Specificity is (0,4,0)
+   * or more on every path, above `.sk-input`/`.sk-select__trigger`/`.sk-button[data-variant]`, so
+   * no load order decides it. "First" and "last" skip separators and `[hidden]` members, so a
+   * separator at an edge or a member hidden for now leaves no squared outer corner. */
+
+  /* Horizontal: a member after another loses its inline-start corners. */
+  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))):is(.sk-button, .sk-input, .sk-select-native, .sk-button-group__text),
+  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))):is(.sk-menu, .sk-popover) > .sk-button,
+  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-tooltip > .sk-tooltip__trigger > .sk-button,
+  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-tooltip > .sk-tooltip__trigger > :is(.sk-menu, .sk-popover) > .sk-button,
+  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-select > .sk-select__control > .sk-select__trigger {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  }
+
+  /* Horizontal: a member before another loses its inline-end corners. */
+  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden]))):is(.sk-button, .sk-input, .sk-select-native, .sk-button-group__text),
+  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden]))):is(.sk-menu, .sk-popover) > .sk-button,
+  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-tooltip > .sk-tooltip__trigger > .sk-button,
+  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-tooltip > .sk-tooltip__trigger > :is(.sk-menu, .sk-popover) > .sk-button,
+  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-select > .sk-select__control > .sk-select__trigger {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  /* Vertical: a member below another loses its block-start corners. */
+  .sk-button-group[data-orientation="vertical"]:not(:has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))):is(.sk-button, .sk-input, .sk-select-native, .sk-button-group__text),
+  .sk-button-group[data-orientation="vertical"]:not(:has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))):is(.sk-menu, .sk-popover) > .sk-button,
+  .sk-button-group[data-orientation="vertical"]:not(:has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-tooltip > .sk-tooltip__trigger > .sk-button,
+  .sk-button-group[data-orientation="vertical"]:not(:has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-tooltip > .sk-tooltip__trigger > :is(.sk-menu, .sk-popover) > .sk-button,
+  .sk-button-group[data-orientation="vertical"]:not(:has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-select > .sk-select__control > .sk-select__trigger {
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+  }
+
+  /* Vertical: a member above another loses its block-end corners. */
+  .sk-button-group[data-orientation="vertical"]:not(:has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden]))):is(.sk-button, .sk-input, .sk-select-native, .sk-button-group__text),
+  .sk-button-group[data-orientation="vertical"]:not(:has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden]))):is(.sk-menu, .sk-popover) > .sk-button,
+  .sk-button-group[data-orientation="vertical"]:not(:has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-tooltip > .sk-tooltip__trigger > .sk-button,
+  .sk-button-group[data-orientation="vertical"]:not(:has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-tooltip > .sk-tooltip__trigger > :is(.sk-menu, .sk-popover) > .sk-button,
+  .sk-button-group[data-orientation="vertical"]:not(:has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-select > .sk-select__control > .sk-select__trigger {
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  /*
+   * THE SEAM. Each later member pulls back by one border width, so its leading border lands on the
+   * SAME pixel column as the previous member's trailing border: one line where both paint one,
+   * none where both are transparent (two solid fills read as one pill, a ButtonGroupSeparator puts
+   * the line back). Two adjacent flex items each round their own fractional width, and at some
+   * zoom levels that opened a hairline of the page through the seam; overlapping removes it rather
+   * than making it rarer. `-1px` is `--sk-button-border-width` and every face's own border width.
+   * A separator, and whatever follows one, sits flush instead: the separator IS the seam.
+   */
+  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden])), .sk-button-group__separator, .sk-button-group__separator + *) {
+    margin-inline-start: -1px;
+  }
+
+  .sk-button-group[data-orientation="vertical"]:not(:has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden])), .sk-button-group__separator, .sk-button-group__separator + *) {
+    margin-block-start: -1px;
+  }
+
+  /*
+   * THE DIVIDER, MANDATORY. Members of a group are always told apart: each later Button paints its
+   * leading and each earlier one its trailing border in the separator colour (a hovered member raises over its neighbour's, and a transparent border there would hide the line), on the pixel the seam overlap already shares, so no
+   * markup is needed and a solid, a soft and a ghost member all show one thin line. It runs the
+   * whole height. `data-separator="inset"` turns it off here and hands it to ButtonGroupSeparator,
+   * which covers only part of the height. Brutalist and tactile keep their own edge and ledge.
+   */
+  .sk-button-group:not([data-orientation="vertical"], [data-separator="inset"], :has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-button:not([data-appearance="tactile"], [data-appearance="brutalist"]),
+  .sk-button-group:not([data-orientation="vertical"], [data-separator="inset"], :has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))):is(.sk-menu, .sk-popover) > .sk-button:not([data-appearance="tactile"], [data-appearance="brutalist"]),
+  .sk-button-group:not([data-orientation="vertical"], [data-separator="inset"], :has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-tooltip > .sk-tooltip__trigger > .sk-button:not([data-appearance="tactile"], [data-appearance="brutalist"]),
+  .sk-button-group:not([data-orientation="vertical"], [data-separator="inset"], :has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-tooltip > .sk-tooltip__trigger > :is(.sk-menu, .sk-popover) > .sk-button:not([data-appearance="tactile"], [data-appearance="brutalist"]) {
+    border-inline-start-color: var(--sk-button-group-separator-color);
+  }
+
+  .sk-button-group[data-orientation="vertical"]:not([data-separator="inset"], :has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-button:not([data-appearance="tactile"], [data-appearance="brutalist"]),
+  .sk-button-group[data-orientation="vertical"]:not([data-separator="inset"], :has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))):is(.sk-menu, .sk-popover) > .sk-button:not([data-appearance="tactile"], [data-appearance="brutalist"]),
+  .sk-button-group[data-orientation="vertical"]:not([data-separator="inset"], :has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-tooltip > .sk-tooltip__trigger > .sk-button:not([data-appearance="tactile"], [data-appearance="brutalist"]),
+  .sk-button-group[data-orientation="vertical"]:not([data-separator="inset"], :has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-tooltip > .sk-tooltip__trigger > :is(.sk-menu, .sk-popover) > .sk-button:not([data-appearance="tactile"], [data-appearance="brutalist"]) {
+    border-block-start-color: var(--sk-button-group-separator-color);
+  }
+
+  .sk-button-group:not([data-orientation="vertical"], [data-separator="inset"], :has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-button:not([data-appearance="tactile"], [data-appearance="brutalist"]),
+  .sk-button-group:not([data-orientation="vertical"], [data-separator="inset"], :has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden]))):is(.sk-menu, .sk-popover) > .sk-button:not([data-appearance="tactile"], [data-appearance="brutalist"]),
+  .sk-button-group:not([data-orientation="vertical"], [data-separator="inset"], :has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-tooltip > .sk-tooltip__trigger > .sk-button:not([data-appearance="tactile"], [data-appearance="brutalist"]),
+  .sk-button-group:not([data-orientation="vertical"], [data-separator="inset"], :has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-tooltip > .sk-tooltip__trigger > :is(.sk-menu, .sk-popover) > .sk-button:not([data-appearance="tactile"], [data-appearance="brutalist"]) {
+    border-inline-end-color: var(--sk-button-group-separator-color);
+  }
+
+  .sk-button-group[data-orientation="vertical"]:not([data-separator="inset"], :has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-button:not([data-appearance="tactile"], [data-appearance="brutalist"]),
+  .sk-button-group[data-orientation="vertical"]:not([data-separator="inset"], :has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden]))):is(.sk-menu, .sk-popover) > .sk-button:not([data-appearance="tactile"], [data-appearance="brutalist"]),
+  .sk-button-group[data-orientation="vertical"]:not([data-separator="inset"], :has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-tooltip > .sk-tooltip__trigger > .sk-button:not([data-appearance="tactile"], [data-appearance="brutalist"]),
+  .sk-button-group[data-orientation="vertical"]:not([data-separator="inset"], :has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-tooltip > .sk-tooltip__trigger > :is(.sk-menu, .sk-popover) > .sk-button:not([data-appearance="tactile"], [data-appearance="brutalist"]) {
+    border-block-end-color: var(--sk-button-group-separator-color);
+  }
+
+  /* The overlap paints the later member over the earlier one's border, so a focused field raises
+   * itself over its neighbours the way `.sk-interactive:focus-visible` already does for buttons. */
+  .sk-button-group > .sk-input:focus-visible,
+  .sk-button-group > .sk-select-native:focus-visible {
+    position: relative;
+    z-index: var(--z-focus);
+  }
+
+  /*
+   * Neither Button face casts its own shadow once the group does. `[class]` is a specificity
+   * bump, not a filter: it lifts the direct path to (0,4,0), above `.sk-button[data-variant="…"]`
+   * and the brutalist/frosted face shadows at rest. TACTILE keeps its own ledge (see APPEARANCE).
+   */
+  .sk-button-group > .sk-button[class]:not([data-appearance="tactile"]),
+  .sk-button-group > :is(.sk-menu, .sk-popover) > .sk-button:not([data-appearance="tactile"]),
+  .sk-button-group > .sk-tooltip > .sk-tooltip__trigger > .sk-button:not([data-appearance="tactile"]),
+  .sk-button-group > .sk-tooltip > .sk-tooltip__trigger > :is(.sk-menu, .sk-popover) > .sk-button:not([data-appearance="tactile"]) {
+    box-shadow: none;
+  }
+
+  /*
+   * A hovered member raises itself over its neighbours, or the overlap above hides its hover border
+   * on the seam side and the hover reads lopsided. Below `--z-focus`, so a focus ring still wins.
+   */
+  .sk-button-group > :is(.sk-button, .sk-input, .sk-select-native):hover,
+  .sk-button-group > :is(.sk-menu, .sk-popover, .sk-select, .sk-tooltip):hover {
+    position: relative;
+    z-index: 1;
+  }
+
+  /*
+   * SQUEEZED. A group never wraps (a weld across two lines is not one control), so in a narrow
+   * container something has to give. Text labels give, with an ellipsis instead of being clipped
+   * on both sides around a centred label; icon-only faces and wrapped triggers (Menu, Popover,
+   * Tooltip) never do, so the chevron of a split button stays square and reachable. A field takes
+   * the room the row has and gives it back down to a usable width.
+   */
+  /* Never narrower than it is tall: a squeezed "2" or "OK" lost its own glyph before its neighbours gave
+   * anything. Button's own floor is 0 (button.css), so this only ever applies inside a group. */
+  .sk-button-group .sk-button {
+    min-inline-size: var(--sk-button-height);
+  }
+
+  .sk-button-group .sk-button:not([data-icon-only]) > .sk-button__label {
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sk-button-group > :is(.sk-button[data-icon-only], .sk-menu, .sk-popover, .sk-tooltip) {
+    flex-shrink: 0;
+  }
+
+  .sk-button-group > .sk-input {
+    /* Its intrinsic width, not Input's own `100%`: that resolves against the group itself, so the
+     * field's basis was the whole group and it squeezed a short prefix to "ht…". It still grows
+     * into a group made wider than its content. */
+    flex: 1 1 auto;
+    inline-size: auto;
+    min-inline-size: min(8rem, 100%);
+  }
+
+  /* ── PARTS ───────────────────────────────────────────────────────────────────────────────── */
+
+  /* The separator lies ON the two borders beside it (a pixel each way, raised over both) rather than
+   * between them: three lines side by side read as a thick, dirty seam. */
+  .sk-button-group__separator {
+    flex: none;
+    align-self: stretch;
+    position: relative;
+    /* Above a hovered member and every brutalist stack position (12), below focus. */
+    z-index: 20;
+    inline-size: 1px;
+    margin-inline: -1px;
+    background: var(--sk-button-group-separator-color);
+  }
+
+  .sk-button-group[data-orientation="vertical"] > .sk-button-group__separator {
+    inline-size: auto;
+    block-size: 1px;
+    margin-inline: 0;
+    margin-block: -1px;
+  }
+
+  /* INSET: the line covers part of the cross axis, centred, instead of the whole edge. */
+  .sk-button-group[data-separator="inset"] > .sk-button-group__separator {
+    align-self: center;
+    block-size: var(--sk-button-group-separator-inset);
+  }
+
+  .sk-button-group[data-separator="inset"][data-orientation="vertical"] > .sk-button-group__separator {
+    inline-size: var(--sk-button-group-separator-inset);
+    block-size: 1px;
+  }
+
+  /* A separator with nothing on one side divides nothing. */
+  .sk-button-group > .sk-button-group__separator:is(:nth-child(1 of :not([hidden])), :nth-last-child(1 of :not([hidden]))) {
+    display: none;
+  }
+
+  /* A face with no behaviour: a prefix ("https://"), a unit, a label. It stretches to the row's
+   * height (the group's `align-items: stretch`) instead of owning a size scale of its own. */
+  .sk-button-group__text {
+    box-sizing: border-box;
+    /* A block, not a flex box: `text-overflow` only reaches a block container's own line, and a long
+     * prefix (a whole domain) has to give way to the field beside it. `align-content` centres it. */
+    display: block;
+    align-content: center;
+    min-inline-size: 0;
+    padding-inline: var(--space-inset-md);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-control);
+    background: var(--sk-button-group-text-bg);
+    color: var(--color-text-secondary);
+    /* The input's own size: a prefix is part of the value it precedes, not a caption above it. */
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-label);
+    line-height: var(--font-line-height-body);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  label.sk-button-group__text {
+    cursor: default;
+  }
+
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Members carry Button's appearance themselves. What changes here is the one shadow the group
+   * casts:
+   *
+   *   TACTILE keeps each member's own ledge: a ledge drops straight down with no sideways blur, so
+   *   the members meet at the seam as one continuous ledge. The group's soft shadow goes, or it
+   *   would sit under the ledge as a second depth.
+   *
+   *   BRUTALIST casts ONE hard black offset around the whole group, mirrored in RTL; the seam is
+   *   the members' own black edge.
+   *
+   *   FROSTED needs nothing: the faces are the material, the group keeps its soft shadow.
+   */
+  .sk-button-group:has(> .sk-button[data-appearance="tactile"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="tactile"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="tactile"]) {
+    --sk-button-group-shadow: none;
+    --sk-button-group-wash: none;
+  }
+
+  .sk-button-group:not([data-orientation="vertical"]):has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) {
+    --sk-button-group-brutalist-offset: 5px;
+    --brutalist-direction: 1;
+    --sk-button-group-shadow: calc(var(--sk-button-group-brutalist-offset) * var(--brutalist-direction))
+      var(--sk-button-group-brutalist-offset) 0 oklch(from var(--shadow-lg) l c h / 1);
+    --sk-button-group-wash: none;
+  }
+
+  .sk-button-group:has(
+    > .sk-button[data-appearance="brutalist"][data-variant="soft"],
+    > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"][data-variant="soft"],
+    > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"][data-variant="soft"]
+  ) {
+    --sk-button-group-brutalist-offset: 4px;
+  }
+
+  .sk-button-group:has(
+    > .sk-button[data-appearance="brutalist"][data-variant="ghost"],
+    > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"][data-variant="ghost"],
+    > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"][data-variant="ghost"]
+  ) {
+    --sk-button-group-brutalist-offset: 2px;
+  }
+
+  /* Every `:has()` below lists the same three paths as the slab rule above: `:has()` takes its most
+   * specific argument, so a shorter list here would lose to it and the override would never land. */
+  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]):dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  /*
+   * BRUTALIST STACKING. Each member's black edge and, vertically, its hard offset must read as
+   * built up in order: the first sits UNDER the second, the second under the third. The order follows the
+   * reading direction, so RTL needs no rule: a member's shadow points at the NEXT one, which must
+   * be above it either way. Plain DOM order is not enough:
+   * a pressed face (`translate`) and a hovered member (z-index 1 above) jump over their neighbours.
+   * 12 positions is the ceiling; beyond it the rest share the top one. Separators stay above all, and a focused member keeps its own focus z-index.
+   */
+  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(1) { --sk-button-group-stack: 1; }
+  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(2) { --sk-button-group-stack: 2; }
+  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(3) { --sk-button-group-stack: 3; }
+  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(4) { --sk-button-group-stack: 4; }
+  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(5) { --sk-button-group-stack: 5; }
+  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(6) { --sk-button-group-stack: 6; }
+  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(7) { --sk-button-group-stack: 7; }
+  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(8) { --sk-button-group-stack: 8; }
+  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(9) { --sk-button-group-stack: 9; }
+  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(10) { --sk-button-group-stack: 10; }
+  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(11) { --sk-button-group-stack: 11; }
+  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(12) { --sk-button-group-stack: 12; }
+
+  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :not(.sk-button-group__separator, :focus-visible, :has(:focus-visible)) {
+    position: relative;
+    z-index: var(--sk-button-group-stack, 12);
+  }
+
+  .sk-button-group > .sk-button[data-appearance="brutalist"]:active:not(:disabled):not([aria-disabled="true"]),
+  .sk-button-group > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"]:active:not(:disabled):not([aria-disabled="true"]),
+  .sk-button-group > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]:active:not(:disabled):not([aria-disabled="true"]) {
+    /* The group casts the resting slab shadow, but the pressed face still needs its own remaining
+     * hard shadow under it. Without that 1px shadow, the active first member moves diagonally and
+     * exposes a white slit between its old face and the group shadow, breaking the press illusion. */
+    box-shadow: calc(1px * var(--brutalist-direction)) 1px 0 oklch(from var(--shadow-lg) l c h / 1);
+  }
+
+  /*
+   * BRUTALIST, EVERY MEMBER BUT THE LAST keeps its own hard shadow to the end side (the last one has
+   * the group's slab). It lies under the next member, which is stacked above it, so at rest it is
+   * hidden; press the next one and its face travels over, uncovering the shadow of the one before
+   * it: the first's when the second is pressed, the second's when the third is. It is STATIC while its
+   * member is at rest: the farthest the next face travels (offset minus the 1px it keeps), on both
+   * axes, so it starts exactly where the pressed face's top lands and adds nothing above it. Only when
+   * this member is the one pressed does it shrink to 1px, so it never trails below the slab.
+   */
+  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden])), .sk-button-group__separator).sk-button[class][data-appearance="brutalist"]:not([data-variant="ghost"]),
+  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden])), .sk-button-group__separator):is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"]:not([data-variant="ghost"]),
+  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden])), .sk-button-group__separator).sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]:not([data-variant="ghost"]),
+  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden])), .sk-button-group__separator).sk-tooltip > .sk-tooltip__trigger > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"]:not([data-variant="ghost"]) {
+    box-shadow:
+      calc(max(1px, var(--brutalist-offset-inline) * (1 - var(--brutalist-travel)) - 1px) * var(--brutalist-direction))
+      max(1px, var(--brutalist-offset-block) * (1 - var(--brutalist-travel)) - 1px) 0 var(--sk-button-brutalist-shadow);
+  }
+
+  /* VERTICAL brutalist: no group slab; each member keeps Button's own hard shadow and diagonal
+   * travel, so neither half flattens into a plain vertical drop. */
+  .sk-button-group[data-orientation="vertical"] > .sk-button[class][data-appearance="brutalist"] {
+    box-shadow:
+      calc(var(--brutalist-shadow-inline) * var(--brutalist-direction)) var(--brutalist-shadow-block) 0
+        var(--sk-button-brutalist-shadow);
+  }
+
+  .sk-button-group[data-orientation="vertical"] > .sk-button[class][data-appearance="brutalist"]:not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden]))) {
+    /* A 1px black seam under upper members: without it, pressing the lower member moves its face
+     * into the shared edge and the upper one looks like it lost its constructed shadow. */
+    box-shadow:
+      calc(var(--brutalist-shadow-inline) * var(--brutalist-direction)) var(--brutalist-shadow-block) 0
+        var(--sk-button-brutalist-shadow),
+      0 1px 0 var(--sk-button-brutalist-edge);
+  }
+
+  .sk-button-group[data-orientation="vertical"] > .sk-button[data-appearance="brutalist"]:hover:not(:disabled):not([aria-disabled="true"]) {
+    /* Growing one member's hard offset on hover makes only that row stick out to inline-end, and
+     * the stack stops reading as one construction. Keep the hover face still; active is the cue. */
+    --brutalist-travel: 0;
+  }
+
+  @media (forced-colors: active) {
+    .sk-button-group {
+      --sk-button-group-shadow: none;
+    }
+
+    .sk-button-group__separator {
+      background: CanvasText;
+    }
+  }
+}

@@ -643,6 +643,91 @@
       ]
     },
     {
+      "category": "actions",
+      "css": "@skryensya/core/components/button-group.css",
+      "id": "button-group",
+      "signatures": [
+        {
+          "alternatives": [
+            "Toolbar",
+            "Segmented",
+            "Inline"
+          ],
+          "avoidWhen": [
+            "the buttons toggle state or pick one option; that is Segmented",
+            "many controls should be one Tab stop with arrow keys between them; that is Toolbar",
+            "the actions are unrelated, or there is a single action; separate Buttons in an Inline say that better",
+            "the members have different variants or sizes; a joined shape with mixed faces reads as broken"
+          ],
+          "host": "div",
+          "id": "ButtonGroup",
+          "intent": [
+            "grouped-actions",
+            "joined-buttons",
+            "input-with-button",
+            "paired-vertical-actions",
+            "split-button",
+            "primary-action-with-alternatives",
+            "save-and-save-as"
+          ],
+          "parents": [],
+          "useWhen": [
+            "a few related actions should read as one control: Archive, Report, Snooze",
+            "a split button: one main action as a Button and its variants behind a Menu with triggerIconOnly and triggerLabel, both with the same variant, tone and size",
+            "two icon actions are a pair, one above the other (orientation vertical): zoom in and out",
+            "an Input, Select or ButtonGroupText joined to the Button that acts on it: search, a URL with its prefix, an amount with its currency",
+            "a row of groups with space between them: a ButtonGroup whose children are ButtonGroups"
+          ]
+        },
+        {
+          "alternatives": [],
+          "avoidWhen": [],
+          "host": "span",
+          "id": "ButtonGroupSeparator",
+          "intent": [
+            "divide-joined-buttons"
+          ],
+          "parents": [
+            "ButtonGroup"
+          ],
+          "useWhen": [
+            "two solid members touch: a solid fill has no border, so without this the seam disappears"
+          ]
+        },
+        {
+          "alternatives": [],
+          "avoidWhen": [],
+          "host": "span",
+          "id": "ButtonGroupText",
+          "intent": [
+            "static-text-in-a-group",
+            "input-prefix"
+          ],
+          "parents": [
+            "ButtonGroup"
+          ],
+          "useWhen": [
+            "static text joined to a control: a prefix like https://, a unit, a count"
+          ]
+        },
+        {
+          "alternatives": [],
+          "avoidWhen": [],
+          "host": "label",
+          "id": "ButtonGroupLabel",
+          "intent": [
+            "label-an-input-in-a-group"
+          ],
+          "parents": [
+            "ButtonGroup"
+          ],
+          "useWhen": [
+            "the input in the group needs a visible label joined to it; htmlFor is its id"
+          ]
+        }
+      ]
+    },
+    {
       "category": "forms",
       "css": "@skryensya/core/components/calendar.css",
       "id": "calendar",
@@ -1943,34 +2028,6 @@
       ]
     },
     {
-      "category": "forms",
-      "css": "@skryensya/core/components/editor.css",
-      "id": "editor",
-      "signatures": [
-        {
-          "alternatives": [
-            "Textarea"
-          ],
-          "avoidWhen": [
-            "the field is a single line, or needs no formatting at all: Input/Textarea is enough there"
-          ],
-          "host": "div",
-          "id": "Editor",
-          "intent": [
-            "rich-text-field",
-            "wysiwyg-editor",
-            "formatted-content",
-            "editor-with-toolbar"
-          ],
-          "parents": [],
-          "useWhen": [
-            "styled text is needed - bold, lists, headings, quotes - not only plain text",
-            "the formatting toolbar should come ready, without composing it by hand"
-          ]
-        }
-      ]
-    },
-    {
       "category": "feedback",
       "css": "@skryensya/core/components/empty-state.css",
       "id": "empty-state",
@@ -2286,44 +2343,6 @@
     },
     {
       "category": "content",
-      "css": "@skryensya/core/components/image-cropper.css",
-      "id": "image-cropper",
-      "signatures": [
-        {
-          "alternatives": [
-            "ImageFrame",
-            "FileUpload",
-            "Canvas"
-          ],
-          "avoidWhen": [
-            "the picture is only displayed in a frame and the browser can crop it for free; ImageFrame fits it with object-fit",
-            "the file has to be chosen or uploaded; FileUpload does that, and the two are joined by the consumer's src, not by this component",
-            "drawing, annotating or filtering is needed; this crops, zooms and rotates and does nothing else to the pixels",
-            "the crop is applied on the server from coordinates and no one needs to see or adjust it; send the crop numbers from a form instead"
-          ],
-          "host": "div",
-          "id": "ImageCropper",
-          "intent": [
-            "image-cropper",
-            "crop-image",
-            "avatar-crop",
-            "profile-picture-crop",
-            "cover-image-crop",
-            "rotate-and-zoom-image",
-            "crop-to-aspect-ratio"
-          ],
-          "parents": [],
-          "useWhen": [
-            "a person has to choose which part of a picture is used: a profile photo, a cover, a thumbnail, a product shot cut to a fixed ratio",
-            "the crop must be exact and reproducible: the result is a file at the picture's own resolution, or numbers that describe it, and the same value draws the same crop at any size",
-            "the picture may need turning or straightening before it is cut: zoom, quarter turns and a fine angle are part of the tool",
-            "an avatar is wanted: a circle crop exports a transparent PNG with the circle already cut, not a square to be masked afterwards"
-          ]
-        }
-      ]
-    },
-    {
-      "category": "content",
       "css": "@skryensya/core/patterns/image-frame.css",
       "id": "image-frame",
       "signatures": [
@@ -2386,7 +2405,8 @@
             "search-field"
           ],
           "parents": [
-            "FormField"
+            "FormField",
+            "ButtonGroup"
           ],
           "useWhen": [
             "the user types one line of text: email, name, search",
@@ -2819,6 +2839,7 @@
       "signatures": [
         {
           "alternatives": [
+            "Segmented",
             "Select",
             "Combobox",
             "RadioGroup",
@@ -2827,6 +2848,7 @@
           "avoidWhen": [
             "it is a form field that gets submitted: Listbox has no input and no name; that is Select, RadioGroup or a group of Checkboxes",
             "the options are many or the space is small: an always-open listbox takes as much room as its options; that is Select or Combobox",
+            "a single choice laid in a row: that is Segmented",
             "each row navigates to another page or runs an action: that is NavList or Menu, not a choice"
           ],
           "host": "div",
@@ -2841,7 +2863,8 @@
           "useWhen": [
             "whoever uses the screen has to see every option while choosing: a view, a few filters, the items they are about to act on",
             "more than one can be chosen, and checking and unchecking without opening anything is faster than a dropdown",
-            "the list is browsed with the keyboard (arrows, type-ahead) and focus has to stay in one place"
+            "the list is browsed with the keyboard (arrows, type-ahead) and focus has to stay in one place",
+            "laid in a row (horizontal) only when several can be chosen: a row of days, a few toggled filters"
           ]
         }
       ]
@@ -4737,58 +4760,6 @@
       ]
     },
     {
-      "category": "actions",
-      "css": "@skryensya/core/components/split-button.css",
-      "id": "split-button",
-      "signatures": [
-        {
-          "alternatives": [
-            "SplitButton",
-            "Button.action"
-          ],
-          "avoidWhen": [
-            "there is one main action with variants of it behind a menu; that is SplitButton, which is horizontal and carries the menu",
-            "the two actions are unrelated, or one is clearly the primary one; two separate Buttons say that better",
-            "the buttons need labels; the halves are icon-only and a labelled pair is two Buttons in an Inline"
-          ],
-          "host": "div",
-          "id": "SplitButtonVertical",
-          "intent": [
-            "paired-vertical-actions",
-            "zoom-in-and-out"
-          ],
-          "parents": [],
-          "useWhen": [
-            "two icon-only actions are a pair, one above the other, and should read as one control: zoom in and out, previous and next, raise and lower",
-            "there is no menu and nothing to choose: both halves are plain actions of the same weight"
-          ]
-        },
-        {
-          "alternatives": [
-            "Menu",
-            "Button.action"
-          ],
-          "avoidWhen": [
-            "the actions are not variants of the same thing; that is a Menu alone",
-            "there is a single action: that is a Button"
-          ],
-          "host": "div",
-          "id": "SplitButton",
-          "intent": [
-            "primary-action-with-alternatives",
-            "default-plus-more",
-            "save-and-save-as"
-          ],
-          "parents": [],
-          "useWhen": [
-            "there is one action almost everyone wants and a few variants of the same action",
-            "the main one should be one click away and the others should take no room",
-            "the action carries weldEnd and the menu trigger triggerWeldStart, with the same variant and size on both halves"
-          ]
-        }
-      ]
-    },
-    {
       "category": "data",
       "css": "@skryensya/core/components/stat.css",
       "id": "stat",
@@ -6352,5 +6323,5 @@
     }
   ],
   "schemaVersion": "2.3",
-  "sourceHash": "ce6e6446ae3ca442"
+  "sourceHash": "ceb23c6ebdbaffbc"
 }

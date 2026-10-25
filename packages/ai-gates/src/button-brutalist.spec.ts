@@ -22,8 +22,8 @@ function parseShadow(shadow: string): Shadow {
   return { x: lengths[0]!, y: lengths[1]!, blur: lengths[2] ?? 0, color };
 }
 
+/** Where the face sits relative to its rest box. The brutalist face moves by `left`/`top`, not `translate`. */
 function parseTranslate(translate: string): { x: number; y: number } {
-  if (translate === "none") return { x: 0, y: 0 };
   const [x = "0", y = "0"] = translate.split(/\s+/);
   return { x: Number.parseFloat(x), y: Number.parseFloat(y) };
 }
@@ -65,7 +65,7 @@ async function read(page: Page, selector: string): Promise<Read> {
     const cs = getComputedStyle(el);
     return {
       shadow: cs.boxShadow,
-      translate: cs.translate,
+      translate: `${cs.left} ${cs.top}`,
       scale: cs.scale,
       bg: cs.backgroundColor,
       bgAlpha: (() => {
@@ -80,7 +80,7 @@ async function read(page: Page, selector: string): Promise<Read> {
       borderWidth: cs.borderTopWidth,
       borderStartColor: cs.borderInlineStartColor,
       borderEndColor: cs.borderInlineEndColor,
-      // The layout box, not the painted one: offsetWidth ignores `translate`.
+      // The layout box, not the painted one: offsetWidth ignores the relative offset.
       blockSize: (el as HTMLElement).offsetHeight,
       inlineSize: (el as HTMLElement).offsetWidth,
     };
@@ -127,7 +127,7 @@ test("rest paints a flat face, an edge and a zero-blur offset toward block-end a
   expect(await page.locator("#probe").evaluate((el) => getComputedStyle(el).backgroundImage)).toBe("none");
 });
 
-test("hover reaches further, press drives the face into a fixed shadow, footprint unchanged", async ({ page }) => {
+test("hover leaves the offset alone, press drives the face into a fixed shadow, footprint unchanged", async ({ page }) => {
   await mount(page, `<span id="before">before</span>${button("probe", 'data-tone="accent"')}<span id="after">after</span>`);
   const afterRest = await page.locator("#after").boundingBox();
 
@@ -136,7 +136,7 @@ test("hover reaches further, press drives the face into a fixed shadow, footprin
   const active = await whilePressed(page, "#probe");
   const afterActive = await page.locator("#after").boundingBox();
 
-  expect(hover.shadow!.y).toBeGreaterThan(rest.shadow!.y);
+  expect(hover.shadow!.y).toBe(rest.shadow!.y);
   // No transform at rest or on hover: it would cut the touch target back to the face.
   expect(rest.translate).toEqual({ x: 0, y: 0 });
   expect(hover.translate).toEqual({ x: 0, y: 0 });
@@ -390,28 +390,6 @@ test("RTL mirrors the inline side of the offset and of the travel", async ({ pag
   expect(active.translate.x + active.shadow!.x).toBe(-5);
 });
 
-test("welded members cast one block-end shadow, share one seam line, and press straight down", async ({ page }) => {
-  await mount(
-    page,
-    `<div style="display:inline-flex">${button("lead", 'data-tone="accent" data-weld-end', "Save")}${button(
-      "trail",
-      'data-tone="accent" data-weld-start data-icon-only aria-label="More"',
-      "▾",
-    )}</div>`,
-  );
-  const lead = await read(page, "#lead");
-  const trail = await read(page, "#trail");
-
-  for (const member of [lead, trail]) expect(member.shadow).toMatchObject({ x: 0, y: 5, blur: 0 });
-  // One line at the seam: the trailing member draws its start edge, the leading one clears its end.
-  expect(lead.borderEndColor).toBe("rgba(0, 0, 0, 0)");
-  expect(trail.borderStartColor).not.toBe("rgba(0, 0, 0, 0)");
-
-  const active = await whilePressed(page, "#trail");
-  expect(active.translate.x).toBe(0);
-  expect(active.translate.y).toBeGreaterThan(0);
-});
-
 test("the navigation host renders the same construction as the action host", async ({ page }) => {
   await mount(page, button("action", 'data-tone="accent"', "Docs") + '<a id="link" class="sk-button sk-interactive" href="#x" data-appearance="brutalist" data-tone="accent">Docs</a>');
   const action = await read(page, "#action");
@@ -430,8 +408,7 @@ test("reduced motion: the pressed state still lands, with no animated travel", a
     const times = cs.transitionDuration.split(",").map((s) => Number.parseFloat(s) * (s.includes("ms") ? 1 : 1000));
     return Object.fromEntries(names.map((name, i) => [name, times[i]]));
   });
-  expect(durations.translate).toBeLessThanOrEqual(1);
-  expect(durations["box-shadow"]).toBeLessThanOrEqual(1);
+  expect(durations["--brutalist-travel"]).toBeLessThanOrEqual(1);
 
   const active = await whilePressed(page, "#probe");
   expect(active.translate.y).toBeGreaterThan(0);

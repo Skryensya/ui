@@ -1,0 +1,30 @@
+# The structure lives in packages/core/src/button-group.ts. Here, only why it is chosen.
+
+ButtonGroup:
+  useWhen:
+    - "a few related actions should read as one control: Archive, Report, Snooze"
+    - "a split button: one main action as a Button and its variants behind a Menu with triggerIconOnly and triggerLabel, both with the same variant, tone and size"
+    - "two icon actions are a pair, one above the other (orientation vertical): zoom in and out"
+    - "an Input, Select or ButtonGroupText joined to the Button that acts on it: search, a URL with its prefix, an amount with its currency"
+    - "a row of groups with space between them: a ButtonGroup whose children are ButtonGroups"
+  avoidWhen:
+    - "the buttons toggle state or pick one option; that is Segmented"
+    - "many controls should be one Tab stop with arrow keys between them; that is Toolbar"
+    - "the actions are unrelated, or there is a single action; separate Buttons in an Inline say that better"
+    - "the members have different variants or sizes; a joined shape with mixed faces reads as broken"
+  alternatives:
+    - Toolbar
+    - Segmented
+    - Inline
+
+ButtonGroupSeparator:
+  useWhen:
+    - "two solid members touch: a solid fill has no border, so without this the seam disappears"
+
+ButtonGroupText:
+  useWhen:
+    - "static text joined to a control: a prefix like https://, a unit, a count"
+
+ButtonGroupLabel:
+  useWhen:
+    - "the input in the group needs a visible label joined to it; htmlFor is its id"

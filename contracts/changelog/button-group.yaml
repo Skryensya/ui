@@ -1,0 +1,47 @@
+# What changed in button-group (split-button before 2026-10-23), in the words its users read. Only appended to, never rewritten.
+#
+# `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
+# does not match, something a consumer depends on has moved: write the entry and paste in the new
+# hash.
+surface: "e7ac4fd00be6cd7a"
+entries:
+  - date: 2026-10-24
+    kind: feature
+    es:
+      title: "El divisor entre miembros siempre se ve"
+      body: "El grupo dibuja una línea fina entre miembros aunque no haya ButtonGroupSeparator. Nueva opción separator: full (alto completo, por defecto) o inset (línea corta y centrada, con un ButtonGroupSeparator entre cada par)."
+    en:
+      title: "The divider between members is always visible"
+      body: "The group draws a thin line between members even without a ButtonGroupSeparator. New separator option: full (whole height, the default) or inset (a shorter centred line, with a ButtonGroupSeparator between each pair)."
+  - date: 2026-10-23
+    kind: breaking
+    es:
+      title: "SplitButton pasa a ser ButtonGroup"
+      body: "El componente se llama ButtonGroup y la soldadura la hace el grupo según la posición: weldStart, weldEnd, triggerWeldStart y triggerWeldEnd ya no existen. Un split button es un ButtonGroup con un Button y un Menu; SplitButton y SplitButtonVertical se eliminan. Nuevas piezas: ButtonGroupSeparator, ButtonGroupText y ButtonGroupLabel, y miembros Input, Select y Popover. Receta de migración en docs/migrations/0001-split-button-to-button-group.md."
+    en:
+      title: "SplitButton becomes ButtonGroup"
+      body: "The component is now ButtonGroup and the group welds its members by position: weldStart, weldEnd, triggerWeldStart and triggerWeldEnd are gone. A split button is a ButtonGroup of a Button and a Menu; SplitButton and SplitButtonVertical are removed. New parts: ButtonGroupSeparator, ButtonGroupText and ButtonGroupLabel, and Input, Select and Popover members. Migration recipe in docs/migrations/0001-split-button-to-button-group.md."
+  - date: 2026-10-18
+    kind: feature
+    es:
+      title: "La acción ocupada deja el menú deshabilitado"
+      body: "Nueva regla: si action lleva loading, menu tiene que llevar disabled. Validada en el árbol (un autor que la rompe recibe un error, no un split button donde el menú sigue abriendo alternativas para la acción que ya está en curso); el binding de React de la convención plana ya la aplica solo con la nueva prop loading."
+    en:
+      title: "A busy action leaves the menu disabled"
+      body: "New rule: when action carries loading, menu must carry disabled. Validated on the tree (an author who breaks it gets an error, not a split button whose menu still opens alternatives for the action already running); the flat-prop React convenience already applies it from its new loading prop."
+  - date: 2026-10-09
+    kind: feature
+    es:
+      title: Una variante vertical para dos acciones que son un par
+      body: "Nueva firma <code>SplitButtonVertical</code>: dos botones de icono soldados uno sobre otro, sin menú, para un par como acercar y alejar. Las dos mitades siguen compartiendo variante, tono y tamaño."
+    en:
+      title: A vertical variant for two actions that are a pair
+      body: "New signature <code>SplitButtonVertical</code>: two icon buttons welded one above the other, with no menu, for a pair like zoom in and out. The two halves still share variant, tone and size."
+  - date: 2026-10-01
+    kind: feature
+    es:
+      title: Primera versión
+      body: "Se publica por primera vez, con su contrato, un binding de React y una hoja de estilos para marcado simple."
+    en:
+      title: First release
+      body: "Published for the first time, with its contract, a React binding and a stylesheet for plain markup."
