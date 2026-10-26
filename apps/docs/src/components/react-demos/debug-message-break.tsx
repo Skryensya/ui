@@ -55,7 +55,7 @@ export function MessageBreak() {
       <div className="break-scenario-grid">
         {CASES.map(({ label, name, text, footer, align }) => (
           <section className="break-case" key={label}>
-            <h2 className="break-case__label">Message — {label}</h2>
+            <h2 className="break-case__label">Message - {label}</h2>
             <BreakCaseFindings component="message" label={label} />
             <div className="break-case__stage">
               <div style={{ inlineSize: "100%" }}>

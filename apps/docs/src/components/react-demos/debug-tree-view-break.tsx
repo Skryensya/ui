@@ -22,22 +22,22 @@ const DEMO: readonly TreeNode[] = [
 const WORST: readonly TreeNode[] = [
   {
     id: "northwind",
-    label: "Northwind Holdings — international billing and security workspace",
+    label: "Northwind Holdings - international billing and security workspace",
     children: [
       {
         id: "finance",
         label: "Finance and account operations",
         children: [
-          { id: "invoice", label: "Q3 consolidated invoice — final approved by Finance and Legal.pdf" },
+          { id: "invoice", label: "Q3 consolidated invoice - final approved by Finance and Legal.pdf" },
           { id: "short", label: "Jo" },
-          { id: "dang", label: "Đặng Thị Ngọc Hân — billing contact history.csv" },
-          { id: "arabic", label: "نور الهدى عبد الرحمن — account-notes.md" },
+          { id: "dang", label: "Đặng Thị Ngọc Hân - billing contact history.csv" },
+          { id: "arabic", label: "نور الهدى عبد الرحمن - account-notes.md" },
           { id: "disabled", label: "Archived workspace", disabled: true },
         ],
       },
     ],
   },
-  { id: "chinese", label: "王秀英 — 国际账单与安全通知" },
+  { id: "chinese", label: "王秀英 - 国际账单与安全通知" },
 ];
 const MANY: readonly TreeNode[] = [
   {
@@ -69,7 +69,7 @@ export function TreeViewBreak() {
       <div className="break-scenario-grid">
         {SCENARIOS.map((scenario, index) => (
           <section className="break-case" key={scenario.label}>
-            <h2 className="break-case__label">TreeView — {scenario.label}</h2>
+            <h2 className="break-case__label">TreeView - {scenario.label}</h2>
             <div className="break-case__stage">
               <div className="break-w-320">
                 <TreeView
@@ -87,7 +87,7 @@ export function TreeViewBreak() {
         ))}
       </div>
       <section className="break-case">
-        <h2 className="break-case__label">TreeView — 1,000 leaves — wide container (1100px)</h2>
+        <h2 className="break-case__label">TreeView - 1,000 leaves - wide container (1100px)</h2>
         <div className="break-case__stage">
           <div className="break-tree-viewport break-w-1100">
             <TreeView id="tree-huge" label="Workspace archive" nodes={MANY} defaultExpandedValue={["archive"]} wrap />

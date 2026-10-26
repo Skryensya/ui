@@ -36,7 +36,7 @@ function Specimen({ id, data, index }: { id: string; data: Fixture; index: numbe
   const prefix = `break-${id}-${index}`;
   const prose = <Box padding="md" surface="surface"><h3>{title}</h3><p>{body}</p></Box>;
   const picture = <img src="/demos/lightbox/coast.jpg" alt="Coastline" />;
-  const rows = items.map((text, i) => <p key={i}>{text}{i === 0 && body ? ` — ${body}` : ""}</p>);
+  const rows = items.map((text, i) => <p key={i}>{text}{i === 0 && body ? ` - ${body}` : ""}</p>);
   switch (id) {
     case "audio-player": return <AudioPlayer label={title} tracks={items.map((text, i) => ({ src: "/audio/morning-light.wav", title: text, artist: worst ? "Aleksandra Wiśniewska-Kowalczyk" : undefined, cover: worst && i === 1 ? "/debug/missing-cover.jpg" : "/audio/morning-light.svg" }))} />;
     case "video-player": return <VideoPlayer label={title} src={worst ? "/debug/missing-video.webm" : data.label === "Empty" ? undefined : "/demos/lightbox-video/satin-blue.webm"} poster="/demos/lightbox-video/satin-blue-poster.jpg" captionsTitle={title} />;

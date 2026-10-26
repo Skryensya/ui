@@ -50,8 +50,8 @@ por ejemplo, el alto de la metadata ya prueba el defecto aunque el texto envuelv
 | 7 | Broken | CommentThread: autor y timestamp compiten; email/URL desbordan hasta 425px | Metadata que pueda reducirse/apilarse y wrap del body. `packages/core/css/components/comment-thread.css:132`, `:162`, `:182`. |
 | 8 | Fragile | CommentThread: seis niveles dejan 45px de body; fila de acciones de 51px para grupo de votos de 84px | Adaptar indentación al contenedor sin aplanar la relación entre respuestas ni encoger targets indefinidamente. `packages/core/css/components/comment-thread.css:277`. |
 | 9 | Broken | Feed: email/URL producen 398px de contenido en artículo dentro de 229px | Contener artículos y envolver identificadores, conservando foco/ARIA. `packages/core/css/components/feed.css:19`. |
-| 10 | Fragile — composición | ImageFrame con 404 conserva icono nativo y alt; no hay recuperación | Política de fallback en el consumidor con img autorado/onError o fuente alternativa. No es una garantía incumplida de ImageFrame. Mantener el 404 del harness. `packages/react/src/components/image-frame.tsx:58`. |
-| 11 | Fragile — asset | Wordmark negro transparente casi invisible en oscuro | Variante del asset o fondo de marca acordado. No invertir todas las imágenes ni cambiar el adverso del harness. `apps/docs/src/components/react-demos/debug-image-frame-break.tsx`. |
+| 10 | Fragile - composición | ImageFrame con 404 conserva icono nativo y alt; no hay recuperación | Política de fallback en el consumidor con img autorado/onError o fuente alternativa. No es una garantía incumplida de ImageFrame. Mantener el 404 del harness. `packages/react/src/components/image-frame.tsx:58`. |
+| 11 | Fragile - asset | Wordmark negro transparente casi invisible en oscuro | Variante del asset o fondo de marca acordado. No invertir todas las imágenes ni cambiar el adverso del harness. `apps/docs/src/components/react-demos/debug-image-frame-break.tsx`. |
 
 ## Decisiones y qué resistió
 

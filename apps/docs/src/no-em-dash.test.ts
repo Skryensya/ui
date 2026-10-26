@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync, statSync } from "node:fs";
+import { lstatSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, extname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
@@ -22,6 +22,12 @@ const skippedDirectories = {
   runs: true,
   /* `storybook-static/` in apps/storybook-react and apps/storybook-vanilla: Storybook build output. */
   "storybook-static": true,
+  /* Installed agent skills (`skills-lock.json`): third-party text we do not edit. */
+  ".agents": true,
+  /* `.claude/worktrees/`: other branches checked out inside this repo, each a full copy of it. */
+  worktrees: true,
+  /* A Chrome user-data profile (gitignored): browser state and cached pages, not anything we write. */
+  "x.profile": true,
 } satisfies Record<string, true>;
 const checkedExtensions = {
   ".astro": true,
@@ -50,6 +56,8 @@ const collectCheckedFiles = (dir: string): string[] => {
     if (entry in skippedDirectories) continue;
 
     const path = join(dir, entry);
+    /* A symlink reaches files that are scanned (or skipped) by their real path. */
+    if (lstatSync(path).isSymbolicLink()) continue;
     const stat = statSync(path);
     if (stat.isDirectory()) {
       files.push(...collectCheckedFiles(path));

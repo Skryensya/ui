@@ -56,7 +56,7 @@ export function FormFieldBreak() {
         {CASES.map(
           ({ label, fieldLabel, hint, error, value, required, disabled }) => (
             <section className="break-case" key={label}>
-              <h2 className="break-case__label">FormField — {label}</h2>
+              <h2 className="break-case__label">FormField - {label}</h2>
               <div className="break-case__stage">
                 <div style={{ inlineSize: "100%" }}>
                   <FormField

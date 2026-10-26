@@ -13,8 +13,8 @@ and **lessons** so the rest of the catalogue can be audited the same way.
 
 **Update 2026-10-17: this is no longer true.** The kit shipped a release (`v0.0.2`) and at least two
 real consumer repos depend on it in production (`informes-asimov`, `slep-barrancas-remake`, both
-tracking a `skryensya-ui-pain-points.md` against today's prop names). A break is still fine — tell
-them in the changelog entry, same as before — but "no consumer exists to spare" is no longer the
+tracking a `skryensya-ui-pain-points.md` against today's prop names). A break is still fine - tell
+them in the changelog entry, same as before - but "no consumer exists to spare" is no longer the
 reason; see memory `no-consumers-yet`.
 
 The kit has **no external consumers**: the only code depending on it is `apps/docs` and the

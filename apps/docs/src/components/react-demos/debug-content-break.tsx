@@ -15,7 +15,7 @@ const DEMO = {
 
 const WORST = {
   heading: "Benachrichtigungseinstellungen",
-  body: "Senior Product Design Engineer, Platform Infrastructure — Đặng Thị Ngọc Hân · bartholomew.fitzgerald@northwind-industries-holdings.example.com",
+  body: "Senior Product Design Engineer, Platform Infrastructure - Đặng Thị Ngọc Hân · bartholomew.fitzgerald@northwind-industries-holdings.example.com",
   href: "/workspaces/acme/projects/q3-launch/docs/9f8e7d6c5b4a?tab=comments&filter=unresolved",
   link: "https://example.com/workspaces/acme/projects/q3-launch/docs/9f8e7d6c5b4a?tab=comments&filter=unresolved",
   rtl: "نور الهدى عبد الرحمن",

@@ -18,13 +18,13 @@ const WORST = countries.en.map((name) => ({
   label: name === "United Kingdom" ? LONG_LABEL : name,
   ...(name === "United Kingdom" ? { description: "ISO 3166-1 alpha-2 · GB" } : {}),
 }));
-// Single-select is Combobox's own identity — type to filter, the chosen label sits as TEXT in the
+// Single-select is Combobox's own identity - type to filter, the chosen label sits as TEXT in the
 // field, same as the host `<input>` it enhances. These scenarios never set `multiple`, so the
 // break page cannot be mistaken for TagsInput's chip-based one.
 const SCENARIOS: readonly Scenario[] = [
-  { label: "Demo data — 20 countries", items: DEMO, selected: DEMO[2]?.value },
+  { label: "Demo data - 20 countries", items: DEMO, selected: DEMO[2]?.value },
   {
-    label: "Worst case — full source list, long selected label",
+    label: "Worst case - full source list, long selected label",
     items: WORST,
     selected: "united-kingdom",
   },
@@ -34,7 +34,7 @@ const SCENARIOS: readonly Scenario[] = [
 // `multiple` is its own worst case (removable Tags above the input instead of a chosen label
 // inside it) and is kept apart from the SCENARIOS above so the two layouts are never confused.
 const MULTIPLE_SCENARIO: Scenario = {
-  label: "Multiple selection — three Tags",
+  label: "Multiple selection - three Tags",
   items: WORST,
   selected: ["united-kingdom", "democratic-republic-of-the-congo", "saint-vincent-and-the-grenadines"],
   multiple: true,
@@ -42,7 +42,7 @@ const MULTIPLE_SCENARIO: Scenario = {
 // `max` at its own limit: every unselected option disables and the placeholder drops, so there is
 // nothing inviting a search that could not go anywhere.
 const MAX_SCENARIO: Scenario = {
-  label: "Multiple selection — max 3, already at the limit",
+  label: "Multiple selection - max 3, already at the limit",
   items: WORST,
   selected: ["united-kingdom", "democratic-republic-of-the-congo", "saint-vincent-and-the-grenadines"],
   multiple: true,
@@ -86,17 +86,17 @@ export function ComboboxBreak() {
       </header>
       <div className="break-scenario-grid">
         {SCENARIOS.map((scenario, index) => (
-          <Case key={scenario.label} label={`Combobox — ${scenario.label}`} width="break-w-320">
+          <Case key={scenario.label} label={`Combobox - ${scenario.label}`} width="break-w-320">
             <Field scenario={scenario} id={`combobox-${index}-320`} />
           </Case>
         ))}
       </div>
       {[{ label: "Regular demo width (18rem)", width: "break-w-18rem" }, { label: "Wide container (1100px)", width: "break-w-1100" }].map(({ label, width }) => (
-        <Case key={label} label={`Combobox — ${MULTIPLE_SCENARIO.label} — ${label}`} width={width}>
+        <Case key={label} label={`Combobox - ${MULTIPLE_SCENARIO.label} - ${label}`} width={width}>
           <Field scenario={MULTIPLE_SCENARIO} id={`combobox-worst-${width}`} />
         </Case>
       ))}
-      <Case label={`Combobox — ${MAX_SCENARIO.label}`} width="break-w-18rem">
+      <Case label={`Combobox - ${MAX_SCENARIO.label}`} width="break-w-18rem">
         <Field scenario={MAX_SCENARIO} id="combobox-max" />
       </Case>
     </div>

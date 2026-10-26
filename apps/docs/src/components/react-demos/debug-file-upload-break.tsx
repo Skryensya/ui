@@ -49,11 +49,11 @@ export function FileUploadBreak() {
           1,
         ),
         makeFile(
-          "Đặng Thị Ngọc Hân — security-notification-audit-and-billing-contact-history.pdf",
+          "Đặng Thị Ngọc Hân - security-notification-audit-and-billing-contact-history.pdf",
           3_200_000,
           2,
         ),
-        makeFile("Q3 Board Deck — FINAL (revised) v12 [approved by legal].pdf", 1_800_000, 3),
+        makeFile("Q3 Board Deck - FINAL (revised) v12 [approved by legal].pdf", 1_800_000, 3),
       ],
     },
     {
@@ -62,7 +62,7 @@ export function FileUploadBreak() {
     },
     {
       label: "One file",
-      files: [makeFile("Q3 Board Deck — FINAL (revised) v12 [approved by legal].pdf", 1_200_000, 4)],
+      files: [makeFile("Q3 Board Deck - FINAL (revised) v12 [approved by legal].pdf", 1_200_000, 4)],
     },
   ], []);
 
@@ -77,13 +77,13 @@ export function FileUploadBreak() {
       </header>
       <div className="break-scenario-grid">
         {scenarios.map((scenario, index) => (
-          <Case key={scenario.label} label={`FileUpload — ${scenario.label}`} width="break-w-320">
+          <Case key={scenario.label} label={`FileUpload - ${scenario.label}`} width="break-w-320">
             <Upload scenario={scenario} id={`upload-narrow-${index}`} />
           </Case>
         ))}
       </div>
       {scenarios.map((scenario, index) => (
-        <Case key={scenario.label} label={`FileUpload — ${scenario.label} — wide`} width="break-w-1100">
+        <Case key={scenario.label} label={`FileUpload - ${scenario.label} - wide`} width="break-w-1100">
           <Upload scenario={scenario} id={`upload-wide-${index}`} />
         </Case>
       ))}

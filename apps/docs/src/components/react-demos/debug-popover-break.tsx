@@ -28,7 +28,7 @@ export function PopoverBreak() {
       <div className="break-scenario-grid">
         {CASES.map(({ label, title, description, body }, i) => (
           <section className="break-case" key={label}>
-            <h2 className="break-case__label">Popover — {label}</h2>
+            <h2 className="break-case__label">Popover - {label}</h2>
             <div className="break-case__stage">
               <div className="break-w-320">
                 <Popover

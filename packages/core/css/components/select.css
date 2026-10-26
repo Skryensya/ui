@@ -62,7 +62,7 @@
 
   /* `sk-scrollbar` (class list) gives the thumb colour and the `::picker(select)` inherit bridge
    * (patterns/scrollbar.css). This overrides its track to transparent and keeps the thumb always
-   * on — `sk-scrollbar--reveal` hid it until hover/focus, which read as the thumb vanishing while
+   * on - `sk-scrollbar--reveal` hid it until hover/focus, which read as the thumb vanishing while
    * scrolling the picker's own surface, since that isn't a hover on the select itself. The doubled
    * class beats `.sk-scrollbar`'s equal-specificity rule without `!important`. */
   .sk-select-native.sk-select-native {

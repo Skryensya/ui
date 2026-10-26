@@ -78,12 +78,12 @@ export function NumberFieldBreak() {
       </header>
       <div className="break-scenario-grid">
         {SCENARIOS.map(({ label, fieldLabel, ...props }) => (
-          <Case key={label} label={`NumberField — ${label}`} width="break-w-320">
+          <Case key={label} label={`NumberField - ${label}`} width="break-w-320">
             <NumberField {...props} label={fieldLabel} />
           </Case>
         ))}
       </div>
-      <Case label="NumberField — wide container (1100px)" width="break-w-1100">
+      <Case label="NumberField - wide container (1100px)" width="break-w-1100">
         <NumberField
           label="Annual transactions"
           defaultValue="999999999"

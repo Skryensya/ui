@@ -396,7 +396,7 @@ export function ButtonBreak() {
         <Case label="HTML-looking text and a raw ampersand" note="React text nodes escape by construction; this checks Button adds no second rendering layer (dangerouslySetInnerHTML, a markdown pass) that would un-escape it.">
           <Button>{LABELS.htmlish}</Button>
         </Case>
-        <Case label="Embedded newline" note="white-space: nowrap collapses it to a space rather than wrapping or being dropped — checking that holds with an embedded \\n specifically, not just a long run-on sentence.">
+        <Case label="Embedded newline" note="white-space: nowrap collapses it to a space rather than wrapping or being dropped - checking that holds with an embedded \\n specifically, not just a long run-on sentence.">
           <Button>{LABELS.newline}</Button>
         </Case>
       </Group>
@@ -404,7 +404,7 @@ export function ButtonBreak() {
       <Group title="Count baked into the label (not in the first pass)">
         <Case
           label="Hardcoded plural / no thousands separator, 0 / 1 / 1284"
-          note="Not a Button bug — Button renders whatever string it's given — but this is where the classic caller bug (Intl.PluralRules, CATALOG.md) actually surfaces, since a count baked into a button's label is one of the most common real call sites for it."
+          note="Not a Button bug - Button renders whatever string it's given - but this is where the classic caller bug (Intl.PluralRules, CATALOG.md) actually surfaces, since a count baked into a button's label is one of the most common real call sites for it."
           broke="the naive row's `Eliminar ${n} elementos` reads “Eliminar 1 elementos” at n=1 and “Eliminar 1284 elementos” with no separator at n=1284."
           fixed="the row below it, same three counts, built with Intl.PluralRules + Intl.NumberFormat instead of string interpolation."
         >

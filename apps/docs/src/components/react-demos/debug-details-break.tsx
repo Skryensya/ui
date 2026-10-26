@@ -55,7 +55,7 @@ export function DetailsBreak() {
       <div className="break-scenario-grid">
         {CASES.map(({ label, items }, index) => (
           <section className="break-case" key={label}>
-            <h2 className="break-case__label">Details — {label}</h2>
+            <h2 className="break-case__label">Details - {label}</h2>
             <BreakCaseFindings component="details" label={label} />
             <div className="break-case__stage">
               <div
@@ -66,7 +66,7 @@ export function DetailsBreak() {
                     : {}),
                 }}
               >
-                <DetailsGroup aria-label={`Invoice questions — ${label}`}>
+                <DetailsGroup aria-label={`Invoice questions - ${label}`}>
                   {items.map(({ title, body }, i) => (
                     <Details
                       key={i}

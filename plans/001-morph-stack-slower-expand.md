@@ -1,4 +1,4 @@
-# 001 — Slow the MorphStack open and close
+# 001 - Slow the MorphStack open and close
 
 - **Status**: TODO
 - **Commit**: a52905e1
@@ -13,7 +13,7 @@ covers most of the distance in the first ~100ms. The tilt and the plates all sta
 snap, and the stagger (`0.15 × 320ms = 48ms` per share) is too short to be seen as a sequence.
 
 ```css
-/* packages/core/css/components/morph-stack.css:47 and :107 — current */
+/* packages/core/css/components/morph-stack.css:47 and :107 - current */
 --sk-morph-stack-stagger: 0.15;
 transition: transform var(--motion-expand-duration) var(--motion-expand-easing);
 ```

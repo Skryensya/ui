@@ -52,12 +52,12 @@ export function StepsBreak() {
       <div className="break-scenario-grid">
         {CASES.map(({ label, steps, current }) => (
           <section className="break-case" key={label}>
-            <h2 className="break-case__label">Steps — {label}</h2>
+            <h2 className="break-case__label">Steps - {label}</h2>
             <BreakCaseFindings component="steps" label={label} />
             <div className="break-case__stage">
               <div style={{ inlineSize: "100%" }}>
                 <Steps
-                  aria-label={`Progress — ${label}`}
+                  aria-label={`Progress - ${label}`}
                   steps={steps}
                   current={current}
                 />

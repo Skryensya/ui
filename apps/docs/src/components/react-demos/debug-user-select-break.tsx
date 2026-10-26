@@ -44,7 +44,7 @@ export function UserSelectBreak() {
       <div className="break-scenario-grid">
         {SCENARIOS.map((scenario, index) => (
           <section className="break-case" key={scenario.label}>
-            <h2 className="break-case__label">UserSelect — {scenario.label}</h2>
+            <h2 className="break-case__label">UserSelect - {scenario.label}</h2>
             <div className="break-case__stage">
               <div className="break-w-320">
                 <UserSelect

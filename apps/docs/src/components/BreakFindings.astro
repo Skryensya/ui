@@ -9,9 +9,9 @@ const findings = breakFindings[component] ?? [];
   <p>Diagnóstico, no demo corregida. Los casos de abajo conservan los datos adversos y el comportamiento real del componente.</p>
   {findings.length ? findings.map((finding) => (
     <article class="break-finding" data-break-status={finding.status}>
-      <h3>{finding.status === "open" ? "ERROR ABIERTO" : "CORREGIDO"} — {finding.scenario}</h3>
+      <h3>{finding.status === "open" ? "ERROR ABIERTO" : "CORREGIDO"} - {finding.scenario}</h3>
       <p><strong>Error observado:</strong> {finding.error}</p>
-      <p><strong>{finding.status === "open" ? "Fix propuesto — SIN APLICAR:" : "Fix aplicado:"}</strong> {finding.fix}</p>
+      <p><strong>{finding.status === "open" ? "Fix propuesto - SIN APLICAR:" : "Fix aplicado:"}</strong> {finding.fix}</p>
       <p><strong>Revisar:</strong> <code>{finding.source}</code></p>
     </article>
   )) : <p><strong>Sin errores nuevos registrados para esta página.</strong> No significa que esté libre de defectos ni que se haya completado toda la matriz de pruebas. El historial anotado junto a los casos se conserva.</p>}

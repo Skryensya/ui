@@ -53,7 +53,7 @@ export function DialogBreak() {
           const id = `break-dialog-${i}`;
           return (
             <section className="break-case" key={label}>
-              <h2 className="break-case__label">Dialog — {label}</h2>
+              <h2 className="break-case__label">Dialog - {label}</h2>
               <div className="break-case__stage">
                 <Button
                   onClick={() =>

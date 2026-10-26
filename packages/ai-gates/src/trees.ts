@@ -941,6 +941,16 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    name: "tag/toggle",
+    enhanced: false,
+    tree: {
+      contract: "tag",
+      signature: "Tag.toggle",
+      options: { selected: false, tone: "accent" },
+      children: "Diseño",
+    },
+  },
+  {
     // A named bar: the three aria-value attributes are what make "62 of 100" audible.
     name: "progress/labelled",
     enhanced: false,
@@ -2874,6 +2884,39 @@ const signatureTrees: readonly Canonical[] = [
           },
         },
       ],
+    },
+  },
+  {
+    /* The opt-in wrapper a wide comparison scrolls inside: a plain `<div>` around the same table. */
+    name: "comparison-table/scroll",
+    enhanced: false,
+    tree: {
+      contract: "comparison-table",
+      signature: "ComparisonTableScroll",
+      children: {
+        contract: "comparison-table",
+        signature: "ComparisonTable",
+        options: { aspectLabel: "Aspecto" },
+        slots: {
+          columns: [
+            { contract: "comparison-table", signature: "ComparisonColumn", children: "Plan básico" },
+            { contract: "comparison-table", signature: "ComparisonColumn", children: "Plan completo" },
+          ],
+        },
+        children: [
+          {
+            contract: "comparison-table",
+            signature: "ComparisonRow",
+            slots: {
+              label: "Usuarios",
+              children: [
+                { contract: "comparison-table", signature: "ComparisonCell", children: "Hasta 3" },
+                { contract: "comparison-table", signature: "ComparisonCell", children: "Sin límite" },
+              ],
+            },
+          },
+        ],
+      },
     },
   },
   {

@@ -10,19 +10,19 @@ entries:
     target: disabled
     es:
       title: Tag tiene disabled
-      body: "<code>aria-disabled</code> en la raíz (todo anfitrión lo entiende, hasta el <code>span</code>); <code>Tag</code> removible y <code>Tag.toggle</code> además reciben el <code>disabled</code> nativo real, en el botón de quitar o en el propio chip. No existe en <code>Tag.link</code> — un enlace tampoco se puede deshabilitar de forma nativa."
+      body: "<code>aria-disabled</code> en la raíz (todo anfitrión lo entiende, hasta el <code>span</code>); <code>Tag</code> removible y <code>Tag.toggle</code> además reciben el <code>disabled</code> nativo real, en el botón de quitar o en el propio chip. No existe en <code>Tag.link</code> - un enlace tampoco se puede deshabilitar de forma nativa."
     en:
       title: Tag has disabled
-      body: "<code>aria-disabled</code> on the root (every host understands it, even the <code>span</code>); removable <code>Tag</code> and <code>Tag.toggle</code> also get the real native <code>disabled</code>, on the remove button or on the chip itself. Not on <code>Tag.link</code> — a link cannot be natively disabled either."
+      body: "<code>aria-disabled</code> on the root (every host understands it, even the <code>span</code>); removable <code>Tag</code> and <code>Tag.toggle</code> also get the real native <code>disabled</code>, on the remove button or on the chip itself. Not on <code>Tag.link</code> - a link cannot be natively disabled either."
   - date: 2026-10-17
     kind: feature
     target: Tag.toggle
     es:
       title: Tag se puede seleccionar con Tag.toggle
-      body: "Un tercer anfitrión, además de <code>span</code> (removible) y <code>a</code> (navega): un <code>button</code> real con <code>selected</code> → <code>aria-pressed</code>, para un chip de filtro que el lector activa y desactiva. No se puede combinar con <code>removable</code> ni <code>href</code> — un botón no puede anidar otro botón."
+      body: "Un tercer anfitrión, además de <code>span</code> (removible) y <code>a</code> (navega): un <code>button</code> real con <code>selected</code> → <code>aria-pressed</code>, para un chip de filtro que el lector activa y desactiva. No se puede combinar con <code>removable</code> ni <code>href</code> - un botón no puede anidar otro botón."
     en:
       title: Tag can be selected with Tag.toggle
-      body: "A third host, beside <code>span</code> (removable) and <code>a</code> (navigates): a real <code>button</code> with <code>selected</code> → <code>aria-pressed</code>, for a filter chip the reader turns on and off. It cannot combine with <code>removable</code> or <code>href</code> — a button cannot nest another button."
+      body: "A third host, beside <code>span</code> (removable) and <code>a</code> (navigates): a real <code>button</code> with <code>selected</code> → <code>aria-pressed</code>, for a filter chip the reader turns on and off. It cannot combine with <code>removable</code> or <code>href</code> - a button cannot nest another button."
   - date: 2026-10-17
     kind: breaking
     target: tone

@@ -106,9 +106,9 @@ it("edits only the changed classification field as human-owned, then accepts", a
     ),
   );
   await waitFor(() =>
-    expect((screen.getByText("Accept") as HTMLButtonElement).disabled).toBe(
-      false,
-    ),
+    expect(
+      screen.getByText("Accept").closest("button")!.disabled,
+    ).toBe(false),
   );
   fireEvent.click(screen.getByText("Accept"));
   await waitFor(() =>

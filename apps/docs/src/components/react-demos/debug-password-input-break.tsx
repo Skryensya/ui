@@ -47,7 +47,7 @@ export function PasswordInputBreak() {
       <div className="break-scenario-grid">
         {CASES.map(({ label, props }) => (
           <section className="break-case" key={label}>
-            <h2 className="break-case__label">PasswordInput — {label}</h2>
+            <h2 className="break-case__label">PasswordInput - {label}</h2>
             <div className="break-case__stage">
               <div style={{ inlineSize: "100%" }}>
                 <PasswordInput

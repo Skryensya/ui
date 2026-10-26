@@ -30,10 +30,10 @@ export function ListBreak() {
       <div className="break-scenario-grid">
         {SCENARIOS.map(({ label, rows }) => (
           <section className="break-case" key={label}>
-            <h2 className="break-case__label">List — {label}</h2>
+            <h2 className="break-case__label">List - {label}</h2>
             <div className="break-case__stage">
               <div className={label === "1,000 rows" ? "break-list-viewport" : "break-w-320"}>
-                <List aria-label={`Workspace items — ${label}`}>
+                <List aria-label={`Workspace items - ${label}`}>
                   {rows.map((row, i) => <ListItem key={`${row.title}-${i}`} title={row.title} description={row.description || undefined} trailing={row.trailing} />)}
                 </List>
               </div>

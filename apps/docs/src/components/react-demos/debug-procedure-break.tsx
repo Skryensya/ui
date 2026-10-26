@@ -51,7 +51,7 @@ export function ProcedureBreak() {
       <div className="break-scenario-grid">
         {CASES.map(({ label, instructions }) => (
           <section className="break-case" key={label}>
-            <h2 className="break-case__label">Procedure — {label}</h2>
+            <h2 className="break-case__label">Procedure - {label}</h2>
             <BreakCaseFindings component="procedure" label={label} />
             <div className="break-case__stage">
               <div
@@ -62,7 +62,7 @@ export function ProcedureBreak() {
                     : {}),
                 }}
               >
-                <Procedure aria-label={`Instructions — ${label}`}>
+                <Procedure aria-label={`Instructions - ${label}`}>
                   {instructions.map(({ title, body }, i) => (
                     <ProcedureStep key={i} title={title}>
                       {body ? <p>{body}</p> : null}

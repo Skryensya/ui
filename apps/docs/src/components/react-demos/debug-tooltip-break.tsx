@@ -56,7 +56,7 @@ export function TooltipBreak() {
       <div className="break-scenario-grid">
         {SCENARIOS.map((scenario, index) => (
           <section className="break-case" key={scenario.label}>
-            <h2 className="break-case__label">Tooltip — {scenario.label}</h2>
+            <h2 className="break-case__label">Tooltip - {scenario.label}</h2>
             <BreakCaseFindings component="tooltip" label={scenario.label} />
             <div className="break-case__stage">
               <div className="break-w-320 break-tooltip-stage">

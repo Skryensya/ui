@@ -27,7 +27,7 @@ const expectedOrder = [
 const expected: Record<(typeof expectedOrder)[number], readonly string[]> = {
   actions: ["AppBar", "Button", "ButtonGroup", "Clipboard", "CommandPalette", "Menu", "Menubar", "StateButton", "TileButton", "Toolbar"],
   forms: [
-    "Calendar", "Checkbox", "ColorPicker", "Combobox", "DatePicker", "Editor", "Drop zone", "FormField", "Input", "Listbox",
+    "Calendar", "Checkbox", "ColorPicker", "Combobox", "DatePicker", "Drop zone", "FormField", "Input", "Listbox",
     "NumberField", "OtpInput", "PasswordInput", "Questionnaire", "RadioGroup", "SegmentedControl", "Select", "Slider", "Switch",
     "TagsInput", "TileCheckbox", "TileRadioGroup", "TileSwitch", "TimeField", "UserSelect",
   ],
@@ -39,7 +39,7 @@ const expected: Record<(typeof expectedOrder)[number], readonly string[]> = {
   feedback: ["Callout", "EmptyState", "Loader", "Placeholder", "Progress", "Toast"],
   overlays: ["Dialog", "Dialog Stack", "Drawer", "Popover", "Tooltip", "Tour", "Vaul", "Window"],
   layout: ["AppShell", "Box", "Footer", "Grid", "Hero", "Inline", "Layout Grid", "Resizable", "Scroll Expand", "Scroll Stack", "Separator", "Stack", "Wrapper"],
-  media: ["Canvas", "Carousel", "Compare Slider", "Diagram", "Image Cropper", "ImageFrame", "Lightbox", "Marquee", "MediaOverlay", "Morph Stack", "QRCode", "Video Player", "Audio Player"],
+  media: ["Canvas", "Carousel", "Compare Slider", "Diagram", "ImageFrame", "Lightbox", "Marquee", "MediaOverlay", "Morph Stack", "QRCode", "Video Player", "Audio Player"],
   utilities: ["FadeEdge", "Hotkey", "Presence", "Scrollbar"],
 };
 

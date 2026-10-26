@@ -27,7 +27,7 @@
   }
 
   /* An icon-only trigger is a square button: its glyph says what it opens, so the dropdown chevron
-   * is left out rather than widening the square — but only when a composed `trigger` slot painted a
+   * is left out rather than widening the square - but only when a composed `trigger` slot painted a
    * glyph of its own alongside it (a real sibling, never a swap: the chevron wrapper is authored
    * unconditionally by the template, see menu.ts). `:not(:only-child)` is what tells the two cases
    * apart. Without it, a split button's trigger (icon-only, no `trigger` slot: the chevron IS the

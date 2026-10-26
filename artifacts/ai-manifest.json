@@ -3609,7 +3609,7 @@
               "title": "suffix/locale/fractionDigits now apply to a numeric value with no separate count"
             },
             "es": {
-              "body": "El formato solo se activaba cuando count !== undefined. count existe para el camino de texto ya escrito (vanilla, un value string más el número crudo al lado); un <Stat value={82} suffix=\"%\" /> sin count — el uso documentado en React — mostraba 82 pelado, sin la unidad. Ahora el formato se activa según si el valor mismo es numérico.",
+              "body": "El formato solo se activaba cuando count !== undefined. count existe para el camino de texto ya escrito (vanilla, un value string más el número crudo al lado); un <Stat value={82} suffix=\"%\" /> sin count - el uso documentado en React - mostraba 82 pelado, sin la unidad. Ahora el formato se activa según si el valor mismo es numérico.",
               "title": "suffix/locale/fractionDigits ya aplican a un value numérico sin count aparte"
             },
             "kind": "bugfix",
@@ -3874,11 +3874,11 @@
           {
             "date": "2026-10-17",
             "en": {
-              "body": "<code>aria-disabled</code> on the root (every host understands it, even the <code>span</code>); removable <code>Tag</code> and <code>Tag.toggle</code> also get the real native <code>disabled</code>, on the remove button or on the chip itself. Not on <code>Tag.link</code> — a link cannot be natively disabled either.",
+              "body": "<code>aria-disabled</code> on the root (every host understands it, even the <code>span</code>); removable <code>Tag</code> and <code>Tag.toggle</code> also get the real native <code>disabled</code>, on the remove button or on the chip itself. Not on <code>Tag.link</code> - a link cannot be natively disabled either.",
               "title": "Tag has disabled"
             },
             "es": {
-              "body": "<code>aria-disabled</code> en la raíz (todo anfitrión lo entiende, hasta el <code>span</code>); <code>Tag</code> removible y <code>Tag.toggle</code> además reciben el <code>disabled</code> nativo real, en el botón de quitar o en el propio chip. No existe en <code>Tag.link</code> — un enlace tampoco se puede deshabilitar de forma nativa.",
+              "body": "<code>aria-disabled</code> en la raíz (todo anfitrión lo entiende, hasta el <code>span</code>); <code>Tag</code> removible y <code>Tag.toggle</code> además reciben el <code>disabled</code> nativo real, en el botón de quitar o en el propio chip. No existe en <code>Tag.link</code> - un enlace tampoco se puede deshabilitar de forma nativa.",
               "title": "Tag tiene disabled"
             },
             "kind": "feature",
@@ -3887,11 +3887,11 @@
           {
             "date": "2026-10-17",
             "en": {
-              "body": "A third host, beside <code>span</code> (removable) and <code>a</code> (navigates): a real <code>button</code> with <code>selected</code> → <code>aria-pressed</code>, for a filter chip the reader turns on and off. It cannot combine with <code>removable</code> or <code>href</code> — a button cannot nest another button.",
+              "body": "A third host, beside <code>span</code> (removable) and <code>a</code> (navigates): a real <code>button</code> with <code>selected</code> → <code>aria-pressed</code>, for a filter chip the reader turns on and off. It cannot combine with <code>removable</code> or <code>href</code> - a button cannot nest another button.",
               "title": "Tag can be selected with Tag.toggle"
             },
             "es": {
-              "body": "Un tercer anfitrión, además de <code>span</code> (removible) y <code>a</code> (navega): un <code>button</code> real con <code>selected</code> → <code>aria-pressed</code>, para un chip de filtro que el lector activa y desactiva. No se puede combinar con <code>removable</code> ni <code>href</code> — un botón no puede anidar otro botón.",
+              "body": "Un tercer anfitrión, además de <code>span</code> (removible) y <code>a</code> (navega): un <code>button</code> real con <code>selected</code> → <code>aria-pressed</code>, para un chip de filtro que el lector activa y desactiva. No se puede combinar con <code>removable</code> ni <code>href</code> - un botón no puede anidar otro botón.",
               "title": "Tag se puede seleccionar con Tag.toggle"
             },
             "kind": "feature",
@@ -50992,7 +50992,7 @@
     "working": "0.0.3"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "d2fe2cf4332d1d19",
+  "sourceHash": "83e10d8995e134cc",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

@@ -97,7 +97,7 @@ export function ComparisonTableBreak() {
       <div className="break-scenario-grid">
         {CASES.map(({ label, columns, rows }) => (
           <section className="break-case" key={label}>
-            <h2 className="break-case__label">ComparisonTable — {label}</h2>
+            <h2 className="break-case__label">ComparisonTable - {label}</h2>
             <BreakCaseFindings component="comparison-table" label={label} />
             <div className="break-case__stage">
               <div
@@ -111,7 +111,7 @@ export function ComparisonTableBreak() {
                 <ComparisonTableScroll>
                   <ComparisonTable
                     aspectLabel="Plan feature"
-                    caption={`Workspace plans — ${label}`}
+                    caption={`Workspace plans - ${label}`}
                     columns={columns.map((column) => (
                       <ComparisonColumn key={column}>{column}</ComparisonColumn>
                     ))}

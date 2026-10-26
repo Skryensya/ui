@@ -36,7 +36,7 @@ const WORST: readonly Slide[] = [
   },
   {
     eyebrow: "Regional report",
-    title: "王秀英 — Billing overview",
+    title: "王秀英 - Billing overview",
     description: "国际账单和安全通知；الفواتير والتنبيهات الأمنية.",
     metric: "0 unresolved alerts",
   },
@@ -114,27 +114,27 @@ export function CarouselBreak() {
       </header>
 
       <div className="break-scenario-grid">
-        <Case label="Carousel — Demo data — 320px">
+        <Case label="Carousel - Demo data - 320px">
           <Track label="Workspace highlights" slides={DEMO} slideSize="min(88%, 20rem)" />
         </Case>
-        <Case label="Carousel — Worst case — 320px">
+        <Case label="Carousel - Worst case - 320px">
           <Track label="International billing and security updates" slides={WORST} slideSize="min(88%, 20rem)" />
         </Case>
-        <Case label="Carousel — Worst case — RTL">
+        <Case label="Carousel - Worst case - RTL">
           <Track dir="rtl" label="التقارير الإقليمية والتنبيهات الأمنية" slides={WORST} slideSize="min(88%, 20rem)" />
         </Case>
-        <Case label="Carousel — Empty">
+        <Case label="Carousel - Empty">
           <Track label="Recently viewed reports" slides={[]} />
         </Case>
-        <Case label="Carousel — One slide">
+        <Case label="Carousel - One slide">
           <Track label="Pinned report" slides={[DEMO[0]!]} />
         </Case>
-        <Case label="Carousel — 1,000 slides — dots by default">
+        <Case label="Carousel - 1,000 slides - dots by default">
           <Track label="Saved photos" slides={HUGE} slideSize="100%" />
         </Case>
       </div>
 
-      <Case label="Carousel — Worst case — 1100px container">
+      <Case label="Carousel - Worst case - 1100px container">
         <div className="break-w-1100" style={{ inlineSize: "min(1100px, calc(100vw - 2rem))" }}>
           <Carousel aria-label="Featured plans and workspace reports" slideSize="min(42%, 28rem)">
             {WORST.map((slide, index) => (

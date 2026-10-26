@@ -52,10 +52,10 @@ export function MenubarBreak() {
       <div className="break-scenario-grid">
         {CASES.map(({ label, labels }) => (
           <section className="break-case" key={label}>
-            <h2 className="break-case__label">Menubar — {label}</h2>
+            <h2 className="break-case__label">Menubar - {label}</h2>
             <BreakCaseFindings component="menubar" label={label} />
             <div className="break-case__stage">
-              <Menubar label={`Workspace commands — ${label}`}>
+              <Menubar label={`Workspace commands - ${label}`}>
                 {labels.map((name, i) => (
                   <MenubarItem
                     key={name}

@@ -55,7 +55,7 @@ export function OtpInputBreak() {
       <div className="break-scenario-grid">
         {CASES.map(({ label, props }) => (
           <section className="break-case" key={label}>
-            <h2 className="break-case__label">OtpInput — {label}</h2>
+            <h2 className="break-case__label">OtpInput - {label}</h2>
             <BreakCaseFindings component="otp-input" label={label} />
             <div className="break-case__stage">
               <div style={{ inlineSize: "100%" }}>

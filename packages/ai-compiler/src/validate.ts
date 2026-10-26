@@ -188,12 +188,30 @@ function renderedElement(contract: ComponentContract, signature: ContractSignatu
   return signature.template.element;
 }
 
+/** Whether a branch gated by `whenGiven`/`whenMissing` on an OPTION renders for this tree (a gate on a slot always counts). */
+function renders(node: ContractTemplate, signature: ContractSignature, tree: UsageTree): boolean {
+  const given = (names: string | readonly string[]) =>
+    (typeof names === "string" ? [names] : names).some((name) => {
+      if (!signature.options.includes(name)) return true;
+      const value = tree.options?.[name];
+      return value !== undefined && value !== false;
+    });
+  return (node.whenGiven === undefined || given(node.whenGiven)) && (node.whenMissing === undefined || !given(node.whenMissing));
+}
+
 /** The nearest element that holds a slot's content: the slot's own node, or its closest ancestor with one. */
-function slotContainer(node: ContractTemplate, slot: string, nearest: ContractTemplate | undefined): ContractTemplate | undefined {
+function slotContainer(
+  node: ContractTemplate,
+  slot: string,
+  nearest: ContractTemplate | undefined,
+  signature: ContractSignature,
+  tree: UsageTree,
+): ContractTemplate | undefined {
+  if (!renders(node, signature, tree)) return undefined;
   const here = node.element ? node : nearest;
   if (node.slot === slot) return here;
   for (const child of node.children ?? []) {
-    const found = slotContainer(child, slot, here);
+    const found = slotContainer(child, slot, here, signature, tree);
     if (found) return found;
   }
   return undefined;
@@ -208,7 +226,7 @@ function checkContentModel(
   path: string,
   problems: Problem[],
 ): void {
-  const container = slotContainer(signature.template, slot, undefined);
+  const container = slotContainer(signature.template, slot, undefined, signature, tree);
   if (!container) return;
   const parentElement = container.host ? renderedElement(contract, signature, tree) : container.element;
   if (!parentElement || !PHRASING_ONLY.has(parentElement)) return;

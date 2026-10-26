@@ -15,7 +15,7 @@ const CASES = [
     articles: [
       {
         title:
-          "Aleksandra Wiśniewska-Kowalczyk — International product infrastructure",
+          "Aleksandra Wiśniewska-Kowalczyk - International product infrastructure",
         body: "Contact bartholomew.fitzgerald@northwind-industries-holdings.example.com. Review https://example.com/workspaces/acme/projects/q3-launch/docs/9f8e7d6c5b4a?tab=comments&filter=unresolved before approval.",
       },
       {
@@ -51,7 +51,7 @@ export function FeedBreak() {
       <div className="break-scenario-grid">
         {CASES.map(({ label, articles, busy }) => (
           <section className="break-case" key={label}>
-            <h2 className="break-case__label">Feed — {label}</h2>
+            <h2 className="break-case__label">Feed - {label}</h2>
             <BreakCaseFindings component="feed" label={label} />
             <div className="break-case__stage">
               <div
@@ -63,7 +63,7 @@ export function FeedBreak() {
                 }}
               >
                 <Feed
-                  label={`Workspace updates — ${label}`}
+                  label={`Workspace updates - ${label}`}
                   keyboard
                   busy={busy}
                 >

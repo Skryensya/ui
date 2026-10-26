@@ -10,7 +10,7 @@ entries:
     target: Stat
     es:
       title: "suffix/locale/fractionDigits ya aplican a un value numérico sin count aparte"
-      body: "El formato solo se activaba cuando count !== undefined. count existe para el camino de texto ya escrito (vanilla, un value string más el número crudo al lado); un <Stat value={82} suffix=\"%\" /> sin count — el uso documentado en React — mostraba 82 pelado, sin la unidad. Ahora el formato se activa según si el valor mismo es numérico."
+      body: "El formato solo se activaba cuando count !== undefined. count existe para el camino de texto ya escrito (vanilla, un value string más el número crudo al lado); un <Stat value={82} suffix=\"%\" /> sin count - el uso documentado en React - mostraba 82 pelado, sin la unidad. Ahora el formato se activa según si el valor mismo es numérico."
     en:
       title: "suffix/locale/fractionDigits now apply to a numeric value with no separate count"
       body: "Formatting only turned on when count !== undefined. count exists for the authored-text path (vanilla: a value string plus the raw number beside it); a plain <Stat value={82} suffix=\"%\" /> with no count - the documented React usage - rendered a bare 82, no unit. Formatting now turns on based on whether the value itself is numeric."

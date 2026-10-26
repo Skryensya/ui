@@ -99,7 +99,7 @@
    * trailing space even when there is room. One flat list fixes that: the input is just the last
    * item, and it wraps only when the line is actually full. (Selectors like `:has()` and `+` still
    * see this element; only its box is gone. `role="list"`/`aria-label` on it stay read by current
-   * browsers — unlike pre-2022 engines, `display: contents` no longer strips explicit ARIA.) */
+   * browsers - unlike pre-2022 engines, `display: contents` no longer strips explicit ARIA.) */
   .sk-combobox__selected-items {
     display: contents;
   }
@@ -107,10 +107,10 @@
   /* Tags read as a TagsInput row, not a text field: `--sk-combobox-padding-x` (space-inset-md) is
    * sized for the single-select case, where the input alone fills the control and needs the wider
    * inline margin a line of text wants. A row of chips doesn't: matches TagsInput's own
-   * `--sk-tags-input-padding-y` (tags-input.css) for the block padding single-select never needed —
-   * it has only the input's own touch-target height to centre inside — so that reads the same in
+   * `--sk-tags-input-padding-y` (tags-input.css) for the block padding single-select never needed -
+   * it has only the input's own touch-target height to centre inside - so that reads the same in
    * both fields (the START inline padding is its own value here, not tied to TagsInput's; the END
-   * side stays as-is — it is the INPUT's own trailing padding, shared with single-select, not this
+   * side stays as-is - it is the INPUT's own trailing padding, shared with single-select, not this
    * rule's to double up on). Scoped to `:has()` so plain single-select is untouched. */
   .sk-combobox__value:has(.sk-combobox__selected-items) {
     padding-inline-start: var(--space-inset-xs);
@@ -149,8 +149,8 @@
    * The BLOCK floor needs dropping too, same reasoning: `--size-touch-target` (42px) makes sense
    * when the input is the only thing in the control, but once it shares a flex line with 1.75rem
    * Tags (tag.css's `--sk-tag-height`, the one fixed height every chip paints at, density or not)
-   * that floor alone inflates just the input's row — and with it the placeholder and the typed text,
-   * which sit centred inside that extra height — so a field that reads flush against its own Tags
+   * that floor alone inflates just the input's row - and with it the placeholder and the typed text,
+   * which sit centred inside that extra height - so a field that reads flush against its own Tags
    * suddenly has visible air around only one row. The control itself still floors at a full
    * `--size-touch-target` (its own `min-block-size`, above), so the touch target does not shrink:
    * only this row's box does, matching the Tags instead of a lone taller line among them. */
@@ -175,7 +175,7 @@
    * several lines the grid row grows to that whole tall height (`align-items: stretch` on the
    * control), and `center` puts the button at the middle of ALL of it instead of where a reader's
    * eye actually is, against the first line. The fixed offset below is `.sk-combobox__input`'s own
-   * `calc(--size-touch-target - 2px)` trick read the other way — `--size-touch-target` minus the
+   * `calc(--size-touch-target - 2px)` trick read the other way - `--size-touch-target` minus the
    * 1px border on each edge is this row's real content height (42px, not 44), and centring
    * control-xs (24px) inside THAT is what the margin computes, same number `align-self: center`
    * landed on for a single line, so the common case reads identically; what changes is only the

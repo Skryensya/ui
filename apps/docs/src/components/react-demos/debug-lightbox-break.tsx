@@ -44,7 +44,7 @@ const WORST: readonly Media[] = [
     thumbnailSrc: "/demos/lightbox/fjord-thumb.jpg",
     thumbnailAlt: "Aleksandra Wiśniewska-Kowalczyk at the northern fjord",
     alt: "Aleksandra Wiśniewska-Kowalczyk standing beside the fjord after the international billing review.",
-    title: "International billing and security notifications — final review",
+    title: "International billing and security notifications - final review",
     description:
       "The billing-contact change takes effect after the monthly close. The finance team has reviewed the affected invoices, confirmed the regional tax records, and scheduled security notifications for every workspace administrator. Keep this full caption visible: it is the only place this gallery records what changed and why.",
     credit: "Photo supplied by the Northwind international billing and compliance team",
@@ -66,16 +66,16 @@ const WORST: readonly Media[] = [
     src: "/demos/lightbox/coast.jpg",
     thumbnailSrc: "/demos/lightbox/coast-thumb.jpg",
     thumbnailAlt: "A panoramic coastline and the open sea",
-    title: "12,345,678.90 — 1,284 items — 0 unresolved",
+    title: "12,345,678.90 - 1,284 items - 0 unresolved",
     description: "<script>alert(1)</script> &amp; **literal text**",
-    credit: "International field report — Q3, revised v12",
+    credit: "International field report - Q3, revised v12",
   },
   {
     src: "/demos/lightbox/snow-camp.jpg",
     thumbnailSrc: "/demos/lightbox/snow-camp-thumb.jpg",
     thumbnailAlt: "A snow-covered camp under a bright sky",
     alt: "A small camp beneath a bright snowfield.",
-    description: "الفواتير والتنبيهات الأمنية — 王秀英",
+    description: "الفواتير والتنبيهات الأمنية - 王秀英",
     width: 1800,
     height: 1200,
   },
@@ -211,22 +211,22 @@ export function LightboxBreak() {
       </header>
 
       <div className="break-scenario-grid">
-        <Case label="Lightbox — Demo data — 320px">
+        <Case label="Lightbox - Demo data - 320px">
           <Gallery id="lightbox-demo" label="Workspace photos" images={DEMO} />
         </Case>
-        <Case label="Lightbox — Worst case — 320px">
+        <Case label="Lightbox - Worst case - 320px">
           <Gallery id="lightbox-worst" label="International billing and security photo archive" images={WORST} />
         </Case>
-        <Case label="Lightbox — Worst case — RTL">
+        <Case label="Lightbox - Worst case - RTL">
           <Gallery dir="rtl" id="lightbox-rtl" label="معرض صور الفواتير والتنبيهات الأمنية" images={WORST} />
         </Case>
-        <Case label="Lightbox — Empty gallery">
+        <Case label="Lightbox - Empty gallery">
           <EmptyGallery />
         </Case>
-        <Case label="Lightbox — One image">
+        <Case label="Lightbox - One image">
           <Gallery id="lightbox-one" label="One saved photo" images={[DEMO[0]!]} />
         </Case>
-        <Case label="Lightbox — 1,000 images">
+        <Case label="Lightbox - 1,000 images">
           <Gallery id="lightbox-huge" label="Saved photo archive" images={HUGE} />
         </Case>
       </div>

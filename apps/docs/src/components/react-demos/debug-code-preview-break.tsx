@@ -52,7 +52,7 @@ export function CodePreviewBreak() {
       <div className="break-scenario-grid">
         {CASES.map(({ label, filename, note, code, collapsible }) => (
           <section className="break-case" key={label}>
-            <h2 className="break-case__label">CodePreview — {label}</h2>
+            <h2 className="break-case__label">CodePreview - {label}</h2>
             <BreakCaseFindings component="code-preview" label={label} />
             <div className="break-case__stage">
               <div style={{ inlineSize: "100%" }}>

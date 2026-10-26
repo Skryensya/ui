@@ -92,7 +92,7 @@ export function BadgeBreak() {
         </Case>
         <Case
           label="Long unbreakable word, inline"
-          fixed="capped. `.sk-badge` had no `overflow-wrap`, `max-inline-size` or `overflow: clip` at all — unlike Button's own root rule, which measured and fixed this exact shape. It now carries the same trio (badge.css's `.sk-badge` base rule): `min-inline-size: 0` + `max-inline-size: 100%` + `overflow: clip`, never an ellipsis (a truncated status word reads as a different, wrong one)."
+          fixed="capped. `.sk-badge` had no `overflow-wrap`, `max-inline-size` or `overflow: clip` at all - unlike Button's own root rule, which measured and fixed this exact shape. It now carries the same trio (badge.css's `.sk-badge` base rule): `min-inline-size: 0` + `max-inline-size: 100%` + `overflow: clip`, never an ellipsis (a truncated status word reads as a different, wrong one)."
         >
           <Badge tone="warning">{LABELS.longWord}</Badge>
         </Case>
@@ -132,7 +132,7 @@ export function BadgeBreak() {
         </Case>
       </Group>
 
-      <Group title="BadgeHolder — the corner badge">
+      <Group title="BadgeHolder - the corner badge">
         <Case label="Short count on an icon button, normal layout">
           <BadgeHolder>
             <Button iconOnly aria-label="Account">

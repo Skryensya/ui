@@ -85,12 +85,12 @@ export function TimeFieldBreak() {
       </header>
       <div className="break-scenario-grid">
         {SCENARIOS.map((scenario, index) => (
-          <Case key={scenario.label} label={`TimeField — ${scenario.label}`} width="break-w-320">
+          <Case key={scenario.label} label={`TimeField - ${scenario.label}`} width="break-w-320">
             <Field scenario={scenario} id={`time-${index}`} />
           </Case>
         ))}
       </div>
-      <Case label="TimeField — dense options — wide container (1100px)" width="break-w-1100">
+      <Case label="TimeField - dense options - wide container (1100px)" width="break-w-1100">
         <Field scenario={SCENARIOS[2]} id="time-wide" />
       </Case>
     </div>

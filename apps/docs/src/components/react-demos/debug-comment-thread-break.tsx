@@ -162,7 +162,7 @@ export function CommentThreadBreak() {
       <div className="break-scenario-grid">
         {CASES.map(({ label, entries }, index) => (
           <section className="break-case" key={label}>
-            <h2 className="break-case__label">CommentThread — {label}</h2>
+            <h2 className="break-case__label">CommentThread - {label}</h2>
             <BreakCaseFindings component="comment-thread" label={label} />
             <div className="break-case__stage">
               <div
@@ -173,7 +173,7 @@ export function CommentThreadBreak() {
                     : {}),
                 }}
               >
-                <CommentThread label={`Release discussion — ${label}`}>
+                <CommentThread label={`Release discussion - ${label}`}>
                   {entries.map((entry, i) => (
                     <ThreadEntry
                       key={i}

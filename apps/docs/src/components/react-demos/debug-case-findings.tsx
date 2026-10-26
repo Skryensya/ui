@@ -32,7 +32,7 @@ export function BreakCaseFindings({
           <p className="break-case__note">
             <strong>
               {finding.status === "open"
-                ? "Fix propuesto — SIN APLICAR:"
+                ? "Fix propuesto - SIN APLICAR:"
                 : "Fix aplicado:"}
             </strong>{" "}
             {finding.fix}

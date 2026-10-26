@@ -34,10 +34,10 @@ export function ToolbarBreak() {
       <div className="break-scenario-grid">
         {CASES.map(({ label, actions }) => (
           <section className="break-case" key={label}>
-            <h2 className="break-case__label">Toolbar — {label}</h2>
+            <h2 className="break-case__label">Toolbar - {label}</h2>
             <BreakCaseFindings component="toolbar" label={label} />
             <div className="break-case__stage">
-              <Toolbar label={`Editing — ${label}`}>
+              <Toolbar label={`Editing - ${label}`}>
                 {actions.map((action, i) => (
                   <Button
                     key={action}
@@ -52,7 +52,7 @@ export function ToolbarBreak() {
           </section>
         ))}
         <section className="break-case">
-          <h2 className="break-case__label">Toolbar — Nested composite</h2>
+          <h2 className="break-case__label">Toolbar - Nested composite</h2>
           <div className="break-case__stage">
             <Toolbar label="Document view">
               <ToolbarGroup label="History">

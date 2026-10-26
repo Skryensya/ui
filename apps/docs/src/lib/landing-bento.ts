@@ -438,7 +438,7 @@ export function bentoSets(es: boolean): BentoTile[][] {
             contract: "tag",
             signature: "Tag",
             options: {
-              tone: "danger",
+              tone: "accent",
               removable: true,
               removeLabel: t("Quitar Urgente", "Remove Urgent"),
             },

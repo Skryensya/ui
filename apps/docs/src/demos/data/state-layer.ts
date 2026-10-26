@@ -20,10 +20,14 @@ export const stateLabels = (t: Translate) =>
 
 type StateItem = ReturnType<typeof stateLabels>[number];
 
+/** Button's own `pressed` option writes `aria-pressed`, so a selected tile passes it here and not as an attribute. */
+export const stateOptions = (item: StateItem): Record<string, boolean> =>
+  "selected" in item && item.selected ? { pressed: true } : {};
+
 /** The attributes one tile needs, with only the ones that state actually uses written out. */
 export const stateAttrs = (baseClass: string, item: StateItem): Record<string, string> => ({
   class: baseClass,
   ...("peek" in item && item.peek ? { "data-peek": item.peek } : {}),
-  ...("selected" in item && item.selected ? { "aria-pressed": item.selected, "data-selected": item.selected } : {}),
+  ...("selected" in item && item.selected ? { "data-selected": item.selected } : {}),
   ...("disabled" in item && item.disabled ? { "aria-disabled": item.disabled } : {}),
 });

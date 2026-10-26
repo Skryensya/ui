@@ -94,7 +94,7 @@ export function DataGridBreak() {
       <div className="break-scenario-grid">
         {SCENARIOS.map(({ label, members }, index) => (
           <section className="break-case" key={label}>
-            <h2 className="break-case__label">DataGrid — {label}</h2>
+            <h2 className="break-case__label">DataGrid - {label}</h2>
             <div className="break-case__stage">
               <div className="break-w-320"><Grid members={members} id={`${index}-320`} /></div>
             </div>
@@ -102,7 +102,7 @@ export function DataGridBreak() {
         ))}
       </div>
       <section className="break-case">
-        <h2 className="break-case__label">DataGrid — 1,000 rows — wide container (1100px)</h2>
+        <h2 className="break-case__label">DataGrid - 1,000 rows - wide container (1100px)</h2>
         <div className="break-case__stage">
           <div className="break-grid-viewport break-w-1100"><Grid members={MANY} id="thousand-wide" /></div>
         </div>

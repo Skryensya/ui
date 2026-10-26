@@ -45,7 +45,7 @@ function StateCase({ scenario }: { scenario: (typeof CASES)[number] }) {
   );
   return (
     <section className="break-case">
-      <h2 className="break-case__label">StateButton — {scenario.label}</h2>
+      <h2 className="break-case__label">StateButton - {scenario.label}</h2>
       <BreakCaseFindings component="state-button" label={scenario.label} />
       <div className="break-case__stage">
         <StateButton

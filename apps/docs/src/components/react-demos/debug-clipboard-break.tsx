@@ -50,7 +50,7 @@ export function ClipboardBreak() {
       <div className="break-scenario-grid">
         {CASES.map(({ label, fieldLabel, value, copiedLabel, errorLabel }) => (
           <section className="break-case" key={label}>
-            <h2 className="break-case__label">Clipboard — {label}</h2>
+            <h2 className="break-case__label">Clipboard - {label}</h2>
             <BreakCaseFindings component="clipboard" label={label} />
             <div className="break-case__stage">
               <div style={{ inlineSize: "100%" }}>

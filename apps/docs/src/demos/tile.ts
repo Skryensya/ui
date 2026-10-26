@@ -189,7 +189,7 @@ export const tileButtonListTree = (t: Translate): UsageTree => ({
   signature: "Stack",
   options: { gap: "sm" },
   attrs: { style: "max-inline-size: 24rem; margin-inline: auto;" },
-  children: ["export", "share", "delete"].map((id) => ({
+  children: (["export", "share", "delete"] as const).map((id) => ({
     contract: "tile",
     signature: "TileButton",
     children: tileContent(t(`demo.tile.buttonList.${id}.title`), t(`demo.tile.buttonList.${id}.description`)),
@@ -308,7 +308,7 @@ export const tilePaddingTree = (t: Translate): UsageTree => ({
   })),
 });
 
-const switchCard = (t: Translate, id: string, options: Record<string, unknown> = {}): UsageTree => ({
+const switchCard = (t: Translate, id: "alerts" | "digest" | "sounds", options: Record<string, unknown> = {}): UsageTree => ({
   contract: "tile",
   signature: "TileSwitch",
   options: { name: id, ...options },

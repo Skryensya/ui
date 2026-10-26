@@ -99,7 +99,7 @@ function TableCase({
                 {rows.map((row, index) => (
                   <TableRow key={`${id}-${index}`}>
                     <TableHeader scope="row">{row.name}</TableHeader>
-                    <TableCell>{row.role ?? "—"}</TableCell>
+                    <TableCell>{row.role ?? "-"}</TableCell>
                     <TableCell>{row.email}</TableCell>
                     <TableCell>{row.workspaces.toLocaleString("en-US")}</TableCell>
                     <TableCell>{row.status}</TableCell>
@@ -127,11 +127,11 @@ export function TableBreak() {
       </header>
       <div className="break-scenario-grid">
         {SCENARIOS.map(({ label, rows }, index) => (
-          <TableCase key={label} label={`Table — ${label}`} rows={rows} id={`table-${index}`} width="break-w-320" />
+          <TableCase key={label} label={`Table - ${label}`} rows={rows} id={`table-${index}`} width="break-w-320" />
         ))}
       </div>
-      <TableCase label="Table — Worst case — wide container (1100px)" rows={WORST} id="table-wide" width="break-w-1100" resizable />
-      <TableCase label="Table — 1,000 rows — wide container (1100px)" rows={MANY} id="table-huge" width="break-w-1100" maxBlockSize="42rem" />
+      <TableCase label="Table - Worst case - wide container (1100px)" rows={WORST} id="table-wide" width="break-w-1100" resizable />
+      <TableCase label="Table - 1,000 rows - wide container (1100px)" rows={MANY} id="table-huge" width="break-w-1100" maxBlockSize="42rem" />
     </div>
   );
 }

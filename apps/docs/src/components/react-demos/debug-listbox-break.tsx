@@ -10,14 +10,14 @@ const DEMO: ListboxItem[] = [
 const WORST: ListboxItem[] = [
   { value: "design", label: "Design systems and international product infrastructure", defaultSelected: true },
   { value: "billing", label: "Paramètres de confidentialité et de sécurité" },
-  { value: "legal", label: "Legal and compliance — records retention" },
+  { value: "legal", label: "Legal and compliance - records retention" },
   { value: "cjk", label: "王秀英 · 产品团队" },
   { value: "disabled", label: "Archived workspace (read only)", disabled: true },
   { value: "literal", label: "Literal text: <script>alert(1)</script> &amp; **bold**" },
 ];
 const HUNDRED: ListboxItem[] = Array.from({ length: 1000 }, (_, i) => ({
   value: `workspace-${i + 1}`,
-  label: `Workspace ${i + 1} — ${i % 2 ? "Design review" : "International billing"}`,
+  label: `Workspace ${i + 1} - ${i % 2 ? "Design review" : "International billing"}`,
   ...(i === 0 ? { defaultSelected: true } : {}),
 }));
 const SCENARIOS = [
@@ -35,10 +35,10 @@ export function ListboxBreak() {
       <div className="break-scenario-grid">
         {SCENARIOS.map(({ label, items }) => (
           <section className="break-case" key={label}>
-            <h2 className="break-case__label">Listbox — {label}</h2>
+            <h2 className="break-case__label">Listbox - {label}</h2>
             <div className="break-case__stage">
               <div className={label === "1,000 items" ? "break-listbox-viewport" : "break-w-320"}>
-                <Listbox label={`Workspace view — ${label}`} items={items} selectionMode="multiple" />
+                <Listbox label={`Workspace view - ${label}`} items={items} selectionMode="multiple" />
               </div>
             </div>
           </section>

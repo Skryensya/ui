@@ -60,12 +60,12 @@ export function TabsBreak() {
       <div className="break-scenario-grid">
         {CASES.map(({ label, items }) => (
           <section className="break-case" key={label}>
-            <h2 className="break-case__label">Tabs — {label}</h2>
+            <h2 className="break-case__label">Tabs - {label}</h2>
             <BreakCaseFindings component="tabs" label={label} />
             <div className="break-case__stage">
               <div style={{ inlineSize: "100%" }}>
                 <Tabs
-                  aria-label={`Documents — ${label}`}
+                  aria-label={`Documents - ${label}`}
                   items={items}
                   defaultValue={items[0]?.value}
                 />

@@ -1,6 +1,6 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
-import { stateAttrs, stateLabels } from "./data/state-layer";
+import { stateAttrs, stateLabels, stateOptions } from "./data/state-layer";
 
 /** The six states on a bare tile: the state layer with nothing else painting over it. */
 export const stateLayerBareTree = (t: Translate): UsageTree => ({
@@ -10,6 +10,7 @@ export const stateLayerBareTree = (t: Translate): UsageTree => ({
   children: stateLabels(t).map((item) => ({
     contract: "button",
     signature: "Button.action",
+    options: stateOptions(item),
     attrs: stateAttrs("sl-tile", item),
     children: item.label,
   })),
@@ -23,6 +24,7 @@ export const stateLayerCurrentColorTree = (t: Translate): UsageTree => ({
   children: stateLabels(t).map((item) => ({
     contract: "button",
     signature: "Button.action",
+    options: stateOptions(item),
     attrs: stateAttrs("sl-tile sl-current-tile", item),
     children: item.label,
   })),
@@ -52,7 +54,8 @@ export const stateLayerLabTree = (t: Translate): UsageTree => ({
         {
           contract: "button",
           signature: "Button.action",
-          attrs: { class: "sl-item", "aria-pressed": "true", "data-selected": "true" },
+          options: { pressed: true },
+          attrs: { class: "sl-item", "data-selected": "true" },
           children: t("demo.stateLayer.inbox"),
         },
         {

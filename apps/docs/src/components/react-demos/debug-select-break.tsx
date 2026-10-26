@@ -15,8 +15,8 @@ const DEMO: readonly Item[] = [
 const WORST: readonly Item[] = [
   { value: "billing", label: "International billing and security notifications" },
   { value: "settings", label: "Abrechnungsbenachrichtigungseinstellungen" },
-  { value: "support", label: "Aleksandra Wiśniewska-Kowalczyk — Customer support" },
-  { value: "regional", label: "王秀英 — 国際請求とセキュリティ通知" },
+  { value: "support", label: "Aleksandra Wiśniewska-Kowalczyk - Customer support" },
+  { value: "regional", label: "王秀英 - 国際請求とセキュリティ通知" },
   { value: "short", label: "Jo" },
   { value: "disabled", label: "Former billing contact", disabled: true },
 ];
@@ -73,13 +73,13 @@ export function SelectBreak() {
       </header>
       <div className="break-scenario-grid">
         {SCENARIOS.map((scenario, index) => (
-          <Case key={scenario.label} label={`NativeSelect / Select — ${scenario.label}`}>
+          <Case key={scenario.label} label={`NativeSelect / Select - ${scenario.label}`}>
             <Fields scenario={scenario} id={`scenario-${index}`} />
           </Case>
         ))}
       </div>
       {[{ label: "Regular field (18rem)", width: "break-w-18rem" }, { label: "Wide container (1100px)", width: "break-w-1100" }].map(({ label, width }) => (
-        <Case key={label} label={`Select — Worst case — ${label}`}>
+        <Case key={label} label={`Select - Worst case - ${label}`}>
           <div className={width}>
             <FormField id={`select-${width}`} label="Billing owner" className="break-select-field">
               <Select options={WORST} defaultValue="billing" placeholder="Choose an owner" />

@@ -66,7 +66,7 @@ export function TagsInputBreak() {
       <div className="break-scenario-grid">
         {SCENARIOS.map((scenario, index) => (
           <section className="break-case" key={scenario.label}>
-            <h2 className="break-case__label">TagsInput — {scenario.label}</h2>
+            <h2 className="break-case__label">TagsInput - {scenario.label}</h2>
             <div className="break-case__stage">
               <div className="break-w-320"><Field scenario={scenario} id={`tags-${index}`} /></div>
             </div>

@@ -144,8 +144,21 @@ async function observe(binding: "vanilla" | "react", tree: (typeof canonicalTree
 const observed = new Map<string, { vanilla: Seen[]; react: Seen[] }>();
 
 beforeAll(async () => {
-  for (const { name, tree } of canonicalTrees) {
-    observed.set(name, { vanilla: await observe("vanilla", tree), react: await observe("react", tree) });
+  /* jsdom does no layout, so every `offsetHeight` is 0 and React's virtualized Select/UserSelect list
+   * (`@tanstack/virtual-core`) renders no rows. Stubbed for the React pass only, as select.test.tsx does. */
+  const offsetHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "offsetHeight");
+  try {
+    for (const { name, tree } of canonicalTrees) {
+      const vanilla = await observe("vanilla", tree);
+      Object.defineProperty(HTMLElement.prototype, "offsetHeight", { configurable: true, get: () => 44 });
+      const react = await observe("react", tree);
+      if (offsetHeight) Object.defineProperty(HTMLElement.prototype, "offsetHeight", offsetHeight);
+      else delete (HTMLElement.prototype as { offsetHeight?: unknown }).offsetHeight;
+      observed.set(name, { vanilla, react });
+    }
+  } finally {
+    if (offsetHeight) Object.defineProperty(HTMLElement.prototype, "offsetHeight", offsetHeight);
+    else delete (HTMLElement.prototype as { offsetHeight?: unknown }).offsetHeight;
   }
 }, 120_000);
 

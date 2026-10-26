@@ -43,10 +43,10 @@ export function SegmentedBreak() {
       <div className="break-scenario-grid">
         {CASES.map(({ label, options }) => (
           <section className="break-case" key={label}>
-            <h2 className="break-case__label">SegmentedControl — {label}</h2>
+            <h2 className="break-case__label">SegmentedControl - {label}</h2>
             <BreakCaseFindings component="segmented" label={label} />
             <div className="break-case__stage">
-              <SegmentedControl label={`Period — ${label}`} options={options} />
+              <SegmentedControl label={`Period - ${label}`} options={options} />
             </div>
           </section>
         ))}

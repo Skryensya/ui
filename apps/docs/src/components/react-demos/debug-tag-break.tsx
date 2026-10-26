@@ -208,7 +208,7 @@ export function TagBreak() {
       <Group title="Counts baked into the label">
         <Case
           label="Hardcoded plural / no thousands separator, 0 / 1 / 1284"
-          note="Not a Tag bug — Tag renders whatever string it's given — same caller mistake already flagged on Button and Badge, surfacing here too since a result count is a realistic tag label."
+          note="Not a Tag bug - Tag renders whatever string it's given - same caller mistake already flagged on Button and Badge, surfacing here too since a result count is a realistic tag label."
           broke="naive `${n} resultados` reads “1 resultados” at n=1, no separator at n=1284."
           fixed="the row below it, same three counts, via Intl.PluralRules + Intl.NumberFormat."
         >

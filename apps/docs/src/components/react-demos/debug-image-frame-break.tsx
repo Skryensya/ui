@@ -37,7 +37,7 @@ const CASES: { label: string; props: ImageFrameProps; note?: string }[] = [
     label: "Broken source",
     props: {
       src: "/debug/missing-image-frame-fixture.jpg",
-      alt: "International billing reconciliation and security review — Aleksandra Wiśniewska-Kowalczyk",
+      alt: "International billing reconciliation and security review - Aleksandra Wiśniewska-Kowalczyk",
       aspect: "16/9",
     },
     note: "The 404 is intentional. Inspect the actual broken-image/alt state; no harness fallback is inserted.",
@@ -55,7 +55,7 @@ const CASES: { label: string; props: ImageFrameProps; note?: string }[] = [
       aspect: "3/2",
       fit: "contain",
     },
-    note: "Black artwork on transparency: inspect it in dark mode. The asset itself has no theme awareness — ImageFrame cannot know what color an arbitrary image's pixels are, and must not guess (inverting colors wholesale breaks the photos that are fine).",
+    note: "Black artwork on transparency: inspect it in dark mode. The asset itself has no theme awareness - ImageFrame cannot know what color an arbitrary image's pixels are, and must not guess (inverting colors wholesale breaks the photos that are fine).",
   },
   {
     label: "Transparent artwork, backed",
@@ -66,7 +66,7 @@ const CASES: { label: string; props: ImageFrameProps; note?: string }[] = [
       fit: "contain",
       style: { "--sk-image-frame-bg": "#fff" } as CSSProperties,
     },
-    note: "Same asset, same both themes — but the caller who KNOWS this logo needs a light backing sets --sk-image-frame-bg (already a published hook; see imageFrameContract.hooks) once, on this instance only. Legible in dark mode without touching the SVG or any other image on the page.",
+    note: "Same asset, same both themes - but the caller who KNOWS this logo needs a light backing sets --sk-image-frame-bg (already a published hook; see imageFrameContract.hooks) once, on this instance only. Legible in dark mode without touching the SVG or any other image on the page.",
   },
 ];
 
@@ -79,7 +79,7 @@ export function ImageFrameBreak() {
           Real media plus calibrated extreme aspect ratios, an intentional 404,
           missing media and transparent artwork. The harness does not repair a
           broken source, invert colors, or choose a replacement background for
-          an image it knows nothing about — the one exception is{" "}
+          an image it knows nothing about - the one exception is{" "}
           <strong>Transparent artwork, backed</strong>, which sets the
           already-published <code>--sk-image-frame-bg</code> hook, something
           any caller who knows their own asset can do the same way.
@@ -88,7 +88,7 @@ export function ImageFrameBreak() {
       <div className="break-scenario-grid">
         {CASES.map(({ label, props, note }) => (
           <section className="break-case" key={label}>
-            <h2 className="break-case__label">ImageFrame — {label}</h2>
+            <h2 className="break-case__label">ImageFrame - {label}</h2>
             <BreakCaseFindings component="image-frame" label={label} />
             <div className="break-case__stage">
               <div style={{ inlineSize: "100%" }}>

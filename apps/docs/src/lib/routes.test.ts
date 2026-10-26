@@ -21,6 +21,7 @@ const pagesDir = join(root, "pages");
 
 function walk(dir: string, out: string[] = []): string[] {
   for (const name of readdirSync(dir)) {
+    if (name === "x.profile") continue; // a gitignored Chrome profile: its dangling symlinks break statSync
     const full = join(dir, name);
     if (statSync(full).isDirectory()) walk(full, out);
     else out.push(full);
@@ -78,7 +79,8 @@ for (const file of walk(root)) {
  */
 describe("locale-independent markup", () => {
   const shared = walk(root).filter(
-    (file) => /\.astro$/.test(file) && /[/\\](components|layouts)[/\\]/.test(file),
+    // DebugShell is English-only developer tooling: there is no `/es/debug` to localize to.
+    (file) => /\.astro$/.test(file) && /[/\\](components|layouts)[/\\]/.test(file) && !/DebugShell\.astro$/.test(file),
   );
 
   it("has shared components to check", () => {

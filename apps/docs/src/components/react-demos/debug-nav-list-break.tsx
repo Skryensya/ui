@@ -20,7 +20,7 @@ const CASES = [
     label: "Large workspace",
     items: Array.from(
       { length: 1000 },
-      (_, i) => `Project ${i + 1} — Release planning`,
+      (_, i) => `Project ${i + 1} - Release planning`,
     ),
   },
 ];
@@ -38,7 +38,7 @@ export function NavListBreak() {
       <div className="break-scenario-grid">
         {CASES.map(({ label, items }) => (
           <section className="break-case" key={label}>
-            <h2 className="break-case__label">NavList — {label}</h2>
+            <h2 className="break-case__label">NavList - {label}</h2>
             <BreakCaseFindings component="nav-list" label={label} />
             <div className="break-case__stage">
               <div
@@ -49,7 +49,7 @@ export function NavListBreak() {
                     : {}),
                 }}
               >
-                <NavList aria-label={`Projects — ${label}`}>
+                <NavList aria-label={`Projects - ${label}`}>
                   <NavListGroup label="Workspace projects" collapsible>
                     {items.map((name, i) => (
                       <NavListLink

@@ -61,7 +61,7 @@ function Fields({ scenario, id }: { scenario: Scenario; id: string }) {
     <div className="break-date-picker-fields">
       <NativeDatePicker
         id={`${id}-native`}
-        label={`${scenario.fieldLabel} — native`}
+        label={`${scenario.fieldLabel} - native`}
         defaultValue={scenario.nativeValue}
         min={scenario.min}
         max={scenario.max}
@@ -69,7 +69,7 @@ function Fields({ scenario, id }: { scenario: Scenario; id: string }) {
       />
       <DatePicker
         id={`${id}-enhanced`}
-        label={`${scenario.fieldLabel} — enhanced`}
+        label={`${scenario.fieldLabel} - enhanced`}
         defaultValue={scenario.value}
         selectionMode={scenario.selectionMode}
         min={scenario.min}
@@ -94,12 +94,12 @@ export function DatePickerBreak() {
       </header>
       <div className="break-scenario-grid">
         {SCENARIOS.map((scenario, index) => (
-          <Case key={scenario.label} label={`DatePicker — ${scenario.label}`} width="break-w-320">
+          <Case key={scenario.label} label={`DatePicker - ${scenario.label}`} width="break-w-320">
             <Fields scenario={scenario} id={`date-${index}`} />
           </Case>
         ))}
       </div>
-      <Case label="DatePicker — long-label boundary — wide container (1100px)" width="break-w-1100">
+      <Case label="DatePicker - long-label boundary - wide container (1100px)" width="break-w-1100">
         <DatePicker
           id="date-wide"
           label={SCENARIOS[1].fieldLabel}

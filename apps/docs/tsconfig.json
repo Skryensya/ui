@@ -37,5 +37,5 @@
     }
   },
   "include": [".astro/types.d.ts", "src/**/*", "scripts/**/*", "astro.config.ts"],
-  "exclude": ["dist"]
+  "exclude": ["dist", "src/**/x.profile"]
 }

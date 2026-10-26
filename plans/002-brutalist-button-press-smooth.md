@@ -1,4 +1,4 @@
-# 002 — Smooth the brutalist button press and stop its hover shadow from growing
+# 002 - Smooth the brutalist button press and stop its hover shadow from growing
 
 - **Status**: DONE (hover + curve; then extended: face and shadow driven by one registered `--brutalist-travel`, face moves by left/top)
 - **Commit**: 420090c3
@@ -14,7 +14,7 @@ Two things make the brutalist press feel like a jump. Both were MEASURED in Chro
 2. **The curve is almost all in the first frame.** Press uses `--motion-feedback-easing` = `--scale-easing-standard` = `cubic-bezier(0.2, 0, 0, 1)` over 120ms. Measured travel: 0 → 1.23px at 19ms → 2.58px at 35ms → 3.26px at 52ms → 4px at 136ms. About a third of the 4px move happens in one frame, then it crawls: that is a snap, not a press. Shadow and translate use the same curve and stay in lockstep (their sum is constant), so the sync is fine; only the curve and the hover growth are wrong.
 
 ```css
-/* packages/core/css/components/button.css:709 — current */
+/* packages/core/css/components/button.css:709 - current */
   /* Hover reaches a notch further: the same hard offset, one pixel longer. No glow, no lift. */
   @media (any-hover: hover) {
     .sk-button[data-appearance="brutalist"]:hover:not(:disabled):not([aria-disabled="true"]) {
@@ -24,7 +24,7 @@ Two things make the brutalist press feel like a jump. Both were MEASURED in Chro
 ```
 
 ```css
-/* packages/core/css/components/button.css:664 — current (inside .sk-button[data-appearance="brutalist"]) */
+/* packages/core/css/components/button.css:664 - current (inside .sk-button[data-appearance="brutalist"]) */
     transition:
       background-color var(--motion-state-change-duration) var(--motion-state-change-easing),
       border-color var(--motion-state-change-duration) var(--motion-state-change-easing),
@@ -41,7 +41,7 @@ The same hover rule exists in `packages/core/css/components/tile.css:540`. Out o
 2. The brutalist face and its shadow move on one gentler curve, still an ease-out (it must start moving the instant the finger lands) but with a lower launch velocity, and inside the 100–160ms press budget.
 
 ```css
-/* target — inside .sk-button[data-appearance="brutalist"], next to the other --brutalist-* internals */
+/* target - inside .sk-button[data-appearance="brutalist"], next to the other --brutalist-* internals */
     /* Press travel only. The shared feedback easing (0.2, 0, 0, 1) front-loads a third of a 4px move
      * into one frame; this launches softer and still lands under the finger. Face and shadow share
      * it, so their sum stays constant and the far edge never wobbles. Reduced motion: the

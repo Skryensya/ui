@@ -46,10 +46,10 @@ export function BreadcrumbBreak() {
       <div className="break-scenario-grid">
         {CASES.map(({ label, items }) => (
           <section className="break-case" key={label}>
-            <h2 className="break-case__label">Breadcrumb — {label}</h2>
+            <h2 className="break-case__label">Breadcrumb - {label}</h2>
             <div className="break-case__stage">
               <div style={{ inlineSize: "min(100%, 20rem)" }}>
-                <Breadcrumb items={items} label={`Path — ${label}`} />
+                <Breadcrumb items={items} label={`Path - ${label}`} />
               </div>
             </div>
           </section>

@@ -12,7 +12,7 @@ const WORST: CommandPaletteEntry[] = Array.from({ length: 1000 }, (_, i) => ({
     ? "Export the complete billing and security audit history for this workspace"
     : i === 1
       ? "Aleksandra Wiśniewska-Kowalczyk · International product infrastructure"
-      : `Workspace destination ${i + 1} — ${i % 2 ? "Paramètres de confidentialité" : "王秀英 产品团队"}`,
+      : `Workspace destination ${i + 1} - ${i % 2 ? "Paramètres de confidentialité" : "王秀英 产品团队"}`,
   href: `#workspace-${i + 1}`,
   section: i % 2 ? "People · Operations" : "Finance and compliance",
 }));
@@ -31,12 +31,12 @@ export function CommandPaletteBreak() {
           const id = `break-palette-${i}`;
           return (
             <section className="break-case" key={label}>
-              <h2 className="break-case__label">CommandPalette — {label}</h2>
+              <h2 className="break-case__label">CommandPalette - {label}</h2>
               <div className="break-case__stage">
                 <Button onClick={() => (document.getElementById(id) as HTMLDialogElement | null)?.showModal()} variant="solid">Open {label}</Button>
                 <CommandPalette
                   id={id}
-                  label={`Search workspace — ${label}`}
+                  label={`Search workspace - ${label}`}
                   placeholder="Search destinations or commands…"
                   emptyLabel="No matching destinations"
                   closeLabel="Close search"

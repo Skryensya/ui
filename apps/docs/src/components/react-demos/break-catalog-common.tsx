@@ -13,7 +13,7 @@ export const FIXTURES: readonly Fixture[] = [
   { label: "Empty", title: "Workspace review", body: "", items: [] },
   { label: "One item", title: "Jo", body: "One review is available.", items: ["Jo"] },
 ];
-const LARGE: Fixture = { label: "1,000 items", title: "Workspace archive", body: LONG_BODY, items: Array.from({ length: 1000 }, (_, i) => `Project ${i + 1} — invoice reconciliation`) };
+const LARGE: Fixture = { label: "1,000 items", title: "Workspace archive", body: LONG_BODY, items: Array.from({ length: 1000 }, (_, i) => `Project ${i + 1} - invoice reconciliation`) };
 
 class SpecimenBoundary extends Component<{ children: ReactNode }, { error: string | null }> {
   state = { error: null as string | null };
@@ -25,7 +25,7 @@ class SpecimenBoundary extends Component<{ children: ReactNode }, { error: strin
 
 export function FixtureCases({ id, render, large = false, fixtures = FIXTURES }: { id: string; render: (fixture: Fixture, index: number) => ReactNode; large?: boolean; fixtures?: readonly Fixture[] }) {
   return <div className="break-scenario-grid">{[...fixtures, ...(large ? [LARGE] : [])].map((fixture, index) => <section className="break-case" key={fixture.label} data-break-case={fixture.label}>
-    <h2 className="break-case__label">{id} — {fixture.label}</h2>
+    <h2 className="break-case__label">{id} - {fixture.label}</h2>
     <BreakCaseFindings component={id} label={fixture.label} />
     <div className="break-case__stage"><div style={{ inlineSize: "100%", ...(fixture.items.length === 1000 ? { maxBlockSize: "32rem", overflow: "auto" } : {}) }}><SpecimenBoundary>{render(fixture, index)}</SpecimenBoundary></div></div>
   </section>)}</div>;

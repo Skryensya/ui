@@ -4848,6 +4848,17 @@ describe("content model: what the HTML parser would move", () => {
     expect(rules(paragraph)).not.toContain("content-model");
   });
 
+  it("judges only the branch the options render: a TableHeader holds a block unless it is sortable", () => {
+    const header = (options?: Record<string, boolean>): UsageTree => ({
+      contract: "table",
+      signature: "TableHeader",
+      options,
+      children: stack,
+    });
+    expect(rules(header())).not.toContain("content-model");
+    expect(rules(header({ sortable: true }))).toContain("content-model");
+  });
+
   it("follows an element option on the parent: a div Text holds blocks", () => {
     const tree: UsageTree = { contract: "typography", signature: "Text", options: { textElement: "div" }, children: [stack] };
     expect(rules(tree)).not.toContain("content-model");

@@ -4,9 +4,12 @@
  * a-la-carte path for a bundler-aware consumer: `@use "@skryensya/core/tokens"` plus whichever
  * `components/*.css` or `patterns/*.css` it imports. This script serves the reader with no bundler:
  *
- *   <link rel="stylesheet" href="@skryensya/core/skryensya.css">                  batteries included
- *   <link rel="stylesheet" href="@skryensya/core/tokens.css">                     tokens only, then
- *   <link rel="stylesheet" href="@skryensya/core/components/button.css">          pick what you use
+ *   <link rel="stylesheet" href=".../@skryensya/core/dist/skryensya.css">             batteries included
+ *   <link rel="stylesheet" href=".../@skryensya/core/dist/tokens.css">                tokens only, then
+ *   <link rel="stylesheet" href=".../@skryensya/core/dist/components/button.css">     pick what you use
+ *
+ * (Physical paths: a browser cannot resolve package `exports`. The `@skryensya/core/components/*`
+ * specifier is for a bundler and still points at the commented sources in css/.)
  *
  * `components/*.css` and `patterns/*.css` already declare their own cross-file dependencies via
  * native `@import url(...)` (calendar imports button, layout imports box/wrapper/image-frame, …), so
@@ -110,6 +113,19 @@ results.push([
   `tokens + ${patterns.length} patterns + ${components.length} components + ${effects.length} effects`,
 ]);
 
+// The a-la-carte files for a page with no bundler, which can only link physical files (it cannot
+// resolve `exports`). Same sources the Sass/bundler path reads from css/, minified: 51% of a
+// component's source bytes are comments, and prose does not gzip away (button.css: 18.4 kB gz as
+// authored, 3.0 kB minified). Their own `@import url(...)` between siblings stays, and still resolves
+// because patterns/ and components/ keep their relative layout here.
+let singles = 0;
+let singlesBytes = 0;
+for (const [sub, items] of [["components", components], ["patterns", patterns], ["effects", effects]] as const)
+  for (const { f, css } of items) {
+    singlesBytes += readFileSync(writeDist(`${sub}/${f}`, css, f)).length;
+    singles++;
+  }
+
 // The foundation alone, no patterns or components: everything a consumer needs before it links even
 // one component. Same ENTRY as the full bundle above (so it stays in lockstep with it), just without
 // the two `section(...)` calls that append patterns and components. Published as the no-toolchain
@@ -163,3 +179,4 @@ for (const [name, path, note] of results) {
   const kb = (readFileSync(path).length / 1024).toFixed(1);
   console.log(`✓ dist/${name}, ${kb} kB (${note})`);
 }
+console.log(`✓ dist/{components,patterns,effects}/*.css, ${singles} files, ${(singlesBytes / 1024).toFixed(1)} kB in total (minified, for linking one by one without a bundler)`);

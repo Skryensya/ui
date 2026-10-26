@@ -99,9 +99,9 @@ const activityList = (label: string, t?: Translate): UsageTree => ({
 const TAGS = [
   ["Diseño", undefined],
   ["Frontend", "accent"],
-  ["Aprobado", "success"],
-  ["En revisión", "warning"],
-  ["Bloqueado", "danger"],
+  ["Aprobado", "accent"],
+  ["En revisión", "accent"],
+  ["Bloqueado", "accent"],
   ["Backend", undefined],
   ["Accesibilidad", undefined],
   ["Performance", undefined],
