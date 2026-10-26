@@ -272,6 +272,11 @@ export const windowContract = {
       values: ["plain", "brutalist", "frosted"],
       default: "plain",
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        brutalist: ["@skryensya/core/components/window.brutalist.css"],
+        frosted: ["@skryensya/core/components/window.frosted.css"],
+      },
     },
     /** Accessible name of the icon-only close control. Replaces Zag's hardcoded English one. */
     closeLabel: { type: "string", default: "Close", attr: "aria-label" },

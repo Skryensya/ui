@@ -3,8 +3,17 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "12985b2ae2e73991"
+surface: "cef83e06af79075a"
 entries:
+  - date: 2026-10-25
+    kind: breaking
+    target: appearance
+    es:
+      title: "Cada apariencia tiene su propia hoja"
+      body: "Las reglas de `brutalist`, `frosted` pasan de date-picker.css a date-picker.brutalist.css, date-picker.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en date-picker.css."
+    en:
+      title: "Each appearance has its own stylesheet"
+      body: "The rules for `brutalist`, `frosted` move from date-picker.css to date-picker.brutalist.css, date-picker.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in date-picker.css."
   - date: 2026-10-19
     kind: bugfix
     es:

@@ -140,6 +140,11 @@ export const comboboxContract = {
       type: "enum",
       values: ["plain", "brutalist", "frosted"],
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        brutalist: ["@skryensya/core/components/combobox.brutalist.css"],
+        frosted: ["@skryensya/core/components/combobox.frosted.css"],
+      },
     },
     /** Submitted under this name. Lives on the input, like every other form attribute here. */
     name: { type: "string", attr: "name" },

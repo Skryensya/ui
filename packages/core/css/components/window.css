@@ -167,82 +167,11 @@
   }
 
   /*
-   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
-   *
-   * Plain, brutalist and frosted live on the CONTENT, the element that paints, because React
-   * portals the positioner away from its root. No tactile slab: a window is dragged, not pressed.
-   * The title-bar controls stay plain ghost buttons. Radius, padding and stack order are untouched.
+   * APPEARANCES live in their own sheets, so a page that never asks for one does not ship it:
+   *   brutalist  window.brutalist.css
+   *   frosted    window.frosted.css
+   * Load each one right after this file: it only adds to it, and a base that loads after one wins every tie.
    */
-
-  /* BRUTALIST: the black edge, a black rule under the title bar, and a hard zero-blur offset toward
-   * block-end and inline-end (mirrored in RTL). It replaces the soft modal shadow, and it is what says
-   * which window is in front: a window behind another keeps half of it. A maximized window IS the
-   * viewport, so there is nothing to offset from. */
-  .sk-window__content[data-appearance="brutalist"] {
-    --sk-window-brutalist-offset-inline: 8px;
-    --sk-window-brutalist-offset-block: 8px;
-    --sk-window-brutalist-edge: oklch(from var(--shadow-lg) l c h / 1);
-    --sk-window-brutalist-shadow: var(--sk-window-brutalist-edge);
-    --sk-window-border-color: var(--sk-window-brutalist-edge);
-    --sk-window-header-border-color: var(--sk-window-brutalist-edge);
-    --sk-window-wash: none;
-    --brutalist-direction: 1;
-    --brutalist-reach: 1;
-    box-shadow: calc(var(--sk-window-brutalist-offset-inline) * var(--brutalist-reach) * var(--brutalist-direction))
-      calc(var(--sk-window-brutalist-offset-block) * var(--brutalist-reach)) 0 var(--sk-window-brutalist-shadow);
-  }
-
-  .sk-window__content[data-appearance="brutalist"]:dir(rtl) {
-    --brutalist-direction: -1;
-  }
-
-  .sk-window__content[data-appearance="brutalist"][data-behind] {
-    --brutalist-reach: 0.5;
-  }
-
-  .sk-window__content[data-appearance="brutalist"][data-maximized] {
-    --brutalist-reach: 0;
-  }
-
-  /* One continuous sheet of glass, not two translucent panels stacked at the title bar. A soft
-   * top wash and inner rim catch the light; the existing shadow still places it above the page.
-   * Every material-only detail reads the shared switch so an opaque fallback stays genuinely plain. */
-  .sk-window__content[data-appearance="frosted"] {
-    --sk-window-wash: none;
-    --frost-edge: var(--frost-on) color-mix(in oklab, currentColor 16%, transparent);
-    --sk-window-border-color: var(--frost-edge, var(--color-border-subtle));
-    --frost-glass: var(--frost-on) light-dark(
-      color-mix(in oklab, var(--sk-window-bg) var(--frost-alpha-chrome), transparent),
-      color-mix(in oklab, var(--sk-window-bg) var(--frost-alpha-card), transparent)
-    );
-    --frost-sheen: var(--frost-on) linear-gradient(
-      to bottom,
-      color-mix(in oklab, var(--frost-highlight) 24%, transparent),
-      transparent 45%
-    );
-    --frost-rim: var(--frost-on) inset 0 1px 0 var(--frost-highlight),
-      inset 0 0 0 1px color-mix(in oklab, var(--frost-highlight) 32%, transparent);
-    background: var(--frost-sheen, none) var(--frost-glass, var(--sk-window-bg));
-    box-shadow: var(--frost-rim, 0 0 0 transparent), var(--sk-window-shadow);
-    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-xl)) saturate(var(--frost-saturate));
-    backdrop-filter: var(--frost-on) blur(var(--frost-blur-xl)) saturate(var(--frost-saturate));
-  }
-
-  .sk-window__content[data-appearance="frosted"][data-behind] {
-    box-shadow: var(--frost-rim, 0 0 0 transparent), var(--sk-window-shadow-behind);
-  }
-
-  /* A quiet tint separates the drag region without hiding the glass behind it. No second blur. */
-  .sk-window__content[data-appearance="frosted"] .sk-window__header {
-    --frost-header: var(--frost-on) color-mix(in oklab, var(--color-text-primary) 4%, transparent);
-    --frost-divider: var(--frost-on) color-mix(in oklab, currentColor 8%, transparent);
-    background: var(--frost-header, var(--sk-window-header-bg));
-    border-block-end-color: var(--frost-divider, var(--sk-window-header-border-color));
-  }
-
-  .sk-window__content[data-appearance="frosted"][data-minimized] .sk-window__header {
-    border-block-end-color: transparent;
-  }
 
   @media (prefers-reduced-motion: reduce) {
     .sk-window__content {

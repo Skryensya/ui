@@ -7,8 +7,17 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "c978f185bf9746b9"
+surface: "82e954bd0eee8692"
 entries:
+  - date: 2026-10-25
+    kind: breaking
+    target: appearance
+    es:
+      title: "Cada apariencia tiene su propia hoja"
+      body: "Las reglas de `tactile`, `brutalist`, `frosted` pasan de accordion.css a accordion.tactile.css, tile.tactile.css, details.tactile.css, accordion.brutalist.css, tile.brutalist.css, details.brutalist.css, accordion.frosted.css, tile.frosted.css, details.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en accordion.css."
+    en:
+      title: "Each appearance has its own stylesheet"
+      body: "The rules for `tactile`, `brutalist`, `frosted` move from accordion.css to accordion.tactile.css, tile.tactile.css, details.tactile.css, accordion.brutalist.css, tile.brutalist.css, details.brutalist.css, accordion.frosted.css, tile.frosted.css, details.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in accordion.css."
   - date: 2026-10-17
     kind: feature
     target: Details

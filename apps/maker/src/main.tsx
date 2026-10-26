@@ -7,7 +7,9 @@ import "@skryensya/icons-lucide/select.css";
 import "./app.css";
 
 /* The chrome is built from the kit, so it loads the kit's sheets; the stage loads its own. */
-import.meta.glob("../../../packages/core/css/components/*.css", { eager: true });
+/* Components first, then their appearance sheets: a base that loads after one wins every tie. */
+import.meta.glob(["../../../packages/core/css/components/*.css", "!../../../packages/core/css/components/*.*.css"], { eager: true });
+import.meta.glob("../../../packages/core/css/components/*.*.css", { eager: true });
 import.meta.glob("../../../packages/core/css/patterns/*.css", { eager: true });
 
 document.documentElement.setAttribute("data-scheme", "light");

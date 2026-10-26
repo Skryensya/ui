@@ -3,8 +3,17 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "aa5a5e50beb061b0"
+surface: "4c34bee77e9d659a"
 entries:
+  - date: 2026-10-25
+    kind: breaking
+    target: appearance
+    es:
+      title: "Cada apariencia tiene su propia hoja"
+      body: "Las reglas de `brutalist`, `frosted` pasan de code-preview.css a code-preview.brutalist.css, switch.brutalist.css, code-preview.frosted.css, switch.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en code-preview.css."
+    en:
+      title: "Each appearance has its own stylesheet"
+      body: "The rules for `brutalist`, `frosted` move from code-preview.css to code-preview.brutalist.css, switch.brutalist.css, code-preview.frosted.css, switch.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in code-preview.css."
   - date: 2026-10-03
     kind: chore
     target: CodePreview

@@ -227,7 +227,7 @@ const screenMiddle = (t: Translate): UsageTree =>
 
 /** What they can do: one button, at the corner where the eye ends. */
 const screenFront = (t: Translate): UsageTree =>
-  layer("end end", chip("background: var(--color-border-accent); color: var(--color-text-on-accent);", text(t("demo.morphStack.screen.front"), { weight: "label", size: "sm" })));
+  layer("end end", chip("background: var(--color-border-accent); color: var(--color-text-on-accent);", { ...text(t("demo.morphStack.screen.front"), { weight: "label", size: "sm" }), attrs: { style: "color: inherit;" } }));
 
 /** 3. A screen over its structure, tuned with hooks only. */
 export const morphStackTunedTree = (t: Translate): UsageTree =>

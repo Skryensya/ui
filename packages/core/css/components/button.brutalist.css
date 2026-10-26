@@ -1,0 +1,178 @@
+/*
+ * TIER 3, BUTTON · BRUTALIST
+ *
+ * The `appearance="brutalist"` rules of button.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER button.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.brutalist`.
+ */
+
+@layer components {
+  /*
+   * BRUTALIST. Graphic depth, NOT semantic elevation: a flat face, a hard edge, and a zero-blur
+   * offset the face travels into. `--elevation-*` means height above the page and none of it is
+   * spent here; the offset is a drawn mark attached to the control.
+   *
+   * ONE FORMULA FOR EVERY STATE. The states below move a single internal `--brutalist-travel`
+   * (0 at rest and on hover, positive presses). The visible shadow is
+   * `offset × (1 - travel)` and, while pressed, the face moves by whatever the shadow gave up, so
+   * the shadow's far edge stays put: the face slides toward a fixed hole. `box-shadow` is declared
+   * once, here, so a container that clears a group member's shadow (button-group.css does) wins in
+   * every state instead of losing to a :hover or :active rule with more specificity.
+   *
+   * NO TRANSFORM AT REST OR ON HOVER. Any `translate` other than `none`, even `0 0`, makes Chrome
+   * hit-test the host against its clip without `overflow-clip-margin`, which cuts the `::after`
+   * touch target back to the face: measured, an `xs` brutalist stopped answering 6px outside its
+   * face. So hover changes nothing, and the face moves by `left`/`top`
+   * on its relative box, never `translate`.
+   *
+   * WHOLE PIXELS AT REST, via round() on the offsets: a hard edge at 3.75px antialiases into the soft shadow this appearance
+   * exists not to be. The remaining shadow never drops below 1px while there is an offset at all, so a
+   * press never swallows the face into its shadow completely.
+   *
+   * RTL MIRRORS the inline side (`:dir(rtl)` below), the same decision sticker.css made: the offset
+   * is UI geometry that follows the reading direction, not a fixed light source.
+   *
+   * INDEPENDENT of radius and density: no corner, size or spacing is touched here, so the face keeps
+   * whatever `data-radius` resolves to and the offset follows the corner (box-shadow does).
+   *
+   * Internal (`--brutalist-*`, not hooks): a consumer who set one would be fighting the state.
+   */
+  .sk-button[data-appearance="brutalist"] {
+    /* The edge keeps plain's own width, so switching appearance never changes the button's size (and
+     * a ButtonGroup's 1px seam overlap still holds); the weight comes from the ink and the offset. */
+    --sk-button-wash: none;
+    /* The ink that draws the construction, and it is BLACK in both modes: a shadow is dark, whatever
+     * the page is. text-primary would have been the obvious token and it is wrong in dark, where it
+     * turns near-white and the offset reads as a glow (a grey mix of the border was tried too, and
+     * reads as dirt). Opaque black comes from the system's own shadow colour rather than a raw value:
+     * `--shadow-lg` is black at some alpha in both modes, and this keeps its channels at full alpha.
+     * Every variant and tone draws with this same black: the construction is one ink, the fill and
+     * the label are what carry tone. */
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --sk-button-brutalist-edge: var(--brutalist-black);
+    --sk-button-brutalist-shadow: var(--sk-button-brutalist-edge);
+    --brutalist-direction: 1;
+    --brutalist-travel: 0;
+    /* Disabled scales the whole construction down rather than inventing a second geometry. */
+    --brutalist-reach: 1;
+    /* Press travel only. The shared feedback easing (0.2, 0, 0, 1) front-loads a third of a 4px move
+     * into one frame; this launches softer and still lands under the finger. Face and shadow share
+     * it, so their sum stays constant and the far edge never wobbles. */
+    --brutalist-press-easing: cubic-bezier(0.3, 0, 0.2, 1);
+    --brutalist-offset-inline: round(nearest, calc(var(--sk-button-brutalist-offset-inline) * var(--brutalist-reach)), 1px);
+    --brutalist-offset-block: round(nearest, calc(var(--sk-button-brutalist-offset-block) * var(--brutalist-reach)), 1px);
+    --brutalist-shadow-inline: max(
+      min(var(--brutalist-offset-inline), 1px),
+      calc(var(--brutalist-offset-inline) * (1 - var(--brutalist-travel)))
+    );
+    --brutalist-shadow-block: max(
+      min(var(--brutalist-offset-block), 1px),
+      calc(var(--brutalist-offset-block) * (1 - var(--brutalist-travel)))
+    );
+    border-color: var(--sk-button-brutalist-edge);
+    box-shadow: calc(var(--brutalist-shadow-inline) * var(--brutalist-direction)) var(--brutalist-shadow-block) 0
+      var(--sk-button-brutalist-shadow);
+    /* The face moves by whatever the shadow gives up, and BOTH come from `--brutalist-travel`, the one
+     * thing that transitions. `translate` would run on the compositor and `box-shadow` on the main
+     * thread, so a fast second click retargeted them separately and the far edge tore; one number
+     * read by both lands them on the same frame. The face moves with `left`/`top` on the relative
+     * box, not `translate`, because a `translate` that is not `none` cuts the touch target (above).
+     * Reduced motion needs no block of its own: the feedback duration token already goes instant. */
+    left: calc((var(--brutalist-offset-inline) - var(--brutalist-shadow-inline)) * var(--brutalist-direction));
+    top: calc(var(--brutalist-offset-block) - var(--brutalist-shadow-block));
+    transition:
+      background-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      border-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      --brutalist-travel var(--motion-feedback-duration) var(--brutalist-press-easing);
+  }
+  .sk-button[data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  /* Solid is the base above: strongest edge, full offset. Each quieter emphasis spends LESS of the
+   * construction instead of dropping it, so the four stay distinguishable inside the appearance. */
+
+  /* SOFT: a quiet paper face, not a translucent wash. The plain soft fill is deliberately see-through,
+   * but under a brutalist black edge/offset that transparency makes the construction look dirty and
+   * accidental. Keep soft quieter through a shorter offset and a pale/tinted opaque face instead. */
+  .sk-button[data-appearance="brutalist"][data-variant="soft"] {
+    --sk-button-bg: var(--color-bg-surface);
+    --sk-button-brutalist-offset-inline: 4px;
+    --sk-button-brutalist-offset-block: 4px;
+  }
+  .sk-button:not(:disabled):not([aria-disabled="true"])[data-appearance="brutalist"][data-variant="soft"]:is(
+      [data-tone="accent"],
+      [data-tone="danger"]
+    ) {
+    --sk-button-bg: color-mix(in oklab, var(--sk-button-accent) 14%, var(--color-bg-surface));
+  }
+
+  /* GHOST: still no body (the transparent fill comes from ghost itself, and aria-pressed can still
+   * give it one). The same black outline with the smallest offset, so it reads as a drawn control
+   * rather than as a filled block with its paint missing. On a dark page a black outline is faint:
+   * the label, in the tone's ink, is what carries a ghost there, as it does in plain. */
+  .sk-button[data-appearance="brutalist"][data-variant="ghost"] {
+    --sk-button-brutalist-offset-inline: 2px;
+    --sk-button-brutalist-offset-block: 2px;
+  }
+
+  /* Press drives the face most of the way home. aria-pressed is deliberately absent from these two
+   * rules: a toggle that is ON keeps its rest offset and is told apart by the pressed paint above,
+   * and it still travels when clicked again, because `:active` is the finger and not the state. */
+  .sk-button[data-appearance="brutalist"]:active:not(:disabled):not([aria-disabled="true"]) {
+    --brutalist-travel: 0.8;
+  }
+
+  /* Disabled outranks appearance: the construction stays recognisable but shrinks and fades to the
+   * disabled border colour, so a strong offset never makes an unavailable control look pressable.
+   * Travel cannot happen at all, because the hover/active rules above never match a disabled host. */
+  .sk-button[data-appearance="brutalist"]:is(:disabled, [aria-disabled="true"]) {
+    --brutalist-reach: 0.4;
+    --sk-button-brutalist-edge: var(--color-border-default);
+    --sk-button-brutalist-shadow: var(--color-border-subtle);
+  }
+  @media (forced-colors: active) {
+
+    /* Brutalist degrades to a plain system control: the UA drops box-shadow here anyway, and a face
+     * that travels with no shadow to travel into reads as a jump. The edge keeps the system ink;
+     * focus, aria-pressed (Highlight above) and disabled (GrayText below) are carried as for plain. */
+    .sk-button[data-appearance="brutalist"] {
+      --sk-button-brutalist-edge: CanvasText;
+      box-shadow: none;
+    }
+    .sk-button[data-appearance="brutalist"]:active:not(:disabled):not([aria-disabled="true"]) {
+      --brutalist-travel: 0;
+    }
+    .sk-button[data-appearance="brutalist"]:is(:disabled, [aria-disabled="true"]) {
+      --sk-button-brutalist-edge: GrayText;
+    }
+  }
+
+  /*
+   * Copied from button.css that sat after this appearance's rules in one file, to win over them, so it comes
+   * last here too.
+   */
+  @media (forced-colors: active) {
+    .sk-button:not(:disabled):not([aria-disabled="true"]):not([data-variant="soft"], [data-variant="ghost"]):is(
+        [data-tone="accent"],
+        [data-tone="danger"]
+      ) {
+      --sk-button-bg: Highlight;
+      --sk-button-fg: HighlightText;
+      --sk-button-border-color: CanvasText;
+      background: Highlight;
+      color: HighlightText;
+    }
+    .sk-button:not(:disabled):not([aria-disabled="true"])[data-variant="soft"]:is([data-tone="accent"], [data-tone="danger"]) {
+      --sk-button-bg: Canvas;
+      --sk-button-fg: CanvasText;
+      --sk-button-border-color: Highlight;
+      background: Canvas;
+      color: CanvasText;
+      border-color: Highlight;
+    }
+  }
+}

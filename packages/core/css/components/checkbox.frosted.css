@@ -1,0 +1,41 @@
+/*
+ * TIER 3, CHECKBOX · FROSTED
+ *
+ * The `appearance="frosted"` rules of checkbox.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER checkbox.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.frosted`.
+ */
+
+@layer components {
+  /* FROSTED: the box's own fill thinned into a sheet over a blurred backdrop, with a fine edge.
+   * Opaque baseline; the material only where backdrop-filter exists and no reduced-transparency
+   * preference is set. */
+  :is(.sk-checkbox[data-appearance="frosted"], .sk-checkbox-group[data-appearance="frosted"] .sk-checkbox) .sk-checkbox__control {
+    border-color: color-mix(in oklab, currentColor 30%, transparent);
+  }
+  :is(.sk-checkbox[data-appearance="frosted"], .sk-checkbox-group[data-appearance="frosted"] .sk-checkbox):has(.sk-checkbox__input:checked, input[type="checkbox"].sk-checkbox__input:indeterminate) .sk-checkbox__control {
+    border-color: var(--sk-checkbox-border-color);
+  }
+  :is(.sk-checkbox[data-appearance="frosted"], .sk-checkbox-group[data-appearance="frosted"] .sk-checkbox) .sk-checkbox__control {
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-checkbox-bg) var(--frost-alpha-control), transparent);
+    background: var(--frost-glass, var(--sk-checkbox-bg));
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-xs)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-xs)) saturate(var(--frost-saturate));
+  }
+
+  /*
+   * Copied from checkbox.css that sat after this appearance's rules in one file, to win over them, so it comes
+   * last here too.
+   */
+  @media (forced-colors: active) {
+    :is(.sk-checkbox[data-appearance], .sk-checkbox-group[data-appearance] .sk-checkbox) .sk-checkbox__control,
+    :is(.sk-checkbox[data-appearance], .sk-checkbox-group[data-appearance] .sk-checkbox):not(:has(.sk-checkbox__input:disabled)):active .sk-checkbox__control {
+      box-shadow: none;
+      translate: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+}

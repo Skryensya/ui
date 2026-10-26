@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "4cf9c2cd3a7df547"
+surface: "c7ee8f6b4e7a0c7e"
 entries:
   - date: 2026-10-26
     kind: rework
@@ -23,6 +23,15 @@ entries:
     en:
       title: "Input has an xs size"
       body: "controlSize takes xs: a 28px field with caption type, for a dense bar."
+  - date: 2026-10-25
+    kind: breaking
+    target: appearance
+    es:
+      title: "Cada apariencia tiene su propia hoja"
+      body: "Las reglas de `brutalist`, `frosted` pasan de input.css a input.brutalist.css, input.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en input.css."
+    en:
+      title: "Each appearance has its own stylesheet"
+      body: "The rules for `brutalist`, `frosted` move from input.css to input.brutalist.css, input.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in input.css."
   - date: 2026-10-24
     kind: feature
     target: Input

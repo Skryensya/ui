@@ -126,6 +126,12 @@ export const checkboxContract = {
       values: ["plain", "tactile", "brutalist", "frosted"],
       default: "plain",
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        tactile: ["@skryensya/core/components/checkbox.tactile.css"],
+        brutalist: ["@skryensya/core/components/checkbox.brutalist.css"],
+        frosted: ["@skryensya/core/components/checkbox.frosted.css"],
+      },
     },
     name: { type: "string", attr: "name" },
     value: { type: "string", attr: "value" },
@@ -411,6 +417,12 @@ export const switchContract = {
       values: ["plain", "tactile", "brutalist", "frosted"],
       default: "plain",
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        tactile: ["@skryensya/core/components/switch.tactile.css"],
+        brutalist: ["@skryensya/core/components/switch.brutalist.css"],
+        frosted: ["@skryensya/core/components/switch.frosted.css"],
+      },
     },
   },
 
@@ -508,6 +520,12 @@ export const radioGroupContract = {
       values: ["plain", "tactile", "brutalist", "frosted"],
       default: "plain",
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        tactile: ["@skryensya/core/components/radio-group.tactile.css"],
+        brutalist: ["@skryensya/core/components/radio-group.brutalist.css"],
+        frosted: ["@skryensya/core/components/radio-group.frosted.css"],
+      },
     },
     /** Shared by every input, and what makes the choice exclusive. The group's, never an option's. */
     name: { type: "string", attr: "name" },

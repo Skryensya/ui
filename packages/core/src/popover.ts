@@ -78,6 +78,11 @@ export const popoverContract = {
       values: ["plain", "brutalist", "frosted"],
       default: "plain",
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        brutalist: ["@skryensya/core/components/popover.brutalist.css"],
+        frosted: ["@skryensya/core/components/popover.frosted.css"],
+      },
     },
     /** The id that ties the trigger to the panel. Authored, because the platform needs a real id. */
     panelId: {

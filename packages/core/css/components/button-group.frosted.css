@@ -1,0 +1,48 @@
+/*
+ * TIER 3, BUTTON GROUP · FROSTED
+ *
+ * The `appearance="frosted"` rules of button-group.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER button-group.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.frosted`.
+ */
+
+@layer components {
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Members carry Button's appearance themselves. What changes here is the one shadow the group
+   * casts:
+   *
+   *   TACTILE keeps each member's own ledge: a ledge drops straight down with no sideways blur, so
+   *   the members meet at the seam as one continuous ledge. The group's soft shadow goes, or it
+   *   would sit under the ledge as a second depth.
+   *
+   *   BRUTALIST casts ONE hard black offset around the whole group, mirrored in RTL; the seam is
+   *   the members' own black edge.
+   *
+   *   FROSTED: the group blurs the backdrop ONCE and its members only tint it. A blur per member
+   *   sampled a different slice of the backdrop each, so the member over a dark fold read flatter
+   *   than its neighbour over a bright one. The group keeps its soft shadow.
+   */
+  .sk-button-group:has(> .sk-button[data-appearance="frosted"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="frosted"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="frosted"]) {
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
+  }
+  .sk-button-group > .sk-button[data-appearance="frosted"][class],
+  .sk-button-group > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="frosted"],
+  .sk-button-group > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="frosted"] {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .sk-button-group:has(> .sk-input[data-appearance="frosted"]) > .sk-button-group__text {
+    --sk-button-group-text-bg: transparent;
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-well) var(--frost-alpha-field), transparent);
+
+    border-color: color-mix(in oklab, currentColor 24%, transparent);
+    background: var(--frost-glass, var(--color-bg-well));
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-sm)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-sm)) saturate(var(--frost-saturate));
+  }
+}

@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "88eacb20dcf16fa3"
+surface: "bf5c126160e36664"
 entries:
   - date: 2026-10-26
     kind: feature
@@ -13,6 +13,15 @@ entries:
     en:
       title: An option takes an icon before its text
       body: "Each option's label is now a node, as in Tabs: it can hold an <code>Icon</code> followed by the word. With <code>iconPosition=\"block\"</code> the icon goes above and the bar grows taller. The track's height becomes a minimum instead of fixed, and it never draws a scrollbar, not even inside <code>.sk-scrollbar</code>."
+  - date: 2026-10-25
+    kind: breaking
+    target: appearance
+    es:
+      title: "Cada apariencia tiene su propia hoja"
+      body: "Las reglas de `tactile`, `brutalist`, `frosted` pasan de segmented.css a segmented.tactile.css, segmented.brutalist.css, segmented.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en segmented.css."
+    en:
+      title: "Each appearance has its own stylesheet"
+      body: "The rules for `tactile`, `brutalist`, `frosted` move from segmented.css to segmented.tactile.css, segmented.brutalist.css, segmented.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in segmented.css."
   - date: 2026-10-01
     kind: feature
     es:

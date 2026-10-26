@@ -11,7 +11,8 @@ export function list(options: ListOptions, ctx: Context): number {
     ctx.error(`No category "${options.category}". Categories: ${all.join(", ")}.`);
     return 1;
   }
-  const entries = [...catalog.values()].filter((entry) => !options.category || entry.category === options.category);
+  // Appearances are listed under their component by `info`; here they would add 70 lines of the same names.
+  const entries = [...catalog.values()].filter((entry) => entry.kind !== "appearance" && (!options.category || entry.category === options.category));
 
   if (options.json) {
     ctx.log(JSON.stringify(entries.map(({ id, kind, category, react, vanilla, peers }) => ({ id, kind, category, react: react?.entry ?? null, vanilla: vanilla?.entry ?? null, peers })), null, 2));

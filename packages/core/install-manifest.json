@@ -29,6 +29,54 @@
       "auto": true
     }
   },
+  "accordion.brutalist": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/accordion.brutalist.css",
+      "files": [
+        "@skryensya/core/components/accordion.css",
+        "@skryensya/core/components/accordion.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "accordion",
+      "value": "brutalist"
+    }
+  },
+  "accordion.frosted": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/accordion.frosted.css",
+      "files": [
+        "@skryensya/core/components/accordion.css",
+        "@skryensya/core/components/accordion.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "accordion",
+      "value": "frosted"
+    }
+  },
+  "accordion.tactile": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/accordion.tactile.css",
+      "files": [
+        "@skryensya/core/components/accordion.css",
+        "@skryensya/core/components/accordion.tactile.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "accordion",
+      "value": "tactile"
+    }
+  },
   "annotation": {
     "category": "content",
     "css": {
@@ -128,6 +176,22 @@
     },
     "vanilla": null
   },
+  "avatar.brutalist": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/avatar.brutalist.css",
+      "files": [
+        "@skryensya/core/components/avatar.css",
+        "@skryensya/core/components/avatar.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "avatar",
+      "value": "brutalist"
+    }
+  },
   "back-to-top": {
     "category": "navigation",
     "css": {
@@ -154,6 +218,63 @@
       "auto": true
     }
   },
+  "back-to-top.brutalist": {
+    "category": "navigation",
+    "css": {
+      "entry": "@skryensya/core/components/back-to-top.brutalist.css",
+      "files": [
+        "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/a11y-warn.css",
+        "@skryensya/core/components/button.css",
+        "@skryensya/core/components/back-to-top.css",
+        "@skryensya/core/components/back-to-top.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "back-to-top",
+      "value": "brutalist"
+    }
+  },
+  "back-to-top.frosted": {
+    "category": "navigation",
+    "css": {
+      "entry": "@skryensya/core/components/back-to-top.frosted.css",
+      "files": [
+        "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/a11y-warn.css",
+        "@skryensya/core/components/button.css",
+        "@skryensya/core/components/back-to-top.css",
+        "@skryensya/core/components/back-to-top.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "back-to-top",
+      "value": "frosted"
+    }
+  },
+  "back-to-top.tactile": {
+    "category": "navigation",
+    "css": {
+      "entry": "@skryensya/core/components/back-to-top.tactile.css",
+      "files": [
+        "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/a11y-warn.css",
+        "@skryensya/core/components/button.css",
+        "@skryensya/core/components/back-to-top.css",
+        "@skryensya/core/components/back-to-top.tactile.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "back-to-top",
+      "value": "tactile"
+    }
+  },
   "badge": {
     "category": "content",
     "css": {
@@ -171,6 +292,22 @@
       ]
     },
     "vanilla": null
+  },
+  "badge.brutalist": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/badge.brutalist.css",
+      "files": [
+        "@skryensya/core/components/badge.css",
+        "@skryensya/core/components/badge.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "badge",
+      "value": "brutalist"
+    }
   },
   "box": {
     "category": "layout",
@@ -236,6 +373,60 @@
       "auto": true
     }
   },
+  "button.brutalist": {
+    "category": "actions",
+    "css": {
+      "entry": "@skryensya/core/components/button.brutalist.css",
+      "files": [
+        "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/a11y-warn.css",
+        "@skryensya/core/components/button.css",
+        "@skryensya/core/components/button.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "button",
+      "value": "brutalist"
+    }
+  },
+  "button.frosted": {
+    "category": "actions",
+    "css": {
+      "entry": "@skryensya/core/components/button.frosted.css",
+      "files": [
+        "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/a11y-warn.css",
+        "@skryensya/core/components/button.css",
+        "@skryensya/core/components/button.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "button",
+      "value": "frosted"
+    }
+  },
+  "button.tactile": {
+    "category": "actions",
+    "css": {
+      "entry": "@skryensya/core/components/button.tactile.css",
+      "files": [
+        "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/a11y-warn.css",
+        "@skryensya/core/components/button.css",
+        "@skryensya/core/components/button.tactile.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "button",
+      "value": "tactile"
+    }
+  },
   "button-group": {
     "category": "actions",
     "css": {
@@ -254,6 +445,54 @@
       ]
     },
     "vanilla": null
+  },
+  "button-group.brutalist": {
+    "category": "actions",
+    "css": {
+      "entry": "@skryensya/core/components/button-group.brutalist.css",
+      "files": [
+        "@skryensya/core/components/button-group.css",
+        "@skryensya/core/components/button-group.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "button-group",
+      "value": "brutalist"
+    }
+  },
+  "button-group.frosted": {
+    "category": "actions",
+    "css": {
+      "entry": "@skryensya/core/components/button-group.frosted.css",
+      "files": [
+        "@skryensya/core/components/button-group.css",
+        "@skryensya/core/components/button-group.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "button-group",
+      "value": "frosted"
+    }
+  },
+  "button-group.tactile": {
+    "category": "actions",
+    "css": {
+      "entry": "@skryensya/core/components/button-group.tactile.css",
+      "files": [
+        "@skryensya/core/components/button-group.css",
+        "@skryensya/core/components/button-group.tactile.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "button-group",
+      "value": "tactile"
+    }
   },
   "calendar": {
     "category": "forms",
@@ -296,6 +535,38 @@
       ]
     },
     "vanilla": null
+  },
+  "callout.brutalist": {
+    "category": "feedback",
+    "css": {
+      "entry": "@skryensya/core/components/callout.brutalist.css",
+      "files": [
+        "@skryensya/core/components/callout.css",
+        "@skryensya/core/components/callout.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "callout",
+      "value": "brutalist"
+    }
+  },
+  "callout.frosted": {
+    "category": "feedback",
+    "css": {
+      "entry": "@skryensya/core/components/callout.frosted.css",
+      "files": [
+        "@skryensya/core/components/callout.css",
+        "@skryensya/core/components/callout.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "callout",
+      "value": "frosted"
+    }
   },
   "canvas": {
     "category": "content",
@@ -386,6 +657,54 @@
     },
     "vanilla": null
   },
+  "checkbox.brutalist": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/checkbox.brutalist.css",
+      "files": [
+        "@skryensya/core/components/checkbox.css",
+        "@skryensya/core/components/checkbox.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "checkbox",
+      "value": "brutalist"
+    }
+  },
+  "checkbox.frosted": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/checkbox.frosted.css",
+      "files": [
+        "@skryensya/core/components/checkbox.css",
+        "@skryensya/core/components/checkbox.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "checkbox",
+      "value": "frosted"
+    }
+  },
+  "checkbox.tactile": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/checkbox.tactile.css",
+      "files": [
+        "@skryensya/core/components/checkbox.css",
+        "@skryensya/core/components/checkbox.tactile.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "checkbox",
+      "value": "tactile"
+    }
+  },
   "clipboard": {
     "category": "actions",
     "css": {
@@ -432,6 +751,38 @@
       "mount": "mountCodePreview",
       "selectors": [],
       "auto": false
+    }
+  },
+  "code-preview.brutalist": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/code-preview.brutalist.css",
+      "files": [
+        "@skryensya/core/components/code-preview.css",
+        "@skryensya/core/components/code-preview.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "code-preview",
+      "value": "brutalist"
+    }
+  },
+  "code-preview.frosted": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/code-preview.frosted.css",
+      "files": [
+        "@skryensya/core/components/code-preview.css",
+        "@skryensya/core/components/code-preview.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "code-preview",
+      "value": "frosted"
     }
   },
   "color-picker": {
@@ -481,6 +832,38 @@
         "[data-sk-combobox]"
       ],
       "auto": true
+    }
+  },
+  "combobox.brutalist": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/combobox.brutalist.css",
+      "files": [
+        "@skryensya/core/components/combobox.css",
+        "@skryensya/core/components/combobox.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "combobox",
+      "value": "brutalist"
+    }
+  },
+  "combobox.frosted": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/combobox.frosted.css",
+      "files": [
+        "@skryensya/core/components/combobox.css",
+        "@skryensya/core/components/combobox.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "combobox",
+      "value": "frosted"
     }
   },
   "command-palette": {
@@ -649,6 +1032,46 @@
       "auto": true
     }
   },
+  "date-picker.brutalist": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/date-picker.brutalist.css",
+      "files": [
+        "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/a11y-warn.css",
+        "@skryensya/core/components/button.css",
+        "@skryensya/core/components/calendar.css",
+        "@skryensya/core/components/date-picker.css",
+        "@skryensya/core/components/date-picker.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "date-picker",
+      "value": "brutalist"
+    }
+  },
+  "date-picker.frosted": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/date-picker.frosted.css",
+      "files": [
+        "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/a11y-warn.css",
+        "@skryensya/core/components/button.css",
+        "@skryensya/core/components/calendar.css",
+        "@skryensya/core/components/date-picker.css",
+        "@skryensya/core/components/date-picker.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "date-picker",
+      "value": "frosted"
+    }
+  },
   "description-list": {
     "category": "data",
     "css": {
@@ -710,6 +1133,38 @@
         "dialog"
       ],
       "auto": true
+    }
+  },
+  "dialog.brutalist": {
+    "category": "overlays",
+    "css": {
+      "entry": "@skryensya/core/components/dialog.brutalist.css",
+      "files": [
+        "@skryensya/core/components/dialog.css",
+        "@skryensya/core/components/dialog.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "dialog",
+      "value": "brutalist"
+    }
+  },
+  "dialog.frosted": {
+    "category": "overlays",
+    "css": {
+      "entry": "@skryensya/core/components/dialog.frosted.css",
+      "files": [
+        "@skryensya/core/components/dialog.css",
+        "@skryensya/core/components/dialog.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "dialog",
+      "value": "frosted"
     }
   },
   "dialog-stack": {
@@ -949,6 +1404,38 @@
       "auto": true
     }
   },
+  "input.brutalist": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/input.brutalist.css",
+      "files": [
+        "@skryensya/core/components/input.css",
+        "@skryensya/core/components/input.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "input",
+      "value": "brutalist"
+    }
+  },
+  "input.frosted": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/input.frosted.css",
+      "files": [
+        "@skryensya/core/components/input.css",
+        "@skryensya/core/components/input.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "input",
+      "value": "frosted"
+    }
+  },
   "kbd": {
     "category": "content",
     "css": {
@@ -965,6 +1452,23 @@
       ]
     },
     "vanilla": null
+  },
+  "kbd.brutalist": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/kbd.brutalist.css",
+      "files": [
+        "@skryensya/core/patterns/a11y-warn.css",
+        "@skryensya/core/components/kbd.css",
+        "@skryensya/core/components/kbd.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "kbd",
+      "value": "brutalist"
+    }
   },
   "layout": {
     "category": "layout",
@@ -1306,6 +1810,38 @@
     },
     "vanilla": null
   },
+  "navbar.brutalist": {
+    "category": "navigation",
+    "css": {
+      "entry": "@skryensya/core/components/navbar.brutalist.css",
+      "files": [
+        "@skryensya/core/components/navbar.css",
+        "@skryensya/core/components/navbar.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "navbar",
+      "value": "brutalist"
+    }
+  },
+  "navbar.frosted": {
+    "category": "navigation",
+    "css": {
+      "entry": "@skryensya/core/components/navbar.frosted.css",
+      "files": [
+        "@skryensya/core/components/navbar.css",
+        "@skryensya/core/components/navbar.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "navbar",
+      "value": "frosted"
+    }
+  },
   "number-field": {
     "category": "forms",
     "css": {
@@ -1327,6 +1863,38 @@
         "[data-sk-number-field]"
       ],
       "auto": true
+    }
+  },
+  "number-field.brutalist": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/number-field.brutalist.css",
+      "files": [
+        "@skryensya/core/components/number-field.css",
+        "@skryensya/core/components/number-field.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "number-field",
+      "value": "brutalist"
+    }
+  },
+  "number-field.frosted": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/number-field.frosted.css",
+      "files": [
+        "@skryensya/core/components/number-field.css",
+        "@skryensya/core/components/number-field.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "number-field",
+      "value": "frosted"
     }
   },
   "otp-input": {
@@ -1368,6 +1936,54 @@
     },
     "vanilla": null
   },
+  "pagination.brutalist": {
+    "category": "navigation",
+    "css": {
+      "entry": "@skryensya/core/components/pagination.brutalist.css",
+      "files": [
+        "@skryensya/core/components/pagination.css",
+        "@skryensya/core/components/pagination.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "pagination",
+      "value": "brutalist"
+    }
+  },
+  "pagination.frosted": {
+    "category": "navigation",
+    "css": {
+      "entry": "@skryensya/core/components/pagination.frosted.css",
+      "files": [
+        "@skryensya/core/components/pagination.css",
+        "@skryensya/core/components/pagination.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "pagination",
+      "value": "frosted"
+    }
+  },
+  "pagination.tactile": {
+    "category": "navigation",
+    "css": {
+      "entry": "@skryensya/core/components/pagination.tactile.css",
+      "files": [
+        "@skryensya/core/components/pagination.css",
+        "@skryensya/core/components/pagination.tactile.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "pagination",
+      "value": "tactile"
+    }
+  },
   "password-input": {
     "category": "forms",
     "css": {
@@ -1389,6 +2005,38 @@
         "[data-sk-password-input]"
       ],
       "auto": true
+    }
+  },
+  "password-input.brutalist": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/password-input.brutalist.css",
+      "files": [
+        "@skryensya/core/components/password-input.css",
+        "@skryensya/core/components/password-input.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "password-input",
+      "value": "brutalist"
+    }
+  },
+  "password-input.frosted": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/password-input.frosted.css",
+      "files": [
+        "@skryensya/core/components/password-input.css",
+        "@skryensya/core/components/password-input.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "password-input",
+      "value": "frosted"
     }
   },
   "placeholder": {
@@ -1425,6 +2073,38 @@
       ]
     },
     "vanilla": null
+  },
+  "popover.brutalist": {
+    "category": "overlays",
+    "css": {
+      "entry": "@skryensya/core/components/popover.brutalist.css",
+      "files": [
+        "@skryensya/core/components/popover.css",
+        "@skryensya/core/components/popover.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "popover",
+      "value": "brutalist"
+    }
+  },
+  "popover.frosted": {
+    "category": "overlays",
+    "css": {
+      "entry": "@skryensya/core/components/popover.frosted.css",
+      "files": [
+        "@skryensya/core/components/popover.css",
+        "@skryensya/core/components/popover.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "popover",
+      "value": "frosted"
+    }
   },
   "presence": {
     "category": "layout",
@@ -1555,6 +2235,54 @@
     },
     "vanilla": null
   },
+  "radio-group.brutalist": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/radio-group.brutalist.css",
+      "files": [
+        "@skryensya/core/components/radio-group.css",
+        "@skryensya/core/components/radio-group.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "radio-group",
+      "value": "brutalist"
+    }
+  },
+  "radio-group.frosted": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/radio-group.frosted.css",
+      "files": [
+        "@skryensya/core/components/radio-group.css",
+        "@skryensya/core/components/radio-group.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "radio-group",
+      "value": "frosted"
+    }
+  },
+  "radio-group.tactile": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/radio-group.tactile.css",
+      "files": [
+        "@skryensya/core/components/radio-group.css",
+        "@skryensya/core/components/radio-group.tactile.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "radio-group",
+      "value": "tactile"
+    }
+  },
   "rating": {
     "category": "forms",
     "css": {
@@ -1683,6 +2411,54 @@
       "auto": true
     }
   },
+  "segmented.brutalist": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/segmented.brutalist.css",
+      "files": [
+        "@skryensya/core/components/segmented.css",
+        "@skryensya/core/components/segmented.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "segmented",
+      "value": "brutalist"
+    }
+  },
+  "segmented.frosted": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/segmented.frosted.css",
+      "files": [
+        "@skryensya/core/components/segmented.css",
+        "@skryensya/core/components/segmented.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "segmented",
+      "value": "frosted"
+    }
+  },
+  "segmented.tactile": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/segmented.tactile.css",
+      "files": [
+        "@skryensya/core/components/segmented.css",
+        "@skryensya/core/components/segmented.tactile.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "segmented",
+      "value": "tactile"
+    }
+  },
   "select": {
     "category": "forms",
     "css": {
@@ -1705,6 +2481,38 @@
         "[data-sk-select]"
       ],
       "auto": true
+    }
+  },
+  "select.brutalist": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/select.brutalist.css",
+      "files": [
+        "@skryensya/core/components/select.css",
+        "@skryensya/core/components/select.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "select",
+      "value": "brutalist"
+    }
+  },
+  "select.frosted": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/select.frosted.css",
+      "files": [
+        "@skryensya/core/components/select.css",
+        "@skryensya/core/components/select.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "select",
+      "value": "frosted"
     }
   },
   "separator": {
@@ -1769,6 +2577,42 @@
         "[data-sk-sidebar]"
       ],
       "auto": true
+    }
+  },
+  "sidebar.brutalist": {
+    "category": "navigation",
+    "css": {
+      "entry": "@skryensya/core/components/sidebar.brutalist.css",
+      "files": [
+        "@skryensya/core/patterns/splitter.css",
+        "@skryensya/core/patterns/grip.css",
+        "@skryensya/core/components/sidebar.css",
+        "@skryensya/core/components/sidebar.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "sidebar",
+      "value": "brutalist"
+    }
+  },
+  "sidebar.frosted": {
+    "category": "navigation",
+    "css": {
+      "entry": "@skryensya/core/components/sidebar.frosted.css",
+      "files": [
+        "@skryensya/core/patterns/splitter.css",
+        "@skryensya/core/patterns/grip.css",
+        "@skryensya/core/components/sidebar.css",
+        "@skryensya/core/components/sidebar.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "sidebar",
+      "value": "frosted"
     }
   },
   "skip-link": {
@@ -1867,6 +2711,22 @@
     },
     "vanilla": null
   },
+  "steps.segments": {
+    "category": "navigation",
+    "css": {
+      "entry": "@skryensya/core/components/steps.segments.css",
+      "files": [
+        "@skryensya/core/components/steps.css",
+        "@skryensya/core/components/steps.segments.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "steps",
+      "value": "segments"
+    }
+  },
   "switch": {
     "category": "forms",
     "css": {
@@ -1882,6 +2742,54 @@
       ]
     },
     "vanilla": null
+  },
+  "switch.brutalist": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/switch.brutalist.css",
+      "files": [
+        "@skryensya/core/components/switch.css",
+        "@skryensya/core/components/switch.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "switch",
+      "value": "brutalist"
+    }
+  },
+  "switch.frosted": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/switch.frosted.css",
+      "files": [
+        "@skryensya/core/components/switch.css",
+        "@skryensya/core/components/switch.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "switch",
+      "value": "frosted"
+    }
+  },
+  "switch.tactile": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/switch.tactile.css",
+      "files": [
+        "@skryensya/core/components/switch.css",
+        "@skryensya/core/components/switch.tactile.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "switch",
+      "value": "tactile"
+    }
   },
   "table": {
     "category": "data",
@@ -1973,6 +2881,23 @@
     },
     "vanilla": null
   },
+  "tag.brutalist": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/tag.brutalist.css",
+      "files": [
+        "@skryensya/core/patterns/a11y-warn.css",
+        "@skryensya/core/components/tag.css",
+        "@skryensya/core/components/tag.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "tag",
+      "value": "brutalist"
+    }
+  },
   "tags-input": {
     "category": "forms",
     "css": {
@@ -1994,6 +2919,38 @@
         "[data-sk-tags-input]"
       ],
       "auto": true
+    }
+  },
+  "tags-input.brutalist": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/tags-input.brutalist.css",
+      "files": [
+        "@skryensya/core/components/tags-input.css",
+        "@skryensya/core/components/tags-input.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "tags-input",
+      "value": "brutalist"
+    }
+  },
+  "tags-input.frosted": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/tags-input.frosted.css",
+      "files": [
+        "@skryensya/core/components/tags-input.css",
+        "@skryensya/core/components/tags-input.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "tags-input",
+      "value": "frosted"
     }
   },
   "tile": {
@@ -2021,6 +2978,54 @@
     },
     "vanilla": null
   },
+  "tile.brutalist": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/tile.brutalist.css",
+      "files": [
+        "@skryensya/core/components/tile.css",
+        "@skryensya/core/components/tile.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "tile",
+      "value": "brutalist"
+    }
+  },
+  "tile.frosted": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/tile.frosted.css",
+      "files": [
+        "@skryensya/core/components/tile.css",
+        "@skryensya/core/components/tile.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "tile",
+      "value": "frosted"
+    }
+  },
+  "tile.tactile": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/tile.tactile.css",
+      "files": [
+        "@skryensya/core/components/tile.css",
+        "@skryensya/core/components/tile.tactile.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "tile",
+      "value": "tactile"
+    }
+  },
   "time-field": {
     "category": "forms",
     "css": {
@@ -2042,6 +3047,38 @@
         "[data-sk-time-field]"
       ],
       "auto": true
+    }
+  },
+  "time-field.brutalist": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/time-field.brutalist.css",
+      "files": [
+        "@skryensya/core/components/time-field.css",
+        "@skryensya/core/components/time-field.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "time-field",
+      "value": "brutalist"
+    }
+  },
+  "time-field.frosted": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/time-field.frosted.css",
+      "files": [
+        "@skryensya/core/components/time-field.css",
+        "@skryensya/core/components/time-field.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "time-field",
+      "value": "frosted"
     }
   },
   "timeline": {
@@ -2109,6 +3146,54 @@
       "auto": true
     }
   },
+  "toolbar.brutalist": {
+    "category": "actions",
+    "css": {
+      "entry": "@skryensya/core/components/toolbar.brutalist.css",
+      "files": [
+        "@skryensya/core/components/toolbar.css",
+        "@skryensya/core/components/toolbar.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "toolbar",
+      "value": "brutalist"
+    }
+  },
+  "toolbar.frosted": {
+    "category": "actions",
+    "css": {
+      "entry": "@skryensya/core/components/toolbar.frosted.css",
+      "files": [
+        "@skryensya/core/components/toolbar.css",
+        "@skryensya/core/components/toolbar.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "toolbar",
+      "value": "frosted"
+    }
+  },
+  "toolbar.tactile": {
+    "category": "actions",
+    "css": {
+      "entry": "@skryensya/core/components/toolbar.tactile.css",
+      "files": [
+        "@skryensya/core/components/toolbar.css",
+        "@skryensya/core/components/toolbar.tactile.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "toolbar",
+      "value": "tactile"
+    }
+  },
   "tooltip": {
     "category": "overlays",
     "css": {
@@ -2158,6 +3243,46 @@
         "[data-sk-tour]"
       ],
       "auto": true
+    }
+  },
+  "tour.brutalist": {
+    "category": "overlays",
+    "css": {
+      "entry": "@skryensya/core/components/tour.brutalist.css",
+      "files": [
+        "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/a11y-warn.css",
+        "@skryensya/core/components/button.css",
+        "@skryensya/core/patterns/visually-hidden.css",
+        "@skryensya/core/components/tour.css",
+        "@skryensya/core/components/tour.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "tour",
+      "value": "brutalist"
+    }
+  },
+  "tour.frosted": {
+    "category": "overlays",
+    "css": {
+      "entry": "@skryensya/core/components/tour.frosted.css",
+      "files": [
+        "@skryensya/core/components/loader.css",
+        "@skryensya/core/patterns/a11y-warn.css",
+        "@skryensya/core/components/button.css",
+        "@skryensya/core/patterns/visually-hidden.css",
+        "@skryensya/core/components/tour.css",
+        "@skryensya/core/components/tour.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "tour",
+      "value": "frosted"
     }
   },
   "tree-view": {
@@ -2332,6 +3457,38 @@
         "[data-sk-window]"
       ],
       "auto": true
+    }
+  },
+  "window.brutalist": {
+    "category": "overlays",
+    "css": {
+      "entry": "@skryensya/core/components/window.brutalist.css",
+      "files": [
+        "@skryensya/core/components/window.css",
+        "@skryensya/core/components/window.brutalist.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "window",
+      "value": "brutalist"
+    }
+  },
+  "window.frosted": {
+    "category": "overlays",
+    "css": {
+      "entry": "@skryensya/core/components/window.frosted.css",
+      "files": [
+        "@skryensya/core/components/window.css",
+        "@skryensya/core/components/window.frosted.css"
+      ]
+    },
+    "react": null,
+    "vanilla": null,
+    "appearance": {
+      "of": "window",
+      "value": "frosted"
     }
   },
   "wrapper": {

@@ -194,6 +194,12 @@ export const tileContract = {
       values: ["plain", "tactile", "brutalist", "frosted"],
       default: "plain",
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        tactile: ["@skryensya/core/components/tile.tactile.css", "@skryensya/core/components/checkbox.tactile.css", "@skryensya/core/components/switch.tactile.css"],
+        brutalist: ["@skryensya/core/components/tile.brutalist.css", "@skryensya/core/components/checkbox.brutalist.css", "@skryensya/core/components/switch.brutalist.css"],
+        frosted: ["@skryensya/core/components/tile.frosted.css", "@skryensya/core/components/checkbox.frosted.css", "@skryensya/core/components/switch.frosted.css"],
+      },
     },
     href: { type: "string", attr: "href" },
     /* The choice's identity in a form. Machine input: the enhancer reads them off the root, React

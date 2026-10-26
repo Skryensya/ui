@@ -3,8 +3,16 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "4695c6ff3833cf91"
+surface: "336c63bbe1de17cb"
 entries:
+  - date: 2026-10-25
+    kind: breaking
+    es:
+      title: "El grupo carga su soldadura por apariencia, en hojas aparte"
+      body: "Las reglas con las que el grupo une a un miembro `tactile`, `brutalist`, `frosted` pasan a button-group.tactile.css, button-group.brutalist.css, button-group.frosted.css. El contrato las declara en memberAppearanceSheets y se cargan cuando un miembro pide ese valor; sin la hoja, el grupo suelda ese miembro como si fuera plain."
+    en:
+      title: "The group loads its weld per appearance, in separate sheets"
+      body: "The rules that join a `tactile`, `brutalist`, `frosted` member into the group move to button-group.tactile.css, button-group.brutalist.css, button-group.frosted.css. The contract declares them in memberAppearanceSheets and a tree loads them when a member asks for that value; without the sheet the group welds that member as if it were plain."
   - date: 2026-10-25
     kind: breaking
     es:

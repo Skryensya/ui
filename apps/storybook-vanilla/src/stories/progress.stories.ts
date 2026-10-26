@@ -5,6 +5,7 @@ import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/progress.css";
 import "@skryensya/core/components/steps.css";
+import "@skryensya/core/components/steps.segments.css";
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/progress";

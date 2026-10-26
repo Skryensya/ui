@@ -58,6 +58,10 @@ export const badgeContract = {
       values: ["plain", "brutalist"],
       default: "plain",
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        brutalist: ["@skryensya/core/components/badge.brutalist.css"],
+      },
     },
     /** Named by ROLE, never by hue: a brand may swap what colour `accent` is and the name stays true. */
     tone: {

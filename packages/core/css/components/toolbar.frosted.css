@@ -1,0 +1,43 @@
+/*
+ * TIER 3, TOOLBAR · FROSTED
+ *
+ * The `appearance="frosted"` rules of toolbar.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER toolbar.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.frosted`.
+ */
+
+@layer components {
+  /* FROSTED: Button's see-through material, fine edge and lit rim. Opaque baseline; the material only
+   * where backdrop-filter exists and no reduced-transparency preference is set. */
+  .sk-toolbar[data-appearance="frosted"] {
+    --sk-toolbar-border-color: color-mix(in oklab, currentColor 18%, transparent);
+    box-shadow:
+      inset 0 1px 0 light-dark(
+        color-mix(in oklab, var(--color-bg-surface) 70%, transparent),
+        color-mix(in oklab, var(--color-text-primary) 18%, transparent)
+      ),
+      0 1px 2px var(--shadow-sm);
+  }
+  .sk-toolbar[data-appearance="frosted"] {
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-toolbar-bg) var(--frost-alpha-chrome), transparent);
+    background: var(--frost-glass, var(--sk-toolbar-bg));
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
+  }
+
+  /*
+   * Copied from toolbar.css that sat after this appearance's rules in one file, to win over them, so it comes
+   * last here too.
+   */
+  @media (forced-colors: active) {
+    .sk-toolbar[data-appearance] {
+      border-color: CanvasText;
+      background: Canvas;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+  }
+}

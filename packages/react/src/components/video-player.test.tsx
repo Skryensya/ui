@@ -195,13 +195,14 @@ describe("VideoPlayer", () => {
     });
     const clock = button("time");
     const current = root.querySelector(".sk-video-player__current")!;
-    expect(clock.getAttribute("aria-label")).toBe("Show remaining time");
+    // The name leads with the clock the button shows, then says what a press does.
+    expect(clock.getAttribute("aria-label")).toBe("0:30 2:00: Show remaining time");
     expect(current.textContent).toBe("0:30");
     fireEvent.click(clock);
     expect(current.textContent).toBe("-1:30");
     expect(root.querySelector(".sk-video-player__duration")!.textContent).toBe("2:00");
     expect(root.hasAttribute("data-remaining")).toBe(true);
-    expect(clock.getAttribute("aria-label")).toBe("Show elapsed time");
+    expect(clock.getAttribute("aria-label")).toBe("-1:30 2:00: Show elapsed time");
     video.currentTime = 90;
     act(() => {
       video.dispatchEvent(new Event("timeupdate"));

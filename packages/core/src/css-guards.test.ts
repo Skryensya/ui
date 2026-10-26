@@ -21,6 +21,13 @@ function stylesheets(dir: string): { path: string; css: string }[] {
   });
 }
 
+/** A component's sheet plus its appearance siblings (`button.css` with `button.tactile.css` …), comments already out. */
+const withSiblings = (name: string): string =>
+  stylesheets(join(CSS_DIR, "components"))
+    .filter(({ path }) => new RegExp(`/${name}(\\.[a-z]+)?\\.css$`).test(path))
+    .map(({ css }) => css)
+    .join("\n");
+
 /** `:indeterminate`, with whatever the selector said the input was. */
 const INDETERMINATE = /([\w[\]="'-]*)\s*:indeterminate/g;
 
@@ -62,6 +69,7 @@ describe("stylesheet selectors", () => {
  * side is edited and the other is not, and that is the part a test can own.
  */
 const STEPS = join(CSS_DIR, "components", "steps.css");
+const STEPS_SEGMENTS = join(CSS_DIR, "components", "steps.segments.css");
 
 /** Every `selector { ... }` in source order, tagged with the at-rules it sits inside. */
 function flatRules(src: string): { selector: string; body: string; inside: string[] }[] {
@@ -101,7 +109,7 @@ const declarations = (body: string): string[] =>
 
 describe("steps bars are written twice and must say the same thing", () => {
   it("the phone rail's segment rules match the segments appearance, rule for rule", () => {
-    const css = readFileSync(STEPS, "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+    const css = [STEPS, STEPS_SEGMENTS].map((file) => readFileSync(file, "utf8")).join("\n").replace(/\/\*[\s\S]*?\*\//g, "");
     const byAppearance = new Map<string, string[]>();
     const onPhone = new Map<string, string[]>();
 
@@ -131,7 +139,7 @@ describe("steps bars are written twice and must say the same thing", () => {
  * page), and no physical `Npx Npx` shadow that would ignore RTL.
  */
 describe("button brutalist appearance", () => {
-  const css = stylesheets(join(CSS_DIR, "components")).find(({ path }) => path.endsWith("button.css"))!.css;
+  const css = withSiblings("button");
   const rules = [...css.matchAll(/([^{}]*)\{([^{}]*)\}/g)]
     .map(([, selector, body]) => ({ selector: selector!.trim(), body: body! }))
     .filter(({ selector }) => selector.includes('.sk-button[data-appearance="brutalist"]'));
@@ -183,7 +191,7 @@ describe("button brutalist appearance", () => {
  * at rest (a transform at rest makes the tile a containing block for fixed descendants).
  */
 describe("tile appearances", () => {
-  const css = stylesheets(join(CSS_DIR, "components")).find(({ path }) => path.endsWith("tile.css"))!.css;
+  const css = withSiblings("tile");
   const rules = [...css.matchAll(/([^{}]*)\{([^{}]*)\}/g)]
     .map(([, selector, body]) => ({ selector: selector!.trim(), body: body! }))
     .filter(({ selector }) => /\[data-appearance="(tactile|brutalist)"\]/.test(selector));
@@ -222,7 +230,7 @@ describe("tile appearances", () => {
  * the reduced-transparency preference, so the opaque baseline is what every other browser gets.
  */
 describe("button frosted appearance", () => {
-  const css = stylesheets(join(CSS_DIR, "components")).find(({ path }) => path.endsWith("button.css"))!.css;
+  const css = withSiblings("button");
   const rules = [...css.matchAll(/([^{}]*)\{([^{}]*)\}/g)]
     .map(([, selector, body]) => ({ selector: selector!.trim(), body: body! }))
     .filter(({ selector }) => selector.includes('.sk-button[data-appearance="frosted"]'));

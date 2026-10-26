@@ -3,8 +3,17 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "aa6f2a72a2dd1d30"
+surface: "e3d3dea34a2a092a"
 entries:
+  - date: 2026-10-25
+    kind: breaking
+    target: appearance
+    es:
+      title: "Cada apariencia tiene su propia hoja"
+      body: "Las reglas de `brutalist`, `frosted` pasan de navbar.css a navbar.brutalist.css, navbar.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en navbar.css."
+    en:
+      title: "Each appearance has its own stylesheet"
+      body: "The rules for `brutalist`, `frosted` move from navbar.css to navbar.brutalist.css, navbar.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in navbar.css."
   - date: 2026-10-06
     kind: feature
     target: Navbar

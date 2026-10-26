@@ -1,4 +1,5 @@
 import type { ComponentContract } from "@skryensya/core/contract";
+import { sheetsToReconcile } from "./contract-sheets.js";
 import { parseTokens, CSS_DIR } from "@skryensya/core/parse";
 
 /*
@@ -47,7 +48,7 @@ let corpus: ReturnType<typeof parseTokens> | undefined;
 
 export function hookDetailsOf(contract: ComponentContract): Readonly<Record<string, HookDetail>> {
   corpus ??= parseTokens(CSS_DIR);
-  const rels = [contract.css, ...(contract.hookSheets ?? [])].map((sheet) => sheet.replace(/^@skryensya\/core\//, ""));
+  const rels = sheetsToReconcile(contract).map((sheet) => sheet.replace(/^@skryensya\/core\//, ""));
   const files = rels.map((rel) => corpus!.files.find((file) => file.rel === rel)).filter((file) => file !== undefined);
   const output = new Set(contract.outputHooks ?? []);
 

@@ -18,6 +18,7 @@ const unique = <T>(items: T[]): T[] => [...new Set(items)];
 
 /** The line a person writes to use an entry with a binding. */
 function usage(entry: Entry, binding: Binding): string[] {
+  if (entry.appearance) return [`write appearance="${entry.appearance.value}" on ${entry.appearance.of}; the sheet is in the stylesheet now.`];
   if (binding === "react") return entry.react ? [`import { ${entry.react.names.join(", ")} } from "${entry.react.entry}";`] : [];
   if (!entry.vanilla) return ["CSS only: the markup and the stylesheet are all it needs."];
   const lines = entry.vanilla.mount ? [`import { ${entry.vanilla.mount} } from "${entry.vanilla.entry}";`] : [];
@@ -51,9 +52,13 @@ export function add(ids: string[], options: AddOptions, ctx: Context): number {
   }
 
   const binding = options.binding ?? adapter.defaultBinding(project);
-  const entries = unique(ids).map((id) => catalog.get(id)!);
+  // An appearance (`button.brutalist`) dresses a component, so asking for it brings the component along.
+  const entries = unique(unique(ids).flatMap((id) => {
+    const entry = catalog.get(id)!;
+    return entry.appearance ? [catalog.get(entry.appearance.of)!, entry] : [entry];
+  }));
 
-  const missing = entries.filter((entry) => binding === "react" && !entry.react);
+  const missing = entries.filter((entry) => binding === "react" && !entry.react && !entry.appearance);
   if (missing.length) {
     ctx.error(`${missing.map((entry) => entry.id).join(", ")} ${missing.length > 1 ? "have" : "has"} no React binding. Use --binding vanilla, or pick another component.`);
     return 1;

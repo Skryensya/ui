@@ -5,6 +5,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `tactile`, `brutalist`, `frosted` move from accordion.css to accordion.tactile.css, tile.tactile.css, details.tactile.css, accordion.brutalist.css, tile.brutalist.css, details.brutalist.css, accordion.frosted.css, tile.frosted.css, details.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in accordion.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `tactile`, `brutalist`, `frosted` pasan de accordion.css a accordion.tactile.css, tile.tactile.css, details.tactile.css, accordion.brutalist.css, tile.brutalist.css, details.brutalist.css, accordion.frosted.css, tile.frosted.css, details.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en accordion.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          },
+          {
             "date": "2026-10-24",
             "en": {
               "body": "Vanilla markup left out `aria-level` when `headingLevel` stayed at its default, and a `role=\"heading\"` with no level is invalid ARIA. It is now always written (3 by default).",
@@ -152,6 +165,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `brutalist` move from avatar.css to avatar.brutalist.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in avatar.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `brutalist` pasan de avatar.css a avatar.brutalist.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en avatar.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          },
+          {
             "date": "2026-10-17",
             "en": {
               "body": "max={0} read as \"no cap\" (0 is falsy) and showed everyone; a hand-given overflow showed up even once max already proved nothing was left out. max is now authoritative whenever it is given, including the \"nothing overflowed\" case.",
@@ -231,6 +257,25 @@
     ],
     "back-to-top": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `tactile`, `brutalist`, `frosted` move from back-to-top.css to back-to-top.tactile.css, back-to-top.brutalist.css, back-to-top.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in back-to-top.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `tactile`, `brutalist`, `frosted` pasan de back-to-top.css a back-to-top.tactile.css, back-to-top.brutalist.css, back-to-top.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en back-to-top.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-12",
         "entries": [
           {
@@ -268,6 +313,25 @@
       }
     ],
     "badge": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `brutalist` move from badge.css to badge.brutalist.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in badge.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `brutalist` pasan de badge.css a badge.brutalist.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en badge.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-12",
         "entries": [
@@ -401,6 +465,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `tactile`, `brutalist`, `frosted` move from button.css to button.tactile.css, button.brutalist.css, button.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in button.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `tactile`, `brutalist`, `frosted` pasan de button.css a button.tactile.css, button.brutalist.css, button.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en button.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          },
+          {
             "date": "2026-10-24",
             "en": {
               "body": "Two new hooks, --sk-button-tactile-press-duration and --sk-button-tactile-press-easing, tune the duration and curve the tactile ledge and face press down on together. By default they follow the shared feedback tempo.",
@@ -488,6 +565,18 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules that join a `tactile`, `brutalist`, `frosted` member into the group move to button-group.tactile.css, button-group.brutalist.css, button-group.frosted.css. The contract declares them in memberAppearanceSheets and a tree loads them when a member asks for that value; without the sheet the group welds that member as if it were plain.",
+              "title": "The group loads its weld per appearance, in separate sheets"
+            },
+            "es": {
+              "body": "Las reglas con las que el grupo une a un miembro `tactile`, `brutalist`, `frosted` pasan a button-group.tactile.css, button-group.brutalist.css, button-group.frosted.css. El contrato las declara en memberAppearanceSheets y se cargan cuando un miembro pide ese valor; sin la hoja, el grupo suelda ese miembro como si fuera plain.",
+              "title": "El grupo carga su soldadura por apariencia, en hojas aparte"
+            },
+            "kind": "breaking"
+          },
           {
             "date": "2026-10-25",
             "en": {
@@ -597,6 +686,25 @@
       }
     ],
     "callout": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `brutalist`, `frosted` move from callout.css to callout.brutalist.css, callout.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in callout.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `brutalist`, `frosted` pasan de callout.css a callout.brutalist.css, callout.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en callout.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -741,6 +849,25 @@
     ],
     "checkbox": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `tactile`, `brutalist`, `frosted` move from checkbox.css to checkbox.tactile.css, checkbox.brutalist.css, checkbox.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in checkbox.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `tactile`, `brutalist`, `frosted` pasan de checkbox.css a checkbox.tactile.css, checkbox.brutalist.css, checkbox.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en checkbox.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -813,6 +940,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `brutalist`, `frosted` move from code-preview.css to code-preview.brutalist.css, switch.brutalist.css, code-preview.frosted.css, switch.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in code-preview.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `brutalist`, `frosted` pasan de code-preview.css a code-preview.brutalist.css, switch.brutalist.css, code-preview.frosted.css, switch.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en code-preview.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          },
           {
             "date": "2026-10-13",
             "en": {
@@ -944,6 +1084,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `brutalist`, `frosted` move from combobox.css to combobox.brutalist.css, combobox.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in combobox.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `brutalist`, `frosted` pasan de combobox.css a combobox.brutalist.css, combobox.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en combobox.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          },
           {
             "date": "2026-10-19",
             "en": {
@@ -1167,6 +1320,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `brutalist`, `frosted` move from date-picker.css to date-picker.brutalist.css, date-picker.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in date-picker.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `brutalist`, `frosted` pasan de date-picker.css a date-picker.brutalist.css, date-picker.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en date-picker.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          },
+          {
             "date": "2026-10-19",
             "en": {
               "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> and <code>--sk-anchored-size</code> were listed as hooks, but no stylesheet in the library ever declares them, not even the <code>anchored.css</code> pattern they came from: overriding any of them did nothing, silently. Only <code>--sk-anchored-z</code> remains, the one actually in use.",
@@ -1263,6 +1429,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `brutalist`, `frosted` move from dialog.css to dialog.brutalist.css, dialog.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in dialog.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `brutalist`, `frosted` pasan de dialog.css a dialog.brutalist.css, dialog.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en dialog.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          },
           {
             "date": "2026-10-17",
             "en": {
@@ -1714,15 +1893,41 @@
           {
             "date": "2026-10-26",
             "en": {
-              "body": "controlSize takes xs: a 24px field with caption type, for a dense bar beside xs buttons.",
+              "body": "sm used to sit at 44px because of the touch floor and matched md. The scale is now 28, 36, 44 and 48px, in even steps.",
+              "title": "Input sm is 36px, no longer the same as md"
+            },
+            "es": {
+              "body": "Antes sm quedaba en 44px por el mínimo táctil y era igual que md. Ahora la escala es 28, 36, 44 y 48px, con pasos parejos.",
+              "title": "Input sm mide 36px, ya no igual que md"
+            },
+            "kind": "rework",
+            "target": "Input"
+          },
+          {
+            "date": "2026-10-26",
+            "en": {
+              "body": "controlSize takes xs: a 28px field with caption type, for a dense bar.",
               "title": "Input has an xs size"
             },
             "es": {
-              "body": "controlSize admite xs: 24px de alto con tipografía caption, para una barra densa junto a botones xs.",
+              "body": "controlSize admite xs: 28px de alto con tipografía caption, para una barra densa.",
               "title": "Input tiene un tamaño xs"
             },
             "kind": "feature",
             "target": "Input"
+          },
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `brutalist`, `frosted` move from input.css to input.brutalist.css, input.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in input.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `brutalist`, `frosted` pasan de input.css a input.brutalist.css, input.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en input.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
           },
           {
             "date": "2026-10-24",
@@ -1798,6 +2003,25 @@
       }
     ],
     "kbd": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `brutalist` move from kbd.css to kbd.brutalist.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in kbd.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `brutalist` pasan de kbd.css a kbd.brutalist.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en kbd.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-12",
         "entries": [
@@ -2583,6 +2807,25 @@
     ],
     "navbar": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `brutalist`, `frosted` move from navbar.css to navbar.brutalist.css, navbar.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in navbar.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `brutalist`, `frosted` pasan de navbar.css a navbar.brutalist.css, navbar.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en navbar.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-12",
         "entries": [
           {
@@ -2621,6 +2864,25 @@
       }
     ],
     "number-field": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `brutalist`, `frosted` move from number-field.css to number-field.brutalist.css, number-field.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in number-field.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `brutalist`, `frosted` pasan de number-field.css a number-field.brutalist.css, number-field.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en number-field.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-12",
         "entries": [
@@ -2725,6 +2987,25 @@
     ],
     "pagination": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `tactile`, `brutalist`, `frosted` move from pagination.css to pagination.tactile.css, pagination.brutalist.css, pagination.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in pagination.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `tactile`, `brutalist`, `frosted` pasan de pagination.css a pagination.tactile.css, pagination.brutalist.css, pagination.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en pagination.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -2744,6 +3025,25 @@
       }
     ],
     "password-input": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `brutalist`, `frosted` move from password-input.css to password-input.brutalist.css, password-input.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in password-input.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `brutalist`, `frosted` pasan de password-input.css a password-input.brutalist.css, password-input.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en password-input.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -2805,6 +3105,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `brutalist`, `frosted` move from popover.css to popover.brutalist.css, popover.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in popover.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `brutalist`, `frosted` pasan de popover.css a popover.brutalist.css, popover.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en popover.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          },
           {
             "date": "2026-10-19",
             "en": {
@@ -3113,6 +3426,25 @@
     ],
     "radio-group": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `tactile`, `brutalist`, `frosted` move from radio-group.css to radio-group.tactile.css, radio-group.brutalist.css, radio-group.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in radio-group.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `tactile`, `brutalist`, `frosted` pasan de radio-group.css a radio-group.tactile.css, radio-group.brutalist.css, radio-group.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en radio-group.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -3302,6 +3634,19 @@
               "title": "Una opción admite un icono delante del texto"
             },
             "kind": "feature"
+          },
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `tactile`, `brutalist`, `frosted` move from segmented.css to segmented.tactile.css, segmented.brutalist.css, segmented.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in segmented.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `tactile`, `brutalist`, `frosted` pasan de segmented.css a segmented.tactile.css, segmented.brutalist.css, segmented.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en segmented.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
           }
         ],
         "version": "0.0.3-dev"
@@ -3329,6 +3674,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `brutalist`, `frosted` move from select.css to select.brutalist.css, select.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in select.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `brutalist`, `frosted` pasan de select.css a select.brutalist.css, select.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en select.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          },
           {
             "date": "2026-10-18",
             "en": {
@@ -3533,6 +3891,25 @@
       }
     ],
     "sidebar": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `brutalist`, `frosted` move from sidebar.css to sidebar.brutalist.css, sidebar.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in sidebar.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `brutalist`, `frosted` pasan de sidebar.css a sidebar.brutalist.css, sidebar.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en sidebar.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-12",
         "entries": [
@@ -3775,6 +4152,25 @@
     ],
     "steps": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `segments` move from steps.css to steps.segments.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in steps.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `segments` pasan de steps.css a steps.segments.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en steps.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -3794,6 +4190,25 @@
       }
     ],
     "switch": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `tactile`, `brutalist`, `frosted` move from switch.css to switch.tactile.css, switch.brutalist.css, switch.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in switch.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `tactile`, `brutalist`, `frosted` pasan de switch.css a switch.tactile.css, switch.brutalist.css, switch.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en switch.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -3915,6 +4330,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `brutalist` move from tag.css to tag.brutalist.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in tag.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `brutalist` pasan de tag.css a tag.brutalist.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en tag.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          },
+          {
             "date": "2026-10-17",
             "en": {
               "body": "<code>aria-disabled</code> on the root (every host understands it, even the <code>span</code>); removable <code>Tag</code> and <code>Tag.toggle</code> also get the real native <code>disabled</code>, on the remove button or on the chip itself. Not on <code>Tag.link</code> - a link cannot be natively disabled either.",
@@ -3980,6 +4408,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `brutalist`, `frosted` move from tags-input.css to tags-input.brutalist.css, tags-input.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in tags-input.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `brutalist`, `frosted` pasan de tags-input.css a tags-input.brutalist.css, tags-input.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en tags-input.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          },
+          {
             "date": "2026-10-19",
             "en": {
               "body": "The same button, in the same spot and with the same markup Combobox's own clear is: it shows only when there is something to clear, and sits outside the area the tags and the entry wrap inside, so it never gets pushed onto its own line as that area grows.",
@@ -4014,6 +4455,25 @@
       }
     ],
     "tile": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `tactile`, `brutalist`, `frosted` move from tile.css to tile.tactile.css, checkbox.tactile.css, switch.tactile.css, tile.brutalist.css, checkbox.brutalist.css, switch.brutalist.css, tile.frosted.css, checkbox.frosted.css, switch.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in tile.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `tactile`, `brutalist`, `frosted` pasan de tile.css a tile.tactile.css, checkbox.tactile.css, switch.tactile.css, tile.brutalist.css, checkbox.brutalist.css, switch.brutalist.css, tile.frosted.css, checkbox.frosted.css, switch.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en tile.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-12",
         "entries": [
@@ -4055,6 +4515,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `brutalist`, `frosted` move from time-field.css to time-field.brutalist.css, select.brutalist.css, time-field.frosted.css, select.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in time-field.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `brutalist`, `frosted` pasan de time-field.css a time-field.brutalist.css, select.brutalist.css, time-field.frosted.css, select.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en time-field.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          },
           {
             "date": "2026-10-19",
             "en": {
@@ -4153,6 +4626,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `tactile`, `brutalist`, `frosted` move from toolbar.css to toolbar.tactile.css, toolbar.brutalist.css, toolbar.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in toolbar.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `tactile`, `brutalist`, `frosted` pasan de toolbar.css a toolbar.tactile.css, toolbar.brutalist.css, toolbar.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en toolbar.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          },
+          {
             "date": "2026-10-17",
             "en": {
               "body": "New justify option (start/center/end/between) to spread the bar's controls along its main axis. Also fixes the bar not shrinking as a flex item inside a narrow container, so flex-wrap never got the chance to wrap.",
@@ -4225,6 +4711,25 @@
       }
     ],
     "tour": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `brutalist`, `frosted` move from tour.css to tour.brutalist.css, tour.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in tour.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `brutalist`, `frosted` pasan de tour.css a tour.brutalist.css, tour.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en tour.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -4420,6 +4925,25 @@
     ],
     "window": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "The rules for `brutalist`, `frosted` move from window.css to window.brutalist.css, window.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in window.css.",
+              "title": "Each appearance has its own stylesheet"
+            },
+            "es": {
+              "body": "Las reglas de `brutalist`, `frosted` pasan de window.css a window.brutalist.css, window.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en window.css.",
+              "title": "Cada apariencia tiene su propia hoja"
+            },
+            "kind": "breaking",
+            "target": "appearance"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
+      {
         "date": "2026-10-12",
         "entries": [
           {
@@ -4562,7 +5086,7 @@
           "default": "var(--brutalist-black)",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/accordion.css"
+          "sheet": "@skryensya/core/components/accordion.brutalist.css"
         },
         "--sk-accordion-brutalist-offset-block": {
           "default": "5px",
@@ -4580,7 +5104,7 @@
           "default": "var(--brutalist-black)",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/accordion.css"
+          "sheet": "@skryensya/core/components/accordion.brutalist.css"
         },
         "--sk-accordion-depth": {
           "default": "4px",
@@ -4670,7 +5194,7 @@
           "default": "var(--brutalist-black)",
           "output": false,
           "part": "nativeGroup",
-          "sheet": "@skryensya/core/components/details.css"
+          "sheet": "@skryensya/core/components/details.brutalist.css"
         },
         "--sk-details-brutalist-offset-block": {
           "default": "5px",
@@ -4688,7 +5212,7 @@
           "default": "var(--brutalist-black)",
           "output": false,
           "part": "nativeGroup",
-          "sheet": "@skryensya/core/components/details.css"
+          "sheet": "@skryensya/core/components/details.brutalist.css"
         },
         "--sk-details-content-bg": {
           "default": "var(--color-bg-surface-sunken)",
@@ -4784,7 +5308,7 @@
           "default": "var(--brutalist-black)",
           "output": false,
           "part": "item",
-          "sheet": "@skryensya/core/components/tile.css"
+          "sheet": "@skryensya/core/components/tile.brutalist.css"
         },
         "--sk-tile-brutalist-offset-block": {
           "default": "5px",
@@ -4802,7 +5326,7 @@
           "default": "var(--brutalist-black)",
           "output": false,
           "part": "item",
-          "sheet": "@skryensya/core/components/tile.css"
+          "sheet": "@skryensya/core/components/tile.brutalist.css"
         },
         "--sk-tile-depth": {
           "default": "4px",
@@ -4894,6 +5418,23 @@
         "appearance": {
           "attr": "data-appearance",
           "default": "plain",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/accordion.brutalist.css",
+              "@skryensya/core/components/tile.brutalist.css",
+              "@skryensya/core/components/details.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/accordion.frosted.css",
+              "@skryensya/core/components/tile.frosted.css",
+              "@skryensya/core/components/details.frosted.css"
+            ],
+            "tactile": [
+              "@skryensya/core/components/accordion.tactile.css",
+              "@skryensya/core/components/tile.tactile.css",
+              "@skryensya/core/components/details.tactile.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -7992,25 +8533,25 @@
           "default": "oklch(from var(--shadow-lg) l c h / 1)",
           "output": false,
           "part": "groupOverflow",
-          "sheet": "@skryensya/core/components/avatar.css"
+          "sheet": "@skryensya/core/components/avatar.brutalist.css"
         },
         "--sk-avatar-brutalist-offset-block": {
           "default": "3px",
           "output": false,
           "part": "groupOverflow",
-          "sheet": "@skryensya/core/components/avatar.css"
+          "sheet": "@skryensya/core/components/avatar.brutalist.css"
         },
         "--sk-avatar-brutalist-offset-inline": {
           "default": "3px",
           "output": false,
           "part": "groupOverflow",
-          "sheet": "@skryensya/core/components/avatar.css"
+          "sheet": "@skryensya/core/components/avatar.brutalist.css"
         },
         "--sk-avatar-brutalist-shadow": {
           "default": "var(--sk-avatar-brutalist-edge)",
           "output": false,
           "part": "groupOverflow",
-          "sheet": "@skryensya/core/components/avatar.css"
+          "sheet": "@skryensya/core/components/avatar.brutalist.css"
         },
         "--sk-avatar-fg": {
           "default": "var(--color-text-primary)",
@@ -8046,6 +8587,11 @@
         "appearance": {
           "attr": "data-appearance",
           "default": "plain",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/avatar.brutalist.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -8382,13 +8928,13 @@
           "default": "4px",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/back-to-top.css"
+          "sheet": "@skryensya/core/components/back-to-top.brutalist.css"
         },
         "--sk-back-to-top-depth": {
           "default": "5px",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/back-to-top.css"
+          "sheet": "@skryensya/core/components/back-to-top.tactile.css"
         },
         "--sk-back-to-top-enter-scale": {
           "default": "0.82",
@@ -8452,6 +8998,17 @@
         "appearance": {
           "attr": "data-appearance",
           "default": "plain",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/back-to-top.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/back-to-top.frosted.css"
+            ],
+            "tactile": [
+              "@skryensya/core/components/back-to-top.tactile.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -8706,6 +9263,11 @@
         "appearance": {
           "attr": "data-appearance",
           "default": "plain",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/badge.brutalist.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -9564,7 +10126,7 @@
           "default": "var(--brutalist-black)",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/button.css"
+          "sheet": "@skryensya/core/components/button.brutalist.css"
         },
         "--sk-button-brutalist-offset-block": {
           "default": "5px",
@@ -9582,7 +10144,7 @@
           "default": "var(--sk-button-brutalist-edge)",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/button.css"
+          "sheet": "@skryensya/core/components/button.brutalist.css"
         },
         "--sk-button-depth": {
           "default": "5px",
@@ -9648,13 +10210,13 @@
           "default": "var(--motion-feedback-duration)",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/button.css"
+          "sheet": "@skryensya/core/components/button.tactile.css"
         },
         "--sk-button-tactile-press-easing": {
           "default": "var(--motion-feedback-easing)",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/button.css"
+          "sheet": "@skryensya/core/components/button.tactile.css"
         },
         "--sk-button-wash": {
           "default": "var(--elevation-wash-raised)",
@@ -9698,6 +10260,17 @@
         "appearance": {
           "attr": "data-appearance",
           "default": "plain",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/button.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/button.frosted.css"
+            ],
+            "tactile": [
+              "@skryensya/core/components/button.tactile.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -10091,7 +10664,7 @@
           "default": "5px",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/button-group.css"
+          "sheet": "@skryensya/core/components/button-group.brutalist.css"
         },
         "--sk-button-group-gap": {
           "default": "var(--space-inline-sm)",
@@ -10140,6 +10713,17 @@
         "--sk-button-group-wash"
       ],
       "id": "button-group",
+      "memberAppearanceSheets": {
+        "brutalist": [
+          "@skryensya/core/components/button-group.brutalist.css"
+        ],
+        "frosted": [
+          "@skryensya/core/components/button-group.frosted.css"
+        ],
+        "tactile": [
+          "@skryensya/core/components/button-group.tactile.css"
+        ]
+      },
       "options": {
         "htmlFor": {
           "attr": "for",
@@ -10662,6 +11246,14 @@
         "appearance": {
           "attr": "data-appearance",
           "default": "plain",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/callout.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/callout.frosted.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -11291,7 +11883,7 @@
           "sheet": "@skryensya/core/components/carousel.css"
         },
         "--sk-carousel-dot-gap": {
-          "default": "var(--space-inline-sm)",
+          "default": "0rem",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/carousel.css"
@@ -12271,6 +12863,17 @@
         "appearance": {
           "attr": "data-appearance",
           "default": "plain",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/checkbox.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/checkbox.frosted.css"
+            ],
+            "tactile": [
+              "@skryensya/core/components/checkbox.tactile.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -13298,7 +13901,7 @@
           "default": "5px",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/code-preview.css"
+          "sheet": "@skryensya/core/components/code-preview.brutalist.css"
         },
         "--sk-code-preview-collapsed-padding-block": {
           "default": "var(--space-inset-md)",
@@ -13391,6 +13994,16 @@
         "appearance": {
           "attr": "data-appearance",
           "default": "plain",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/code-preview.brutalist.css",
+              "@skryensya/core/components/switch.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/code-preview.frosted.css",
+              "@skryensya/core/components/switch.frosted.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -14832,6 +15445,14 @@
         },
         "appearance": {
           "attr": "data-appearance",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/combobox.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/combobox.frosted.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -18368,6 +18989,14 @@
       "options": {
         "appearance": {
           "attr": "data-appearance",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/date-picker.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/date-picker.frosted.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -19803,7 +20432,7 @@
           "default": "8px",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/dialog.css"
+          "sheet": "@skryensya/core/components/dialog.brutalist.css"
         },
         "--sk-dialog-elevation": {
           "default": "var(--elevation-modal)",
@@ -19911,6 +20540,14 @@
         "appearance": {
           "attr": "data-appearance",
           "default": "plain",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/dialog.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/dialog.frosted.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -23446,6 +24083,14 @@
       "options": {
         "appearance": {
           "attr": "data-appearance",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/input.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/input.frosted.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -23826,6 +24471,11 @@
         "appearance": {
           "attr": "data-appearance",
           "default": "plain",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/kbd.brutalist.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -30307,7 +30957,7 @@
           "default": "4px",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/navbar.css"
+          "sheet": "@skryensya/core/components/navbar.brutalist.css"
         },
         "--sk-navbar-elevation": {
           "default": "var(--elevation-raised)",
@@ -30373,6 +31023,14 @@
         "appearance": {
           "attr": "data-appearance",
           "default": "plain",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/navbar.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/navbar.frosted.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -30658,6 +31316,14 @@
       "options": {
         "appearance": {
           "attr": "data-appearance",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/number-field.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/number-field.frosted.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -31329,7 +31995,7 @@
           "default": "3px",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/pagination.css"
+          "sheet": "@skryensya/core/components/pagination.brutalist.css"
         },
         "--sk-pagination-current-bg": {
           "default": "var(--color-bg-surface-raised)",
@@ -31508,6 +32174,17 @@
         "appearance": {
           "attr": "data-appearance",
           "default": "plain",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/pagination.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/pagination.frosted.css"
+            ],
+            "tactile": [
+              "@skryensya/core/components/pagination.tactile.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -31860,6 +32537,14 @@
       "options": {
         "appearance": {
           "attr": "data-appearance",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/password-input.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/password-input.frosted.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -32626,6 +33311,14 @@
         "appearance": {
           "attr": "data-appearance",
           "default": "plain",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/popover.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/popover.frosted.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -35478,6 +36171,17 @@
         "appearance": {
           "attr": "data-appearance",
           "default": "plain",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/radio-group.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/radio-group.frosted.css"
+            ],
+            "tactile": [
+              "@skryensya/core/components/radio-group.tactile.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -37129,7 +37833,7 @@
           "default": "3px",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/segmented.css"
+          "sheet": "@skryensya/core/components/segmented.brutalist.css"
         },
         "--sk-segmented-font-size": {
           "default": "var(--font-size-body-sm)",
@@ -37235,6 +37939,17 @@
         "appearance": {
           "attr": "data-appearance",
           "default": "plain",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/segmented.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/segmented.frosted.css"
+            ],
+            "tactile": [
+              "@skryensya/core/components/segmented.tactile.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -37614,6 +38329,14 @@
       "options": {
         "appearance": {
           "attr": "data-appearance",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/select.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/select.frosted.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -38524,7 +39247,7 @@
           "default": "6px",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/sidebar.css"
+          "sheet": "@skryensya/core/components/sidebar.brutalist.css"
         },
         "--sk-sidebar-collapsed-inline-size": {
           "default": "calc(\n      var(--size-control-sm) + var(--sk-sidebar-padding) * 2 + var(--sk-sidebar-border-width)\n    )",
@@ -38772,6 +39495,14 @@
         "appearance": {
           "attr": "data-appearance",
           "default": "plain",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/sidebar.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/sidebar.frosted.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -40247,6 +40978,11 @@
         "appearance": {
           "attr": "data-appearance",
           "default": "markers",
+          "sheets": {
+            "segments": [
+              "@skryensya/core/components/steps.segments.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "markers",
@@ -40582,6 +41318,17 @@
         "appearance": {
           "attr": "data-appearance",
           "default": "plain",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/switch.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/switch.frosted.css"
+            ],
+            "tactile": [
+              "@skryensya/core/components/switch.tactile.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -41606,7 +42353,7 @@
           "default": "3px",
           "output": false,
           "part": "nav",
-          "sheet": "@skryensya/core/components/pagination.css"
+          "sheet": "@skryensya/core/components/pagination.brutalist.css"
         },
         "--sk-pagination-current-bg": {
           "default": "var(--color-bg-surface-raised)",
@@ -42597,6 +43344,11 @@
         "appearance": {
           "attr": "data-appearance",
           "default": "plain",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/tag.brutalist.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -43079,6 +43831,14 @@
         },
         "appearance": {
           "attr": "data-appearance",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/tags-input.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/tags-input.frosted.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -43611,7 +44371,7 @@
           "default": "var(--brutalist-black)",
           "output": false,
           "part": "interactive",
-          "sheet": "@skryensya/core/components/tile.css"
+          "sheet": "@skryensya/core/components/tile.brutalist.css"
         },
         "--sk-tile-brutalist-offset-block": {
           "default": "5px",
@@ -43629,7 +44389,7 @@
           "default": "var(--brutalist-black)",
           "output": false,
           "part": "interactive",
-          "sheet": "@skryensya/core/components/tile.css"
+          "sheet": "@skryensya/core/components/tile.brutalist.css"
         },
         "--sk-tile-depth": {
           "default": "4px",
@@ -43698,6 +44458,23 @@
         "appearance": {
           "attr": "data-appearance",
           "default": "plain",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/tile.brutalist.css",
+              "@skryensya/core/components/checkbox.brutalist.css",
+              "@skryensya/core/components/switch.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/tile.frosted.css",
+              "@skryensya/core/components/checkbox.frosted.css",
+              "@skryensya/core/components/switch.frosted.css"
+            ],
+            "tactile": [
+              "@skryensya/core/components/tile.tactile.css",
+              "@skryensya/core/components/checkbox.tactile.css",
+              "@skryensya/core/components/switch.tactile.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -44906,6 +45683,16 @@
       "options": {
         "appearance": {
           "attr": "data-appearance",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/time-field.brutalist.css",
+              "@skryensya/core/components/select.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/time-field.frosted.css",
+              "@skryensya/core/components/select.frosted.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -45658,13 +46445,13 @@
           "default": "4px",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/toolbar.css"
+          "sheet": "@skryensya/core/components/toolbar.brutalist.css"
         },
         "--sk-toolbar-depth": {
           "default": "4px",
           "output": false,
           "part": "root",
-          "sheet": "@skryensya/core/components/toolbar.css"
+          "sheet": "@skryensya/core/components/toolbar.tactile.css"
         },
         "--sk-toolbar-gap": {
           "default": "var(--space-inline-xs)",
@@ -45707,6 +46494,17 @@
         "appearance": {
           "attr": "data-appearance",
           "default": "plain",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/toolbar.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/toolbar.frosted.css"
+            ],
+            "tactile": [
+              "@skryensya/core/components/toolbar.tactile.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -46218,7 +47016,7 @@
           "default": "5px",
           "output": false,
           "part": "popover",
-          "sheet": "@skryensya/core/components/tour.css"
+          "sheet": "@skryensya/core/components/tour.brutalist.css"
         },
         "--sk-tour-fg": {
           "default": "light-dark(var(--color-text-primary), var(--color-text-inverse))",
@@ -46306,6 +47104,14 @@
         "appearance": {
           "attr": "data-appearance",
           "default": "plain",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/tour.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/tour.frosted.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -50389,25 +51195,25 @@
           "default": "oklch(from var(--shadow-lg) l c h / 1)",
           "output": false,
           "part": "content",
-          "sheet": "@skryensya/core/components/window.css"
+          "sheet": "@skryensya/core/components/window.brutalist.css"
         },
         "--sk-window-brutalist-offset-block": {
           "default": "8px",
           "output": false,
           "part": "content",
-          "sheet": "@skryensya/core/components/window.css"
+          "sheet": "@skryensya/core/components/window.brutalist.css"
         },
         "--sk-window-brutalist-offset-inline": {
           "default": "8px",
           "output": false,
           "part": "content",
-          "sheet": "@skryensya/core/components/window.css"
+          "sheet": "@skryensya/core/components/window.brutalist.css"
         },
         "--sk-window-brutalist-shadow": {
           "default": "var(--sk-window-brutalist-edge)",
           "output": false,
           "part": "content",
-          "sheet": "@skryensya/core/components/window.css"
+          "sheet": "@skryensya/core/components/window.brutalist.css"
         },
         "--sk-window-fg": {
           "default": "var(--color-text-primary)",
@@ -50486,6 +51292,14 @@
         "appearance": {
           "attr": "data-appearance",
           "default": "plain",
+          "sheets": {
+            "brutalist": [
+              "@skryensya/core/components/window.brutalist.css"
+            ],
+            "frosted": [
+              "@skryensya/core/components/window.frosted.css"
+            ]
+          },
           "type": "enum",
           "values": [
             "plain",
@@ -51142,7 +51956,7 @@
     "working": "0.0.3"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "31759de258d8b0bc",
+  "sourceHash": "3f415932f6d19c57",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

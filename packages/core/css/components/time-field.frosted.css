@@ -1,0 +1,39 @@
+/*
+ * TIER 3, TIME FIELD · FROSTED
+ *
+ * The `appearance="frosted"` rules of time-field.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER time-field.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.frosted`.
+ */
+
+@layer components {
+  /* FROSTED: the field's own fill (whichever state set it) thinned into a sheet over a blurred
+   * backdrop, with a fine edge. Opaque baseline; the material only where backdrop-filter exists and
+   * no reduced-transparency preference is set. */
+  .sk-time-field:where([data-appearance="frosted"]) {
+    --sk-time-field-wash: none;
+    --sk-time-field-border-color: color-mix(in oklab, currentColor 24%, transparent);
+    --sk-time-field-shadow: inset 0 1px 2px var(--shadow-sm);
+  }
+  .sk-time-field:where([data-appearance="frosted"]) .sk-time-field__control {
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-time-field-bg) var(--frost-alpha-field), transparent);
+    background: var(--frost-glass, var(--sk-time-field-bg));
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-sm)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-sm)) saturate(var(--frost-saturate));
+  }
+
+  /*
+   * Copied from time-field.css that sat after this appearance's rules in one file, to win over them, so it comes
+   * last here too.
+   */
+  @media (forced-colors: active) {
+    .sk-time-field[data-appearance] .sk-time-field__control {
+      background: Canvas;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+  }
+}

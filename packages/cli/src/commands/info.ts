@@ -1,5 +1,5 @@
 import type { Context } from "../context.js";
-import { catalog, suggest } from "../manifest.js";
+import { appearancesOf, catalog, suggest } from "../manifest.js";
 
 export function info(id: string | undefined, ctx: Context): number {
   if (!id) {
@@ -31,6 +31,12 @@ export function info(id: string | undefined, ctx: Context): number {
   } else if (entry.kind === "component") {
     ctx.log();
     ctx.log("Vanilla: the stylesheet is all it needs.");
+  }
+  const looks = appearancesOf(entry.id);
+  if (looks.length) {
+    ctx.log();
+    ctx.log("Appearances (each is its own sheet; add the ones you use)");
+    for (const look of looks) ctx.log(`  skryensya add ${look.id}`);
   }
   if (entry.peers.length) {
     ctx.log();

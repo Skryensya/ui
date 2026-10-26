@@ -20,7 +20,15 @@
  */
 import tokensCss from "../../../../packages/core/css/tokens.scss?inline";
 
-const componentCss = import.meta.glob<string>("../../../../packages/core/css/components/*.css", {
+/* Components first, then their appearance sheets (`x.tactile.css`): an appearance only adds to its component,
+   and a base that loads after it wins every tie at equal specificity. */
+const componentCss = import.meta.glob<string>(["../../../../packages/core/css/components/*.css", "!../../../../packages/core/css/components/*.*.css"], {
+  eager: true,
+  query: "?inline",
+  import: "default",
+});
+
+const appearanceCss = import.meta.glob<string>("../../../../packages/core/css/components/*.*.css", {
   eager: true,
   query: "?inline",
   import: "default",
@@ -32,6 +40,6 @@ const patternCss = import.meta.glob<string>("../../../../packages/core/css/patte
   import: "default",
 });
 
-export const kitCss = [tokensCss, ...Object.values(componentCss), ...Object.values(patternCss)].join(
+export const kitCss = [tokensCss, ...Object.values(componentCss), ...Object.values(appearanceCss), ...Object.values(patternCss)].join(
   "\n",
 );

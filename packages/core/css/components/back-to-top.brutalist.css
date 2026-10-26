@@ -1,0 +1,73 @@
+/*
+ * TIER 3, BACK TO TOP · BRUTALIST
+ *
+ * The `appearance="brutalist"` rules of back-to-top.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER back-to-top.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.brutalist`.
+ */
+
+@layer components {
+  .sk-back-to-top[data-appearance="brutalist"] {
+    --press: 0;
+    transition:
+      opacity var(--motion-exit-duration) var(--motion-exit-easing),
+      scale var(--motion-exit-duration) var(--motion-exit-easing),
+      translate var(--motion-exit-duration) var(--motion-exit-easing),
+      border-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing),
+      transform var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+  .sk-back-to-top[data-appearance="brutalist"]:not([hidden]) {
+    transition:
+      opacity var(--motion-enter-duration) var(--motion-enter-easing),
+      scale var(--motion-enter-duration) var(--motion-enter-easing),
+      translate var(--motion-enter-duration) var(--motion-enter-easing),
+      border-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing),
+      transform var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  /* BRUTALIST: the black edge (hover keeps it black; only the paint of the edge is the construction)
+   * and a hard offset the disc travels into, toward block-end and inline-end, mirrored in RTL. */
+  .sk-back-to-top[data-appearance="brutalist"] {
+    --sk-back-to-top-brutalist-offset: 4px;
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+    --sk-back-to-top-border-color: var(--brutalist-black);
+    --sk-back-to-top-border-color-hover: var(--brutalist-black);
+    --sk-back-to-top-wash: none;
+    --press-transform: translate(
+      calc(var(--sk-back-to-top-brutalist-offset) * var(--press) * var(--brutalist-direction)),
+      calc(var(--sk-back-to-top-brutalist-offset) * var(--press))
+    );
+    box-shadow:
+      calc(var(--sk-back-to-top-brutalist-offset) * (1 - var(--press)) * var(--brutalist-direction))
+      calc(var(--sk-back-to-top-brutalist-offset) * (1 - var(--press))) 0 var(--brutalist-black);
+  }
+  .sk-back-to-top[data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+  .sk-back-to-top[data-appearance="brutalist"]:not([hidden]):active {
+    --press: 0.75;
+    transform: var(--press-transform);
+  }
+
+  /*
+   * Copied from back-to-top.css that sat after this appearance's rules in one file, to win over them, so it comes
+   * last here too.
+   */
+  @media (forced-colors: active) {
+    .sk-back-to-top[data-appearance] {
+      border-color: CanvasText;
+      background: Canvas;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+    .sk-back-to-top[data-appearance]:not([hidden]):active {
+      transform: none;
+    }
+  }
+}

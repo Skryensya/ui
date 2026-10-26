@@ -8,7 +8,9 @@ import { loadTree, renderTree } from "./react-render.js";
 
 import "@skryensya/core/tokens.scss";
 import.meta.glob("../../core/css/patterns/*.css", { eager: true });
-import.meta.glob("../../core/css/components/*.css", { eager: true });
+/* Components first, then their appearance sheets: a base that loads after one wins every tie. */
+import.meta.glob(["../../core/css/components/*.css", "!../../core/css/components/*.*.css"], { eager: true });
+import.meta.glob("../../core/css/components/*.*.css", { eager: true });
 
 /* What a real page's own stylesheet does and the kit deliberately does not: paint the canvas and set the
    text colour. Without them dark mode is light text on the browser's default white. */

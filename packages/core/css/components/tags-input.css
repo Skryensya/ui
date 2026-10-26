@@ -262,44 +262,11 @@
   }
 
   /*
-   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
-   *
-   * Input's axis on this field (input.css documents it): written as the root's own hooks behind
-   * `:where()`, at the base rule's specificity, so every state (invalid, disabled, read-only) still
-   * outranks it. The offset is internal. No tactile: a field is typed into, not pressed.
+   * APPEARANCES live in their own sheets, so a page that never asks for one does not ship it:
+   *   brutalist  tags-input.brutalist.css
+   *   frosted    tags-input.frosted.css
+   * Load each one right after this file: it only adds to it, and a base that loads after one wins every tie.
    */
-
-  /* BRUTALIST: the black edge and a hard offset toward block-end and inline-end, mirrored in RTL,
-   * in place of the soft well. */
-  .sk-tags-input:where([data-appearance="brutalist"]) {
-    --field-brutalist-offset: 3px;
-    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
-    --brutalist-direction: 1;
-    --sk-tags-input-border-color: var(--brutalist-black);
-    --sk-tags-input-wash: none;
-    --sk-tags-input-shadow: calc(var(--field-brutalist-offset) * var(--brutalist-direction)) var(--field-brutalist-offset) 0
-      var(--brutalist-black);
-  }
-
-  .sk-tags-input:where([data-appearance="brutalist"]):dir(rtl) {
-    --brutalist-direction: -1;
-  }
-
-  /* FROSTED: the field's own fill (whichever state set it) thinned into a sheet over a blurred
-   * backdrop, with a fine edge. Opaque baseline; the material only where backdrop-filter exists and
-   * no reduced-transparency preference is set. */
-  .sk-tags-input:where([data-appearance="frosted"]) {
-    --sk-tags-input-wash: none;
-    --sk-tags-input-border-color: color-mix(in oklab, currentColor 24%, transparent);
-    --sk-tags-input-shadow: inset 0 1px 2px var(--shadow-sm);
-  }
-
-  .sk-tags-input:where([data-appearance="frosted"]) .sk-tags-input__control {
-    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-tags-input-bg) var(--frost-alpha-field), transparent);
-    background: var(--frost-glass, var(--sk-tags-input-bg));
-    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-sm)) saturate(var(--frost-saturate));
-    backdrop-filter: var(--frost-on) blur(var(--frost-blur-sm)) saturate(var(--frost-saturate));
-  }
 
   @media (forced-colors: active) {
     .sk-tags-input[data-appearance] .sk-tags-input__control {

@@ -1,0 +1,44 @@
+/*
+ * TIER 3, PAGINATION · TACTILE
+ *
+ * The `appearance="tactile"` rules of pagination.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER pagination.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.tactile`.
+ */
+
+@layer components {
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Button's axis (button.css documents each construction in full), worn by the CURRENT page and
+   * written as the `--sk-pagination-current-*` hooks it already reads. The other pages stay the
+   * quiet ghost squares they are.
+   */
+
+  /* TACTILE: the current page is a key on a deeper ledge in a darker step of its own face; a press
+   * sinks a page instead of squeezing it. */
+  .sk-pagination[data-appearance="tactile"] {
+    --sk-pagination-current-ledge: light-dark(
+      color-mix(in oklab, var(--sk-pagination-current-bg) 72%, var(--color-text-primary)),
+      color-mix(in oklab, var(--sk-pagination-current-bg) 68%, var(--color-bg-surface-sunken))
+    );
+    --sk-pagination-current-shadow:
+      inset 0 1px 0 var(--sk-pagination-current-highlight),
+      0 3px 0 var(--sk-pagination-current-ledge),
+      var(--elevation-raised);
+  }
+  .sk-pagination[data-appearance="tactile"] :is(.sk-pagination__item, .sk-pagination__previous, .sk-pagination__next) {
+    transition:
+      background-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      border-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing),
+      color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      translate var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+  .sk-pagination[data-appearance="tactile"] :is(.sk-pagination__item, .sk-pagination__previous, .sk-pagination__next):active:not(:disabled) {
+    scale: 1;
+    translate: 0 2px;
+  }
+}

@@ -89,6 +89,11 @@ export const numberFieldContract = {
       type: "enum",
       values: ["plain", "brutalist", "frosted"],
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        brutalist: ["@skryensya/core/components/number-field.brutalist.css"],
+        frosted: ["@skryensya/core/components/number-field.frosted.css"],
+      },
     },
     /** Submitted with the form. The machine writes it onto the real input. */
     name: { type: "string", attr: "name", machineInput: true },

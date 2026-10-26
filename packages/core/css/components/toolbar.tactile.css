@@ -1,0 +1,50 @@
+/*
+ * TIER 3, TOOLBAR · TACTILE
+ *
+ * The `appearance="tactile"` rules of toolbar.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER toolbar.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.tactile`.
+ */
+
+@layer components {
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Button's axis on the bar's FRAME (button.css documents each construction in full). The controls
+   * inside are Buttons and set their own appearance; the bar only decides what they sit on.
+   */
+
+  /* TACTILE: a console slab standing on a ledge in a darker step of its own surface, lit from the top. */
+  .sk-toolbar[data-appearance="tactile"] {
+    --sk-toolbar-depth: 4px;
+    background:
+      linear-gradient(
+        to bottom,
+        light-dark(color-mix(in oklab, white 12%, transparent), color-mix(in oklab, white 5%, transparent)),
+        transparent 50%
+      ),
+      var(--sk-toolbar-bg);
+    box-shadow:
+      0 var(--sk-toolbar-depth) 0 light-dark(
+        color-mix(in oklab, var(--sk-toolbar-bg) 76%, var(--color-text-primary)),
+        color-mix(in oklab, var(--sk-toolbar-bg) 72%, var(--color-bg-surface-sunken))
+      ),
+      var(--elevation-raised);
+  }
+
+  /*
+   * Copied from toolbar.css that sat after this appearance's rules in one file, to win over them, so it comes
+   * last here too.
+   */
+  @media (forced-colors: active) {
+    .sk-toolbar[data-appearance] {
+      border-color: CanvasText;
+      background: Canvas;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+  }
+}

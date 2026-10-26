@@ -1,0 +1,152 @@
+/*
+ * TIER 3, TILE · TACTILE
+ *
+ * The `appearance="tactile"` rules of tile.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER tile.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.tactile`.
+ */
+
+@layer components {
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * The same axis Button publishes, with the same three values and the same meaning: how the
+   * surface is PHYSICALLY expressed, never what it does. Plain is everything above, matched by
+   * absence. Tile has no variant or tone, so each appearance has exactly one construction here,
+   * derived from the surface and the border the tile already paints.
+   *
+   * ONE TRAVEL PER APPEARANCE. Rest, hover and press only move `--tactile-travel` or
+   * `--brutalist-travel`; `box-shadow` is declared once per appearance, so no state rule can
+   * disagree with another about the shape of the shadow.
+   *
+   * ONLY A CONTROL TRAVELS. Hover and press match `.sk-tile--interactive` (link, button and the
+   * three wrapped inputs). An expandable tile is a container, its trigger is the control, so the
+   * section wears the construction at rest and never moves: a whole card sinking while its own
+   * panel animates open would be two motions answering one click.
+   *
+   * SELECTION IS NOT PRESS, the same decision Button makes for `aria-pressed`: a checked tile keeps
+   * its rest depth and is told apart by paint (the selected border colour, carried into the ledge
+   * and the offset), and it still travels when clicked again.
+   *
+   * No `translate` at rest, only while hovered or pressed: any transform other than `none` makes the
+   * tile a containing block for fixed-position descendants, which a tile hosting a menu would feel.
+   */
+  .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="tactile"] {
+    --tactile-travel: 0;
+    /* Dark reaches past the sunken surface toward black: a tile's face sits almost ON the sunken
+     * tone in dark mode, so Button's surface-to-sunken mix left a ledge nobody could see. */
+    --tactile-ledge: light-dark(
+      color-mix(in oklab, var(--color-bg-surface) 76%, var(--color-text-primary)),
+      color-mix(in oklab, var(--color-bg-surface-sunken) 55%, black)
+    );
+    --tactile-haze: light-dark(
+      color-mix(in oklab, var(--color-text-primary) 14%, transparent),
+      color-mix(in oklab, var(--color-bg-surface-sunken) 44%, transparent)
+    );
+    --tactile-drop: calc(var(--sk-tile-depth) * (1 - var(--tactile-travel)));
+    background:
+      linear-gradient(
+        to bottom,
+        light-dark(color-mix(in oklab, white 10%, transparent), color-mix(in oklab, white 6%, transparent)),
+        transparent 55%,
+        light-dark(color-mix(in oklab, black 5%, transparent), color-mix(in oklab, black 8%, transparent))
+      ),
+      var(--color-bg-surface);
+    box-shadow:
+      0 var(--tactile-drop) 0 var(--tactile-ledge),
+      0 calc(var(--tactile-drop) + 1px) 4px var(--tactile-haze);
+    transition:
+      border-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing),
+      translate var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+  .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="tactile"]:where(
+      [data-state="checked"],
+      [data-state="selected"],
+      :has(> input:checked),
+      :has(> input[type="checkbox"]:indeterminate)
+    ) {
+    --tactile-ledge: light-dark(
+      color-mix(in oklab, var(--sk-color-border-selected) 72%, var(--color-text-primary)),
+      color-mix(in oklab, var(--sk-color-border-selected) 56%, black)
+    );
+  }
+  @media (any-hover: hover) {
+    .sk-tile--interactive[data-appearance="tactile"]:hover:not(:disabled, :has(> input:disabled)) {
+      --tactile-travel: 0.18;
+      translate: 0 calc(var(--sk-tile-depth) * var(--tactile-travel));
+    }
+  }
+  .sk-tile--interactive[data-appearance="tactile"]:active:not(:disabled, :has(> input:disabled)) {
+    --tactile-travel: 0.86;
+    --tactile-haze: transparent;
+    translate: 0 calc(var(--sk-tile-depth) * var(--tactile-travel));
+  }
+
+  /* Disabled outranks appearance: a shallower, colourless ledge, so an unavailable tile still reads
+   * as the same object without promising a press. The travel rules above never match it. */
+  .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="tactile"]:is(
+      [data-disabled]:disabled,
+      :has(> input:disabled)
+    ) {
+    --tactile-travel: 0.45;
+    --tactile-ledge: var(--color-border-subtle);
+    --tactile-haze: color-mix(in oklab, var(--color-text-disabled) 18%, transparent);
+  }
+  @media (forced-colors: active) {
+
+    /* Every appearance degrades to the plain system surface: the UA drops box-shadow here anyway, and
+     * a face that travels with nothing to travel into reads as a jump. The border above still
+     * carries selection (Highlight) and disabled (GrayText). */
+    .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="tactile"] {
+      --sk-tile-border-color: CanvasText;
+      border-color: var(--sk-tile-border-color);
+      background: Canvas;
+      box-shadow: none;
+      backdrop-filter: none;
+    }
+
+    /* The appearance rules set their own edge colours at a higher specificity than the plain
+     * forced-colors rules above, so selection and disabled are restated for them here. */
+    .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="tactile"]:is(
+        [data-state="checked"],
+        [data-state="selected"],
+        :has(> input:checked),
+        :has(> input[type="checkbox"]:indeterminate)
+      ) {
+      --sk-tile-border-color: Highlight;
+    }
+    .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="tactile"]:is(
+        [data-disabled]:disabled,
+        :has(> input:disabled)
+      ) {
+      --sk-tile-border-color: GrayText;
+    }
+
+    /* Same guard as the travel rules, so this ties their specificity and wins on order. */
+    .sk-tile--interactive[data-appearance="tactile"]:is(:hover, :active):not(:disabled, :has(> input:disabled)) {
+      translate: none;
+    }
+  }
+
+  /*
+   * Copied from tile.css that sat after this appearance's rules in one file, to win over them, so it comes
+   * last here too.
+   */
+  @media (forced-colors: active) {
+
+    .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable):where([data-state="checked"], [data-state="selected"]),
+    .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable):has(> input:checked),
+    .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable):has(> input[type="checkbox"]:indeterminate) {
+      --sk-tile-border-color: Highlight;
+    }
+
+    .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable):where([data-disabled]:disabled),
+    .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable):has(> input:disabled) {
+      --sk-tile-border-color: GrayText;
+      color: GrayText;
+    }
+  }
+}

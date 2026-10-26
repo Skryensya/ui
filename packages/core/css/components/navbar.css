@@ -65,43 +65,11 @@
   }
 
   /*
-   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
-   *
-   * Button's axis on the navbar's surface (button.css documents each construction in full). Plain,
-   * brutalist and frosted: a surface is never pressed, so there is no tactile. Radius, padding and
-   * motion are untouched.
+   * APPEARANCES live in their own sheets, so a page that never asks for one does not ship it:
+   *   brutalist  navbar.brutalist.css
+   *   frosted    navbar.frosted.css
+   * Load each one right after this file: it only adds to it, and a base that loads after one wins every tie.
    */
-
-  /* BRUTALIST: the black edge and a hard zero-blur offset toward block-end and inline-end
-   * (mirrored in RTL), in place of the soft elevation. Flat face. */
-  .sk-navbar[data-appearance="brutalist"] {
-    --sk-navbar-brutalist-offset: 4px;
-    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
-    --brutalist-direction: 1;
-    --sk-navbar-border-color: var(--brutalist-black);
-    --sk-navbar-wash: none;
-    --sk-navbar-elevation: calc(var(--sk-navbar-brutalist-offset) * var(--brutalist-direction)) var(--sk-navbar-brutalist-offset) 0 var(--brutalist-black);
-  }
-
-  .sk-navbar[data-appearance="brutalist"]:dir(rtl) {
-    --brutalist-direction: -1;
-  }
-
-  /* FROSTED: Button's see-through material over whatever sits behind the navbar, with a fine edge and
-   * a lit top rim over its own shadow. Opaque baseline; the material only where backdrop-filter
-   * exists and no reduced-transparency preference is set. */
-  .sk-navbar[data-appearance="frosted"] {
-    --sk-navbar-wash: none;
-    --sk-navbar-border-color: color-mix(in oklab, currentColor 18%, transparent);
-    --sk-navbar-elevation: inset 0 1px 0 var(--frost-highlight), var(--elevation-raised);
-  }
-
-  .sk-navbar[data-appearance="frosted"] {
-    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-navbar-bg) var(--frost-alpha-chrome), transparent);
-    background: var(--frost-glass, var(--sk-navbar-bg));
-    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-lg)) saturate(var(--frost-saturate));
-    backdrop-filter: var(--frost-on) blur(var(--frost-blur-lg)) saturate(var(--frost-saturate));
-  }
 
   /* Forced colors keep neither construction: the system surface and its boundary. */
   @media (forced-colors: active) {

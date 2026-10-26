@@ -3,8 +3,17 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "3d360b86ce6426c5"
+surface: "62901e9ef220376d"
 entries:
+  - date: 2026-10-25
+    kind: breaking
+    target: appearance
+    es:
+      title: "Cada apariencia tiene su propia hoja"
+      body: "Las reglas de `brutalist` pasan de avatar.css a avatar.brutalist.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en avatar.css."
+    en:
+      title: "Each appearance has its own stylesheet"
+      body: "The rules for `brutalist` move from avatar.css to avatar.brutalist.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in avatar.css."
   - date: 2026-10-17
     kind: bugfix
     target: AvatarGroup

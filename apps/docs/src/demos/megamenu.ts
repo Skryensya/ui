@@ -391,7 +391,7 @@ export const megamenuOpenTree = (t: Translate, variant: UsageTree): UsageTree =>
         {
           contract: "typography",
           signature: "Text",
-          attrs: { class: "sk-megamenu__trigger", "aria-expanded": "true" },
+          attrs: { class: "sk-megamenu__trigger", role: "button", "aria-expanded": "true" },
           children: t("demo.megamenu.trigger1"),
         },
         part("sk-megamenu__positioner", [

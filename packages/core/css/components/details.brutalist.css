@@ -1,0 +1,43 @@
+/*
+ * TIER 3, DETAILS · BRUTALIST
+ *
+ * The `appearance="brutalist"` rules of details.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER details.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.brutalist`.
+ */
+
+@layer components {
+  :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="brutalist"] {
+    /* Button's ink: black in both modes, at plain's border width (see button.css). */
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --sk-details-brutalist-edge: var(--brutalist-black);
+    --sk-details-brutalist-shadow: var(--brutalist-black);
+    --brutalist-direction: 1;
+    border-color: var(--sk-details-brutalist-edge);
+    box-shadow:
+      calc(round(nearest, var(--sk-details-brutalist-offset-inline), 1px) * var(--brutalist-direction))
+      round(nearest, var(--sk-details-brutalist-offset-block), 1px)
+      0 var(--sk-details-brutalist-shadow);
+  }
+  :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  /* The group's dividers go to the construction's ink too: one slab ruled into sections. */
+  .sk-details-group[data-appearance="brutalist"] > .sk-details + .sk-details {
+    border-block-start-color: var(--sk-details-brutalist-edge);
+  }
+
+  /*
+   * Copied from details.css that sat after this appearance's rules in one file, to win over them, so it comes
+   * last here too.
+   */
+  @media (forced-colors: active) {
+
+    .sk-details-group > .sk-details + .sk-details {
+      border-block-start-color: CanvasText;
+    }
+  }
+}

@@ -208,6 +208,11 @@ export const selectContract = {
       type: "enum",
       values: ["plain", "brutalist", "frosted"],
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        brutalist: ["@skryensya/core/components/select.brutalist.css"],
+        frosted: ["@skryensya/core/components/select.frosted.css"],
+      },
     },
     /** Submitted under this name, and what makes the hidden native control worth rendering. */
     name: { type: "string", attr: "name" },

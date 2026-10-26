@@ -73,7 +73,16 @@ export const avatarContract = {
      * black edge and hard offset, scaled to the disc. No `tactile` (an avatar is never pressed) and
      * no `frosted` (a portrait or initials on see-through glass stops reading as a person).
      */
-    appearance: { type: "enum", values: ["plain", "brutalist"], default: "plain", attr: "data-appearance" },
+    appearance: {
+      type: "enum",
+      values: ["plain", "brutalist"],
+      default: "plain",
+      attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        brutalist: ["@skryensya/core/components/avatar.brutalist.css"],
+      },
+    },
     /** The accessible name when initials are the fallback. */
     name: { type: "string", attr: "aria-label" },
     /** The image's alt text; React calls this prop `name`. */

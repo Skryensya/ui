@@ -211,6 +211,11 @@ export const sidebarContract = {
       values: ["plain", "brutalist", "frosted"],
       default: "plain",
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        brutalist: ["@skryensya/core/components/sidebar.brutalist.css"],
+        frosted: ["@skryensya/core/components/sidebar.frosted.css"],
+      },
     },
     /** Starts narrowed. Read once as the initial state; after that the interaction owns it. */
     defaultCollapsed: {

@@ -176,7 +176,8 @@
     ...slides.map((slide, index): PartBinding => ({
       part: "item",
       node: () => slide,
-      props: () => api.getItemProps({ index, snapAlign: align }),
+      // No `aria-hidden` from the machine: a link in an out-of-view slide stays tabbable, a focusable node under it.
+      props: () => ({ ...api.getItemProps({ index, snapAlign: align }), "aria-hidden": undefined }),
       style: "once",
     })),
   ];

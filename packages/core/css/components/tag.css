@@ -156,11 +156,11 @@
     cursor: not-allowed;
   }
 
-  /* Disabled outranks appearance, the same ordering Button's own brutalist-disabled rule states: a
-   * strong offset must never make an unavailable chip look pressable. */
-  .sk-tag[data-appearance="brutalist"]:is(:disabled, [aria-disabled="true"]) {
-    --brutalist-black: var(--color-border-subtle);
-  }
+  /*
+   * APPEARANCES live in their own sheets, so a page that never asks for one does not ship it:
+   *   brutalist  tag.brutalist.css
+   * Load each one right after this file: it only adds to it, and a base that loads after one wins every tie.
+   */
 
   /* Forced-colors drops author colors, so the `color-mix` hairline would vanish and the chip would lose
    * its outline. Pin the edge to a system color there, the chip stays a defined box. */
@@ -174,32 +174,6 @@
       --sk-tag-bg: Canvas;
       --sk-tag-fg: GrayText;
       --sk-tag-border: GrayText;
-    }
-  }
-
-  /*
-   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
-   *
-   * Button's axis on the tag, which takes brutalist alone: a mark this small is never pressed
-   * (no tactile), and see-through glass on it would only cost its label contrast (no frosted). A
-   * black edge and a 2px hard offset toward block-end and inline-end, mirrored in RTL; the
-   * offset is internal so no sheet that reuses this one inherits a hook it does not document.
-   */
-  .sk-tag[data-appearance="brutalist"] {
-    --brutalist-offset: 2px;
-    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
-    --brutalist-direction: 1;
-    border-color: var(--brutalist-black);
-    box-shadow: calc(var(--brutalist-offset) * var(--brutalist-direction)) var(--brutalist-offset) 0 var(--brutalist-black);
-  }
-
-  .sk-tag[data-appearance="brutalist"]:dir(rtl) {
-    --brutalist-direction: -1;
-  }
-
-  @media (forced-colors: active) {
-    .sk-tag[data-appearance="brutalist"] {
-      box-shadow: none;
     }
   }
 }

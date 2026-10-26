@@ -1,0 +1,45 @@
+/*
+ * TIER 3, CALLOUT · BRUTALIST
+ *
+ * The `appearance="brutalist"` rules of callout.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER callout.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.brutalist`.
+ */
+
+@layer components {
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Button's axis on the callout's surface (button.css documents each construction in full). Plain,
+   * brutalist and frosted: a surface is never pressed, so there is no tactile. Radius, padding and
+   * motion are untouched.
+   */
+
+  /* BRUTALIST: the black edge and a hard zero-blur offset toward block-end and inline-end
+   * (mirrored in RTL), in place of the soft elevation. Flat face. */
+  .sk-callout[data-appearance="brutalist"] {
+    --callout-brutalist-offset: 4px;
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+    box-shadow: calc(var(--callout-brutalist-offset) * var(--brutalist-direction)) var(--callout-brutalist-offset) 0 var(--brutalist-black);
+    border-color: var(--brutalist-black);
+  }
+  .sk-callout[data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  /*
+   * Copied from callout.css that sat after this appearance's rules in one file, to win over them, so it comes
+   * last here too.
+   */
+  @media (forced-colors: active) {
+    .sk-callout[data-appearance] {
+      background: Canvas;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+  }
+}

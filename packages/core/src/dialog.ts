@@ -68,6 +68,11 @@ export const dialogContract = {
       values: ["plain", "brutalist", "frosted"],
       default: "plain",
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        brutalist: ["@skryensya/core/components/dialog.brutalist.css"],
+        frosted: ["@skryensya/core/components/dialog.frosted.css"],
+      },
     },
     /** What the closing control announces. Lives on the close button as `aria-label`, not the host. */
     closeLabel: { type: "string", default: "Close", attr: "aria-label" },

@@ -56,6 +56,12 @@ export const toolbarContract = {
       values: ["plain", "tactile", "brutalist", "frosted"],
       default: "plain",
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        tactile: ["@skryensya/core/components/toolbar.tactile.css"],
+        brutalist: ["@skryensya/core/components/toolbar.brutalist.css"],
+        frosted: ["@skryensya/core/components/toolbar.frosted.css"],
+      },
     },
     /** Names the bar. A page with two toolbars needs each told apart. */
     label: { type: "string", attr: "aria-label" },

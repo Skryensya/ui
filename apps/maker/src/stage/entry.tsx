@@ -15,7 +15,9 @@ import "./stage.css";
  * Every published stylesheet, not a hand-picked list: a maker page can reach any contract, and
  * `apps/eval-viewer` lost `dialog.css` once by picking.
  */
-import.meta.glob("../../../../packages/core/css/components/*.css", { eager: true });
+/* Components first, then their appearance sheets: a base that loads after one wins every tie. */
+import.meta.glob(["../../../../packages/core/css/components/*.css", "!../../../../packages/core/css/components/*.*.css"], { eager: true });
+import.meta.glob("../../../../packages/core/css/components/*.*.css", { eager: true });
 import.meta.glob("../../../../packages/core/css/patterns/*.css", { eager: true });
 
 export type StageApi = {

@@ -1,0 +1,50 @@
+/*
+ * TIER 3, RADIO GROUP · BRUTALIST
+ *
+ * The `appearance="brutalist"` rules of radio-group.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER radio-group.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.brutalist`.
+ */
+
+@layer components {
+  /* BRUTALIST: the black edge and a hard offset the press collapses, toward block-end and
+   * inline-end (mirrored in RTL). */
+  :is(.sk-radio[data-appearance="brutalist"], .sk-radio-group[data-appearance="brutalist"] .sk-radio) {
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+  }
+  :is(.sk-radio[data-appearance="brutalist"], .sk-radio-group[data-appearance="brutalist"] .sk-radio):dir(rtl) {
+    --brutalist-direction: -1;
+  }
+  :is(.sk-radio[data-appearance="brutalist"], .sk-radio-group[data-appearance="brutalist"] .sk-radio) .sk-radio__control::before {
+    border-color: var(--brutalist-black);
+    background: var(--color-bg-surface);
+    box-shadow: calc(2px * var(--brutalist-direction)) 2px 0 var(--brutalist-black);
+    transition:
+      translate var(--motion-feedback-duration) var(--motion-feedback-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+  :is(.sk-radio[data-appearance="brutalist"], .sk-radio-group[data-appearance="brutalist"] .sk-radio):not(:has(.sk-radio__input:disabled)):active .sk-radio__control {
+    scale: 1;
+  }
+  :is(.sk-radio[data-appearance="brutalist"], .sk-radio-group[data-appearance="brutalist"] .sk-radio):not(:has(.sk-radio__input:disabled)):active .sk-radio__control::before {
+    translate: calc(2px * var(--brutalist-direction)) 2px;
+    box-shadow: 0 0 0 var(--brutalist-black);
+  }
+
+  /*
+   * Copied from radio-group.css that sat after this appearance's rules in one file, to win over them, so it comes
+   * last here too.
+   */
+  @media (forced-colors: active) {
+    :is(.sk-radio[data-appearance], .sk-radio-group[data-appearance] .sk-radio) .sk-radio__control::before,
+    :is(.sk-radio[data-appearance], .sk-radio-group[data-appearance] .sk-radio):not(:has(.sk-radio__input:disabled)):active .sk-radio__control::before {
+      box-shadow: none;
+      translate: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+}

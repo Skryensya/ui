@@ -1,0 +1,39 @@
+/*
+ * TIER 3, SELECT · FROSTED
+ *
+ * The `appearance="frosted"` rules of select.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER select.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.frosted`.
+ */
+
+@layer components {
+  /* FROSTED: the field's own fill (whichever state set it) thinned into a sheet over a blurred
+   * backdrop, with a fine edge. Opaque baseline; the material only where backdrop-filter exists and
+   * no reduced-transparency preference is set. */
+  .sk-select:where([data-appearance="frosted"]) {
+    --sk-select-wash: none;
+    --sk-select-border-color: color-mix(in oklab, currentColor 24%, transparent);
+    --sk-select-shadow: inset 0 1px 2px var(--shadow-sm);
+  }
+  .sk-select:where([data-appearance="frosted"]) .sk-select__trigger {
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-select-bg) var(--frost-alpha-field), transparent);
+    background: var(--frost-glass, var(--sk-select-bg));
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-sm)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-sm)) saturate(var(--frost-saturate));
+  }
+
+  /*
+   * Copied from select.css that sat after this appearance's rules in one file, to win over them, so it comes
+   * last here too.
+   */
+  @media (forced-colors: active) {
+    .sk-select[data-appearance] .sk-select__trigger {
+      background: Canvas;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+  }
+}

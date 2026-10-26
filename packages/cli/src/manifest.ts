@@ -14,7 +14,7 @@ export type VanillaEntry = { entry: string; mount: string | null; selectors: str
 
 export type Entry = {
   id: string;
-  kind: "component" | "integration";
+  kind: "component" | "integration" | "appearance";
   category: string;
   summary?: string;
   /** Stylesheets in the order they must load, each once. */
@@ -23,6 +23,8 @@ export type Entry = {
   vanilla: VanillaEntry | null;
   /** Packages the component needs besides the system's own. */
   peers: string[];
+  /** On an `appearance` entry (`button.brutalist`): the component it dresses and the value. */
+  appearance?: { of: string; value: string };
 };
 
 type RawEntry = {
@@ -30,6 +32,7 @@ type RawEntry = {
   css: { entry: string; files: string[] };
   react: ReactEntry | null;
   vanilla: VanillaEntry | null;
+  appearance?: { of: string; value: string };
 };
 
 /** What a component needs beyond the system's own packages. */
@@ -64,8 +67,9 @@ function build(): Map<string, Entry> {
   for (const [id, entry] of Object.entries(manifest)) {
     entries.set(id, {
       id,
-      kind: "component",
+      kind: entry.appearance ? "appearance" : "component",
       category: entry.category,
+      ...(entry.appearance ? { summary: `The ${entry.appearance.value} look of ${entry.appearance.of}: its rules live in their own sheet.`, appearance: entry.appearance } : {}),
       css: entry.css.files,
       react: entry.react,
       vanilla: entry.vanilla,
@@ -89,6 +93,10 @@ function build(): Map<string, Entry> {
 
 export const catalog: ReadonlyMap<string, Entry> = build();
 
+/** The appearance entries of a component (`button.tactile`, `button.brutalist`, …), by value. */
+export const appearancesOf = (id: string): Entry[] =>
+  [...catalog.values()].filter((entry) => entry.appearance?.of === id).sort((a, b) => a.id.localeCompare(b.id));
+
 export const categories = (): string[] => unique([...catalog.values()].map((entry) => entry.category)).sort();
 
 /**
@@ -100,8 +108,22 @@ export const consumerPath = (coreFile: string, binding: Binding): string =>
   coreFile.replace(/^@skryensya\/core\//, `@skryensya/${binding}/css/`);
 
 /** The stylesheets of several entries, in load order, each once. */
-export const cssOf = (ids: readonly string[]): string[] =>
-  unique(ids.flatMap((id) => catalog.get(id)?.css ?? []));
+/**
+ * The stylesheets of these ids, in load order: each component, then its appearances right behind it.
+ * An appearance sheet only adds to its component's, and a component sheet that loaded after it would win
+ * every tie at equal specificity, so an appearance never goes ahead of its component; and it stays next to
+ * it (not after every component) so that another component's late rule over this one, as Combobox's over
+ * its inner Button, still comes after the whole of it. Components keep the order they were added in.
+ */
+export const cssOf = (ids: readonly string[]): string[] => {
+  const component = (id: string) => catalog.get(id)?.appearance?.of ?? id;
+  return unique(
+    unique(ids.map(component)).flatMap((of) => [
+      ...(catalog.get(of)?.css ?? []),
+      ...ids.filter((id) => catalog.get(id)?.appearance?.of === of).flatMap((id) => catalog.get(id)?.css ?? []),
+    ]),
+  );
+};
 
 const distance = (a: string, b: string): number => {
   const row = Array.from({ length: b.length + 1 }, (_, index) => index);

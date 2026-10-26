@@ -463,6 +463,11 @@ export const tourContract = {
       values: ["plain", "brutalist", "frosted"],
       default: "plain",
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        brutalist: ["@skryensya/core/components/tour.brutalist.css"],
+        frosted: ["@skryensya/core/components/tour.frosted.css"],
+      },
     },
     /** The tour's id, which its triggers name in `opens` and its memory is keyed by. */
     tourId: { type: "string", attr: "id", prop: "id" },

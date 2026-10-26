@@ -45,6 +45,14 @@ export const buttonGroupContract = {
     "--sk-button-group-wash",
   ],
 
+  /* The weld of a member's appearance is the group's rule, written against the member (`:has(>
+     .sk-button[data-appearance=…])`), so the group's sheet for it loads when a member asks for it. */
+  memberAppearanceSheets: {
+    tactile: ["@skryensya/core/components/button-group.tactile.css"],
+    brutalist: ["@skryensya/core/components/button-group.brutalist.css"],
+    frosted: ["@skryensya/core/components/button-group.frosted.css"],
+  },
+
   options: {
     /** Which axis the members join on. `vertical` stacks them: zoom in over zoom out. */
     orientation: {

@@ -173,20 +173,12 @@
   }
 
   /*
-   * TACTILE SEAMS. Each member casts a soft drop shadow, and a member stacked above its neighbour
-   * spilled that shadow sideways over the neighbour's face as a dark smudge at the seam. So a member
-   * that is not first is clipped at its START edge, the one it shares, and keeps its shadow on every
-   * other side. The previous member's own spill, which lands under this one's face and below its
-   * ledge, is what fills the drop where the two meet, so the shadow stays one continuous band. The
-   * start edge is clipped at the border box, not a column inside it: a column in left a light crack
-   * through the ledge wherever the widths were fractional.
+   * APPEARANCES live in their own sheets, so a page that never asks for one does not ship it:
+   *   tactile    button-group.tactile.css
+   *   brutalist  button-group.brutalist.css
+   *   frosted    button-group.frosted.css
+   * Load each one right after this file: it only adds to it, and a base that loads after one wins every tie.
    */
-  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-button[data-appearance="tactile"],
-  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))):is(.sk-menu, .sk-popover) > .sk-button[data-appearance="tactile"],
-  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="tactile"],
-  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-tooltip > .sk-tooltip__trigger > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="tactile"] {
-    clip-path: inset(-50px -50px -50px 0);
-  }
 
   /* The overlap paints the later member over the earlier one's border, so a focused field raises
    * itself over its neighbours the way `.sk-interactive:focus-visible` already does for buttons. */
@@ -261,13 +253,6 @@
   .sk-button-group:has(> .sk-button:not([data-variant="soft"], [data-variant="ghost"]):is([data-tone="accent"], [data-tone="danger"]), > .sk-menu > .sk-button:not([data-variant="soft"], [data-variant="ghost"]):is([data-tone="accent"], [data-tone="danger"])):not(:has(> :not(.sk-button-group__separator, .sk-menu, .sk-button:not([data-variant="soft"], [data-variant="ghost"]):is([data-tone="accent"], [data-tone="danger"])))) {
     --sk-button-group-separator-ink: var(--color-text-on-accent);
     --sk-button-group-separator-color: color-mix(in oklab, var(--color-text-on-accent) 45%, transparent);
-  }
-
-  /* Brutalist has no subtle divider: its line is the same black as its edges, 1px, and the whole height (an inset one would be a
-   * dent in a hard edge). The members give up their own seam edge for it (see INSET above), or it would be 2px thick. */
-  .sk-button-group:has(> [data-appearance="brutalist"]) {
-    --sk-button-group-separator-color: var(--sk-button-brutalist-edge, oklch(0 0 0));
-    --sk-button-group-separator-inset: 100%;
   }
 
   /* PLAIN DRAWS NO BORDER OF ITS OWN in a group: the fill, the shared shadow and the separators already say where each member
@@ -444,146 +429,6 @@
   }
 
   /*
-   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
-   *
-   * Members carry Button's appearance themselves. What changes here is the one shadow the group
-   * casts:
-   *
-   *   TACTILE keeps each member's own ledge: a ledge drops straight down with no sideways blur, so
-   *   the members meet at the seam as one continuous ledge. The group's soft shadow goes, or it
-   *   would sit under the ledge as a second depth.
-   *
-   *   BRUTALIST casts ONE hard black offset around the whole group, mirrored in RTL; the seam is
-   *   the members' own black edge.
-   *
-   *   FROSTED: the group blurs the backdrop ONCE and its members only tint it. A blur per member
-   *   sampled a different slice of the backdrop each, so the member over a dark fold read flatter
-   *   than its neighbour over a bright one. The group keeps its soft shadow.
-   */
-  .sk-button-group:has(> .sk-button[data-appearance="frosted"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="frosted"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="frosted"]) {
-    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
-    backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
-  }
-
-  .sk-button-group > .sk-button[data-appearance="frosted"][class],
-  .sk-button-group > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="frosted"],
-  .sk-button-group > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="frosted"] {
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-
-  .sk-button-group:has(> .sk-button[data-appearance="tactile"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="tactile"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="tactile"]) {
-    --sk-button-group-shadow: none;
-    --sk-button-group-wash: none;
-  }
-
-  .sk-button-group:not([data-orientation="vertical"]):has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) {
-    --sk-button-group-brutalist-offset: 5px;
-    --brutalist-direction: 1;
-    --sk-button-group-shadow: calc(var(--sk-button-group-brutalist-offset) * var(--brutalist-direction))
-      var(--sk-button-group-brutalist-offset) 0 oklch(from var(--shadow-lg) l c h / 1);
-    --sk-button-group-wash: none;
-  }
-
-  .sk-button-group:has(
-    > .sk-button[data-appearance="brutalist"][data-variant="soft"],
-    > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"][data-variant="soft"],
-    > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"][data-variant="soft"]
-  ) {
-    --sk-button-group-brutalist-offset: 4px;
-  }
-
-  .sk-button-group:has(
-    > .sk-button[data-appearance="brutalist"][data-variant="ghost"],
-    > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"][data-variant="ghost"],
-    > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"][data-variant="ghost"]
-  ) {
-    --sk-button-group-brutalist-offset: 2px;
-  }
-
-  /* Every `:has()` below lists the same three paths as the slab rule above: `:has()` takes its most
-   * specific argument, so a shorter list here would lose to it and the override would never land. */
-  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]):dir(rtl) {
-    --brutalist-direction: -1;
-  }
-
-  /*
-   * BRUTALIST STACKING. Each member's black edge and, vertically, its hard offset must read as
-   * built up in order: the first sits UNDER the second, the second under the third. The order follows the
-   * reading direction, so RTL needs no rule: a member's shadow points at the NEXT one, which must
-   * be above it either way. Plain DOM order is not enough:
-   * a pressed face (`translate`) and a hovered member (z-index 1 above) jump over their neighbours.
-   * 12 positions is the ceiling; beyond it the rest share the top one. Separators stay above all, and a focused member keeps its own focus z-index.
-   */
-  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(1) { --sk-button-group-stack: 1; }
-  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(2) { --sk-button-group-stack: 2; }
-  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(3) { --sk-button-group-stack: 3; }
-  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(4) { --sk-button-group-stack: 4; }
-  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(5) { --sk-button-group-stack: 5; }
-  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(6) { --sk-button-group-stack: 6; }
-  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(7) { --sk-button-group-stack: 7; }
-  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(8) { --sk-button-group-stack: 8; }
-  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(9) { --sk-button-group-stack: 9; }
-  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(10) { --sk-button-group-stack: 10; }
-  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(11) { --sk-button-group-stack: 11; }
-  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :nth-child(12) { --sk-button-group-stack: 12; }
-
-  .sk-button-group:has(> .sk-button[data-appearance="brutalist"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]) > :not(.sk-button-group__separator, :focus-visible, :has(:focus-visible)) {
-    position: relative;
-    z-index: var(--sk-button-group-stack, 12);
-  }
-
-  .sk-button-group > .sk-button[data-appearance="brutalist"]:active:not(:disabled):not([aria-disabled="true"]),
-  .sk-button-group > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"]:active:not(:disabled):not([aria-disabled="true"]),
-  .sk-button-group > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]:active:not(:disabled):not([aria-disabled="true"]) {
-    /* The group casts the resting slab shadow, but the pressed face still needs its own remaining
-     * hard shadow under it. Without that 1px shadow, the active first member moves diagonally and
-     * exposes a white slit between its old face and the group shadow, breaking the press illusion. */
-    box-shadow: calc(1px * var(--brutalist-direction)) 1px 0 oklch(from var(--shadow-lg) l c h / 1);
-  }
-
-  /*
-   * BRUTALIST, EVERY MEMBER BUT THE LAST keeps its own hard shadow to the end side (the last one has
-   * the group's slab). It lies under the next member, which is stacked above it, so at rest it is
-   * hidden; press the next one and its face travels over, uncovering the shadow of the one before
-   * it: the first's when the second is pressed, the second's when the third is. It is STATIC while its
-   * member is at rest: the farthest the next face travels (offset minus the 1px it keeps), on both
-   * axes, so it starts exactly where the pressed face's top lands and adds nothing above it. Only when
-   * this member is the one pressed does it shrink to 1px, so it never trails below the slab.
-   */
-  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden])), .sk-button-group__separator).sk-button[class][data-appearance="brutalist"]:not([data-variant="ghost"]),
-  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden])), .sk-button-group__separator):is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"]:not([data-variant="ghost"]),
-  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden])), .sk-button-group__separator).sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="brutalist"]:not([data-variant="ghost"]),
-  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden])), .sk-button-group__separator).sk-tooltip > .sk-tooltip__trigger > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="brutalist"]:not([data-variant="ghost"]) {
-    box-shadow:
-      calc(max(1px, var(--brutalist-offset-inline) * (1 - var(--brutalist-travel)) - 1px) * var(--brutalist-direction))
-      max(1px, var(--brutalist-offset-block) * (1 - var(--brutalist-travel)) - 1px) 0 var(--sk-button-brutalist-shadow);
-  }
-
-  /* VERTICAL brutalist: no group slab; each member keeps Button's own hard shadow and diagonal
-   * travel, so neither half flattens into a plain vertical drop. */
-  .sk-button-group[data-orientation="vertical"] > .sk-button[class][data-appearance="brutalist"] {
-    box-shadow:
-      calc(var(--brutalist-shadow-inline) * var(--brutalist-direction)) var(--brutalist-shadow-block) 0
-        var(--sk-button-brutalist-shadow);
-  }
-
-  .sk-button-group[data-orientation="vertical"] > .sk-button[class][data-appearance="brutalist"]:not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden]))) {
-    /* A 1px black seam under upper members: without it, pressing the lower member moves its face
-     * into the shared edge and the upper one looks like it lost its constructed shadow. */
-    box-shadow:
-      calc(var(--brutalist-shadow-inline) * var(--brutalist-direction)) var(--brutalist-shadow-block) 0
-        var(--sk-button-brutalist-shadow),
-      0 1px 0 var(--sk-button-brutalist-edge);
-  }
-
-  .sk-button-group[data-orientation="vertical"] > .sk-button[data-appearance="brutalist"]:hover:not(:disabled):not([aria-disabled="true"]) {
-    /* Growing one member's hard offset on hover makes only that row stick out to inline-end, and
-     * the stack stops reading as one construction. Keep the hover face still; active is the cue. */
-    --brutalist-travel: 0;
-  }
-
-  /*
    * A FIELD GROUP (an Input beside ButtonGroupText / ButtonGroupLabel, no Button to carry the appearance) follows the INPUT's
    * appearance, so the prefix and the label are never left in the plain look beside a brutalist or frosted field.
    * The Input is the one member that carries `data-appearance`; the faces read it from the group with `:has()`.
@@ -596,56 +441,6 @@
   label.sk-button-group__text {
     background: var(--color-bg-surface);
     color: var(--color-text-primary);
-  }
-
-  .sk-button-group:not([data-orientation="vertical"]):has(> .sk-input[data-appearance="brutalist"]) {
-    --brutalist-direction: 1;
-    --sk-button-group-shadow: calc(3px * var(--brutalist-direction)) 3px 0 oklch(from var(--shadow-lg) l c h / 1);
-    --sk-button-group-wash: none;
-  }
-
-  .sk-button-group:not([data-orientation="vertical"]):has(> .sk-input[data-appearance="brutalist"]):dir(rtl) {
-    --brutalist-direction: -1;
-  }
-
-  .sk-button-group:not([data-orientation="vertical"]) > .sk-input[data-appearance="brutalist"] {
-    --sk-input-shadow: none;
-  }
-
-  .sk-button-group:has(> .sk-input[data-appearance="brutalist"]) > .sk-button-group__text {
-    border-color: oklch(from var(--shadow-lg) l c h / 1);
-  }
-
-  /*
-   * BRUTALIST, EVERY OTHER MEMBER TOO. A Button that is not last keeps a hard shadow under the next member
-   * (see above), uncovered when that one is pressed. A field, a Select or a prefix beside it needs the
-   * same, or pressing the Button beside a field leaves a white slit where the field's shadow should be.
-   * Same reach as the Button's resting shadow: the group's offset less the 1px the pressed face keeps.
-   */
-  .sk-button-group:not([data-orientation="vertical"]) > .sk-input[data-appearance="brutalist"]:not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden]))) {
-    --sk-input-shadow: calc(max(1px, var(--sk-button-group-brutalist-offset, 4px) - 1px) * var(--brutalist-direction))
-      max(1px, var(--sk-button-group-brutalist-offset, 4px) - 1px) 0 oklch(from var(--shadow-lg) l c h / 1);
-  }
-
-  .sk-button-group:not([data-orientation="vertical"]) > .sk-select[data-appearance="brutalist"]:not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden]))) {
-    --sk-select-shadow: calc(max(1px, var(--sk-button-group-brutalist-offset, 4px) - 1px) * var(--brutalist-direction))
-      max(1px, var(--sk-button-group-brutalist-offset, 4px) - 1px) 0 oklch(from var(--shadow-lg) l c h / 1);
-  }
-
-  .sk-button-group:not([data-orientation="vertical"]):has(> [data-appearance="brutalist"]) > .sk-button-group__text:not(:nth-last-child(1 of :not(.sk-button-group__separator, [hidden]))) {
-    box-shadow:
-      calc(max(1px, var(--sk-button-group-brutalist-offset, 4px) - 1px) * var(--brutalist-direction))
-      max(1px, var(--sk-button-group-brutalist-offset, 4px) - 1px) 0 oklch(from var(--shadow-lg) l c h / 1);
-  }
-
-  .sk-button-group:has(> .sk-input[data-appearance="frosted"]) > .sk-button-group__text {
-    --sk-button-group-text-bg: transparent;
-    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-well) var(--frost-alpha-field), transparent);
-
-    border-color: color-mix(in oklab, currentColor 24%, transparent);
-    background: var(--frost-glass, var(--color-bg-well));
-    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-sm)) saturate(var(--frost-saturate));
-    backdrop-filter: var(--frost-on) blur(var(--frost-blur-sm)) saturate(var(--frost-saturate));
   }
 
   /*

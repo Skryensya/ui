@@ -1,0 +1,42 @@
+/*
+ * TIER 3, CALLOUT · FROSTED
+ *
+ * The `appearance="frosted"` rules of callout.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER callout.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.frosted`.
+ */
+
+@layer components {
+  /* FROSTED: Button's see-through material over whatever sits behind the callout, with a fine edge and
+   * a lit top rim over its own shadow. Opaque baseline; the material only where backdrop-filter
+   * exists and no reduced-transparency preference is set. */
+  .sk-callout[data-appearance="frosted"] {
+    /* A contrast floor, not taste: a toned callout's ink sits close to its subtle fill, and measured it
+     * only clears 4.5:1 over the worst backdrop from about 92%. Neutral has the headroom to show more. */
+    --frost-opacity: var(--frost-alpha-tint);
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-callout-bg) var(--frost-opacity), transparent);
+    border-color: color-mix(in oklab, currentColor 18%, transparent);
+    box-shadow: inset 0 1px 0 var(--frost-highlight), 0 1px 2px var(--shadow-sm);
+    background: var(--frost-glass, var(--sk-callout-bg));
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
+  }
+  .sk-callout[data-appearance="frosted"][data-tone="neutral"] {
+    --frost-opacity: var(--frost-alpha-card);
+  }
+
+  /*
+   * Copied from callout.css that sat after this appearance's rules in one file, to win over them, so it comes
+   * last here too.
+   */
+  @media (forced-colors: active) {
+    .sk-callout[data-appearance] {
+      background: Canvas;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+  }
+}

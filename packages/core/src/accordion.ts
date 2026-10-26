@@ -199,6 +199,12 @@ export const accordionContract = {
       values: ["plain", "tactile", "brutalist", "frosted"],
       default: "plain",
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        tactile: ["@skryensya/core/components/accordion.tactile.css", "@skryensya/core/components/tile.tactile.css", "@skryensya/core/components/details.tactile.css"],
+        brutalist: ["@skryensya/core/components/accordion.brutalist.css", "@skryensya/core/components/tile.brutalist.css", "@skryensya/core/components/details.brutalist.css"],
+        frosted: ["@skryensya/core/components/accordion.frosted.css", "@skryensya/core/components/tile.frosted.css", "@skryensya/core/components/details.frosted.css"],
+      },
     },
     /**
      * `Details`/`DetailsGroup` only: the platform half's own density. `md` is the generous,

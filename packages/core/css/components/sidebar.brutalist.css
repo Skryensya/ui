@@ -1,0 +1,39 @@
+/*
+ * TIER 3, SIDEBAR · BRUTALIST
+ *
+ * The `appearance="brutalist"` rules of sidebar.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER sidebar.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.brutalist`.
+ */
+
+@layer components {
+  .sk-sidebar[data-side="end"][data-appearance="brutalist"] {
+    --brutalist-direction: -1;
+  }
+  .sk-sidebar[data-side="end"][data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: 1;
+  }
+
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Button's axis on the sidebar's surface (button.css documents each construction in full). Plain,
+   * brutalist and frosted: a surface is never pressed, so there is no tactile. Radius, padding and
+   * motion are untouched.
+   */
+
+  /* BRUTALIST: the black edge and a hard zero-blur offset toward block-end and inline-end
+   * (mirrored in RTL), in place of the soft elevation. Flat face. */
+  .sk-sidebar[data-appearance="brutalist"] {
+    --sk-sidebar-brutalist-offset: 6px;
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+    --sk-sidebar-border-color: var(--brutalist-black);
+    --sk-sidebar-elevation: calc(var(--sk-sidebar-brutalist-offset) * var(--brutalist-direction)) var(--sk-sidebar-brutalist-offset) 0 var(--brutalist-black);
+  }
+  .sk-sidebar[data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+}

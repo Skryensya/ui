@@ -57,11 +57,11 @@ type Activity = {
  */
 const ACTIVITY: readonly Activity[] = [
   { initials: "AL", palette: "blue-600", name: "Ada Lovelace", action: 'Comentó en "Rediseño del dashboard"', time: "2m" },
-  { initials: "GH", palette: "emerald-600", name: "Grace Hopper", action: "Aprobó el pull request #482", time: "15m" },
-  { initials: "AT", palette: "sky-600", name: "Alan Turing", action: 'Creó el ticket "Migrar auth a OAuth2"', time: "1h" },
+  { initials: "GH", palette: "emerald-700", name: "Grace Hopper", action: "Aprobó el pull request #482", time: "15m" },
+  { initials: "AT", palette: "sky-700", name: "Alan Turing", action: 'Creó el ticket "Migrar auth a OAuth2"', time: "1h" },
   { initials: "MH", palette: "red-600", name: "Margaret Hamilton", action: "Cerró 3 issues en el sprint actual", time: "2h" },
-  { initials: "DK", palette: "amber-600", name: "Donald Knuth", action: "Subió una nueva build a staging", time: "5h" },
-  { initials: "KJ", palette: "emerald-600", name: "Katherine Johnson", action: 'Editó la página "Roadmap Q3"', time: "8h" },
+  { initials: "DK", palette: "amber-700", name: "Donald Knuth", action: "Subió una nueva build a staging", time: "5h" },
+  { initials: "KJ", palette: "emerald-700", name: "Katherine Johnson", action: 'Editó la página "Roadmap Q3"', time: "8h" },
   { initials: "BL", palette: "blue-600", name: "Barbara Liskov", action: "Invitó a 2 personas al equipo", time: "1d" },
 ];
 

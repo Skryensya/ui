@@ -262,70 +262,13 @@
     /* Accordion's own values (accordion.css): the two halves of one contract are one material. */
   }
 
-  :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="tactile"] {
-    box-shadow:
-      0 var(--sk-details-depth) 0 light-dark(
-        color-mix(in oklab, var(--color-bg-surface) 76%, var(--color-text-primary)),
-        color-mix(in oklab, var(--color-bg-surface-sunken) 55%, black)
-      ),
-      0 calc(var(--sk-details-depth) + 1px) 4px light-dark(
-        color-mix(in oklab, var(--color-text-primary) 14%, transparent),
-        color-mix(in oklab, var(--color-bg-surface-sunken) 44%, transparent)
-      );
-  }
-
-  :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="brutalist"] {
-    /* Button's ink: black in both modes, at plain's border width (see button.css). */
-    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
-    --sk-details-brutalist-edge: var(--brutalist-black);
-    --sk-details-brutalist-shadow: var(--brutalist-black);
-    --brutalist-direction: 1;
-    border-color: var(--sk-details-brutalist-edge);
-    box-shadow:
-      calc(round(nearest, var(--sk-details-brutalist-offset-inline), 1px) * var(--brutalist-direction))
-      round(nearest, var(--sk-details-brutalist-offset-block), 1px)
-      0 var(--sk-details-brutalist-shadow);
-  }
-
-  :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="brutalist"]:dir(rtl) {
-    --brutalist-direction: -1;
-  }
-
-  /* The group's dividers go to the construction's ink too: one slab ruled into sections. */
-  .sk-details-group[data-appearance="brutalist"] > .sk-details + .sk-details {
-    border-block-start-color: var(--sk-details-brutalist-edge);
-  }
-
-  /* FROSTED: Button's material, on the same surface brutalist uses (the group's frame, or a lone
-   * details). Opaque baseline first; the see-through sheet only where it can be done honestly. */
-  :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="frosted"] {
-    --frost-highlight: light-dark(
-      color-mix(in oklab, var(--color-bg-surface) 90%, transparent),
-      color-mix(in oklab, var(--color-text-primary) 22%, transparent)
-    );
-    border-color: color-mix(in oklab, currentColor 18%, transparent);
-    box-shadow: inset 0 1px 0 var(--frost-highlight), 0 1px 2px var(--shadow-sm);
-  }
-
-  .sk-details-group[data-appearance="frosted"] > .sk-details + .sk-details {
-    border-block-start-color: color-mix(in oklab, currentColor 12%, transparent);
-  }
-
-  /* The material, behind the system switch (semantic/_frost.scss); off, the surface and the sunken
-   * body stay opaque. */
-  :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="frosted"] {
-    --frost-glass: var(--frost-on)
-      linear-gradient(to bottom, color-mix(in oklab, var(--frost-highlight) 60%, transparent), transparent 12rem),
-      color-mix(in oklab, var(--color-bg-surface) var(--frost-alpha-card), transparent);
-    background: var(--frost-glass, var(--color-bg-surface));
-    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
-    backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
-  }
-
-  :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="frosted"] .sk-details__content {
-    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface-sunken) var(--frost-alpha-card), transparent);
-    --sk-details-content-bg: var(--frost-glass, var(--color-bg-surface-sunken));
-  }
+  /*
+   * APPEARANCES live in their own sheets, so a page that never asks for one does not ship it:
+   *   tactile    details.tactile.css
+   *   brutalist  details.brutalist.css
+   *   frosted    details.frosted.css
+   * Load each one right after this file: it only adds to it, and a base that loads after one wins every tie.
+   */
 
   @media (forced-colors: active) {
     :is(.sk-details, .sk-details-group)[data-appearance] {

@@ -3,8 +3,17 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "446ec6c35f923296"
+surface: "3704222dd023ddb8"
 entries:
+  - date: 2026-10-25
+    kind: breaking
+    target: appearance
+    es:
+      title: "Cada apariencia tiene su propia hoja"
+      body: "Las reglas de `tactile`, `brutalist`, `frosted` pasan de radio-group.css a radio-group.tactile.css, radio-group.brutalist.css, radio-group.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en radio-group.css."
+    en:
+      title: "Each appearance has its own stylesheet"
+      body: "The rules for `tactile`, `brutalist`, `frosted` move from radio-group.css to radio-group.tactile.css, radio-group.brutalist.css, radio-group.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in radio-group.css."
   - date: 2026-10-01
     kind: feature
     es:

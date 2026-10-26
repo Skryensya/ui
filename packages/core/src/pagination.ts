@@ -147,6 +147,12 @@ export const paginationContract = {
       values: ["plain", "tactile", "brutalist", "frosted"],
       default: "plain",
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        tactile: ["@skryensya/core/components/pagination.tactile.css"],
+        brutalist: ["@skryensya/core/components/pagination.brutalist.css"],
+        frosted: ["@skryensya/core/components/pagination.frosted.css"],
+      },
     },
   },
 

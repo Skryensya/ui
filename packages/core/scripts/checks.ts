@@ -160,6 +160,16 @@ export function runChecks(
     }
   }
 
+  // An APPEARANCE SIBLING is `components/button.tactile.css` beside `components/button.css`: the rules of
+  // one `data-appearance` value, split out so a page that never asks for it does not ship them. It is part
+  // of its base's surface (the hooks live there), so rules 6 and 7, which ask a sheet to stand alone, do not
+  // apply to it, and rule 8 keeps those rules from drifting back into the base.
+  const relSet = new Set(files.map((f) => f.rel));
+  const siblingOf = (rel?: string) => {
+    const m = rel ? /^(components\/[a-z0-9-]+)\.([a-z]+)\.css$/.exec(rel) : null;
+    return m && relSet.has(`${m[1]}.css`) ? { base: `${m[1]}.css`, value: m[2]! } : null;
+  };
+
   // ── 6: component sheets ship the class, not just the hooks ──────────────────
   //
   // A components/ sheet has to produce a working component on import. This rule exists because its
@@ -172,7 +182,7 @@ export function runChecks(
   // thing, tuned"; its structure belongs to what it composes, and re-implementing it there would be
   // the duplication the pattern exists to prevent. That is a different claim from "I ship nothing".
   for (const f of files) {
-    if (!f.rel?.startsWith("components/")) continue;
+    if (!f.rel?.startsWith("components/") || siblingOf(f.rel)) continue;
 
     const structural = [...(f.css ?? "").matchAll(/(^|[;{])\s*([a-z-]+)\s*:/g)].filter(
       (m) => !m[2].startsWith("--"),
@@ -198,12 +208,46 @@ export function runChecks(
   // component's hooks (theme-toggle onto --sk-button-*, toast onto --sk-alert-*) exposes ITS hooks,
   // tuned, so it counts. "At least one --sk-* declaration" is what both halves turn on.
   for (const f of files) {
-    if (!f.rel?.startsWith("components/")) continue;
+    if (!f.rel?.startsWith("components/") || siblingOf(f.rel)) continue;
     const declaresHook = f.decls.some((d) => d.name.startsWith("--sk-"));
     if (declaresHook) continue;
 
     fail("component-ships-hooks", f.rel,
       "component sheet paints structure but declares no --sk-* hook, so it has no public restyle surface (and its docs styling-hooks table is empty); lift its themeable values to --sk-<name>-* hooks");
+  }
+
+  // ── 8: an appearance's rules live in that appearance's sheet, and only there ─────────────────────
+  //
+  // `components/button.css` plus `components/button.tactile.css` is only worth anything if the base
+  // really stays free of the tactile rules: one that drifts back in ships to every page again, and
+  // one that lands in the WRONG sibling loads for the wrong appearance. A rule names a value when its
+  // selector matches `[data-appearance="x"]` outside a `:not()`, which only EXCLUDES it, so the base's
+  // own `:not([data-appearance="tactile"], …)` press rule is exactly where it should be.
+  const names = (selector: string) =>
+    new Set([...selector.replace(/:not\((?:[^()]|\([^()]*\))*\)/g, "").matchAll(/\[data-appearance\s*=\s*["']?([\w-]+)["']?\]/g)].map((m) => m[1]!));
+  const valuesWithSheet = new Map<string, Set<string>>();
+  for (const f of files) {
+    const s = siblingOf(f.rel);
+    if (s) valuesWithSheet.set(s.base, (valuesWithSheet.get(s.base) ?? new Set()).add(s.value));
+  }
+  for (const f of files) {
+    if (!f.rel?.startsWith("components/")) continue;
+    const sibling = siblingOf(f.rel);
+    const split = valuesWithSheet.get(sibling?.base ?? f.rel);
+    if (!split) continue;
+    const css = (f.css ?? "").replace(/\/\*[\s\S]*?\*\//g, "");
+    const stray = new Set<string>();
+    for (const m of css.matchAll(/([^{};]+)\{/g)) {
+      const selector = m[1]!.trim();
+      if (selector.startsWith("@")) continue;
+      for (const v of names(selector)) if (sibling ? v !== sibling.value : split.has(v)) stray.add(v);
+    }
+    for (const v of stray) {
+      fail("appearance-sheet", f.rel,
+        sibling
+          ? `names appearance "${v}" but is the "${sibling.value}" sheet; each appearance's rules live in its own sheet`
+          : `still holds "${v}" rules although ${f.rel.replace(/\.css$/, `.${v}.css`)} exists; move them there, or the base ships them to every page`);
+    }
   }
 
   return problems;

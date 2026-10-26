@@ -1,0 +1,46 @@
+/*
+ * TIER 3, ACCORDION · TACTILE
+ *
+ * The `appearance="tactile"` rules of accordion.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER accordion.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.tactile`.
+ */
+
+@layer components {
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Tile's two constructions, drawn on the FRAME, because the frame is the one surface: the items
+   * inside are flattened into it and never carry their own. At rest only, the same as an
+   * ExpandableTile: every trigger is its own control, so nothing here moves on hover or press.
+   *
+   * Brutalist is Button's construction: one black ink in both modes (the system's shadow colour at
+   * full alpha, see button.css), at plain's border width so the frame never changes size. The
+   * dividers take the same ink, so the stack reads as one slab ruled into sections rather than a
+   * black frame around faint hairlines. Radius is untouched.
+   */
+  .sk-accordion[data-appearance="tactile"] {
+    box-shadow:
+      0 var(--sk-accordion-depth) 0 light-dark(
+        color-mix(in oklab, var(--color-bg-surface) 76%, var(--color-text-primary)),
+        color-mix(in oklab, var(--color-bg-surface-sunken) 55%, black)
+      ),
+      0 calc(var(--sk-accordion-depth) + 1px) 4px light-dark(
+        color-mix(in oklab, var(--color-text-primary) 14%, transparent),
+        color-mix(in oklab, var(--color-bg-surface-sunken) 44%, transparent)
+      );
+  }
+
+  /*
+   * Copied from accordion.css that sat after this appearance's rules in one file, to win over them, so it comes
+   * last here too.
+   */
+  @media (forced-colors: active) {
+    .sk-accordion[data-appearance] {
+      box-shadow: none;
+      backdrop-filter: none;
+    }
+  }
+}

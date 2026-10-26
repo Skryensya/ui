@@ -123,6 +123,12 @@ export const buttonContract = {
       values: ["plain", "tactile", "brutalist", "frosted"],
       default: "plain",
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        tactile: ["@skryensya/core/components/button.tactile.css"],
+        brutalist: ["@skryensya/core/components/button.brutalist.css"],
+        frosted: ["@skryensya/core/components/button.frosted.css"],
+      },
     },
     /*
      * `xs` is the floor of the scale, not a fourth step someone felt like adding: it paints at

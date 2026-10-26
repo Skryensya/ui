@@ -8,9 +8,9 @@ import "@skryensya/icons-lucide/select.css";
 import "./studio.css";
 
 /* The studio is built from the kit, so it loads the kit's sheets. */
-import.meta.glob("../../../packages/core/css/components/*.css", {
-  eager: true,
-});
+/* Components first, then their appearance sheets: a base that loads after one wins every tie. */
+import.meta.glob(["../../../packages/core/css/components/*.css", "!../../../packages/core/css/components/*.*.css"], { eager: true });
+import.meta.glob("../../../packages/core/css/components/*.*.css", { eager: true });
 import.meta.glob("../../../packages/core/css/patterns/*.css", { eager: true });
 
 applyScheme(storedScheme());

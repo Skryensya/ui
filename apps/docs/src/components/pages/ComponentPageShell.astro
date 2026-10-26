@@ -228,7 +228,17 @@ const importStatement = (names: readonly string[], entry: string) => {
 const sheets = install?.css.files ?? derivedStyleGroups.map((group) => `@skryensya/core/${group.file}`);
 /** The stylesheet the component names; the others load through its own `@import`s. */
 const ownSheet = install?.css.entry ?? sheets.at(-1);
-const vanillaStyleImports = ownSheet ? [`@import "${viaBinding("vanilla", "@skryensya/core/tokens.css")}";`, `@import "${viaBinding("vanilla", ownSheet)}";`, ...extraSheets.map((sheet) => `@import "${viaBinding("vanilla", sheet)}";`)].join("\n") : "";
+/* Each non-default appearance is its own sheet (`button.brutalist.css`), named by the contract: the Installation
+   panel lists them, so a page that wants one knows what to import. Read from the contract, never typed here. */
+const appearanceSheets = (() => {
+  const c = contractId ? getContract(contractId) : undefined;
+  if (!c) return [] as string[];
+  const out = new Set<string>();
+  for (const option of Object.values(c.options)) for (const list of Object.values(option.sheets ?? {})) list.forEach((s) => out.add(s));
+  for (const list of Object.values(c.memberAppearanceSheets ?? {})) list.forEach((s) => out.add(s));
+  return [...out];
+})();
+const vanillaStyleImports = ownSheet ? [`@import "${viaBinding("vanilla", "@skryensya/core/tokens.css")}";`, `@import "${viaBinding("vanilla", ownSheet)}";`, ...extraSheets.map((sheet) => `@import "${viaBinding("vanilla", sheet)}";`), ...(appearanceSheets.length ? [`/* ${t("install.appearanceSheets")} */`, ...appearanceSheets.map((sheet) => `@import "${viaBinding("vanilla", sheet)}";`)] : [])].join("\n") : "";
 const alsoLoads = sheets.filter((sheet) => sheet !== ownSheet);
 const autoSnippet = `import { initComponents } from "@skryensya/vanilla/auto";
 
@@ -242,7 +252,7 @@ const vanillaMountSnippet = vanillaMount
   : null;
 const reactNames = importNames?.length ? install?.react?.names.filter((name) => importNames.includes(name)) : install?.react?.names;
 const reactSnippet = install?.react
-  ? `${importStatement(reactNames ?? [], install.react.entry)}\nimport "${viaBinding("react", ownSheet!)}";${extraSheets.map((sheet) => `\nimport "${viaBinding("react", sheet)}";`).join("")}`
+  ? `${importStatement(reactNames ?? [], install.react.entry)}\nimport "${viaBinding("react", ownSheet!)}";${extraSheets.map((sheet) => `\nimport "${viaBinding("react", sheet)}";`).join("")}${appearanceSheets.length ? `\n\n// ${t("install.appearanceSheets")}\n${appearanceSheets.map((sheet) => `import "${viaBinding("react", sheet)}";`).join("\n")}` : ""}`
   : null;
 const autoLink = `<a href="${localizePath("/automatic-mounting", locale)}">${t("vanilla.autoLinkLabel")}</a>`;
 

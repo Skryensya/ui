@@ -1,0 +1,31 @@
+/*
+ * TIER 3, BUTTON GROUP · TACTILE
+ *
+ * The `appearance="tactile"` rules of button-group.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER button-group.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.tactile`.
+ */
+
+@layer components {
+  /*
+   * TACTILE SEAMS. Each member casts a soft drop shadow, and a member stacked above its neighbour
+   * spilled that shadow sideways over the neighbour's face as a dark smudge at the seam. So a member
+   * that is not first is clipped at its START edge, the one it shares, and keeps its shadow on every
+   * other side. The previous member's own spill, which lands under this one's face and below its
+   * ledge, is what fills the drop where the two meet, so the shadow stays one continuous band. The
+   * start edge is clipped at the border box, not a column inside it: a column in left a light crack
+   * through the ledge wherever the widths were fractional.
+   */
+  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-button[data-appearance="tactile"],
+  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))):is(.sk-menu, .sk-popover) > .sk-button[data-appearance="tactile"],
+  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="tactile"],
+  .sk-button-group:not([data-orientation="vertical"], :has(> .sk-button-group)) > :not(:nth-child(1 of :not(.sk-button-group__separator, [hidden]))).sk-tooltip > .sk-tooltip__trigger > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="tactile"] {
+    clip-path: inset(-50px -50px -50px 0);
+  }
+  .sk-button-group:has(> .sk-button[data-appearance="tactile"], > :is(.sk-menu, .sk-popover) > .sk-button[data-appearance="tactile"], > .sk-tooltip > .sk-tooltip__trigger > .sk-button[data-appearance="tactile"]) {
+    --sk-button-group-shadow: none;
+    --sk-button-group-wash: none;
+  }
+}

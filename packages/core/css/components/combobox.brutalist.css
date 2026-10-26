@@ -1,0 +1,34 @@
+/*
+ * TIER 3, COMBOBOX · BRUTALIST
+ *
+ * The `appearance="brutalist"` rules of combobox.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER combobox.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.brutalist`.
+ */
+
+@layer components {
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Input's axis on this field (input.css documents it): written as the root's own hooks behind
+   * `:where()`, at the base rule's specificity, so every state (invalid, disabled, read-only) still
+   * outranks it. The offset is internal. No tactile: a field is typed into, not pressed.
+   */
+
+  /* BRUTALIST: the black edge and a hard offset toward block-end and inline-end, mirrored in RTL,
+   * in place of the soft well. */
+  .sk-combobox:where([data-appearance="brutalist"]) {
+    --field-brutalist-offset: 3px;
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+    --sk-combobox-border-color: var(--brutalist-black);
+    --sk-combobox-wash: none;
+    --sk-combobox-shadow: calc(var(--field-brutalist-offset) * var(--brutalist-direction)) var(--field-brutalist-offset) 0
+      var(--brutalist-black);
+  }
+  .sk-combobox:where([data-appearance="brutalist"]):dir(rtl) {
+    --brutalist-direction: -1;
+  }
+}

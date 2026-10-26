@@ -160,7 +160,9 @@ _Avoid_: modifier, flag, status
 A selectable visual and physical expression of one component family. It may change paint, depth,
 elevation, and interaction feedback while preserving that component's meaning, anatomy, semantics,
 logical state, and behavior. It is one axis, not the aggregate of every visible option: Button's
-`variant` is emphasis, `tone` is meaning, and `appearance` is physical expression.
+`variant` is emphasis, `tone` is meaning, and `appearance` is physical expression. Each non-default
+value ships as its own stylesheet beside the component's (`button.brutalist.css`), which the contract
+names in `options.appearance.sheets`, so a page that never writes the value never loads its rules.
 _Avoid_: variant, tone, state, styling hook, presentation, theme
 
 **Markup contract**:

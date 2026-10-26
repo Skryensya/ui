@@ -96,6 +96,11 @@ export const passwordInputContract = {
       type: "enum",
       values: ["plain", "brutalist", "frosted"],
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        brutalist: ["@skryensya/core/components/password-input.brutalist.css"],
+        frosted: ["@skryensya/core/components/password-input.frosted.css"],
+      },
     },
     /** Submitted with the form. */
     name: { type: "string", attr: "name", machineInput: true },

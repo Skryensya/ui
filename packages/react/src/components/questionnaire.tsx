@@ -54,6 +54,7 @@ import { RadioGroup } from "./selection.js";
 import { Button } from "./button.js";
 import { FormField } from "./form-field.js";
 import { Input, Textarea } from "./input.js";
+import { kbdParts } from "@skryensya/core/kbd";
 import { Kbd } from "./kbd.js";
 import { Progress } from "./progress.js";
 import { Steps } from "./steps.js";
@@ -601,6 +602,8 @@ function ChoiceContent({ choice }: { choice: QuestionnaireChoice }) {
  * what the stylesheet hides.
  */
 function ChoiceShortcut({ shortcut }: { shortcut: string | null }) {
+  /* Kbd logs an error for empty children; the empty keycap is the stylesheet's own hide hook, so it is spelled out here. */
+  if (!shortcut) return <kbd aria-hidden="true" data-tone="neutral" className={`${kbdParts.root} ${questionnaireParts.shortcut}`} />;
   return (
     <Kbd aria-hidden="true" className={questionnaireParts.shortcut}>
       {shortcut ?? ""}

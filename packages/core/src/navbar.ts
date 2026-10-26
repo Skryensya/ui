@@ -50,6 +50,11 @@ export const navbarContract = {
       values: ["plain", "brutalist", "frosted"],
       default: "plain",
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        brutalist: ["@skryensya/core/components/navbar.brutalist.css"],
+        frosted: ["@skryensya/core/components/navbar.frosted.css"],
+      },
     },
   },
 

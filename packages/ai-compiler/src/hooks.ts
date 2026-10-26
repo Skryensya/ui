@@ -1,4 +1,5 @@
 import { parseTokens, CSS_DIR } from "@skryensya/core/parse";
+import { sheetsToReconcile } from "./contract-sheets.js";
 import { contractIds, getContract } from "@skryensya/core/registry";
 
 /*
@@ -100,9 +101,7 @@ export function checkStylingHooks(): HookProblem[] {
      * EVERY sheet this contract publishes, not just `css`. A contract whose styling spans more than
      * one stylesheet says so with `hookSheets`, and the union is what `hooks` is reconciled against.
      */
-    const rels = [contract.css, ...(contract.hookSheets ?? [])].map((c) =>
-      c.replace(/^@skryensya\/core\//, ""),
-    );
+    const rels = sheetsToReconcile(contract).map((c) => c.replace(/^@skryensya\/core\//, ""));
     const missingSheets = rels.filter((rel) => !byRel.get(rel));
     if (missingSheets.length > 0) {
       for (const rel of missingSheets) {

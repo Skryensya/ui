@@ -1,0 +1,94 @@
+/*
+ * TIER 3, STEPS · SEGMENTS
+ *
+ * The `appearance="segments"` rules of steps.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER steps.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.segments`.
+ */
+
+@layer components {
+  /* ── segments ─────────────────────────────────────────────────────────────
+   * THE SAME SEQUENCE, READ AT A GLANCE. One bar per stage on a single axis, and no labels: this is
+   * the shape for a progress you check in passing rather than study. Everything that decides what a
+   * stage IS stays where it was (statuses, `aria-current`, the windowing); what changes is how a
+   * marker is drawn, so a bar is the marker stretched to fill its stage.
+   *
+   * No connector, because the bars ARE the connector: laid end to end with a gap between them, a row
+   * of them already reads as one track, and a line joining them would draw the same distance twice.
+   */
+  .sk-steps[data-appearance="segments"] {
+    gap: var(--space-inline-xs);
+    align-items: center;
+  }
+  .sk-steps[data-appearance="segments"] .sk-steps__item {
+    grid-template-rows: auto;
+    padding: 0;
+  }
+
+  /* The bars are the track: nothing to join. */
+  .sk-steps[data-appearance="segments"] .sk-steps__item::after {
+    content: none;
+  }
+
+  /* Labels and descriptions still exist for a screen reader; they are just not drawn. */
+  .sk-steps[data-appearance="segments"] :is(.sk-steps__label, .sk-steps__description) {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .sk-steps[data-appearance="segments"] .sk-steps__marker {
+    inline-size: 100%;
+    block-size: var(--sk-steps-segment-size);
+    border: 0;
+    border-radius: var(--radius-pill);
+    /* PENDING IS THE QUIETEST RUNG. `border-default` read as a filled bar next to the accent one,
+       so the three states said "done, done, here" instead of "done, here, not yet". */
+    background: var(--color-border-subtle);
+    box-shadow: none;
+    /* The number inside the disc has no room in a bar, and the bar's fill already says the same. */
+    color: transparent;
+    font-size: 0;
+  }
+  .sk-steps[data-appearance="segments"] .sk-steps__item[data-status="complete"] .sk-steps__marker {
+    background: var(--color-action-accent);
+  }
+
+  /*
+   * THE CURRENT STAGE IS A DIFFERENT COLOUR AND SLIGHTLY TALLER: the tertiary text colour (a mid grey, light
+   * enough on dark and dark enough on light to stand clear of the track) against the accent of the finished bars, and half again the height. The accent says "done";
+   * a colour that is not the accent says "this one is different", so where you are is not mistaken for
+   * a stage that is finished. Because the height differs too, it still reads in grey, in forced colours
+   * and for a colour-blind reader, and neither that colour nor a taller bar is a thing keyboard focus
+   * looks like.
+   *
+   * It used to be an empty bar with an accent ring, and a ring is exactly how focus is drawn: the stage
+   * you are on was easy to mistake for the control that has focus, and the other way round. A half
+   * filled bar, a full-strength tall one and a dimmed accent were tried next and dropped: they read
+   * as a measurement, as finished, and as unfinished business.
+   */
+  .sk-steps[data-appearance="segments"] .sk-steps__item[data-status="current"] .sk-steps__marker {
+    background: var(--color-text-tertiary);
+    block-size: calc(var(--sk-steps-segment-size) * 1.5);
+  }
+  @media (forced-colors: active) {
+    .sk-steps:is([data-appearance="segments"]) .sk-steps__marker {
+      border: 1px solid CanvasText;
+      background: Canvas;
+      box-shadow: none;
+    }
+    .sk-steps:is([data-appearance="segments"]) .sk-steps__item[data-status="complete"] .sk-steps__marker {
+      background: Highlight;
+    }
+    .sk-steps:is([data-appearance="segments"]) .sk-steps__item[data-status="current"] .sk-steps__marker {
+      background: Highlight;
+    }
+  }
+}

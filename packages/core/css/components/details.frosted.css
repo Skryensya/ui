@@ -1,0 +1,51 @@
+/*
+ * TIER 3, DETAILS · FROSTED
+ *
+ * The `appearance="frosted"` rules of details.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER details.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.frosted`.
+ */
+
+@layer components {
+  /* FROSTED: Button's material, on the same surface brutalist uses (the group's frame, or a lone
+   * details). Opaque baseline first; the see-through sheet only where it can be done honestly. */
+  :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="frosted"] {
+    --frost-highlight: light-dark(
+      color-mix(in oklab, var(--color-bg-surface) 90%, transparent),
+      color-mix(in oklab, var(--color-text-primary) 22%, transparent)
+    );
+    border-color: color-mix(in oklab, currentColor 18%, transparent);
+    box-shadow: inset 0 1px 0 var(--frost-highlight), 0 1px 2px var(--shadow-sm);
+  }
+  .sk-details-group[data-appearance="frosted"] > .sk-details + .sk-details {
+    border-block-start-color: color-mix(in oklab, currentColor 12%, transparent);
+  }
+
+  /* The material, behind the system switch (semantic/_frost.scss); off, the surface and the sunken
+   * body stay opaque. */
+  :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="frosted"] {
+    --frost-glass: var(--frost-on)
+      linear-gradient(to bottom, color-mix(in oklab, var(--frost-highlight) 60%, transparent), transparent 12rem),
+      color-mix(in oklab, var(--color-bg-surface) var(--frost-alpha-card), transparent);
+    background: var(--frost-glass, var(--color-bg-surface));
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
+  }
+  :is(.sk-details:not(.sk-details-group > *), .sk-details-group)[data-appearance="frosted"] .sk-details__content {
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface-sunken) var(--frost-alpha-card), transparent);
+    --sk-details-content-bg: var(--frost-glass, var(--color-bg-surface-sunken));
+  }
+
+  /*
+   * Copied from details.css that sat after this appearance's rules in one file, to win over them, so it comes
+   * last here too.
+   */
+  @media (forced-colors: active) {
+
+    .sk-details-group > .sk-details + .sk-details {
+      border-block-start-color: CanvasText;
+    }
+  }
+}

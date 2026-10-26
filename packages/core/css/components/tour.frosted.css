@@ -1,0 +1,38 @@
+/*
+ * TIER 3, TOUR · FROSTED
+ *
+ * The `appearance="frosted"` rules of tour.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER tour.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.frosted`.
+ */
+
+@layer components {
+  /* FROSTED: Button's see-through material over whatever sits behind the tour step, with a fine edge and
+   * a lit top rim over its own shadow. Opaque baseline; the material only where backdrop-filter
+   * exists and no reduced-transparency preference is set. */
+  .sk-tour[data-appearance="frosted"] .sk-tour__popover {
+    --sk-tour-border-color: color-mix(in oklab, currentColor 18%, transparent);
+    --sk-tour-shadow: inset 0 1px 0 var(--frost-highlight), var(--elevation-overlay);
+  }
+  .sk-tour[data-appearance="frosted"] .sk-tour__popover {
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-tour-bg) var(--frost-alpha-overlay), transparent);
+    background: var(--frost-glass, var(--sk-tour-bg));
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-lg)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-lg)) saturate(var(--frost-saturate));
+  }
+
+  /*
+   * Copied from tour.css that sat after this appearance's rules in one file, to win over them, so it comes
+   * last here too.
+   */
+  @media (forced-colors: active) {
+    .sk-tour[data-appearance] .sk-tour__popover {
+      background: Canvas;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+  }
+}

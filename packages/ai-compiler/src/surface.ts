@@ -53,6 +53,8 @@ const PUBLIC_OPTION_KEYS = [
   "falseValue",
   "alsoAttr",
   "deprecatedValues",
+  /* Which sheet a value must be linked with: a page that does not link it renders that value as plain. */
+  "sheets",
   "computedInput",
   "writeDefault",
 ] as const satisfies readonly (keyof ContractOption)[];
@@ -155,7 +157,7 @@ function signatureSurface(signature: ContractSignature) {
  * The contract's consumer-visible shape, canonically ordered.
  *
  * Included: css, parts, options (public fields), events, eventDetails, a11y, hooks, hookSheets,
- * outputHooks, authoredAttrs, systemOwned, and per signature host / option lists / requires·forbids·groups /
+ * memberAppearanceSheets, outputHooks, authoredAttrs, systemOwned, and per signature host / option lists / requires·forbids·groups /
  * parents / notInside / descendants / implies / excludes / pairs / slotImplies / slots / mount /
  * portals / hitTesting / forward / compose / deprecated.
  *
@@ -176,6 +178,7 @@ export function contractSurface(contract: ComponentContract) {
     a11y: contract.a11y,
     hooks: contract.hooks,
     hookSheets: contract.hookSheets,
+    memberAppearanceSheets: contract.memberAppearanceSheets,
     outputHooks: contract.outputHooks,
     /* Dropping one breaks authored markup on a host this contract does not even own. */
     authoredAttrs: contract.authoredAttrs ? [...contract.authoredAttrs].sort() : undefined,

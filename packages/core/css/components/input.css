@@ -247,51 +247,11 @@
   }
 
   /*
-   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
-   *
-   * Button's axis on the field, for every family that paints a `.sk-input` (Combobox, NumberField,
-   * PasswordInput, DatePicker, TimeField, TagsInput…): they forward the attribute, this draws it.
-   * Written as the existing hooks behind `:where()`, at the base rule's own specificity, so every
-   * STATE above still outranks it: an invalid brutalist field keeps its danger edge, a disabled one
-   * its disabled paint. The offset is internal, since this sheet is a hook sheet of those families.
-   * No tactile: a field is typed into, not pressed.
+   * APPEARANCES live in their own sheets, so a page that never asks for one does not ship it:
+   *   brutalist  input.brutalist.css
+   *   frosted    input.frosted.css
+   * Load each one right after this file: it only adds to it, and a base that loads after one wins every tie.
    */
-
-  /* BRUTALIST: the black edge and a hard offset toward block-end and inline-end, mirrored in RTL, in
-   * place of the sunken well. Disabled drops the offset. */
-  .sk-input:where([data-appearance="brutalist"]) {
-    --input-brutalist-offset: 3px;
-    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
-    --brutalist-direction: 1;
-    --sk-input-border-color: var(--brutalist-black);
-    --sk-input-wash: none;
-    --sk-input-shadow: calc(var(--input-brutalist-offset) * var(--brutalist-direction)) var(--input-brutalist-offset) 0
-      var(--brutalist-black);
-  }
-
-  .sk-input:where([data-appearance="brutalist"]):dir(rtl) {
-    --brutalist-direction: -1;
-  }
-
-  .sk-input:where([data-appearance="brutalist"]):is(:disabled, [aria-disabled="true"]) {
-    --sk-input-shadow: none;
-  }
-
-  /* FROSTED: the field's own fill (whichever state set it) thinned into a sheet over a blurred
-   * backdrop, with a fine edge. Opaque baseline; the material only where backdrop-filter exists and
-   * no reduced-transparency preference is set. */
-  .sk-input:where([data-appearance="frosted"]) {
-    --sk-input-wash: none;
-    --sk-input-border-color: color-mix(in oklab, currentColor 24%, transparent);
-    --sk-input-shadow: inset 0 1px 2px var(--shadow-sm);
-  }
-
-  .sk-input:where([data-appearance="frosted"]) {
-    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-input-bg) var(--frost-alpha-field), transparent);
-    background: var(--frost-glass, var(--sk-input-bg));
-    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-sm)) saturate(var(--frost-saturate));
-    backdrop-filter: var(--frost-on) blur(var(--frost-blur-sm)) saturate(var(--frost-saturate));
-  }
 
   /* GHOST: no container at all. Written after the appearances and at the same `:where()` specificity, so it wins over their paint
    * and loses to every state (invalid keeps its danger edge, disabled its own paint). The focus ring is untouched. */

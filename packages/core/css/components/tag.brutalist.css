@@ -1,0 +1,41 @@
+/*
+ * TIER 3, TAG · BRUTALIST
+ *
+ * The `appearance="brutalist"` rules of tag.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER tag.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.brutalist`.
+ */
+
+@layer components {
+  /* Disabled outranks appearance, the same ordering Button's own brutalist-disabled rule states: a
+   * strong offset must never make an unavailable chip look pressable. */
+  .sk-tag[data-appearance="brutalist"]:is(:disabled, [aria-disabled="true"]) {
+    --brutalist-black: var(--color-border-subtle);
+  }
+
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Button's axis on the tag, which takes brutalist alone: a mark this small is never pressed
+   * (no tactile), and see-through glass on it would only cost its label contrast (no frosted). A
+   * black edge and a 2px hard offset toward block-end and inline-end, mirrored in RTL; the
+   * offset is internal so no sheet that reuses this one inherits a hook it does not document.
+   */
+  .sk-tag[data-appearance="brutalist"] {
+    --brutalist-offset: 2px;
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+    border-color: var(--brutalist-black);
+    box-shadow: calc(var(--brutalist-offset) * var(--brutalist-direction)) var(--brutalist-offset) 0 var(--brutalist-black);
+  }
+  .sk-tag[data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+  @media (forced-colors: active) {
+    .sk-tag[data-appearance="brutalist"] {
+      box-shadow: none;
+    }
+  }
+}

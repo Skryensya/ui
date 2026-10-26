@@ -1,0 +1,93 @@
+/*
+ * TIER 3, TILE · FROSTED
+ *
+ * The `appearance="frosted"` rules of tile.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER tile.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.frosted`.
+ */
+
+@layer components {
+  /* end data-motion mirror */
+
+  /*
+   * FROSTED: Button's material (button.css documents the contract). The baseline is the plain
+   * surface, opaque, plus a fine edge and a lit top rim; only a browser with backdrop-filter and no
+   * reduced-transparency preference gets the see-through sheet. No travel: a card that goes glassy
+   * and also sinks would be two expressions at once. Selection keeps plain's accent border.
+   */
+  .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="frosted"] {
+    --sk-tile-border-color: color-mix(in oklab, currentColor 18%, transparent);
+    --frost-wash: linear-gradient(to bottom, color-mix(in oklab, var(--frost-highlight) 45%, transparent), transparent 40%);
+    /* The material behind the system switch (semantic/_frost.scss); off, the opaque surface. */
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface) var(--frost-alpha-card), transparent);
+    background: var(--frost-wash) var(--frost-glass, var(--color-bg-surface));
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
+    box-shadow: inset 0 1px 0 var(--frost-highlight), 0 1px 2px var(--shadow-sm);
+  }
+  .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="frosted"]:where(
+      [data-state="checked"],
+      [data-state="selected"],
+      :has(> input:checked),
+      :has(> input[type="checkbox"]:indeterminate)
+    ) {
+    --sk-tile-border-color: var(--sk-color-border-selected);
+  }
+  .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="frosted"]:is(
+      [data-disabled]:disabled,
+      :has(> input:disabled)
+    ) {
+    --sk-tile-border-color: var(--sk-color-border-subtle);
+    --frost-highlight: transparent;
+  }
+
+  /* The revealed panel is part of the same sheet: sunken, but still see-through. */
+  .sk-tile--expandable[data-appearance="frosted"] > .sk-tile__expandable-content:not([hidden]) {
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface-sunken) var(--frost-alpha-control), transparent);
+    background: var(--frost-glass, var(--color-bg-surface-sunken));
+  }
+  @media (forced-colors: active) {
+    .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="frosted"] {
+      --sk-tile-border-color: CanvasText;
+      border-color: var(--sk-tile-border-color);
+      background: Canvas;
+      box-shadow: none;
+      backdrop-filter: none;
+    }
+    .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="frosted"]:is(
+        [data-state="checked"],
+        [data-state="selected"],
+        :has(> input:checked),
+        :has(> input[type="checkbox"]:indeterminate)
+      ) {
+      --sk-tile-border-color: Highlight;
+    }
+    .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable)[data-appearance="frosted"]:is(
+        [data-disabled]:disabled,
+        :has(> input:disabled)
+      ) {
+      --sk-tile-border-color: GrayText;
+    }
+  }
+
+  /*
+   * Copied from tile.css that sat after this appearance's rules in one file, to win over them, so it comes
+   * last here too.
+   */
+  @media (forced-colors: active) {
+
+    .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable):where([data-state="checked"], [data-state="selected"]),
+    .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable):has(> input:checked),
+    .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable):has(> input[type="checkbox"]:indeterminate) {
+      --sk-tile-border-color: Highlight;
+    }
+
+    .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable):where([data-disabled]:disabled),
+    .sk-tile:where(.sk-tile--interactive, .sk-tile--expandable):has(> input:disabled) {
+      --sk-tile-border-color: GrayText;
+      color: GrayText;
+    }
+  }
+}

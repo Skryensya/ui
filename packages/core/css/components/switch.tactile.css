@@ -1,0 +1,69 @@
+/*
+ * TIER 3, SWITCH · TACTILE
+ *
+ * The `appearance="tactile"` rules of switch.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER switch.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.tactile`.
+ */
+
+@layer components {
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Button's axis on the standalone switch (button.css documents each construction in full), keyed
+   * on the label. The thumb's slide rides `transform`; a press rides `translate`, so the two compose
+   * instead of one cancelling the other.
+   */
+
+  /* TACTILE: a sunken well and a raised thumb on a small ledge; a press sinks the thumb, not the track. */
+  .sk-switch[data-appearance="tactile"] .sk-switch__control {
+    box-shadow: inset 0 2px 3px light-dark(
+      color-mix(in oklab, var(--color-text-primary) 18%, transparent),
+      color-mix(in oklab, var(--color-bg-surface-sunken) 70%, transparent)
+    );
+  }
+  .sk-switch[data-appearance="tactile"] .sk-switch__thumb {
+    box-shadow:
+      0 2px 0 light-dark(
+        color-mix(in oklab, var(--sk-switch-thumb-bg) 70%, var(--color-text-primary)),
+        color-mix(in oklab, var(--sk-switch-thumb-bg) 60%, var(--color-bg-surface-sunken))
+      ),
+      var(--elevation-raised);
+    transition:
+      transform var(--motion-state-change-duration) var(--motion-state-change-easing),
+      translate var(--motion-feedback-duration) var(--motion-feedback-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  /* The press, for both: the track stops squeezing and the thumb travels instead. */
+  .sk-switch[data-appearance="tactile"]:active .sk-switch__control {
+    scale: 1;
+  }
+  .sk-switch[data-appearance="tactile"]:not(:has(.sk-switch__input:disabled)):active .sk-switch__thumb {
+    translate: 0 1px;
+    box-shadow: 0 1px 0 light-dark(
+      color-mix(in oklab, var(--sk-switch-thumb-bg) 70%, var(--color-text-primary)),
+      color-mix(in oklab, var(--sk-switch-thumb-bg) 60%, var(--color-bg-surface-sunken))
+    );
+  }
+
+  /*
+   * Copied from switch.css that sat after this appearance's rules in one file, to win over them, so it comes
+   * last here too.
+   */
+  @media (forced-colors: active) {
+    .sk-switch[data-appearance] .sk-switch__control {
+      box-shadow: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+
+    .sk-switch[data-appearance] .sk-switch__thumb,
+    .sk-switch[data-appearance]:not(:has(.sk-switch__input:disabled)):active .sk-switch__thumb {
+      box-shadow: none;
+      translate: none;
+    }
+  }
+}

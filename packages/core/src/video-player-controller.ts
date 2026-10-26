@@ -256,12 +256,21 @@ export function connectVideoPlayer(root: HTMLElement, initial: VideoPlayerConfig
     },
   );
 
+  /* The name starts with the clock the button shows (label-in-name), then says what a press does next. */
+  const nameTimeButton = () => {
+    if (!timeButton) return;
+    const action = showRemaining ? labels().elapsed : labels().remaining;
+    const clock = [...timeButton.children].map((part) => part.textContent?.trim()).filter(Boolean).join(" ");
+    timeButton.setAttribute("aria-label", clock ? `${clock}: ${action}` : action);
+  };
+
   /* `force` is the connect-time paint, before the first visibility report has said anything. */
   const paintTime = (force = false) => {
     if (!visible && !force) return;
     const total = videoFiniteTime(video.duration);
     const now = scrubbing ? scrubTime : videoFiniteTime(video.currentTime);
     view.update(now, total, bufferedEndAt(now));
+    nameTimeButton();
   };
 
   const paintVolume = () => {
@@ -295,7 +304,7 @@ export function connectVideoPlayer(root: HTMLElement, initial: VideoPlayerConfig
     }
     if (timeButton) {
       /* The name is what a press does next, and the visible clock is the rest of the story. */
-      timeButton.setAttribute("aria-label", showRemaining ? labels().elapsed : labels().remaining);
+      nameTimeButton();
       flag(videoPlayerAttrs.remaining, showRemaining);
     }
     if (speedButton) {

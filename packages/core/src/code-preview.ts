@@ -120,6 +120,11 @@ export const codePreviewContract = {
       values: ["plain", "brutalist", "frosted"],
       default: "plain",
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        brutalist: ["@skryensya/core/components/code-preview.brutalist.css", "@skryensya/core/components/switch.brutalist.css"],
+        frosted: ["@skryensya/core/components/code-preview.frosted.css", "@skryensya/core/components/switch.frosted.css"],
+      },
     },
     /** The panel is taller than its window, so it gets a disclosure control. */
     collapsible: { type: "boolean", default: false, attr: codePreviewAttrs.collapsible, trueValue: "", machineInput: true },

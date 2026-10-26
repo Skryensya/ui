@@ -120,6 +120,12 @@ export const backToTopContract = {
       values: ["plain", "tactile", "brutalist", "frosted"],
       default: "plain",
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        tactile: ["@skryensya/core/components/back-to-top.tactile.css"],
+        brutalist: ["@skryensya/core/components/back-to-top.brutalist.css"],
+        frosted: ["@skryensya/core/components/back-to-top.frosted.css"],
+      },
     },
     /**
      * Distance the scroller must travel from its start before the control reveals itself. The

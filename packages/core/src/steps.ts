@@ -78,7 +78,16 @@ export const stepsContract = {
      * was never the point. The statuses, the connector logic, `aria-current` and the windowing are
      * unchanged, which is the reason this is an appearance and not another component.
      */
-    appearance: { type: "enum", values: ["markers", "segments"], default: "markers", attr: "data-appearance" },
+    appearance: {
+      type: "enum",
+      values: ["markers", "segments"],
+      default: "markers",
+      attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        segments: ["@skryensya/core/components/steps.segments.css"],
+      },
+    },
   },
 
   signatures: {

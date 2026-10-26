@@ -426,6 +426,9 @@ export function CarouselSlide({ children, className, ...props }: CarouselSlidePr
       {...props}
       {...itemProps}
       className={cx(carouselParts.slide, className)}
+      /* The machine hides slides out of view from assistive tech, but a link inside one stays tabbable: a
+         focusable node under aria-hidden. The slides are a scroller, so they stay readable. */
+      aria-hidden={undefined}
       /* A slide between two stops (`slidesPerMove` above 1) is marked, and the sheet takes its snap away. */
       data-no-snap={itemProps && !isStop ? "" : undefined}
       /* `scroll-snap-align` first, as the enhancer seeds it before the machine's first measure: that

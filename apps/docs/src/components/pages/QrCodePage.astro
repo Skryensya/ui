@@ -129,9 +129,9 @@ const explain = (option: string, values: readonly string[]) =>
     <p set:html={t("qrCodePage.popoverBody")} />
     <UsagePreview tree={qrCodePopoverTree(locale)} label={t("qrCodePage.popoverLabel")} viewport="overlay" storybookTitle="Components/QRCode" storybookStory="Popover" />
     <UsagePreview tree={qrCodeTicketTree(locale)} title={t("qrCodePage.ticketTitle")} description={t("qrCodePage.ticketBody")} storybookTitle="Components/QRCode" storybookStory="Ticket" />
-    <h4>{t("qrCodePage.runtimeTitle")}</h4>
+    <h3>{t("qrCodePage.runtimeTitle")}</h3>
     <p set:html={t("qrCodePage.runtimeBody")} />
-    <h4>{t("qrCodePage.exportTitle")}</h4>
+    <h3>{t("qrCodePage.exportTitle")}</h3>
     <p set:html={t("qrCodePage.exportBody")} />
     <p>
       {reactStorybook && <a class="sk-link sk-interactive" href={reactStorybook} rel="noreferrer" target="_blank">Storybook React</a>}

@@ -23,7 +23,10 @@ import "@skryensya/core/tokens.scss";
  * can enumerate at build time.
  */
 import.meta.glob("../../core/css/patterns/*.css", { eager: true });
-import.meta.glob("../../core/css/components/*.css", { eager: true });
+/* Components first, then their appearance sheets (`x.tactile.css`): an appearance only adds to its component,
+   and a base that loads after it wins every tie at equal specificity. */
+import.meta.glob(["../../core/css/components/*.css", "!../../core/css/components/*.*.css"], { eager: true });
+import.meta.glob("../../core/css/components/*.*.css", { eager: true });
 /* Needed for focus-ring.spec.ts (G5): that gate reads a real computed `outline-style` off a
  * highlighted `.sk-menu__item`, which resolves to nothing without this sheet. Confirmed missing
  * before this addition: `menu/with-submenu` was already a canonical tree and rendered, unstyled,

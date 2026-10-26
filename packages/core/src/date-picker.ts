@@ -118,6 +118,11 @@ export const datePickerContract = {
       type: "enum",
       values: ["plain", "brutalist", "frosted"],
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        brutalist: ["@skryensya/core/components/date-picker.brutalist.css"],
+        frosted: ["@skryensya/core/components/date-picker.frosted.css"],
+      },
     },
     /** Submitted under this name. */
     name: { type: "string", attr: "data-name", machineInput: true },

@@ -159,28 +159,8 @@
   }
 
   /*
-   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
-   *
-   * Button's axis on the key legend, which takes brutalist alone: a mark this small is never pressed
-   * (no tactile), and see-through glass on it would only cost its label contrast (no frosted). A
-   * black edge and a 2px hard offset toward block-end and inline-end, mirrored in RTL; the
-   * offset is internal so no sheet that reuses this one inherits a hook it does not document.
+   * APPEARANCES live in their own sheets, so a page that never asks for one does not ship it:
+   *   brutalist  kbd.brutalist.css
+   * Load each one right after this file: it only adds to it, and a base that loads after one wins every tie.
    */
-  .sk-kbd[data-appearance="brutalist"] {
-    --brutalist-offset: 2px;
-    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
-    --brutalist-direction: 1;
-    border-color: var(--brutalist-black);
-    box-shadow: calc(var(--brutalist-offset) * var(--brutalist-direction)) var(--brutalist-offset) 0 var(--brutalist-black);
-  }
-
-  .sk-kbd[data-appearance="brutalist"]:dir(rtl) {
-    --brutalist-direction: -1;
-  }
-
-  @media (forced-colors: active) {
-    .sk-kbd[data-appearance="brutalist"] {
-      box-shadow: none;
-    }
-  }
 }

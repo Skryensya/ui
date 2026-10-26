@@ -90,6 +90,12 @@ export const segmentedContract = {
       values: ["plain", "tactile", "brutalist", "frosted"],
       default: "plain",
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        tactile: ["@skryensya/core/components/segmented.tactile.css"],
+        brutalist: ["@skryensya/core/components/segmented.brutalist.css"],
+        frosted: ["@skryensya/core/components/segmented.frosted.css"],
+      },
     },
     /*
      * The TRACK's size, on Button's scale: `sm` is the size it has always been, the height of a

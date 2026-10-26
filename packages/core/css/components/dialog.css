@@ -247,45 +247,11 @@
   }
 
   /*
-   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
-   *
-   * Button's axis on the dialog's surface (button.css documents each construction in full). Plain,
-   * brutalist and frosted: a surface is never pressed, so there is no tactile. Radius, padding and
-   * motion are untouched.
+   * APPEARANCES live in their own sheets, so a page that never asks for one does not ship it:
+   *   brutalist  dialog.brutalist.css
+   *   frosted    dialog.frosted.css
+   * Load each one right after this file: it only adds to it, and a base that loads after one wins every tie.
    */
-
-  /* BRUTALIST: the black edge and a hard zero-blur offset toward block-end and inline-end
-   * (mirrored in RTL), in place of the soft elevation. Flat face. */
-  .sk-dialog[data-appearance="brutalist"] {
-    --sk-dialog-brutalist-offset: 8px;
-    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
-    --brutalist-direction: 1;
-    --sk-dialog-border-color: var(--brutalist-black);
-    --sk-dialog-header-border-color: var(--brutalist-black);
-    --sk-dialog-footer-border-color: var(--brutalist-black);
-    --sk-dialog-wash: none;
-    --sk-dialog-elevation: calc(var(--sk-dialog-brutalist-offset) * var(--brutalist-direction)) var(--sk-dialog-brutalist-offset) 0 var(--brutalist-black);
-  }
-
-  .sk-dialog[data-appearance="brutalist"]:dir(rtl) {
-    --brutalist-direction: -1;
-  }
-
-  /* FROSTED: Button's see-through material over whatever sits behind the dialog, with a fine edge and
-   * a lit top rim over its own shadow. Opaque baseline; the material only where backdrop-filter
-   * exists and no reduced-transparency preference is set. */
-  .sk-dialog[data-appearance="frosted"] {
-    --sk-dialog-wash: none;
-    --sk-dialog-border-color: color-mix(in oklab, currentColor 18%, transparent);
-    --sk-dialog-elevation: inset 0 1px 0 var(--frost-highlight), var(--elevation-modal);
-  }
-
-  .sk-dialog[data-appearance="frosted"] {
-    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-dialog-bg) var(--frost-alpha-overlay), transparent);
-    background: var(--frost-glass, var(--sk-dialog-bg));
-    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-xl)) saturate(var(--frost-saturate));
-    backdrop-filter: var(--frost-on) blur(var(--frost-blur-xl)) saturate(var(--frost-saturate));
-  }
 
   /* Forced colors keep neither construction: the system surface and its boundary. */
   @media (forced-colors: active) {

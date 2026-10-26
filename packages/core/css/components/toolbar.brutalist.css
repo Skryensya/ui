@@ -1,0 +1,40 @@
+/*
+ * TIER 3, TOOLBAR · BRUTALIST
+ *
+ * The `appearance="brutalist"` rules of toolbar.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER toolbar.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.brutalist`.
+ */
+
+@layer components {
+  /* BRUTALIST: the black edge, black separators, and a hard offset toward block-end and inline-end
+   * (mirrored in RTL). */
+  .sk-toolbar[data-appearance="brutalist"] {
+    --sk-toolbar-brutalist-offset: 4px;
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+    --sk-toolbar-border-color: var(--brutalist-black);
+    --sk-toolbar-separator-color: var(--brutalist-black);
+    box-shadow: calc(var(--sk-toolbar-brutalist-offset) * var(--brutalist-direction))
+      var(--sk-toolbar-brutalist-offset) 0 var(--brutalist-black);
+  }
+  .sk-toolbar[data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+
+  /*
+   * Copied from toolbar.css that sat after this appearance's rules in one file, to win over them, so it comes
+   * last here too.
+   */
+  @media (forced-colors: active) {
+    .sk-toolbar[data-appearance] {
+      border-color: CanvasText;
+      background: Canvas;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+  }
+}

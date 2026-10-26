@@ -21,6 +21,11 @@ export interface InstallEntry {
   css: { entry: string; files: string[] };
   react: { entry: string; names: string[] } | null;
   vanilla: { entry: string; mount: string | null; selectors: string[]; auto: boolean } | null;
+  /**
+   * Present on an APPEARANCE entry (`button.brutalist`): the component it dresses and the value. Its `css`
+   * is that value's sheets with whatever they import, in load order; it has no bindings of its own.
+   */
+  appearance?: { of: string; value: string };
 }
 
 export interface ContractSummary {
@@ -29,6 +34,29 @@ export interface ContractSummary {
   css: string;
   /** The names the contract's signatures export from the React package, in signature order. */
   reactNames: string[];
+  /** The sheets each non-default appearance value brings in (the option's `sheets` plus `memberAppearanceSheets`). */
+  appearanceSheets: Record<string, string[]>;
+}
+
+/** The slice of a contract the manifest reads, so the generator and its drift test summarise one the same way. */
+export interface ManifestContract {
+  category?: string;
+  css: string;
+  signatures: Record<string, { react?: { name: string } }>;
+  options: Record<string, { sheets?: Record<string, readonly string[]> }>;
+  memberAppearanceSheets?: Record<string, readonly string[]>;
+}
+
+export function summarizeContract(id: string, contract: ManifestContract): ContractSummary {
+  const reactNames = [...new Set(Object.values(contract.signatures).flatMap((signature) => (signature.react ? [signature.react.name] : [])))];
+  // value -> the sheets that appearance needs, from the option that owns the value and from a group that welds its members by it
+  const appearanceSheets: Record<string, string[]> = {};
+  const note = (value: string, sheets: readonly string[]) => {
+    appearanceSheets[value] = [...new Set([...(appearanceSheets[value] ?? []), ...sheets])];
+  };
+  for (const option of Object.values(contract.options)) for (const [value, sheets] of Object.entries(option.sheets ?? {})) note(value, sheets);
+  for (const [value, sheets] of Object.entries(contract.memberAppearanceSheets ?? {})) note(value, sheets);
+  return { id, category: contract.category ?? "", css: contract.css, reactNames, appearanceSheets };
 }
 
 const PREFIX = "@skryensya/core/";
@@ -97,6 +125,25 @@ export function buildInstallManifest(options: {
       react: react[`./${contract.id}`] ? { entry: `@skryensya/react/${contract.id}`, names: contract.reactNames } : null,
       vanilla: vanillaEntry,
     };
+
+    /* One entry per appearance value, named like its sheet (`button.brutalist`), so `add button.brutalist` is
+       the whole instruction for a page that wants that look. */
+    for (const [value, sheets] of Object.entries(contract.appearanceSheets).sort(([a], [b]) => a.localeCompare(b))) {
+      // The component's own sheets first (a sibling does not import its base: a base that loads after the
+      // appearance wins every tie), then the appearance's, which already name what they build on first.
+      const seen = new Set<string>(files);
+      // Only the sheets whose base this entry already loads: a contract that lists a hook sheet of another
+      // family (Tile lists Checkbox's) is not asking for that family's appearance without its base.
+      const ownSheets = sheets.filter((sheet) => files.includes(sheet.replace(/\.[a-z]+\.css$/, ".css")));
+      const appearanceFiles = [...files, ...ownSheets.flatMap((sheet) => sheetsWithImports(cssDir, sheet, seen))];
+      manifest[`${contract.id}.${value}`] = {
+        category: contract.category,
+        css: { entry: sheets[0]!, files: appearanceFiles },
+        react: null,
+        vanilla: null,
+        appearance: { of: contract.id, value },
+      };
+    }
   }
   return manifest;
 }

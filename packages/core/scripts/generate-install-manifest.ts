@@ -6,18 +6,14 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
-import { buildInstallManifest } from "./install-manifest.ts";
+import { buildInstallManifest, summarizeContract, type ManifestContract } from "./install-manifest.ts";
 
 const root = join(import.meta.dirname, "..");
 const registry = (await import(pathToFileURL(join(root, "dist/registry.js")).href)) as {
   contractIds(): readonly string[];
-  getContract(id: string): { id: string; category: string; css: string; signatures: Record<string, { react?: { name: string } }> };
+  getContract(id: string): ManifestContract;
 };
-const contracts = registry.contractIds().map((id) => {
-  const { category, css, signatures } = registry.getContract(id);
-  const reactNames = [...new Set(Object.values(signatures).flatMap((signature) => (signature.react ? [signature.react.name] : [])))];
-  return { id, category, css, reactNames };
-});
+const contracts = registry.contractIds().map((id) => summarizeContract(id, registry.getContract(id)));
 
 const text = `${JSON.stringify(buildInstallManifest({ packagesDir: join(root, ".."), contracts }), null, 2)}\n`;
 const target = join(root, "install-manifest.json");

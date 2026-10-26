@@ -3,8 +3,17 @@
 # `surface` es la forma del contrato la última vez que alguien la revisó. Si el compilador dice
 # que no coincide, algo de lo que un consumidor depende se movió: escribe la entrada y pega el
 # hash nuevo.
-surface: "97b92a8002c9bcbb"
+surface: "35a17052a5abf57c"
 entries:
+  - date: 2026-10-25
+    kind: breaking
+    target: appearance
+    es:
+      title: "Cada apariencia tiene su propia hoja"
+      body: "Las reglas de `brutalist`, `frosted` pasan de tour.css a tour.brutalist.css, tour.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en tour.css."
+    en:
+      title: "Each appearance has its own stylesheet"
+      body: "The rules for `brutalist`, `frosted` move from tour.css to tour.brutalist.css, tour.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in tour.css."
   - date: 2026-10-01
     kind: feature
     es:

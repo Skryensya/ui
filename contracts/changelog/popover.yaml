@@ -3,8 +3,17 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "89b4e78e48bc6a3b"
+surface: "b7a3e22e22db353d"
 entries:
+  - date: 2026-10-25
+    kind: breaking
+    target: appearance
+    es:
+      title: "Cada apariencia tiene su propia hoja"
+      body: "Las reglas de `brutalist`, `frosted` pasan de popover.css a popover.brutalist.css, popover.frosted.css. Importa la hoja del valor que uses; sin ella, ese valor no recibe su pintura. Los hooks siguen declarados en popover.css."
+    en:
+      title: "Each appearance has its own stylesheet"
+      body: "The rules for `brutalist`, `frosted` move from popover.css to popover.brutalist.css, popover.frosted.css. Import the sheet for the value you use; without it, that value does not get its paint. The hooks are still declared in popover.css."
   - date: 2026-10-19
     kind: bugfix
     es:

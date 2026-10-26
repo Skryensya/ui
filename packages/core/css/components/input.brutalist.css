@@ -1,0 +1,40 @@
+/*
+ * TIER 3, INPUT · BRUTALIST
+ *
+ * The `appearance="brutalist"` rules of input.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER input.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.brutalist`.
+ */
+
+@layer components {
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Button's axis on the field, for every family that paints a `.sk-input` (Combobox, NumberField,
+   * PasswordInput, DatePicker, TimeField, TagsInput…): they forward the attribute, this draws it.
+   * Written as the existing hooks behind `:where()`, at the base rule's own specificity, so every
+   * STATE above still outranks it: an invalid brutalist field keeps its danger edge, a disabled one
+   * its disabled paint. The offset is internal, since this sheet is a hook sheet of those families.
+   * No tactile: a field is typed into, not pressed.
+   */
+
+  /* BRUTALIST: the black edge and a hard offset toward block-end and inline-end, mirrored in RTL, in
+   * place of the sunken well. Disabled drops the offset. */
+  .sk-input:where([data-appearance="brutalist"]) {
+    --input-brutalist-offset: 3px;
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+    --sk-input-border-color: var(--brutalist-black);
+    --sk-input-wash: none;
+    --sk-input-shadow: calc(var(--input-brutalist-offset) * var(--brutalist-direction)) var(--input-brutalist-offset) 0
+      var(--brutalist-black);
+  }
+  .sk-input:where([data-appearance="brutalist"]):dir(rtl) {
+    --brutalist-direction: -1;
+  }
+  .sk-input:where([data-appearance="brutalist"]):is(:disabled, [aria-disabled="true"]) {
+    --sk-input-shadow: none;
+  }
+}

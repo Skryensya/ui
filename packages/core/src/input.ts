@@ -84,6 +84,11 @@ export const inputContract = {
       type: "enum",
       values: ["plain", "brutalist", "frosted"],
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        brutalist: ["@skryensya/core/components/input.brutalist.css"],
+        frosted: ["@skryensya/core/components/input.frosted.css"],
+      },
     },
     /**
      * `ghost` is the field with NO visible container, Button's word for "ink only": no fill, edge, well or radius, the text and

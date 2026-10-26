@@ -79,6 +79,10 @@ export const tagContract = {
       values: ["plain", "brutalist"],
       default: "plain",
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        brutalist: ["@skryensya/core/components/tag.brutalist.css"],
+      },
     },
     tone: {
       type: "enum",

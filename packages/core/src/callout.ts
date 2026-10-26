@@ -73,6 +73,11 @@ export const calloutContract = {
       values: ["plain", "brutalist", "frosted"],
       default: "plain",
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        brutalist: ["@skryensya/core/components/callout.brutalist.css"],
+        frosted: ["@skryensya/core/components/callout.frosted.css"],
+      },
     },
     tone: {
       type: "enum",

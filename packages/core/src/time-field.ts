@@ -341,6 +341,11 @@ export const timeFieldContract = {
       type: "enum",
       values: ["plain", "brutalist", "frosted"],
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        brutalist: ["@skryensya/core/components/time-field.brutalist.css", "@skryensya/core/components/select.brutalist.css"],
+        frosted: ["@skryensya/core/components/time-field.frosted.css", "@skryensya/core/components/select.frosted.css"],
+      },
     },
     name: { type: "string", attr: "data-name", machineInput: true },
     /** Decides the hour cycle, the segment order and the separators. Not decoration. */

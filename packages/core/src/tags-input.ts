@@ -139,6 +139,11 @@ export const tagsInputContract = {
       type: "enum",
       values: ["plain", "brutalist", "frosted"],
       attr: "data-appearance",
+      /* Each non-default appearance's rules live in their own sheet; a tree loads it only when it asks for that value. */
+      sheets: {
+        brutalist: ["@skryensya/core/components/tags-input.brutalist.css"],
+        frosted: ["@skryensya/core/components/tags-input.frosted.css"],
+      },
     },
     /**
      * The accessible name of the field where tags are typed.

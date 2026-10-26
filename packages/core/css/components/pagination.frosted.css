@@ -1,0 +1,40 @@
+/*
+ * TIER 3, PAGINATION · FROSTED
+ *
+ * The `appearance="frosted"` rules of pagination.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER pagination.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.frosted`.
+ */
+
+@layer components {
+  /* FROSTED: the current page is Button's see-through sheet, with a fine edge and a lit rim. Opaque
+   * baseline; the material only where backdrop-filter exists and no reduced-transparency preference
+   * is set. */
+  .sk-pagination[data-appearance="frosted"] {
+    --sk-pagination-current-wash: none;
+    --sk-pagination-current-border-color: color-mix(in oklab, currentColor 18%, transparent);
+  }
+
+  /* The material, behind the system switch (semantic/_frost.scss). */
+  .sk-pagination[data-appearance="frosted"] {
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface-raised) var(--frost-alpha-chrome), transparent);
+    --sk-pagination-current-bg: var(--frost-glass, var(--color-bg-surface-raised));
+  }
+  .sk-pagination[data-appearance="frosted"] .sk-pagination__item[aria-current="page"] {
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-sm)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-sm)) saturate(var(--frost-saturate));
+  }
+
+  /*
+   * Copied from pagination.css that sat after this appearance's rules in one file, to win over them, so it comes
+   * last here too.
+   */
+  @media (forced-colors: active) {
+    .sk-pagination[data-appearance] .sk-pagination__item[aria-current="page"] {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+}

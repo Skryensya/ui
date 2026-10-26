@@ -511,50 +511,12 @@
     transform: none;
   }
 
-  .sk-sidebar[data-side="end"][data-appearance="brutalist"] {
-    --brutalist-direction: -1;
-  }
-
-  .sk-sidebar[data-side="end"][data-appearance="brutalist"]:dir(rtl) {
-    --brutalist-direction: 1;
-  }
-
   /*
-   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
-   *
-   * Button's axis on the sidebar's surface (button.css documents each construction in full). Plain,
-   * brutalist and frosted: a surface is never pressed, so there is no tactile. Radius, padding and
-   * motion are untouched.
+   * APPEARANCES live in their own sheets, so a page that never asks for one does not ship it:
+   *   brutalist  sidebar.brutalist.css
+   *   frosted    sidebar.frosted.css
+   * Load each one right after this file: it only adds to it, and a base that loads after one wins every tie.
    */
-
-  /* BRUTALIST: the black edge and a hard zero-blur offset toward block-end and inline-end
-   * (mirrored in RTL), in place of the soft elevation. Flat face. */
-  .sk-sidebar[data-appearance="brutalist"] {
-    --sk-sidebar-brutalist-offset: 6px;
-    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
-    --brutalist-direction: 1;
-    --sk-sidebar-border-color: var(--brutalist-black);
-    --sk-sidebar-elevation: calc(var(--sk-sidebar-brutalist-offset) * var(--brutalist-direction)) var(--sk-sidebar-brutalist-offset) 0 var(--brutalist-black);
-  }
-
-  .sk-sidebar[data-appearance="brutalist"]:dir(rtl) {
-    --brutalist-direction: -1;
-  }
-
-  /* FROSTED: Button's see-through material over whatever sits behind the sidebar, with a fine edge and
-   * a lit top rim over its own shadow. Opaque baseline; the material only where backdrop-filter
-   * exists and no reduced-transparency preference is set. */
-  .sk-sidebar[data-appearance="frosted"] {
-    --sk-sidebar-border-color: color-mix(in oklab, currentColor 18%, transparent);
-    --sk-sidebar-elevation: inset 0 1px 0 var(--frost-highlight), 0 0 transparent;
-  }
-
-  .sk-sidebar[data-appearance="frosted"] {
-    --frost-glass: var(--frost-on) color-mix(in oklab, var(--sk-sidebar-bg) var(--frost-alpha-chrome), transparent);
-    background: var(--frost-glass, var(--sk-sidebar-bg));
-    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-lg)) saturate(var(--frost-saturate));
-    backdrop-filter: var(--frost-on) blur(var(--frost-blur-lg)) saturate(var(--frost-saturate));
-  }
 
   /* Forced colors keep neither construction: the system surface and its boundary. */
   @media (forced-colors: active) {

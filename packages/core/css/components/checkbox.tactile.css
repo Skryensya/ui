@@ -1,0 +1,61 @@
+/*
+ * TIER 3, CHECKBOX · TACTILE
+ *
+ * The `appearance="tactile"` rules of checkbox.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER checkbox.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.tactile`.
+ */
+
+@layer components {
+  /*
+   * ── APPEARANCE ───────────────────────────────────────────────────────────────────────────────
+   *
+   * Button's axis on the box (button.css documents each construction in full), keyed on a
+   * Checkbox's label or a CheckboxGroup's root. Painted on the control directly, with no new
+   * public hooks: checkbox.css is also a hook sheet of Tile and Questionnaire.
+   */
+
+  /* TACTILE: a raised box on a small ledge in a darker step of its own fill, lit from the top; a
+   * press sinks it instead of squeezing it. */
+  :is(.sk-checkbox[data-appearance="tactile"], .sk-checkbox-group[data-appearance="tactile"] .sk-checkbox) .sk-checkbox__control {
+    --checkbox-ledge: light-dark(
+      color-mix(in oklab, var(--sk-checkbox-bg) 72%, var(--color-text-primary)),
+      color-mix(in oklab, var(--sk-checkbox-bg) 64%, var(--color-bg-surface-sunken))
+    );
+    background:
+      linear-gradient(
+        to bottom,
+        light-dark(color-mix(in oklab, white 16%, transparent), color-mix(in oklab, white 6%, transparent)),
+        transparent 60%
+      ),
+      var(--sk-checkbox-bg);
+    box-shadow: 0 2px 0 var(--checkbox-ledge);
+    transition:
+      background-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      border-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      translate var(--motion-feedback-duration) var(--motion-feedback-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+  :is(.sk-checkbox[data-appearance="tactile"], .sk-checkbox-group[data-appearance="tactile"] .sk-checkbox):not(:has(.sk-checkbox__input:disabled)):active .sk-checkbox__control {
+    scale: 1;
+    translate: 0 1px;
+    box-shadow: 0 1px 0 var(--checkbox-ledge);
+  }
+
+  /*
+   * Copied from checkbox.css that sat after this appearance's rules in one file, to win over them, so it comes
+   * last here too.
+   */
+  @media (forced-colors: active) {
+    :is(.sk-checkbox[data-appearance], .sk-checkbox-group[data-appearance] .sk-checkbox) .sk-checkbox__control,
+    :is(.sk-checkbox[data-appearance], .sk-checkbox-group[data-appearance] .sk-checkbox):not(:has(.sk-checkbox__input:disabled)):active .sk-checkbox__control {
+      box-shadow: none;
+      translate: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+}

@@ -1,0 +1,69 @@
+/*
+ * TIER 3, SWITCH · BRUTALIST
+ *
+ * The `appearance="brutalist"` rules of switch.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER switch.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.brutalist`.
+ */
+
+@layer components {
+  /* BRUTALIST: the black edge on track and thumb, and a hard offset under the thumb that the press
+   * collapses, toward block-end and inline-end (mirrored in RTL). */
+
+  /* Internal (`--switch-*`, not hooks): switch.css is also a hook sheet of Tile and Code Preview, and
+   * the appearance adds no knob a consumer needs there. */
+  .sk-switch[data-appearance="brutalist"] {
+    --switch-brutalist-offset: 2px;
+    --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
+    --brutalist-direction: 1;
+  }
+  .sk-switch[data-appearance="brutalist"] .sk-switch__control {
+    border-color: var(--brutalist-black);
+  }
+  .sk-switch[data-appearance="brutalist"]:dir(rtl) {
+    --brutalist-direction: -1;
+  }
+  .sk-switch[data-appearance="brutalist"] .sk-switch__thumb {
+    border: 1px solid var(--brutalist-black);
+    box-sizing: border-box;
+    box-shadow: calc(var(--switch-brutalist-offset) * var(--brutalist-direction)) var(--switch-brutalist-offset) 0
+      var(--brutalist-black);
+    transition:
+      transform var(--motion-state-change-duration) var(--motion-state-change-easing),
+      translate var(--motion-feedback-duration) var(--motion-feedback-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+  .sk-switch[data-appearance="brutalist"]:active .sk-switch__control {
+    scale: 1;
+  }
+  .sk-switch[data-appearance="brutalist"]:not(:has(.sk-switch__input:disabled)):active .sk-switch__thumb {
+    translate: calc(var(--switch-brutalist-offset) * var(--brutalist-direction)) var(--switch-brutalist-offset);
+    box-shadow: 0 0 0 var(--brutalist-black);
+  }
+
+  /*
+   * Copied from switch.css that sat after this appearance's rules in one file, to win over them, so it comes
+   * last here too.
+   */
+  @media (forced-colors: active) {
+
+    .sk-switch__input:checked + .sk-switch__control,
+    .sk-tile:has(> input[type="checkbox"][role="switch"]:checked) > .sk-switch__control {
+      border-color: Highlight;
+      background: Highlight;
+    }
+    .sk-switch[data-appearance] .sk-switch__control {
+      box-shadow: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+
+    .sk-switch[data-appearance] .sk-switch__thumb,
+    .sk-switch[data-appearance]:not(:has(.sk-switch__input:disabled)):active .sk-switch__thumb {
+      box-shadow: none;
+      translate: none;
+    }
+  }
+}

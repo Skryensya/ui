@@ -64,6 +64,24 @@ export type ContractOption = {
    */
   readonly deprecatedValues?: Readonly<Record<string, string>>;
   /**
+   * The stylesheets a VALUE needs on top of the contract's `css`, keyed by value. A value that is not
+   * listed (the default, in practice) needs none: its paint is the base sheet's.
+   *
+   * It exists for `appearance`. `tactile`, `brutalist` and `frosted` together were ~15% of every
+   * component sheet and a page that never sets one still shipped all three, so their rules moved to
+   * `<name>.<value>.css`. This is where the contract says which sheet belongs to which value, so a
+   * tree loads `button.brutalist.css` exactly when it writes `appearance: "brutalist"`, and a
+   * hand-written page knows what to import.
+   *
+   * A value's list names the sheets of this contract's OWN family (its `css` and `hookSheets`), and each
+   * one loads right after its base: a base that loads after the appearance meant to win over it wins every
+   * tie at equal specificity. The sheets import nothing, so the order is the list's job; `sheetsForTree`
+   * writes it as alphabetical by base, each appearance behind its own, which is the order the one file had.
+   *
+   * Each key must be one of `values`; each sheet must exist. Both are checked.
+   */
+  readonly sheets?: Readonly<Record<string, readonly string[]>>;
+  /**
    * A `string` option that is really a list, written into one attribute: `columnWeights="2,1,1"`.
    * `item` is what each entry must be. `countFrom` names a row signature whose direct children the
    * list must match one-for-one, looked up as the first such node under this one: a Table's weights
@@ -837,6 +855,15 @@ export type ComponentContract = {
    */
   readonly hookSheets?: readonly string[];
   /**
+   * The sheets this contract needs when a node ANYWHERE INSIDE it sets an `appearance`-style option
+   * (any option written to `data-appearance`) to a value, keyed by that value.
+   *
+   * ButtonGroup welds its members into one shape by watching them: `:has(> .sk-button[data-appearance=
+   * "brutalist"])`. So the weld's rules for an appearance are the GROUP's, needed because a member asked
+   * for it, and the group has no `appearance` option of its own to hang a sheet on.
+   */
+  readonly memberAppearanceSheets?: Readonly<Record<string, readonly string[]>>;
+  /**
    * Keys of `parts` that bindings or enhancers emit but authors never write in a UsageTree.
    *
    * Calendar's grid cells, Carousel's prev/next/dots: the contract still owns the class names (CSS
@@ -957,4 +984,19 @@ export function signatureOptions(
   signature: ContractSignature,
 ): readonly [string, ContractOption][] {
   return Object.entries(contract.options).filter(([name]) => signature.options.includes(name));
+}
+
+/**
+ * EVERY stylesheet a contract publishes: its own `css`, its `hookSheets`, and the sheets a value of
+ * an option (`sheets`) or a member's appearance (`memberAppearanceSheets`) brings in. The question
+ * "where do this contract's hooks live" has this answer; "which of them does THIS tree need" is
+ * `sheetsForTree`'s, and it is a subset.
+ */
+export function allSheetsOf(contract: ComponentContract): readonly string[] {
+  const out = new Set<string>([contract.css, ...(contract.hookSheets ?? [])]);
+  for (const option of Object.values(contract.options ?? {})) {
+    for (const list of Object.values(option.sheets ?? {})) for (const sheet of list) out.add(sheet);
+  }
+  for (const list of Object.values(contract.memberAppearanceSheets ?? {})) for (const sheet of list) out.add(sheet);
+  return [...out];
 }

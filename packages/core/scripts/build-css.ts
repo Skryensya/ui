@@ -69,11 +69,23 @@ const ENTRY = `
 
 const tokensCss = compileString(ENTRY, { loadPaths: [CSS], style: "expanded" }).css;
 
-const readDir = (sub: string) =>
-  readdirSync(join(CSS, sub))
-    .filter((f) => f.endsWith(".css"))
-    .sort()
+/*
+ * A sheet's APPEARANCE siblings (`button.tactile.css` beside `button.css`) must land AFTER their base:
+ * the bundle strips every `@import`, so file order IS the cascade, and plain alphabetical order puts
+ * `button.brutalist.css` before `button.css` ('b' < 'c'). Sorted by the base's name first, base before
+ * its siblings, so every other pair keeps the order it always had.
+ */
+const baseOf = (names: ReadonlySet<string>, f: string) => {
+  const m = /^(.+)\.[a-z]+\.css$/.exec(f);
+  return m && names.has(`${m[1]}.css`) ? `${m[1]}.css` : f;
+};
+const readDir = (sub: string) => {
+  const names = new Set(readdirSync(join(CSS, sub)).filter((f) => f.endsWith(".css")));
+  const key = (f: string) => baseOf(names, f);
+  return [...names]
+    .sort((a, b) => (key(a) < key(b) ? -1 : key(a) > key(b) ? 1 : a === key(a) ? -1 : b === key(b) ? 1 : a < b ? -1 : 1))
     .map((f) => ({ f, css: readFileSync(join(CSS, sub, f), "utf8") }));
+};
 
 const patterns = readDir("patterns");
 const components = readDir("components");

@@ -53,6 +53,37 @@ const classToCss: ReadonlyMap<string, string> = (() => {
   return index;
 })();
 
+/** Every appearance sibling sheet any contract names, to tell `button.tactile.css` from a sheet that merely looks like one. */
+const appearanceSheets: ReadonlySet<string> = (() => {
+  const out = new Set<string>();
+  for (const id of contractIds()) {
+    const contract = getContract(id);
+    if (!contract) continue;
+    for (const option of Object.values(contract.options ?? {})) for (const list of Object.values(option.sheets ?? {})) for (const s of list) out.add(s);
+    for (const list of Object.values(contract.memberAppearanceSheets ?? {})) for (const s of list) out.add(s);
+  }
+  return out;
+})();
+
+/**
+ * The order to LOAD the sheets in, which is the cascade order.
+ *
+ * Alphabetical by BASE, each appearance sheet right after the base it adds to: the order the one file per
+ * component always had, so `button.css`, `button.tactile.css`, `combobox.css`, `combobox.brutalist.css`. Plain
+ * alphabetical order of the file names gets it wrong, since it puts `button.brutalist.css` BEFORE `button.css`
+ * ('b' < 'c'), and a base that loads after the appearance it should lose to wins every tie at equal specificity.
+ * Pairing them is also what keeps a late rule of one component (Combobox's override of its inner Button) after
+ * the whole of Button, appearance included, as it was. The sheets import nothing, so nothing is pasted twice.
+ */
+function inLoadOrder(sheets: ReadonlySet<string>): string[] {
+  const baseOf = (s: string) => (appearanceSheets.has(s) ? s.replace(/\.[a-z]+\.css$/, ".css") : s);
+  return [...sheets].sort((a, b) => {
+    const [x, y] = [baseOf(a), baseOf(b)];
+    if (x !== y) return x < y ? -1 : 1;
+    return a === x ? -1 : b === y ? 1 : a < b ? -1 : 1;
+  });
+}
+
 function walkTemplate(node: ContractTemplate | undefined, visit: (n: ContractTemplate) => void): void {
   if (!node) return;
   visit(node);
@@ -69,11 +100,33 @@ export function sheetsForTree(tree: UsageTree): SheetsForTree {
   const sheets = new Set<string>();
   const classes = new Set<string>();
 
-  const visit = (node: UsageTree): void => {
+  const visit = (node: UsageTree, ancestors: readonly UsageTree[]): void => {
     const contract = getContract(node.contract);
     if (!contract) return;
     if (typeof contract.css === "string") sheets.add(contract.css);
     for (const hook of contract.hookSheets ?? []) sheets.add(hook);
+
+    /*
+     * A value's own sheet, when the contract splits one off (`appearance: "brutalist"` needs
+     * `button.brutalist.css`). The EFFECTIVE value counts, the default included, so a default that
+     * ever got a sheet would not be missed. And an ancestor that welds its members by watching them
+     * (ButtonGroup) needs ITS sheet for that value, because a member asked for it.
+     */
+    const appearances: string[] = [];
+    const seen = (value: string) => {
+      appearances.push(value);
+      for (const above of ancestors) {
+        for (const sheet of getContract(above.contract)?.memberAppearanceSheets?.[value] ?? []) sheets.add(sheet);
+      }
+    };
+    for (const [key, option] of Object.entries(contract.options ?? {})) {
+      const value = String(node.options?.[key] ?? option.default ?? "");
+      for (const sheet of option.sheets?.[value] ?? []) sheets.add(sheet);
+      if (option.attr === "data-appearance") seen(value);
+    }
+    /* A contract that forwards the Button look (`StateButton`) takes the appearance as an authored attr, not an option. */
+    const authored = node.attrs?.["data-appearance"];
+    if (typeof authored === "string") seen(authored);
 
     const signature = contract.signatures[node.signature];
     for (const entry of signature?.compose ?? []) {
@@ -87,7 +140,14 @@ export function sheetsForTree(tree: UsageTree): SheetsForTree {
       for (const also of part.also ?? []) {
         classes.add(also);
         const owner = classToCss.get(also);
-        if (owner) sheets.add(owner);
+        if (!owner) continue;
+        sheets.add(owner);
+        /* A part that borrows another family's class (a CopyButton IS a `.sk-button`) is painted by that
+           family's appearance sheet too, for the value this node was given. */
+        for (const value of appearances) {
+          const sibling = owner.replace(/\.css$/, `.${value}.css`);
+          if (appearanceSheets.has(sibling)) sheets.add(sibling);
+        }
       }
     });
   };
@@ -104,7 +164,7 @@ export function sheetsForTree(tree: UsageTree): SheetsForTree {
     .sort();
 
   return {
-    sheets: [...sheets].sort(),
+    sheets: inLoadOrder(sheets),
     classes: [...classes].sort(),
     unplaced,
   };

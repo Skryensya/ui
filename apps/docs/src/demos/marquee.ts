@@ -98,14 +98,14 @@ function badgeStrip(t: Translate): UsageTree[] {
 
 /** One hue per person, so eight avatars read as eight people rather than one repeated default. */
 const people = [
-  { initials: "AP", swatch: "blue-500" },
-  { initials: "MJ", swatch: "emerald-600" },
-  { initials: "RS", swatch: "sky-600" },
-  { initials: "TK", swatch: "red-500" },
-  { initials: "LV", swatch: "blue-700" },
-  { initials: "DC", swatch: "emerald-700" },
-  { initials: "NB", swatch: "sky-700" },
-  { initials: "YQ", swatch: "red-700" },
+  { initials: "AP", swatch: "blue-600" },
+  { initials: "MJ", swatch: "emerald-700" },
+  { initials: "RS", swatch: "sky-700" },
+  { initials: "TK", swatch: "red-600" },
+  { initials: "LV", swatch: "blue-800" },
+  { initials: "DC", swatch: "emerald-800" },
+  { initials: "NB", swatch: "sky-800" },
+  { initials: "YQ", swatch: "red-800" },
 ] as const;
 
 /** Avatars, and nothing but Avatars. Initials, so the strip needs no photographs. */

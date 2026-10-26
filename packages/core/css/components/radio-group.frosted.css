@@ -1,0 +1,37 @@
+/*
+ * TIER 3, RADIO GROUP · FROSTED
+ *
+ * The `appearance="frosted"` rules of radio-group.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER radio-group.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.frosted`.
+ */
+
+@layer components {
+  /* FROSTED: the ring becomes a see-through disc over a blurred backdrop. Opaque baseline; the
+   * material only where backdrop-filter exists and no reduced-transparency preference is set. */
+  :is(.sk-radio[data-appearance="frosted"], .sk-radio-group[data-appearance="frosted"] .sk-radio) .sk-radio__control::before {
+    background: var(--color-bg-surface);
+  }
+  :is(.sk-radio[data-appearance="frosted"], .sk-radio-group[data-appearance="frosted"] .sk-radio) .sk-radio__control::before {
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface) var(--frost-alpha-control), transparent);
+    background: var(--frost-glass, var(--color-bg-surface));
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-xs)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-xs)) saturate(var(--frost-saturate));
+  }
+
+  /*
+   * Copied from radio-group.css that sat after this appearance's rules in one file, to win over them, so it comes
+   * last here too.
+   */
+  @media (forced-colors: active) {
+    :is(.sk-radio[data-appearance], .sk-radio-group[data-appearance] .sk-radio) .sk-radio__control::before,
+    :is(.sk-radio[data-appearance], .sk-radio-group[data-appearance] .sk-radio):not(:has(.sk-radio__input:disabled)):active .sk-radio__control::before {
+      box-shadow: none;
+      translate: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+}

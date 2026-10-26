@@ -11,7 +11,7 @@ import { emitMarkup } from "@skryensya/ai-compiler/emit";
 import { canonical } from "@skryensya/ai-compiler/manifest";
 import { sheetsForTree } from "@skryensya/ai-compiler/sheets-for-tree";
 import { surfaceHash } from "@skryensya/ai-compiler/surface";
-import type { ComponentContract, ContractOption } from "@skryensya/core/contract";
+import { allSheetsOf, type ComponentContract, type ContractOption } from "@skryensya/core/contract";
 import { parseTokens } from "@skryensya/core/parse";
 import { getContract } from "@skryensya/core/registry";
 import type { ItemInput, UsageTree } from "@skryensya/core/usage-tree";
@@ -344,7 +344,10 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
   // The contract's own sheets, as the tree emitter says a Button needs them; the base bundle first.
   const sample = treeFor(realization, { options: {}, icons: true, iconChildren: false }, iconName);
   const own = contract.css;
-  const sheetNames = [...sheetsForTree(sample).sheets].sort((a, b) => Number(a === own) - Number(b === own));
+  const bundle = [...sheetsForTree(sample).sheets].sort((a, b) => Number(a === own) - Number(b === own));
+  // The sample tree leaves every option at its default, so it asks for no appearance sheet. A variant's cells
+  // are resolved for EVERY value, so those sheets are read too, after the base they import (cascade order).
+  const sheetNames = [...bundle, ...allSheetsOf(contract).filter((name) => !bundle.includes(name))];
   const sheets = sheetNames.map((name) => {
     const rel = name.replace("@skryensya/core/", "");
     const file = corpus.files.find((f) => f.rel === rel);

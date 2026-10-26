@@ -1,0 +1,55 @@
+/*
+ * TIER 3, ACCORDION · FROSTED
+ *
+ * The `appearance="frosted"` rules of accordion.css, split out of it so a page that never asks for that
+ * appearance does not ship them. LOAD IT RIGHT AFTER accordion.css: this sheet only adds to it, and a base that
+ * loads after it would win every tie at equal specificity. It imports nothing, so a bundler that copies
+ * @imports cannot paste a base behind it. The contract lists it under
+ * `options.appearance.sheets.frosted`.
+ */
+
+@layer components {
+  /*
+   * FROSTED: Button's material on the frame. Opaque baseline with a fine edge and a lit rim; the
+   * see-through sheet only where backdrop-filter exists and transparency is not reduced. The open
+   * bodies stay sunken but let the same sheet through, so the frame reads as one pane of glass.
+   *
+   * LIGHTER THAN TILE'S SHEET on purpose: an accordion is a tall block of reading, and at tile's
+   * density the backdrop greyed the whole column. A denser face, a lit wash down from the top edge
+   * and open bodies that recede only a little keep it bright while the backdrop still shows.
+   */
+  .sk-accordion[data-appearance="frosted"] {
+    --sk-accordion-border-color: color-mix(in oklab, currentColor 18%, transparent);
+    --sk-accordion-divider-color: color-mix(in oklab, currentColor 12%, transparent);
+    --frost-highlight: light-dark(
+      color-mix(in oklab, var(--color-bg-surface) 90%, transparent),
+      color-mix(in oklab, var(--color-text-primary) 22%, transparent)
+    );
+    box-shadow: inset 0 1px 0 var(--frost-highlight), 0 1px 2px var(--shadow-sm);
+  }
+
+  /* The material, behind the system switch (semantic/_frost.scss); off, the frame keeps its own
+   * opaque surface and sunken bodies. */
+  .sk-accordion[data-appearance="frosted"] {
+    --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface) var(--frost-alpha-card), transparent);
+    --frost-glass-open: var(--frost-on) color-mix(in oklab, var(--color-bg-surface-sunken) var(--frost-alpha-card), transparent);
+    --frost-lit: var(--frost-on)
+      linear-gradient(to bottom, color-mix(in oklab, var(--frost-highlight) 60%, transparent), transparent 12rem),;
+    --sk-accordion-bg: var(--frost-glass, var(--color-bg-surface));
+    --sk-accordion-open-bg: var(--frost-glass-open, var(--color-bg-surface-sunken));
+    background: var(--frost-lit,) var(--sk-accordion-bg);
+    -webkit-backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
+    backdrop-filter: var(--frost-on) blur(var(--frost-blur-md)) saturate(var(--frost-saturate));
+  }
+
+  /*
+   * Copied from accordion.css that sat after this appearance's rules in one file, to win over them, so it comes
+   * last here too.
+   */
+  @media (forced-colors: active) {
+    .sk-accordion[data-appearance] {
+      box-shadow: none;
+      backdrop-filter: none;
+    }
+  }
+}
