@@ -32,6 +32,6 @@ export const buttonGroupRealization: Realization = {
   slots: {},
   content: { trees: { children: [action, menu] }, names: { "Button.action.children": "action" } },
   icons,
-  grid: { columns: [], rows: ["orientation"], descending: [] },
+  grid: { columns: ["separator"], rows: ["orientation"], descending: [] },
   stage,
 };

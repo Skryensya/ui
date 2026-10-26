@@ -35,6 +35,6 @@ export const toolbarRealization: Realization = {
     },
   },
   icons,
-  grid: { columns: [], rows: ["orientation"], descending: [] },
+  grid: { columns: [], rows: ["orientation", "justify"], descending: [] },
   stage,
 };

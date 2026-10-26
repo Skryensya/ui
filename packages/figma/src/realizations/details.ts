@@ -28,6 +28,6 @@ export const detailsRealization: Realization = {
     names: { "Details.Summary.children": "summary", "Details.Content.children": "answer" },
   },
   icons,
-  grid: { columns: ["open"], rows: [], descending: [] },
+  grid: { columns: ["open"], rows: ["size"], descending: [] },
   stage,
 };

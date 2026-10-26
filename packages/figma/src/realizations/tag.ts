@@ -16,7 +16,7 @@ export const tagRealization: Realization = {
   exclude: [],
   slots: { children: { holds: "text", sample: "Tag" } },
   icons,
-  grid: { columns: ["tone"], rows: ["removable"], descending: [] },
+  grid: { columns: ["tone"], rows: ["removable", "disabled"], descending: [] },
   stage,
 };
 

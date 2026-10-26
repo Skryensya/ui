@@ -28,7 +28,7 @@ export const inputRealization: Realization = {
     placeholder: { holds: "text", sample: "Email address", option: "placeholder", pseudo: "placeholder" },
   },
   icons,
-  grid: { columns: ["state"], rows: ["controlSize"], descending: ["controlSize"] },
+  grid: { columns: ["state"], rows: ["controlSize", "variant"], descending: ["controlSize"] },
   stage,
 };
 
@@ -38,6 +38,7 @@ export const textareaRealization: Realization = {
   id: "textarea",
   signature: "Textarea",
   exclude: [],
+  grid: { columns: ["state", "autoSize"], rows: ["controlSize", "variant"], descending: ["controlSize"] },
   slots: {
     placeholder: { holds: "text", sample: "Add a note", option: "placeholder", pseudo: "placeholder" },
   },

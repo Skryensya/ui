@@ -23,7 +23,7 @@ export const buttonRealization: Realization = {
   },
   overlays: { before: "state layer" },
   ring: "focus ring",
-  exclude: [],
+  exclude: ["loading"],
   // Arrows by side: leading points back, trailing points on. A lone icon points on.
   slots: {
     pre: { holds: "icon", icon: "arrow-left" },

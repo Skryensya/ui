@@ -74,7 +74,7 @@ describe("derived from the contract", () => {
 
   it("finds the non-visual options by the cascade, not by a list", () => {
     const report = manifest.report as { options: Record<string, { visual: string[]; nonVisual: string[] }> };
-    expect(report.options.button.nonVisual).toEqual(["type"]);
+    expect(report.options.button.nonVisual).toEqual(["type", "loadingText"]);
     expect(report.options.button.visual).toContain("pressed");
     expect(report.options.button.visual).toContain("disabled");
   });
@@ -222,7 +222,7 @@ describe("the stage", () => {
 describe("representation", () => {
   it("stays far below the naive product", () => {
     const report = manifest.report as { variants: { naiveAllOptions: Record<string, number>; variantsTotal: number } };
-    expect(report.variants.naiveAllOptions.button).toBe(20736);
+    expect(report.variants.naiveAllOptions.button).toBe(10368);
     for (const set of sets) expect(set.cells.length).toBeLessThanOrEqual(500);
     expect(report.variants.variantsTotal).toBe(sets.reduce((n, s) => n + s.cells.length, 0));
   });
