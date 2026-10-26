@@ -263,11 +263,11 @@
     --sk-button-group-separator-color: color-mix(in oklab, var(--color-text-on-accent) 45%, transparent);
   }
 
-  /* Brutalist draws its line in the same black as its edges, 1px, and nearly the whole height: a little room at the top and bottom so it
-   * never starts on the container's edge. The members give up their own seam edge for it (see INSET above), or it would be 2px thick. */
+  /* Brutalist has no subtle divider: its line is the same black as its edges, 1px, and the whole height (an inset one would be a
+   * dent in a hard edge). The members give up their own seam edge for it (see INSET above), or it would be 2px thick. */
   .sk-button-group:has(> [data-appearance="brutalist"]) {
     --sk-button-group-separator-color: var(--sk-button-brutalist-edge, oklch(0 0 0));
-    --sk-button-group-separator-inset: calc(100% - 2 * var(--space-inset-sm));
+    --sk-button-group-separator-inset: 100%;
   }
 
   /* PLAIN DRAWS NO BORDER OF ITS OWN in a group: the fill, the shared shadow and the separators already say where each member
