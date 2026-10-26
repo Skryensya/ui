@@ -1541,48 +1541,6 @@ describe("accordion: platform disclosure without a machine", () => {
   });
 });
 
-describe("editor: rich-text field with derived toolbar", () => {
-  const editor = (overrides: Partial<UsageTree> = {}): UsageTree =>
-    ({
-      contract: "editor",
-      signature: "Editor",
-      options: { label: "Notas", placeholder: "Escribe algo", toolbarLabel: "Formato" },
-      ...overrides,
-    }) as UsageTree;
-
-  it("accepts the field options and rejects an unknown command option", () => {
-    expect(validateUsageTree(editor()).valid).toBe(true);
-    expect(
-      rules(
-        editor({
-          options: { label: "Notas", toolbarCompact: "yes" },
-        }),
-      ),
-    ).toContain("invalid-option-value");
-  });
-
-  it("publishes change/ready events, mount, and autoFocus prop alias", () => {
-    const contract = getContract("editor")!;
-    expect(contract.events).toEqual({ change: "sk:editorchange", ready: "sk:editorready" });
-    expect(contract.signatures.Editor.mount).toBe("data-sk-editor");
-    expect(contract.options.autofocus.prop).toBe("autoFocus");
-  });
-
-  it("loads toolbar/input via also and popover/anchored via hookSheets", () => {
-    expect(getContract("editor")!.hookSheets).toEqual([
-      "@skryensya/core/components/popover.css",
-      "@skryensya/core/patterns/anchored.css",
-    ]);
-    const { sheets, unplaced } = sheetsForTree(editor());
-    expect(sheets).toContain("@skryensya/core/components/editor.css");
-    expect(sheets).toContain("@skryensya/core/components/toolbar.css");
-    expect(sheets).toContain("@skryensya/core/components/input.css");
-    expect(sheets).toContain("@skryensya/core/components/popover.css");
-    expect(sheets).toContain("@skryensya/core/patterns/anchored.css");
-    expect(unplaced).toEqual([]);
-  });
-});
-
 describe("empty-state: intentional absence with a next action", () => {
   it("requires a text title and accepts Icon plus Button actions", () => {
     expect(rules({ contract: "empty-state", signature: "EmptyState" })).toContain(
@@ -5473,50 +5431,6 @@ describe("implies: stat's count-up needs a number, its trend needs a change", ()
   });
 });
 
-describe("split-button: the two halves are welded, not left to memory", () => {
-  const action = (options: Readonly<Record<string, string | boolean>>): UsageTree => ({
-    contract: "button",
-    signature: "Button.action",
-    options,
-    children: "Guardar",
-  });
-  const menu = (options: Readonly<Record<string, string | boolean>>): UsageTree => ({
-    contract: "menu",
-    signature: "Menu",
-    options: { triggerIconOnly: true, triggerLabel: "Más opciones de guardado", ...options },
-    slots: { trigger: { contract: "icon", signature: "Icon", options: { name: "chevron-down" } }, items: [{ options: { value: "as" }, slots: { label: "Guardar como" } }] },
-  } as UsageTree);
-  const split = (a: UsageTree, m: UsageTree): UsageTree => ({
-    contract: "split-button",
-    signature: "SplitButton",
-    options: { label: "Guardar" },
-    slots: { action: a, menu: m },
-  });
-
-  it("accepts an action welded at its end and a trigger welded at its start", () => {
-    expect(rules(split(action({ weldEnd: true }), menu({ triggerWeldStart: true })))).not.toContain("restricted-option-value");
-  });
-
-  it("rejects either half left unwelded, which leaves a gap between them", () => {
-    expect(rules(split(action({}), menu({ triggerWeldStart: true })))).toContain("restricted-option-value");
-    expect(rules(split(action({ weldEnd: true }), menu({})))).toContain("restricted-option-value");
-  });
-
-  it("slotImplies: a loading action leaves the menu trigger reachable, not merely busy", () => {
-    expect(
-      rules(split(action({ weldEnd: true, loading: true }), menu({ triggerWeldStart: true }))),
-    ).toContain("missing-implied");
-    expect(
-      rules(split(action({ weldEnd: true, loading: true }), menu({ triggerWeldStart: true, disabled: true }))),
-    ).not.toContain("missing-implied");
-    // One-way: a disabled trigger with no loading action is unremarkable (an author can always
-    // disable the whole group), the reverse of what the rule actually asks.
-    expect(
-      rules(split(action({ weldEnd: true }), menu({ triggerWeldStart: true, disabled: true }))),
-    ).not.toContain("missing-implied");
-  });
-});
-
 describe("slider: a named thumb whose value sits inside its own range", () => {
   const slider = (options: Readonly<Record<string, number | string>>, named = true): UsageTree => ({
     contract: "slider",
@@ -5708,27 +5622,6 @@ describe("generic rules: groups, pairs, counts, positions, conditions, vocabular
       }) as UsageTree;
     expect(messageFor(menu({ triggerVariant: "accent" }), "invalid-option-value")).toContain("solid, soft, ghost");
     expect(rules(menu({ triggerVariant: "soft", triggerTone: "danger", triggerSize: "sm" }))).not.toContain("invalid-option-value");
-  });
-
-  it("pairs: a split button's halves share variant, tone and size", () => {
-    const split = (action: Readonly<Record<string, string | boolean>>, trigger: Readonly<Record<string, string | boolean>>): UsageTree =>
-      ({
-        contract: "split-button",
-        signature: "SplitButton",
-        options: { label: "Guardar" },
-        slots: {
-          action: { contract: "button", signature: "Button.action", options: { weldEnd: true, ...action }, children: "Guardar" },
-          menu: {
-            contract: "menu",
-            signature: "Menu",
-            options: { label: "Más", triggerLabel: "Más", triggerIconOnly: true, triggerWeldStart: true, ...trigger },
-            slots: { trigger: { contract: "icon", signature: "Icon", options: { name: "chevron-down" } }, items: [{ options: { value: "a" }, slots: { label: "A" } }] },
-          },
-        },
-      }) as UsageTree;
-    expect(rules(split({}, {}))).not.toContain("unpaired-options");
-    expect(rules(split({ tone: "danger" }, { triggerTone: "danger" }))).not.toContain("unpaired-options");
-    expect(rules(split({ tone: "danger" }, {}))).toContain("unpaired-options");
   });
 
   it("minItems and item requires", () => {

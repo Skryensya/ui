@@ -5,13 +5,14 @@ import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/number-field.css";
 import * as demos from "@docs/demos/number-field";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/NumberField", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.numberFieldAnatomyTree);
-export const Default: StoryObj = treeStory(demos.numberFieldTree);
-export const Single: StoryObj = treeStory(demos.numberFieldSingleTree);
+export const Anatomy: StoryObj = treeStory(demos.numberFieldAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Locale: StoryObj = treeStory((t) => demos.numberFieldLocaleTree(t, "#"));
+export const Single: StoryObj = treeStory(demos.numberFieldSingleTree);
 export const Decimal: StoryObj = treeStory(demos.numberFieldDecimalTree);
 export const Unbounded: StoryObj = treeStory(demos.numberFieldUnboundedTree);
+export const Default: StoryObj = treeStory(demos.numberFieldTree);

@@ -68,3 +68,5 @@ packages/vanilla/css/
 
 # Output of `node scripts/release.ts pack`.
 /release/
+.unlighthouse/
+.lighthouse/

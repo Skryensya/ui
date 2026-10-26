@@ -1,6 +1,7 @@
 ---
 /* The anatomy diagram at the top of the page is an Annotated frame, so this page needs its sheet. */
 import "@skryensya/core/components/annotation.css";
+import "@skryensya/core/components/avatar.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import UsagePreview from "../UsagePreview.astro";
@@ -99,9 +100,9 @@ import { carouselTitlesDoTree, carouselTitlesDontTree } from "../../demos/dodont
     <UsagePreview css={zoomOut} tree={carouselCardsTree(t)} title={t("carousel.cardsTitle")} description={t("carousel.cardsBody")} storybookTitle={storybookTitle} storybookStory="Cards" />
     <UsagePreview css={zoomOut} tree={carouselAutoplayTree(t)} title={t("carousel.multiTitle")} description={t("carousel.multiBody1")} storybookTitle={storybookTitle} storybookStory="Autoplay" />
     <UsagePreview css={zoomOut} tree={carouselFocusableTree(t)} title={t("carousel.focusTitle")} description={t("carousel.focusBody1")} storybookTitle={storybookTitle} storybookStory="Focusable" />
-    <UsagePreview css={zoomOut} tree={carouselStatsTree(t)} title={t("carousel.statsTitle")} description={t("carousel.statsBody")} storybookTitle={storybookTitle} storybookStory="Cards" />
-    <UsagePreview css={zoomOut} tree={carouselQuotesTree(t)} title={t("carousel.quotesTitle")} description={t("carousel.quotesBody")} storybookTitle={storybookTitle} storybookStory="Cards" />
-    <UsagePreview css={zoomOut} tree={carouselProductsTree(t)} title={t("carousel.productsTitle")} description={t("carousel.productsBody")} storybookTitle={storybookTitle} storybookStory="Cards" />
+    <UsagePreview css={zoomOut} tree={carouselStatsTree(t)} title={t("carousel.statsTitle")} description={t("carousel.statsBody")} storybookTitle={storybookTitle} storybookStory="Stats" />
+    <UsagePreview css={zoomOut} tree={carouselQuotesTree(t)} title={t("carousel.quotesTitle")} description={t("carousel.quotesBody")} storybookTitle={storybookTitle} storybookStory="Quotes" />
+    <UsagePreview css={zoomOut} tree={carouselProductsTree(t)} title={t("carousel.productsTitle")} description={t("carousel.productsBody")} storybookTitle={storybookTitle} storybookStory="Products" />
     <UsagePreview css={zoomOut} tree={carouselBareTree(t)} title={t("carousel.bareTitle")} description={t("carousel.bareBody1")} storybookTitle={storybookTitle} storybookStory="Bare" />
 
     <h3>{t("carousel.apiTitle")}</h3>

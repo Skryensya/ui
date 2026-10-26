@@ -2,16 +2,18 @@
 // change the demo (or the docs page that shows it) and run `pnpm generate` in this app.
 import "@skryensya/core/components/avatar.css";
 import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/loader.css";
 import "@skryensya/core/components/message.css";
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/message";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+const { messageDemoCss } = demos;
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Message", tags: ["autodocs"] } satisfies Meta;
 
 export const Playground: StoryObj = treeStory(demos.messagePlaygroundTree);
-export const Group: StoryObj = treeStory(demos.messageGroupTree);
-export const Writing: StoryObj = treeStory(demos.messageWritingTree);
-export const Reaction: StoryObj = treeStory(demos.messageReactionTree);
-export const Actions: StoryObj = treeStory(demos.messageActionsTree);
+export const Group: StoryObj = treeStory(demos.messageGroupTree, { decorators: [withCss(messageDemoCss)] });
+export const Writing: StoryObj = treeStory(demos.messageWritingTree, { decorators: [withCss(messageDemoCss)] });
+export const Reaction: StoryObj = treeStory(demos.messageReactionTree, { decorators: [withCss(messageDemoCss)] });
+export const Actions: StoryObj = treeStory(demos.messageActionsTree, { decorators: [withCss(messageDemoCss)] });

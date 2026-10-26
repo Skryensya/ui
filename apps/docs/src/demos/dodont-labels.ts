@@ -6,7 +6,6 @@ import { datePickerTree } from "./date-picker";
 import { timeFieldTree } from "./time-field";
 import { colorPickerTree } from "./color-picker";
 import { tagsInputTree } from "./tags-input";
-import { editorTree } from "./editor";
 import { clipboardFieldTree } from "./clipboard";
 import { tocPlainTree } from "./toc";
 
@@ -42,7 +41,6 @@ export const dd2 = {
   timeField: pair("timeField", timeFieldTree, "slot"),
   colorPicker: pair("colorPicker", colorPickerTree, "slot"),
   tagsInput: pair("tagsInput", tagsInputTree, "option"),
-  editor: pair("editor", editorTree, "option"),
   clipboard: pair("clipboard", clipboardFieldTree, "fieldLabel"),
   toc: pair("toc", tocPlainTree, "title"),
 };

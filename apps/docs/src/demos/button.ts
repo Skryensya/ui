@@ -222,22 +222,11 @@ const shapesTree = (t: Translate, appearance: ShowcasedAppearance, href: string)
       children: t("demo.button.readNews"),
     },
     {
-      contract: "layout",
-      signature: "Inline",
-      options: { gap: "none" },
+      contract: "button-group",
+      signature: "ButtonGroup",
       children: [
-        {
-          contract: "button",
-          signature: "Button.action",
-          options: { appearance, weldEnd: true },
-          children: t("demo.button.edit"),
-        },
-        {
-          contract: "button",
-          signature: "Button.action",
-          options: { appearance, weldStart: true },
-          children: t("demo.button.copy"),
-        },
+        { contract: "button", signature: "Button.action", options: { appearance }, children: t("demo.button.edit") },
+        { contract: "button", signature: "Button.action", options: { appearance }, children: t("demo.button.copy") },
       ],
     },
   ],

@@ -122,7 +122,7 @@ describe("discover_ui", () => {
     const { payload } = await call("discover_ui", { query: "a switch that applies at once, with no save button" });
     expect(payload.input.negated).toEqual(["save", "button"]);
     expect(payload.candidates[0].signature).toBe("Switch");
-    expect(payload.candidates.map((c: Payload) => c.signature)).not.toContain("SplitButton");
+    expect(payload.candidates.map((c: Payload) => c.signature)).not.toContain("ButtonGroup");
   });
 
   it("returns the vocabulary when called with nothing", async () => {

@@ -54,6 +54,14 @@ function targetSelector(scope: HTMLElement): string {
   return scope.getAttribute("data-docs-appearance-target") || appearanceTargetSelector;
 }
 
+function writeAppearance(element: HTMLElement, preferred: Appearance): void {
+  // Fields and panels have no press feedback; only their buttons can be tactile.
+  const value = preferred === "tactile" && element.matches(".sk-input, .sk-select, .sk-select-native, .sk-popover") ? "plain" : preferred;
+  if (!element.closest(fixedSelector) && element.getAttribute("data-appearance") !== value) {
+    element.setAttribute("data-appearance", value);
+  }
+}
+
 function writeFrameSource(frame: HTMLIFrameElement, value: Appearance): void {
   const scope = frame.closest<HTMLElement>(scopeSelector);
   const source = frame.getAttribute("data-sk-component-preview-doc");
@@ -61,7 +69,7 @@ function writeFrameSource(frame: HTMLIFrameElement, value: Appearance): void {
   try {
     const doc = new DOMParser().parseFromString(source, "text/html");
     doc.querySelectorAll<HTMLElement>(targetSelector(scope)).forEach((element) => {
-      element.setAttribute("data-appearance", value);
+      writeAppearance(element, value);
     });
     updateComponentPreviewStageDocument(frame, `<!doctype html>\n${doc.documentElement.outerHTML}`);
   } catch {
@@ -75,7 +83,7 @@ function writeFrame(frame: HTMLIFrameElement, value: Appearance): void {
   writeFrameSource(frame, value);
   try {
     frame.contentDocument?.querySelectorAll<HTMLElement>(targetSelector(scope)).forEach((element) => {
-      element.setAttribute("data-appearance", value);
+      writeAppearance(element, value);
     });
   } catch {
     /* ComponentPreview frames are same-origin srcdoc. A future cross-origin frame simply opts out. */
@@ -86,8 +94,8 @@ function writeFrame(frame: HTMLIFrameElement, value: Appearance): void {
  * A SCOPE KEEPS ITS APPEARANCE WHEN ITS EXAMPLE IS REDRAWN. A property playground swaps its example every
  * time the reader picks another option of its segmented control (variant, tone...), and the new elements are
  * fresh markup that never saw the attribute `apply` wrote on the old ones. Without this the reader would have
- * to choose the appearance again after every option. Only `childList` is watched: setting an attribute does
- * not wake it, so there is no loop.
+ * to choose the appearance again after every option. Frames mount asynchronously, so also reapply at
+ * `frame-ready`. Appearance writes are not observed, avoiding a feedback loop.
  */
 const watched = new WeakSet<HTMLElement>();
 function keepAppearance(scope: HTMLElement): void {
@@ -96,19 +104,23 @@ function keepAppearance(scope: HTMLElement): void {
   new MutationObserver(() => {
     const value = current(scope);
     scope.querySelectorAll<HTMLElement>(targetSelector(scope)).forEach((element) => {
-      if (!element.closest(fixedSelector) && element.getAttribute("data-appearance") !== value) {
-        element.setAttribute("data-appearance", value);
-      }
+      writeAppearance(element, value);
     });
-  }).observe(scope, { childList: true, subtree: true });
+    scope.querySelectorAll<HTMLIFrameElement>("iframe.sk-component-preview__stage[data-sk-component-preview-frame-ready]").forEach((frame) => {
+      writeFrame(frame, value);
+    });
+  }).observe(scope, { childList: true, subtree: true, attributes: true, attributeFilter: ["data-sk-component-preview-frame-ready"] });
 }
 
 function apply(scope: HTMLElement, preferred: Appearance): void {
   const value = effectiveIn(scope, preferred);
   keepAppearance(scope);
   scope.setAttribute("data-docs-appearance", value);
+  /* The satin is only fetched once a card has been frosted (preview-card.css), and then kept, so
+     leaving frosted still animates over it. */
+  if (value === "frosted") scope.setAttribute("data-docs-frost-seen", "");
   scope.querySelectorAll<HTMLElement>(targetSelector(scope)).forEach((element) => {
-    if (!element.closest(fixedSelector)) element.setAttribute("data-appearance", value);
+    writeAppearance(element, value);
   });
   scope.querySelectorAll<HTMLIFrameElement>("iframe.sk-component-preview__stage").forEach((frame) => {
     writeFrame(frame, value);
@@ -143,6 +155,12 @@ export function placeAppearanceMenus(root: ParentNode = document): void {
       const control = document.createElement("div");
       control.className = "docs-card-appearance";
       control.append(template.content.cloneNode(true));
+      const omit = card.getAttribute("data-docs-appearance-omit")?.split(/\s+/) ?? [];
+      control.querySelectorAll<HTMLElement>(setSelector).forEach((item) => {
+        if (omit.includes(item.getAttribute("data-docs-appearance-set") ?? "")) item.remove();
+      });
+      const values = control.querySelector<HTMLElement>("[data-docs-appearance-values]");
+      if (values) values.dataset.docsAppearanceValues = values.dataset.docsAppearanceValues!.split(/\s+/).filter((v) => !omit.includes(v)).join(" ");
       card.append(control);
       card.setAttribute("data-docs-appearance-scope", "");
       if (target) card.setAttribute("data-docs-appearance-target", target);

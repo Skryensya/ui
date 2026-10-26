@@ -3,8 +3,16 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "11c380b4851f4030"
+surface: "a884ec0759b59fec"
 entries:
+  - date: 2026-10-24
+    kind: feature
+    es:
+      title: "El tempo del press tactile es un hook"
+      body: "Dos hooks nuevos, --sk-button-tactile-press-duration y --sk-button-tactile-press-easing, afinan la duración y la curva con las que la repisa y la cara del tactile se hunden juntas. Por defecto siguen el tempo de feedback compartido."
+    en:
+      title: "The tactile press tempo is a hook"
+      body: "Two new hooks, --sk-button-tactile-press-duration and --sk-button-tactile-press-easing, tune the duration and curve the tactile ledge and face press down on together. By default they follow the shared feedback tempo."
   - date: 2026-10-23
     kind: breaking
     es:

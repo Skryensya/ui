@@ -84,6 +84,22 @@ describe("CommandPalette Vanilla contracts", () => {
     expect(selected()).toBe(0);
   });
 
+  it("never writes aria-expanded on a text-field trigger, which a textbox does not allow", () => {
+    const root = markup();
+    trigger().insertAdjacentHTML(
+      "afterend",
+      `<input data-sk-command-palette-open aria-controls="cmd" type="text" readonly aria-label="Buscar" />`,
+    );
+    const field = document.querySelector<HTMLInputElement>("input[data-sk-command-palette-open]")!;
+    mountCommandPalette(document);
+
+    fireEvent.click(field);
+
+    expect(root.open).toBe(true);
+    expect(field.hasAttribute("aria-expanded")).toBe(false);
+    expect(trigger().getAttribute("aria-expanded")).toBe("true");
+  });
+
   it("filters as the reader types, and says when nothing matched", () => {
     markup();
     mountCommandPalette(document);

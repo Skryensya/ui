@@ -3,6 +3,7 @@
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/command-palette.css";
 import "@skryensya/core/components/dialog.css";
+import "@skryensya/core/components/loader.css";
 import "@skryensya/core/patterns/dialog-vaul.css";
 import "@skryensya/core/patterns/icon.css";
 import "@skryensya/core/patterns/layout.css";

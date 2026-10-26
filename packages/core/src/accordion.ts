@@ -237,7 +237,7 @@ export const accordionContract = {
      * the same sections rendered as `<details>` (`apps/docs/src/demos/accordion.ts`). Bindings
      * clamp to 1..6 (the only values `aria-level` means); the schema cannot yet express that range.
      */
-    headingLevel: { type: "number", default: 3, min: 1, max: 6, integer: true, attr: "aria-level" },
+    headingLevel: { type: "number", default: 3, min: 1, max: 6, integer: true, attr: "aria-level", writeDefault: true },
     /**
      * Siblings sharing a name are exclusive; the browser closes the others itself.
      *

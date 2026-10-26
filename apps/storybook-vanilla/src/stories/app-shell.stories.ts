@@ -4,6 +4,7 @@ import "@skryensya/core/components/avatar.css";
 import "@skryensya/core/components/badge.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/callout.css";
+import "@skryensya/core/components/loader.css";
 import "@skryensya/core/components/navbar.css";
 import "@skryensya/core/components/sidebar.css";
 import "@skryensya/core/components/stat.css";

@@ -5,11 +5,14 @@ Listbox:
     - "whoever uses the screen has to see every option while choosing: a view, a few filters, the items they are about to act on"
     - "more than one can be chosen, and checking and unchecking without opening anything is faster than a dropdown"
     - "the list is browsed with the keyboard (arrows, type-ahead) and focus has to stay in one place"
+    - "laid in a row (horizontal) only when several can be chosen: a row of days, a few toggled filters"
   avoidWhen:
     - "it is a form field that gets submitted: Listbox has no input and no name; that is Select, RadioGroup or a group of Checkboxes"
     - "the options are many or the space is small: an always-open listbox takes as much room as its options; that is Select or Combobox"
+    - "a single choice laid in a row: that is Segmented"
     - "each row navigates to another page or runs an action: that is NavList or Menu, not a choice"
   alternatives:
+    - Segmented
     - Select
     - Combobox
     - RadioGroup

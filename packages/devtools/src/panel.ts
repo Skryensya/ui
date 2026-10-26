@@ -241,7 +241,9 @@ export function mountDebugPanel(options: DebugPanelOptions = {}): DebugPanelHand
   const shadow = host.attachShadow({ mode: "open" });
 
   const style = document.createElement("style");
-  style.textContent = `${buttonCss}\n${checkboxCss}\n${iconCss}\n${stateLayerCss}\n${popoverCss}\n${anchoredCss}\n${LAYOUT_STYLES}`;
+  // `?raw` keeps the sheets' relative `@import`s, which resolve against the PAGE url here and 404;
+  // what they pull in (loader, a11y-warn) is nothing this panel's controls use.
+  style.textContent = `${buttonCss}\n${checkboxCss}\n${iconCss}\n${stateLayerCss}\n${popoverCss}\n${anchoredCss}\n${LAYOUT_STYLES}`.replace(/@import[^;]*;/g, "");
   shadow.appendChild(style);
 
   const root = document.createElement("div");

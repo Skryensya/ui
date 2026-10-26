@@ -2,6 +2,7 @@ import { emitMarkup } from "@skryensya/ai-compiler/emit";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import { describe, expect, it } from "vitest";
 import { useTranslations, type Translate } from "../i18n";
+import { buttonGroupAnatomyTree } from "./button-group";
 
 /*
  * EVERY ANATOMY DIAGRAM NAMES SOMETHING THAT IS THERE.
@@ -80,6 +81,21 @@ const classesIn = (markup: string): Set<string> => {
 };
 
 describe("anatomy diagrams", () => {
+  it.each(["es", "en"] as const)("ButtonGroup (%s) shows both complete compositions with five shared part names", (locale) => {
+    const tree = buttonGroupAnatomyTree(useTranslations(locale)) as AnnotatedTree;
+    const markup = emitMarkup(tree.slots.subject);
+    expect(markup.match(/class="sk-button-group"/g)).toHaveLength(2);
+    expect([...classesIn(markup)]).toEqual(expect.arrayContaining([
+      "sk-button", "sk-menu__trigger", "sk-button-group__separator", "sk-button-group__text", "sk-input",
+    ]));
+    expect(markup).toContain('for="demo-button-group-anatomy-site"');
+    expect(markup).toContain('id="demo-button-group-anatomy-site"');
+    expect(tree.slots.items.map(({ options }) => options.for)).toEqual([
+      ".sk-button-group", ".sk-button", ".sk-button-group__separator", ".sk-button-group__text", ".sk-input",
+    ]);
+    for (const index of [0, 1, 3]) expect(tree.slots.items[index]?.options).toMatchObject({ match: "all" });
+  });
+
   it("finds the anatomy trees", () => {
     expect(anatomies.length).toBeGreaterThan(40);
   });

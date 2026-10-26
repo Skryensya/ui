@@ -125,7 +125,7 @@ test("faces: Input, Select, NativeSelect, Popover and ButtonGroupText weld; inne
     `<div class="sk-button-group" role="group">
       <span id="text" class="sk-button-group__text">https://</span>
       <input id="input" class="sk-input" aria-label="URL" />
-      <div class="sk-select"><div class="sk-select__control"><button id="select" class="sk-select__trigger" type="button">USD</button></div></div>
+      <div id="select-root" class="sk-select"><div class="sk-select__control"><button id="select" class="sk-select__trigger" type="button">USD</button></div></div>
       <select id="native" class="sk-select-native" aria-label="Moneda"><option>CLP</option></select>
       <div class="sk-popover">
         ${btn('id="pop" data-icon-only aria-label="Copilot"', "▾")}
@@ -135,6 +135,7 @@ test("faces: Input, Select, NativeSelect, Popover and ButtonGroupText weld; inne
   );
   expect(round(await shape(page, "#text"))).toMatchObject({ left: true, right: false });
   for (const id of ["#input", "#select", "#native"]) expect(await shape(page, id), id).toMatchObject({ tl: 0, tr: 0, bl: 0, br: 0 });
+  expect(await page.locator("#select-root").evaluate((el) => getComputedStyle(el).minInlineSize)).toBe("0px");
   expect(round(await shape(page, "#pop"))).toMatchObject({ left: false, right: true });
   // A Button inside a member's own panel is not a face: it keeps every corner.
   expect(round(await shape(page, "#close"))).toEqual({ left: true, right: true, top: true, bottom: true });

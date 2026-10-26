@@ -6,11 +6,12 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/kbd.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/kbd";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Kbd", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.kbdAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.kbdAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Single: StoryObj = treeStory(() => demos.kbdSingleTree);
 export const Default: StoryObj = treeStory(() => demos.kbdTree);
 export const Accent: StoryObj = treeStory(() => demos.kbdAccentTree);
-export const Single: StoryObj = treeStory(() => demos.kbdSingleTree);

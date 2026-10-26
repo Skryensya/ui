@@ -34,7 +34,6 @@ type RawEntry = {
 
 /** What a component needs beyond the system's own packages. */
 const PEERS: Record<string, string[]> = {
-  editor: ["@skryensya/editor"],
 };
 
 /**

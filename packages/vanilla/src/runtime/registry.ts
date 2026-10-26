@@ -13,15 +13,6 @@ type Registration = {
  *
  * CodePreview and ComponentPreview are deliberately absent. They are opt-in documentation surfaces
  * mounted through their explicit subpaths, never part of the default application runtime.
- *
- * Editor is deliberately absent too, for a sharper reason: `@skryensya/editor` (ProseMirror, ~9
- * packages) is an OPTIONAL peer dependency of this package (see `package.json`), precisely so that
- * importing `@skryensya/vanilla/auto` never drags it in for a consumer who never installed it. A
- * selector-gated `import()` here would still name that module in this file's static analysis and
- * in bundlers that eagerly resolve dynamic-import specifiers, which defeats the optionality this
- * table exists to guarantee for every OTHER entry. A page that uses Editor calls `mountEditor`
- * from `@skryensya/vanilla/editor` itself, explicitly - the same shape CodePreview/ComponentPreview
- * already use, for a different reason.
  */
 // Runtime plugin loading is intentional: static imports would defeat selector gating and ship every enhancer.
 const registrations: readonly Registration[] = [
@@ -321,10 +312,6 @@ const registrations: readonly Registration[] = [
   {
     selector: "[data-sk-canvas]",
     load: async () => (await import("../components/canvas.js")).mountCanvas,
-  },
-  {
-    selector: "[data-sk-image-cropper]",
-    load: async () => (await import("../components/image-cropper.js")).mountImageCropper,
   },
   {
     /*

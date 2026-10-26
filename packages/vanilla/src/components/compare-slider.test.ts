@@ -86,14 +86,22 @@ describe("connectCompareSlider", () => {
     expect(at(root)).toBe(50);
     key(handle, "ArrowDown");
     expect(at(root)).toBe(51);
-    pointer(root, "pointerdown", 0, 100);
+    pointer(handle, "pointerdown", 0, 100);
     expect(at(root)).toBe(25);
   });
 
-  it("jumps to a press anywhere on the box, and follows the pointer until it is released", () => {
+  it("ignores a press on a layer", () => {
     const { root } = build();
     cleanup = connectCompareSlider(root);
-    pointer(root, "pointerdown", 250);
+    pointer(root.querySelector<HTMLElement>(".sk-compare-slider__after")!, "pointerdown", 250);
+    expect(at(root)).toBe(50);
+    expect(root.hasAttribute("data-dragging")).toBe(false);
+  });
+
+  it("follows the pointer from a press on the divider until it is released", () => {
+    const { root, handle } = build();
+    cleanup = connectCompareSlider(root);
+    pointer(handle, "pointerdown", 250);
     expect(at(root)).toBe(25);
     expect(root.hasAttribute("data-dragging")).toBe(true);
     pointer(root, "pointermove", 800);
@@ -105,9 +113,9 @@ describe("connectCompareSlider", () => {
   });
 
   it("never leaves the box", () => {
-    const { root } = build();
+    const { root, handle } = build();
     cleanup = connectCompareSlider(root);
-    pointer(root, "pointerdown", 5000);
+    pointer(handle, "pointerdown", 5000);
     expect(at(root)).toBe(100);
     pointer(root, "pointermove", -400);
     expect(at(root)).toBe(0);
@@ -128,7 +136,7 @@ describe("connectCompareSlider", () => {
     const stop = connectCompareSlider(root);
     stop();
     key(handle, "ArrowRight");
-    pointer(root, "pointerdown", 900);
+    pointer(handle, "pointerdown", 900);
     expect(at(root)).toBe(50);
   });
 

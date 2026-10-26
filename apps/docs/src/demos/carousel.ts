@@ -285,7 +285,7 @@ export const carouselStatsTree = (t: Translate): UsageTree => ({
         options: { gap: "sm", align: "start" },
         children: [
           { contract: "typography", signature: "Text", options: { size: "caption", tone: "tertiary", weight: "label" }, children: t(`demo.carousel.stat.${position}.label` as never) },
-          { contract: "typography", signature: "Text", options: { size: "xl", weight: "label" }, children: t(`demo.carousel.stat.${position}.value` as never) },
+          { contract: "typography", signature: "Text", options: { size: "lg", weight: "label" }, children: t(`demo.carousel.stat.${position}.value` as never) },
           { contract: "badge", signature: "Badge", options: { tone: tone === "danger" ? "danger" : tone === "positive" ? "success" : "neutral" }, children: t(`demo.carousel.stat.${position}.delta` as never) },
           { contract: "typography", signature: "Text", options: { size: "sm", tone: "secondary" }, children: t(`demo.carousel.stat.${position}.note` as never) },
         ],

@@ -54,11 +54,11 @@ export type CompareSliderProps = Omit<HTMLAttributes<HTMLDivElement>, "children"
  *
  * The divider is the same bar Resizable uses (its keys, its right-to-left sign, its thumb), carrying one value: how much
  * of the box the before layer shows. Arrows move it a percent (Shift, ten), Home and End take it to the ends and Enter
- * back to where it started; a press anywhere on the box moves it there. The six-dot thumb is always on screen.
+ * back to where it started; a drag starting on the divider moves it. The six-dot thumb is always on screen.
  *
  * Both layers are laid out at the full size of the box and a clip opens over the after one, so nothing is resized and the
- * two stay registered. A layer is a box, not an image: put anything in it, and keep it non-interactive, since a press on
- * the box is the divider's.
+ * two stay registered. A layer is a box, not an image: put anything in it, links and buttons included: only a press
+ * on the divider moves it.
  */
 export function CompareSlider({
   after,
@@ -126,6 +126,8 @@ export function CompareSlider({
 
   const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (event.button !== 0) return;
+    /* Only a press on the divider starts a drag: the layers stay the author's, and a stray click on them moves nothing. */
+    if (!handleRef.current?.contains(event.target as Node)) return;
     /* A press does not start a text selection or a native image drag, and puts the focus where the keys are. */
     event.preventDefault();
     viewRef.current?.refresh();

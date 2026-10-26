@@ -4,14 +4,16 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/callout.css";
 import "@skryensya/core/components/canvas.css";
+import "@skryensya/core/components/loader.css";
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/icon.css";
 import * as demos from "@docs/demos/callout";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Callout", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.calloutAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.calloutAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Neutral: StoryObj = treeStory(demos.calloutNeutralTree);
 export const Info: StoryObj = treeStory(demos.calloutInfoTree);
 export const Warning: StoryObj = treeStory(demos.calloutWarningTree);

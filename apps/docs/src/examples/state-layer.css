@@ -52,7 +52,7 @@
   --state-layer-opacity: var(--state-layer-pressed-opacity);
 }
 
-.sl-tile[aria-selected="true"] {
+.sl-tile[aria-pressed="true"] {
   color: var(--color-text-accent);
   box-shadow: inset 0 0 0 1px var(--color-border-accent);
 }
@@ -70,7 +70,7 @@
 }
 
 /* The selection keeps a signal independent of the layer. */
-.sl-current-tile[aria-selected="true"] {
+.sl-current-tile[aria-pressed="true"] {
   color: var(--color-text-inverse);
   box-shadow: inset 0 0 0 2px currentColor;
 }
@@ -133,13 +133,13 @@
 }
 
 /* Selection indicator INDEPENDENT of the layer. */
-.sl-item[aria-selected="true"] {
+.sl-item[aria-pressed="true"] {
   color: var(--color-text-accent);
   font-weight: var(--font-weight-label);
   box-shadow: inset 3px 0 0 var(--color-border-accent);
 }
 
-.sl-item[aria-selected="true"] .sl-item__meta {
+.sl-item[aria-pressed="true"] .sl-item__meta {
   color: var(--color-text-accent);
 }
 

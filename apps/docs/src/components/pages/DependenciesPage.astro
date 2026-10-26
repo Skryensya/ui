@@ -105,15 +105,6 @@ const groups: readonly Group[] = [
           en: "Validating and formatting phone numbers depends on per-country metadata that changes often. Maintaining that table would be a separate job from the design system, which is why it lives in an optional package (@skryensya/phone) and the core never loads it.",
         },
       },
-      {
-        id: "prosemirror",
-        name: "prosemirror-*",
-        used: "editor",
-        why: {
-          es: "Un editor de texto enriquecido es modelo de documento, selección, historial y transformaciones, no un contenteditable con botones. ProseMirror resuelve eso con un esquema explícito, y el editor queda en su propio paquete opcional para que quien no lo use no pague su peso.",
-          en: "A rich-text editor is a document model, selection, history and transforms, not a contenteditable with buttons. ProseMirror solves that with an explicit schema, and the editor sits in its own optional package so anyone not using it does not pay for it.",
-        },
-      },
     ],
   },
   {
@@ -126,11 +117,11 @@ const groups: readonly Group[] = [
     entries: [
       {
         id: "optional-peers",
-        name: "@skryensya/editor, @skryensya/icons-material, @skryensya/icons-phosphor",
+        name: "@skryensya/icons-material, @skryensya/icons-phosphor",
         used: "react, vanilla",
         why: {
-          es: "Se marcan como peer opcional para que el árbol de instalación de quien no usa un editor o un set de iconos concreto no los incluya. Los iconos de Lucide sí vienen por defecto porque los componentes los necesitan para funcionar.",
-          en: "Marked as optional peers so the install tree of someone not using an editor or a given icon set does not include them. The Lucide icons do ship by default because the components need them to work.",
+          es: "Se marcan como peer opcional para que el árbol de instalación de quien no usa un set de iconos concreto no los incluya. Los iconos de Lucide sí vienen por defecto porque los componentes los necesitan para funcionar.",
+          en: "Marked as optional peers so the install tree of someone not using a given icon set does not include them. The Lucide icons do ship by default because the components need them to work.",
         },
       },
     ],

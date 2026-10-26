@@ -19,6 +19,7 @@
     --sk-slider-track-size: var(--space-inset-xs);
     --sk-slider-thumb-size: var(--size-icon-sm);
     --sk-slider-thumb-hit: var(--size-control-sm);
+    --sk-slider-thumb-shadow: drop-shadow(0 1px 1.5px rgb(0 0 0 / 0.28)) drop-shadow(0 0 0.5px rgb(0 0 0 / 0.3));
 
     inline-size: 100%;
     min-inline-size: var(--sk-slider-thumb-hit);
@@ -77,6 +78,10 @@
     border-radius: var(--radius-pill);
     touch-action: none;
     cursor: grab;
+    filter: var(--sk-slider-thumb-shadow);
+    transition:
+      scale var(--motion-feedback-duration) var(--motion-feedback-easing),
+      filter var(--motion-feedback-duration) var(--motion-feedback-easing);
     background: radial-gradient(circle at center,
       var(--sk-slider-thumb) 0 calc(var(--sk-slider-thumb-size) / 2 - 1px),
       var(--color-border-default) calc(var(--sk-slider-thumb-size) / 2 - 1px) calc(var(--sk-slider-thumb-size) / 2),
@@ -84,10 +89,23 @@
       transparent calc(var(--sk-slider-thumb-size) / 2 + var(--sk-slider-thumb-ring-size)));
   }
 
+  /* The :where() keeps hover weaker than the press/drag rule below, which must win while the pointer is still over the knob.
+   The knob only deepens its shadow on hover and, on press or drag, swells and also fills with the accent so it reads as "picked up"; `scale` leaves Zag's inline transform alone. */
+  :where(.sk-slider:not([data-disabled])) .sk-slider__thumb:hover,
+  :where(.sk-slider-range:not([data-disabled])) :is(.sk-slider-range__low, .sk-slider-range__high):hover {
+    --sk-slider-thumb-shadow: drop-shadow(0 2px 3px rgb(0 0 0 / 0.3)) drop-shadow(0 0 0.5px rgb(0 0 0 / 0.3));
+  }
+
+  .sk-slider__thumb:active,
+  .sk-slider-range__low:active,
+  .sk-slider-range__high:active,
   .sk-slider__thumb[data-dragging],
   .sk-slider-range__low[data-dragging],
   .sk-slider-range__high[data-dragging] {
     cursor: grabbing;
+    scale: 1.3;
+    --sk-slider-thumb: var(--sk-slider-fill-color);
+    --sk-slider-thumb-shadow: drop-shadow(0 2px 4px rgb(0 0 0 / 0.32)) drop-shadow(0 0 0.5px rgb(0 0 0 / 0.3));
   }
 
   .sk-slider:dir(rtl) .sk-slider__thumb,
@@ -95,16 +113,14 @@
     transform: translateX(50%) !important;
   }
 
+  /* Focus is shown by the knob itself (bigger, filled with the accent, deeper shadow), never by an outline or ring. */
   .sk-slider__thumb:focus-visible,
   .sk-slider-range__low:focus-visible,
   .sk-slider-range__high:focus-visible {
     outline: none;
-    background: radial-gradient(circle at center,
-      var(--sk-slider-thumb) 0 calc(var(--sk-slider-thumb-size) / 2 - 1px),
-      var(--color-border-default) calc(var(--sk-slider-thumb-size) / 2 - 1px) calc(var(--sk-slider-thumb-size) / 2),
-      var(--sk-slider-thumb-ring) calc(var(--sk-slider-thumb-size) / 2) calc(var(--sk-slider-thumb-size) / 2 + var(--sk-slider-thumb-ring-size)),
-      var(--focus-ring-color) calc(var(--sk-slider-thumb-size) / 2 + var(--sk-slider-thumb-ring-size)) calc(var(--sk-slider-thumb-size) / 2 + var(--sk-slider-thumb-ring-size) + var(--focus-ring-width)),
-      transparent calc(var(--sk-slider-thumb-size) / 2 + var(--sk-slider-thumb-ring-size) + var(--focus-ring-width)));
+    scale: 1.3;
+    --sk-slider-thumb: var(--sk-slider-fill-color);
+    --sk-slider-thumb-shadow: drop-shadow(0 2px 4px rgb(0 0 0 / 0.32)) drop-shadow(0 0 0.5px rgb(0 0 0 / 0.3));
   }
 
   .sk-slider__input,
@@ -125,6 +141,7 @@
     .sk-slider-range__high {
       border: 2px solid CanvasText;
       background: Canvas;
+      filter: none;
     }
 
     .sk-slider__thumb:focus-visible,

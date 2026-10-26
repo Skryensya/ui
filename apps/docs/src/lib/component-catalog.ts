@@ -52,6 +52,10 @@ const componentDescriptions = {
     es: "Ejecuta acciones o lleva a un destino con énfasis visual.",
     en: "Runs actions or emphasizes navigation to a destination.",
   },
+  "/components/button-group": {
+    es: "Une acciones relacionadas en un solo control, como un split button.",
+    en: "Joins related actions into one control, like a split button.",
+  },
   "/components/calendar": {
     es: "Permite explorar y elegir fechas en una cuadrícula siempre visible.",
     en: "Explores and selects dates in an always-visible grid.",
@@ -116,10 +120,6 @@ const componentDescriptions = {
     es: "Explica por qué no hay contenido y orienta el siguiente paso.",
     en: "Explains why content is absent and points to the next step.",
   },
-  "/components/editor": {
-    es: "Texto enriquecido con una barra de formato, construido sobre ProseMirror.",
-    en: "Rich text with a formatting bar, built on ProseMirror.",
-  },
   "/components/fade-edge": {
     es: "Desvanece el contenido suavemente en un borde para ocultar overflow sin cortes duros.",
     en: "Smoothly fades content at an edge to hide overflow without hard clipping.",
@@ -171,10 +171,6 @@ const componentDescriptions = {
   "/components/lightbox": {
     es: "Muestra una imagen o una galería en grande, con zoom, en un diálogo modal.",
     en: "Shows an image or a gallery large, with zoom, in a modal dialog.",
-  },
-  "/components/image-cropper": {
-    es: "Una ventana de recorte sobre una imagen, con zoom, rotación, proporciones y exportación exacta, incluido el círculo transparente.",
-    en: "A crop window over an image, with zoom, rotation, aspect ratios and an exact export, including the transparent circle.",
   },
   "/components/image-frame": {
     es: "Recorta y posiciona imágenes con una proporción controlada.",
@@ -375,10 +371,6 @@ const componentDescriptions = {
   "/components/slider": {
     es: "Ajusta un valor continuo dentro de un rango.",
     en: "Adjusts a continuous value within a range.",
-  },
-  "/components/split-button": {
-    es: "Combina una acción principal con alternativas relacionadas.",
-    en: "Pairs one accent action with related alternatives.",
   },
   "/components/stack": {
     es: "Separa elementos verticalmente con un ritmo consistente.",

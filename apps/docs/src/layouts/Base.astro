@@ -18,17 +18,10 @@ import "@skryensya/core/dimensions/radius.scss";
 import "@skryensya/core/dimensions/press-scale.scss";
 import "@skryensya/core/components/badge.css";
 import "@skryensya/core/components/button.css";
-import "@skryensya/core/components/copy-button.css";
+import "@skryensya/core/components/popover.css";
 import "@skryensya/core/components/theme-toggle.css";
 import "@skryensya/core/components/kbd.css";
-import "@skryensya/core/components/form-field.css";
-import "@skryensya/core/components/callout.css";
-import "@skryensya/core/components/avatar.css";
 import "@skryensya/core/components/loader.css";
-import "@skryensya/core/components/segmented.css";
-import "@skryensya/core/components/pagination.css";
-import "@skryensya/core/components/separator.css";
-import "@skryensya/core/components/input.css";
 /* The site's icon set (Lucide) drawing the native select's chevron and check, the same glyphs the
    enhanced Select renders. Global because every native select on the site, and every preview frame
    that copies this page's styles, should read as the same control. */
@@ -37,7 +30,7 @@ import "@skryensya/icons-lucide/select.css";
  * owns the search row, the list and the footer, not the modal frame. Without this sheet ⌘K came out
  * with the browser's black border and square corners. It goes first for that reason: it is the base,
  * not an extra. */
-import "@skryensya/core/components/dialog.css";
+/* dialog.css loads off the first paint, with the palette's and the drawer's sheets: `scripts/layout-deferred-sheets.ts`. */
 /*
  * The mobile drawer, and the two sheets that make it exist. Without them the small rail's <dialog> came
  * out exactly as the browser paints it: a 300px box centered on the screen, with a 3px black border and
@@ -51,7 +44,6 @@ import "@skryensya/core/components/dialog.css";
  * The pattern before the component: `drawer.css` brings no structure, it only re-declares Vaul's hooks
  * (decision 8), so without `vaul.css` there is no panel to adjust.
  */
-import "@skryensya/core/patterns/vaul.css";
 /*
  * The command palette opts into Dialog Vaul (`data-sk-dialog-vaul` on `CommandPalette.astro`'s own
  * `<dialog>`): centred on desktop, a block-end sheet with a drag handle below `desktop`, the same
@@ -59,9 +51,6 @@ import "@skryensya/core/patterns/vaul.css";
  * attribute alone does nothing without this sheet, and `⌘K` would silently keep the centred desktop
  * box on a phone instead.
  */
-import "@skryensya/core/patterns/dialog-vaul.css";
-import "@skryensya/core/components/command-palette.css";
-import "@skryensya/core/components/tabs.css";
 /* The docs rail is a scroll container; FadeEdge makes overflow visible without a hard cutoff. */
 import "@skryensya/core/components/fade-edge.css";
 /* Anchoring: the placement shared by tooltip, popover, popup, menu, select, combobox and date picker
@@ -73,10 +62,6 @@ import "@skryensya/core/patterns/anchored.css";
  * sheet is imported where the markup that uses it lives, and this markup lives in the layout. */
 import "@skryensya/core/components/menu.css";
 import "@skryensya/core/components/tooltip.css";
-import "@skryensya/core/components/switch.css";
-import "@skryensya/core/components/table.css";
-import "@skryensya/core/components/typography.css";
-import "@skryensya/core/components/toc.css"; // the "On this page" rail: Toc.astro mounts [data-sk-toc]
 /* The left rail's shell. It was missing, and the docs shell had rewritten its rules by hand
  * (background, border, separator, footer) reading `--sk-sidebar-*` hooks that without this sheet
  * nobody declares: they all resolved to nothing, so the rail came out transparent and without padding. */
@@ -93,20 +78,23 @@ import "@skryensya/core/components/back-to-top.css";
 import "@skryensya/core/patterns/nav-list.css"; // opt-in: an app may have no navigation (decision 17)
 import "@skryensya/core/patterns/scrollbar.css";
 import "@skryensya/core/patterns/scroll-lock.css";
-import "@skryensya/core/patterns/media-overlay.css";
 import "@skryensya/core/patterns/layout.css";
-import "@skryensya/core/patterns/footer.css"; // <SiteFooter>'s `sk-footer`, used by the landing page
-import "@skryensya/core/patterns/table-pager.css";
 import "@skryensya/core/patterns/icon-toggle.css";
 /* The mobile preference sheet (`#docs-prefs-sheet`, below) renders every setting as a Tile Button -
  * markup that lives in the layout, not in a page. Same opt-in rule as Menu above: without this
  * sheet, on any page that doesn't happen to import `tile.css` for its OWN reasons (a component page
  * demoing Tile itself), the sheet's `sk-tile*` classes hit no rules at all and fall back to bare
  * span/button UA defaults - confirmed live on `/effects`, which has no reason to pull Tile in. */
-import "@skryensya/core/components/tile.css";
-/* Effects (ADR-20), opt-in decorative motion: the component page masthead below is the collapse
- * effect's own consumer (`ComponentPageShell.astro`'s `sk-fx-collapse-header` classes). */
-import "@skryensya/core/effects/collapse-header.css";
+/*
+ * OFF THE FIRST PAINT: tile.css, with dialog.css, vaul.css, dialog-vaul.css and command-palette.css
+ * above. They style only what is closed when a page loads (the palette, the mobile drawer, the
+ * preference sheet and its Tiles), so a client script links them after the first frame instead of
+ * holding it: `scripts/layout-deferred-sheets.ts`, and `scripts/deferred-styles.ts` for why it is safe.
+ */
+/* The rule between a page and its footer (`<hr class="sk-separator">` below `#main-content`). */
+import "@skryensya/core/components/separator.css";
+/* After every component sheet above: the deferred ones (dialog, vaul, tile…) are inserted here. */
+import "../styles/deferred-styles-anchor.css";
 
 /* kbd is in the global chrome (the ⌘K search badge, the palette footer), so its consumer skin loads
  * here rather than per-page, the same reason the button skin above does. */
@@ -132,6 +120,7 @@ import VersionMenu from "../components/VersionMenu.astro";
 import PrefTooltip from "../components/PrefTooltip.astro";
 import CommandPalette from "../components/CommandPalette.astro";
 import { emitMarkup } from "@skryensya/ai-compiler/emit";
+import type { UsageTree } from "@skryensya/core/usage-tree";
 import { DOCS_TOUR_TEMPLATE_ID, docsTourTree } from "../lib/docs-tour";
 import ContrastToggle from "../components/ContrastToggle.astro";
 import SidebarNav from "../components/SidebarNav.astro";
@@ -152,7 +141,6 @@ import { reportIssueUrl } from "../lib/report-issue";
 import {
   availableLocales,
   canonicalPath,
-  defaultLocale,
   getLocale,
   locales,
   localizePath,
@@ -167,6 +155,7 @@ import {
   componentPreviewBindingPreference,
   componentPreviewScreenPreference,
   contrastPreference,
+  LANGUAGE_COOKIE,
   languagePreference,
   palettePreference,
 } from "../lib/preferences";
@@ -260,15 +249,15 @@ const alternates = alternateLocales.map((code) => {
  *   - `hrefs` is only the translations that ACTUALLY EXIST for this page (from `alternates`), so the
  *     script can never redirect a reader onto a 404. It takes their PATHS, never the absolute
  *     `href` beside them: this navigates, so it has to stay on the origin the reader is on.
- *   - `current` / `def` let it tell "an explicit `/` URL" (respect it) from "an unprefixed page"
- *     (the only place browser-language auto-detection runs).
- *   - `slot` is `languagePreference`'s, so a stored explicit choice overrides the browser guess.
+ *   - `current` is this page's language, so a stored choice that already matches does nothing.
+ *   - `slot` is `languagePreference`'s, the reader's explicit choice.
  */
 const LANG_REDIRECT = {
   key: STORAGE_KEY,
   slot: languagePreference.slot,
+  /* What nginx reads the choice from (`$cookie_sk_lang`); `language-menu.ts` writes it too. */
+  cookie: LANGUAGE_COOKIE,
   current: locale,
-  def: defaultLocale,
   locales,
   hrefs: Object.fromEntries(alternates.map((alternate) => [alternate.code, alternate.path])),
 };
@@ -482,6 +471,18 @@ const issueUrl = reportIssueUrl(title, t("footer.reportIssue.body", { url: Astro
  * gallery can render the identical set read-only, instead of hand-keeping two copies in sync.
  */
 const PALETTE_PRESETS = palettePresets(locale);
+/* The navbar's palette control: a Popover whose panel lists every preset as a swatch, so one click picks
+   one. The two @@ mark where the trigger's dot and the panel's swatches go. */
+const [paletteBefore = "", paletteMid = "", paletteAfter = ""] = emitMarkup(
+  {
+    contract: "popover",
+    signature: "Popover",
+    options: { panelId: "docs-palette-panel", triggerLabel: t("prefs.palette"), triggerVariant: "ghost", triggerIconOnly: true, placement: "block-end" },
+    attrs: { class: "dimensions__palette-popover" },
+    slots: { trigger: "@@", children: "@@" },
+  } as UsageTree,
+  { fillDefaults: false },
+).split("@@");
 ---
 
 <!doctype html>
@@ -489,33 +490,22 @@ const PALETTE_PRESETS = palettePresets(locale);
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    {/*
-      FONT PRELOAD. Without it the face is discovered only once the CSS is parsed and a text node
-      asks for it, so it lands after first paint and the swap reflows every line set in the
-      fallback. Only the upright latin file: italic and latin-ext stay on demand. `crossorigin` is
-      required for fonts even same-origin, or the preload is fetched twice.
-    */}
-    <link rel="preload" href={hankenLatinUrl} as="font" type="font/woff2" crossorigin />
+    {/* shortcut: no brand mark exists yet, so an empty icon stops the browser's /favicon.ico 404 (a
+        console error on every page); swap in a real icon once there is one. */}
+    <link rel="icon" href="data:," />
 
     {/*
-      LANGUAGE, RESOLVED BEFORE ANYTHING PAINTS.
+      LANGUAGE: THE SERVER DECIDES, THIS ONLY BACKS IT UP.
 
-      The site is static and language IS the URL (`i18n/index.ts`). This is the one bit of runtime
-      negotiation layered on top, and it is deliberately narrow:
+      The site is static and language IS the URL (`i18n/index.ts`). The negotiation on top of it lives
+      in nginx (`nginx.docs.conf`, fed by `pages/lang-twins.nginx.conf.ts`): a stored choice in the
+      `sk_lang` cookie wins both ways, and with none a browser whose first language is Spanish is moved
+      off an unprefixed page. It used to run here, which meant downloading the whole wrong-language
+      page (HTML, stylesheets, font) before leaving it; the server answers in one round trip.
 
-        - A stored explicit choice (`languagePreference`, set from `LanguageMenu`) ALWAYS wins, both
-          directions. A reader who picked Español once is sent back to Español even from an `/`
-          link, because "remember my choice" is what they asked for.
-        - With NO stored choice, the browser's own language list decides, but ONLY on an unprefixed
-          (default-locale) page. An explicit `/` URL (a shared link, a bookmark) is left exactly
-          where it points; auto-detection never touches it.
-        - A redirect only ever fires toward a translation that EXISTS (`LANG_REDIRECT.hrefs` is built
-          from `alternates`), so an untranslated page never becomes a 404.
-
-      `location.replace`, not `assign`: the pre-redirect URL was never a page the reader chose to be
-      on, so it does not belong in history. Same `is:inline` + `define:vars` shape as the pre-paint
-      block below, and it runs first so a wrong-language document is abandoned before its subresources
-      are fetched.
+      What stays here: a reader whose choice predates the cookie still has it only in localStorage,
+      so it is copied into the cookie (the server honours it from the next request on) and honoured
+      once, now, the way it always was. `location.replace`: the abandoned URL is not history.
     */}
     <script is:inline define:vars={{ LANG_REDIRECT }}>
       (function () {
@@ -525,33 +515,24 @@ const PALETTE_PRESETS = palettePresets(locale);
           var s = JSON.parse(localStorage.getItem(R.key) || "{}");
           if (s && typeof s === "object") stored = s[R.slot];
         } catch (e) {}
+        if (R.locales.indexOf(stored) === -1) return;
 
-        var known = R.locales.indexOf(stored) !== -1;
-        var target;
-        if (known) {
-          /* Explicit choice: honoured everywhere, even over an `/` URL. */
-          target = stored;
-        } else if (R.current === R.def) {
-          /* No choice yet, and this is an unprefixed page: let the browser decide. */
-          var navs =
-            navigator.languages && navigator.languages.length
-              ? navigator.languages
-              : [navigator.language || ""];
-          for (var i = 0; i < navs.length && !target; i++) {
-            var primary = String(navs[i]).toLowerCase().split("-")[0];
-            if (R.locales.indexOf(primary) !== -1) target = primary;
-          }
-          if (!target) target = R.def;
-        } else {
-          /* No choice, explicit `/` URL: respect it. */
-          return;
+        if (document.cookie.indexOf(R.cookie + "=" + stored) === -1) {
+          document.cookie = R.cookie + "=" + stored + "; path=/; max-age=31536000; samesite=lax";
         }
-
-        if (target === R.current) return;
-        var dest = R.hrefs[target];
+        if (stored === R.current) return;
+        var dest = R.hrefs[stored];
         if (dest) location.replace(dest);
       })();
     </script>
+
+    {/*
+      FONT PRELOAD. Without it the face is discovered only once the CSS is parsed and a text node
+      asks for it, so it lands after first paint and the swap reflows every line set in the
+      fallback. Only the upright latin file: italic and latin-ext stay on demand. `crossorigin` is
+      required for fonts even same-origin, or the preload is fetched twice.
+    */}
+    <link rel="preload" href={hankenLatinUrl} as="font" type="font/woff2" crossorigin />
 
     <title>{title} · skryensya/ui</title>
     {noIndex && <meta name="robots" content="noindex" />}
@@ -912,7 +893,6 @@ const PALETTE_PRESETS = palettePresets(locale);
             placeholder={t("search.label")}
             aria-label={t("search.label")}
             aria-controls="docs-cmdk"
-            aria-expanded="false"
             aria-keyshortcuts="Meta+K Control+K"
             data-sk-command-palette-open
             data-sk-search-trigger-input
@@ -978,23 +958,21 @@ const PALETTE_PRESETS = palettePresets(locale);
         */}
         <div class="dimensions__prefs">
           {/*
-            Color palette: ONE button that cycles the curated presets (PALETTE_PRESETS), the same shape
-            as the mode and contrast toggles beside it rather than a rail of swatches. Its dot shows the
-            current accent; a click advances to the next preset and applies its complete semantic accent
-            bundle. The button ships neutral so there is no wrong-color flash before the script runs.
+            Color palette: a Popover of the curated presets (PALETTE_PRESETS), one swatch each, so one click
+            picks one. The trigger's dot shows the current accent; a swatch applies the preset's complete
+            semantic accent bundle. The dot ships neutral so there is no wrong-color flash before the script
+            runs. (The mobile sheet keeps a single tile that cycles.)
           */}
           <PrefTooltip label={t("prefs.palette")}>
-            <button
-              class="sk-button sk-interactive dimensions__palette-toggle"
-              data-variant="ghost"
-              data-icon-only
-              type="button"
-              aria-label={t("prefs.palette")}
-              data-docs-palette-toggle
-              data-label-template={t("prefs.paletteNamed")}
-            >
-              <span class="dimensions__palette-dot" aria-hidden="true"></span>
-            </button>
+            <Fragment set:html={paletteBefore} />
+            <span class="dimensions__palette-dot" aria-hidden="true"></span>
+            <Fragment set:html={paletteMid} />
+            <div class="dimensions__palette-options" role="group" aria-label={t("prefs.palette")}>
+              {PALETTE_PRESETS.map((preset) => (
+                <button type="button" class="dimensions__palette-option" data-docs-palette-set={preset.id} style={`--swatch: ${preset.accent}`} title={preset.name} aria-label={preset.name} aria-pressed="false" />
+              ))}
+            </div>
+            <Fragment set:html={paletteAfter} />
           </PrefTooltip>
 
           {/* One-click mode cycle: system → claro → oscuro. */}
@@ -1640,7 +1618,7 @@ const PALETTE_PRESETS = palettePresets(locale);
       <div class="sk-popover" data-probe-for="sk-popover"></div>
       <ol class="sk-procedure" data-probe-for="sk-procedure"></ol>
       <div class="sk-segmented" data-probe-for="sk-segmented"></div>
-      <div class="sk-split-button" data-probe-for="sk-split-button"></div>
+      <div class="sk-button-group" data-probe-for="sk-button-group"></div>
       <div class="sk-time-field" data-probe-for="sk-time-field"></div>
       <div class="sk-toolbar" data-probe-for="sk-toolbar"></div>
       <div class="sk-tree-view" data-probe-for="sk-tree-view"></div>
@@ -1799,6 +1777,10 @@ const PALETTE_PRESETS = palettePresets(locale);
       from, set in `<head>` before either of these runs).
     */}
     <script>
+      import { initLayoutDeferredSheets } from "../scripts/layout-deferred-sheets";
+      initLayoutDeferredSheets();
+    </script>
+    <script>
       import { initHeroTabsUrl } from "../scripts/hero-tabs-url";
       initHeroTabsUrl();
     </script>
@@ -1897,6 +1879,7 @@ const PALETTE_PRESETS = palettePresets(locale);
        * persists the id. The FOUC guard replays them before paint on the next load. The first preset
        * is the default and removes every inline ramp override. */
       import { getPreference, setPreference } from "@skryensya/vanilla/storage";
+      import { placeNativePopovers } from "@skryensya/core/anchored";
       import { palettePreference } from "../lib/preferences";
       type PalettePreset = {
         id: string;
@@ -1907,7 +1890,9 @@ const PALETTE_PRESETS = palettePresets(locale);
 
       const paletteToggles = document.querySelectorAll("[data-docs-palette-toggle]");
       const presetsEl = document.getElementById("docs-palette-presets");
-      if (paletteToggles.length > 0 && presetsEl) {
+      /* The native Popover has no machine: this puts its panel against the trigger when it opens. */
+      placeNativePopovers();
+      if (presetsEl) {
         const root = document.documentElement;
         let presets: PalettePreset[] = [];
         try {
@@ -1921,6 +1906,9 @@ const PALETTE_PRESETS = palettePresets(locale);
           if (!preset) return;
           const properties = Object.keys(presets[0].tokens);
           for (const property of properties) root.style.setProperty(property, preset.tokens[property]);
+          document.querySelectorAll<HTMLElement>(".dimensions__palette-popover .dimensions__palette-dot").forEach((dot) => dot.style.setProperty("--swatch", preset.accent));
+          document.querySelector(".dimensions__palette-popover [popovertarget]")?.setAttribute("aria-label", (paletteToggles[0]?.getAttribute("data-label-template") || "{name}").replace("{name}", preset.name));
+          document.querySelectorAll<HTMLElement>("[data-docs-palette-set]").forEach((option) => option.setAttribute("aria-pressed", String(option.dataset.docsPaletteSet === preset.id)));
           paletteToggles.forEach((paletteToggle) => {
             const dot = paletteToggle.querySelector<HTMLElement>(".dimensions__palette-dot");
             /* the dot shows the current color; the label names it so the icon-only button stays legible */
@@ -1934,6 +1922,13 @@ const PALETTE_PRESETS = palettePresets(locale);
           if (persist) setPreference(palettePreference, preset.id);
         };
 
+        document.querySelectorAll<HTMLElement>("[data-docs-palette-set]").forEach((option) =>
+          option.addEventListener("click", () => {
+            index = Math.max(0, presets.findIndex((p) => p.id === option.dataset.docsPaletteSet));
+            apply(true);
+            option.closest<HTMLElement>("[popover]")?.hidePopover();
+          }),
+        );
         apply(false); // sync every dot + label to the saved preset the FOUC guard already applied
         paletteToggles.forEach((paletteToggle) => {
           paletteToggle.addEventListener("click", () => {

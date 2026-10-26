@@ -51,7 +51,7 @@ try {
           await page.screenshot({ path: `${output}/${entry.id}-${mode.dir}.png` });
         }
         const demo = page.locator('[data-break-case="Demo"]');
-        if (mode.width === 1280 && ["drawer", "vaul", "dialog-stack", "window", "presence", "hotkey", "tile-button", "card", "tile-checkbox", "tile-switch", "expandable-tile", "resizable", "compare-slider", "editor", "table-pager"].includes(entry.id)) {
+        if (mode.width === 1280 && ["drawer", "vaul", "dialog-stack", "window", "presence", "hotkey", "tile-button", "card", "tile-checkbox", "tile-switch", "expandable-tile", "resizable", "compare-slider", "table-pager"].includes(entry.id)) {
           try {
             if (["drawer", "vaul", "dialog-stack", "window"].includes(entry.id)) {
               await demo.getByRole("button", { name: /^Open / }).first().click();
@@ -82,9 +82,6 @@ try {
               const before = await handle.getAttribute("aria-valuenow");
               await handle.focus(); await page.keyboard.press("ArrowRight");
               assert.notEqual(await handle.getAttribute("aria-valuenow"), before);
-            } else if (entry.id === "editor") {
-              await demo.locator('[contenteditable="true"]').fill("Local editor review");
-              assert.ok((await demo.textContent()).includes("characters (local only)"));
             } else if (entry.id === "table-pager") {
               const worst = page.locator('[data-break-case="Worst case"]');
               await worst.getByRole("button", { name: "Next page", exact: true }).click();

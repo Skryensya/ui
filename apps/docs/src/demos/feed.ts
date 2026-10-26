@@ -73,7 +73,7 @@ export const feedTree = (t: Translate): UsageTree => {
  * `labelledBySlot` points at whatever the slot rendered.
  */
 const activityArticle = (
-  entry: { initials: string; author: string; when: string; body: string; tag?: string; tone?: "accent" | "success" },
+  entry: { initials: string; author: string; when: string; body: string; tag?: string; tone?: "accent" },
   index: number,
   total: number,
 ): UsageTree => ({
@@ -145,7 +145,6 @@ export const feedActivityTree = (t: Translate): UsageTree => {
       when: t("demo.feed.when3"),
       body: t("demo.feed.activity3"),
       tag: t("demo.feed.tagClosed"),
-      tone: "success" as const,
     },
   ];
   return {

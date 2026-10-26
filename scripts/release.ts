@@ -25,7 +25,7 @@ import { join, resolve } from "node:path";
 const root = resolve(import.meta.dirname, "..");
 
 /** What a release ships, in the order it builds: `core` first, the rest depend on it. */
-export const shipped = ["core", "icons-lucide", "icons-material", "icons-phosphor", "react", "vanilla", "editor", "devtools", "cli"] as const;
+export const shipped = ["core", "icons-lucide", "icons-material", "icons-phosphor", "react", "vanilla", "devtools", "cli"] as const;
 
 type Condition = string | { [key: string]: Condition };
 interface Manifest {

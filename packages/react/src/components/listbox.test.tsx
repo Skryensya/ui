@@ -55,4 +55,36 @@ describe("Listbox", () => {
     );
     expect(ui.getByRole("option", { name: long }).getAttribute("title")).toBe(long);
   });
+
+  it("clears the choice on a second click only when deselectable", async () => {
+    const keeps = render(<Listbox items={items} label="Letras" />);
+    await click(keeps.getByRole("option", { name: "Beta" }));
+    expect(selected(keeps.container)).toEqual(["b"]);
+    keeps.unmount();
+
+    const clears = render(<Listbox deselectable items={items} label="Letras" />);
+    await click(clears.getByRole("option", { name: "Beta" }));
+    expect(selected(clears.container)).toEqual([]);
+  });
+
+  it("describes an option by its description, which is not part of its name", () => {
+    const ui = render(
+      <Listbox items={[{ value: "a", label: "Alfa", description: "Primera letra" }, { value: "b", label: "Beta" }]} label="Letras" />,
+    );
+    const option = ui.getByRole("option", { name: "Alfa" });
+    expect(option.getAttribute("aria-describedby")).toBeTruthy();
+    expect(ui.getByRole("option", { description: "Primera letra" })).toBe(option);
+    expect(ui.getByRole("option", { name: "Beta" }).hasAttribute("aria-describedby")).toBe(false);
+  });
+
+  it("marks the choice by its fill alone when the indicator is none", () => {
+    const ui = render(<Listbox indicator="none" items={items} label="Letras" />);
+    expect(ui.container.querySelector("[data-sk-listbox]")!.getAttribute("data-indicator")).toBe("none");
+    expect(ui.container.querySelector("[data-sk-listbox-item-indicator]")).toBeNull();
+    expect(selected(ui.container)).toEqual(["b"]);
+  });
+  it("never shows the check in a horizontal list", () => {
+    const ui = render(<Listbox items={items} label="Letras" orientation="horizontal" />);
+    expect(ui.container.querySelector("[data-sk-listbox-item-indicator]")).toBeNull();
+  });
 });

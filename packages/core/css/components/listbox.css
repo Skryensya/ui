@@ -19,8 +19,10 @@
     --sk-listbox-padding: var(--space-inset-xs);
     --sk-listbox-max-block-size: 18rem;
     --sk-listbox-item-fg: var(--color-text-primary);
-    --sk-listbox-item-selected-fg: var(--color-text-accent);
+    --sk-listbox-item-selected-bg: var(--color-action-accent);
+    --sk-listbox-item-selected-fg: var(--color-text-on-accent);
     --sk-listbox-item-disabled-fg: var(--color-text-disabled);
+    --sk-listbox-item-description-fg: var(--color-text-secondary);
     --sk-listbox-item-padding: var(--space-inset-xs) var(--space-inset-sm);
     --sk-listbox-item-radius: var(--radius-control);
 
@@ -72,11 +74,15 @@
     box-sizing: border-box;
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    gap: var(--space-inline-sm);
+    /* Columns only: a row gap would push the description away from the label it belongs to. */
+    column-gap: var(--space-inline-sm);
     align-items: center;
     min-inline-size: 0;
-    min-block-size: var(--size-touch-target);
+    /* Compact like a menu row, still above the 24px target minimum (WCAG 2.5.8). */
+    min-block-size: var(--size-control-sm);
     padding: var(--sk-listbox-item-padding);
+    font-size: var(--font-size-body-sm);
+    line-height: var(--font-line-height-body);
     border-radius: var(--sk-listbox-item-radius);
     color: var(--sk-listbox-item-fg);
     cursor: pointer;
@@ -87,13 +93,24 @@
     flex: none;
   }
 
-  /* Chosen: the accent text, the label weight and the SELECTED rung of the state layer, so a chosen
-     row reads as chosen without the check, and a highlighted one (the hover rung) stays distinct. */
+  /* Chosen: a solid accent fill, so a chosen row reads at a glance without the check. The state
+     layer mixes `currentColor`, so hovering a chosen row lays the on-accent text color over it. A
+     disabled chosen row keeps the selected wash instead: disabled text on a solid fill would vanish. */
   .sk-listbox__item[data-state="checked"] {
     --state-layer-opacity: var(--state-layer-selected-opacity);
 
-    color: var(--sk-listbox-item-selected-fg);
     font-weight: var(--font-weight-label);
+  }
+
+  .sk-listbox:not([data-disabled]) .sk-listbox__item[data-state="checked"]:not([data-disabled]) {
+    --state-layer-opacity: 0;
+
+    background: var(--sk-listbox-item-selected-bg);
+    color: var(--sk-listbox-item-selected-fg);
+  }
+
+  .sk-listbox:not([data-disabled]) .sk-listbox__item[data-state="checked"]:not([data-disabled]) .sk-listbox__item-description {
+    color: inherit;
   }
 
   .sk-listbox__item[data-highlighted] {
@@ -107,10 +124,33 @@
     outline-offset: calc(-1 * var(--focus-ring-width));
   }
 
+  /* The ring sits inside the row; on the accent fill an accent ring would disappear. */
+  .sk-listbox__content:focus-visible > .sk-listbox__item[data-highlighted][data-state="checked"] {
+    outline-color: var(--sk-listbox-item-selected-fg);
+  }
+
   .sk-listbox__item[data-disabled] {
     --state-layer-opacity: var(--state-layer-disabled-opacity);
     color: var(--sk-listbox-item-disabled-fg);
     cursor: not-allowed;
+  }
+
+  /* The check spans both rows, so a description sits under the label and never under the check. */
+  .sk-listbox__item-indicator {
+    grid-column: 2;
+    grid-row: 1 / -1;
+  }
+
+  .sk-listbox__item-description {
+    grid-column: 1;
+    color: var(--sk-listbox-item-description-fg);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-body);
+    line-height: var(--font-line-height-caption);
+  }
+
+  .sk-listbox__item[data-disabled] .sk-listbox__item-description {
+    color: inherit;
   }
 
   .sk-listbox__item-text {
@@ -132,6 +172,16 @@
     visibility: visible;
   }
 
+  /* Fill only: the check and the column it holds are gone. Vanilla markup may still carry it.
+     Horizontal always: a row of chips reads by its fill, and a tick only widens each one. */
+  :is(.sk-listbox[data-indicator="none"], .sk-listbox[data-orientation="horizontal"]) .sk-listbox__item {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  :is(.sk-listbox[data-indicator="none"], .sk-listbox[data-orientation="horizontal"]) .sk-listbox__item-indicator {
+    display: none;
+  }
+
   .sk-listbox[data-disabled] .sk-listbox__item {
     color: var(--sk-listbox-item-disabled-fg);
     cursor: not-allowed;
@@ -143,7 +193,12 @@
     }
 
     .sk-listbox__item[data-state="checked"] {
-      color: Highlight;
+      background: Highlight;
+      color: HighlightText;
+    }
+
+    .sk-listbox__item[data-state="checked"] .sk-listbox__item-description {
+      color: inherit;
     }
 
     .sk-listbox__item[data-disabled] {

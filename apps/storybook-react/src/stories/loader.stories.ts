@@ -9,16 +9,17 @@ import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/loader";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Loader", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.loaderAnatomyTree);
-export const Sizes: StoryObj = treeStory(demos.loaderSizesTree);
-export const Speeds: StoryObj = treeStory(demos.loaderSpeedsTree);
-export const PseudoVariants: StoryObj = treeStory(demos.loaderPseudoVariantsTree);
-export const StaggeredVariants: StoryObj = treeStory(demos.loaderStaggeredVariantsTree);
+export const Anatomy: StoryObj = treeStory(demos.loaderAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Single: StoryObj = treeStory(demos.loaderSingleTree);
 export const Simulation: StoryObj = treeStory(demos.loaderSimulationTree);
 export const Contexts: StoryObj = treeStory(demos.loaderContextsTree);
+export const PseudoVariants: StoryObj = treeStory(demos.loaderPseudoVariantsTree);
+export const StaggeredVariants: StoryObj = treeStory(demos.loaderStaggeredVariantsTree);
 export const HookPlayground: StoryObj = treeStory(demos.loaderHookPlaygroundTree);
-export const Single: StoryObj = treeStory(demos.loaderSingleTree);
+export const Sizes: StoryObj = treeStory(demos.loaderSizesTree);
+export const Speeds: StoryObj = treeStory(demos.loaderSpeedsTree);

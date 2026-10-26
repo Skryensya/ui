@@ -2,6 +2,8 @@ import { commandPaletteEvents, type CommandPaletteCommandEventDetail } from "@sk
 import { mountIcons } from "@skryensya/vanilla/icon";
 import { siteIcons } from "../icons";
 import { DOCS_TOUR_COMMAND, DOCS_TOUR_ID, DOCS_TOUR_TEMPLATE_ID } from "../lib/docs-tour";
+import tourCss from "@skryensya/core/components/tour.css?inline";
+import { insertDeferredStyles } from "./deferred-styles";
 
 /*
  * `/tour` in the command palette. The tour's markup waits in a `<template>` (Base.astro), where the
@@ -13,10 +15,10 @@ import { DOCS_TOUR_COMMAND, DOCS_TOUR_ID, DOCS_TOUR_TEMPLATE_ID } from "../lib/d
 let bound = false;
 
 async function startDocsTour(): Promise<void> {
-  const [{ connectTourRoot, getTour }] = await Promise.all([
-    import("@skryensya/vanilla/tour"),
-    import("@skryensya/core/components/tour.css"),
-  ]);
+  /* Inserted on demand, not `import()`ed: Astro links every stylesheet a page's scripts can reach,
+     dynamic imports included, so an import made the tour's CSS render-blocking on every page. */
+  insertDeferredStyles([tourCss]);
+  const { connectTourRoot, getTour } = await import("@skryensya/vanilla/tour");
 
   let root = document.getElementById(DOCS_TOUR_ID);
   if (!root) {

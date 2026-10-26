@@ -9,15 +9,16 @@ import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/image-frame.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/avatar";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Avatar", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.avatarAnatomyTree);
-export const GroupAnatomy: StoryObj = treeStory(demos.avatarGroupAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.avatarAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const GroupAnatomy: StoryObj = treeStory(demos.avatarGroupAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Single: StoryObj = treeStory((t) => demos.avatarSingleTree());
 export const Image: StoryObj = treeStory(demos.avatarImageTree);
-export const Sizes: StoryObj = treeStory(demos.avatarSizesTree);
-export const Colors: StoryObj = treeStory(demos.avatarColorsTree);
 export const Group: StoryObj = treeStory(demos.avatarGroupTree);
 export const Profile: StoryObj = treeStory(demos.avatarProfileTree);
+export const Colors: StoryObj = treeStory(demos.avatarColorsTree);
+export const Sizes: StoryObj = treeStory(demos.avatarSizesTree);

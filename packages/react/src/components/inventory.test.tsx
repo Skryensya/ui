@@ -8,8 +8,9 @@ import { EmptyState } from "./empty-state.js";
 import { FileUpload } from "./file-upload.js";
 import { Icon } from "./icon.js";
 import { Menu } from "./menu.js";
+import { Button } from "./button.js";
 import { NumberField } from "./number-field.js";
-import { SplitButton } from "./split-button.js";
+import { ButtonGroup } from "./button-group.js";
 import { TimeField } from "./time-field.js";
 import { Popover } from "./popover.js";
 import { Toolbar } from "./toolbar.js";
@@ -382,7 +383,7 @@ describe("expanded component inventory", () => {
     ).toBe(true);
   });
 
-  it("keeps EmptyState content and SplitButton actions explicit", async () => {
+  it("keeps EmptyState content and a split ButtonGroup's actions explicit", async () => {
     const onClick = vi.fn();
     const onSelect = vi.fn();
     const ui = render(
@@ -391,14 +392,16 @@ describe("expanded component inventory", () => {
           title="Sin proyectos"
           actions={<button type="button">Crear</button>}
         />
-        <SplitButton
-          menuItems={[{ label: "Guardar copia", value: "copy" }]}
-          menuLabel="Más opciones"
-          onClick={onClick}
-          onSelect={onSelect}
-        >
-          Guardar
-        </SplitButton>
+        <ButtonGroup>
+          <Button onClick={onClick}>Guardar</Button>
+          <Menu
+            items={[{ label: "Guardar copia", value: "copy" }]}
+            label="Más opciones"
+            triggerLabel="Más opciones"
+            triggerIconOnly
+            onSelect={onSelect}
+          />
+        </ButtonGroup>
       </>,
     );
     expect(ui.getByRole("heading", { name: "Sin proyectos" })).toBeTruthy();
@@ -409,30 +412,6 @@ describe("expanded component inventory", () => {
     await waitFor(() =>
       expect(onSelect).toHaveBeenCalledWith({ value: "copy" }),
     );
-  });
-
-  it("disables both SplitButton actions as one control", () => {
-    const ui = render(
-      <SplitButton
-        disabled
-        menuItems={[{ label: "Guardar copia", value: "copy" }]}
-        menuLabel="Más opciones"
-      >
-        Guardar
-      </SplitButton>,
-    );
-    expect(
-      ui.getByRole("button", { name: "Guardar" }).hasAttribute("disabled"),
-    ).toBe(true);
-    expect(
-      ui.getByRole("button", { name: "Más opciones" }).hasAttribute("disabled"),
-    ).toBe(true);
-    const trigger = ui.getByRole("button", { name: "Más opciones" });
-    expect(trigger.hasAttribute("data-weld-start")).toBe(true);
-    expect(trigger.hasAttribute("data-icon-only")).toBe(true);
-    // The trigger pairs with the action on BOTH axes now, not just emphasis.
-    expect(trigger.getAttribute("data-variant")).toBe("solid");
-    expect(trigger.getAttribute("data-tone")).toBe("accent");
   });
 
   it("forwards multiple native files through FileUpload", async () => {

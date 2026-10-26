@@ -11,12 +11,13 @@ import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/media-overlay.css";
 import "@skryensya/core/patterns/nav-list.css";
 import * as demos from "@docs/demos/megamenu";
+const { megamenuAnatomyCss } = demos;
 import { placeholderHrefs } from "@docs/lib/placeholder-hrefs";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Megamenu", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.megamenuAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.megamenuAnatomyTree, { decorators: [withCss(megamenuAnatomyCss)] });
 export const Default: StoryObj = treeStory(demos.megamenuTree);
 export const TwoColumns: StoryObj = treeStory((t) => demos.megamenuTwoColumnsTree(t, placeholderHrefs()));
 export const FourColumns: StoryObj = treeStory((t) => demos.megamenuFourColumnsTree(t, placeholderHrefs()));

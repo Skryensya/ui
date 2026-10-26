@@ -3,6 +3,7 @@
 import "@skryensya/core/components/badge.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/checkbox.css";
+import "@skryensya/core/components/loader.css";
 import "@skryensya/core/components/stat.css";
 import "@skryensya/core/components/switch.css";
 import "@skryensya/core/components/tile.css";

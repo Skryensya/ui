@@ -38,15 +38,13 @@
     overflow: clip;
     border-radius: var(--sk-compare-slider-radius);
     background: var(--sk-compare-slider-bg);
-    /* A press anywhere moves the divider. On touch, the other axis stays the page's, so a horizontal compare still scrolls. */
+    /* Only the divider takes a press. On touch, the other axis stays the page's, so a horizontal compare still scrolls. */
     touch-action: pan-y;
     user-select: none;
-    cursor: ew-resize;
   }
 
   .sk-compare-slider[data-direction="vertical"] {
     touch-action: pan-x;
-    cursor: ns-resize;
   }
 
   .sk-compare-slider__before,
@@ -163,9 +161,30 @@
     background: var(--sk-compare-slider-handle-active-color);
   }
 
-  .sk-compare-slider__handle:focus-visible .sk-compare-slider__grip {
-    outline: var(--focus-ring-width) solid var(--focus-ring-color);
-    outline-offset: var(--focus-ring-offset);
+  /* The thumb changes itself, never with an outline: on focus or press it swells and takes the divider's active colour. */
+  .sk-compare-slider__grip {
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.3);
+    transition:
+      opacity var(--motion-feedback-duration) var(--motion-feedback-easing),
+      scale var(--motion-feedback-duration) var(--motion-feedback-easing),
+      background-color var(--motion-feedback-duration) var(--motion-feedback-easing),
+      box-shadow var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  .sk-compare-slider__handle:focus-visible,
+  .sk-compare-slider__handle:active,
+  .sk-compare-slider[data-dragging] > .sk-compare-slider__handle {
+    --sk-grip-scale: 1.25;
+  }
+
+  /* The grip declares its own colour hooks, so they are set ON it: a value set on the handle would never reach past them. */
+  .sk-compare-slider__handle:focus-visible .sk-compare-slider__grip,
+  .sk-compare-slider__handle:active .sk-compare-slider__grip,
+  .sk-compare-slider[data-dragging] .sk-compare-slider__grip {
+    --sk-grip-bg: var(--sk-compare-slider-handle-active-color);
+    --sk-grip-border-color: var(--sk-compare-slider-handle-active-color);
+    --sk-grip-dot-color: var(--color-text-on-accent);
+    box-shadow: 0 2px 6px rgb(0 0 0 / 0.35);
   }
 
   @media (prefers-reduced-motion: reduce) {

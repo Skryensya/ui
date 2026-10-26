@@ -333,6 +333,45 @@ body {
 }
 
 
+/* The navbar's palette Popover: the trigger is the dot; the panel is a grid of preset swatches. */
+.dimensions__palette-options {
+  display: grid;
+  grid-template-columns: repeat(6, 1.75rem);
+  gap: var(--space-inline-xs);
+}
+
+/* Open, the panel says what the "Color palette" hint would: hide the hint for as long as it is. */
+.dimensions__prefs .sk-tooltip:has(.sk-popover__content:popover-open) .sk-tooltip__content {
+  display: none;
+}
+
+/* A swatch grid has nothing to confirm: light-dismiss and Escape close it, so the contract's Close button goes. */
+.dimensions__palette-popover .sk-popover__close {
+  display: none;
+}
+
+.dimensions__palette-option {
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--swatch);
+  background-clip: padding-box;
+  box-shadow: 0 0 0 1px var(--color-border-strong);
+  cursor: pointer;
+}
+
+.dimensions__palette-option[aria-pressed="true"] {
+  border-color: var(--color-bg-surface);
+  box-shadow: 0 0 0 2px var(--color-text-primary);
+}
+
+.dimensions__palette-option:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
 /* The language menu is near the trailing edge of the header, so its panel opens against the window
    edge. Menu's own placement is start-aligned (`block-end span-inline-end` + `justify-self: start`,
    see menu.css), which for this trigger means a panel that starts near the right edge and needs

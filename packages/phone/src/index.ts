@@ -18,8 +18,7 @@ import {
  * imports is about 155 kB, which is larger than the rest of the kit's validation put together and
  * is pure cost to the consumer validating a RUT and an email. So `@skryensya/core` declares the
  * `phone` format and ships no validator for it, and a page that wants one installs this and calls
- * `registerPhoneFormat()`. Same shape, and the same reason, as `@skryensya/editor` being an
- * optional peer that `runtime/registry.ts` refuses to even name.
+ * `registerPhoneFormat()`.
  *
  * `/max` AND NOT `/min`, which is the one choice here worth defending, because `/min` is half the
  * size. Measured against this package's own metadata: `/min` accepts `+56 30 123 4567`, whose area

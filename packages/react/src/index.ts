@@ -105,8 +105,6 @@ export type {
 } from "./components/carousel.js";
 export { AutoplayMarquee, Marquee } from "./components/marquee.js";
 export type { MarqueeProps } from "./components/marquee.js";
-export { ImageCropper } from "./components/image-cropper.js";
-export type { ImageCropperHandle, ImageCropperProps } from "./components/image-cropper.js";
 export { DialogStack, DialogStackBody, DialogStackContent, DialogStackDescription, DialogStackFooter, DialogStackHeader, DialogStackNext, DialogStackOverlay, DialogStackPrevious, DialogStackTitle, DialogStackTrigger, DialogStackClose } from "./components/dialog-stack.js";
 export type { DialogStackProps, DialogStackActionProps } from "./components/dialog-stack.js";
 export { MorphStack } from "./components/morph-stack.js";
@@ -326,8 +324,8 @@ export { Menu } from "./components/menu.js";
 export type { MenuProps } from "./components/menu.js";
 export { NumberField } from "./components/number-field.js";
 export type { NumberFieldProps } from "./components/number-field.js";
-export { SplitButton, SplitButtonVertical } from "./components/split-button.js";
-export type { SplitButtonProps, SplitButtonVerticalProps } from "./components/split-button.js";
+export { ButtonGroup, ButtonGroupLabel, ButtonGroupSeparator, ButtonGroupText } from "./components/button-group.js";
+export type { ButtonGroupLabelProps, ButtonGroupProps, ButtonGroupTextProps } from "./components/button-group.js";
 export { TimeField } from "./components/time-field.js";
 export type { TimeFieldProps } from "./components/time-field.js";
 export {

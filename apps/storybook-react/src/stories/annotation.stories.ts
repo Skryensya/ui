@@ -7,19 +7,21 @@ import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/checkbox.css";
 import "@skryensya/core/components/details.css";
+import "@skryensya/core/components/loader.css";
 import "@skryensya/core/components/menu.css";
 import "@skryensya/core/components/stat.css";
 import "@skryensya/core/components/switch.css";
 import "@skryensya/core/components/tile.css";
 import "@skryensya/core/patterns/anchored.css";
 import * as demos from "@docs/demos/annotation";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+const { annotationSelfAnatomyCss } = demos;
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Annotation", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.annotationAnatomyTree);
-export const SelfAnatomy: StoryObj = treeStory(demos.annotationSelfAnatomyTree);
-export const Sides: StoryObj = treeStory(demos.annotationSidesTree);
-export const Plural: StoryObj = treeStory(demos.annotationPluralTree);
+export const SelfAnatomy: StoryObj = treeStory(demos.annotationSelfAnatomyTree, { decorators: [withCss(annotationSelfAnatomyCss)] });
 export const One: StoryObj = treeStory(demos.annotationOneTree);
 export const Match: StoryObj = treeStory(demos.annotationMatchTree);
+export const Sides: StoryObj = treeStory(demos.annotationSidesTree);
+export const Plural: StoryObj = treeStory(demos.annotationPluralTree);

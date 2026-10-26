@@ -2,6 +2,7 @@
 // change the demo (or the docs page that shows it) and run `pnpm generate` in this app.
 import "@skryensya/core/components/avatar.css";
 import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/loader.css";
 import "@skryensya/core/components/message.css";
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/layout.css";

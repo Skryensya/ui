@@ -19,5 +19,5 @@ export default { title: "Components/Checkbox", tags: ["autodocs"] } satisfies Me
 export const Anatomy: StoryObj = treeStory(demos.checkboxAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Group: StoryObj = treeStory(demos.checkboxGroupTree);
 export const Default: StoryObj = treeStory(demos.checkboxTree);
-export const TileCheckbox: StoryObj = treeStory(demos.tileCheckboxTree);
 export const Scale: StoryObj = treeStory(demos.checkboxScaleTree);
+export const TileCheckbox: StoryObj = treeStory(demos.tileCheckboxTree);

@@ -1,0 +1,5 @@
+/* Where `scripts/deferred-styles.ts` inserts the sheets of what is closed at load: right after the
+   layout's own component sheets, the cascade position they had when Base.astro imported them. */
+:root {
+  --docs-deferred-styles-anchor: 1;
+}

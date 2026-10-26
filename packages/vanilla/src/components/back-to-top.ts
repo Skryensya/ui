@@ -64,7 +64,9 @@ export function connectBackToTop(root: HTMLElement): Cleanup {
   const scrollTarget: EventTarget = scroller;
   scrollTarget.addEventListener("scroll", onScroll, { passive: true });
   root.addEventListener("click", onClick);
-  sync();
+  /* The first read waits for a frame too: reading scrollTop at mount forces a full-page layout
+     mid-script (Lighthouse's longest task). The control ships `hidden`, so a frame late is invisible. */
+  onScroll();
 
   return () => {
     if (frame) cancelAnimationFrame(frame);

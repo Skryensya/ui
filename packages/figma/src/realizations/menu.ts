@@ -14,7 +14,7 @@ export const menuRealization: Realization = {
   overlays: { before: "state layer" },
   ring: "focus ring",
   // The trigger's options shape the Button that opens it, not the list; the safety triangle is a debug aid.
-  exclude: ["triggerWeldStart", "triggerWeldEnd", "triggerIconOnly", "triggerVariant", "triggerSize", "triggerTone", "debugSafetyTriangle"],
+  exclude: ["triggerIconOnly", "triggerVariant", "triggerSize", "triggerTone", "debugSafetyTriangle"],
   width: 220,
   given: { label: "Actions", triggerLabel: "Actions" },
   // Open, as the machine marks it.

@@ -63,6 +63,8 @@
     selectionMode,
     orientation,
     disabled: root.hasAttribute("data-disabled"),
+    deselectable: root.hasAttribute("data-deselectable"),
+    loopFocus: root.hasAttribute("data-loop-focus"),
     defaultValue: listboxDefaultValue(items),
     onValueChange(details: { value: string[] }) {
       root.dispatchEvent(
@@ -81,11 +83,29 @@
     { part: "content", node: () => content, props: () => api.getContentProps(), events: true },
     ...itemEls.flatMap((el, index): PartBinding[] => {
       const item = items[index]!;
+      /* With a description the row's text is label + description; name it by the label alone. */
+      const text = el.querySelector<HTMLElement>(selector.itemText);
+      const description = el.querySelector<HTMLElement>(selector.itemDescription);
+      if (description) {
+        const base = uniqueId("sk-listbox-item");
+        description.id ||= `${base}-description`;
+        if (text) text.id ||= `${base}-label`;
+      }
       return [
-        { part: "item", node: () => el, props: () => api.getItemProps({ item }), events: true, classes: ["sk-interactive"] },
+        {
+          part: "item",
+          node: () => el,
+          props: () => ({
+            ...api.getItemProps({ item }),
+            "aria-describedby": description?.id,
+            "aria-labelledby": description ? text?.id : undefined,
+          }),
+          events: true,
+          classes: ["sk-interactive"],
+        },
         {
           part: "itemText",
-          node: () => el.querySelector<HTMLElement>(selector.itemText),
+          node: () => text,
           props: () => api.getItemTextProps({ item }),
         },
         {

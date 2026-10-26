@@ -4,6 +4,7 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/badge.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
+import "@skryensya/core/components/loader.css";
 import "@skryensya/core/components/popover.css";
 import "@skryensya/core/components/qr-code.css";
 import "@skryensya/core/components/typography.css";

@@ -3,7 +3,7 @@
 # `surface` es la forma del contrato la última vez que alguien la revisó. Si el compilador dice
 # que no coincide, algo de lo que un consumidor depende se movió: escribe la entrada y pega el
 # hash nuevo.
-surface: "11ff27dab511350e"
+surface: "6ece7fd208c607d0"
 entries:
   - date: 2026-10-01
     kind: feature
@@ -13,3 +13,11 @@ entries:
     en:
       title: First release
       body: "Published for the first time, with its contract, a React binding and a Vanilla mount."
+  - date: 2026-10-23
+    kind: feature
+    es:
+      title: Más compacto, selección sólida, descripción por opción
+      body: "Filas más bajas y texto más chico; la opción elegida se rellena con el color de acento (`--sk-listbox-item-selected-bg`) y `indicator=\"none\"` la marca sólo con ese relleno, sin el check. Cada opción acepta una descripción bajo su nombre, anunciada aparte. `deselectable` deja quitar la elección en modo single y `loopFocus` hace que las flechas den la vuelta."
+    en:
+      title: More compact, solid selection, option descriptions
+      body: "Shorter rows and smaller text; the chosen option is filled with the accent color (`--sk-listbox-item-selected-bg`), and `indicator=\"none\"` marks it by that fill alone, without the check. Each option takes a description under its name, announced separately. `deselectable` lets single mode clear its choice, and `loopFocus` wraps the arrow keys."

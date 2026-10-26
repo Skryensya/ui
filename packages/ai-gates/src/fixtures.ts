@@ -31,7 +31,7 @@ import { test as base, expect, type BrowserContext, type Page } from "@playwrigh
  * right independently) and checking it explicitly is what turns a broken stage into the one clear
  * error message below, everywhere this helper is used instead of copied.
  */
-export async function waitForStage(page: Page): Promise<void> {
+export async function waitForStage(page: Page, { keepModals = false } = {}): Promise<void> {
   await page.goto("/");
   await page.waitForSelector('body[data-ready="true"], body[data-ready="error"]');
 
@@ -40,6 +40,11 @@ export async function waitForStage(page: Page): Promise<void> {
     const reason = await page.evaluate(() => window.gateError);
     throw new Error(`The stage never became ready: ${reason ?? "unknown"}`);
   }
+
+  /* The stage renders `dialog-stack/open`, a real modal: it makes the rest of the page inert, so a
+   * test that hovers or clicks a fixture of its own would hit the dialog instead. Only the readers
+   * of the stage as rendered (`stagePage`, the screenshot baseline) keep it open. */
+  if (!keepModals) await page.evaluate(() => document.querySelectorAll<HTMLDialogElement>("dialog:modal").forEach((dialog) => dialog.close()));
 }
 
 /*
@@ -88,7 +93,7 @@ export const test = base.extend<{}, WorkerFixtures>({
       const failures: string[] = [];
       page.on("pageerror", (error) => failures.push(error.message));
 
-      await waitForStage(page);
+      await waitForStage(page, { keepModals: true });
 
       if (failures.length > 0) {
         throw new Error(`the page must render both bindings without throwing: ${failures.join("; ")}`);

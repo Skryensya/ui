@@ -19,7 +19,7 @@ import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 export default { title: "Components/RadioGroup", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.radioGroupAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
-export const TileRadioGroupAnatomy: StoryObj = treeStory(demos.tileRadioGroupAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const TileRadioGroupAnatomy: StoryObj = treeStory(demos.tileRadioGroupAnatomyTree);
 export const Default: StoryObj = treeStory(demos.radioGroupTree);
 export const Spread: StoryObj = treeStory(demos.radioGroupSpreadTree);
 export const Disabled: StoryObj = treeStory(demos.radioGroupDisabledTree);

@@ -44,8 +44,6 @@
   padding: var(--space-inset-md);
   border: 1px solid var(--color-border-subtle);
   border-radius: var(--radius-surface);
-  /* No line along the bottom edge: the tinted card already stands off the page, and the line read as a rule under the example. */
-  border-block-end-width: 0;
   /* Light has one white for canvas and surface alike, so the card tints toward the well to stand off the page; dark already differs. The frame's veil reads the same colour, or the example sits in a second box. */
   --docs-card-bg: light-dark(color-mix(in oklab, var(--color-bg-well) 28%, var(--color-bg-surface)), var(--color-bg-surface));
 

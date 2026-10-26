@@ -55,8 +55,6 @@ export const intents = [
   intent("input/fields/pick-stay", { en: "Pick a stay", es: "Elegir una estancia" }, { en: "Pick a start and an end in one go.", es: "Elegir un inicio y un fin de una vez." }),
   intent("input/preferences/brand-color", { en: "Brand colour", es: "Color de marca" }, { en: "Set the colour a product takes its accents from.", es: "Fijar el color de donde un producto toma sus acentos." }),
   intent("input/preferences/avatar-color", { en: "Avatar colour", es: "Color de avatar" }, { en: "Choose an initials avatar's background.", es: "Elegir el fondo de un avatar de iniciales." }),
-  intent("input/media/profile-picture", { en: "Profile picture", es: "Foto de perfil" }, { en: "Let a person choose the part of a photo that becomes their round picture.", es: "Dejar que una persona elija la parte de una foto que será su imagen redonda." }),
-  intent("input/media/cover-crop", { en: "Cover crop", es: "Recorte de portada" }, { en: "Cut a photo to the fixed shape a cover or banner needs.", es: "Cortar una foto a la forma fija que pide una portada o un banner." }),
   intent("input/capture/subscribe", { en: "Subscribe", es: "Suscripción" }, { en: "Capture one value and one action, on one line.", es: "Capturar un dato y una acción, en una línea." }),
   intent("input/capture/contact", { en: "Contact", es: "Contacto" }, { en: "Take a message with its topic so it reaches the right person.", es: "Recibir un mensaje con su tema para que llegue a quien corresponde." }),
   intent("input/preferences/toggle-setting", { en: "Toggle setting", es: "Ajuste que se activa" }, { en: "One option that turns on or off at once.", es: "Una opción que se activa o desactiva al momento." }),

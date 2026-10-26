@@ -133,7 +133,7 @@ export function localeOf(t: Translate): Locale {
  * English owns the bare paths, so English is the canonical spelling of a route and this table says
  * how each segment is written in the other locale. Translating whole paths would mean a per-locale
  * href on all ~97 nav entries; the path vocabulary is about a dozen words, and every component slug
- * (`avatar`, `date-picker`, `split-button`) is identical in both and passes through untouched.
+ * (`avatar`, `date-picker`, `button-group`) is identical in both and passes through untouched.
  *
  * Keys are English segments; a segment with no entry is emitted as-is.
  */
@@ -281,6 +281,11 @@ for (const modulePath of Object.keys(pageModules)) {
 /** Does `canonical` exist in `locale`? */
 export function hasTranslation(canonical: string, locale: Locale): boolean {
   return pagesByCanonical.get(canonicalPath(canonical))?.has(locale) ?? false;
+}
+
+/** Every canonical path with at least one published page. */
+export function publishedCanonicals(): readonly string[] {
+  return [...pagesByCanonical.keys()];
 }
 
 /** Every locale this page is actually published in, in declaration order. */

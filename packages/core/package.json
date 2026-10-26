@@ -254,14 +254,6 @@
       "types": "./src/form-field.ts",
       "default": "./src/form-field.ts"
     },
-    "./editor": {
-      "types": "./src/editor.ts",
-      "default": "./src/editor.ts"
-    },
-    "./editor-icons": {
-      "types": "./src/editor-icons.ts",
-      "default": "./src/editor-icons.ts"
-    },
     "./input": {
       "types": "./src/input.ts",
       "default": "./src/input.ts"
@@ -305,18 +297,6 @@
     "./wrapper": {
       "types": "./src/layout.ts",
       "default": "./src/layout.ts"
-    },
-    "./image-cropper": {
-      "types": "./src/image-cropper.ts",
-      "default": "./src/image-cropper.ts"
-    },
-    "./image-cropper-model": {
-      "types": "./src/image-cropper-model.ts",
-      "default": "./src/image-cropper-model.ts"
-    },
-    "./image-cropper-controller": {
-      "types": "./src/image-cropper-controller.ts",
-      "default": "./src/image-cropper-controller.ts"
     },
     "./image-frame": {
       "types": "./src/image-frame.ts",
@@ -614,9 +594,9 @@
       "types": "./src/popover.ts",
       "default": "./src/popover.ts"
     },
-    "./split-button": {
-      "types": "./src/split-button.ts",
-      "default": "./src/split-button.ts"
+    "./button-group": {
+      "types": "./src/button-group.ts",
+      "default": "./src/button-group.ts"
     },
     "./timeline": {
       "types": "./src/timeline.ts",
@@ -735,7 +715,6 @@
     "@zag-js/tags-input": "^1.43.3",
     "@zag-js/tooltip": "1.43.3",
     "@zag-js/tree-view": "^1.43.3",
-    "cropperjs": "2.2.0",
     "qrcode": "^1.5.4"
   },
   "sideEffects": [

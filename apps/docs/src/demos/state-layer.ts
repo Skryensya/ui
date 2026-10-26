@@ -52,7 +52,7 @@ export const stateLayerLabTree = (t: Translate): UsageTree => ({
         {
           contract: "button",
           signature: "Button.action",
-          attrs: { class: "sl-item", "aria-selected": "true" },
+          attrs: { class: "sl-item", "aria-pressed": "true", "data-selected": "true" },
           children: t("demo.stateLayer.inbox"),
         },
         {

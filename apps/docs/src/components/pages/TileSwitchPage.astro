@@ -37,7 +37,7 @@ const states = tileSwitchStateTrees(t);
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview tree={withPx(withPy(tileSwitchTree(t)))} title={t("switchPage.tileTitle")} description={t("switchPage.tileBody1")} storybookTitle="Components/Switch" storybookStory="TileSwitch" />
     <p set:html={t("switchPage.tileBody2")} />
-    <UsagePreview tree={withPx(withPy(tileSwitchListTree(t)))} title={t("tileSwitchPage.listTitle")} description={t("tileSwitchPage.listBody")} storybookTitle="Components/Switch" storybookStory="TileSwitch" />
+    <UsagePreview tree={withPx(withPy(tileSwitchListTree(t)))} title={t("tileSwitchPage.listTitle")} description={t("tileSwitchPage.listBody")} storybookTitle="Components/Tile" storybookStory="SwitchList" />
     <UsagePreview
       variants={[
         { value: "off", label: t("tileSwitchPage.stateOff"), tree: withPx(withPy(states.off)) },

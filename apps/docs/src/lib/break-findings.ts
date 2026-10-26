@@ -9,16 +9,64 @@ export type BreakFinding = {
 
 // Findings are observations, not CSS overrides for the specimens.
 export const breakFindings: Record<string, readonly BreakFinding[]> = {
-  "split-button": [
+  "button-group": [
     {
       scenario:
         "Worst case / Loading - viewport de 320px (contenedor de 229px)",
       cases: ["Worst case", "Loading"],
       error:
         "El split button ocupa 369px con el título largo y 393px en loading. El segmento que abre alternativas queda fuera de vista y ensancha la página.",
-      fix: "Aplicado: min-inline-size: 0 y max-inline-size: 100% en .sk-split-button, mismo par de reglas que Button ya usa en sí mismo, un nivel arriba, para que el recorte del segmento primario pueda surtir efecto al encoger el grupo.",
+      fix: "Aplicado: min-inline-size: 0 y max-inline-size: 100% en el grupo (hoy .sk-button-group), mismo par de reglas que Button ya usa en sí mismo, un nivel arriba, para que el recorte del segmento primario pueda surtir efecto al encoger el grupo.",
       status: "fixed",
-      source: "packages/core/css/components/split-button.css",
+      source: "packages/core/css/components/button-group.css",
+    },
+    {
+      scenario: "ButtonGroup: tres etiquetas largas a 320px",
+      cases: [],
+      error: "Cada etiqueta se recortaba por los dos lados alrededor del centro, sin elipsis: «todas las conv», «richtigungseins».",
+      fix: "Aplicado: dentro del grupo, sk-button__label lleva overflow: hidden y text-overflow: ellipsis, y ningún botón queda más angosto que su alto. Los íconos y los triggers envueltos (Menu, Popover, Tooltip) no se encogen.",
+      status: "fixed",
+      source: "packages/core/css/components/button-group.css",
+    },
+    {
+      scenario: "ButtonGroup: prefijo largo junto a un campo",
+      cases: [],
+      error: "El prefijo (white-space: nowrap) empujaba el campo 37px fuera del contenedor. Con un prefijo corto, el 100% de Input se resolvía contra el propio grupo y recortaba «https://» a «ht…».",
+      fix: "Aplicado: ButtonGroupText es un bloque con elipsis y min-inline-size: 0; dentro del grupo, Input usa su ancho intrínseco y flex: 1 1 auto, con un piso de 8rem.",
+      status: "fixed",
+      source: "packages/core/css/components/button-group.css",
+    },
+    {
+      scenario: "ButtonGroup: miembros envueltos en Tooltip",
+      cases: [],
+      error: "Un Button dentro de un Tooltip (span > span > button) no se soldaba: esquinas redondas en medio del grupo y una sombra por botón.",
+      fix: "Aplicado: la ruta .sk-tooltip > .sk-tooltip__trigger (también con un Menu o Popover adentro) cuenta como una cara más en el weld, la sombra, el press y las apariencias.",
+      status: "fixed",
+      source: "packages/core/css/components/button-group.css",
+    },
+    {
+      scenario: "ButtonGroup: separador en un extremo, miembro oculto al inicio",
+      cases: [],
+      error: "Un separador al inicio o al final dibujaba una línea suelta y cuadraba la esquina exterior del vecino; un primer miembro [hidden] hacía lo mismo.",
+      fix: "Aplicado: «primero» y «último» se calculan con :nth-child(1 of :not(separador, [hidden])); un separador sin nada a un lado no se muestra.",
+      status: "fixed",
+      source: "packages/core/css/components/button-group.css",
+    },
+    {
+      scenario: "ButtonGroup vertical: etiqueta sobre un ícono",
+      cases: [],
+      error: "El ícono quedaba cuadrado debajo de un botón ancho y la esquina soldada del ancho colgaba sobre nada.",
+      fix: "Aplicado: en vertical, los miembros de solo ícono se estiran al ancho de la columna; el cuadrado queda como piso.",
+      status: "fixed",
+      source: "packages/core/css/components/button-group.css",
+    },
+    {
+      scenario: "ButtonGroup: paginación con números de cuatro cifras a 320px",
+      cases: [],
+      error: "«1,284», «1,285» y «1,286» terminan en «1,…»: un número no se debería truncar nunca.",
+      fix: "Aplicado: seis páginas de cuatro cifras no caben en 320px, así que la fila muestra menos (1 … 1,285 … 1,290). Queda como regla de contenido en la página.",
+      status: "fixed",
+      source: "apps/docs/src/i18n/messages/components/button-group.ts",
     },
   ],
   clipboard: [

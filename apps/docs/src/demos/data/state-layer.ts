@@ -24,6 +24,6 @@ type StateItem = ReturnType<typeof stateLabels>[number];
 export const stateAttrs = (baseClass: string, item: StateItem): Record<string, string> => ({
   class: baseClass,
   ...("peek" in item && item.peek ? { "data-peek": item.peek } : {}),
-  ...("selected" in item && item.selected ? { "aria-selected": item.selected } : {}),
+  ...("selected" in item && item.selected ? { "aria-pressed": item.selected, "data-selected": item.selected } : {}),
   ...("disabled" in item && item.disabled ? { "aria-disabled": item.disabled } : {}),
 });

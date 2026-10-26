@@ -38,9 +38,6 @@ async function boot(host: HTMLElement): Promise<void> {
   if (host.querySelector("[data-sk-code-preview]")) {
     (await import("@skryensya/vanilla/code-preview")).mountCodePreview(host);
   }
-  if (host.querySelector("[data-sk-editor]")) {
-    (await import("@skryensya/vanilla/editor")).mountEditor(host);
-  }
 }
 
 /*

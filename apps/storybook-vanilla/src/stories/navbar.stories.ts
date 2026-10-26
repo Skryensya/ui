@@ -4,6 +4,7 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/avatar.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
+import "@skryensya/core/components/loader.css";
 import "@skryensya/core/components/megamenu.css";
 import "@skryensya/core/components/navbar.css";
 import "@skryensya/core/patterns/anchored.css";

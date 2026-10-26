@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-26T13:49:28.762Z",
+  "generatedAt": "2026-10-24T11:56:42.339Z",
   "viewport": {
     "width": 1920,
     "height": 1000
@@ -52,17 +52,6 @@
       "breadcrumb-with-long-labels": 72,
       "multi-level-breadcrumb": 72,
       "two-level-breadcrumb": 72
-    },
-    "/components/button": {
-      "button-as-a-link": 93,
-      "button-part-by-part": 185,
-      "button-with-default-values": 93,
-      "button-with-leading-icon": 93,
-      "button-xs-sm-md-lg": 97,
-      "destructive-trigger-and-confirmation": 93,
-      "every-emphasis-by-every-tone": 307,
-      "icon-only-button-with-accessible-name": 93,
-      "tilebutton": 145
     },
     "/components/calendar": {
       "calendar": 384,
@@ -409,16 +398,6 @@
       "slider": 125,
       "slider-part-by-part": 197
     },
-    "/components/split-button": {
-      "splitbutton": 289,
-      "splitbutton-danger-variant": 289,
-      "splitbutton-ghost-variant": 289,
-      "splitbutton-menu-first": 289,
-      "splitbutton-part-by-part": 181,
-      "splitbutton-small-size": 289,
-      "splitbutton-subtle-variant": 289,
-      "splitbutton-translucent-variant": 289
-    },
     "/components/stack": {
       "stack": 237,
       "stack-part-by-part": 238
@@ -568,17 +547,6 @@
       "breadcrumb-de-dos-niveles": 72,
       "breadcrumb-de-varios-niveles": 72,
       "breadcrumb-que-colapsa-para-entrar": 72
-    },
-    "/es/componentes/button": {
-      "button-como-enlace": 93,
-      "button-con-icono-inicial": 93,
-      "button-con-valores-por-defecto": 93,
-      "button-parte-por-parte": 185,
-      "button-solo-icono-con-nombre-accesible": 93,
-      "button-xs-sm-md-lg": 153,
-      "disparador-y-confirmacion-destructivos": 93,
-      "tilebutton": 145,
-      "todos-los-enfasis-por-todos-los-tonos": 307
     },
     "/es/componentes/calendar": {
       "calendar": 384,
@@ -932,16 +900,6 @@
       "rango-de-precio": 81,
       "slider": 125,
       "slider-parte-por-parte": 197
-    },
-    "/es/componentes/split-button": {
-      "splitbutton": 289,
-      "splitbutton-menu-primero": 289,
-      "splitbutton-parte-por-parte": 181,
-      "splitbutton-tamano-small": 289,
-      "splitbutton-variante-danger": 289,
-      "splitbutton-variante-ghost": 289,
-      "splitbutton-variante-subtle": 289,
-      "splitbutton-variante-translucent": 289
     },
     "/es/componentes/stack": {
       "stack": 237,

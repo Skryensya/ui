@@ -1,7 +1,7 @@
 /*
  * A NUMBER FOR EVERY USAGE PREVIEW, UNIQUE ACROSS THE WHOLE SITE, for the debug panel's "Preview ids" check.
  *
- * "Example 4 of the SplitButton page" is not enough when the same card shows up in a screenshot, a bug report
+ * "Example 4 of the ButtonGroup page" is not enough when the same card shows up in a screenshot, a bug report
  * and a console: the number has to name one card on the whole site, and keep naming it tomorrow. So it is not a
  * position or a hash. It is handed out once, in order, and written down in `src/data/preview-ids.json` (commit it,
  * like a lockfile): a key (the page's path + what the card is) maps to its number, new cards take the next free

@@ -6,10 +6,11 @@ import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/changelog.css";
 import * as demos from "@docs/demos/changelog";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Changelog", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.changelogAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.changelogAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(demos.changelogTree);
 export const Compact: StoryObj = treeStory(demos.changelogCompactTree);

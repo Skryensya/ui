@@ -687,16 +687,23 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    align-content: flex-start;
+    align-content: center;
+    justify-content: center;
     gap: var(--space-inline-md);
     box-sizing: border-box;
     min-inline-size: 0;
-    /* Content-sized: never a viewport floor (that forced scrollbars). */
-    min-block-size: 0;
+    /* Fills the frame so the specimen centres on both axes, not just hugs the top-left. Border-box and no
+       margin, so it never adds a scrollbar; the auto-fit height is measured from the children, not the body. */
+    min-block-size: 100dvh;
     margin: 0;
     padding: var(--sk-component-preview-stage-padding);
     background: var(--sk-component-preview-bg);
     color: var(--color-text-primary);
+  }
+
+  .sk-component-preview__frame-body[data-sk-measuring] {
+    min-block-size: 0;
+    align-content: flex-start;
   }
 
   /* Preview documents must not inherit the host's scroll-lock gutter or a page-tall body.

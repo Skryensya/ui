@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { ColorPicker } from "@skryensya/react/color-picker";
-import { Editor } from "@skryensya/react/editor";
 import { QRCode } from "@skryensya/react/qr-code";
 import { Questionnaire, QuestionnaireItem } from "@skryensya/react/questionnaire";
 import { Resizable } from "@skryensya/react/resizable";
@@ -10,7 +9,6 @@ import { NativeSelect } from "@skryensya/react/select-native";
 import { Treegrid, TreegridHead, TreegridHeadRow, TreegridColumnHeader, TreegridBody, TreegridRow, TreegridCell, TreegridScroll } from "@skryensya/react/treegrid";
 import { FixtureCases, FIXTURES, URL, EMAIL, type Fixture } from "./break-catalog-common";
 import "@skryensya/core/components/color-picker.css";
-import "@skryensya/core/components/editor.css";
 import "@skryensya/core/components/toolbar.css";
 import "@skryensya/core/components/popover.css";
 import "@skryensya/core/components/qr-code.css";
@@ -35,7 +33,6 @@ function Specimen({ id, data, index }: { id: string; data: Fixture; index: numbe
   const { title, body, items, worst } = data;
   switch (id) {
     case "color-picker": return <><ColorPicker label={title} defaultValue={worst ? "#ffffff00" : "#1266cc"} disabled={!items.length} swatches={items.map((_, i) => `hsl(${i * 47 % 360} 70% 50%)`)} onValueChange={({ value }) => setStatus(value)} /><output>{status}</output></>;
-    case "editor": return <><Editor label={title} toolbarLabel={`Formatting ${title}`} defaultValue={body ? `<p>${body.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>` : ""} placeholder="Write a workspace review…" onChange={({ markdown }) => setStatus(`${markdown.length} characters (local only)`)} /><output>{status}</output></>;
     case "qr-code": return <QRCode label={`Open workspace reference — ${title}`} value={!items.length ? "" : worst ? `BEGIN:VCARD\nVERSION:3.0\nFN:Aleksandra Wiśniewska-Kowalczyk\nEMAIL:${EMAIL}\nURL:${URL}\nNOTE:${body}\nEND:VCARD` : items.length === 1 ? "J" : URL} />;
     case "questionnaire": return <Questionnaire aria-label={title} progress="steps" onSubmit={(event) => event.preventDefault()} onValuesSubmit={() => setStatus("Answers validated locally; nothing submitted")}><QuestionnaireItem name={`review-${index}`} title={title} description={body} required choices={items.map((text, i) => ({ value: `option-${i}`, label: text, description: i === 0 && worst ? body : undefined, disabled: worst && i === 2 }))} /><QuestionnaireItem name={`contact-${index}`} title="Contact for the review" text textType="email" textLabel="Email address" required /></Questionnaire>;
     case "resizable": return <Resizable>{items.length ? <Resizable.Panel size={35} minSize={15} collapsible minInlineSize={worst ? "20rem" : undefined}><h3>{items[0]}</h3><p>{body}</p></Resizable.Panel> : null}{items.length > 1 ? <Resizable.Handle label={`Resize ${title}`} /> : null}{items.length > 1 ? <Resizable.Panel size={65} minSize={25}><h3>{items[1]}</h3><p>{body}</p></Resizable.Panel> : null}</Resizable>;

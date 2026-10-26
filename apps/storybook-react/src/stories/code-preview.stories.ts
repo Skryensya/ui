@@ -6,9 +6,10 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/code-preview.css";
 import "@skryensya/core/components/switch.css";
 import * as demos from "@docs/demos/code-preview";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+const { codePreviewAnatomyCss } = demos;
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/CodePreview", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.codePreviewAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.codePreviewAnatomyTree, { decorators: [withCss(codePreviewAnatomyCss)] });
 export const Default: StoryObj = treeStory(demos.codePreviewTree);

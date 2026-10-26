@@ -59,3 +59,6 @@ export const languagePreference = definePreference<Locale>({
   fallback: defaultLocale,
   parse: oneOf(locales),
 });
+
+/** The same choice, as the cookie nginx reads (`$cookie_sk_lang` in `nginx.docs.conf`). */
+export const LANGUAGE_COOKIE = "sk_lang";

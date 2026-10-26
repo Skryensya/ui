@@ -3,8 +3,26 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "568b92f6e5d3cc75"
+surface: "e40603208ef525bb"
 entries:
+  - date: 2026-10-24
+    kind: feature
+    target: Input
+    es:
+      title: "Input acepta inputmode"
+      body: "Se permite inputmode para sugerir el teclado adecuado, por ejemplo decimal, sin cambiar el tipo del campo."
+    en:
+      title: "Input accepts inputmode"
+      body: "inputmode is allowed to suggest the right keyboard, for example decimal, without changing the field's type."
+  - date: 2026-10-24
+    kind: feature
+    target: Input
+    es:
+      title: "Input puede ir dentro de un ButtonGroup"
+      body: "Además de FormField, ahora Input acepta ButtonGroup como padre: se suelda al botón que actúa sobre él. Dentro del grupo, nómbralo con aria-label o con un ButtonGroupLabel."
+    en:
+      title: "Input can sit inside a ButtonGroup"
+      body: "Besides FormField, Input now accepts ButtonGroup as its parent, welded to the button that acts on it. Inside the group, name it with aria-label or a ButtonGroupLabel."
   - date: 2026-10-17
     kind: feature
     target: Textarea

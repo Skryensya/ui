@@ -25,7 +25,7 @@ const expectedOrder = [
 
 /* Component names as the rail shows them, by category. Two entries the brief did not place sit where a reader would look first. */
 const expected: Record<(typeof expectedOrder)[number], readonly string[]> = {
-  actions: ["AppBar", "Button", "Clipboard", "CommandPalette", "Menu", "Menubar", "SplitButton", "StateButton", "TileButton", "Toolbar"],
+  actions: ["AppBar", "Button", "ButtonGroup", "Clipboard", "CommandPalette", "Menu", "Menubar", "StateButton", "TileButton", "Toolbar"],
   forms: [
     "Calendar", "Checkbox", "ColorPicker", "Combobox", "DatePicker", "Editor", "Drop zone", "FormField", "Input", "Listbox",
     "NumberField", "OtpInput", "PasswordInput", "Questionnaire", "RadioGroup", "SegmentedControl", "Select", "Slider", "Switch",

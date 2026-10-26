@@ -190,8 +190,13 @@ export const buttonGroupPopoverTree = (t: Translate): UsageTree =>
   ]);
 
 /** The same group under `dir="rtl"`: the weld is logical, so the corners follow. */
+/** The seams are the compact default's own: a short separator between each pair, and the attribute that marks it, which vanilla markup (unlike React) does not add. */
 export const buttonGroupRtlTree = (_t: Translate): UsageTree =>
-  group([button("أرشفة"), button("تقرير"), button("تأجيل")], { label: "البريد" }, { dir: "rtl" });
+  group(
+    [button("أرشفة"), { contract: "button-group", signature: "ButtonGroupSeparator" }, button("تقرير"), { contract: "button-group", signature: "ButtonGroupSeparator" }, button("تأجيل")],
+    { label: "البريد", separator: "inset" },
+    { dir: "rtl" },
+  );
 
 /** Shared classes get one legend entry across both complete compositions. */
 export const buttonGroupAnatomyTree = (t: Translate): UsageTree => ({
@@ -255,4 +260,15 @@ export const buttonGroupAnatomyCss = `${annotationDemoCss}
 
 .sk-annotated__subject .sk-input {
   inline-size: 11rem;
+}
+
+/* The annotation rings a part's own box, and a separator's box is the whole seam: a ring around that read as a full-height rule. Here its box is the short
+   line itself, so the ring (and the number pointing at it) lands on what the separator actually draws. */
+.sk-annotated__subject .sk-button-group__separator {
+  align-self: center;
+  block-size: 1.75rem;
+}
+
+.sk-annotated__subject .sk-button-group__separator::before {
+  inset-block: 0;
 }`;

@@ -261,7 +261,6 @@ function syncRootState(): void {
     "0",
     "important",
   );
-  document.body.style.setProperty("min-block-size", "0", "important");
   document.body.style.setProperty("block-size", "auto", "important");
   applyOverflow();
 }
@@ -280,7 +279,6 @@ function injectFrameChrome(): void {
     }
     body.sk-component-preview__frame-body {
       block-size: auto !important;
-      min-block-size: 0 !important;
       height: auto !important;
       max-block-size: none !important;
       overflow: ${scrolls() ? "auto" : "hidden"} !important;
@@ -592,6 +590,16 @@ function runAuthoredScript(): void {
  */
 function measureContentHeight(): number {
   const body = document.body;
+  // The body fills the frame to centre its specimen; measuring that would read the centring offset as content and grow the frame forever.
+  body.setAttribute("data-sk-measuring", "");
+  try {
+    return measureContent(body);
+  } finally {
+    body.removeAttribute("data-sk-measuring");
+  }
+}
+
+function measureContent(body: HTMLElement): number {
   const styles = getComputedStyle(body);
   const paddingTop = parseFloat(styles.paddingTop) || 0;
   const paddingBottom = parseFloat(styles.paddingBottom) || 0;
@@ -816,19 +824,6 @@ async function boot(): Promise<void> {
   }
   if (document.querySelector("[data-sk-component-preview]")) {
     (await import("../preview/component-preview-enhancer")).mountComponentPreview(document);
-  }
-  /*
-   * Editor is deliberately absent from `initComponents`'s own registry (`mountFrameComponents`
-   * above already ran it): `@skryensya/editor` is an OPTIONAL peer dependency of
-   * `@skryensya/vanilla` (ProseMirror, ~9 packages), so the package's auto-loader must never name
-   * it, even lazily. This site's docs, though, is exactly the kind of consumer that already
-   * depends on `@skryensya/editor` directly - it is what builds this very demo - so it opts in
-   * explicitly here, the same shape any real page hosting an Editor would write for itself
-   * (`EditorPage.astro`'s own `js` snippet shows that exact shape to the reader).
-   */
-  if (document.querySelector("[data-sk-editor]")) {
-    const { mountEditor } = await import("@skryensya/vanilla/editor");
-    mountEditor(document);
   }
   await mountReactDemo();
   runAuthoredScript();

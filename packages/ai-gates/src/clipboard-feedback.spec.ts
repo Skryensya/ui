@@ -51,7 +51,7 @@ test("copied feedback has room for its text and is not clipped by the button", a
     document.querySelectorAll<HTMLDialogElement>('dialog[open]').forEach(el => el.close());
     const host = document.createElement('div');
     host.style.cssText = 'position:fixed;left:200px;top:160px;z-index:99999';
-    host.innerHTML = `<button class="sk-copy-button sk-button sk-interactive sk-icon-toggle sk-anchor" data-icon-only data-size="sm" data-variant="soft" data-copied style="anchor-name:--copy-probe;--sk-anchored-name:--copy-probe"><span data-face="copied">✓</span><span class="sk-copy-button__feedback sk-anchored" data-sk-placement="block-start" data-state="open" style="--sk-anchored-name:--copy-probe;--sk-anchored-box-name:--copy-feedback-probe;pointer-events:auto"><span>Copiado</span><span class="sk-anchored-arrow" aria-hidden="true"></span></span></button>`;
+    host.innerHTML = `<button class="sk-copy-button sk-button sk-interactive sk-icon-toggle sk-anchor" data-icon-only data-size="sm" data-variant="soft" data-copied style="anchor-name:--copy-probe;--sk-anchored-name:--copy-probe"><span data-face="copied">✓</span><span class="sk-copy-button__feedback sk-anchored" data-sk-placement="block-start" data-state="open" data-placed style="--sk-anchored-name:--copy-probe;--sk-anchored-box-name:--copy-feedback-probe;pointer-events:auto"><span>Copiado</span><span class="sk-anchored-arrow" aria-hidden="true"></span></span></button>`;
     document.body.append(host);
   });
   const feedback = page.locator('.sk-copy-button__feedback[data-state="open"]').last();

@@ -25,8 +25,6 @@ const cx = (...classes: Array<string | undefined>) =>
 export type CheckedState = Record<string, boolean>;
 
 const {
-  triggerWeldStart: triggerWeldStartOption,
-  triggerWeldEnd: triggerWeldEndOption,
   triggerVariant: triggerVariantOption,
   triggerTone: triggerToneOption,
   triggerAppearance: triggerAppearanceOption,
@@ -49,12 +47,6 @@ export type MenuProps = Pick<
    *  icon-only trigger (leave `trigger` unset): the chevron below is painted either way, and this
    *  is what makes the button announce something instead of nothing. */
   triggerLabel?: string;
-  /** Welds the trigger button's own start/end edge flat against a neighbor (radius AND border
-   *  color both); see `menu.ts`'s identical option doc. The same attribute (`data-weld-start`/
-   *  `-end`) `Button`'s own `weldStart`/`weldEnd` options write; button.css owns the rule, this
-   *  only reaches the same attribute. */
-  triggerWeldStart?: boolean;
-  triggerWeldEnd?: boolean;
   /** Passed straight to the trigger's own `data-variant`/`data-size`; see `menu.ts`'s identical
    *  option doc. `Button`'s own `[data-variant="…"]`/`[data-size="…"]` rules (button.css) apply to
    *  the trigger directly once these are set; nothing here repeats their CSS. */
@@ -548,8 +540,6 @@ export function Menu({
   trigger,
   triggerClassName,
   triggerLabel,
-  triggerWeldStart,
-  triggerWeldEnd,
   triggerVariant,
   triggerTone,
   triggerAppearance,
@@ -648,10 +638,6 @@ export function Menu({
           {...anchorProps(cx("sk-button", "sk-interactive", menuParts.trigger, triggerClassName))}
           aria-label={triggerLabel}
           {...{
-            [triggerWeldStartOption.attr]: triggerWeldStart
-              ? triggerWeldStartOption.trueValue
-              : undefined,
-            [triggerWeldEndOption.attr]: triggerWeldEnd ? triggerWeldEndOption.trueValue : undefined,
             [triggerVariantOption.attr]: triggerVariant,
             [triggerToneOption.attr]: triggerTone,
             [triggerAppearanceOption.attr]: triggerAppearance,

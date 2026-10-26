@@ -5,6 +5,7 @@ import "@skryensya/core/components/avatar.css";
 import "@skryensya/core/components/badge.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
+import "@skryensya/core/components/loader.css";
 import "@skryensya/core/components/placeholder.css";
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/box.css";
@@ -13,14 +14,15 @@ import "@skryensya/core/patterns/image-frame.css";
 import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/media-overlay.css";
 import * as demos from "@docs/demos/placeholder";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Placeholder", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.placeholderAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.placeholderAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Paragraph: StoryObj = treeStory((t) => demos.placeholderParagraphTree());
 export const PublicationPlaceholder: StoryObj = treeStory(demos.publicationPlaceholderTree);
 export const PublicationSwap: StoryObj = treeStory(demos.publicationSwapTree);
-export const Match: StoryObj = treeStory(demos.placeholderMatchTree);
 export const Gallery: StoryObj = treeStory(demos.placeholderGalleryTree);
 export const Table: StoryObj = treeStory(demos.placeholderTableTree);
-export const Paragraph: StoryObj = treeStory((t) => demos.placeholderParagraphTree());
+export const Match: StoryObj = treeStory(demos.placeholderMatchTree);

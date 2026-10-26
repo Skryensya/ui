@@ -2,6 +2,7 @@ import { validateUsageTree } from "@skryensya/ai-compiler/validate";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import { describe, expect, it } from "vitest";
 import { useTranslations, type Translate } from "../i18n";
+import { buttonGroupBySize } from "./button-group";
 
 /*
  * EVERY USAGE TREE IN `src/demos`, AGAINST ITS CONTRACTS.
@@ -88,6 +89,16 @@ describe("every demo usage tree composes", () => {
   for (const { module, name, tree } of cases) {
     it(`${module} :: ${name}`, () => {
       expect(errorsIn(tree)).toEqual([]);
+    });
+  }
+
+  for (const size of ["sm", "md", "lg"] as const) {
+    it(`button-group size ${size} applies to every member`, () => {
+      const tree = buttonGroupBySize(size)(t);
+      const members = tree.children as readonly UsageTree[];
+      expect(errorsIn(tree)).toEqual([]);
+      expect(members.map(({ contract }) => contract)).toEqual(["button", "button", "menu"]);
+      expect(members.map(({ options }) => options?.size ?? options?.triggerSize)).toEqual([size, size, size]);
     });
   }
 });

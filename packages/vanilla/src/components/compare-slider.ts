@@ -27,9 +27,8 @@ export const COMPARE_SLIDER_CHANGE_EVENT = "sk:comparesliderchange";
  * the clip and the divider's place straight on the elements they move (see `compare-slider-view.ts`, which has the numbers
  * for why it is not a custom property on the root). The same split `connectResizable` keeps.
  *
- * A press ANYWHERE on the box moves the divider there and starts following the pointer (captured on the root, so it
- * keeps following when the pointer outruns the box), unlike a Resizable bar, which waits for travel past a threshold:
- * here the press IS the gesture, since there is no other thing a press on the box could mean.
+ * A press on the DIVIDER starts following the pointer (captured on the root, so it keeps following when the pointer
+ * outruns the box). A press on a layer does nothing, so what is inside the layers stays the author's to make interactive.
  */
 export function connectCompareSlider(root: HTMLElement): Cleanup {
   const handle = root.querySelector<HTMLElement>(`:scope > .${compareSliderParts.handle}`);
@@ -78,6 +77,8 @@ export function connectCompareSlider(root: HTMLElement): Cleanup {
   let dragging = false;
   const onDown = (event: PointerEvent): void => {
     if (event.button !== 0) return;
+    /* Only a press on the divider starts a drag: the layers stay the author's, and a stray click on them moves nothing. */
+    if (!handle.contains(event.target as Node)) return;
     event.preventDefault();
     view.refresh();
     handle.focus({ preventScroll: true });

@@ -376,20 +376,6 @@ test("xs and sm keep their 44px hit area, at rest and hovered", async ({ page })
   }
 });
 
-test("welded members read as one sheet: no doubled edge at the seam", async ({ page }) => {
-  await mount(
-    page,
-    `<div style="display:inline-flex">${button("lead", 'data-tone="accent" data-weld-end', "Save")}${button("trail", 'data-tone="accent" data-weld-start data-icon-only aria-label="More"', "▾")}</div>`,
-    BUSY,
-  );
-  const lead = await read(page, "#lead");
-  const trail = await read(page, "#trail");
-  expect(lead.borderEndColor).toBe("rgba(0, 0, 0, 0)");
-  expect(trail.borderStartColor).toBe("rgba(0, 0, 0, 0)");
-  expect(lead.bg).toBe(trail.bg);
-  expect(lead.backdrop).toBe(trail.backdrop);
-});
-
 test("the navigation host renders the same material as the action host", async ({ page }) => {
   await mount(page, button("action", 'data-tone="accent"', "Docs") + '<a id="link" class="sk-button sk-interactive" href="#x" data-appearance="frosted" data-tone="accent">Docs</a>');
   const action = await read(page, "#action");

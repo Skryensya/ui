@@ -38,14 +38,6 @@ export type Canonical = {
   readonly enhanced: boolean;
 };
 
-/** 800 by 600, four flat quarters: a pixel's colour is the quarter it was cut from. */
-const CROPPER_PICTURE = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(
-  '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">' +
-    '<rect width="400" height="300" fill="#e53935"/><rect x="400" width="400" height="300" fill="#43a047"/>' +
-    '<rect y="300" width="400" height="300" fill="#1e88e5"/><rect x="400" y="300" width="400" height="300" fill="#fdd835"/>' +
-    "</svg>",
-)}`;
-
 const signatureTrees: readonly Canonical[] = [
   {
     name: "button/action",
@@ -1852,31 +1844,20 @@ const signatureTrees: readonly Canonical[] = [
       },
     },
   },
-  /* A composition, not a component with a list: both halves are real signatures, `action` a
-   * Button.action and `menu` a Menu. Split-button.ts's own contract, since ae244c7. */
+  /* A split button is a ButtonGroup of a Button and an icon-only Menu: the group welds them by position. */
   {
-    name: "split-button/save-and-more",
+    name: "button-group/split",
     enhanced: true,
     tree: {
-      contract: "split-button",
-      signature: "SplitButton",
-      slots: {
-        action: {
-          contract: "button",
-          signature: "Button.action",
-          options: { tone: "accent", weldEnd: true },
-          slots: { children: "Guardar" },
-        },
-        menu: {
+      contract: "button-group",
+      signature: "ButtonGroup",
+      options: { label: "Guardar" },
+      children: [
+        { contract: "button", signature: "Button.action", options: { tone: "accent" }, slots: { children: "Guardar" } },
+        {
           contract: "menu",
           signature: "Menu",
-          options: {
-            label: "Otras formas de guardar",
-            triggerLabel: "Más",
-            triggerTone: "accent",
-            triggerIconOnly: true,
-            triggerWeldStart: true,
-          },
+          options: { label: "Otras formas de guardar", triggerLabel: "Más", triggerTone: "accent", triggerIconOnly: true },
           slots: {
             items: [
               { options: { value: "copy" }, slots: { label: "Guardar una copia" } },
@@ -1884,21 +1865,64 @@ const signatureTrees: readonly Canonical[] = [
             ],
           },
         },
-      },
+      ],
     },
   },
-  /* The stacked pair: two real `Button.action`s sharing one look (the contract's `pairs` insist), joined into one group. */
+  /* The stacked pair: two Button.actions of one look, welded on the block axis. */
   {
-    name: "split-button/vertical",
+    name: "button-group/vertical",
     enhanced: false,
     tree: {
-      contract: "split-button",
-      signature: "SplitButtonVertical",
-      options: { label: "Zoom" },
-      slots: {
-        first: { contract: "button", signature: "Button.action", options: { variant: "soft" }, slots: { children: "Acercar" } },
-        second: { contract: "button", signature: "Button.action", options: { variant: "soft" }, slots: { children: "Alejar" } },
-      },
+      contract: "button-group",
+      signature: "ButtonGroup",
+      options: { label: "Zoom", orientation: "vertical" },
+      children: [
+        { contract: "button", signature: "Button.action", options: { variant: "soft" }, slots: { children: "Acercar" } },
+        { contract: "button", signature: "Button.action", options: { variant: "soft" }, slots: { children: "Alejar" } },
+      ],
+    },
+  },
+  /* A label, text, an input and a button behind a separator: every part the group owns. */
+  {
+    name: "button-group/input-with-parts",
+    enhanced: false,
+    tree: {
+      contract: "button-group",
+      signature: "ButtonGroup",
+      children: [
+        { contract: "button-group", signature: "ButtonGroupLabel", options: { htmlFor: "gate-site-url" }, slots: { children: "Sitio" } },
+        { contract: "button-group", signature: "ButtonGroupText", slots: { children: "https://" } },
+        // aria-label as well: both bindings share this page, so the id collides and the label alone
+        // would name only the first input. aria-label wins the name, the same in both.
+        { contract: "input", signature: "Input", attrs: { id: "gate-site-url", "aria-label": "Sitio" } },
+        { contract: "button-group", signature: "ButtonGroupSeparator" },
+        { contract: "button", signature: "Button.action", slots: { children: "Ir" } },
+      ],
+    },
+  },
+  /* A row of groups: the outer one only spaces them. */
+  {
+    name: "button-group/nested",
+    enhanced: false,
+    tree: {
+      contract: "button-group",
+      signature: "ButtonGroup",
+      options: { label: "Paginación" },
+      children: [
+        {
+          contract: "button-group",
+          signature: "ButtonGroup",
+          children: [
+            { contract: "button", signature: "Button.action", options: { variant: "soft" }, slots: { children: "1" } },
+            { contract: "button", signature: "Button.action", options: { variant: "soft" }, slots: { children: "2" } },
+          ],
+        },
+        {
+          contract: "button-group",
+          signature: "ButtonGroup",
+          children: [{ contract: "button", signature: "Button.action", options: { variant: "soft" }, attrs: { "aria-label": "Siguiente" }, slots: { children: "›" } }],
+        },
+      ],
     },
   },
   /* The invitation to scroll: hidden at rest in both bindings until the enhancer finds a scroller that has more to show. */
@@ -3420,15 +3444,6 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
-    name: "editor/field",
-    enhanced: true,
-    tree: {
-      contract: "editor",
-      signature: "Editor",
-      options: { label: "Notas", placeholder: "Escribe algo", toolbarLabel: "Formato" },
-    },
-  },
-  {
     name: "comment-thread/comment",
     enhanced: false,
     tree: {
@@ -3998,29 +4013,6 @@ const signatureTrees: readonly Canonical[] = [
    * proves the embedded canvas (the frame on the canvas, the legend outside it) renders the same
    * structure from both bindings as the standalone one.
    */
-  /*
-   * IMAGE CROPPER, twice: the plain rectangle with its toolbar, and the circle with the preview and Cancel. The picture is a data
-   * URI of four flat quadrants (red, green, blue, yellow) so that nothing is fetched and a pixel's colour says where it came from;
-   * `image-cropper.spec.ts` is what drags, zooms, rotates and exports it.
-   */
-  {
-    name: "image-cropper/default",
-    enhanced: true,
-    tree: {
-      contract: "image-cropper",
-      signature: "ImageCropper",
-      options: { src: CROPPER_PICTURE, alt: "Four coloured quarters", aspect: "4:3" },
-    },
-  },
-  {
-    name: "image-cropper/circle",
-    enhanced: true,
-    tree: {
-      contract: "image-cropper",
-      signature: "ImageCropper",
-      options: { src: CROPPER_PICTURE, alt: "Four coloured quarters", shape: "circle", label: "Profile picture" },
-    },
-  },
   {
     name: "canvas/default",
     enhanced: true,

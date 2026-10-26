@@ -20,12 +20,10 @@ import { contracts } from "./registry.js";
 
 /*
  * PARTS THE PAGE COMPOSES. A part can be named in `parts` for a consumer to author (the stylesheet styles it) without any
- * template drawing it: ImageCropper's side column is empty by design and a page puts its preview, its sliders and its
- * actions there, wearing the cropper's classes. `systemOwned` is the opposite (the binding draws it, an author never writes
+ * template drawing it. `systemOwned` is the opposite (the binding draws it, an author never writes
  * it in a tree), so it cannot say this; this list can, and a part missing from both is a defect.
  */
 const PAGE_COMPOSED: Readonly<Record<string, readonly string[]>> = {
-  "image-cropper": ["preview", "previewCanvas", "range", "output", "ratioInput", "actions"],
 };
 
 /*
@@ -51,7 +49,6 @@ const AUDITED = [
   "audio-player",
   "compare-slider",
   "dialog-stack",
-  "image-cropper",
   "morph-stack",
   "scroll-expand",
   "scroll-hint",

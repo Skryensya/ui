@@ -144,14 +144,20 @@ test("the thumb has a surface-coloured separator ring over the filled track", as
   expect(background, "the separator ring must sit outside the visible knob").toContain("11px");
 });
 
-test("the focus ring is separated from the thumb by the surface ring", async ({ page }) => {
+test("focus changes the thumb itself and draws no ring or outline", async ({ page }) => {
   await page.setContent(fixtureHtml(60));
-  await page.locator(".sk-slider__thumb").focus();
-  const background = await page.locator(".sk-slider__thumb").evaluate((el) => getComputedStyle(el).backgroundImage);
+  const thumb = page.locator(".sk-slider__thumb");
+  const before = await thumb.evaluate((el) => getComputedStyle(el).backgroundImage);
+  await thumb.focus();
+  const after = await thumb.evaluate((el) => {
+    const cs = getComputedStyle(el);
+    return { background: cs.backgroundImage, outline: cs.outlineStyle, scale: cs.scale };
+  });
 
-  expect(background, "focus ring must not replace the thumb's ordinary border").toContain("rgb(255, 0, 255) 7px, rgb(255, 0, 255) 8px");
-  expect(background, "surface separator must sit between thumb and focus").toContain("rgb(255, 255, 255) 8px, rgb(255, 255, 255) 11px");
-  expect(background, "focus colour must start outside the separator").toContain("rgb(0, 102, 255) 11px");
+  expect(after.background, "focus must change the knob colour, not add a ring to the gradient").not.toBe(before);
+  expect(after.background).not.toContain("rgb(0, 102, 255)");
+  expect(after.outline).toBe("none");
+  expect(after.scale, "the focused thumb must swell").not.toBe("none");
 });
 
 test("SliderRange's fill div uses the full line percentages Zag publishes", async ({ page }) => {

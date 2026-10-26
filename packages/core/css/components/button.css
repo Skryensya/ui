@@ -354,6 +354,16 @@
         color-mix(in oklab, var(--color-bg-surface-sunken) 44%, transparent)
       );
     translate: 0 0;
+    --sk-button-tactile-press-duration: var(--motion-feedback-duration);
+    --sk-button-tactile-press-easing: var(--motion-feedback-easing);
+    /* The press tempo, as a hook: the ledge and the face travel on ONE duration and curve, so slowing
+     * or softening the press moves both together. Defaults to the shared feedback tempo. */
+    transition:
+      background-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      border-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      box-shadow var(--sk-button-tactile-press-duration) var(--sk-button-tactile-press-easing),
+      translate var(--sk-button-tactile-press-duration) var(--sk-button-tactile-press-easing);
   }
 
   /* SOFT: a shorter key, cast in see-through shadow, so the depth reads over any surface as the

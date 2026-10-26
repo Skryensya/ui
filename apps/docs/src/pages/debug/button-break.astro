@@ -18,6 +18,7 @@ if (import.meta.env.PROD) {
 
 import "@skryensya/core/tokens.scss";
 import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/button-group.css";
 import "../../styles/site.css";
 import { ButtonBreak } from "../../components/react-demos/debug-button-break";
 
@@ -119,9 +120,6 @@ import DebugShell from "../../components/DebugShell.astro";
       .break-stretch {
         display: grid;
         gap: var(--space-stack-sm);
-      }
-      .break-weld {
-        display: flex;
       }
       /* Cases inside a group that render several buttons side by side. */
       .break-case__stage > .break-row {

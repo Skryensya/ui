@@ -3,7 +3,6 @@ import { flushSync } from "react-dom";
 import { emitMarkup } from "@skryensya/ai-compiler/emit";
 import { mountComponentsWithIcons } from "@skryensya/vanilla/auto";
 import { mountCodePreview } from "@skryensya/vanilla/code-preview";
-import { mountEditor } from "@skryensya/vanilla/editor";
 import { lucideIcons } from "@skryensya/icons-lucide";
 import { canonicalTrees } from "../src/trees.js";
 import { loadTree, renderTree, setPortalContainer } from "./react-render.js";
@@ -152,21 +151,6 @@ async function stage(): Promise<void> {
   // without this, the vanilla side of every code-preview canonical tree never enhances at all, so
   // React and Vanilla only LOOK symmetric because neither's dynamic behavior ever ran.
   mountCodePreview(document.body);
-  /*
-   * Editor is excluded from `initComponents` for its own reason (`registry.ts`): ProseMirror is an
-   * OPTIONAL peer dependency, so `@skryensya/vanilla/auto` must never name it, and a page that uses
-   * Editor mounts it explicitly. The stage is such a page. Without this the vanilla editor stayed
-   * as the contract emits it, an empty toolbar and a plain div, while React rendered fourteen
-   * toolbar buttons and a live ProseMirror: a ~950-line "divergence" that was really one binding
-   * never having been started.
-   */
-  for (const host of document.querySelectorAll<HTMLElement>('[data-binding="vanilla"]')) {
-    /* Scoped to the vanilla halves, unlike the mounts above. React's Editor renders the same
-     * `data-sk-editor` marker but builds its toolbar in JSX, so it has no `data-sk-toolbar` for the
-     * enhancer to find; handed the whole document, the enhancer reaches those too and throws
-     * ("necesita un [data-sk-toolbar]"), taking the whole stage down with it. */
-    await mountEditor(host);
-  }
 
   document.body.dataset.ready = "true";
 }

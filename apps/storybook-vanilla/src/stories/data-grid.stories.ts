@@ -4,6 +4,7 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/data-grid.css";
+import "@skryensya/core/components/loader.css";
 import "@skryensya/core/patterns/icon.css";
 import * as demos from "@docs/demos/data-grid";
 import { annotationDemoCss } from "@docs/demos/annotation";

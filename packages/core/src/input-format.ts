@@ -33,8 +33,7 @@ export const inputFormatNames = ["rut", "phone", "url", "email"] as const;
  * A phone number is only checkable against a numbering plan, and every country has its own: the
  * table is roughly 155 kB of metadata that nobody validating a RUT should have to download. So
  * `@skryensya/phone` wraps libphonenumber-js and registers itself through `registerInputFormat`
- * below, exactly the way `@skryensya/editor` is an optional peer that a page opts into by calling
- * its own mount, rather than something the default runtime drags in.
+ * below: a page opts into it, rather than the default runtime dragging it in.
  *
  * A HAND-WRITTEN CHILEAN PLAN LIVED HERE FIRST, and was deleted rather than kept beside this,
  * because measuring it against the real metadata showed it wrong in BOTH directions: it accepted
@@ -258,7 +257,7 @@ export type InputFormatModule = {
  *
  * Mutable module state, deliberately and with its cost acknowledged: registration is global and
  * order-dependent, which is the price of letting a format arrive from a package core must never
- * name. It is the same trade `@skryensya/editor` makes as an optional peer.
+ * name.
  */
 const modules = new Map<InputFormat, InputFormatModule>([
   ["rut", { validate: validateRut, display: displayRut }],

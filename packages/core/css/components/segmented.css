@@ -87,6 +87,8 @@
        convention as Toolbar/Menubar/Tabs - the options stay single-line and selectable. */
     max-inline-size: 100%;
     overflow-x: auto;
+    /* `overflow-x: auto` alone computes y to `auto` too, so a sub-pixel of option height showed a vertical scrollbar. */
+    overflow-y: hidden;
     overscroll-behavior-inline: contain;
     scrollbar-width: none;
   }

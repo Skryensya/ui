@@ -92,7 +92,7 @@ export const descriptionListRichTree = (t: Translate): UsageTree => ({
         children: {
           contract: "tag",
           signature: "Tag",
-          options: { tone: "success" },
+          options: { tone: "accent" },
           slots: { children: t("demo.descriptionList.status.value") },
         },
       },

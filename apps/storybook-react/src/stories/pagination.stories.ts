@@ -7,13 +7,14 @@ import "@skryensya/core/components/pagination.css";
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/pagination";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Pagination", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.paginationAnatomyTree);
-export const Default: StoryObj = treeStory(demos.paginationTree);
-export const SiblingsCase: StoryObj = treeStory(demos.paginationSiblingsCase);
-export const Results: StoryObj = treeStory(demos.paginationResultsTree);
-export const PositionCase: StoryObj = treeStory(demos.paginationPositionCase);
+export const Anatomy: StoryObj = treeStory(demos.paginationAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Appearance: StoryObj = treeStory(demos.paginationAppearanceTree);
+export const Default: StoryObj = treeStory(demos.paginationTree);
+export const Results: StoryObj = treeStory(demos.paginationResultsTree);
+export const SiblingsCase: StoryObj = treeStory(demos.paginationSiblingsCase);
+export const PositionCase: StoryObj = treeStory(demos.paginationPositionCase);

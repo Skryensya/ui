@@ -5,6 +5,7 @@ import "@skryensya/core/components/avatar.css";
 import "@skryensya/core/components/badge.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
+import "@skryensya/core/components/loader.css";
 import "@skryensya/core/patterns/icon.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/badge";

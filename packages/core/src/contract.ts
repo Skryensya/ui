@@ -130,6 +130,12 @@ export type ContractOption = {
    * validator quote, and keeps every option one shape.
    */
   readonly computedInput?: true;
+  /**
+   * The default is written even into authored-only markup (`emitMarkup(..., { fillDefaults: false })`,
+   * what the docs show and a reader copies). For an attribute its element REQUIRES: `aria-level` on
+   * `role="heading"` has no default of its own, so leaving it out is not "level 3", it is invalid ARIA.
+   */
+  readonly writeDefault?: true;
 };
 
 /** Where authored content lands inside a part template. */

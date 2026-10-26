@@ -3,7 +3,7 @@ import { catalog, categories, consumerPath, cssOf, suggest } from "./manifest.js
 
 describe("catalog", () => {
   it("holds every component of the install manifest and the integrations", () => {
-    expect(catalog.size).toBeGreaterThan(110);
+    expect(catalog.size).toBeGreaterThan(100);
     expect(catalog.get("button")?.react?.entry).toBe("@skryensya/react/button");
     expect(catalog.get("hook-form")?.kind).toBe("integration");
     expect(categories()).toContain("integrations");
@@ -31,7 +31,6 @@ describe("catalog", () => {
   });
 
   it("names the packages a component needs besides the system's", () => {
-    expect(catalog.get("editor")!.peers).toEqual(["@skryensya/editor"]);
     expect(catalog.get("data-table")!.peers).toEqual(["@tanstack/react-table"]);
   });
 });

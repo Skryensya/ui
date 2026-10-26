@@ -19,7 +19,7 @@ if (import.meta.env.PROD) {
  * there's no localStorage here, unlike the header's selector, which genuinely is a site
  * preference).
  *
- * All eleven live simultaneously as a READ-ONLY GALLERY: nothing is selectable, there is no control
+ * All twelve live simultaneously as a READ-ONLY GALLERY: nothing is selectable, there is no control
  * that cycles between them. Each card already shows its own result, side by side with the others,
  * so they can be compared at a glance.
  *
@@ -39,6 +39,7 @@ if (import.meta.env.PROD) {
  * to be a hand-rolled `<nav>`.
  */
 import Base from "../layouts/Base.astro";
+import "@skryensya/core/components/callout.css";
 import CodeBlock from "../components/CodeBlock.astro";
 import Toc from "../components/Toc.astro";
 import { tokens } from "../lib/tokens";
@@ -48,7 +49,7 @@ import "@skryensya/core/patterns/image-frame.css";
 
 /* A real (if generic) placeholder photo, not a gradient wash: the same satin placeholder every
  * other card example in these docs already uses (lib/satin.ts). One shared URL for all 22
- * card instances (11 presets × 2 schemes). The browser fetches it once and serves the rest from
+ * card instances (12 presets × 2 schemes). The browser fetches it once and serves the rest from
  * cache, so this costs one network request, not twenty-two. */
 const demoImage = satin("pearl");
 

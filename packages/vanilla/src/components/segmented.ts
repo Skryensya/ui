@@ -24,7 +24,7 @@ export function connectSegmented(root: HTMLElement): Cleanup {
   }
 
   const indicator = root.querySelector<HTMLElement>(`.${segmentedParts.indicator}`);
-  const render = () => {
+  const render = (align = true) => {
     applyAttrs(root, { role: "radiogroup", "data-value": value });
 
     for (const option of options) {
@@ -40,7 +40,7 @@ export function connectSegmented(root: HTMLElement): Cleanup {
       });
     }
 
-    alignIndicator(root, indicator);
+    if (align) alignIndicator(root, indicator);
   };
 
   const setValue = (next: string) => {
@@ -59,7 +59,8 @@ export function connectSegmented(root: HTMLElement): Cleanup {
 
   const observer = typeof ResizeObserver === "undefined" ? undefined : new ResizeObserver(() => alignIndicator(root, indicator));
   observer?.observe(root);
-  render();
+  /* The observer's first callback lands after layout; measuring here too would force one mid-script. */
+  render(!observer);
 
   return () => {
     for (const cleanup of cleanups) cleanup();

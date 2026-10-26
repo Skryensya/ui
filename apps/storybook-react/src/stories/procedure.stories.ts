@@ -6,6 +6,7 @@ import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/callout.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/code-preview.css";
+import "@skryensya/core/components/loader.css";
 import "@skryensya/core/components/procedure.css";
 import "@skryensya/core/components/qr-code.css";
 import "@skryensya/core/components/switch.css";
@@ -13,12 +14,13 @@ import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/icon.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/procedure";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Procedure", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.procedureAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.procedureAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Content: StoryObj = treeStory((t) => demos.procedureContentTree(t, "#"));
 export const Default: StoryObj = treeStory(demos.procedureTree);
 export const Deploy: StoryObj = treeStory(demos.procedureDeployTree);
 export const Security: StoryObj = treeStory(demos.procedureSecurityTree);
-export const Content: StoryObj = treeStory((t) => demos.procedureContentTree(t, "#"));

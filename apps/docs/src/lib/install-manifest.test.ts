@@ -17,7 +17,12 @@ describe("component Installation", () => {
 
   it("names the sheets a component loads in dependency order, ending on its own", () => {
     const calendar = installFor("calendar")!;
-    expect(calendar.css.files).toEqual(["@skryensya/core/components/button.css", "@skryensya/core/components/calendar.css"]);
+    expect(calendar.css.files).toEqual([
+      "@skryensya/core/components/loader.css",
+      "@skryensya/core/patterns/a11y-warn.css",
+      "@skryensya/core/components/button.css",
+      "@skryensya/core/components/calendar.css",
+    ]);
     expect(calendar.vanilla).toMatchObject({ entry: "@skryensya/vanilla/calendar", mount: "mountCalendar", auto: true });
   });
 });

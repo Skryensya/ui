@@ -53,7 +53,6 @@ import { contentContract } from "./content.js";
 import { numberFieldContract } from "./number-field.js";
 import { navbarContract } from "./navbar.js";
 import { toolbarContract } from "./toolbar.js";
-import { editorContract } from "./editor.js";
 import { tooltipContract } from "./tooltip.js";
 import { selectContract } from "./select.js";
 import { userSelectContract } from "./user-select.js";
@@ -74,7 +73,7 @@ import { datePickerContract } from "./date-picker.js";
 import { colorPickerContract } from "./color-picker.js";
 import { dialogContract } from "./dialog.js";
 import { dialogStackContract } from "./dialog-stack.js";
-import { splitButtonContract } from "./split-button.js";
+import { buttonGroupContract } from "./button-group.js";
 import { popoverContract } from "./popover.js";
 import { windowContract } from "./window.js";
 import { commandPaletteContract } from "./command-palette.js";
@@ -95,7 +94,6 @@ import { checkboxContract, radioGroupContract, switchContract } from "./selectio
 import { formFieldContract } from "./form-field.js";
 import { iconContract } from "./icon.js";
 import { inputContract } from "./input.js";
-import { imageCropperContract } from "./image-cropper.js";
 import { imageFrameContract } from "./image-frame.js";
 import { navListContract } from "./nav-list.js";
 import { tableContract } from "./table.js";
@@ -150,7 +148,6 @@ export const contracts = fromContracts(
   heroContract,
   footerContract,
   iconContract,
-  imageCropperContract,
   imageFrameContract,
   fadeEdgeContract,
   scrollHintContract,
@@ -208,7 +205,6 @@ export const contracts = fromContracts(
   treegridContract,
   tagContract,
   toolbarContract,
-  editorContract,
   tooltipContract,
   selectContract,
   userSelectContract,
@@ -229,7 +225,7 @@ export const contracts = fromContracts(
   colorPickerContract,
   dialogContract,
   dialogStackContract,
-  splitButtonContract,
+  buttonGroupContract,
   popoverContract,
   windowContract,
   commandPaletteContract,

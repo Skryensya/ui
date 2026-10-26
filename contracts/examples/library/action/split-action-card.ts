@@ -19,7 +19,7 @@ const { pattern, use } = definePattern<Content>({
   subject: "action",
   scale: "component",
   title: { en: "Split action card", es: "Card con acción dividida" },
-  layout: { en: "A title block over one SplitButton at the end: the main half runs the default, the other half opens the alternatives.", es: "Un bloque de título sobre un SplitButton al final: la mitad principal ejecuta lo habitual y la otra abre las alternativas." },
+  layout: { en: "A title block over one split ButtonGroup at the end: the main half runs the default, the other half opens the alternatives.", es: "Un bloque de título sobre un ButtonGroup dividido al final: la mitad principal ejecuta lo habitual y la otra abre las alternativas." },
   fields: { title: { en: "What the action is about.", es: "De qué trata la acción." }, subtitle: { en: "One line of context.", es: "Una línea de contexto." }, action: { en: "The default action's label.", es: "La etiqueta de la acción habitual." }, alternatives: { en: "Two or three variants of the default: a stable `value` and a label.", es: "Dos o tres variantes de lo habitual: un `value` estable y una etiqueta." }, more: { en: "The accessible name of the menu half.", es: "El nombre accesible de la mitad del menú." }, variant: { en: "`solid` for the page's one main action, `soft` for a quieter one.", es: "`solid` para la acción principal de la página, `soft` para una más discreta." }, tone: { en: "`accent` when the action is the point of the card.", es: "`accent` cuando la acción es el centro de la card." } },
   notes: [{ en: "The alternatives are variants of the default, not other jobs: if they do something different, they are separate buttons.", es: "Las alternativas son variantes de lo habitual, no otras tareas: si hacen algo distinto, son botones separados." }],
   build: ({ title, subtitle, action, alternatives, more, variant, tone }) =>
@@ -28,17 +28,17 @@ const { pattern, use } = definePattern<Content>({
       inline(
         [
           {
-            contract: "split-button",
-            signature: "SplitButton",
-            slots: {
-              action: { contract: "button", signature: "Button.action", options: { variant, size: "md", weldEnd: true, ...(tone ? { tone } : {}) }, slots: { children: action } },
-              menu: {
+            contract: "button-group",
+            signature: "ButtonGroup",
+            children: [
+              { contract: "button", signature: "Button.action", options: { variant, size: "md", ...(tone ? { tone } : {}) }, slots: { children: action } },
+              {
                 contract: "menu",
                 signature: "Menu",
-                options: { label: more, triggerLabel: more, triggerVariant: variant, triggerSize: "md", triggerIconOnly: true, triggerWeldStart: true, ...(tone ? { triggerTone: tone } : {}) },
+                options: { label: more, triggerLabel: more, triggerVariant: variant, triggerSize: "md", triggerIconOnly: true, ...(tone ? { triggerTone: tone } : {}) },
                 slots: { items: alternatives.map((entry) => ({ options: { value: entry.value }, slots: { label: entry.label } })) },
               },
-            },
+            ],
           },
         ],
         { gap: "sm", justify: "end" },

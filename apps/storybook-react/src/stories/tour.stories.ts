@@ -3,14 +3,16 @@
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/form-field.css";
 import "@skryensya/core/components/input.css";
+import "@skryensya/core/components/loader.css";
 import "@skryensya/core/components/segmented.css";
 import "@skryensya/core/components/tour.css";
 import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/tour";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+const { tourDemoCss } = demos;
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Tour", tags: ["autodocs"] } satisfies Meta;
 
-export const Basic: StoryObj = treeStory(demos.tourBasicTree);
-export const Missing: StoryObj = treeStory(demos.tourMissingTree);
+export const Basic: StoryObj = treeStory(demos.tourBasicTree, { decorators: [withCss(tourDemoCss)] });
+export const Missing: StoryObj = treeStory(demos.tourMissingTree, { decorators: [withCss(tourDemoCss)] });

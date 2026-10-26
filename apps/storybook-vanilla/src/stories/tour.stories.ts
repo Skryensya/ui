@@ -3,6 +3,7 @@
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/form-field.css";
 import "@skryensya/core/components/input.css";
+import "@skryensya/core/components/loader.css";
 import "@skryensya/core/components/segmented.css";
 import "@skryensya/core/components/tour.css";
 import "@skryensya/core/patterns/layout.css";

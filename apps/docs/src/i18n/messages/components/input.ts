@@ -29,7 +29,6 @@ export const inputMessages = {
 
     "inputPage.content1": "Escribe la etiqueta con lo que se pide: «Correo electrónico».",
 
-    "inputPage.whenNot4": 'Para texto con formato: usa <a href="/es/componentes/editor">Editor</a>.',
 
     "inputPage.whenNot3": 'Para una contraseña: usa <a href="/es/componentes/password-input">PasswordInput</a>.',
 
@@ -131,7 +130,6 @@ export const inputMessages = {
 
     "inputPage.content1": "Write the label as what is asked: “Email address”.",
 
-    "inputPage.whenNot4": 'For formatted text: use <a href="/components/editor">Editor</a>.',
 
     "inputPage.whenNot3": 'For a password: use <a href="/components/password-input">PasswordInput</a>.',
 

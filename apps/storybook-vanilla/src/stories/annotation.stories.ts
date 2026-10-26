@@ -7,6 +7,7 @@ import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/checkbox.css";
 import "@skryensya/core/components/details.css";
+import "@skryensya/core/components/loader.css";
 import "@skryensya/core/components/menu.css";
 import "@skryensya/core/components/stat.css";
 import "@skryensya/core/components/switch.css";

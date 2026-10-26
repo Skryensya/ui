@@ -31,7 +31,11 @@
       var(--color-text-primary) 16%,
       var(--color-bg-surface-raised)
     );
+  }
 
+  /* What the palette changes on the Dialog it sits on, at `.sk-dialog`'s specificity plus one so it
+   * wins whatever order the two sheets load in (a page that imports dialog.css after this one). */
+  .sk-dialog.sk-command-palette {
     /* Widen the dialog hook; a palette needs more room than a confirm box. Raised, not the page
      * surface: it is a floating index, same lift Menu and Popover take, so it does not read as a
      * second copy of the canvas with a hard frame around it. */

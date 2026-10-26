@@ -3,11 +3,12 @@
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/scrollbar";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+const { scrollbarDemoCss } = demos;
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Scrollbar", tags: ["autodocs"] } satisfies Meta;
 
-export const Always: StoryObj = treeStory(demos.scrollbarAlwaysTree);
-export const Reveal: StoryObj = treeStory(demos.scrollbarRevealTree);
-export const Horizontal: StoryObj = treeStory(demos.scrollbarHorizontalTree);
-export const Custom: StoryObj = treeStory(demos.scrollbarCustomTree);
+export const Always: StoryObj = treeStory(demos.scrollbarAlwaysTree, { decorators: [withCss(scrollbarDemoCss)] });
+export const Reveal: StoryObj = treeStory(demos.scrollbarRevealTree, { decorators: [withCss(scrollbarDemoCss)] });
+export const Horizontal: StoryObj = treeStory(demos.scrollbarHorizontalTree, { decorators: [withCss(scrollbarDemoCss)] });
+export const Custom: StoryObj = treeStory(demos.scrollbarCustomTree, { decorators: [withCss(scrollbarDemoCss)] });

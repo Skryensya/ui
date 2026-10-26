@@ -8,13 +8,14 @@ import "@skryensya/core/components/separator.css";
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/resizable";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Resizable", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.resizableAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.resizableAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Specimen: StoryObj = treeStory(demos.resizableSpecimenTree);
 export const Horizontal: StoryObj = treeStory(demos.resizableHorizontalTree);
-export const Collapsible: StoryObj = treeStory(demos.resizableCollapsibleTree);
 export const Vertical: StoryObj = treeStory(demos.resizableVerticalTree);
 export const Three: StoryObj = treeStory(demos.resizableThreeTree);
-export const Specimen: StoryObj = treeStory(demos.resizableSpecimenTree);
+export const Collapsible: StoryObj = treeStory(demos.resizableCollapsibleTree);

@@ -2,6 +2,7 @@
 // change the demo (or the docs page that shows it) and run `pnpm generate` in this app.
 import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/avatar.css";
+import "@skryensya/core/components/badge.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/carousel.css";
@@ -11,13 +12,17 @@ import "@skryensya/core/patterns/image-frame.css";
 import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/media-overlay.css";
 import * as demos from "@docs/demos/carousel";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Carousel", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.carouselAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.carouselAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Cards: StoryObj = treeStory(demos.carouselCardsTree);
 export const Autoplay: StoryObj = treeStory(demos.carouselAutoplayTree);
 export const Focusable: StoryObj = treeStory(demos.carouselFocusableTree);
+export const Stats: StoryObj = treeStory(demos.carouselStatsTree);
+export const Quotes: StoryObj = treeStory(demos.carouselQuotesTree);
+export const Products: StoryObj = treeStory(demos.carouselProductsTree);
 export const Bare: StoryObj = treeStory(demos.carouselBareTree);
 export const Native: StoryObj = treeStory(demos.carouselNativeTree);

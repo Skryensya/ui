@@ -33,7 +33,7 @@ for (const [key, n] of matches.slice(0, 20)) {
   for (const [name, value] of [["title", title], ["label", label], ["option", option], ["story", [story, storyName].filter(Boolean).join(" / ")]] as const) {
     if (value) console.log(`  ${name.padEnd(7)}${value}`);
   }
-  // The page component (`/components/split-button` → SplitButtonPage.astro), then wherever the title's exact words are written (the copy lives in i18n).
+  // The page component (`/components/button-group` → ButtonGroupPage.astro), then wherever the title's exact words are written (the copy lives in i18n).
   const name = (path ?? "").split("/").filter(Boolean).pop()?.replace(/(^|-)(\w)/g, (_, __, c: string) => c.toUpperCase());
   const page = `src/components/pages/${name}Page.astro`;
   if (name && existsSync(page)) console.log(`  page   ${page}`);

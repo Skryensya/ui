@@ -4,12 +4,15 @@ import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/empty-state.css";
+import "@skryensya/core/components/loader.css";
 import "@skryensya/core/patterns/icon.css";
 import * as demos from "@docs/demos/empty-state";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/EmptyState", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.emptyStateAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.emptyStateAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(demos.emptyStateTree);
 export const Search: StoryObj = treeStory(demos.emptyStateSearchTree);
+export const Page: StoryObj = treeStory(demos.emptyStatePageTree);

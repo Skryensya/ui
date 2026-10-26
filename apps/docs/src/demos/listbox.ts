@@ -8,9 +8,14 @@ import { anatomyCanvas, anatomyHints, namePart } from "./annotation-parts";
  * which is how the contract says "these two" as easily as "this one".
  */
 
-const option = (value: string, label: string, extra: { defaultSelected?: boolean; disabled?: boolean } = {}) => ({
+const option = (
+  value: string,
+  label: string,
+  extra: { defaultSelected?: boolean; disabled?: boolean } = {},
+  description?: string,
+) => ({
   options: { value, ...extra },
-  slots: { label },
+  slots: description ? { label, description } : { label },
 });
 
 /** Anatomy: one list with a chosen option, so the check has something to point at. */
@@ -44,18 +49,20 @@ export const listboxAnatomyTree = (t: Translate): UsageTree => ({
   },
 });
 
-/** 1. One choice, seen whole while it is made: how a list of things is shown. */
+/** 1. One choice, seen whole while it is made: how a list of things is shown, each with what it means.
+ *  A single choice reads from its fill alone, so this one drops the check. */
 export const listboxSingleTree = (t: Translate): UsageTree => ({
   contract: "listbox",
   signature: "Listbox",
+  options: { loopFocus: true, indicator: "none" },
   attrs: { style: "inline-size: 16rem; max-inline-size: 100%;" },
   slots: {
     label: t("listbox.demoViewLabel"),
     items: [
-      option("list", t("listbox.demoViewList"), { defaultSelected: true }),
-      option("board", t("listbox.demoViewBoard")),
-      option("calendar", t("listbox.demoViewCalendar")),
-      option("timeline", t("listbox.demoViewTimeline")),
+      option("list", t("listbox.demoViewList"), { defaultSelected: true }, t("listbox.demoViewListHint")),
+      option("board", t("listbox.demoViewBoard"), {}, t("listbox.demoViewBoardHint")),
+      option("calendar", t("listbox.demoViewCalendar"), {}, t("listbox.demoViewCalendarHint")),
+      option("timeline", t("listbox.demoViewTimeline"), {}, t("listbox.demoViewTimelineHint")),
     ],
   },
 });
@@ -125,16 +132,16 @@ export const listboxDontSingleFiltersTree = (t: Translate): UsageTree => ({
 
 export const listboxDoHorizontalShortTree = (t: Translate): UsageTree => listboxHorizontalTree(t);
 
-export const listboxDontHorizontalLongTree = (t: Translate): UsageTree => ({
+/* A single choice laid in a row is a Segmented wearing a listbox's role. */
+export const listboxDontHorizontalSingleTree = (t: Translate): UsageTree => ({
   contract: "listbox",
   signature: "Listbox",
   options: { orientation: "horizontal" },
-  attrs: { style: "inline-size: 16rem; max-inline-size: 100%;" },
   slots: {
     label: t("listbox.demoViewLabel"),
     items: [
-      option("table", t("listbox.dd.fullTable"), { defaultSelected: true }),
-      option("dashboard", t("listbox.dd.dashboard")),
+      option("list", t("listbox.demoViewList"), { defaultSelected: true }),
+      option("board", t("listbox.demoViewBoard")),
       option("calendar", t("listbox.demoViewCalendar")),
     ],
   },

@@ -10,11 +10,12 @@ import "@skryensya/core/patterns/image-frame.css";
 import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/media-overlay.css";
 import * as demos from "@docs/demos/compare-slider";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+const { compareSliderAnatomyCss } = demos;
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Compare Slider", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.compareSliderAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.compareSliderAnatomyTree, { decorators: [withCss(compareSliderAnatomyCss)] });
 export const Default: StoryObj = treeStory(demos.compareSliderTree);
 export const Interface: StoryObj = treeStory(demos.compareSliderInterfaceTree);
 export const Vertical: StoryObj = treeStory(demos.compareSliderVerticalTree);

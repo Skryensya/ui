@@ -61,6 +61,8 @@ export const buttonContract = {
     "--sk-button-padding-x",
     "--sk-button-radius",
     "--sk-button-shadow",
+    "--sk-button-tactile-press-duration",
+    "--sk-button-tactile-press-easing",
     "--sk-button-wash",
     "--sk-button-width",
   ],
@@ -153,33 +155,6 @@ export const buttonContract = {
       trueValue: "",
     },
     /*
-     * Welds the START (leading) edge flat against a neighbor. A button that has ANOTHER control
-     * glued to that side (a split button's primary half beside its menu trigger, a segmented
-     * group's middle members). Removes BOTH things a round, bordered corner there would get
-     * wrong: the corner's own rounding (reads as a gap between two separate controls instead of
-     * a seam in one welded shape) AND the edge's own border color (for any variant that paints
-     * one: `solid`, `soft`. A visible border sitting right next to whatever the
-     * neighbor paints on ITS OWN touching edge doubles the seam into two competing lines; a
-     * toned fill and `ghost` never had this problem, their own border is already transparent,
-     * which is exactly why the bug stayed hidden until an example paired two neutral halves).
-     * Orthogonal to every other axis: any variant, any size, can be welded. Presence-only, like
-     * `iconOnly`. See `weldEnd` for the opposite edge. A control welded on BOTH sides (a
-     * segmented group's middle member) sets both at once.
-     */
-    weldStart: {
-      type: "boolean",
-      default: false,
-      attr: "data-weld-start",
-      trueValue: "",
-    },
-    /** Same idea, the opposite edge; see `weldStart`'s own doc. */
-    weldEnd: {
-      type: "boolean",
-      default: false,
-      attr: "data-weld-end",
-      trueValue: "",
-    },
-    /*
      * A TOGGLE'S OWN STATE. Bold in a toolbar, an upvote, Play/Pause: a button that stays on.
      *
      * Three states, not two, which is why it carries both `trueValue` and `falseValue` the way
@@ -250,8 +225,6 @@ export const buttonContract = {
         "appearance",
         "size",
         "iconOnly",
-        "weldStart",
-        "weldEnd",
         "pressed",
         "disabled",
         "type",
@@ -331,7 +304,7 @@ export const buttonContract = {
     "Button.navigation": {
       intent: ["navigation", "single-destination"],
       host: { element: "a", when: { href: "present" } },
-      options: ["variant", "tone", "appearance", "size", "iconOnly", "weldStart", "weldEnd", "href"],
+      options: ["variant", "tone", "appearance", "size", "iconOnly", "href"],
       compose: [{ of: "icon", systemOwned: true }],
       hitTesting: { childrenNone: ["Icon"] },
       requires: ["href"],

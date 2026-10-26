@@ -23,6 +23,8 @@ export const listboxParts = {
   content: "sk-listbox__content",
   item: "sk-listbox__item",
   itemText: "sk-listbox__item-text",
+  /** Secondary text under the label, and the option's `aria-describedby`. */
+  itemDescription: "sk-listbox__item-description",
   /** The check on a selected option. Decorative: `aria-selected` is what is announced. */
   itemIndicator: "sk-listbox__item-indicator",
 } as const;
@@ -35,6 +37,7 @@ export const listboxAttrs = {
   content: "data-sk-listbox-content",
   item: "data-sk-listbox-item",
   itemText: "data-sk-listbox-item-text",
+  itemDescription: "data-sk-listbox-item-description",
   itemIndicator: "data-sk-listbox-item-indicator",
 } as const;
 
@@ -48,6 +51,8 @@ export type ListboxValueChangeDetails = { value: string[] };
 export type ListboxItem = {
   value: string;
   label: string;
+  /** Secondary text under the label: what the option means, not a second name. */
+  description?: string;
   disabled?: boolean;
   defaultSelected?: boolean;
 };
@@ -70,10 +75,12 @@ export const listboxContract = {
     "--sk-listbox-bg",
     "--sk-listbox-border-color",
     "--sk-listbox-gap",
+    "--sk-listbox-item-description-fg",
     "--sk-listbox-item-disabled-fg",
     "--sk-listbox-item-fg",
     "--sk-listbox-item-padding",
     "--sk-listbox-item-radius",
+    "--sk-listbox-item-selected-bg",
     "--sk-listbox-item-selected-fg",
     "--sk-listbox-label-fg",
     "--sk-listbox-max-block-size",
@@ -101,8 +108,18 @@ export const listboxContract = {
       attr: "data-orientation",
       machineInput: true,
     },
+    /**
+     * How a chosen option is marked besides its fill. `check` adds the tick, which multiple mode
+     * needs to tell chosen from highlighted; `none` leaves the fill alone, for a single choice.
+     * A horizontal list never shows it: a row of chips reads by its fill, and a tick only widens it.
+     */
+    indicator: { type: "enum", values: ["check", "none"], default: "check", attr: "data-indicator" },
     /** The whole list: nothing can be highlighted or chosen. */
     disabled: { type: "boolean", default: false, attr: "data-disabled", trueValue: "", machineInput: true },
+    /** In `single` mode, choosing the chosen option again clears it. Off: once chosen, the list keeps a choice. */
+    deselectable: { type: "boolean", default: false, attr: "data-deselectable", trueValue: "", machineInput: true },
+    /** The arrow keys wrap from the last option to the first, and back. */
+    loopFocus: { type: "boolean", default: false, attr: "data-loop-focus", trueValue: "", machineInput: true },
   },
 
   signatures: {
@@ -110,7 +127,7 @@ export const listboxContract = {
       intent: ["choose-in-place", "always-open-list", "multi-select-list", "pick-from-visible-options"],
       host: { element: "div" },
       mount: listboxAttrs.root,
-      options: ["selectionMode", "orientation", "disabled"],
+      options: ["selectionMode", "orientation", "indicator", "disabled", "deselectable", "loopFocus"],
       forward: ["id", "aria-*"],
       compose: [{ of: "icon", systemOwned: true }],
       slots: {
@@ -128,7 +145,7 @@ export const listboxContract = {
               /** Chosen when the list first renders. Several may be, when the mode allows it. */
               defaultSelected: { type: "boolean", default: false, attr: "data-default-selected", trueValue: "" },
             },
-            slots: { label: { accepts: "text", required: true } },
+            slots: { label: { accepts: "text", required: true }, description: { accepts: "text" } },
             requires: ["value"],
           },
         },
@@ -155,10 +172,17 @@ export const listboxContract = {
                   { element: "span", part: "itemText", mount: listboxAttrs.itemText, itemSlot: "label" },
                   {
                     element: "span",
+                    part: "itemDescription",
+                    mount: listboxAttrs.itemDescription,
+                    itemSlot: "description",
+                    whenItemSlotGiven: "description",
+                  },
+                  {
+                    element: "span",
                     part: "itemIndicator",
                     mount: listboxAttrs.itemIndicator,
                     attrs: { "aria-hidden": "true" },
-                    children: [{ element: "span", attrs: { "data-sk-icon": "check", "data-sk-icon-size": "md" } }],
+                    children: [{ element: "span", attrs: { "data-sk-icon": "check", "data-sk-icon-size": "sm" } }],
                   },
                 ],
               },

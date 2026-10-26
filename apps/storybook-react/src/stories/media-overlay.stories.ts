@@ -9,11 +9,12 @@ import "@skryensya/core/patterns/image-frame.css";
 import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/media-overlay.css";
 import * as demos from "@docs/demos/media-overlay";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/MediaOverlay", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.mediaOverlayAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.mediaOverlayAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Card: StoryObj = treeStory(demos.mediaOverlayCardTree);
 export const Edges: StoryObj = treeStory((t) => demos.mediaOverlayEdgesTree());
 export const Strengths: StoryObj = treeStory((t) => demos.mediaOverlayStrengthsTree());

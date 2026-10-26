@@ -150,10 +150,6 @@
       "types": "./src/components/morph-stack.tsx",
       "default": "./src/components/morph-stack.tsx"
     },
-    "./image-cropper": {
-      "types": "./src/components/image-cropper.tsx",
-      "default": "./src/components/image-cropper.tsx"
-    },
     "./scroll-stack": {
       "types": "./src/components/scroll-stack.tsx",
       "default": "./src/components/scroll-stack.tsx"
@@ -181,10 +177,6 @@
     "./form-field": {
       "types": "./src/components/form-field.tsx",
       "default": "./src/components/form-field.tsx"
-    },
-    "./editor": {
-      "types": "./src/components/editor.tsx",
-      "default": "./src/components/editor.tsx"
     },
     "./layout": {
       "types": "./src/components/layout.tsx",
@@ -466,9 +458,9 @@
       "types": "./src/components/otp-input.tsx",
       "default": "./src/components/otp-input.tsx"
     },
-    "./split-button": {
-      "types": "./src/components/split-button.tsx",
-      "default": "./src/components/split-button.tsx"
+    "./button-group": {
+      "types": "./src/components/button-group.tsx",
+      "default": "./src/components/button-group.tsx"
     },
     "./timeline": {
       "types": "./src/components/timeline.tsx",
@@ -546,7 +538,6 @@
     "motion": "12.23.24"
   },
   "peerDependencies": {
-    "@skryensya/editor": "workspace:*",
     "@skryensya/icons-material": "workspace:*",
     "@skryensya/icons-phosphor": "workspace:*",
     "@tanstack/react-table": ">=9",
@@ -555,9 +546,6 @@
     "react-hook-form": ">=7.50"
   },
   "peerDependenciesMeta": {
-    "@skryensya/editor": {
-      "optional": true
-    },
     "@skryensya/icons-material": {
       "optional": true
     },
@@ -573,7 +561,6 @@
   },
   "devDependencies": {
     "@hookform/resolvers": "^5.9.1",
-    "@skryensya/editor": "workspace:*",
     "@skryensya/icons-material": "workspace:*",
     "@skryensya/icons-phosphor": "workspace:*",
     "@tanstack/react-table": "^9.2.4",

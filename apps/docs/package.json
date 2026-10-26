@@ -18,6 +18,9 @@
     "icons:components": "node scripts/generate-component-icons.ts",
     "build": "astro build",
     "preview": "astro preview",
+    "perf:serve": "astro build && astro preview --port 4401",
+    "perf:lighthouse": "pnpm dlx lighthouse@13.4.1 ${URL:-http://localhost:4401/} --preset=desktop --chrome-flags=--headless=new --output-path=.lighthouse/report.html --view",
+    "perf:unlighthouse": "pnpm dlx @unlighthouse/cli@0.18.1 --site http://localhost:4401",
     "generate:templates": "vitest run src/demos/templates/artifact.test.ts --update"
   },
   "dependencies": {

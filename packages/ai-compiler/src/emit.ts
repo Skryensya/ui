@@ -820,7 +820,7 @@ function attributesFor(node: ContractTemplate, ctx: NodeContext): string[] {
   }
 
   for (const [name, option] of mine) {
-    const value = tree.options?.[name] ?? (fillOptionDefaults ? option.default : undefined);
+    const value = tree.options?.[name] ?? (fillOptionDefaults || option.writeDefault ? option.default : undefined);
     // An option that only feeds a computation has already done its work in the structure above.
     if (value === undefined || option.computedInput) continue;
     if (option.styleProperty) {

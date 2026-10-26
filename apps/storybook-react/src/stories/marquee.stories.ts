@@ -13,11 +13,12 @@ import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/media-overlay.css";
 import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/marquee";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Marquee", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.marqueeAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.marqueeAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Manual: StoryObj = treeStory(demos.marqueeManualTree);
 export const Autoplay: StoryObj = treeStory((t) => demos.marqueeAutoplayTree());
 export const Control: StoryObj = treeStory(demos.marqueeControlTree);

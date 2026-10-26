@@ -304,7 +304,8 @@ export const detailsGroupTree = (t: Translate, name = "deployment"): UsageTree =
           {
             contract: "typography",
             signature: "Heading",
-            options: { headingSize: "h3", flush: true },
+            /* h4: the demo sits under the page's own h3 ("Details nativo"), and an h2 here broke the outline. */
+            options: { headingSize: "h3", headingElement: "h4", flush: true },
             children: t(`demo.accordion.${value}.title` as never),
           },
           {

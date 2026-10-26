@@ -1,6 +1,6 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
-import { splitButtonTree } from "./split-button";
+import { buttonGroupInputTree, buttonGroupSplitAccentTree } from "./button-group";
 import { tileRadioGroupItems } from "./data/radio-group";
 
 type UIKey = Parameters<Translate>[0];
@@ -66,20 +66,20 @@ export const toastDontTree = (t: Translate): UsageTree => ({
   },
 });
 
-/* ───────────── SplitButton ───────────── */
+/* ───────────── ButtonGroup: a split button ───────────── */
+
+/** A split ButtonGroup whose action half reads `label`. */
+const splitWithAction = (t: Translate, label: string): UsageTree => {
+  const tree = buttonGroupSplitAccentTree(t);
+  const [action, ...rest] = tree.children as UsageTree[];
+  return { ...tree, children: [{ ...action!, slots: { children: label } }, ...rest] };
+};
 
 /** The primary half names what a click does. */
-export const splitButtonDoTree = (t: Translate): UsageTree => splitButtonTree(t);
+export const buttonGroupSplitDoTree = (t: Translate): UsageTree => buttonGroupSplitAccentTree(t);
 
 /** "Actions" tells nobody what the main half does, which is the point of having a main half. */
-export const splitButtonDontTree = (t: Translate): UsageTree => {
-  const tree = splitButtonTree(t);
-  const slots = tree.slots as Record<string, UsageTree>;
-  return {
-    ...tree,
-    slots: { ...slots, action: { ...slots.action!, slots: { children: t("demo.splitButton.dd.vague") } } },
-  };
-};
+export const buttonGroupSplitDontTree = (t: Translate): UsageTree => splitWithAction(t, t("demo.buttonGroup.dd.vague"));
 
 /* ───────────── StateButton ───────────── */
 
@@ -225,20 +225,120 @@ const failure = (t: Translate, message: UIKey, withRetry: boolean): UsageTree =>
 export const toastFailDoTree = (t: Translate): UsageTree => failure(t, "demo.toast.dd.failDo", true);
 export const toastFailDontTree = (t: Translate): UsageTree => failure(t, "demo.toast.dd.failDont", false);
 
-/* ───────────── SplitButton: one action is a Button ───────────── */
+/* ───────────── ButtonGroup: one action is a Button ───────────── */
 
-export const splitButtonSingleDoTree = (t: Translate): UsageTree => ({
+export const buttonGroupSingleDoTree = (t: Translate): UsageTree => ({
   contract: "button",
   signature: "Button.action",
   options: { variant: "solid", size: "md" },
-  children: t("demo.splitButton.dd.export"),
+  children: t("demo.buttonGroup.dd.export"),
 });
 
-export const splitButtonSingleDontTree = (t: Translate): UsageTree => {
-  const tree = splitButtonTree(t);
-  const slots = tree.slots as Record<string, UsageTree>;
-  return { ...tree, slots: { ...slots, action: { ...slots.action!, slots: { children: t("demo.splitButton.dd.export") } } } };
+export const buttonGroupSingleDontTree = (t: Translate): UsageTree => splitWithAction(t, t("demo.buttonGroup.dd.export"));
+
+/* ───────────── ButtonGroup: more of the page's rules ───────────── */
+
+const separator = (): UsageTree => ({ contract: "button-group", signature: "ButtonGroupSeparator" });
+
+/** A ButtonGroup drawn the way the page's own examples are: the compact default, written out so the markup carries it, with its separators. */
+const bgroup = (members: UsageTree[], label: string): UsageTree => ({
+  contract: "button-group",
+  signature: "ButtonGroup",
+  options: { label, separator: "inset" },
+  children: members.flatMap((member, i) => (i === 0 ? [member] : [separator(), member])),
+});
+
+const soft = (label: string, options: Record<string, string> = {}): UsageTree => button(label, { variant: "soft", ...options });
+
+/** The mail actions, as the page's first example has them. */
+const mailActions = (t: Translate, sizes: readonly [string, string, string] = ["sm", "sm", "sm"]): UsageTree[] => [
+  soft(t("demo.buttonGroup.archive"), { size: sizes[0] }),
+  soft(t("demo.buttonGroup.report"), { size: sizes[1] }),
+  soft(t("demo.buttonGroup.snooze"), { size: sizes[2] }),
+];
+
+/** Each action names what it does, with a verb. */
+export const buttonGroupVerbsDoTree = (t: Translate): UsageTree => bgroup(mailActions(t), t("demo.buttonGroup.mailLabel"));
+
+/** Nouns and states say what the thing is, not what pressing it does. */
+export const buttonGroupVerbsDontTree = (t: Translate): UsageTree =>
+  bgroup([soft(t("demo.buttonGroup.dd.noun1")), soft(t("demo.buttonGroup.dd.noun2")), soft(t("demo.buttonGroup.dd.noun3"))], t("demo.buttonGroup.mailLabel"));
+
+/** Every member at one size. */
+export const buttonGroupSizeDoTree = (t: Translate): UsageTree => bgroup(mailActions(t, ["md", "md", "md"]), t("demo.buttonGroup.mailLabel"));
+
+/** One member larger than its neighbours: the shared edge stops lining up. */
+export const buttonGroupSizeDontTree = (t: Translate): UsageTree => bgroup(mailActions(t, ["sm", "lg", "sm"]), t("demo.buttonGroup.mailLabel"));
+
+/** A split button whose menu half looks like the action half. */
+export const buttonGroupLookDoTree = (t: Translate): UsageTree => buttonGroupSplitAccentTree(t);
+
+/** The menu half in another look: the two halves stop reading as one control. */
+export const buttonGroupLookDontTree = (t: Translate): UsageTree => {
+  const tree = buttonGroupSplitAccentTree(t);
+  const children = (tree.children as UsageTree[]).map((member) => {
+    if (member.contract !== "menu") return member;
+    const { triggerTone: _tone, ...options } = member.options ?? {};
+    return { ...member, options: { ...options, triggerVariant: "ghost" } };
+  });
+  return { ...tree, children };
 };
+
+/** The field and the button that uses it, joined. */
+export const buttonGroupFieldDoTree = (t: Translate): UsageTree => buttonGroupInputTree(t);
+
+/** The same two, apart: the field is on its own, and nothing says the button acts on it. */
+export const buttonGroupFieldDontTree = (t: Translate): UsageTree => {
+  const [field, action] = buttonGroupInputTree(t).children as UsageTree[];
+  return {
+    contract: "layout",
+    signature: "Inline",
+    options: { gap: "md" },
+    children: [{ contract: "button-group", signature: "ButtonGroup", children: [field!] }, action!],
+  };
+};
+
+/** Unrelated actions are separate buttons. */
+export const buttonGroupUnrelatedDoTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Inline",
+  options: { gap: "md" },
+  children: [soft(t("demo.buttonGroup.dd.print")), soft(t("demo.buttonGroup.dd.delete"), { tone: "danger" })],
+});
+
+/** Joined, they read as two takes on one thing, and a destructive one sits against a harmless one. */
+export const buttonGroupUnrelatedDontTree = (t: Translate): UsageTree =>
+  bgroup([soft(t("demo.buttonGroup.dd.print")), soft(t("demo.buttonGroup.dd.delete"), { tone: "danger" })], t("demo.buttonGroup.dd.range"));
+
+const rangeOptions = (t: Translate) => [
+  ["day", t("demo.buttonGroup.dd.day")],
+  ["week", t("demo.buttonGroup.dd.week")],
+  ["month", t("demo.buttonGroup.dd.month")],
+] as const;
+
+/** Choosing one of several options is a Segmented: it holds the choice. */
+export const buttonGroupOptionDoTree = (t: Translate): UsageTree => ({
+  contract: "segmented",
+  signature: "Segmented",
+  options: { value: "week", label: t("demo.buttonGroup.dd.range") },
+  slots: { items: rangeOptions(t).map(([value, label]) => ({ options: { value }, slots: { label } })) },
+});
+
+/** Buttons that pick an option do not remember which one is picked. */
+export const buttonGroupOptionDontTree = (t: Translate): UsageTree =>
+  bgroup(rangeOptions(t).map(([, label]) => soft(label)), t("demo.buttonGroup.dd.range"));
+
+/** Two solid buttons with a line between them. */
+export const buttonGroupFuseDoTree = (t: Translate): UsageTree =>
+  bgroup([button(t("demo.buttonGroup.copyAction"), { variant: "solid" }), button(t("demo.buttonGroup.pasteAction"), { variant: "solid" })], t("demo.buttonGroup.mailLabel"));
+
+/** No line: the two fills fuse into one button with two labels. */
+export const buttonGroupFuseDontTree = (t: Translate): UsageTree => ({
+  contract: "button-group",
+  signature: "ButtonGroup",
+  options: { label: t("demo.buttonGroup.mailLabel"), separator: "none" },
+  children: [button(t("demo.buttonGroup.copyAction"), { variant: "solid" }), button(t("demo.buttonGroup.pasteAction"), { variant: "solid" })],
+});
 
 /* ───────────── StateButton: on or off is a Switch ───────────── */
 

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-10T02:23:38.754Z",
+  "generatedAt": "2026-10-24T11:55:18.969Z",
   "results": {
     "apps/docs/src/components/pages/CardPage.test.ts": {
       "imports tile.css, which Base.astro never loads globally": "passed",
@@ -766,7 +766,7 @@
       "carries a leading icon in the pre slot alongside its label": "passed",
       "carries a trailing icon in the post slot alongside its label": "passed",
       "renders an icon-only button as a named square": "passed",
-      "warns in development when a button renders nothing at all": "passed",
+      "warns in development when a button renders nothing at all, and marks it visually too": "passed",
       "does not warn when the only content is an element, whatever it renders": "passed",
       "warns when children is empty even though an aria-label names the button": "passed",
       "warns in development when an icon-only button has no accessible name": "passed",
@@ -776,12 +776,16 @@
       "maps brutalist appearance on a navigation host": "passed",
       "maps frosted appearance on a navigation host": "passed",
       "does not write aria-pressed or disabled on a navigation host": "passed",
-      "welds either edge on its own, and both at once for a middle member": "passed",
-      "writes nothing for an unwelded edge": "passed",
-      "welds a button of any variant and size": "passed",
       "submits its form when asked, and resets one on reset": "passed",
       "carries the name and value a submitter needs to say which button sent the form": "passed",
-      "writes aria-pressed only when pressed is given": "passed"
+      "writes aria-pressed only when pressed is given": "passed",
+      "sets aria-busy, disables the button, and discards clicks, keeping the label in the DOM": "passed",
+      "keeps the plain label visible when loading, with no loadingText given": "passed",
+      "swaps the label for loadingText while loading, without losing the original from the DOM": "passed",
+      "writes data-loading only when asked, and never on the navigation shape": "passed",
+      "renders the child's own tag with Button's classes and data attrs, not a <button>/<a> of its own": "passed",
+      "keeps the child's own className and chains its onClick before Button's, respecting preventDefault": "passed",
+      "throws when the child is not a single element": "passed"
     },
     "packages/react/src/components/callout.test.tsx": {
       "serializes its appearance beside its tone, plain by default": "passed",
@@ -1481,15 +1485,6 @@
     "packages/react/src/components/slider.test.tsx": {
       "uses the Zag slider machine anatomy and value state": "passed",
       "dispatches sk:slidervaluechange with the same detail vanilla does": "passed"
-    },
-    "packages/react/src/components/split-button.test.tsx": {
-      "renders a labelled group holding the action button and the menu's icon-only trigger": "passed",
-      "gives both halves the same appearance from one prop": "passed",
-      "clicking the action button fires onClick, independent of the menu": "passed",
-      "opens the fallback menu from its trigger and selects an item": "passed",
-      "disables both the action button and the menu trigger together": "passed",
-      "pairs the fallback trigger's shape and variant/size with the action button": "passed",
-      "renders a hand-composed action and menu verbatim instead of the flat-prop fallback": "passed"
     },
     "packages/react/src/components/stat.test.tsx": {
       "colors the change by trend, not by sign": "passed",
@@ -2588,6 +2583,13 @@
       "is reachable from script by id, and gone after cleanup": "passed",
       "has nothing to do when the markup has no video": "passed",
       "is the enhancer the runtime registers": "passed"
+    },
+    "packages/react/src/components/button-group.test.tsx": {
+      "groups independent actions vertically without a menu": "passed",
+      "defaults to horizontal and writes nothing on its members": "passed",
+      "labels the input beside it with ButtonGroupLabel, and ButtonGroupText stays plain text": "passed",
+      "holds the action and the menu's icon-only trigger as one named group": "passed",
+      "keeps the action and the menu independent": "passed"
     }
   }
 }

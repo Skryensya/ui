@@ -8,8 +8,8 @@
  * that teardown running in the same tick as the click is not something to trust the plain anchor
  * navigation to survive, especially on touch. So this drives the navigation itself:
  *
- *   1. write `languagePreference` (synchronous) so the pre-paint redirect in `Base.astro` keeps
- *      honouring the choice on every later visit to an unprefixed page, and
+ *   1. write `languagePreference` and its `sk_lang` cookie (synchronous), so nginx sends every later
+ *      visit to this language before any HTML is sent, and
  *   2. `location.assign` to the row's href, a full load. That is what a language switch wants
  *      anyway (the whole document re-renders in the new language), and it leaves a real history
  *      entry, because unlike the pre-paint redirect this IS a navigation the reader asked for.
@@ -24,7 +24,7 @@ import { setPreference } from "@skryensya/vanilla/storage";
 /* `../i18n/locales`, not `../i18n/ui`: this is a client module, and `ui` now retains the whole
  * dictionary when imported (see the note in `i18n/locales.ts`). */
 import { locales } from "../i18n/locales";
-import { languagePreference } from "../lib/preferences";
+import { LANGUAGE_COOKIE, languagePreference } from "../lib/preferences";
 
 const isLocale = (value: string | null | undefined): value is (typeof locales)[number] =>
   value != null && (locales as readonly string[]).includes(value);
@@ -46,6 +46,8 @@ export function initLanguageMenu(): void {
       if (!isLocale(locale)) return;
 
       setPreference(languagePreference, locale);
+      /* The server's copy: nginx sends every later unprefixed request to this language. */
+      document.cookie = `${LANGUAGE_COOKIE}=${locale}; path=/; max-age=31536000; samesite=lax`;
 
       /* Already reading this language: let the menu just close, no reload. */
       if (locale === document.documentElement.lang) return;

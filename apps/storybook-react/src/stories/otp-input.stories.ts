@@ -6,15 +6,16 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/otp-input.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/otp-input";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/OtpInput", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.otpInputAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.otpInputAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const Single: StoryObj = treeStory(demos.otpInputSingleTree);
+export const CountCase: StoryObj = treeStory(demos.otpInputCountCase);
+export const StateCase: StoryObj = treeStory(demos.otpInputStateCase);
 export const Sms: StoryObj = treeStory(demos.otpInputSmsTree);
 export const Alphanumeric: StoryObj = treeStory(demos.otpInputAlphanumericTree);
 export const Pin: StoryObj = treeStory(demos.otpInputPinTree);
 export const States: StoryObj = treeStory(demos.otpInputStatesTree);
-export const Single: StoryObj = treeStory(demos.otpInputSingleTree);
-export const CountCase: StoryObj = treeStory(demos.otpInputCountCase);
-export const StateCase: StoryObj = treeStory(demos.otpInputStateCase);

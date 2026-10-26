@@ -7,7 +7,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "673583f286ce5db8"
+surface: "c978f185bf9746b9"
 entries:
   - date: 2026-10-17
     kind: feature
@@ -34,3 +34,11 @@ entries:
     en:
       title: First release
       body: "Published for the first time, with its contract, a React binding and a Vanilla mount."
+  - date: 2026-10-24
+    kind: bugfix
+    es:
+      title: El encabezado del trigger siempre declara su nivel
+      body: "El markup de Vanilla omitía `aria-level` cuando `headingLevel` quedaba en su valor por defecto, y un `role=\"heading\"` sin nivel es ARIA inválido. Ahora siempre se escribe (3 por defecto)."
+    en:
+      title: The trigger heading always states its level
+      body: "Vanilla markup left out `aria-level` when `headingLevel` stayed at its default, and a `role=\"heading\"` with no level is invalid ARIA. It is now always written (3 by default)."

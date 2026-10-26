@@ -186,7 +186,7 @@ export async function generateStories({ app, check = false }: GenerateOptions): 
       pages.find((p) => p.route === `/components/${module}`) ?? pages.find((p) => p.modules.has(module));
 
     /* A page's previews, in order: which tree each one calls and the css it passes. */
-    function pagePreviews(page: Page | undefined): { tree: string; css?: string; cssFrom?: string }[] {
+    function pagePreviews(page: Page | undefined): { tree: string; wrapped: string; css?: string; cssFrom?: string; title?: string }[] {
       if (!page) return [];
       const { source } = page;
       // Every name the page imports from a demo module, so a css identifier can be traced to its export.
@@ -196,13 +196,16 @@ export async function generateStories({ app, check = false }: GenerateOptions): 
           importedFrom.set(name, module!);
         }
       }
-      const previews: { tree: string; css?: string; cssFrom?: string }[] = [];
+      const previews: { tree: string; wrapped: string; css?: string; cssFrom?: string; title?: string }[] = [];
       for (const [block] of source.matchAll(/<(?:Component|Usage)Preview\b[\s\S]*?\/>/g)) {
         const tree = /tree=\{\s*(\w+)/.exec(block)?.[1];
         if (!tree) continue;
         const css = /\bcss=\{\s*(\w+)\s*\}/.exec(block)?.[1];
         const cssFrom = css ? importedFrom.get(css) : undefined;
-        previews.push({ tree, ...(css && cssFrom ? { css, cssFrom } : {}) });
+        const title = /\bstorybookTitle="([^"]+)"/.exec(block)?.[1];
+        // `tree={withPy(expandableTileTree(t))}`: the demo export inside a page-local wrapper.
+        const wrapped = /tree=\{\s*(?:\w+\(\s*)*(\w+)\(/.exec(block)?.[1] ?? tree;
+        previews.push({ tree, wrapped, ...(css && cssFrom ? { css, cssFrom } : {}), ...(title ? { title } : {}) });
       }
       return previews;
     }
@@ -310,7 +313,17 @@ export async function generateStories({ app, check = false }: GenerateOptions): 
 
       /* The catalog's group and label; a component page the catalog does not list (paused) keeps its
          own name; a demo that no component page shows (foundations, templates) sits apart. */
+      /* A module split across component pages (Tile: one page per kind) has no page of its own to take a
+         title from; when the pages link its trees under the module's own name, that is the title. */
+      const ownName = `Components/${pascal(module)}`;
+      const linkedByName =
+        home?.route !== `/components/${module}` &&
+        pages
+          .filter((p) => p.modules.has(module))
+          .flatMap(pagePreviews)
+          .some((preview) => preview.title === ownName && preview.wrapped in exports);
       const title =
+        (linkedByName ? ownName : undefined) ??
         (home && titles.get(home.route)) ??
         (home?.route.startsWith("/components/")
           ? `Components/${pascal(home.route.split("/").pop()!)}`

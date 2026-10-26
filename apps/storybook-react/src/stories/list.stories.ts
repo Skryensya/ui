@@ -7,11 +7,12 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/list.css";
 import "@skryensya/core/patterns/icon.css";
 import * as demos from "@docs/demos/list";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/List", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.listAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.listAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Plain: StoryObj = treeStory(demos.listPlainTree);
 export const Titled: StoryObj = treeStory(demos.listTitledTree);
 export const Leading: StoryObj = treeStory(demos.listLeadingTree);

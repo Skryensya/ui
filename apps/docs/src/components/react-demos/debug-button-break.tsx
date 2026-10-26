@@ -7,6 +7,7 @@
  * Not linked from the site nav. Delete with its page when the run is done.
  */
 import { Button } from "@skryensya/react/button";
+import { ButtonGroup } from "@skryensya/react/button-group";
 import { Icon, IconSetProvider } from "@skryensya/react/icon";
 import { lucideIcons } from "@skryensya/icons-lucide";
 import type { ReactNode } from "react";
@@ -286,16 +287,16 @@ export function ButtonBreak() {
             </div>
           ))}
         </Case>
-        <Case label="Welded pair (weldEnd + weldStart), every variant">
+        <Case label="ButtonGroup pair, every variant">
           {VARIANTS.map((variant) => (
-            <div key={variant} className="break-weld" data-press-scale-note={variant}>
-              <Button variant={variant} weldEnd>
+            <ButtonGroup key={variant} data-press-scale-note={variant}>
+              <Button variant={variant}>
                 {`${variant} primary`}
               </Button>
-              <Button variant={variant} weldStart iconOnly aria-label={`More ${variant} options`}>
+              <Button variant={variant} iconOnly aria-label={`More ${variant} options`}>
                 <Icon name="chevron-down" />
               </Button>
-            </div>
+            </ButtonGroup>
           ))}
         </Case>
         <Case label="href anchor (Button.navigation), every variant">
@@ -311,26 +312,26 @@ export function ButtonBreak() {
             <Button pressed>{LABELS.unbreakable}</Button>
           </div>
         </Case>
-        <Case label="Welded pair, disabled" note="Does the seam (the one border the weld rules clear) still read as one control once disabled fades both halves?">
-          <div className="break-weld">
-            <Button weldEnd disabled>
+        <Case label="ButtonGroup pair, disabled" note="Does the seam (the one shared border column) still read as one control once disabled fades both halves?">
+          <ButtonGroup>
+            <Button disabled>
               Save
             </Button>
-            <Button weldStart iconOnly aria-label="More options" disabled>
+            <Button iconOnly aria-label="More options" disabled>
               <Icon name="chevron-down" />
             </Button>
-          </div>
+          </ButtonGroup>
         </Case>
-        <Case label="Welded pair, long label in a 320px container">
+        <Case label="ButtonGroup pair, long label in a 320px container">
           <div className="break-w-320">
-            <div className="break-weld">
-              <Button weldEnd tone="accent">
+            <ButtonGroup>
+              <Button tone="accent">
                 {LABELS.sentences}
               </Button>
-              <Button weldStart iconOnly aria-label="More options" tone="accent">
+              <Button iconOnly aria-label="More options" tone="accent">
                 <Icon name="chevron-down" />
               </Button>
-            </div>
+            </ButtonGroup>
           </div>
         </Case>
       </Group>
@@ -369,17 +370,17 @@ export function ButtonBreak() {
           ))}
         </Case>
         <Case
-          label="Welded pair, one half loading"
-          note="Raw welded Buttons, not a composed SplitButton: nothing here couples the two halves, so the trigger beside a loading action stays fully clickable. SplitButton's own contract carries that rule (split-button.ts's `slotImplies`) - this primitive pair does not, and is not meant to."
+          label="Grouped pair, one half loading"
+          note="Two Buttons in a ButtonGroup, not a Menu: nothing couples the two halves, so the button beside a loading action stays fully clickable. Disabling the alternatives while the action runs is the author's call."
         >
-          <div className="break-weld">
-            <Button weldEnd loading>
+          <ButtonGroup>
+            <Button loading>
               Save
             </Button>
-            <Button weldStart iconOnly aria-label="More options">
+            <Button iconOnly aria-label="More options">
               <Icon name="chevron-down" />
             </Button>
-          </div>
+          </ButtonGroup>
         </Case>
       </Group>
 

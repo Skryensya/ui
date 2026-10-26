@@ -70,7 +70,6 @@ import { datePickerMessages } from "./messages/components/date-picker";
 import { dialogMessages } from "./messages/components/dialog";
 import { dialogStackMessages } from "./messages/components/dialog-stack";
 import { drawerMessages } from "./messages/components/drawer";
-import { editorMessages } from "./messages/components/editor";
 import { emptyStateMessages } from "./messages/components/empty-state";
 import { fadeEdgeMessages } from "./messages/components/fade-edge";
 import { clipboardMessages } from "./messages/components/clipboard";
@@ -120,7 +119,6 @@ import { audioPlayerMessages } from "./messages/components/audio-player";
 import { comparisonTableMessages } from "./messages/components/comparison-table";
 import { descriptionListMessages } from "./messages/components/description-list";
 import { dodontPairsMessages } from "./messages/components/dodont-pairs";
-import { imageCropperMessages } from "./messages/components/image-cropper";
 import { morphStackMessages } from "./messages/components/morph-stack";
 import { resizableMessages } from "./messages/components/resizable";
 import { scrollExpandMessages } from "./messages/components/scroll-expand";
@@ -134,7 +132,7 @@ import { selectMessages } from "./messages/components/select";
 import { sidebarMessages } from "./messages/components/sidebar";
 import { skipLinkMessages } from "./messages/components/skip-link";
 import { sliderMessages } from "./messages/components/slider";
-import { splitButtonMessages } from "./messages/components/split-button";
+import { buttonGroupMessages } from "./messages/components/button-group";
 import { stackMessages } from "./messages/components/stack";
 import { statMessages } from "./messages/components/stat";
 import { stepsMessages } from "./messages/components/steps";
@@ -232,7 +230,6 @@ export const ui = {
     ...dialogMessages.es,
     ...dialogStackMessages.es,
     ...drawerMessages.es,
-    ...editorMessages.es,
     ...emptyStateMessages.es,
     ...fadeEdgeMessages.es,
     ...clipboardMessages.es,
@@ -284,7 +281,6 @@ export const ui = {
     ...quoteMessages.es,
     ...tagsInputMessages.es,
     ...dodontPairsMessages.es,
-    ...imageCropperMessages.es,
     ...morphStackMessages.es,
     ...resizableMessages.es,
     ...scrollExpandMessages.es,
@@ -296,7 +292,7 @@ export const ui = {
     ...sidebarMessages.es,
     ...skipLinkMessages.es,
     ...sliderMessages.es,
-    ...splitButtonMessages.es,
+    ...buttonGroupMessages.es,
     ...stackMessages.es,
     ...stateButtonMessages.es,
     ...statMessages.es,
@@ -391,7 +387,6 @@ export const ui = {
     ...dialogMessages.en,
     ...dialogStackMessages.en,
     ...drawerMessages.en,
-    ...editorMessages.en,
     ...emptyStateMessages.en,
     ...fadeEdgeMessages.en,
     ...clipboardMessages.en,
@@ -443,7 +438,6 @@ export const ui = {
     ...quoteMessages.en,
     ...tagsInputMessages.en,
     ...dodontPairsMessages.en,
-    ...imageCropperMessages.en,
     ...morphStackMessages.en,
     ...resizableMessages.en,
     ...scrollExpandMessages.en,
@@ -455,7 +449,7 @@ export const ui = {
     ...sidebarMessages.en,
     ...skipLinkMessages.en,
     ...sliderMessages.en,
-    ...splitButtonMessages.en,
+    ...buttonGroupMessages.en,
     ...stackMessages.en,
     ...stateButtonMessages.en,
     ...statMessages.en,

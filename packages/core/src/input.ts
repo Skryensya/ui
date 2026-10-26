@@ -172,8 +172,9 @@ export const inputContract = {
        * `aria-invalid` normally arrive from FormField wiring; authored `id` is still accepted when
        * a tree stands the control alone or pins a known id.
        */
-      forward: ["id", "readonly", "value", "autocomplete", "required", "maxlength", "minlength", "pattern", "min", "max", "step", "aria-*"],
-      parents: ["FormField"],
+      forward: ["id", "readonly", "value", "autocomplete", "inputmode", "required", "maxlength", "minlength", "pattern", "min", "max", "step", "aria-*"],
+      // A ButtonGroup welds it to the button that acts on it; a ButtonGroupLabel or aria-label names it there.
+      parents: ["FormField", "ButtonGroup"],
       slots: {},
       template: { element: "input", part: "root", host: true },
       react: { from: "@skryensya/react/input", name: "Input" },

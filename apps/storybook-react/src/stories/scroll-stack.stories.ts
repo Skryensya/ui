@@ -8,11 +8,12 @@ import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/scroll-stack";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+const { scrollStackAnatomyCss } = demos;
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Scroll Stack", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.scrollStackAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.scrollStackAnatomyTree, { decorators: [withCss(scrollStackAnatomyCss)] });
 export const Default: StoryObj = treeStory(demos.scrollStackTree);
 export const Product: StoryObj = treeStory(demos.scrollStackProductTree);
 export const Cards: StoryObj = treeStory(demos.scrollStackCardsTree);

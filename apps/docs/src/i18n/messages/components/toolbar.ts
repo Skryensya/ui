@@ -43,7 +43,6 @@ export const toolbarMessages = {
 
     "toolbarPage.when1": "Para tres o más controles que actúan sobre lo mismo: formato, herramientas, una selección.",
 
-    "toolbarPage.contract3": 'Para la barra de un editor de texto enriquecido, <a href="/es/componentes/editor">Editor</a> ya trae la suya.',
 
     "toolbarPage.contract2": "Una sola parada de <kbd>Tab</kbd> para toda la barra.",
 
@@ -120,7 +119,6 @@ export const toolbarMessages = {
 
     "toolbarPage.when1": "For three or more controls acting on the same thing: formatting, tools, a selection.",
 
-    "toolbarPage.contract3": 'For a rich text editor\'s bar, <a href="/components/editor">Editor</a> already brings its own.',
 
     "toolbarPage.contract2": "A single <kbd>Tab</kbd> stop for the whole bar.",
 

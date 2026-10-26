@@ -7,10 +7,11 @@ import "@skryensya/core/components/loader.css";
 import "@skryensya/core/components/video-player.css";
 import "@skryensya/core/patterns/visually-hidden.css";
 import * as demos from "@docs/demos/video-player";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+const { videoPlayerAnatomyCss } = demos;
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Video Player", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.videoPlayerAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.videoPlayerAnatomyTree, { decorators: [withCss(videoPlayerAnatomyCss)] });
 export const Default: StoryObj = treeStory(demos.videoPlayerTree);
 export const Study: StoryObj = treeStory(demos.videoPlayerStudyTree);

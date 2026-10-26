@@ -15,7 +15,7 @@ import {
   listboxDoNaturalOrderTree,
   listboxDontActionsTree,
   listboxDontAlphabeticalDaysTree,
-  listboxDontHorizontalLongTree,
+  listboxDontHorizontalSingleTree,
   listboxDontMissingTree,
   listboxDontSingleFiltersTree,
   listboxHorizontalTree,
@@ -116,7 +116,7 @@ const explain = (option: string, values: readonly string[]) =>
     <DoDont
       title={t("listbox.dd.horizontal.title")}
       do={{ tree: listboxDoHorizontalShortTree(t), caption: t("listbox.dd.horizontal.do") }}
-      dont={{ tree: listboxDontHorizontalLongTree(t), caption: t("listbox.dd.horizontal.dont") }}
+      dont={{ tree: listboxDontHorizontalSingleTree(t), caption: t("listbox.dd.horizontal.dont") }}
     />
     <DoDont
       title={t("listbox.dd.disabled.title")}

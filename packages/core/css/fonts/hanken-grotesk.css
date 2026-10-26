@@ -16,8 +16,14 @@
  *   - Real tabular figures, verified by measuring `1111111111` against `0000000000` under
  *     `font-variant-numeric: tabular-nums`: eight sheets in this kit ask for them (chart, meter,
  *     time-field, list, table-pager, nav-list, code-preview).
- *   - One variable weight axis covering 100-900, so the four rungs the system actually uses
- *     (400 body / 500 label / 600 emphasis / 700 heading) are drawn, never synthesised.
+ *   - One variable weight axis, so the four rungs the system actually uses (400 body / 500 label /
+ *     600 emphasis / 700 heading) are drawn, never synthesised. The files ship that axis cut to
+ *     400-700 and without glyph names or hinting (fontTools: `instancer` + `subset`, every glyph and
+ *     feature kept): about a third lighter, which is what the first paint waits on. Within the range
+ *     outlines move by at most 1/1000 em, below a pixel at any text size. The `font-weight`
+ *     descriptors below still say 100-900 ON PURPOSE: the file clamps a heavier request to 700 by
+ *     itself, while a 400-700 descriptor made Chrome synthesise a fake bold over 700 for a `<strong>`
+ *     that resolved to 900, which re-wrapped the line when the face landed (0.14 CLS on a docs page).
  *
  * AND WHY THIS ONE AND NOT A BIG-TECH FAMILY: it is drawn by Alfredo Marco Pradil (Hanken Design
  * Co.) and its OFL copyright is held by the project's own authors, not by a platform vendor. The

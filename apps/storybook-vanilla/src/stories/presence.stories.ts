@@ -6,6 +6,7 @@ import "@skryensya/core/components/callout.css";
 import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/form-field.css";
 import "@skryensya/core/components/input.css";
+import "@skryensya/core/components/loader.css";
 import "@skryensya/core/components/presence.css";
 import "@skryensya/core/components/switch.css";
 import "@skryensya/core/components/typography.css";

@@ -8,15 +8,16 @@ import "@skryensya/core/components/quote.css";
 import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/quote";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Quote", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.quoteAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.quoteAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Default: StoryObj = treeStory(demos.quoteTree);
 export const Text: StoryObj = treeStory(demos.quoteTextTree);
 export const Avatar: StoryObj = treeStory(demos.quoteAvatarTree);
-export const PullAvatar: StoryObj = treeStory(demos.quotePullAvatarTree);
 export const Bare: StoryObj = treeStory(demos.quoteBareTree);
 export const Pull: StoryObj = treeStory(demos.quotePullTree);
+export const PullAvatar: StoryObj = treeStory(demos.quotePullAvatarTree);
 export const Testimonial: StoryObj = treeStory(demos.quoteTestimonialTree);

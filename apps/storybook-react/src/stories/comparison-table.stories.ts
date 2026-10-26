@@ -11,9 +11,9 @@ import { treeStory, type Meta, type StoryObj } from "../tree-story";
 export default { title: "Components/ComparisonTable", tags: ["autodocs"] } satisfies Meta;
 
 export const Anatomy: StoryObj = treeStory(demos.comparisonTableAnatomyTree);
+export const Density: StoryObj = treeStory(demos.comparisonTableDensityTree);
 export const Default: StoryObj = treeStory(demos.comparisonTableTree);
 export const Three: StoryObj = treeStory(demos.comparisonTableThreeTree);
 export const Caption: StoryObj = treeStory(demos.comparisonTableCaptionTree);
-export const Density: StoryObj = treeStory(demos.comparisonTableDensityTree);
 export const Links: StoryObj = treeStory(demos.comparisonTableLinksTree);
 export const Versus: StoryObj = treeStory(demos.comparisonTableVersusTree);

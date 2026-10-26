@@ -28,16 +28,16 @@ export interface PalettePreset {
  * two steps in from each end instead, far enough from every rung of the surface ladder (canvas →
  * surface → surface-raised) that the wash stays visible as its own gray, in either mode.
  */
-function accentBundle(hue: string): Record<string, string> {
+function accentBundle(hue: string, step = "600"): Record<string, string> {
   const subtle = hue === "neutral" ? ["300", "700"] : ["50", "950"];
   const hero = hue === "neutral" ? ["400", "600"] : ["200", "950"];
   return {
     "--color-bg-accent-subtle": `light-dark(var(--palette-${hue}-${subtle[0]}), var(--palette-${hue}-${subtle[1]}))`,
     "--color-text-accent": `light-dark(var(--palette-${hue}-700), var(--palette-${hue}-300))`,
     "--color-text-link": "var(--color-text-accent)",
-    "--color-border-accent": `light-dark(var(--palette-${hue}-600), var(--palette-${hue}-500))`,
+    "--color-border-accent": `light-dark(var(--palette-${hue}-${step}), var(--palette-${hue}-500))`,
     "--color-border-focus": `light-dark(var(--palette-${hue}-600), var(--palette-${hue}-400))`,
-    "--color-action-accent": `light-dark(var(--palette-${hue}-600), var(--palette-${hue}-500))`,
+    "--color-action-accent": `light-dark(var(--palette-${hue}-${step}), var(--palette-${hue}-500))`,
     /* The component-page hero band (site.css's `--docs-hero-bg`, default blue) rides along with the
      * rest of the bundle: without this key it stayed blue no matter which preset was active, since
      * `--color-bg-accent-subtle`'s own `-50` leg reads as barely-there on a band this large (see that
@@ -47,11 +47,10 @@ function accentBundle(hue: string): Record<string, string> {
 }
 
 /*
- * ELEVEN presets, and the ORDER is the cycle a reader actually sees on the header toggle: this is
- * one button pressed repeatedly, so what matters is that consecutive presets look nothing alike,
- * not that the list walks the color wheel in order. Hence indigo → red → cyan → fuchsia after the
- * first six, rather than dropping red next to orange and cyan next to teal. The showcase gallery at
- * /presets renders this same order top-to-bottom.
+ * TWELVE presets, and the ORDER is the one the swatches show in the header's picker: colors that look alike sit
+ * together, walking the hue wheel from green (green → emerald → teal → cyan → blue → indigo → violet → fuchsia → pink → red
+ * → orange), so a reader scanning the swatches finds a family in one place instead of hunting for it across the list.
+ * The /presets showcase gallery renders this same order top-to-bottom.
  *
  * The FIRST entry is the one a reader gets before choosing anything, so it is green. Core's own
  * stylesheet default is still blue (a library default, not the site's to rename), which is why
@@ -70,25 +69,28 @@ function accentBundle(hue: string): Record<string, string> {
  * Already published for base surfaces/text (see this file's other presets); never asked to be an
  * accent before.
  */
-const HUES: { id: string; hue: string; es: string; en: string }[] = [
+/* Hues kept apart on the wheel: a neighbour within ~25° (emerald, cyan, indigo) read as the same pick. */
+/* `step` is the accent's own shade where `-600` is too light for white text on it (mustard). */
+const HUES: { id: string; hue: string; es: string; en: string; step?: "700" }[] = [
   { id: "verde", hue: "green", es: "Verde", en: "Green" },
+  { id: "teal", hue: "teal", es: "Turquesa", en: "Teal" },
+  { id: "cielo", hue: "sky", es: "Cielo", en: "Sky" },
   { id: "azul", hue: "blue", es: "Azul", en: "Blue" },
   { id: "violeta", hue: "violet", es: "Violeta", en: "Violet" },
-  { id: "teal", hue: "teal", es: "Turquesa", en: "Teal" },
-  { id: "rosa", hue: "pink", es: "Rosa", en: "Pink" },
-  { id: "naranja", hue: "orange", es: "Naranja", en: "Orange" },
-  { id: "indigo", hue: "indigo", es: "Índigo", en: "Indigo" },
-  { id: "rojo", hue: "red", es: "Rojo", en: "Red" },
-  { id: "cian", hue: "cyan", es: "Cian", en: "Cyan" },
   { id: "fucsia", hue: "fuchsia", es: "Fucsia", en: "Fuchsia" },
+  { id: "rosa", hue: "pink", es: "Rosa", en: "Pink" },
+  { id: "rojo", hue: "red", es: "Rojo", en: "Red" },
+  { id: "naranja", hue: "orange", es: "Naranja", en: "Orange" },
+  { id: "mostaza", hue: "yellow", es: "Mostaza", en: "Mustard", step: "700" },
+  { id: "lima", hue: "lime", es: "Lima", en: "Lime" },
   { id: "gris", hue: "neutral", es: "Gris", en: "Gray" },
 ];
 
 export function palettePresets(locale: string): PalettePreset[] {
-  return HUES.map(({ id, hue, es, en }) => ({
+  return HUES.map(({ id, hue, es, en, step }) => ({
     id,
     name: locale === "en" ? en : es,
-    accent: `var(--palette-${hue}-600)`,
-    tokens: accentBundle(hue),
+    accent: `var(--palette-${hue}-${step ?? "600"})`,
+    tokens: accentBundle(hue, step),
   }));
 }

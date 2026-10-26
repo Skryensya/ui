@@ -46,7 +46,6 @@ const eventFamilies = new Set([
   "tree-view",
   "content",
   "checkbox",
-  "editor",
   "comment-thread",
   "component-preview",
 ]);

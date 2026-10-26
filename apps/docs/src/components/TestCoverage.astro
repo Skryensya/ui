@@ -123,7 +123,8 @@ function statusDisplay(file: string, name: string) {
               <span class="sk-list__content">
                 {/* A derived row with no authored prose shows the test's real title: the row is
                     evidence either way, and an undescribed one is still true. */}
-                <span class="sk-list__title" set:html={description ?? title} />
+                {/* Only the authored description is HTML; a raw test title is text ("not a <button>/<a>"). */}
+                {description ? <span class="sk-list__title" set:html={description} /> : <span class="sk-list__title">{title}</span>}
               </span>
             </li>
           );

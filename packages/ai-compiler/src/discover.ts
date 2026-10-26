@@ -619,7 +619,7 @@ export function discover(
     if (input.parent && !row.signature.parents.includes(input.parent)) continue;
 
     const lexical = matchRow(row, terms, negated, phrases, intents);
-    // A negation only the input makes never admits: "no save button" is not a reason to list SplitButton.
+    // A negation only the input makes never admits: "no save button" is not a reason to list a split ButtonGroup.
     if (allTerms.length > 0 && !lexical.some(counts)) continue;
 
     const filterEvidence: DiscoverMatch[] = [

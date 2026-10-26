@@ -54,6 +54,7 @@ const PUBLIC_OPTION_KEYS = [
   "alsoAttr",
   "deprecatedValues",
   "computedInput",
+  "writeDefault",
 ] as const satisfies readonly (keyof ContractOption)[];
 
 /** One option, reduced to what an author / agent can depend on. */

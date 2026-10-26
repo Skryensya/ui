@@ -32,7 +32,26 @@ import {
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
-import { buttonGroupSplitDoTree, buttonGroupSplitDontTree, buttonGroupSingleDoTree, buttonGroupSingleDontTree } from "../../demos/dodont-pairs";
+import {
+  buttonGroupSplitDoTree,
+  buttonGroupSplitDontTree,
+  buttonGroupSingleDoTree,
+  buttonGroupSingleDontTree,
+  buttonGroupVerbsDoTree,
+  buttonGroupVerbsDontTree,
+  buttonGroupSizeDoTree,
+  buttonGroupSizeDontTree,
+  buttonGroupLookDoTree,
+  buttonGroupLookDontTree,
+  buttonGroupFieldDoTree,
+  buttonGroupFieldDontTree,
+  buttonGroupUnrelatedDoTree,
+  buttonGroupUnrelatedDontTree,
+  buttonGroupOptionDoTree,
+  buttonGroupOptionDontTree,
+  buttonGroupFuseDoTree,
+  buttonGroupFuseDontTree,
+} from "../../demos/dodont-pairs";
 
 const story = "Components/ButtonGroup";
 const explain = (group: string, value: string) => t(`buttonGroupPage.prop.${group}.${value}` as Parameters<typeof t>[0]);
@@ -192,6 +211,41 @@ const centeredCss = `
       title={t("buttonGroupPage.dd.single.title")}
       do={{ tree: buttonGroupSingleDoTree(t), caption: t("buttonGroupPage.dd.single.do") }}
       dont={{ tree: buttonGroupSingleDontTree(t), caption: t("buttonGroupPage.dd.single.dont") }}
+    />
+    <DoDont
+      title={t("buttonGroupPage.dd.verbs.title")}
+      do={{ tree: buttonGroupVerbsDoTree(t), caption: t("buttonGroupPage.dd.verbs.do") }}
+      dont={{ tree: buttonGroupVerbsDontTree(t), caption: t("buttonGroupPage.dd.verbs.dont") }}
+    />
+    <DoDont
+      title={t("buttonGroupPage.dd.size.title")}
+      do={{ tree: buttonGroupSizeDoTree(t), caption: t("buttonGroupPage.dd.size.do") }}
+      dont={{ tree: buttonGroupSizeDontTree(t), caption: t("buttonGroupPage.dd.size.dont") }}
+    />
+    <DoDont
+      title={t("buttonGroupPage.dd.look.title")}
+      do={{ tree: buttonGroupLookDoTree(t), caption: t("buttonGroupPage.dd.look.do") }}
+      dont={{ tree: buttonGroupLookDontTree(t), caption: t("buttonGroupPage.dd.look.dont") }}
+    />
+    <DoDont
+      title={t("buttonGroupPage.dd.field.title")}
+      do={{ tree: buttonGroupFieldDoTree(t), caption: t("buttonGroupPage.dd.field.do") }}
+      dont={{ tree: buttonGroupFieldDontTree(t), caption: t("buttonGroupPage.dd.field.dont") }}
+    />
+    <DoDont
+      title={t("buttonGroupPage.dd.unrelated.title")}
+      do={{ tree: buttonGroupUnrelatedDoTree(t), caption: t("buttonGroupPage.dd.unrelated.do") }}
+      dont={{ tree: buttonGroupUnrelatedDontTree(t), caption: t("buttonGroupPage.dd.unrelated.dont") }}
+    />
+    <DoDont
+      title={t("buttonGroupPage.dd.option.title")}
+      do={{ tree: buttonGroupOptionDoTree(t), caption: t("buttonGroupPage.dd.option.do") }}
+      dont={{ tree: buttonGroupOptionDontTree(t), caption: t("buttonGroupPage.dd.option.dont") }}
+    />
+    <DoDont
+      title={t("buttonGroupPage.dd.fuse.title")}
+      do={{ tree: buttonGroupFuseDoTree(t), caption: t("buttonGroupPage.dd.fuse.do") }}
+      dont={{ tree: buttonGroupFuseDontTree(t), caption: t("buttonGroupPage.dd.fuse.dont") }}
     />
     <ContentRules items={tList(t, "buttonGroupPage.content")} />
   </Fragment>

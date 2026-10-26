@@ -4,6 +4,8 @@ import react from "@astrojs/react";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { NodePackageImporter } from "sass";
 import { createRequire } from "node:module";
+import { deferModuleScriptsIntegration } from "./src/lib/defer-module-scripts";
+import { cssImportGraph } from "./src/lib/css-import-graph";
 
 /*
  * `astro dev` leaves NODE_ENV unset or "development"; `astro build` forces "production". A couple of
@@ -68,7 +70,7 @@ export default defineConfig({
    */
   site: "https://ui.skryensya.dev",
 
-  integrations: [react()],
+  integrations: [react(), deferModuleScriptsIntegration()],
   // Static output: the site is content, and every dimension (brand, mode, contrast, density)
   // resolves in the browser from custom properties, there is nothing for a server to decide.
   output: "static",
@@ -181,7 +183,7 @@ export default defineConfig({
         "@zag-js/react",
       ],
     },
-    plugins: [svelte()],
+    plugins: [svelte(), ...cssImportGraph()],
     worker: {
       // The srcdoc loads this URL as a module. ESM preserves the registry's selector-gated dynamic
       // imports; the default IIFE format folds every Vanilla enhancer into each preview's bootstrap.
@@ -189,6 +191,9 @@ export default defineConfig({
       plugins: () => [svelte()],
     },
     css: {
+      // Vite's CSS minify is lightningcss, which aborts the whole build on a pseudo-element it cannot
+      // parse (`::picker(select)`); recover and keep the rule as authored, as core's build-css does.
+      lightningcss: { errorRecovery: true },
       preprocessorOptions: {
         scss: {
           // No `api: "modern-compiler"`: Vite 6 made the modern compiler the default and dropped

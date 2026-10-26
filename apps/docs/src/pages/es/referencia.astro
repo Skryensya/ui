@@ -6,6 +6,7 @@
  * lugar de en un componente, con el costo que eso tiene: dos locales, dos copias de la misma tabla.
  */
 import FoundationPage from "../../components/FoundationPage.astro";
+import "@skryensya/core/components/table.css";
 import { groupedTokens, tokens } from "../../lib/tokens";
 
 const toneByTier = { primitive: "warning", semantic: "accent", component: "success" } as const;

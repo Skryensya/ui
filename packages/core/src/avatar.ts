@@ -156,7 +156,7 @@ export const avatarContract = {
 
     /*
      * `role="group"`: a pile of people is one unit to assistive tech the same way it is one unit
-     * visually. Same reasoning as `split-button.ts`'s own `role="group"` doc. `label` is optional
+     * visually. Same reasoning as `button-group.ts`'s own `role="group"` doc. `label` is optional
      * for the same reason it is there: each child avatar already announces its own name, so the
      * group name is a nice-to-have qualifier ("the reviewers"), not the only source of any single
      * avatar's identity.

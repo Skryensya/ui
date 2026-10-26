@@ -6,19 +6,20 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/layout.css";
 import * as demos from "@docs/demos/typography";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Heading", tags: ["autodocs"] } satisfies Meta;
 
-export const HeadingAnatomy: StoryObj = treeStory(demos.headingAnatomyTree);
+export const HeadingAnatomy: StoryObj = treeStory(demos.headingAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const TextAnatomy: StoryObj = treeStory(demos.textAnatomyTree);
-export const Code: StoryObj = treeStory(demos.codeTree);
-export const Output: StoryObj = treeStory(demos.outputTree);
 export const HeadingDisplay: StoryObj = treeStory(demos.headingDisplayTree);
 export const HeadingDocument: StoryObj = treeStory(demos.headingDocumentTree);
 export const HeadingPageTitle: StoryObj = treeStory(demos.headingPageTitleTree);
 export const HeadingOutline: StoryObj = treeStory(demos.headingOutlineTree);
 export const HeadingCompact: StoryObj = treeStory(demos.headingCompactTree);
+export const Code: StoryObj = treeStory(demos.codeTree);
+export const Output: StoryObj = treeStory(demos.outputTree);
 export const HeadingFlush: StoryObj = treeStory(demos.headingFlushTree);
 export const TextScale: StoryObj = treeStory((t) => demos.textScaleTree());
 export const TextTitle: StoryObj = treeStory(demos.textTitleTree);

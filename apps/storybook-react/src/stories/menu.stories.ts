@@ -9,8 +9,8 @@ import { treeStory, type Meta, type StoryObj } from "../tree-story";
 export default { title: "Components/Menu", tags: ["autodocs"] } satisfies Meta;
 
 export const Default: StoryObj = treeStory(demos.menuTree);
-export const Density: StoryObj = treeStory(demos.menuDensityTree);
 export const Tone: StoryObj = treeStory((t) => demos.menuToneTree(t, "#"));
+export const Density: StoryObj = treeStory(demos.menuDensityTree);
 export const Multilevel: StoryObj = treeStory(demos.menuMultilevelTree);
-export const Compact: StoryObj = treeStory(demos.menuCompactTree);
 export const Safety: StoryObj = treeStory(demos.menuSafetyTree);
+export const Compact: StoryObj = treeStory(demos.menuCompactTree);

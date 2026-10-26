@@ -7,11 +7,12 @@ import "@skryensya/core/components/timeline.css";
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/icon.css";
 import * as demos from "@docs/demos/timeline";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+import { annotationDemoCss } from "@docs/demos/annotation";
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Timeline", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.timelineAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.timelineAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
+export const DoTime: StoryObj = treeStory(demos.timelineDoTimeTree);
 export const Default: StoryObj = treeStory(demos.timelineTree);
 export const Tones: StoryObj = treeStory(demos.timelineTonesTree);
-export const DoTime: StoryObj = treeStory(demos.timelineDoTimeTree);

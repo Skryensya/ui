@@ -127,8 +127,8 @@ function sampleSignatureChild(
 }
 
 /*
- * A slot can narrow an option on the child it holds (SplitButton's action must weld its end to the
- * menu: `weldEnd` is `true` there, whatever Button's default). The child's own preset knows nothing
+ * A slot can narrow an option on the child it holds (a Callout's action Button only takes the
+ * `neutral` or `danger` tone). The child's own preset knows nothing
  * of where it goes, so the first allowed value is written here, when the default is not one of them.
  */
 function withSlotRestrictions(child: MakerNode, slot: ContractSlot): MakerNode {

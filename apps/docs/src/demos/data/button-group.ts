@@ -7,6 +7,12 @@ export const splitMenuItems = (t: Translate): readonly ItemInput[] => [
   { options: { value: "save-template" }, slots: { label: t("demo.buttonGroup.template") } },
 ];
 
+/** More mail actions, behind the size example's final ButtonGroup member. */
+export const mailMoreItems = (t: Translate): readonly ItemInput[] => [
+  { options: { value: "snooze" }, slots: { label: t("demo.buttonGroup.snooze") } },
+  { options: { value: "mark-unread" }, slots: { label: t("demo.buttonGroup.markUnread") } },
+];
+
 export const currencyItems: readonly ItemInput[] = [
   { options: { value: "usd" }, slots: { label: "USD" } },
   { options: { value: "eur" }, slots: { label: "EUR" } },

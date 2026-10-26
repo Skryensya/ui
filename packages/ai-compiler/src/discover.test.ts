@@ -153,7 +153,7 @@ describe("negation", () => {
   it("does not admit or promote a candidate through a negated term", () => {
     const order = signatures("switch with no save button");
     expect(order[0]).toBe("Switch");
-    expect(order).not.toContain("SplitButton");
+    expect(order).not.toContain("ButtonGroup");
     for (const candidate of discover(real, snippets, { query: "switch with no save button" }).candidates) {
       expect(candidate.matched.some((m) => m.term === "switch" && m.negation === undefined), candidate.signature).toBe(true);
     }
@@ -199,7 +199,7 @@ describe("negation", () => {
       terms: ["navegacion"],
       negated: ["tenga", "menu"],
     });
-    expect(signatures("un switch sin botón de guardar")).not.toContain("SplitButton");
+    expect(signatures("un switch sin botón de guardar")).not.toContain("ButtonGroup");
   });
 
   it("counts a negated term where the value negates it too", () => {
@@ -400,10 +400,10 @@ describe("discovery quality on real prompts", () => {
     expect(action.matched.some((m) => m.field === "avoidWhen")).toBe(true);
   });
 
-  it("immediate setting: Switch first, SplitButton not promoted by a negated save", () => {
+  it("immediate setting: Switch first, ButtonGroup not promoted by a negated save", () => {
     const list = order("A switch to turn on dark mode immediately, with no save button involved.");
     expect(list[0]).toBe("Switch");
-    expect(list).not.toContain("SplitButton");
+    expect(list).not.toContain("ButtonGroup");
   });
 
   it("native no-JS FAQ: DetailsGroup first, Accordion visible with its avoidWhen", () => {

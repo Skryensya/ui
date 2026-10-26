@@ -72,4 +72,31 @@ describe("Listbox (@zag-js/listbox), vanilla", () => {
     expect(options(root)[1]!.getAttribute("aria-disabled")).toBe("true");
     expect(selected(root)).toEqual([]);
   });
+
+  it("clears the choice on a second click only when deselectable", () => {
+    const keeps = mount();
+    fireEvent.click(options(keeps)[0]!);
+    flushSync();
+    fireEvent.click(options(keeps)[0]!);
+    flushSync();
+    expect(selected(keeps)).toEqual(["a"]);
+
+    const clears = mount("data-deselectable");
+    fireEvent.click(options(clears)[0]!);
+    flushSync();
+    fireEvent.click(options(clears)[0]!);
+    flushSync();
+    expect(selected(clears)).toEqual([]);
+  });
+
+  it("describes an option by its description", () => {
+    const desc = `<span class="sk-listbox__item-description" data-sk-listbox-item-description>Primera letra</span>`;
+    const root = mount("", [item("a", "Alfa", "").replace("</span>", `</span>${desc}`), item("b", "Beta")]);
+    const [withDesc, without] = options(root);
+
+    const id = withDesc!.getAttribute("aria-describedby")!;
+    expect(document.getElementById(withDesc!.getAttribute("aria-labelledby")!)?.textContent).toBe("Alfa");
+    expect(document.getElementById(id)?.textContent).toBe("Primera letra");
+    expect(without!.hasAttribute("aria-describedby")).toBe(false);
+  });
 });

@@ -112,7 +112,7 @@ test("the empty frame is caught by the contract, and would also be caught by the
 
   // Level two: the render. Emitted anyway, past the gate, to show what shipping it looked like:
   // a frame element with no content inside it.
-  await waitForStage(page);
+  await waitForStage(page, { keepModals: true });
 
   const painted = await page.evaluate((markup: string) => {
     const host = document.createElement("div");
@@ -128,7 +128,7 @@ test("the empty frame is caught by the contract, and would also be caught by the
 });
 
 test("canonical states hold their visual baseline", async ({ page }) => {
-  await waitForStage(page);
+  await waitForStage(page, { keepModals: true });
 
   // One baseline for the whole stage: every canonical state in one image, so a token or CSS change
   // that moves any of them shows up as one reviewable diff.

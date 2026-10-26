@@ -272,6 +272,20 @@ export const componentItems = [
       "tarjeta boton",
     ],
   },
+  {
+    href: "/components/button-group",
+    label: "ButtonGroup",
+    aliases: [
+      "split button",
+      "splitbutton",
+      "split-button",
+      "botón dividido",
+      "boton dividido",
+      "acción con menú",
+      "button group",
+      "grupo de botones",
+    ],
+  },
   { href: "/components/callout", label: "Callout", aliases: ["alerta", "nota", "aviso"] },
   {
     href: "/components/card",
@@ -459,12 +473,6 @@ export const componentItems = [
     href: "/components/icon",
     label: "Icon",
     aliases: ["icono", "ícono", "icono componente", "sk-icon", "mountIcons"],
-  },
-  {
-    href: "/components/image-cropper",
-    label: "Image Cropper",
-    trailing: "Beta",
-    aliases: ["image cropper", "crop", "cropper", "recortar", "recortar imagen", "recortador", "avatar", "foto de perfil", "profile picture", "avatar crop", "aspect ratio", "proporción", "zoom", "rotate image", "rotar imagen", "cover image", "portada", "thumbnail", "miniatura", "cropperjs"],
   },
   {
     href: "/components/image-frame",
@@ -910,12 +918,6 @@ export const componentItems = [
     aliases: ["estado vacío", "estado vacio", "sin resultados"],
   },
   {
-    href: "/components/editor",
-    label: "Editor",
-    trailing: "Beta",
-    aliases: ["editor de texto enriquecido", "wysiwyg", "rich text", "prosemirror", "editor de contenido"],
-  },
-  {
     href: "/components/drop-zone",
     label: "Drop zone",
     aliases: ["subir archivo", "carga de archivos", "file upload", "upload file", "dropzone", "FileUpload"],
@@ -984,11 +986,6 @@ export const componentItems = [
       "popover bare",
       "bare",
     ],
-  },
-  {
-    href: "/components/split-button",
-    label: "SplitButton",
-    aliases: ["botón dividido", "boton dividido", "acción con menú"],
   },
   {
     href: "/components/tile-button",
@@ -1061,11 +1058,11 @@ const allComponentNavigation = [
     items: componentGroupItems(
       "/components/app-bar",
       "/components/button",
+      "/components/button-group",
       "/components/clipboard",
       "/components/command-palette",
       "/components/menu",
       "/components/menubar",
-      "/components/split-button",
       "/components/state-button",
       "/components/tile-button",
       "/components/toolbar",
@@ -1081,7 +1078,6 @@ const allComponentNavigation = [
       "/components/color-picker",
       "/components/combobox",
       "/components/date-picker",
-      "/components/editor",
       "/components/drop-zone",
       "/components/form-field",
       "/components/input",
@@ -1239,7 +1235,6 @@ const allComponentNavigation = [
       "/components/carousel",
       "/components/compare-slider",
       "/components/diagram",
-      "/components/image-cropper",
       "/components/image-frame",
       "/components/lightbox",
       "/components/marquee",

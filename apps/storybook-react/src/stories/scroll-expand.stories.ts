@@ -10,11 +10,12 @@ import "@skryensya/core/patterns/image-frame.css";
 import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/media-overlay.css";
 import * as demos from "@docs/demos/scroll-expand";
-import { treeStory, type Meta, type StoryObj } from "../tree-story";
+const { scrollExpandAnatomyCss } = demos;
+import { treeStory, withCss, type Meta, type StoryObj } from "../tree-story";
 
 export default { title: "Components/Scroll Expand", tags: ["autodocs"] } satisfies Meta;
 
-export const Anatomy: StoryObj = treeStory(demos.scrollExpandAnatomyTree);
+export const Anatomy: StoryObj = treeStory(demos.scrollExpandAnatomyTree, { decorators: [withCss(scrollExpandAnatomyCss)] });
 export const Default: StoryObj = treeStory(demos.scrollExpandTree);
 export const Interface: StoryObj = treeStory(demos.scrollExpandInterfaceTree);
 export const Wide: StoryObj = treeStory(demos.scrollExpandWideTree);

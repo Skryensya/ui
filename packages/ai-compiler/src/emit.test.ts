@@ -782,6 +782,17 @@ describe("the two bindings agree on what the tree says", () => {
       '<div class="sk-code-preview__viewport">&lt;Button /&gt;</div>',
     );
   });
+  it("writes a required attribute's default even into authored-only markup", () => {
+    /* `role="heading"` without `aria-level` is invalid ARIA (Lighthouse: aria-required-attr), and the
+       docs emit with `fillDefaults: false`, so the default level has to be written regardless. */
+    const trigger = (options?: Record<string, unknown>): UsageTree =>
+      ({ contract: "accordion", signature: "Accordion.Trigger", options, children: "Envío" }) as UsageTree;
+
+    expect(emitMarkup(trigger(), { fillDefaults: false })).toContain('aria-level="3"');
+    const level2 = emitMarkup(trigger({ headingLevel: 2 }), { fillDefaults: false });
+    expect(level2).toContain('aria-level="2"');
+    expect(level2.match(/aria-level=/g)).toHaveLength(1);
+  });
 });
 
 describe("wiring: six ids from one name", () => {

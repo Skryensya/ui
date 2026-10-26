@@ -172,8 +172,8 @@
     outline-offset: var(--focus-ring-offset);
     /*
      * `--z-focus`, not left at the implicit stacking of DOM order: the outline's own positive
-     * offset bleeds past this element's border box, and a WELDED neighbor (Button's own
-     * `weldStart`/`weldEnd`, a split button's own seam) sits flush against that exact edge with
+     * offset bleeds past this element's border box, and a WELDED neighbor (a ButtonGroup
+     * member, a split button's own seam) sits flush against that exact edge with
      * zero gap. `.sk-interactive` already establishes its own stacking context
      * (`position: relative` + `isolation: isolate`, above), so without an explicit z-index here
      * the LATER sibling in the DOM. Same stacking level, painted second. Covers the ring where

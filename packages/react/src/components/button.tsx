@@ -23,8 +23,6 @@ const {
   pressed: pressedOption,
   size: sizeOption,
   iconOnly: iconOnlyOption,
-  weldStart: weldStartOption,
-  weldEnd: weldEndOption,
   loading: loadingOption,
 } = buttonContract.options;
 const actionTemplate = buttonContract.signatures["Button.action"].template;
@@ -60,7 +58,7 @@ export type ButtonProps =
       ButtonNavAppearance & { href: string });
 
 /**
- * Renders Button's own chrome (variant/tone/appearance/size/weld classes and data attrs) onto a
+ * Renders Button's own chrome (variant/tone/appearance/size classes and data attrs) onto a
  * single child element instead of a `<button>`/`<a>` of Button's own, chaining the child's own
  * `onClick` before Button's: for a router's own `Link`, which owns navigation Button's `href`
  * cannot reach into. The same `asChild` shape `DialogStackTrigger` already uses, and the same
@@ -76,8 +74,6 @@ export type ButtonAsChildProps = {
   appearance?: ButtonProps["appearance"];
   size?: ButtonProps["size"];
   iconOnly?: boolean;
-  weldStart?: boolean;
-  weldEnd?: boolean;
   className?: string;
   /** Chained AFTER the child's own `onClick` (a router's navigation), and only when that one did
    * not call `preventDefault()`. */
@@ -202,8 +198,6 @@ export function Button(allProps: (ButtonProps & { pressed?: boolean; loading?: b
       children: child,
       className,
       iconOnly,
-      weldStart,
-      weldEnd,
       variant = variantOption.default,
       tone = toneOption.default,
       appearance = appearanceOption.default,
@@ -218,8 +212,6 @@ export function Button(allProps: (ButtonProps & { pressed?: boolean; loading?: b
       className: buttonClasses([target.props.className as string | undefined, className].filter(Boolean).join(" ") || undefined),
       "data-sk-button": "",
       [iconOnlyOption.attr]: iconOnly ? iconOnlyOption.trueValue : undefined,
-      [weldStartOption.attr]: weldStart ? weldStartOption.trueValue : undefined,
-      [weldEndOption.attr]: weldEnd ? weldEndOption.trueValue : undefined,
       [sizeOption.attr]: size,
       [variantOption.attr]: variant,
       [toneOption.attr]: tone,
@@ -236,8 +228,6 @@ export function Button(allProps: (ButtonProps & { pressed?: boolean; loading?: b
     children,
     className,
     iconOnly,
-    weldStart,
-    weldEnd,
     variant = variantOption.default,
     tone = toneOption.default,
     appearance = appearanceOption.default,
@@ -262,8 +252,6 @@ export function Button(allProps: (ButtonProps & { pressed?: boolean; loading?: b
     className: buttonClasses(className),
     "data-sk-button": "",
     [iconOnlyOption.attr]: iconOnly ? iconOnlyOption.trueValue : undefined,
-    [weldStartOption.attr]: weldStart ? weldStartOption.trueValue : undefined,
-    [weldEndOption.attr]: weldEnd ? weldEndOption.trueValue : undefined,
     [sizeOption.attr]: size,
     [variantOption.attr]: variant,
     [toneOption.attr]: tone,

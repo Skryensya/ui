@@ -23,8 +23,7 @@ export const buttonRealization: Realization = {
   },
   overlays: { before: "state layer" },
   ring: "focus ring",
-  // Welding belongs to split buttons and segmented groups, which are not realized yet.
-  exclude: ["weldStart", "weldEnd"],
+  exclude: [],
   // Arrows by side: leading points back, trailing points on. A lone icon points on.
   slots: {
     pre: { holds: "icon", icon: "arrow-left" },

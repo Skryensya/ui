@@ -40,6 +40,9 @@
     pointer-events: none;
     /* Zag writes `min-width: max-content` inline; this lets the tooltip's max-width cap take effect. */
     min-inline-size: 0 !important;
+    /* Size to the text, up to the cap below: an absolutely placed box in a tiny anchor (an icon button) otherwise shrinks to that
+     * anchor's width and a two-word label wraps into a column. */
+    inline-size: max-content;
     max-inline-size: min(
       var(--sk-tooltip-max-inline-size, 18rem),
       calc(100vi - 2 * var(--space-inset-md))

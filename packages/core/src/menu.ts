@@ -365,19 +365,6 @@ export const menuContract = {
      */
     triggerLabel: { type: "string", attr: "aria-label" },
     /**
-     * Welds the trigger button's own START (leading) edge flat against a neighbor. For when this
-     * Menu sits beside another control on that side, a split button's own dropdown segment being
-     * the case that motivated it. The SAME attribute `Button`'s own `weldStart` option writes
-     * (`data-weld-start`); see `button.ts`'s doc for the mechanism (button.css owns the rule,
-     * radius AND border color both; a trigger already carries the `.sk-button` class this template
-     * composes, so nothing here has to repeat the CSS, only the option that reaches the same
-     * attribute). See `weldStart` also for the general "why a class, not a specific component
-     * deciding another's radius" reasoning.
-     */
-    triggerWeldStart: { type: "boolean", default: false, attr: "data-weld-start", trueValue: "" },
-    /** Same idea, the opposite edge; see `triggerWeldStart`'s own doc. */
-    triggerWeldEnd: { type: "boolean", default: false, attr: "data-weld-end", trueValue: "" },
-    /**
      * Passed straight to the trigger's own `data-variant`/`data-size`. The SAME attributes
      * `Button`'s own `variant`/`size` options write (`button.ts`), so `button.css`'s existing
      * `[data-variant="…"]`/`[data-size="…"]` rules apply to the trigger directly; nothing here
@@ -398,9 +385,8 @@ export const menuContract = {
      * The SAME attribute `Button`'s own `iconOnly` option writes (`data-icon-only`). A trigger
      * with no visible `trigger` content (paired with `triggerLabel` for its accessible name) is
      * exactly the icon-only SHAPE Button already has a name for: a control-sized square holding
-     * one glyph, zero inline padding. The only thing that still makes it a split-button trigger
-     * and not a bare icon button is `triggerWeldStart`. Everything else about its shape comes
-     * from this, unchanged from any other icon-only Button on the page.
+     * one glyph, zero inline padding. Inside a ButtonGroup it is a split-button trigger; the group
+     * squares its welded corners, nothing here does.
      */
     triggerIconOnly: { type: "boolean", default: false, attr: "data-icon-only", trueValue: "" },
     disabled: {
@@ -445,8 +431,6 @@ export const menuContract = {
       options: [
         "label",
         "triggerLabel",
-        "triggerWeldStart",
-        "triggerWeldEnd",
         "triggerVariant",
         "triggerTone",
         "triggerSize",
@@ -493,8 +477,6 @@ export const menuContract = {
             // same "one option, one element" split `label` (root) already keeps clean.
             options: [
               "triggerLabel",
-              "triggerWeldStart",
-              "triggerWeldEnd",
               "triggerVariant",
               "triggerTone",
               "triggerSize",

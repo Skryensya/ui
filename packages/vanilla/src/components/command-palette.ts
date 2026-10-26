@@ -101,6 +101,9 @@ export function connectCommandPalette(root: HTMLElement): Cleanup {
     // `role="combobox"`, so it is what a screen reader actually questions about expansion.
     input.setAttribute("aria-expanded", expanded ? "true" : "false");
     for (const trigger of uniqueTriggers) {
+      // A text field can open the palette too (the docs header's readonly search box), and
+      // `aria-expanded` is not allowed on a textbox.
+      if (trigger instanceof HTMLInputElement && (trigger.type === "text" || trigger.type === "search")) continue;
       trigger.setAttribute("aria-expanded", expanded ? "true" : "false");
     }
   };

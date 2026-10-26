@@ -39,6 +39,12 @@ async function compare(page: Page, binding: (typeof BINDINGS)[number], direction
 const position = async (root: Locator): Promise<number> =>
   Number(await root.locator(":scope > .sk-compare-slider__handle").getAttribute("aria-valuenow"));
 
+/** The middle of the thumb on the divider: the only place a drag can start. */
+async function grabPoint(root: Locator): Promise<{ x: number; y: number }> {
+  const box = (await root.locator(":scope > .sk-compare-slider__handle > .sk-compare-slider__grip").boundingBox())!;
+  return { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+}
+
 async function point(root: Locator, fx: number, fy: number): Promise<{ x: number; y: number }> {
   const box = (await root.boundingBox())!;
   return { x: box.x + box.width * fx, y: box.y + box.height * fy };
@@ -51,11 +57,13 @@ test.describe("CompareSlider", () => {
 
   for (const binding of BINDINGS) {
     test.describe(binding, () => {
-      test("a press puts the divider where the pointer is, and the clip and the line follow", async ({ page }) => {
+      test("a drag from the divider puts it where the pointer is, and the clip and the line follow", async ({ page }) => {
         const root = await compare(page, binding, "horizontal");
+        const grab = await grabPoint(root);
         const at = await point(root, 0.25, 0.5);
-        await page.mouse.move(at.x, at.y);
+        await page.mouse.move(grab.x, grab.y);
         await page.mouse.down();
+        await page.mouse.move(at.x, at.y, { steps: 4 });
         await page.mouse.up();
         expect(await position(root)).toBeGreaterThanOrEqual(24);
         expect(await position(root)).toBeLessThanOrEqual(26);
@@ -68,6 +76,13 @@ test.describe("CompareSlider", () => {
         expect(geometry.handleAt).toBeGreaterThan(24);
         expect(geometry.handleAt).toBeLessThan(26);
         expect(geometry.after).toMatch(/^inset\(0px 0px 0px 2[45]/);
+      });
+
+      test("a press on a layer moves nothing", async ({ page }) => {
+        const root = await compare(page, binding, "horizontal");
+        const at = await point(root, 0.2, 0.5);
+        await page.mouse.click(at.x, at.y);
+        expect(await position(root)).toBe(50);
       });
 
       test("a drag follows the pointer, and stays in the box when the pointer leaves it", async ({ page }) => {
@@ -105,8 +120,12 @@ test.describe("CompareSlider", () => {
 
       test("stacked layers measure the vertical axis", async ({ page }) => {
         const root = await compare(page, binding, "vertical");
+        const grab = await grabPoint(root);
         const at = await point(root, 0.5, 0.75);
-        await page.mouse.click(at.x, at.y);
+        await page.mouse.move(grab.x, grab.y);
+        await page.mouse.down();
+        await page.mouse.move(at.x, at.y, { steps: 4 });
+        await page.mouse.up();
         expect(await position(root)).toBeGreaterThanOrEqual(74);
         expect(await position(root)).toBeLessThanOrEqual(76);
         const after = await root.locator(":scope > .sk-compare-slider__after").evaluate((el) => getComputedStyle(el).clipPath);
@@ -116,8 +135,15 @@ test.describe("CompareSlider", () => {
       test("in a right-to-left page the before layer is on the right, and the position is measured from there", async ({ page }) => {
         const root = await compare(page, binding, "horizontal");
         await root.evaluate((el) => el.setAttribute("dir", "rtl"));
+        /* The view reads the direction when a press begins, so the divider still sits where the left-to-right paint put it: press a layer to hold the mouse down (ignored), then hand the divider a press at the spot. */
         const at = await point(root, 0.9, 0.5);
-        await page.mouse.click(at.x, at.y);
+        await page.mouse.move(at.x, at.y);
+        await page.mouse.down();
+        await root.locator(":scope > .sk-compare-slider__handle").evaluate(
+          (el, { x, y }) => el.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, cancelable: true, button: 0, pointerId: 1, clientX: x, clientY: y })),
+          at,
+        );
+        await page.mouse.up();
         /* 10% from the right edge: the before layer shows only that far. */
         expect(await position(root)).toBeGreaterThanOrEqual(9);
         expect(await position(root)).toBeLessThanOrEqual(11);

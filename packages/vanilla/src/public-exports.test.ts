@@ -4,7 +4,6 @@ import { mountBackToTop } from "@skryensya/vanilla/back-to-top";
 import { mountCanvas } from "@skryensya/vanilla/canvas";
 import { mountDialog } from "@skryensya/vanilla/dialog";
 import { mountDialogStack } from "@skryensya/vanilla/dialog-stack";
-import { mountImageCropper } from "@skryensya/vanilla/image-cropper";
 import { mountLightbox } from "@skryensya/vanilla/lightbox";
 import { mountTour } from "@skryensya/vanilla/tour";
 import { mountClipboard } from "@skryensya/vanilla/clipboard";
@@ -25,7 +24,6 @@ import { mountQuestionnaire } from "@skryensya/vanilla/questionnaire";
 import { mountDataGrid } from "@skryensya/vanilla/data-grid";
 import { mountDatePicker } from "@skryensya/vanilla/date-picker";
 import { mountDiagram } from "@skryensya/vanilla/diagram";
-import { mountEditor } from "@skryensya/vanilla/editor";
 import { mountExpandableTile } from "@skryensya/vanilla/expandable-tile";
 import { mountFileUpload } from "@skryensya/vanilla/file-upload";
 import { mountFeed } from "@skryensya/vanilla/feed";
@@ -97,7 +95,6 @@ const mounts = [
   mountCanvas,
   mountDialog,
   mountDialogStack,
-  mountImageCropper,
   mountLightbox,
   mountTour,
   mountClipboard,
@@ -162,20 +159,12 @@ const mounts = [
 describe("Vanilla public entry points", () => {
   it("publishes the lazy auto-loader and one mount for every regular enhanced module", () => {
     expect(initComponents).toBeTypeOf("function");
-    expect(mounts).toHaveLength(70);
+    expect(mounts).toHaveLength(69);
     expect(mounts.every((mount) => typeof mount === "function")).toBe(true);
   });
 
-  /*
-   * Editor sits beside CodePreview here for a different reason than either: it IS
-   * part of the default application runtime, conceptually, but `@skryensya/editor` (ProseMirror) is
-   * an optional peer dependency, so `runtime/registry.ts`'s auto-loader must never name it - even
-   * behind a selector-gated `import()` - or every consumer of `@skryensya/vanilla/auto` would need
-   * that peer installed. A page using Editor calls `mountEditor` explicitly instead.
-   */
-  it("publishes documentation previews, Editor, and lifecycle control only through explicit subpaths", () => {
+  it("publishes documentation previews and lifecycle control only through explicit subpaths", () => {
     expect(mountCodePreview).toBeTypeOf("function");
-    expect(mountEditor).toBeTypeOf("function");
     expect(destroyMount).toBeTypeOf("function");
   });
 
@@ -211,7 +200,6 @@ describe("Vanilla public entry points", () => {
         mountCanvas,
         mountDialog,
         mountDialogStack,
-        mountImageCropper,
         mountLightbox,
         mountTour,
         mountClipboard,

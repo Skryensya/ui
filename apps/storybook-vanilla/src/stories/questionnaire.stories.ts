@@ -9,6 +9,7 @@ import "@skryensya/core/components/file-upload.css";
 import "@skryensya/core/components/form-field.css";
 import "@skryensya/core/components/input.css";
 import "@skryensya/core/components/kbd.css";
+import "@skryensya/core/components/loader.css";
 import "@skryensya/core/components/presence.css";
 import "@skryensya/core/components/progress.css";
 import "@skryensya/core/components/questionnaire.css";
