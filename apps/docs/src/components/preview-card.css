@@ -12,6 +12,11 @@
   margin-block: var(--space-stack-lg);
 }
 
+/* A heading written just before the section sits as close to its description as the one inside it (title prop) does, not a heading margin plus the section's own. */
+:is(h2, h3, h4) + .sk-preview-section {
+  margin-block-start: 0;
+}
+
 .sk-preview-section__description {
   margin-block: 0 var(--space-stack-md);
   color: var(--color-text-secondary);
@@ -39,7 +44,12 @@
   padding: var(--space-inset-md);
   border: 1px solid var(--color-border-subtle);
   border-radius: var(--radius-surface);
-  background: var(--color-bg-surface);
+  /* No line along the bottom edge: the tinted card already stands off the page, and the line read as a rule under the example. */
+  border-block-end-width: 0;
+  /* Light has one white for canvas and surface alike, so the card tints toward the well to stand off the page; dark already differs. The frame's veil reads the same colour, or the example sits in a second box. */
+  --docs-card-bg: light-dark(color-mix(in oklab, var(--color-bg-well) 28%, var(--color-bg-surface)), var(--color-bg-surface));
+
+  background: var(--docs-card-bg);
 }
 
 /* A resettable card has a third tool before the appearance menu. */
@@ -120,8 +130,9 @@
 .sk-preview-section:not(.sk-usage-preview--controlled) .sk-preview-card .sk-preview-card__stage {
   --docs-stage-strip: var(--docs-card-tool-strip);
 
-  padding-block-start: var(--docs-stage-strip);
-  min-block-size: calc(var(--sk-preview-card-stage-min-block-size, 7rem) + var(--docs-stage-strip));
+  /* Same strip below, so the example centres in the card and not in what the tools leave. */
+  padding-block: var(--docs-stage-strip);
+  min-block-size: calc(var(--sk-preview-card-stage-min-block-size, 5rem) + var(--docs-stage-strip) * 2);
 }
 
 /* A FIXED EXAMPLE IN A PLAYGROUND CARD (an open menu needs room, so it is framed: `viewport="menu"`) has no control row of its
@@ -139,14 +150,53 @@
   padding-block-start: calc(var(--docs-card-tool-size) + var(--space-inset-md));
 }
 
-/* The example is what is centred; room enough that a small one does not look lost or cramped. */
+/* The example is what is centred, both ways; the box is only as tall as it needs, so a small one does not float in empty space. An example that opens a menu
+   is the exception: it is framed, and sits near the top of the frame with the room its menu needs below. */
 .sk-preview-card__stage {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  min-block-size: var(--sk-preview-card-stage-min-block-size, 7rem);
+  min-block-size: var(--sk-preview-card-stage-min-block-size, 5rem);
   padding-block: var(--space-stack-sm);
+}
+
+/* A SMALL LOADER WHILE A FRAME BOOTS. Switching variants remounts the example's iframe, and until it reports ready it is
+   hidden, so the card went blank for the length of a page load. The stage's own `aria-busy` flag is the signal (the frame
+   runtime flips it, and `frame-ready` / `frame-error` mark the end), so no state is mirrored into React. */
+.sk-preview-card__stage:has(iframe:not([data-sk-component-preview-frame-ready], [data-sk-component-preview-frame-error])) {
+  position: relative;
+}
+
+.sk-preview-card__stage:has(iframe:not([data-sk-component-preview-frame-ready], [data-sk-component-preview-frame-error]))::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  inline-size: var(--size-icon-md);
+  block-size: var(--size-icon-md);
+  margin: calc(var(--size-icon-md) / -2);
+  box-sizing: border-box;
+  border: var(--size-focus-ring) solid color-mix(in oklab, var(--color-text-accent) 22%, transparent);
+  border-block-start-color: var(--color-text-accent);
+  border-radius: 50%;
+  animation: sk-preview-card-loading var(--motion-loading-duration) linear infinite;
+  pointer-events: none;
+}
+
+@keyframes sk-preview-card-loading {
+  to { rotate: 360deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sk-preview-card__stage:has(iframe:not([data-sk-component-preview-frame-ready], [data-sk-component-preview-frame-error]))::after {
+    animation: none;
+  }
+}
+
+/* The stage centres its example, but a vertical ButtonGroup pins itself `align-self: start` (so it never stretches in a column), which parked it at the top of the stage. */
+.sk-preview-card__stage > .sk-button-group[data-orientation="vertical"] {
+  align-self: center;
 }
 
 /* A fixed sentence under an example: centred, quiet, the same place a property card's explanation sits. */
@@ -205,6 +255,11 @@
   initial-value: 0;
 }
 
+/* AN EXAMPLE SET TO FROSTED GETS THE PHOTOGRAPH BEHIND IT, in a rounded window of its own. The stage's top padding is the
+   strip the card's tools float in, so the picture is not the stage's background (it would run under them and its corners
+   would be square): it is a layer inset by that strip, with the card's own radius, behind the example. An isolated example's
+   frame is transparent, so the same satin shows through it. Cards that COMPARE appearances opt out of the scope and
+   bring their own backdrops. */
 .sk-preview-card:has(> .docs-card-appearance) .sk-preview-card__stage {
   position: relative;
   isolation: isolate;
@@ -218,7 +273,6 @@
   z-index: -1;
   inset: var(--docs-stage-strip, 0px) 0 0 0;
   border-radius: var(--radius-surface);
-  background: var(--docs-frost-backdrop);
   mask-image: radial-gradient(
     circle at 50% 50%,
     #000 calc(var(--docs-frost-mix) * 120% - 15%),
@@ -231,26 +285,15 @@
   --docs-frost-mix: 1;
 }
 
-/* An iframe cannot be masked without masking its content, so its satin is veiled by the card's surface colour with the same circle
-   cut out of it: the same spread, from the same centre, on the same clock. */
-.sk-preview-card:has(> .docs-card-appearance) iframe.sk-component-preview__stage {
-  --docs-frost-mix: 0;
-
-  border-radius: var(--radius-surface);
-  background:
-    radial-gradient(
-      circle at 50% 50%,
-      transparent calc(var(--docs-frost-mix) * 120% - 15%),
-      var(--color-bg-surface) calc(var(--docs-frost-mix) * 120%)
-    ),
-    var(--docs-frost-backdrop);
-  transition: --docs-frost-mix calc(var(--motion-enter-duration) * 3) var(--motion-state-change-easing);
+/* The satin is a ~300KB photo nobody sees until the card is frosted: masked to nothing, it was still
+   downloaded on every page with an appearance card, and Lighthouse took it for the page's LCP.
+   `data-docs-frost-seen` (appearance.ts) arrives with the first frosting and stays. */
+.sk-preview-card[data-docs-frost-seen] .sk-preview-card__stage::before {
+  background: var(--docs-frost-backdrop);
 }
 
-.sk-preview-card[data-docs-appearance="frosted"] iframe.sk-component-preview__stage {
-  --docs-frost-mix: 1;
-}
-
+/* The isolated example's frame is transparent and paints nothing of its own, no satin and no veil: the stage's layer above is the only
+   thing that spreads, so the reveal is one shape on one box. A second, frame-sized circle over it read as two containers. */
 
 /* THE GRID'S OWN LABELS (a matrix's column and row headings, not the component) read white over the satin. */
 .sk-preview-card[data-docs-appearance="frosted"] [data-axis-label] {

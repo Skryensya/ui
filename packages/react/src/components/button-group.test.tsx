@@ -41,9 +41,9 @@ describe("ButtonGroup (React)", () => {
     for (const button of group.querySelectorAll("button")) expect(button.getAttributeNames().some((n) => n.includes("weld"))).toBe(false);
   });
 
-  it("inset draws one separator between each pair of members, full draws none of its own", () => {
+  it("inset is the default and draws one separator between each pair; full and none draw none of their own", () => {
     const inset = render(
-      <ButtonGroup separator="inset" aria-label="Inset">
+      <ButtonGroup aria-label="Inset">
         <Button>A</Button>
         <Button>B</Button>
         <Button>C</Button>
@@ -52,10 +52,17 @@ describe("ButtonGroup (React)", () => {
     const group = inset.getByRole("group", { name: "Inset" });
     expect(group.getAttribute("data-separator")).toBe("inset");
     expect(group.querySelectorAll(".sk-button-group__separator")).toHaveLength(2);
-    const full = render(<ButtonGroup aria-label="Full"><Button>A</Button><Button>B</Button></ButtonGroup>);
-    const fullGroup = full.getByRole("group", { name: "Full" });
-    expect(fullGroup.getAttribute("data-separator")).toBe("full");
-    expect(fullGroup.querySelector(".sk-button-group__separator")).toBeNull();
+    for (const separator of ["full", "none"] as const) {
+      const ui = render(<ButtonGroup separator={separator} aria-label={separator}><Button>A</Button><Button>B</Button></ButtonGroup>);
+      const other = ui.getByRole("group", { name: separator });
+      expect(other.getAttribute("data-separator")).toBe(separator);
+      expect(other.querySelector(".sk-button-group__separator")).toBeNull();
+    }
+  });
+
+  it("does not add a separator beside one the caller wrote", () => {
+    const ui = render(<ButtonGroup aria-label="Own"><Button>A</Button><ButtonGroupSeparator /><Button>B</Button></ButtonGroup>);
+    expect(ui.getByRole("group", { name: "Own" }).querySelectorAll(".sk-button-group__separator")).toHaveLength(1);
   });
 
   it("labels the input beside it with ButtonGroupLabel, and ButtonGroupText stays plain text", () => {

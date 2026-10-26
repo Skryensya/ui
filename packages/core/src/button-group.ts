@@ -54,13 +54,14 @@ export const buttonGroupContract = {
       attr: "data-orientation",
     },
     /**
-     * The divider between members, always drawn. `full` is the whole height (the group paints it);
-     * `inset` is a shorter centred line, drawn by ButtonGroupSeparator.
+     * The divider between members. `inset` is a shorter centred line, drawn by ButtonGroupSeparator
+     * (the group adds one between each pair); `full` is the whole height (the group paints it);
+     * `none` draws nothing, so members that paint no border of their own fuse.
      */
     separator: {
       type: "enum",
-      values: ["full", "inset"],
-      default: "full",
+      values: ["inset", "full", "none"],
+      default: "inset",
       attr: "data-separator",
     },
     /** The group's own accessible name; optional, see `role="group"` above. */

@@ -1,6 +1,6 @@
 import { buttonGroupContract, buttonGroupParts } from "@skryensya/core/button-group";
 import type { OptionValue } from "@skryensya/core/contract";
-import { Children, Fragment } from "react";
+import { Children, Fragment, isValidElement } from "react";
 import type { HTMLAttributes, LabelHTMLAttributes, ReactNode } from "react";
 
 /*
@@ -20,7 +20,11 @@ export type ButtonGroupProps = Omit<HTMLAttributes<HTMLDivElement>, "role"> & {
   separator?: OptionValue<typeof separatorOption>;
 };
 
+// An explicit ButtonGroupSeparator already marks that seam; the group adds none beside it.
+const isSeparator = (node: ReactNode) => isValidElement(node) && node.type === ButtonGroupSeparator;
+
 export function ButtonGroup({ children, className, label, orientation = orientationOption.default, separator = separatorOption.default, ...rest }: ButtonGroupProps) {
+  const kids = Children.toArray(children);
   return (
     <div
       {...rest}
@@ -31,9 +35,9 @@ export function ButtonGroup({ children, className, label, orientation = orientat
       role="group"
     >
       {separator === "inset"
-        ? Children.toArray(children).map((child, i) => (
+        ? kids.map((child, i) => (
             <Fragment key={i}>
-              {i > 0 && <ButtonGroupSeparator />}
+              {i > 0 && !isSeparator(child) && !isSeparator(kids[i - 1]) && <ButtonGroupSeparator />}
               {child}
             </Fragment>
           ))

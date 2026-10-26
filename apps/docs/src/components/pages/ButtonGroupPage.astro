@@ -1,8 +1,11 @@
 ---
-import "@skryensya/core/components/split-button.css";
+import "@skryensya/core/components/button-group.css";
 /* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
 import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/menu.css";
+import "@skryensya/core/components/input.css";
+import "@skryensya/core/components/select.css";
+import "@skryensya/core/components/popover.css";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import AppearanceMenu from "../AppearanceMenu.astro";
 import UsagePreview from "../UsagePreview.astro";
@@ -11,113 +14,197 @@ import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
 import {
-  splitButtonAnatomyTree,
-  splitButtonTree,
-  splitButtonVerticalBySize,
-  splitButtonSmallTree,
-  splitButtonSubtleTree,
-  splitButtonOverMediaTree,
-  splitButtonGhostTree,
-  splitButtonDangerTree,
-} from "../../demos/split-button";
-import { annotationDemoCss } from "../../demos/annotation";
+  buttonGroupAnatomyCss,
+  buttonGroupAnatomyTree,
+  buttonGroupBySize,
+  buttonGroupInputTree,
+  buttonGroupNestedTree,
+  buttonGroupPopoverTree,
+  buttonGroupRtlTree,
+  buttonGroupSelectTree,
+  buttonGroupSeparatorBy,
+  buttonGroupSplitTree,
+  buttonGroupTextTree,
+  buttonGroupTree,
+  buttonGroupVerticalBySize,
+} from "../../demos/button-group";
 
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
-import { splitButtonDoTree, splitButtonDontTree, splitButtonSingleDoTree, splitButtonSingleDontTree } from "../../demos/dodont-pairs";
+import { buttonGroupSplitDoTree, buttonGroupSplitDontTree, buttonGroupSingleDoTree, buttonGroupSingleDontTree } from "../../demos/dodont-pairs";
+
+const story = "Components/ButtonGroup";
+const explain = (group: string, value: string) => t(`buttonGroupPage.prop.${group}.${value}` as Parameters<typeof t>[0]);
+/* The frame script pins the body to its content with an inline !important, so the stage's height cannot be asked of it:
+   the group sits at the top of the frame's viewport, centred across, and what the menu floor adds below is the room its menu opens into. */
+const centeredCss = `
+  .sk-button-group {
+    position: fixed;
+    inset: var(--space-inset-md) 0 auto;
+    margin-inline: auto;
+    inline-size: max-content;
+  }
+`;
 ---
 
 <ComponentPageShell
-  hookPlayground={{ tree: splitButtonTree(t), fit: true }}
-  title="SplitButton"
-  description={t("splitButtonPage.description")}
-  contractId="split-button"
-  appearanceTargetSelector=".sk-split-button .sk-button"
+  hookPlayground={{ tree: buttonGroupTree(t), fit: true }}
+  title="ButtonGroup"
+  description={t("buttonGroupPage.description")}
+  contractId="button-group"
+  appearanceTargetSelector=".sk-button-group :is(.sk-button, .sk-input, .sk-select, .sk-popover)"
   styleGroups={[
-    { file: "components/split-button.css", probe: "sk-split-button", title: "SplitButton" },
+    { file: "components/button-group.css", probe: "sk-button-group", title: "ButtonGroup" },
     { file: "patterns/anchored.css", probe: "sk-anchored", title: "Heredados de Anclaje" },
   ]}
-  testFiles={["packages/react/src/components/split-button.test.tsx"]}
-  extraSheets={["@skryensya/core/patterns/anchored.css", "@skryensya/core/components/menu.css", "@skryensya/core/components/button.css", "@skryensya/core/patterns/layout.css"]}
+  testFiles={["packages/react/src/components/button-group.test.tsx"]}
+  extraSheets={[
+    "@skryensya/core/patterns/anchored.css",
+    "@skryensya/core/components/menu.css",
+    "@skryensya/core/components/button.css",
+    "@skryensya/core/components/input.css",
+    "@skryensya/core/components/select.css",
+    "@skryensya/core/components/popover.css",
+    "@skryensya/core/patterns/layout.css",
+  ]}
 >
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} />
   </Fragment>
 
   <Fragment slot="usage">
-    <p class="lede" set:html={t("splitButtonPage.lede")} />
+    <p class="lede" set:html={t("buttonGroupPage.lede")} />
 
     <h3>{t("component.examplesTitle")}</h3>
-    <h4>{t("splitButtonPage.mainTitle")}</h4>
-    <UsagePreview tree={splitButtonTree(t)} description={t("splitButtonPage.mainBody")} label={t("splitButtonPage.mainTitle")} viewport="menu" storybookTitle="Components/SplitButton" storybookStory="Default" />
-    <h4>{t("splitButtonPage.verticalTitle")}</h4>
+    <h4>{t("buttonGroupPage.basicTitle")}</h4>
+    <UsagePreview tree={buttonGroupTree(t)} description={t("buttonGroupPage.basicBody")} label={t("buttonGroupPage.basicTitle")} storybookTitle={story} storybookStory="Default" />
+
+    <h4>{t("buttonGroupPage.splitTitle")}</h4>
     <UsagePreview
       variants={[
-        { value: "xs", label: "xs", tree: splitButtonVerticalBySize("xs")(t) },
-        { value: "sm", label: "sm", tree: splitButtonVerticalBySize("sm")(t) },
-        { value: "md", label: "md", tree: splitButtonVerticalBySize("md")(t) },
-        { value: "lg", label: "lg", tree: splitButtonVerticalBySize("lg")(t) },
+        { value: "solid", label: "solid", explain: explain("split", "solid"), tree: buttonGroupSplitTree({ variant: "solid", tone: "accent" })(t) },
+        { value: "soft", label: "soft", explain: explain("split", "soft"), tree: buttonGroupSplitTree({ variant: "soft" })(t) },
+        { value: "ghost", label: "ghost", explain: explain("split", "ghost"), tree: buttonGroupSplitTree({ variant: "ghost" })(t) },
+        { value: "danger", label: "danger", explain: explain("split", "danger"), tree: buttonGroupSplitTree({ variant: "solid", tone: "danger" })(t) },
       ]}
-      initialVariant="sm"
-      variantsLabel={t("splitButtonPage.verticalTitle")}
+      initialVariant="solid"
+      variantsLabel={t("buttonGroupPage.splitTitle")}
       viewport="menu"
-      stageMinBlockSize="10rem"
-      description={t("splitButtonPage.verticalBody")}
-      label={t("splitButtonPage.verticalTitle")}
-      storybookTitle="Components/SplitButton"
-      storybookStory="Default"
+      stageMinBlockSize="18rem"
+      css={`${centeredCss} .sk-button-group { inset-block-start: 3.5rem; }`}
+      description={t("buttonGroupPage.splitBody")}
+      label={t("buttonGroupPage.splitTitle")}
+      storybookTitle={story}
+      storybookStory="SplitAccent"
     />
-    <h4>{t("splitButtonPage.smallTitle")}</h4>
-    <UsagePreview tree={splitButtonSmallTree(t)} description={t("splitButtonPage.smallBody")} label={t("splitButtonPage.smallTitle")} viewport="menu" storybookTitle="Components/SplitButton" storybookStory="Small" />
-    <h4>{t("splitButtonPage.subtleTitle")}</h4>
-    <UsagePreview tree={splitButtonSubtleTree(t)} description={t("splitButtonPage.subtleBody")} label={t("splitButtonPage.subtleTitle")} viewport="menu" storybookTitle="Components/SplitButton" storybookStory="Subtle" />
-    <h4>{t("splitButtonPage.overMediaTitle")}</h4>
-    <UsagePreview tree={splitButtonOverMediaTree(t)} description={t("splitButtonPage.overMediaBody")} label={t("splitButtonPage.overMediaTitle")} viewport="menu" storybookTitle="Components/SplitButton" storybookStory="OverMedia" />
-    <h4>{t("splitButtonPage.ghostTitle")}</h4>
-    <UsagePreview tree={splitButtonGhostTree(t)} description={t("splitButtonPage.ghostBody")} label={t("splitButtonPage.ghostTitle")} viewport="menu" storybookTitle="Components/SplitButton" storybookStory="Ghost" />
-    <h4>{t("splitButtonPage.dangerTitle")}</h4>
-    <UsagePreview tree={splitButtonDangerTree(t)} description={t("splitButtonPage.dangerBody")} label={t("splitButtonPage.dangerTitle")} viewport="menu" storybookTitle="Components/SplitButton" storybookStory="Danger" />
+
+    <h4>{t("buttonGroupPage.verticalTitle")}</h4>
+    <UsagePreview
+      variants={(["xs", "sm", "md", "lg"] as const).map((size) => ({ value: size, label: size, explain: explain("vertical", size), tree: buttonGroupVerticalBySize(size)(t) }))}
+      initialVariant="sm"
+      variantsLabel={t("buttonGroupPage.verticalTitle")}
+      stageMinBlockSize="7rem"
+      description={t("buttonGroupPage.verticalBody")}
+      label={t("buttonGroupPage.verticalTitle")}
+      storybookTitle={story}
+      storybookStory="Vertical"
+    />
+
+    <h4>{t("buttonGroupPage.sizeTitle")}</h4>
+    <UsagePreview
+      variants={(["sm", "md", "lg"] as const).map((size) => ({ value: size, label: size, explain: explain("size", size), tree: buttonGroupBySize(size)(t) }))}
+      initialVariant="md"
+      variantsLabel={t("buttonGroupPage.sizeTitle")}
+      description={t("buttonGroupPage.sizeBody")}
+      label={t("buttonGroupPage.sizeTitle")}
+      storybookTitle={story}
+      storybookStory="Size"
+    />
+
+    <h4>{t("buttonGroupPage.nestedTitle")}</h4>
+    <UsagePreview tree={buttonGroupNestedTree(t)} description={t("buttonGroupPage.nestedBody")} label={t("buttonGroupPage.nestedTitle")} storybookTitle={story} storybookStory="Nested" />
+
+    <h4>{t("buttonGroupPage.separatorTitle")}</h4>
+    <UsagePreview
+      variants={(["inset", "full", "none"] as const).map((value) => ({ value, label: t(`buttonGroupPage.separator.${value}` as never), explain: explain("separator", value), tree: buttonGroupSeparatorBy(value)(t) }))}
+      initialVariant="inset"
+      variantsLabel={t("buttonGroupPage.separatorTitle")}
+      description={t("buttonGroupPage.separatorBody")}
+      label={t("buttonGroupPage.separatorTitle")}
+      storybookTitle={story}
+      storybookStory="Separator"
+    />
+
+    <h4>{t("buttonGroupPage.inputTitle")}</h4>
+    <UsagePreview tree={buttonGroupInputTree(t)} description={t("buttonGroupPage.inputBody")} label={t("buttonGroupPage.inputTitle")} omitAppearances={["tactile"]} storybookTitle={story} storybookStory="Input" />
+
+    <h4>{t("buttonGroupPage.textTitle")}</h4>
+    <UsagePreview tree={buttonGroupTextTree(t)} description={t("buttonGroupPage.textBody")} label={t("buttonGroupPage.textTitle")} storybookTitle={story} storybookStory="Text" />
+
+    <h4>{t("buttonGroupPage.selectTitle")}</h4>
+    <UsagePreview
+      tree={buttonGroupSelectTree(t)}
+      description={t("buttonGroupPage.selectBody")}
+      label={t("buttonGroupPage.selectTitle")}
+      viewport="menu"
+      omitAppearances={["tactile"]}
+      css={`
+        ${centeredCss}
+        .sk-button-group {
+          inset-block: 0 5rem;
+          margin-block: auto;
+        }
+        .sk-button-group > .sk-select {
+          inline-size: 7rem;
+          flex-shrink: 0;
+        }
+      `}
+      storybookTitle={story}
+      storybookStory="Select"
+    />
+
+    <h4>{t("buttonGroupPage.popoverTitle")}</h4>
+    <UsagePreview tree={buttonGroupPopoverTree(t)} description={t("buttonGroupPage.popoverBody")} label={t("buttonGroupPage.popoverTitle")} viewport="menu" stageMinBlockSize="20rem" css={`.sk-component-preview__frame-body { padding-block-end: 11rem; } .sk-popover__close { margin-block-start: var(--space-stack-md); }`} storybookTitle={story} storybookStory="Popover" />
+
+    <h4>{t("buttonGroupPage.rtlTitle")}</h4>
+    <UsagePreview tree={buttonGroupRtlTree(t)} frostSatin="blue" description={t("buttonGroupPage.rtlBody")} label={t("buttonGroupPage.rtlTitle")} storybookTitle={story} storybookStory="Rtl" />
+
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>
-      {tList(t, "splitButtonPage.contract").map((item) => <li set:html={item} />)}
+      {tList(t, "buttonGroupPage.contract").map((item) => <li set:html={item} />)}
     </ul>
 
     <h3>{t("component.anatomy")}</h3>
-    <p set:html={t("splitButtonPage.anatomyBody")} />
-    <UsagePreview
-      tree={splitButtonAnatomyTree(t)}
-      css={annotationDemoCss}
-      label={t("splitButtonPage.anatomyPreviewLabel")}
-      bare
-    />
+    <p set:html={t("buttonGroupPage.anatomyBody")} />
+    <UsagePreview tree={buttonGroupAnatomyTree(t)} css={buttonGroupAnatomyCss} label={t("buttonGroupPage.anatomyPreviewLabel")} bare />
   </Fragment>
 
   <Fragment slot="guidelines">
-    <p class="lede" set:html={t("splitButtonPage.guidelinesLede")} />
-    <WhenToUse use={tList(t, "splitButtonPage.when")} avoid={tList(t, "splitButtonPage.whenNot")} />
+    <p class="lede" set:html={t("buttonGroupPage.guidelinesLede")} />
+    <WhenToUse use={tList(t, "buttonGroupPage.when")} avoid={tList(t, "buttonGroupPage.whenNot")} />
     <DoDont
-      title={t("splitButtonPage.dd.label.title")}
-      do={{ tree: splitButtonDoTree(t), caption: t("splitButtonPage.dd.label.do") }}
-      dont={{ tree: splitButtonDontTree(t), caption: t("splitButtonPage.dd.label.dont") }}
+      title={t("buttonGroupPage.dd.label.title")}
+      do={{ tree: buttonGroupSplitDoTree(t), caption: t("buttonGroupPage.dd.label.do") }}
+      dont={{ tree: buttonGroupSplitDontTree(t), caption: t("buttonGroupPage.dd.label.dont") }}
     />
     <DoDont
-      title={t("splitButtonPage.dd.single.title")}
-      do={{ tree: splitButtonSingleDoTree(t), caption: t("splitButtonPage.dd.single.do") }}
-      dont={{ tree: splitButtonSingleDontTree(t), caption: t("splitButtonPage.dd.single.dont") }}
+      title={t("buttonGroupPage.dd.single.title")}
+      do={{ tree: buttonGroupSingleDoTree(t), caption: t("buttonGroupPage.dd.single.do") }}
+      dont={{ tree: buttonGroupSingleDontTree(t), caption: t("buttonGroupPage.dd.single.dont") }}
     />
-    <ContentRules items={tList(t, "splitButtonPage.content")} />
+    <ContentRules items={tList(t, "buttonGroupPage.content")} />
   </Fragment>
 
   <Fragment slot="a11y">
     <A11yNotes
-      intro={t("splitButtonPage.a11yIntro")}
-      does={tList(t, "splitButtonPage.a11yDoes")}
-      yours={tList(t, "splitButtonPage.a11yYours")}
+      intro={t("buttonGroupPage.a11yIntro")}
+      does={tList(t, "buttonGroupPage.a11yDoes")}
+      yours={tList(t, "buttonGroupPage.a11yYours")}
       keys={[
-        { keys: ["Tab"], action: t("splitButtonPage.key.tab") },
-        { keys: ["Enter", t("component.key.space")], action: t("splitButtonPage.key.run") },
-        { keys: ["↑", "↓"], action: t("splitButtonPage.key.arrows") },
+        { keys: ["Tab"], action: t("buttonGroupPage.key.tab") },
+        { keys: ["Enter", t("component.key.space")], action: t("buttonGroupPage.key.run") },
+        { keys: ["↑", "↓"], action: t("buttonGroupPage.key.arrows") },
       ]}
     />
   </Fragment>

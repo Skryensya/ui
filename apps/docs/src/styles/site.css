@@ -3846,25 +3846,6 @@ html[data-sk-component-preview-pref="vanilla"] [data-sk-install-binding="react"]
   aspect-ratio: 4 / 3;
 }
 
-/*
- * ── LIGHT MODE DEPTH ─────────────────────────────────────────────────────────────────────────────
- *
- * Dark gets its richness from layering: canvas, surface and raised are three different darks. Light has
- * one ceiling (white) and the page canvas right under it, so the same layout read flat: white boxes on
- * grey with only hairlines between them. Light cannot add lightness, so it adds light and shadow instead.
- * Every declaration here is a `light-dark()` pair with the dark side transparent, so DARK IS UNCHANGED.
- *
- * Colours only inside `light-dark()` (that is all it accepts), which is why each value is a colour
- * inside a gradient or a shadow rather than a whole property.
- */
-
-/* The examples lift off the page: a short contact shadow and a long soft one, like the code block. */
-.sk-preview-card {
-  box-shadow:
-    0 1px 2px light-dark(oklch(0% 0 0 / 0.12), transparent),
-    0 12px 28px -16px light-dark(oklch(0% 0 0 / 0.22), transparent);
-}
-
 /* ── hook playground modal ────────────────────────────────────────────────── */
 /*
  * `HookPlaygroundModal.astro`: a modal with the live example on the left and a flat list of the

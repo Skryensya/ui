@@ -1,7 +1,8 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
-import { currencyItems, splitMenuItems } from "./data/button-group";
+import { currencyItems, mailMoreItems, splitMenuItems } from "./data/button-group";
 import { anatomyCanvas, anatomyHints, namePart } from "./annotation-parts";
+import { annotationDemoCss } from "./annotation";
 
 /*
  * One tree per case the page teaches (shadcn's list: orientation, size, nested, separator, split,
@@ -54,9 +55,25 @@ export const buttonGroupVerticalBySize = (size: Size) => (t: Translate): UsageTr
 
 /** Every member at the same size: the size lives on each Button, never on the group. */
 export const buttonGroupBySize = (size: Exclude<Size, "xs">) => (t: Translate): UsageTree =>
-  group([button(t("demo.buttonGroup.archive"), { size }), button(t("demo.buttonGroup.report"), { size }), iconButton(t("demo.buttonGroup.more"), "more", { size })], {
-    label: t("demo.buttonGroup.mailLabel"),
-  });
+  group(
+    [
+      button(t("demo.buttonGroup.archive"), { size }),
+      button(t("demo.buttonGroup.report"), { size }),
+      {
+        contract: "menu",
+        signature: "Menu",
+        options: {
+          label: t("demo.buttonGroup.mailLabel"),
+          triggerLabel: t("demo.buttonGroup.more"),
+          triggerVariant: "soft",
+          triggerSize: size,
+          triggerIconOnly: true,
+        },
+        slots: { items: mailMoreItems(t) },
+      },
+    ],
+    { label: t("demo.buttonGroup.mailLabel") },
+  );
 
 export const buttonGroupSizeTree = (t: Translate): UsageTree => buttonGroupBySize("md")(t);
 
@@ -66,22 +83,29 @@ export const buttonGroupVerticalTree = (t: Translate): UsageTree => buttonGroupV
 export const buttonGroupNestedTree = (t: Translate): UsageTree =>
   group(
     [
-      group([button("1"), button("2"), button("3")]),
-      group([
-        iconButton(t("demo.buttonGroup.previous"), "chevron-left"),
-        iconButton(t("demo.buttonGroup.next"), "chevron-right"),
-      ]),
+      group([button("1"), button("2"), button("3")], { separator: "none" }),
+      group(
+        [
+          iconButton(t("demo.buttonGroup.previous"), "chevron-left"),
+          iconButton(t("demo.buttonGroup.next"), "chevron-right"),
+        ],
+        { separator: "none" },
+      ),
     ],
     { label: t("demo.buttonGroup.pagesLabel") },
   );
 
-/** Two solid members paint no border, so the separator is the only seam between them. */
-export const buttonGroupSeparatorTree = (t: Translate): UsageTree =>
-  group([
-    button(t("demo.buttonGroup.copyAction"), { variant: "solid" }),
-    { contract: "button-group", signature: "ButtonGroupSeparator" },
-    button(t("demo.buttonGroup.pasteAction"), { variant: "solid" }),
-  ]);
+/** `inset` (default) is a short centred line, `full` the whole height, `none` nothing: two solid members then fuse. */
+export const buttonGroupSeparatorBy = (separator: "inset" | "full" | "none") => (t: Translate): UsageTree =>
+  group(
+    [
+      button(t("demo.buttonGroup.copyAction"), { variant: "solid" }),
+      button(t("demo.buttonGroup.pasteAction"), { variant: "solid" }),
+    ],
+    { separator },
+  );
+
+export const buttonGroupSeparatorTree = (t: Translate): UsageTree => buttonGroupSeparatorBy("inset")(t);
 
 type Tone = { variant: "solid" | "soft" | "ghost"; tone?: "accent" | "danger" };
 
@@ -122,16 +146,26 @@ export const buttonGroupTextTree = (t: Translate): UsageTree =>
   group([
     { contract: "button-group", signature: "ButtonGroupLabel", options: { htmlFor: "demo-button-group-site" }, slots: { children: t("demo.buttonGroup.siteLabel") } },
     { contract: "button-group", signature: "ButtonGroupText", slots: { children: "https://" } },
-    { contract: "input", signature: "Input", attrs: { id: "demo-button-group-site" } },
+    { contract: "input", signature: "Input", options: { appearance: "plain" }, attrs: { id: "demo-button-group-site" } },
   ]);
 
 /** A Select and an Input joined into one amount, and the button that sends it. */
 export const buttonGroupSelectTree = (t: Translate): UsageTree =>
   group([
     { contract: "select", signature: "Select", options: { value: "usd" }, attrs: { "aria-label": t("demo.buttonGroup.currency") }, slots: { items: currencyItems } },
-    { contract: "input", signature: "Input", options: { placeholder: "10.00" }, attrs: { "aria-label": t("demo.buttonGroup.amount") } },
+    // Text, not `type="number"`: no spinners inside a joined shape, and the decimal keypad on a phone.
+    { contract: "input", signature: "Input", options: { placeholder: t("demo.buttonGroup.amountPlaceholder") }, attrs: { "aria-label": t("demo.buttonGroup.amount"), inputmode: "decimal", autocomplete: "off" } },
     button(t("demo.buttonGroup.send"), { variant: "solid", tone: "accent" }),
-  ]);
+    // `full`: one border-weight line per seam, which reads as a divider between currency and amount.
+  ], { separator: "full" });
+
+/** The one setting inside the Popover: a Segmented of the assistant's tones. */
+const toneSetting = (t: Translate): UsageTree => ({
+  contract: "segmented",
+  signature: "Segmented",
+  options: { value: "formal", label: t("demo.buttonGroup.tone") },
+  slots: { items: ["formal", "friendly", "brief"].map((v) => ({ options: { value: v }, slots: { label: t(`demo.buttonGroup.tone.${v}` as never) } })) },
+});
 
 /** A Popover as the second member: the action, and its settings one click away. */
 export const buttonGroupPopoverTree = (t: Translate): UsageTree =>
@@ -145,11 +179,12 @@ export const buttonGroupPopoverTree = (t: Translate): UsageTree =>
         triggerLabel: t("demo.buttonGroup.assistantSettings"),
         triggerVariant: "soft",
         triggerIconOnly: true,
+        closeLabel: t("demo.buttonGroup.close"),
       },
       slots: {
         trigger: { contract: "icon", signature: "Icon", options: { name: "chevron-down" } },
         title: t("demo.buttonGroup.assistantSettings"),
-        children: t("demo.buttonGroup.assistantBody"),
+        children: { contract: "layout", signature: "Stack", options: { gap: "md" }, children: [toneSetting(t)] },
       },
     },
   ]);
@@ -158,17 +193,66 @@ export const buttonGroupPopoverTree = (t: Translate): UsageTree =>
 export const buttonGroupRtlTree = (_t: Translate): UsageTree =>
   group([button("أرشفة"), button("تقرير"), button("تأجيل")], { label: "البريد" }, { dir: "rtl" });
 
+/** Shared classes get one legend entry across both complete compositions. */
 export const buttonGroupAnatomyTree = (t: Translate): UsageTree => ({
   contract: "annotation",
   signature: "Annotated",
-  options: { ...anatomyCanvas(t), label: t("buttonGroupPage.anatomyLabel"), inert: true },
+  options: { ...anatomyCanvas(t), label: t("buttonGroupPage.anatomyLabel"), inert: true, ringPlacement: "offset", ringDistance: 4 },
   slots: {
     ...anatomyHints(t),
-    subject: buttonGroupSplitTree()(t),
+    subject: {
+      contract: "layout",
+      signature: "Inline",
+      options: { gap: "xl", inlineAlign: "center", wrap: false },
+      children: [
+        group(
+          [
+            button(t("demo.buttonGroup.save"), { variant: "solid", tone: "accent" }),
+            { contract: "button-group", signature: "ButtonGroupSeparator" },
+            {
+              contract: "menu",
+              signature: "Menu",
+              options: {
+                label: t("demo.buttonGroup.saveMenuLabel"),
+                triggerLabel: t("demo.buttonGroup.saveMenuLabel"),
+                triggerVariant: "solid",
+                triggerTone: "accent",
+                triggerIconOnly: true,
+              },
+              slots: { items: splitMenuItems(t) },
+            },
+          ],
+          { label: t("demo.buttonGroup.saveMenuLabel") },
+        ),
+        group(
+          [
+            { contract: "button-group", signature: "ButtonGroupLabel", options: { htmlFor: "demo-button-group-anatomy-site" }, slots: { children: t("demo.buttonGroup.siteLabel") } },
+            { contract: "button-group", signature: "ButtonGroupText", slots: { children: "https://" } },
+            { contract: "input", signature: "Input", options: { appearance: "plain" }, attrs: { id: "demo-button-group-anatomy-site", value: "example.com" } },
+          ],
+          { label: t("demo.buttonGroup.siteLabel") },
+        ),
+      ],
+    },
     items: [
-      namePart(".sk-button-group", "block-start", { mark: "bracket", ringPlacement: "offset", ringDistance: 6 }),
-      namePart(".sk-button", "inline-start", { ringPlacement: "offset", ringDistance: 2 }),
-      namePart(".sk-menu__trigger", "inline-end", { ringPlacement: "offset", ringDistance: 2 }),
+      namePart(".sk-button-group", "block-end", { match: "all", ringDistance: 8 }),
+      namePart(".sk-button", "block-start", { match: "all", ringDistance: 2 }),
+      namePart(".sk-button-group__separator", "block-start", { ringDistance: 2 }),
+      namePart(".sk-button-group__text", "block-start", { match: "all", ringDistance: 2 }),
+      namePart(".sk-input", "block-end", { ringDistance: 2 }),
     ],
   },
 });
+
+export const buttonGroupAnatomyCss = `${annotationDemoCss}
+
+/* Leave breathing room around both specimens without the docs’ full 4:3 board. */
+.sk-annotated-figure[class] > .sk-canvas[data-fit-only] > .sk-canvas__viewport {
+  aspect-ratio: auto;
+  block-size: var(--sk-canvas-fit-block-size, auto);
+  min-block-size: 18rem;
+}
+
+.sk-annotated__subject .sk-input {
+  inline-size: 11rem;
+}`;

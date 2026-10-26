@@ -3,8 +3,16 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "e7ac4fd00be6cd7a"
+surface: "4695c6ff3833cf91"
 entries:
+  - date: 2026-10-25
+    kind: breaking
+    es:
+      title: "El separador por defecto es inset, y hay separator none"
+      body: "separator pasa a valer inset por defecto (línea corta y centrada); full sigue siendo el alto completo y none no dibuja nada. El grupo no agrega un separador junto a uno que ya escribiste."
+    en:
+      title: "The default separator is inset, and there is separator none"
+      body: "separator now defaults to inset (a shorter centred line); full is still the whole height and none draws nothing. The group adds no separator beside one you wrote."
   - date: 2026-10-24
     kind: feature
     es:
