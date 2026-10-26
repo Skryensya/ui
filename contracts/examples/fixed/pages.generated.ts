@@ -317,16 +317,16 @@ export const pageSnippets: readonly Snippet[] = [
                             "options": {
                               "variant": "soft"
                             },
-                            "children": [
-                              {
+                            "slots": {
+                              "pre": {
                                 "contract": "icon",
                                 "signature": "Icon",
                                 "options": {
                                   "name": "download"
                                 }
-                              },
-                              "Export"
-                            ]
+                              }
+                            },
+                            "children": "Export"
                           },
                           {
                             "contract": "button",
@@ -1353,17 +1353,16 @@ export const pageSnippets: readonly Snippet[] = [
                     "options": {
                       "variant": "soft"
                     },
-                    "children": [
-                      {
+                    "slots": {
+                      "pre": {
                         "contract": "icon",
                         "signature": "Icon",
                         "options": {
-                          "name": "download",
-                          "size": "sm"
+                          "name": "download"
                         }
-                      },
-                      "Export"
-                    ]
+                      }
+                    },
+                    "children": "Export"
                   }
                 },
                 {

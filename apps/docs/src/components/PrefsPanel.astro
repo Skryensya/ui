@@ -1,0 +1,116 @@
+---
+/*
+ * Desktop reader preferences: the design system's Popover, dropped from the header's Preferences button.
+ *
+ * Nothing here is drawn by the site: the panel is a Popover, the mode a Segmented, the contrast a
+ * Switch, the language a second Segmented, and the swatches are the palette Popover's
+ * (`.dimensions__palette-option`). They are thin fronts for the toggles the site already runs
+ * (`Base.astro` scripts): the mode and contrast controls press the hidden header-cluster toggles
+ * until the state matches, and the swatches carry `data-docs-palette-set`, which the palette script
+ * already listens for. Phones keep `#docs-prefs-sheet`.
+ */
+import { emitMarkup } from "@skryensya/ai-compiler/emit";
+import type { UsageTree } from "@skryensya/core/usage-tree";
+import { availableLocales, canonicalPath, getLocale, localeNames, localizePath, useTranslations } from "../i18n";
+import { iconMarkup } from "../icons";
+
+interface Props {
+  presets: { id: string; name: string; accent: string }[];
+}
+
+const { presets } = Astro.props;
+const t = useTranslations(getLocale(Astro.url));
+const current = getLocale(Astro.url);
+const canonical = canonicalPath(Astro.url.pathname);
+const locales = availableLocales(canonical);
+const hrefs = Object.fromEntries(locales.map((locale) => [locale, localizePath(canonical, locale)]));
+/* The messages read "Mode: dark"; the group already says what it is, so keep the word after the colon. */
+const word = (text: string) => {
+  const tail = text.split(":").pop()!.trim();
+  return tail.charAt(0).toUpperCase() + tail.slice(1);
+};
+const modes = [
+  { value: "system", label: word(t("prefs.modeSystem")) },
+  { value: "light", label: word(t("prefs.modeLight")) },
+  { value: "dark", label: word(t("prefs.modeDark")) },
+];
+
+const [before = "", mid = "", after = ""] = emitMarkup(
+  {
+    contract: "popover",
+    signature: "Popover",
+    options: { panelId: "docs-prefs-pop", triggerLabel: t("prefs.title"), triggerIconOnly: true, placement: "block-end" },
+    attrs: { class: "docs-prefs-popover" },
+    slots: { trigger: "@@", children: "@@" },
+  } as UsageTree,
+  { fillDefaults: false },
+).split("@@");
+
+const modeControl = emitMarkup(
+  {
+    contract: "segmented",
+    signature: "Segmented",
+    options: { value: "system", label: t("prefs.theme"), size: "md", iconPosition: "block" },
+    attrs: { id: "docs-prefs-mode" },
+    slots: { items: modes.map((mode) => ({ options: { value: mode.value }, slots: { label: [{ contract: "icon", signature: "Icon", options: { name: `mode-${mode.value}`, size: "sm" } }, mode.label] } })) },
+  } as UsageTree,
+  { fillDefaults: false },
+);
+
+const contrastControl = emitMarkup(
+  { contract: "switch", signature: "Switch", attrs: { id: "docs-prefs-contrast" }, children: t("prefs.contrast") } as UsageTree,
+  { fillDefaults: false },
+);
+
+const languageControl = emitMarkup(
+  {
+    contract: "segmented",
+    signature: "Segmented",
+    options: { value: current, label: t("prefs.language"), size: "md" },
+    attrs: { id: "docs-prefs-language" },
+    slots: { items: locales.map((locale) => ({ options: { value: locale }, slots: { label: localeNames[locale] } })) },
+  } as UsageTree,
+  { fillDefaults: false },
+);
+---
+
+<Fragment set:html={before} /><Fragment set:html={iconMarkup("settings")} /><Fragment set:html={mid} />
+<div class="docs-prefs-pop__body">
+  <section class="docs-prefs-pop__section">
+    <h2 class="docs-prefs-pop__label">{t("prefs.theme")}</h2>
+    <Fragment set:html={modeControl} />
+  </section>
+
+  <section class="docs-prefs-pop__section">
+    <h2 class="docs-prefs-pop__label">{t("prefs.palette")}</h2>
+    <div class="dimensions__palette-options" role="group" aria-label={t("prefs.palette")}>
+      {
+        presets.map((preset) => (
+          <button
+            type="button"
+            class="dimensions__palette-option"
+            data-docs-palette-set={preset.id}
+            style={`--swatch: ${preset.accent}`}
+            title={preset.name}
+            aria-label={preset.name}
+            aria-pressed="false"
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="docs-prefs-pop__section">
+    <Fragment set:html={contrastControl} />
+  </section>
+
+  {
+    locales.length > 1 && (
+      <section class="docs-prefs-pop__section" data-hrefs={JSON.stringify(hrefs)} id="docs-prefs-language-row">
+        <h2 class="docs-prefs-pop__label">{t("prefs.language")}</h2>
+        <Fragment set:html={languageControl} />
+      </section>
+    )
+  }
+</div>
+<Fragment set:html={after} />

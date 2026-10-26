@@ -57,9 +57,9 @@ const t = useTranslations(getLocale(Astro.url));
  * identical in both locales, so it stays a plain constant rather than an i18n key.
  */
 const iconsSetup = `import { mountIcons } from "@skryensya/vanilla/icon";
-import { lucideIcons } from "@skryensya/icons-lucide";
+import { phosphorIcons } from "@skryensya/icons-phosphor";
 
-mountIcons(document, lucideIcons);`;
+mountIcons(document, phosphorIcons);`;
 
 /*
  * Accordion's enhanced surface is a composition: accordion.css owns the frame and tile.css owns

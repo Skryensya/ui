@@ -45,3 +45,18 @@ export const segmentedDontManyTree = (t: Translate): UsageTree => ({
     })),
   },
 });
+
+/* An icon beside each word: the label is a node, so it can be an Icon followed by the text. */
+export const segmentedIconsTree = (t: Translate): UsageTree => ({
+  contract: "segmented",
+  signature: "Segmented",
+  options: { value: "system", label: t("segmentedPage.icons.label"), iconPosition: "inline" },
+  slots: {
+    items: (["system", "light", "dark"] as const).map((mode) => ({
+      options: { value: mode },
+      slots: {
+        label: [{ contract: "icon", signature: "Icon", options: { name: `mode-${mode}`, size: "sm" } }, t(`segmentedPage.icons.${mode}` as never)],
+      },
+    })),
+  },
+});

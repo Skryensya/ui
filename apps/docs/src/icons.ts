@@ -2,7 +2,7 @@
  * The site's icons.
  *
  * The site brings no geometry of its own: it binds a published set, which is the path it documents.
- * Lucide is the site's choice, not the system's: core names no tenants (decision 2), so there is no
+ * Phosphor is the site's choice, not the system's: core names no tenants (decision 2), so there is no
  * "official" set, there are three published ones and you choose.
  *
  * Changing sets is changing the two lines below. No call site moves, and that is exactly what the
@@ -20,8 +20,8 @@ import { phosphorIcons } from "@skryensya/icons-phosphor";
  * on `<html>` so CSS and preview frames can name the same set. Keeping both beside each other avoids
  * a runtime icon-swap module in the docs shell: the chrome ships already painted in the site set.
  */
-export const siteIconSet = "lucide";
-export const siteIcons = lucideIcons;
+export const siteIconSet = "phosphor";
+export const siteIcons = phosphorIcons;
 
 /** The three published sets, so the page shows them side by side instead of asserting they exist. */
 export const allSets: readonly { id: string; label: string; licence: string; set: IconSet }[] = [
@@ -102,6 +102,14 @@ export const sparkle: IconData = {
   body: `<path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z" />`,
 };
 
+
+/* The reader-preferences button. No stable role draws "adjust how this reads": `settings` is a gear and `appearance`
+   reads as a brush, so this is Phosphor's own circle-half (the display / theme glyph), in the set's own attrs. */
+export const displayIcon: IconData = {
+  viewBox: "0 0 256 256",
+  attrs: siteIcons.settings.attrs,
+  body: `<path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm8,16.37a86.4,86.4,0,0,1,16,3V212.67a86.4,86.4,0,0,1-16,3Zm32,9.26a87.81,87.81,0,0,1,16,10.54V195.83a87.81,87.81,0,0,1-16,10.54ZM40,128a88.11,88.11,0,0,1,80-87.63V215.63A88.11,88.11,0,0,1,40,128Zm160,50.54V77.46a87.82,87.82,0,0,1,0,101.08Z"/>`,
+};
 
 /* Lucide Sun / Moon / Monitor lived here for the docs theme toggle; they are now the stable
  * roles mode-light / mode-dark / mode-system in the published sets. */

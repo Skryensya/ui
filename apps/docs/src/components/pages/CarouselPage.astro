@@ -26,7 +26,7 @@ import "@skryensya/core/components/button.css";
 import "@skryensya/core/patterns/state-layer.css";
 import "@skryensya/core/components/carousel.css";
 import "@skryensya/core/components/fade-edge.css";
-import "@skryensya/icons-lucide/carousel.css";
+import "@skryensya/icons-phosphor/carousel.css";
 import "../../examples/carousel.css";
 
 const t = useTranslations(getLocale(Astro.url));
@@ -37,13 +37,13 @@ const explain = (option: string, values: readonly string[]) =>
 
 const zoomOut = ".sk-carousel { zoom: 0.8; }";
 
-const installIcons = `pnpm add @skryensya/icons-lucide`;
+const installIcons = `pnpm add @skryensya/icons-phosphor`;
 
 const bootstrap = `import { initComponents } from "@skryensya/vanilla/auto";
 import { mountIcons } from "@skryensya/vanilla/icon";
-import { lucideIcons } from "@skryensya/icons-lucide";
+import { phosphorIcons } from "@skryensya/icons-phosphor";
 
-mountIcons(document, lucideIcons);
+mountIcons(document, phosphorIcons);
 await initComponents(); // ${t("carousel.bootstrapComment")}`;
 
 const api = `const carousel = document.querySelector("[data-sk-carousel]");
@@ -64,7 +64,7 @@ import { carouselTitlesDoTree, carouselTitlesDontTree } from "../../demos/dodont
   description={t("carousel.description")}
   contractId="carousel"
   badge="Beta"
-  extraSheets={["@skryensya/core/components/button.css", "@skryensya/core/patterns/state-layer.css", "@skryensya/icons-lucide/carousel.css", "@skryensya/core/components/fade-edge.css", "@skryensya/core/patterns/image-frame.css", "@skryensya/core/patterns/media-overlay.css"]}
+  extraSheets={["@skryensya/core/components/button.css", "@skryensya/core/patterns/state-layer.css", "@skryensya/icons-phosphor/carousel.css", "@skryensya/core/components/fade-edge.css", "@skryensya/core/patterns/image-frame.css", "@skryensya/core/patterns/media-overlay.css"]}
   vanillaInstallSteps={[
     { title: t("install.stepInstall"), blocks: [{ kind: "code", code: installIcons, lang: "bash", label: "terminal" }] },
     { title: t("install.stepMount"), blocks: [{ kind: "code", code: bootstrap, lang: "ts", label: "JavaScript" }] },

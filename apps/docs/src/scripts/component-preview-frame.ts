@@ -1,6 +1,6 @@
 /*
  * The site's set, imported from `../icons` like any other consumer. It used to be hardcoded to
- * `lucideIcons` in here, which was the same value by luck rather than by reference: the set is named
+ * `phosphorIcons` in here, which was the same value by luck rather than by reference: the set is named
  * in ONE place now and this realm reads it, so a site that rebinds is a one-line change again.
  */
 import { siteIcons } from "../icons";
@@ -552,12 +552,12 @@ async function mountReactDemo(): Promise<void> {
   document.body.append(host);
 
   /*
-   * Bound here, not left to `Icon`'s own default. The two agree today (the package's default is
-   * Lucide and so is this site's set), and that is exactly the kind of agreement worth writing down
-   * rather than relying on: an unwrapped React demo resolves against whatever the PACKAGE decides,
+   * Bound here, not left to `Icon`'s own default. The two DISAGREE (the package's default is
+   * Lucide, this site's set is Phosphor), which is why this binding is load-bearing: an unwrapped
+   * React demo would otherwise resolve against whatever the PACKAGE decides,
    * while the frame's icon-mounted Vanilla stage always draws `siteIcons`, and the day those two
    * part company the same tree would render in two geometries side by side with nothing here edited.
-   * A demo that binds its own set (`ToolbarDemo`'s `<IconSetProvider set={lucideIcons}>`) still wins
+   * A demo that binds its own set (`ToolbarDemo`'s `<IconSetProvider set={phosphorIcons}>`) still wins
    * for its own subtree; nesting just re-affirms the same set for everyone else.
    */
   const root = createRoot(host);

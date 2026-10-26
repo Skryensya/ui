@@ -22,9 +22,9 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 
 const vanillaJs = `import { initComponents } from "@skryensya/vanilla/auto";
 import { mountIcons } from "@skryensya/vanilla/icon";
-import { lucideIcons } from "@skryensya/icons-lucide";
+import { phosphorIcons } from "@skryensya/icons-phosphor";
 
-mountIcons(document, lucideIcons);
+mountIcons(document, phosphorIcons);
 await initComponents();`;
 
 const t = useTranslations(getLocale(Astro.url));

@@ -28,10 +28,10 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 const t = useTranslations(getLocale(Astro.url));
 
 const js = `import { mountIcons } from "@skryensya/vanilla/icon";
-import { lucideIcons } from "@skryensya/icons-lucide";
+import { phosphorIcons } from "@skryensya/icons-phosphor";
 import { initComponents } from "@skryensya/vanilla/auto";
 
-mountIcons(document, lucideIcons);
+mountIcons(document, phosphorIcons);
 initComponents();`;
 ---
 

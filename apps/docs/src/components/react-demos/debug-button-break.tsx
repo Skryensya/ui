@@ -9,7 +9,7 @@
 import { Button } from "@skryensya/react/button";
 import { ButtonGroup } from "@skryensya/react/button-group";
 import { Icon, IconSetProvider } from "@skryensya/react/icon";
-import { lucideIcons } from "@skryensya/icons-lucide";
+import { phosphorIcons } from "@skryensya/icons-phosphor";
 import type { ReactNode } from "react";
 
 const VARIANTS = ["solid", "soft", "ghost"] as const;
@@ -77,7 +77,7 @@ function Group({ title, children }: { title: string; children: ReactNode }) {
 
 export function ButtonBreak() {
   return (
-    <IconSetProvider set={lucideIcons}>
+    <IconSetProvider set={phosphorIcons}>
       <Group title="Baseline. Variant × tone, size md">
         {VARIANTS.map((variant) => (
           <Case key={variant} label={`variant="${variant}" × every tone`}>

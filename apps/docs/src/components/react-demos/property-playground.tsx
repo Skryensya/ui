@@ -5,10 +5,15 @@
  *
  * The switcher is the kit's own SegmentedControl at `size="lg"`: here the control is the thing being
  * read, not one more control beside a small button, which is exactly what that size is for.
+ *
+ * On a phone it is a NativeSelect instead: a row of segments has no room there (three options already fill the card,
+ * and a longer set scrolls out of sight), while the platform picker shows the chosen value, lists every option and
+ * is the control a thumb already knows.
  */
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@skryensya/react/button";
 import { SegmentedControl } from "@skryensya/react/segmented";
+import { NativeSelect } from "@skryensya/react/select-native";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import { useRenderedTree } from "./use-rendered-tree";
 import { TreeDemo } from "./tree";
@@ -77,6 +82,15 @@ export function PropertyPlayground({ tree, optionName, trees, measure, toggleLab
    */
   const [hydrated, setHydrated] = useState(false);
   useEffect(() => setHydrated(true), []);
+  /* Phone width: `preview-card.css` stacks the card at the same breakpoint. */
+  const [narrow, setNarrow] = useState(false);
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 40rem)");
+    const update = () => setNarrow(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
 
   const treeFor = (choice: string): UsageTree => {
     const chosenTree: UsageTree =
@@ -120,7 +134,15 @@ export function PropertyPlayground({ tree, optionName, trees, measure, toggleLab
 
   return (
     <div className="sk-property-playground" data-sk-playground-value={value}>
-      {values.length === 0 ? null : hydrated ? (
+      {values.length === 0 ? null : hydrated && narrow ? (
+        <NativeSelect
+          className="sk-property-playground__control"
+          aria-label={controlLabel}
+          value={value}
+          onChange={(event) => setValue(event.target.value)}
+          options={values.map((entry) => ({ value: entry, label: labels[entry] ?? entry }))}
+        />
+      ) : hydrated ? (
         <SegmentedControl
           className="sk-property-playground__control"
           size="lg"

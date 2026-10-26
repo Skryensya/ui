@@ -90,11 +90,25 @@ body {
   --sk-wrapper-max: var(--docs-shell-max);
 }
 
-/* Mobile-only: the bar's own name, once the global nav (which lists "Home" as a peer destination,
-   not a logo) moves into the drawer and stops naming the site. Hidden here; the mobile media query
-   below is what actually shows it, grid-column 1, on the leading edge. */
+/* The bar's own name, set as a wordmark, with the docs major beside it. The global nav no longer lists
+   Home: this is the way home. On phones the media query below re-places the brand in the grid. */
+.dimensions__identity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-inline-sm);
+  flex: none;
+}
+
 .dimensions__brand {
-  display: none;
+  display: inline-flex;
+  align-items: center;
+  --sk-nav-list-link-height: var(--size-control-sm);
+  --sk-nav-list-link-padding-x: var(--space-inset-md);
+  --sk-nav-list-link-fg: var(--color-text-primary);
+  --sk-nav-list-link-font-size: var(--font-size-body);
+  --sk-nav-list-link-font-weight: var(--font-weight-heading);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
 }
 
 /* Mobile-only: a real button standing in for the desktop search field, see the mobile media query
@@ -109,27 +123,36 @@ body {
   display: none;
 }
 
+/* Desktop: the Popover (`PrefsPanel`). Phones use the trigger above and the sheet. */
+.docs-prefs-popover {
+  display: inline-flex;
+}
+
+
 /* Header destinations are one NavList. Home is not a logo-shaped exception; it is the first peer
    destination, with tighter chrome than the sidebar and roomier inline padding for scanning. */
+.dimensions__content {
+  position: relative;
+}
+
+/* The destinations sit on the bar's true centre, whatever the widths of the wordmark and of search +
+   Preferences: the nav is taken out of the flow and centred on the bar itself. */
 .dimensions__global {
+  position: absolute;
+  inset-block: 0;
+  inset-inline: 0;
+  margin-inline: auto;
+  inline-size: max-content;
+  display: flex;
+  align-items: center;
   --sk-nav-list-link-height: var(--size-control-sm);
   --sk-nav-list-link-padding-x: var(--space-inset-md);
   --sk-nav-list-link-font-weight: var(--font-weight-label);
 }
 
-/* The first destination is the site's name, so it is set as a wordmark and not as a section: larger,
-   at the heading weight the mobile brand already uses, tight tracking, full-strength text. The size and
-   weight go on the label so the link keeps the row's control height. */
-.dimensions__global .sk-nav-list__item:first-child .sk-nav-list__link {
-  --sk-nav-list-link-font-weight: var(--font-weight-heading);
-  color: var(--color-text-primary);
+.dimensions__global .sk-nav-list__list {
+  display: flex;
 }
-
-.dimensions__global .sk-nav-list__item:first-child .sk-nav-list__label {
-  font-size: var(--font-size-body-lg);
-  letter-spacing: -0.02em;
-}
-
 
 /* The auto margin sits on the FIRST of the trailing group so version + search + prefs travel to the
    trailing edge together. That first item is the version label; see `:has` below. A margin on prefs
@@ -137,14 +160,21 @@ body {
    (search-trigger.ts has the full reasoning), this wrapper is purely the field's own chrome: the
    sunken well, the border, the icon and kbd hint around the input. */
 .dimensions__version-menu {
+  /* Beside the wordmark; phones carry it in the Preferences sheet. */
   display: inline-flex;
   flex: none;
   align-items: center;
   gap: var(--space-inline-xs);
-  margin-inline-start: auto;
+}
+
+/* Flat: the tinted fill already sets it off the bar, a cast shadow on a header control is noise. */
+.dimensions__version-menu .sk-menu__trigger {
+  --sk-button-shadow: var(--elevation-flat);
 }
 
 .dimensions__version-menu__caption {
+  /* The trigger already says `v0` and the menu carries aria-label: the word "Version" only cost header width. */
+  display: none;
   color: var(--color-text-tertiary);
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-label);
@@ -157,14 +187,17 @@ body {
 
 /* Default-size button: its height hook is the same `max(control-md, touch-target)` the search field
    below sets as its `min-block-size`, so the two share one height. */
-.dimensions__version-menu .sk-menu__trigger {
-  border: 1px solid var(--color-border-default);
+
+/* A small list: one line per major, and a flatter shadow than the menu's default overlay. */
+.dimensions__version-menu {
+  --sk-menu-shadow: var(--elevation-raised);
+  --sk-menu-item-min-height: var(--size-control-xs, 1.75rem);
 }
 
 .dimensions__version-menu__row {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-stack-3xs);
+  align-items: center;
+  gap: var(--space-inline-sm);
   min-inline-size: 0;
 }
 
@@ -183,7 +216,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: var(--space-inline-sm);
-  min-inline-size: min(18rem, 40vw);
+  inline-size: min(12rem, 40vw);
   /* Matches `.sk-button`'s own default height hook, the one this used to inherit for free as a
      `.sk-button`: the header's own height (`--docs-header-block-size` above) was measured against
      that value, and dropping the class must not shrink the row around it. */
@@ -202,10 +235,6 @@ body {
   background: var(--color-bg-surface-sunken);
   box-shadow: var(--elevation-sunken);
   border: 1px solid var(--color-border-default);
-}
-
-.dimensions__content:has(.dimensions__version-menu) .dimensions__search-trigger {
-  margin-inline-start: 0;
 }
 
 .dimensions__search-trigger .sk-icon {
@@ -296,7 +325,8 @@ body {
    field carries none on its edge, so at an equal gap the two icons read as further apart than the
    field is from the first icon. `xs` (≈ lg − that padding) makes the three visual gaps match. */
 .dimensions__prefs {
-  display: flex;
+  /* Never shown: `PrefsPanel` replaced the cluster, and its toggles stay mounted as the panel's engine. */
+  display: none;
   align-items: center;
   gap: var(--space-inline-xs);
 }
@@ -351,8 +381,8 @@ body {
 }
 
 .dimensions__palette-option {
-  inline-size: 1.75rem;
-  block-size: 1.75rem;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
   padding: 0;
   border: 2px solid transparent;
   border-radius: var(--radius-pill);
@@ -430,8 +460,13 @@ body {
     --sk-wrapper-padding-inline: var(--space-inset-md);
   }
 
+  .dimensions__identity {
+    display: contents;
+  }
+
   .dimensions__global,
   .dimensions__prefs,
+  .docs-prefs-popover,
   .dimensions__version-menu {
     display: none;
   }
@@ -466,11 +501,8 @@ body {
     justify-content: flex-start;
     min-inline-size: 0;
     overflow: hidden;
-    color: var(--color-text-primary);
-    font-size: var(--font-size-body);
-    font-weight: var(--font-weight-emphasis);
-    text-decoration: none;
-    white-space: nowrap;
+    --sk-nav-list-link-padding-x: 0;
+    --sk-nav-list-link-font-weight: var(--font-weight-emphasis);
     text-overflow: ellipsis;
   }
 
@@ -503,25 +535,6 @@ html:has(dialog:modal) .sk-toc {
     min-inline-size: var(--size-control-md);
   }
 }
-
-/* Between the compact header and the roomy desktop header, the destination labels fit only if the
-   search affordance stops spending a full field's width. Keep the global nav visible, but use the
-   same icon-only command-palette trigger mobile uses until `80rem`, where the labels have enough
-   room beside version and preferences again. */
-@media (min-width: 72rem) and (max-width: 80rem) {
-  .dimensions__search-trigger {
-    display: none;
-  }
-
-  .dimensions__search-trigger-mobile {
-    display: inline-flex;
-    /* In this tier the icon search is visually part of the preference icon cluster, but it is still
-       a separate flex item so the header's larger gap would otherwise sit between it and the first
-       preference button. Pull only that following gap down to the cluster's own `xs` rhythm. */
-    margin-inline-end: calc(-1 * (var(--space-inline-lg) - var(--space-inline-xs)));
-  }
-}
-
 
 /* ── layout ───────────────────────────────────────────────────────────────── */
 /*
@@ -987,6 +1000,70 @@ main {
   font-size: var(--font-size-body);
   font-weight: var(--font-weight-emphasis);
   line-height: var(--font-line-height-body, 1.3);
+}
+
+/* ── the desktop preferences panel (PrefsPanel) ─────────────────────────────
+   The design system's Popover; Segmented, Switch and the palette swatches bring their own look. All that is
+   left is the panel's rhythm: rows of caption label + control, hairlines between, no cards. */
+/* The hook is declared on the content part, so it is set there: the hairlines then run edge to edge. */
+.docs-prefs-popover .sk-popover__content {
+  --sk-popover-padding: 0;
+}
+
+.docs-prefs-popover .sk-popover__close {
+  display: none;
+}
+
+.docs-prefs-pop__body {
+  inline-size: 17rem;
+}
+
+.docs-prefs-pop__section {
+  display: grid;
+  gap: var(--space-stack-xs);
+  padding: var(--space-inset-sm) var(--space-inset-md);
+}
+
+.docs-prefs-pop__section + .docs-prefs-pop__section {
+  border-block-start: 1px solid var(--color-border-subtle);
+}
+
+.docs-prefs-pop__body .docs-prefs-pop__label {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-family: inherit;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-label);
+}
+
+/* Full width, the options sharing it equally; the swatches spread across the same width. */
+.docs-prefs-pop__body .sk-segmented {
+  display: flex;
+  inline-size: 100%;
+}
+
+.docs-prefs-pop__body .sk-segmented__option {
+  flex: 1 1 0;
+}
+
+.docs-prefs-pop__body .dimensions__palette-options {
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--space-inline-sm);
+  justify-items: center;
+}
+
+/* Roomier, square swatches: the same buttons the palette popover uses, only bigger and squared off. */
+.docs-prefs-pop__body .dimensions__palette-option {
+  inline-size: 2rem;
+  block-size: 2rem;
+  border-radius: calc(var(--radius-control) / 2);
+  border-width: 1px;
+  box-shadow: none;
+}
+
+/* Selected: one hairline ring in the text colour, set off from the fill by the 1px gap. */
+.docs-prefs-pop__body .dimensions__palette-option[aria-pressed="true"] {
+  box-shadow: 0 0 0 1px var(--color-text-primary);
 }
 
 /* ── the reader-preference sheet (#docs-prefs-sheet) ─────────────────────────
@@ -2625,6 +2702,38 @@ main .lede {
   }
 }
 
+/* On a phone the tab strip scrolls sideways with nothing saying so: fade its end edge until it is scrolled to. Registered so the
+   scroll can animate it; with no overflow the timeline is inactive and the value stays 0, so a strip that fits shows no fade. */
+@property --docs-tabs-fade {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@keyframes docs-tabs-fade {
+  0%,
+  85% {
+    --docs-tabs-fade: 3rem;
+  }
+
+  100% {
+    --docs-tabs-fade: 0px;
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (max-width: 40rem) and (prefers-reduced-motion: no-preference) {
+    :where(:root:not([data-motion="reduced"])) .docs-component-shell .docs-component-hero-tabs {
+      animation-name: docs-hero-bleed, docs-tabs-fade;
+      animation-timing-function: linear, linear;
+      animation-fill-mode: both, both;
+      animation-timeline: scroll(root block), scroll(self inline);
+      animation-range: 0 var(--sk-fx-collapse-range), normal;
+      mask-image: linear-gradient(to right, #000 calc(100% - var(--docs-tabs-fade)), transparent);
+    }
+  }
+}
+
 /* The JS-fallback twin: the script walks `--sk-fx-collapse-progress` on the shell, so the bleed simply follows it. */
 [data-sk-fx-collapse-js] .docs-component-shell {
   --docs-hero-bleed: var(--sk-fx-collapse-progress);
@@ -2786,6 +2895,25 @@ main .lede {
 
 .docs-component-head {
   display: contents;
+}
+
+/* The index pages' bands have no collapse effect to set the progress the padding interpolates on, so every inset computed to 0 and
+   the green band shrank to the height of its text. At rest is progress 0. */
+.docs-component-hero:not(.sk-fx-collapse-header) {
+  --sk-fx-collapse-progress: 0;
+  margin-block-end: var(--space-stack-lg);
+}
+
+@media (max-width: 60rem) {
+  /* Same rule `shell.scss` applies to the document rail: an in-page index above the title costs a phone its first screen. */
+  .presets-shell > .sk-toc {
+    display: none;
+  }
+}
+
+/* Foundations pages have no tab strip under the hero, so the first paragraph would sit flush on the band. */
+.docs-component-head ~ .docs-component-body {
+  padding-block-start: var(--space-stack-lg);
 }
 
 /* The "nothing to stand in for until the collapse is on" default now lives in the effect itself

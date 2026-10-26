@@ -1457,5 +1457,9 @@
   "/es/componentes/tag|Categorías en una tarjeta|||Components/Tag|Categories|": 1456,
   "/es/componentes/tile-button|Una columna de decisiones|||Components/Tile|ButtonList|": 1457,
   "/es/componentes/tile-button|Tres densidades|||Components/Tile|ButtonPadding|": 1458,
-  "/es/componentes/tile-switch|Una pantalla de preferencias|||Components/Tile|SwitchList|": 1459
+  "/es/componentes/tile-switch|Una pantalla de preferencias|||Components/Tile|SwitchList|": 1459,
+  "/es/componentes/segmented|Con iconos|||Components/SegmentedControl|Default|": 1460,
+  "/components/segmented|With icons|||Components/SegmentedControl|Default|": 1461,
+  "/es/componentes/segmented|Con iconos||iconPosition|Components/SegmentedControl|Default|": 1462,
+  "/components/segmented|With icons||iconPosition|Components/SegmentedControl|Default|": 1463
 }

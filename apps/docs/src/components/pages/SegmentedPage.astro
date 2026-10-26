@@ -8,12 +8,14 @@ import UsagePreview from "../UsagePreview.astro";
 import DoDont from "../DoDont.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
+import ComparisonTable from "../ComparisonTable.astro";
 import A11yNotes from "../A11yNotes.astro";
-import { segmentedAnatomyTree, segmentedTree, segmentedDontManyTree } from "../../demos/segmented";
+import { segmentedAnatomyTree, segmentedIconsTree, segmentedTree, segmentedDontManyTree } from "../../demos/segmented";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
+const vsRows = ["choice", "role", "keys", "count", "content", "clear"] as const;
 
 import { segmentedShapeDoTree, segmentedShapeDontTree } from "../../demos/dodont-labels";
 ---
@@ -47,6 +49,27 @@ import { segmentedShapeDoTree, segmentedShapeDontTree } from "../../demos/dodont
 
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview tree={segmentedTree(t)} title={t("segmentedPage.viewsTitle")} description={t("segmentedPage.viewsBody")} storybookTitle="Components/SegmentedControl" storybookStory="Default" />
+    <UsagePreview
+      tree={segmentedIconsTree(t)}
+      optionName="iconPosition"
+      title={t("segmentedPage.iconsTitle")}
+      description={t("segmentedPage.iconsBody")}
+      explain={{ inline: t("segmentedPage.icons.inlineBody"), block: t("segmentedPage.icons.blockBody") }}
+      labels={{ inline: "inline", block: "block" }}
+      storybookTitle="Components/SegmentedControl"
+      storybookStory="Default"
+    />
+
+    <h3>{t("segmentedPage.vsListbox.title")}</h3>
+    <p set:html={t("segmentedPage.vsListbox.rule")} />
+    <ComparisonTable
+      aspectLabel={t("segmentedPage.vsListbox.aspect")}
+      columns={["SegmentedControl", "Listbox (horizontal)"]}
+      rows={vsRows.map((row) => ({
+        label: t(`segmentedPage.vsListbox.${row}` as never),
+        cells: [t(`segmentedPage.vsListbox.${row}.segmented` as never), t(`segmentedPage.vsListbox.${row}.listbox` as never)],
+      }))}
+    />
 
     <h3>{t("component.contractNotesTitle")}</h3>
     <ul>

@@ -29,6 +29,14 @@ import { LANGUAGE_COOKIE, languagePreference } from "../lib/preferences";
 const isLocale = (value: string | null | undefined): value is (typeof locales)[number] =>
   value != null && (locales as readonly string[]).includes(value);
 
+/** Remember the reader's choice, then go to that language's copy of the page (nothing to do if already reading it). */
+export function chooseLanguage(locale: (typeof locales)[number], href: string): void {
+  setPreference(languagePreference, locale);
+  /* The server's copy: nginx sends every later unprefixed request to this language. */
+  document.cookie = `${LANGUAGE_COOKIE}=${locale}; path=/; max-age=31536000; samesite=lax`;
+  if (locale !== document.documentElement.lang) window.location.assign(href);
+}
+
 let bound = false;
 
 export function initLanguageMenu(): void {
@@ -45,17 +53,10 @@ export function initLanguageMenu(): void {
       const locale = row.dataset.skLangSet;
       if (!isLocale(locale)) return;
 
-      setPreference(languagePreference, locale);
-      /* The server's copy: nginx sends every later unprefixed request to this language. */
-      document.cookie = `${LANGUAGE_COOKIE}=${locale}; path=/; max-age=31536000; samesite=lax`;
-
-      /* Already reading this language: let the menu just close, no reload. */
-      if (locale === document.documentElement.lang) return;
-
       const href = row.getAttribute("href");
       if (!href) return;
       event.preventDefault();
-      window.location.assign(href);
+      chooseLanguage(locale, href);
     },
     true,
   );

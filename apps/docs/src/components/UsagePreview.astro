@@ -499,7 +499,8 @@ const scope = css && !asPlayground ? `u${[...(css + JSON.stringify(tree))].reduc
   /* The control sits at the start, not stretched across the card; the example is what is centred. */
   .sk-usage-preview--controlled :global(.sk-property-playground__control) {
     justify-self: start;
-    max-inline-size: 100%;
+    /* The width cap (the card minus the corner tools) is `preview-card.css`'s: a `100%` here, scoped and so
+       more specific, was overriding it, and on a phone the control ran under the tools. */
     overflow-x: auto;
   }
 

@@ -18,14 +18,19 @@ import "@skryensya/core/dimensions/radius.scss";
 import "@skryensya/core/dimensions/press-scale.scss";
 import "@skryensya/core/components/badge.css";
 import "@skryensya/core/components/button.css";
+/* The header and the page frame are `sk-wrapper`s. Without the sheet here it arrived with whichever
+ * page chunk happened to import it, and the bar's gutter popped in after first paint (layout shift). */
+import "@skryensya/core/patterns/wrapper.css";
 import "@skryensya/core/components/popover.css";
+import "@skryensya/core/components/segmented.css";
+import "@skryensya/core/components/switch.css";
 import "@skryensya/core/components/theme-toggle.css";
 import "@skryensya/core/components/kbd.css";
 import "@skryensya/core/components/loader.css";
-/* The site's icon set (Lucide) drawing the native select's chevron and check, the same glyphs the
+/* The site's icon set (Phosphor) drawing the native select's chevron and check, the same glyphs the
    enhanced Select renders. Global because every native select on the site, and every preview frame
    that copies this page's styles, should read as the same control. */
-import "@skryensya/icons-lucide/select.css";
+import "@skryensya/icons-phosphor/select.css";
 /* The palette composes over `.sk-dialog` (decision 11), and its sheet says so on the first line: it
  * owns the search row, the list and the footer, not the modal frame. Without this sheet ⌘K came out
  * with the browser's black border and square corners. It goes first for that reason: it is the base,
@@ -117,6 +122,7 @@ import "../styles/shell.scss";
 import { FOCUS_ORDER_CSS } from "../../../../packages/devtools/src/focus-order";
 import LanguageMenu from "../components/LanguageMenu.astro";
 import VersionMenu from "../components/VersionMenu.astro";
+import PrefsPanel from "../components/PrefsPanel.astro";
 import PrefTooltip from "../components/PrefTooltip.astro";
 import CommandPalette from "../components/CommandPalette.astro";
 import { emitMarkup } from "@skryensya/ai-compiler/emit";
@@ -544,7 +550,7 @@ const [paletteBefore = "", paletteMid = "", paletteAfter = ""] = emitMarkup(
     ))}
 
     {/*
-      Docs has a fixed visual contract: Lucide icons, medium density and medium rounding. The reader
+      Docs has a fixed visual contract: Phosphor icons, medium density and medium rounding. The reader
       preferences are scheme, contrast, the color palette and the two ComponentPreview ones, so apply
       those saved values before first paint, the palette especially, or the page would flash the default
       blue and then re-tint.
@@ -802,34 +808,39 @@ const [paletteBefore = "", paletteMid = "", paletteAfter = ""] = emitMarkup(
         {/* The bar's own identity on mobile: once the global nav (which lists "Home" as a peer
             destination, not a logo) moves into the drawer, nothing in the header names the site any
             more. Hidden on desktop, where the nav already says it; see the mobile media query. */}
-        <a class="dimensions__brand sk-interactive" href={href("/")}>
-          skryensya/ui
-        </a>
+        {/* The site's name and the docs major beside it. Phones keep the bare name (`display: contents`
+            lets the grid place it) and carry the version in the preferences sheet. */}
+        <div class="dimensions__identity">
+          {/* The wordmark is a NavList item like the destinations, so it shares their hover, focus and current states. */}
+          <div class="sk-nav-list dimensions__brand" data-orientation="horizontal">
+            <div class="sk-nav-list__group">
+              <ul class="sk-nav-list__list" role="list">
+                <li class="sk-nav-list__item">
+                  <a class="sk-nav-list__link sk-interactive" href={href("/")} aria-current={isGlobalItemCurrent("/") ? "page" : undefined}>
+                    <span class="sk-nav-list__label">skryensya/ui</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <VersionMenu />
+        </div>
+        {/* The destinations, centred on the bar. Home is the wordmark on the left, not a link here. */}
         <nav class="dimensions__global sk-nav-list" data-orientation="horizontal" aria-label={t("nav.global")}>
           <div class="sk-nav-list__group">
             <ul class="sk-nav-list__list" role="list">
               {
-                globalNavigation.map((item) => {
+                globalNavigation.filter((item) => canonicalPath(item.href) !== "/").map((item) => {
                   /* Canonical, so the localised twin of each (`/en/templates`) is caught too. */
-                  const isDevOnly = ["/catalog", "/templates", "/presets"].includes(canonicalPath(item.href));
-                  const isDev = import.meta.env.DEV;
-                  const isDisabled = isDevOnly && !isDev;
+                  const isDisabled = ["/catalog", "/templates", "/presets"].includes(canonicalPath(item.href)) && !import.meta.env.DEV;
 
                   return (
                     <li class="sk-nav-list__item">
                       {isDisabled ? (
-                        <button
-                          class="sk-nav-list__link sk-interactive"
-                          type="button"
-                          disabled
-                          title={t("nav.comingSoon")}
-                          aria-label={t("nav.comingSoon")}
-                        >
+                        <button class="sk-nav-list__link sk-interactive" type="button" disabled title={t("nav.comingSoon")} aria-label={t("nav.comingSoon")}>
                           <span class="sk-nav-list__label">{item.label}</span>
                         </button>
                       ) : (
-                        /* `external` leaves the site, so it opens in a new tab rather than dropping the reader out of
-                           the docs with the back button as their only way home. */
                         <a
                           class="sk-nav-list__link sk-interactive"
                           href={item.href}
@@ -838,14 +849,6 @@ const [paletteBefore = "", paletteMid = "", paletteAfter = ""] = emitMarkup(
                           aria-current={isGlobalItemCurrent(item.href) ? "page" : undefined}
                         >
                           <span class="sk-nav-list__label">{item.label}</span>
-                          {/*
-                            The launch mark, in the part NavList publishes for exactly this
-                            (`sk-nav-list__trailing`: pinned to the end, never squashed by a long
-                            label, and already dimmed to tertiary so it reads as metadata and not as
-                            a second word). Decorative on purpose: `target="_blank"` is the fact, the
-                            glyph is the redundant visible hint, and a screen reader that announced
-                            it would be reading a picture of the thing the link already is.
-                          */}
                           {item.external && (
                             <span class="sk-nav-list__trailing" aria-hidden="true">
                               <Fragment set:html={launchIcon} />
@@ -862,12 +865,6 @@ const [paletteBefore = "", paletteMid = "", paletteAfter = ""] = emitMarkup(
         </nav>
 
 
-
-        {/*
-          Docs major BEFORE search on desktop. The trigger names only the major (`v0`); the menu
-          discloses each major's latest tip. The full tip stays in the footer.
-        */}
-        <VersionMenu />
 
         {/*
           The command-palette trigger is the shortest path to any documentation destination. The
@@ -932,6 +929,9 @@ const [paletteBefore = "", paletteMid = "", paletteAfter = ""] = emitMarkup(
           `data-sk-dialog-vaul-open` is the trigger attribute `connectVaul` reads for a Dialog Vaul
           root (`vaul.ts`), the same shape as the drawer's own `data-sk-vaul-open`.
         */}
+        {/* Desktop twin of the button below: a Popover (trigger + panel) rather than the phone sheet. */}
+        <PrefsPanel presets={PALETTE_PRESETS} />
+
         <button
           class="sk-button sk-interactive dimensions__prefs-trigger"
           data-variant="ghost"
@@ -1874,6 +1874,43 @@ const [paletteBefore = "", paletteMid = "", paletteAfter = ""] = emitMarkup(
     </script>
 
     <script>
+      /* The Preferences panel's mode and contrast controls are fronts for the toggles the site already runs (the header cluster's,
+       * hidden but mounted): press them until the state matches, so persistence and the cross-tab sync stay in one place. */
+      import { chooseLanguage } from "../scripts/language-menu";
+      const root = document.documentElement;
+      const modeToggle = document.querySelector<HTMLButtonElement>(".dimensions__prefs [data-sk-theme-toggle]");
+      const contrastToggle = document.querySelector<HTMLButtonElement>(".dimensions__prefs [data-docs-contrast-toggle]");
+      const modeControl = document.querySelector<HTMLElement>("#docs-prefs-mode");
+      const contrastSwitch = document.querySelector<HTMLInputElement>("#docs-prefs-contrast");
+
+      const sync = () => {
+        const mode = root.getAttribute("data-scheme") || "system";
+        // `data-value` seeds the Segmented before it mounts; the click moves it once mounted (a no-op when it already matches).
+        if (modeControl) modeControl.dataset.value = mode;
+        modeControl?.querySelector<HTMLElement>(`[data-value="${mode}"]`)?.click();
+        if (contrastSwitch) contrastSwitch.checked = root.getAttribute("data-contrast") === "high";
+      };
+
+      modeControl?.addEventListener("sk:segmentedvaluechange", (event) => {
+        const next = (event as CustomEvent<{ value: string }>).detail.value;
+        // system -> light -> dark -> system: at most two presses reach any state.
+        for (let i = 0; i < 3 && (root.getAttribute("data-scheme") || "system") !== next; i++) modeToggle?.click();
+        sync();
+      });
+      document.querySelector<HTMLElement>("#docs-prefs-language")?.addEventListener("sk:segmentedvaluechange", (event) => {
+        const locale = (event as CustomEvent<{ value: string }>).detail.value as Parameters<typeof chooseLanguage>[0];
+        const hrefs = JSON.parse(document.querySelector<HTMLElement>("#docs-prefs-language-row")?.dataset.hrefs ?? "{}");
+        if (hrefs[locale]) chooseLanguage(locale, hrefs[locale]);
+      });
+      contrastSwitch?.addEventListener("change", () => {
+        if ((root.getAttribute("data-contrast") === "high") !== contrastSwitch.checked) contrastToggle?.click();
+        sync();
+      });
+      new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ["data-scheme", "data-contrast"] });
+      sync();
+    </script>
+
+    <script>
       /* The color-palette toggle cycles the curated presets. Each preset contains complete accent
        * and neutral ramp declarations; a click writes those explicit tier-1 values onto :root and
        * persists the id. The FOUC guard replays them before paint on the next load. The first preset
@@ -1926,7 +1963,7 @@ const [paletteBefore = "", paletteMid = "", paletteAfter = ""] = emitMarkup(
           option.addEventListener("click", () => {
             index = Math.max(0, presets.findIndex((p) => p.id === option.dataset.docsPaletteSet));
             apply(true);
-            option.closest<HTMLElement>("[popover]")?.hidePopover();
+            option.closest<HTMLElement>("[popover]:not(#docs-prefs-pop)")?.hidePopover();
           }),
         );
         apply(false); // sync every dot + label to the saved preset the FOUC guard already applied

@@ -229,6 +229,32 @@
   inset-block-start: calc(var(--space-inset-md) + (var(--size-control-lg) - var(--docs-card-tool-size)) / 2);
 }
 
+/* ON A PHONE the control gets the whole row. Beside the tools it had a card's width minus two 44px buttons. Here the
+   tools take their own strip at the top (the one a static stage already reserves) and the control sits under it, full
+   width; `property-playground.tsx` draws a native select there instead of the segments. */
+@media (max-width: 40rem) {
+  .sk-usage-preview--controlled .sk-preview-card {
+    padding-block-start: calc(var(--space-inset-md) + var(--docs-card-tool-strip));
+  }
+
+  .sk-usage-preview--controlled .sk-preview-card .sk-property-playground__control,
+  .sk-usage-preview--controlled .sk-preview-card .sk-property-playground__control-slot {
+    max-inline-size: 100%;
+  }
+
+  .sk-usage-preview--controlled .sk-preview-card .sk-property-playground__control {
+    justify-self: stretch;
+  }
+
+  .sk-usage-preview--controlled .sk-preview-card select.sk-property-playground__control {
+    inline-size: 100%;
+  }
+
+  .sk-usage-preview--controlled .sk-preview-card > :is(.sk-preview-card__code-link, .sk-preview-card__code-menu, .docs-card-appearance) {
+    inset-block-start: var(--docs-card-tool-inset);
+  }
+}
+
 
 /* AN EXAMPLE SET TO FROSTED GETS THE PHOTOGRAPH BEHIND IT, in a rounded window of its own. The stage's top padding is the
    strip the card's tools float in, so the picture is not the stage's background (it would run under them and its corners

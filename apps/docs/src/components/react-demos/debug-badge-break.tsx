@@ -9,7 +9,7 @@
 import { Badge, BadgeDot, BadgeHolder } from "@skryensya/react/badge";
 import { Button } from "@skryensya/react/button";
 import { Icon, IconSetProvider } from "@skryensya/react/icon";
-import { lucideIcons } from "@skryensya/icons-lucide";
+import { phosphorIcons } from "@skryensya/icons-phosphor";
 import type { ReactNode } from "react";
 
 const TONES = ["neutral", "accent", "success", "warning", "danger"] as const;
@@ -70,7 +70,7 @@ function Group({ title, children }: { title: string; children: ReactNode }) {
 
 export function BadgeBreak() {
   return (
-    <IconSetProvider set={lucideIcons}>
+    <IconSetProvider set={phosphorIcons}>
       <Group title="Baseline. Tone × size">
         {TONES.map((tone) => (
           <Case key={tone} label={`tone="${tone}" × every size`}>

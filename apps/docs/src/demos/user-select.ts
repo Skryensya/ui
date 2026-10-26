@@ -97,9 +97,9 @@ export const userSelectEmptyHtml = (t: Translate): string => `<div class="sk-sel
 /* Mounted by the auto-loader like every other family: UserSelect is in its registry now. */
 export const userSelectJs = `import { initComponents } from "@skryensya/vanilla/auto";
 import { mountIcons } from "@skryensya/vanilla/icon";
-import { lucideIcons } from "@skryensya/icons-lucide";
+import { phosphorIcons } from "@skryensya/icons-phosphor";
 
-mountIcons(document, lucideIcons);
+mountIcons(document, phosphorIcons);
 await initComponents();`;
 
 export const userSelectListen = `document

@@ -26,10 +26,10 @@ const t = useTranslations(getLocale(Astro.url));
 
 const js = `import { initComponents } from "@skryensya/vanilla/auto";
 import { mountIcons } from "@skryensya/vanilla/icon";
-import { lucideIcons } from "@skryensya/icons-lucide";
+import { phosphorIcons } from "@skryensya/icons-phosphor";
 
 // ${t("sidebarPage.iconsComment").split("\n").join("\n// ")}
-mountIcons(document, lucideIcons);
+mountIcons(document, phosphorIcons);
 
 await initComponents();`;
 import { sidebarDoTree, sidebarDontTree, sidebarNamesDoTree, sidebarNamesDontTree } from "../../demos/dodont-pairs";

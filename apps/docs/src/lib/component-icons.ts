@@ -6,7 +6,7 @@ import { componentIcons } from "./generated/component-icons";
 /**
  * The glyph for a component page, from a localized href, or `null` for a page that is not a
  * component (a guide, a foundation). A string entry is a stable role and follows the site's set;
- * geometry is Lucide's, generated (see `scripts/generate-component-icons.ts`).
+ * geometry is Phosphor's, generated (see `scripts/generate-component-icons.ts`).
  */
 export function findComponentIconMarkup(
   href: string,

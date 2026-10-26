@@ -196,7 +196,7 @@ export const appShellTree = (t: Translate): UsageTree => ({
                     signature: "Inline",
                     options: { gap: "sm", wrap: true },
                     children: [
-                      { contract: "button", signature: "Button.action", options: { variant: "soft" }, children: [icon("download"), t("demo.appShell.export")] },
+                      { contract: "button", signature: "Button.action", options: { variant: "soft" }, slots: { pre: icon("download") }, children: t("demo.appShell.export") },
                       { contract: "button", signature: "Button.action", options: { tone: "accent" }, children: t("demo.appShell.deploy") },
                     ],
                   },
