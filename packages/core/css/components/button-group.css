@@ -24,7 +24,7 @@
     /* Ink-relative, not a border token: a solid member paints no border, and a border-coloured line
      * vanished against its fill. The ink is the members' label colour (see the rule below for a group
      * of filled accent or danger buttons), so it reads on any face. */
-    --sk-button-group-separator-color: color-mix(in oklab, var(--sk-button-group-separator-ink, currentColor) 40%, transparent);
+    --sk-button-group-separator-color: color-mix(in oklab, var(--sk-button-group-separator-ink, currentColor) 12%, transparent);
     /* How much of the cross axis an `inset` separator covers. */
     --sk-button-group-separator-inset: 60%;
     --sk-button-group-text-bg: var(--color-bg-well);
@@ -260,6 +260,7 @@
    * or the line would vanish on its light face. Same match as the Button's own fill rule. */
   .sk-button-group:has(> .sk-button:not([data-variant="soft"], [data-variant="ghost"]):is([data-tone="accent"], [data-tone="danger"]), > .sk-menu > .sk-button:not([data-variant="soft"], [data-variant="ghost"]):is([data-tone="accent"], [data-tone="danger"])):not(:has(> :not(.sk-button-group__separator, .sk-menu, .sk-button:not([data-variant="soft"], [data-variant="ghost"]):is([data-tone="accent"], [data-tone="danger"])))) {
     --sk-button-group-separator-ink: var(--color-text-on-accent);
+    --sk-button-group-separator-color: color-mix(in oklab, var(--color-text-on-accent) 45%, transparent);
   }
 
   /* Brutalist draws its line in the same black as its edges, 1px, and nearly the whole height: a little room at the top and bottom so it
@@ -267,6 +268,14 @@
   .sk-button-group:has(> [data-appearance="brutalist"]) {
     --sk-button-group-separator-color: var(--sk-button-brutalist-edge, oklch(0 0 0));
     --sk-button-group-separator-inset: calc(100% - 2 * var(--space-inset-sm));
+  }
+
+  /* PLAIN DRAWS NO BORDER OF ITS OWN in a group: the fill, the shared shadow and the separators already say where each member
+   * ends, and a ring around every soft or ghost button read as a box around the whole. The seam's divider is its own
+   * border colour (below) and is unaffected. The other appearances keep the edge that is part of their look. */
+  .sk-button-group > .sk-button:not([data-appearance="tactile"], [data-appearance="brutalist"], [data-appearance="frosted"]),
+  .sk-button-group > :is(.sk-menu, .sk-popover) > .sk-button:not([data-appearance="tactile"], [data-appearance="brutalist"], [data-appearance="frosted"]) {
+    --sk-button-border-color: transparent;
   }
 
   /* ── PARTS ───────────────────────────────────────────────────────────────────────────────── */

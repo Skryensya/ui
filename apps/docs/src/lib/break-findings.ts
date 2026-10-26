@@ -68,6 +68,42 @@ export const breakFindings: Record<string, readonly BreakFinding[]> = {
       status: "fixed",
       source: "apps/docs/src/i18n/messages/components/button-group.ts",
     },
+    {
+      scenario: "Ronda 2: grupos anidados con el separador por defecto, a 320px",
+      cases: ["Pages, nested groups, default separator", "Pages past a thousand"],
+      error:
+        "Con separator inset (el valor por defecto), el grupo exterior inserta un ButtonGroupSeparator entre los dos grupos hijos: una línea suelta de 44px flota a la derecha de «1,290» (x=329, ancho 0), cuando el contrato dice que un grupo de grupos solo los separa con espacio.",
+      fix: "Propuesto, SIN APLICAR: en button-group.tsx no insertar separador junto a un hijo que sea otro ButtonGroup (igual que ya se omite junto a un ButtonGroupSeparator), o en CSS ocultar .sk-button-group__separator dentro de .sk-button-group:has(> .sk-button-group).",
+      status: "open",
+      source: "packages/react/src/components/button-group.tsx",
+    },
+    {
+      scenario: "Ronda 2: doce botones de ícono (barra de formato) a 320px",
+      cases: ["Twelve icon members (a formatting bar)"],
+      error:
+        "Los 12 botones conservan 44px (528px en total) dentro de un grupo de 320px con overflow visible: del octavo en adelante quedan fuera de la superficie y del contenedor, sin scroll ni salto de línea. Los últimos (↶ ↷, hasta x=568) no se alcanzan.",
+      fix: "Propuesto, SIN APLICAR (decisión): permitir que el grupo haga wrap como el grupo de grupos (flex-wrap: wrap), o dar scroll horizontal; y dejar escrito que más de unos seis miembros es una Toolbar.",
+      status: "open",
+      source: "packages/core/css/components/button-group.css",
+    },
+    {
+      scenario: "Ronda 2: un miembro [hidden] entre otros con separator inset",
+      cases: ["Inset with a [hidden] member in the middle"],
+      error:
+        "El grupo inserta un separador a cada lado del miembro oculto: quedan dos separadores en la misma posición (x=128.3, ancho 0) que se dibujan apilados, y la línea se oscurece (12 % + 12 %).",
+      fix: "Propuesto, SIN APLICAR: no insertar el separador junto a un hijo con hidden en button-group.tsx, o en CSS ocultar el segundo de dos separadores contiguos que rodean un miembro [hidden].",
+      status: "open",
+      source: "packages/react/src/components/button-group.tsx",
+    },
+    {
+      scenario: "Ronda 2: Select, campo y botón a 320px con un monto largo",
+      cases: ["Select, field and button"],
+      error:
+        "El Input conserva 179px (su ancho intrínseco y su piso) y es el Select el que se encoge a 77px: el código de moneda «CHF» se recorta a «C.» y Send a «Se…». Se trunca un dato que el usuario compara y la acción.",
+      fix: "Propuesto, SIN APLICAR: flex-shrink: 0 en el Select y en el Button dentro del grupo (o min-inline-size: max-content en el Select), de modo que ceda el Input hasta su piso de 8rem.",
+      status: "open",
+      source: "packages/core/css/components/button-group.css",
+    },
   ],
   clipboard: [
     {

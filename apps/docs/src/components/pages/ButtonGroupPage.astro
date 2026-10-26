@@ -184,7 +184,7 @@ const centeredCss = `
     />
 
     <h4>{t("buttonGroupPage.popoverTitle")}</h4>
-    <UsagePreview tree={buttonGroupPopoverTree(t)} description={t("buttonGroupPage.popoverBody")} label={t("buttonGroupPage.popoverTitle")} viewport="menu" stageMinBlockSize="20rem" css={`.sk-component-preview__frame-body { padding-block-end: 11rem; } .sk-popover__close { margin-block-start: var(--space-stack-md); }`} storybookTitle={story} storybookStory="Popover" />
+    <UsagePreview tree={buttonGroupPopoverTree(t)} description={t("buttonGroupPage.popoverBody")} label={t("buttonGroupPage.popoverTitle")} viewport="menu" stageMinBlockSize="18rem" css={`${centeredCss} .sk-button-group { inset-block-start: 2.5rem; translate: -2.875rem 0; } .sk-popover__close { margin-block-start: var(--space-stack-md); }`} storybookTitle={story} storybookStory="Popover" />
 
     <h4>{t("buttonGroupPage.rtlTitle")}</h4>
     <UsagePreview tree={buttonGroupRtlTree(t)} frostSatin="blue" description={t("buttonGroupPage.rtlBody")} label={t("buttonGroupPage.rtlTitle")} storybookTitle={story} storybookStory="Rtl" />
