@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "a0ca6e9edc3aab97"
+surface: "91709b12b39af6e4"
 entries:
   - date: 2026-10-01
     kind: feature
@@ -13,3 +13,11 @@ entries:
     en:
       title: First release
       body: "Published for the first time, with its contract, a React binding and a Vanilla mount."
+  - date: 2026-10-25
+    kind: feature
+    es:
+      title: Sombra del pulgar como hook
+      body: "--sk-slider-thumb-shadow queda documentado entre los hooks del contrato."
+    en:
+      title: Thumb shadow as a hook
+      body: "--sk-slider-thumb-shadow is now documented among the contract's hooks."

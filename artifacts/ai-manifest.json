@@ -401,6 +401,18 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-10-24",
+            "en": {
+              "body": "Two new hooks, --sk-button-tactile-press-duration and --sk-button-tactile-press-easing, tune the duration and curve the tactile ledge and face press down on together. By default they follow the shared feedback tempo.",
+              "title": "The tactile press tempo is a hook"
+            },
+            "es": {
+              "body": "Dos hooks nuevos, --sk-button-tactile-press-duration y --sk-button-tactile-press-easing, afinan la duración y la curva con las que la repisa y la cara del tactile se hunden juntas. Por defecto siguen el tempo de feedback compartido.",
+              "title": "El tempo del press tactile es un hook"
+            },
+            "kind": "feature"
+          },
+          {
             "date": "2026-10-23",
             "en": {
               "body": "weldStart and weldEnd are removed. To join controls, put them inside a ButtonGroup: the group squares the corners by position. Recipe in docs/migrations/0001-split-button-to-button-group.md.",
@@ -476,6 +488,18 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "separator now defaults to inset (a shorter centred line); full is still the whole height and none draws nothing. The group adds no separator beside one you wrote.",
+              "title": "The default separator is inset, and there is separator none"
+            },
+            "es": {
+              "body": "separator pasa a valer inset por defecto (línea corta y centrada); full sigue siendo el alto completo y none no dibuja nada. El grupo no agrega un separador junto a uno que ya escribiste.",
+              "title": "El separador por defecto es inset, y hay separator none"
+            },
+            "kind": "breaking"
+          },
           {
             "date": "2026-10-24",
             "en": {
@@ -1687,6 +1711,19 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-10-24",
+            "en": {
+              "body": "inputmode is allowed to suggest the right keyboard, for example decimal, without changing the field's type.",
+              "title": "Input accepts inputmode"
+            },
+            "es": {
+              "body": "Se permite inputmode para sugerir el teclado adecuado, por ejemplo decimal, sin cambiar el tipo del campo.",
+              "title": "Input acepta inputmode"
+            },
+            "kind": "feature",
+            "target": "Input"
+          },
           {
             "date": "2026-10-24",
             "en": {
@@ -3524,6 +3561,24 @@
       }
     ],
     "slider": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-25",
+            "en": {
+              "body": "--sk-slider-thumb-shadow is now documented among the contract's hooks.",
+              "title": "Thumb shadow as a hook"
+            },
+            "es": {
+              "body": "--sk-slider-thumb-shadow queda documentado entre los hooks del contrato.",
+              "title": "Sombra del pulgar como hook"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -9546,6 +9601,18 @@
           "part": "root",
           "sheet": "@skryensya/core/components/button.css"
         },
+        "--sk-button-tactile-press-duration": {
+          "default": "var(--motion-feedback-duration)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/button.css"
+        },
+        "--sk-button-tactile-press-easing": {
+          "default": "var(--motion-feedback-easing)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/button.css"
+        },
         "--sk-button-wash": {
           "default": "var(--elevation-wash-raised)",
           "output": false,
@@ -9578,6 +9645,8 @@
         "--sk-button-padding-x",
         "--sk-button-radius",
         "--sk-button-shadow",
+        "--sk-button-tactile-press-duration",
+        "--sk-button-tactile-press-easing",
         "--sk-button-wash",
         "--sk-button-width"
       ],
@@ -9988,7 +10057,7 @@
           "sheet": "@skryensya/core/components/button-group.css"
         },
         "--sk-button-group-separator-color": {
-          "default": "color-mix(in oklab, currentColor 30%, transparent)",
+          "default": "color-mix(in oklab, var(--sk-button-group-separator-ink, currentColor) 12%, transparent)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/button-group.css"
@@ -10049,11 +10118,12 @@
         },
         "separator": {
           "attr": "data-separator",
-          "default": "full",
+          "default": "inset",
           "type": "enum",
           "values": [
+            "inset",
             "full",
-            "inset"
+            "none"
           ]
         }
       },
@@ -16859,7 +16929,6 @@
           "avoidWhen": [
             "the two things are different subjects or sizes; the divider only works if the layers are registered, so they would not line up; use side-by-side Grid columns",
             "the user is resizing panels of a layout rather than revealing a layer; that is Resizable, which conserves a total between neighbours",
-            "what is inside the layers is interactive; a press anywhere on the box moves the divider, so a link or a button inside would be unreachable",
             "there are more than two things to compare; a divider has two sides, and Tabs or a Segmented control fits a set"
           ],
           "useWhen": [
@@ -23463,6 +23532,7 @@
             "readonly",
             "value",
             "autocomplete",
+            "inputmode",
             "required",
             "maxlength",
             "minlength",
@@ -39214,6 +39284,12 @@
           "part": "rangeRoot",
           "sheet": "@skryensya/core/components/slider.css"
         },
+        "--sk-slider-thumb-shadow": {
+          "default": "drop-shadow(0 1px 1.5px rgb(0 0 0 / 0.28)) drop-shadow(0 0 0.5px rgb(0 0 0 / 0.3))",
+          "output": false,
+          "part": "rangeRoot",
+          "sheet": "@skryensya/core/components/slider.css"
+        },
         "--sk-slider-thumb-size": {
           "default": "var(--size-icon-sm)",
           "output": false,
@@ -39239,6 +39315,7 @@
         "--sk-slider-thumb-hit",
         "--sk-slider-thumb-ring",
         "--sk-slider-thumb-ring-size",
+        "--sk-slider-thumb-shadow",
         "--sk-slider-thumb-size",
         "--sk-slider-track",
         "--sk-slider-track-size"
@@ -50915,7 +50992,7 @@
     "working": "0.0.3"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "ceb23c6ebdbaffbc",
+  "sourceHash": "d2fe2cf4332d1d19",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

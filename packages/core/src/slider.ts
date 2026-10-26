@@ -91,6 +91,7 @@ export const sliderContract = {
     "--sk-slider-thumb-hit",
     "--sk-slider-thumb-ring",
     "--sk-slider-thumb-ring-size",
+    "--sk-slider-thumb-shadow",
     "--sk-slider-thumb-size",
     "--sk-slider-track",
     "--sk-slider-track-size",

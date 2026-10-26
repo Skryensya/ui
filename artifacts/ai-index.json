@@ -1407,7 +1407,6 @@
           "avoidWhen": [
             "the two things are different subjects or sizes; the divider only works if the layers are registered, so they would not line up; use side-by-side Grid columns",
             "the user is resizing panels of a layout rather than revealing a layer; that is Resizable, which conserves a total between neighbours",
-            "what is inside the layers is interactive; a press anywhere on the box moves the divider, so a link or a button inside would be unreachable",
             "there are more than two things to compare; a divider has two sides, and Tabs or a Segmented control fits a set"
           ],
           "host": "div",
@@ -6323,5 +6322,5 @@
     }
   ],
   "schemaVersion": "2.3",
-  "sourceHash": "ceb23c6ebdbaffbc"
+  "sourceHash": "d2fe2cf4332d1d19"
 }
