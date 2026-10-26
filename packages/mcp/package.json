@@ -18,18 +18,18 @@
   },
   "dependencies": {
     "@modelcontextprotocol/node": "^2.0.0",
-    "@modelcontextprotocol/server": "~2.2.0",
+    "@modelcontextprotocol/server": "~2.3.1",
     "@skryensya/ai-compiler": "workspace:*",
     "@skryensya/core": "workspace:*",
     "@skryensya/maker-model": "workspace:*",
     "@skryensya/maker-agent": "workspace:*",
     "@skryensya/examples": "workspace:*",
     "hono": "^4.12.34",
-    "zod": "^4.4.3"
+    "zod": "^4.6.6"
   },
   "devDependencies": {
     "@modelcontextprotocol/client": "~2.2.0",
-    "@modelcontextprotocol/sdk": "~1.31.0",
+    "@modelcontextprotocol/sdk": "~1.32.1",
     "@skryensya/maker-server": "workspace:*",
     "@types/node": "catalog:",
     "esbuild": "^0.28.1",

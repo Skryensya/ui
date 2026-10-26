@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@skryensya/reference-model": "workspace:*",
-    "zod": "^4.4.3",
+    "zod": "^4.6.6",
     "@skryensya/core": "workspace:*",
     "@skryensya/icons-lucide": "workspace:*",
     "@skryensya/vanilla": "workspace:*"
@@ -20,7 +20,7 @@
     "@types/node": "catalog:",
     "typescript": "^5.9.3",
     "vitest": "^4.1.11",
-    "vite": "^8.1.5",
+    "vite": "^8.1.6",
     "@types/chrome": "^0.0.287",
     "jsdom": "^29.1.1",
     "@sveltejs/vite-plugin-svelte": "^7.2.0",

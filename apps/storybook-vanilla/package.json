@@ -19,14 +19,14 @@
     "@skryensya/vanilla": "workspace:*"
   },
   "devDependencies": {
-    "@storybook/addon-docs": "^10.5.10",
-    "@storybook/html-vite": "^10.5.10",
+    "@storybook/addon-docs": "^10.6.2",
+    "@storybook/html-vite": "^10.6.2",
     "@sveltejs/vite-plugin-svelte": "^7.2.0",
     "@types/node": "catalog:",
     "sass": "^1.83.0",
-    "storybook": "^10.5.10",
+    "storybook": "^10.6.2",
     "svelte": "^5.56.7",
     "typescript": "^5.9.3",
-    "vite": "^8.1.5"
+    "vite": "^8.1.6"
   }
 }

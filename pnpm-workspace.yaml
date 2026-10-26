@@ -53,6 +53,29 @@ minimumReleaseAge: 43200
 # the cooldown again. Verified by removing them and reinstalling: nothing changes today. They are
 # insurance for the next `pnpm install` that does have to resolve, not a patch for something broken now.
 minimumReleaseAgeExclude:
+  # 2026-10-25: the security round that lifts the audit gate. Each entry names the day it can go.
+  # DELETE AFTER 2026-11-14, when @modelcontextprotocol/sdk 1.32.1 (2026-10-05) and server 2.3.1 are 30 days old.
+  # sdk < 1.32.0 / server < 2.3.0 carry HIGH advisories (experimental tasks not tied to the session that
+  # created them, shared transport delivering one client's messages to another, memory exhaustion on one
+  # request), reached through packages/mcp.
+  - "@modelcontextprotocol/sdk"
+  - "@modelcontextprotocol/server"
+  # DELETE AFTER 2026-11-24, when vite 8.1.6 is 30 days old: launch-editor existence check bypass on
+  # Windows (HIGH), reached through apps/eval-viewer.
+  - "vite"
+  # DELETE AFTER 2026-11-13, when storybook 10.6.2 is 30 days old. `storybook < 10.6.2` carries a
+  # CRITICAL advisory (no origin validation in the preview, code injection from a malicious website) and
+  # a HIGH one (dev server reachable from the local network). Every @storybook/* package ships the same
+  # release, so they cannot be told apart by name: the scope is excluded.
+  - "storybook"
+  - "@storybook/*"
+  # DELETE AFTER 2026-11-24, when zod 4.6.6 is 30 days old: memory exhaustion validating oversized
+  # constrained collections (HIGH), reached through apps/reference-clipper.
+  - "zod"
+  # DELETE AFTER 2026-11-24, when body-parser 2.4.0 is 30 days old: DoS through trailing bytes after a
+  # compressed body (HIGH), reached through packages/mcp > @modelcontextprotocol/sdk > express. The fix
+  # is the override in package.json.
+  - "body-parser"
   # DELETE AFTER 2026-10-19, when devalue 5.9.4 (2026-09-18) is 30 days old.
   # `devalue <= 5.9.2` carries three HIGH advisories (shared memory in stringify/uneval, quadratic
   # expansion of repeated strings in uneval, an unhandled rejection in stringifyAsync), reached through

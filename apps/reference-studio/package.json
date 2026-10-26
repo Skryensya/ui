@@ -21,7 +21,7 @@
     "@types/node": "catalog:",
     "typescript": "^5.9.3",
     "vitest": "^4.1.11",
-    "vite": "^8.1.5",
+    "vite": "^8.1.6",
     "@vitejs/plugin-react": "^5.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",

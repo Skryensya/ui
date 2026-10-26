@@ -14,7 +14,7 @@
   "dependencies": {
     "@skryensya/examples": "workspace:*",
     "@skryensya/core": "workspace:*",
-    "zod": "^4.4.3"
+    "zod": "^4.6.6"
   },
   "devDependencies": {
     "@types/node": "catalog:",
