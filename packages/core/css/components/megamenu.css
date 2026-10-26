@@ -26,7 +26,8 @@
     display: flex;
   }
 
-  .sk-megamenu__trigger {
+  .sk-megamenu__trigger,
+  .sk-megamenu__link {
     display: inline-flex;
     align-items: center;
     gap: var(--space-inline-xs);
@@ -64,6 +65,16 @@
     /* The visible "V" is the lower half of the rotated square: lift it by a quarter of its size to
      * sit on the text's optical middle. */
     transform: translateY(-0.125em) rotate(45deg);
+  }
+
+  /* The section the reader is in, and the plain destination they are on: said by the bar, not only by the sidebar. */
+  .sk-megamenu__item[data-contains-current] > .sk-megamenu__trigger,
+  .sk-megamenu__link[aria-current="page"] {
+    color: var(--color-text-accent);
+  }
+
+  .sk-megamenu__link {
+    text-decoration: none;
   }
 
   .sk-megamenu__trigger[aria-expanded="true"] {
@@ -111,6 +122,12 @@
    * would fight this file's own grid-stacking ruler/panel structure). Every value here is
    * `nav-list.css`'s own default read back from the SAME underlying design tokens, not a fork of it.
    */
+  /* A column's label may be a sentence (the category's own description), so it wraps inside its column instead of
+     * running into the next one, which the sidebar's one-word label never had to do. */
+  .sk-megamenu__content .sk-nav-list__group-label {
+    white-space: normal;
+  }
+
   .sk-megamenu__content {
     --sk-nav-list-group-gap: 0;
     --sk-nav-list-item-gap: 0;

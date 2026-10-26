@@ -381,4 +381,24 @@
   .sk-fade-edge[data-fade="color"][data-at-edge]::after {
     opacity: 0;
   }
+
+  /* High contrast: a faded edge hides the very content it should keep legible, so the band is dropped
+   * and the content ends where it ends. Both triggers, as in `modes/hc.scss`. */
+  [data-contrast="high"] .sk-fade-edge {
+    mask-image: none;
+  }
+
+  [data-contrast="high"] .sk-fade-edge::after {
+    display: none;
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-contrast]) .sk-fade-edge {
+      mask-image: none;
+    }
+
+    :root:not([data-contrast]) .sk-fade-edge::after {
+      display: none;
+    }
+  }
 }

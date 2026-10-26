@@ -58,6 +58,9 @@ const MAP = {
   volume: "speaker-high",
   "volume-muted": "speaker-x",
   captions: "subtitles",
+  bold: "text-b",
+  italic: "text-italic",
+  link: "link",
   fullscreen: "corners-out",
   "fullscreen-exit": "corners-in",
   replay: "arrow-counter-clockwise",
@@ -95,7 +98,9 @@ const MAP = {
 /* Phosphor draws FILLED shapes, not strokes, even at the `regular` weight, which looks like outline but
  * is filled outlines. Its SVGs already carry fill="currentColor" on the root; we re-declare it here
  * anyway so IconData is explicit and does not depend on the asset staying the same. */
-const ATTRS = { fill: "currentColor" };
+/* Phosphor has nothing between `regular` and `bold` (24 units against 16 in the 256 box), and regular reads as
+ * hairline at 16px. A 4-unit stroke in the fill colour thickens every outline by 2 units a side: about halfway. */
+const ATTRS = { fill: "currentColor", stroke: "currentColor", "stroke-width": "4", "stroke-linejoin": "round" };
 
 const WEIGHT = "regular";
 

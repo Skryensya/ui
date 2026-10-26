@@ -1,6 +1,6 @@
 import { act, fireEvent, render, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { Megamenu, MegamenuTrigger } from "./megamenu.js";
+import { Megamenu, MegamenuLink, MegamenuTrigger } from "./megamenu.js";
 import { ImageFrame } from "./image-frame.js";
 
 /** The hover-intent timers call `setState` outside any React event handler `act()` already wraps
@@ -284,5 +284,31 @@ describe("Megamenu (React)", () => {
     fireEvent.pointerOut(pricing!, { relatedTarget: root });
     expect(img.src).toContain("/default.jpg");
     expect(img.alt).toBe("Default");
+  });
+});
+
+describe("Megamenu (React): plain links and the current section", () => {
+  it("keeps a link in its authored place, numbers only the categories, and says which section holds the page", () => {
+    const ui = render(
+      <Megamenu label="Main">
+        <MegamenuTrigger columns={[<div key="a"><a href="/a">A</a></div>]} containsCurrent>
+          First
+        </MegamenuTrigger>
+        <MegamenuLink href="/plain" current>
+          Plain
+        </MegamenuLink>
+        <MegamenuTrigger columns={[<div key="b"><a href="/b">B</a></div>]}>Second</MegamenuTrigger>
+      </Megamenu>,
+    );
+    const row = Array.from(ui.container.querySelectorAll(".sk-megamenu__list > li")).map((li) => li.textContent);
+    expect(row).toEqual(["First", "Plain", "Second"]);
+    expect(trigger(ui, "First").getAttribute("aria-current")).toBe("true");
+    expect(trigger(ui, "Second").hasAttribute("aria-current")).toBe(false);
+    const link = ui.getByRole("link", { name: "Plain" });
+    expect(link.getAttribute("aria-current")).toBe("page");
+    expect(link.hasAttribute("data-sk-megamenu-trigger")).toBe(false);
+
+    fireEvent.click(trigger(ui, "Second"));
+    expect(visiblePanel().textContent).toBe("B");
   });
 });

@@ -38,6 +38,8 @@ export const megamenuParts = {
   list: "sk-megamenu__list",
   item: "sk-megamenu__item",
   trigger: "sk-megamenu__trigger",
+  /** A plain destination in the row (`MegamenuLink`). */
+  link: "sk-megamenu__link",
   positioner: "sk-megamenu__positioner",
   content: "sk-megamenu__content",
   /** Holds every trigger's columns at once, `visibility: hidden`: never painted, never focusable,
@@ -122,6 +124,13 @@ export const megamenuContract = {
   hookSheets: ["@skryensya/core/patterns/anchored.css"],
 
   options: {
+    /** A plain destination in the row (`MegamenuLink`): where it goes. */
+    href: { type: "string", attr: "href" },
+    /** `MegamenuLink` only: this destination is the current page. `aria-current="page"` is what the styling follows. */
+    current: { type: "boolean", default: false, attr: "aria-current", trueValue: "page" },
+    /** `MegamenuTrigger` only: the current page is one of this category's own, so the bar says which section the
+     *  reader is in. A category is a button and not a destination, so it can never itself be "the page". */
+    containsCurrent: { type: "boolean", default: false, attr: "data-contains-current", trueValue: "" },
     /** The bar's accessible name. Required, the same reason `Menubar`'s own `label` is: a `<nav>`
      *  landmark carries no implicit one, and a page with a second nav needs each named. */
     label: { type: "string", attr: "aria-label" },
@@ -154,7 +163,7 @@ export const megamenuContract = {
       forward: ["id", "aria-*"],
       portals: { container: true },
       slots: {
-        children: { accepts: "signature", required: true, of: ["MegamenuTrigger"] },
+        children: { accepts: "signature", required: true, of: ["MegamenuTrigger", "MegamenuLink"] },
       },
       template: {
         element: "nav",
@@ -181,7 +190,7 @@ export const megamenuContract = {
       intent: ["megamenu-category-trigger", "disclosure-navigation-trigger"],
       host: { element: "li" },
       parents: ["Megamenu"],
-      options: [],
+      options: ["containsCurrent"],
       slots: {
         /** The category's own name. Plain text, an accessible name a screen reader announces on
          *  the button itself, nothing more (no icon slot: a category label is not a destination). */
@@ -205,6 +214,7 @@ export const megamenuContract = {
             part: "trigger",
             also: ["sk-interactive"],
             attrs: { type: "button", "aria-expanded": "false" },
+            attrsWhen: [{ option: "containsCurrent", equals: "true", attrs: { "aria-current": "true" } }],
             mount: megamenuAttrs.trigger,
             slot: "children",
           },
@@ -229,6 +239,30 @@ export const megamenuContract = {
         ],
       },
       react: { from: "@skryensya/react/megamenu", name: "MegamenuTrigger" },
+    },
+
+    /*
+     * A destination that sits in the same row as the categories but opens no panel: a link, wearing the
+     * trigger's own look (without its chevron) so the row reads as one. Without it, a bar with one plain
+     * link among its categories had to splice markup into the list by hand. It is not a trigger: it has no
+     * `data-sk-megamenu-trigger`, so the bindings neither index it nor open anything for it.
+     */
+    MegamenuLink: {
+      intent: ["megamenu-plain-destination", "navigation-bar-link"],
+      host: { element: "a" },
+      parents: ["Megamenu"],
+      options: ["href", "current"],
+      requires: ["href"],
+      forward: ["id", "target", "rel", "aria-*"],
+      slots: {
+        children: { accepts: "text", required: true },
+      },
+      template: {
+        element: "li",
+        part: "item",
+        children: [{ element: "a", part: "link", also: ["sk-interactive"], host: true, slot: "children" }],
+      },
+      react: { from: "@skryensya/react/megamenu", name: "MegamenuLink" },
     },
   },
 } as const satisfies ComponentContract;

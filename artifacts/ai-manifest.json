@@ -1712,6 +1712,19 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-10-26",
+            "en": {
+              "body": "controlSize takes xs: a 24px field with caption type, for a dense bar beside xs buttons.",
+              "title": "Input has an xs size"
+            },
+            "es": {
+              "body": "controlSize admite xs: 24px de alto con tipografía caption, para una barra densa junto a botones xs.",
+              "title": "Input tiene un tamaño xs"
+            },
+            "kind": "feature",
+            "target": "Input"
+          },
+          {
             "date": "2026-10-24",
             "en": {
               "body": "inputmode is allowed to suggest the right keyboard, for example decimal, without changing the field's type.",
@@ -2275,6 +2288,18 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-10-26",
+            "en": {
+              "body": "New <code>MegamenuLink</code>: a destination with no panel in the same row as the categories, wearing their look and with no chevron. <code>MegamenuTrigger</code> gains <code>containsCurrent</code>, which marks the category holding the current page (<code>aria-current</code> and the accent colour).",
+              "title": "Plain links in the bar, and the current section"
+            },
+            "es": {
+              "body": "Nuevo <code>MegamenuLink</code>: un destino sin panel en la misma fila que las categorías, con su aspecto y sin chevron. <code>MegamenuTrigger</code> gana <code>containsCurrent</code>, que marca la categoría que contiene la página actual (<code>aria-current</code> y color de acento).",
+              "title": "Enlaces sueltos en la barra y la sección actual"
+            },
+            "kind": "feature"
+          },
           {
             "date": "2026-10-19",
             "en": {
@@ -3263,6 +3288,24 @@
       }
     ],
     "segmented": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-26",
+            "en": {
+              "body": "Each option's label is now a node, as in Tabs: it can hold an <code>Icon</code> followed by the word. With <code>iconPosition=\"block\"</code> the icon goes above and the bar grows taller. The track's height becomes a minimum instead of fixed, and it never draws a scrollbar, not even inside <code>.sk-scrollbar</code>.",
+              "title": "An option takes an icon before its text"
+            },
+            "es": {
+              "body": "La etiqueta de cada opción es ahora un nodo, como en Tabs: puede llevar un <code>Icon</code> seguido de la palabra. Con <code>iconPosition=\"block\"</code> el icono va encima y la barra crece en alto. La pista deja de tener alto fijo (pasa a mínimo) y nunca dibuja barra de desplazamiento, ni dentro de <code>.sk-scrollbar</code>.",
+              "title": "Una opción admite un icono delante del texto"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.3-dev"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -23420,6 +23463,7 @@
           "attr": "data-size",
           "type": "enum",
           "values": [
+            "xs",
             "sm",
             "md",
             "lg"
@@ -27308,6 +27352,12 @@
           "portals": true,
           "react": "@skryensya/react/megamenu#Megamenu"
         },
+        "MegamenuLink": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/megamenu#MegamenuLink"
+        },
         "MegamenuTrigger": {
           "enhancer": null,
           "markup": true,
@@ -27396,6 +27446,22 @@
       ],
       "id": "megamenu",
       "options": {
+        "containsCurrent": {
+          "attr": "data-contains-current",
+          "default": false,
+          "trueValue": "",
+          "type": "boolean"
+        },
+        "current": {
+          "attr": "aria-current",
+          "default": false,
+          "trueValue": "page",
+          "type": "boolean"
+        },
+        "href": {
+          "attr": "href",
+          "type": "string"
+        },
         "label": {
           "attr": "aria-label",
           "type": "string"
@@ -27404,6 +27470,7 @@
       "parts": {
         "content": "sk-megamenu__content",
         "item": "sk-megamenu__item",
+        "link": "sk-megamenu__link",
         "list": "sk-megamenu__list",
         "panel": "sk-megamenu__panel",
         "panelVisible": "sk-megamenu__panel--visible",
@@ -27429,6 +27496,17 @@
           ],
           "useWhen": [
             "site/marketing navigation with categories that drop down a multi-column panel of links, edge to edge under the bar"
+          ]
+        },
+        "MegamenuLink": {
+          "alternatives": [
+            "MegamenuTrigger"
+          ],
+          "avoidWhen": [
+            "it has several destinations under it; that is a MegamenuTrigger"
+          ],
+          "useWhen": [
+            "a destination in the same row as the categories that has no panel of its own: a plain link wearing the category's look, with no chevron"
           ]
         },
         "MegamenuTrigger": {
@@ -27469,7 +27547,8 @@
             "children": {
               "accepts": "signature",
               "of": [
-                "MegamenuTrigger"
+                "MegamenuTrigger",
+                "MegamenuLink"
               ],
               "required": true
             }
@@ -27493,6 +27572,56 @@
             "part": "root"
           }
         },
+        "MegamenuLink": {
+          "forward": [
+            "id",
+            "target",
+            "rel",
+            "aria-*"
+          ],
+          "host": {
+            "element": "a"
+          },
+          "intent": [
+            "megamenu-plain-destination",
+            "navigation-bar-link"
+          ],
+          "options": [
+            "href",
+            "current"
+          ],
+          "parents": [
+            "Megamenu"
+          ],
+          "react": {
+            "from": "@skryensya/react/megamenu",
+            "name": "MegamenuLink"
+          },
+          "requires": [
+            "href"
+          ],
+          "slots": {
+            "children": {
+              "accepts": "text",
+              "required": true
+            }
+          },
+          "template": {
+            "children": [
+              {
+                "also": [
+                  "sk-interactive"
+                ],
+                "element": "a",
+                "host": true,
+                "part": "link",
+                "slot": "children"
+              }
+            ],
+            "element": "li",
+            "part": "item"
+          }
+        },
         "MegamenuTrigger": {
           "host": {
             "element": "li"
@@ -27501,7 +27630,9 @@
             "megamenu-category-trigger",
             "disclosure-navigation-trigger"
           ],
-          "options": [],
+          "options": [
+            "containsCurrent"
+          ],
           "parents": [
             "Megamenu"
           ],
@@ -27535,6 +27666,15 @@
                   "aria-expanded": "false",
                   "type": "button"
                 },
+                "attrsWhen": [
+                  {
+                    "attrs": {
+                      "aria-current": "true"
+                    },
+                    "equals": "true",
+                    "option": "containsCurrent"
+                  }
+                ],
                 "element": "button",
                 "mount": "data-sk-megamenu-trigger",
                 "part": "trigger",
@@ -37103,6 +37243,15 @@
             "frosted"
           ]
         },
+        "iconPosition": {
+          "attr": "data-icon-position",
+          "default": "inline",
+          "type": "enum",
+          "values": [
+            "inline",
+            "block"
+          ]
+        },
         "label": {
           "attr": "aria-label",
           "type": "string"
@@ -37168,7 +37317,8 @@
             "value",
             "label",
             "appearance",
-            "size"
+            "size",
+            "iconPosition"
           ],
           "react": {
             "from": "@skryensya/react/segmented",
@@ -37197,7 +37347,7 @@
                 },
                 "slots": {
                   "label": {
-                    "accepts": "text",
+                    "accepts": "node",
                     "required": true
                   }
                 }
@@ -50992,7 +51142,7 @@
     "working": "0.0.3"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "83e10d8995e134cc",
+  "sourceHash": "31759de258d8b0bc",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

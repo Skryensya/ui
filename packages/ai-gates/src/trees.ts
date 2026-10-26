@@ -3822,6 +3822,7 @@ const signatureTrees: readonly Canonical[] = [
         {
           contract: "megamenu",
           signature: "MegamenuTrigger",
+          options: { containsCurrent: true },
           children: "Soluciones",
           slots: {
             columns: [
@@ -3854,6 +3855,8 @@ const signatureTrees: readonly Canonical[] = [
             ],
           },
         },
+        /* A destination in the same row with no panel of its own, and the page the reader is on. */
+        { contract: "megamenu", signature: "MegamenuLink", options: { href: "/precios", current: true }, children: "Precios" },
       ],
     },
   },

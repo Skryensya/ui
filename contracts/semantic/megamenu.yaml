@@ -17,3 +17,11 @@ Megamenu:
 MegamenuTrigger:
   useWhen:
     - "one category of the bar. Its panel (`columns`) is 2-4 NavListGroups, not commands or a single link"
+
+MegamenuLink:
+  useWhen:
+    - "a destination in the same row as the categories that has no panel of its own: a plain link wearing the category's look, with no chevron"
+  avoidWhen:
+    - "it has several destinations under it; that is a MegamenuTrigger"
+  alternatives:
+    - MegamenuTrigger

@@ -3,8 +3,16 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "97709aa0f68dcb9c"
+surface: "88eacb20dcf16fa3"
 entries:
+  - date: 2026-10-26
+    kind: feature
+    es:
+      title: Una opción admite un icono delante del texto
+      body: "La etiqueta de cada opción es ahora un nodo, como en Tabs: puede llevar un <code>Icon</code> seguido de la palabra. Con <code>iconPosition=\"block\"</code> el icono va encima y la barra crece en alto. La pista deja de tener alto fijo (pasa a mínimo) y nunca dibuja barra de desplazamiento, ni dentro de <code>.sk-scrollbar</code>."
+    en:
+      title: An option takes an icon before its text
+      body: "Each option's label is now a node, as in Tabs: it can hold an <code>Icon</code> followed by the word. With <code>iconPosition=\"block\"</code> the icon goes above and the bar grows taller. The track's height becomes a minimum instead of fixed, and it never draws a scrollbar, not even inside <code>.sk-scrollbar</code>."
   - date: 2026-10-01
     kind: feature
     es:

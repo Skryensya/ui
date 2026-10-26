@@ -1138,7 +1138,8 @@
       "entry": "@skryensya/react/megamenu",
       "names": [
         "Megamenu",
-        "MegamenuTrigger"
+        "MegamenuTrigger",
+        "MegamenuLink"
       ]
     },
     "vanilla": {

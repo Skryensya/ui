@@ -11,6 +11,7 @@ import {
   useLayoutEffect,
   useRef,
   useState,
+  type AnchorHTMLAttributes,
   type FocusEvent,
   type HTMLAttributes,
   type KeyboardEvent,
@@ -274,8 +275,16 @@ export function Megamenu({ children, className, container, label, onOpenChange, 
     (child): child is ReactElement<MegamenuTriggerProps> => isValidElement(child) && child.type === MegamenuTrigger,
   );
   const columnsByIndex = triggerChildren.map((child) => child.props.columns);
-  const items = triggerChildren.map((child, index) =>
-    cloneElement(child, { index, key: child.key ?? index } as Partial<InjectedMegamenuTriggerProps> & { key: number }),
+  /* In authored order: a `MegamenuLink` between two categories stays between them, and only the categories
+     are numbered (they are the panel's indexes). */
+  let triggerIndex = 0;
+  const items = rawChildren.map((child, slot) =>
+    isValidElement(child) && child.type === MegamenuTrigger
+      ? cloneElement(child as ReactElement<MegamenuTriggerProps>, {
+          index: triggerIndex++,
+          key: child.key ?? slot,
+        } as Partial<InjectedMegamenuTriggerProps> & { key: string | number })
+      : child,
   );
   const defaultImageByIndex = columnsByIndex.map(findDefaultImage);
 
@@ -440,19 +449,22 @@ export type MegamenuTriggerProps = {
    *  is a usage guideline rather than something this binding enforces. Read by the parent `Megamenu`
    *  directly off this element's props: the panel that renders it lives there, not here. */
   columns: ReactNode;
+  /** The current page is one of this category's own: the bar colours it and marks it `aria-current`. */
+  containsCurrent?: boolean;
 };
 
 /** `index` is injected by the parent `Megamenu`: never author-set. */
 type InjectedMegamenuTriggerProps = MegamenuTriggerProps & { index: number };
 
 export function MegamenuTrigger(publicProps: MegamenuTriggerProps) {
-  const { children, index } = publicProps as InjectedMegamenuTriggerProps;
+  const { children, containsCurrent, index } = publicProps as InjectedMegamenuTriggerProps;
   const context = useMegamenuContext("Trigger");
   const open = context.state.openIndex === index;
 
   return (
-    <li className={megamenuParts.item}>
+    <li className={megamenuParts.item} data-contains-current={containsCurrent ? "" : undefined}>
       <button
+        aria-current={containsCurrent ? "true" : undefined}
         aria-expanded={open}
         data-pinned={open && context.state.pinned ? "" : undefined}
         className={cx(megamenuParts.trigger, "sk-interactive")}
@@ -468,6 +480,25 @@ export function MegamenuTrigger(publicProps: MegamenuTriggerProps) {
       >
         {children}
       </button>
+    </li>
+  );
+}
+
+export type MegamenuLinkProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & {
+  /** The destination's name. The contract's `children` slot. */
+  children: string;
+  href: string;
+  /** This destination is the current page: `aria-current="page"`. */
+  current?: boolean;
+};
+
+/** A plain destination in the bar's row: opens no panel, so it is not numbered and has no chevron. */
+export function MegamenuLink({ children, className, current, ...props }: MegamenuLinkProps) {
+  return (
+    <li className={megamenuParts.item}>
+      <a {...props} aria-current={current ? "page" : undefined} className={cx(`${megamenuParts.link} sk-interactive`, className)}>
+        {children}
+      </a>
     </li>
   );
 }

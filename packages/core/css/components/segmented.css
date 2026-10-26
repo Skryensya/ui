@@ -75,7 +75,8 @@
     position: relative;
     isolation: isolate;
     display: inline-flex;
-    block-size: var(--sk-segmented-block-size);
+    /* A floor, not a fixed height: an option that carries an icon beside its words may need more. */
+    min-block-size: var(--sk-segmented-block-size);
     padding: var(--sk-segmented-padding);
     gap: var(--sk-segmented-gap);
     border: var(--sk-segmented-border-width) solid var(--sk-segmented-border-color);
@@ -91,6 +92,16 @@
     overflow-y: hidden;
     overscroll-behavior-inline: contain;
     scrollbar-width: none;
+  }
+  /* `.sk-scrollbar *` (patterns/scrollbar.css) puts a thin scrollbar on every descendant at the same
+     specificity, and this track scrolls only as a last resort: it must never draw one. */
+  .sk-scrollbar .sk-segmented {
+    scrollbar-width: none;
+  }
+
+  .sk-segmented::-webkit-scrollbar,
+  .sk-scrollbar .sk-segmented::-webkit-scrollbar {
+    display: none;
   }
   /*
    * SIZE: the track steps up Button's own control scale, and the options' type and inline padding
@@ -142,8 +153,10 @@
     visibility: hidden;
   }
 
+  /* `inherit`, not `visible`: an explicit `visible` would outlive an ancestor that hides (a popover
+   * panel closing), leaving the thumb floating where the control was. */
   .sk-segmented[data-sk-segmented-ready] .sk-segmented__indicator {
-    visibility: visible;
+    visibility: inherit;
   }
 
   /* Motion is for CHANGES. The enhancer adds `data-sk-segmented-motion` a couple of frames after the
@@ -177,6 +190,9 @@
     appearance: none;
     border: 0;
     display: inline-grid;
+    /* An icon beside the words reads as a row, not a stack. */
+    grid-auto-flow: column;
+    column-gap: var(--space-inline-xs);
     /* No height of its own: flex's default `align-items: stretch` fills whatever the track's
      * border-box leaves inside its own padding (see .sk-segmented above), which is what keeps the
      * option from re-adding the control-sm floor the track already accounts for. HIG hit (44px)
@@ -209,6 +225,20 @@
 
   .sk-segmented__option:active:not(:disabled) {
     scale: var(--motion-press-scale);
+  }
+
+  /* An icon before the word already pads the leading edge; the full inline padding on that side
+     would leave the pair off-centre in the pill, so it gives some back. */
+  .sk-segmented__option:has(> .sk-icon, > [data-sk-icon]) {
+    padding-inline-start: calc(var(--sk-segmented-option-padding-inline) * 0.6);
+  }
+
+  /* Icon above the word: a column, so the track grows taller and each option narrower. */
+  .sk-segmented[data-icon-position="block"] .sk-segmented__option {
+    grid-auto-flow: row;
+    row-gap: 0;
+    padding-block: var(--space-inset-xs);
+    padding-inline: calc(var(--sk-segmented-option-padding-inline) * 0.75);
   }
 
   /* Icon-only shape: a square face, no inline padding. Same shape button gives

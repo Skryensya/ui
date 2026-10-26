@@ -60,12 +60,23 @@
   }
 
   /* size variants re-declare the hooks they change */
+  /* The floor of the scale: halfway between Button's `xs` (24px, WCAG 2.2's target minimum) and `sm`,
+     28px, so the step up to `sm` is no bigger than the ones after it. Caption type, and no vertical
+     padding: the line fits the face on its own. */
+  .sk-input[data-size="xs"] {
+    --sk-input-height: calc((var(--size-control-xs) + var(--size-control-sm)) / 2);
+    --sk-input-font-size: var(--font-size-caption);
+    --sk-input-padding-x: var(--space-inset-sm);
+    --sk-input-padding-y: 0px;
+  }
+
   .sk-input[data-size="sm"] {
-    --sk-input-height: max(var(--size-control-sm), var(--size-touch-target));
+    /* Halfway between Button's `sm` and `md` faces (36px), not the 44px touch floor: with the floor `sm`
+       and `md` were the same height and `xs` to `sm` was a jump of 20px. The scale now steps 28, 36, 44,
+       48: even steps, and the 4px to `lg` is the one Button has too. */
+    --sk-input-height: calc((var(--size-control-sm) + var(--size-control-md)) / 2);
     --sk-input-font-size: var(--font-size-body-sm);
-    /* The side inset equals the air above and below one line of text, so the small field sits in an
-       even frame (it was 8px beside ~11px). */
-    --sk-input-padding-x: calc((var(--sk-input-height) - var(--sk-input-font-size) * var(--sk-input-line-height)) / 2);
+    --sk-input-padding-x: var(--space-inset-sm);
   }
 
   .sk-input[data-size="lg"] {

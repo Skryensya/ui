@@ -3,8 +3,16 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "09e99f2be2eee98d"
+surface: "2946ebd508a7c275"
 entries:
+  - date: 2026-10-26
+    kind: feature
+    es:
+      title: Enlaces sueltos en la barra y la sección actual
+      body: "Nuevo <code>MegamenuLink</code>: un destino sin panel en la misma fila que las categorías, con su aspecto y sin chevron. <code>MegamenuTrigger</code> gana <code>containsCurrent</code>, que marca la categoría que contiene la página actual (<code>aria-current</code> y color de acento)."
+    en:
+      title: Plain links in the bar, and the current section
+      body: "New <code>MegamenuLink</code>: a destination with no panel in the same row as the categories, wearing their look and with no chevron. <code>MegamenuTrigger</code> gains <code>containsCurrent</code>, which marks the category holding the current page (<code>aria-current</code> and the accent colour)."
   - date: 2026-10-19
     kind: bugfix
     es:

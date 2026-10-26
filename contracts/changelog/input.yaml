@@ -3,8 +3,26 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "e40603208ef525bb"
+surface: "4cf9c2cd3a7df547"
 entries:
+  - date: 2026-10-26
+    kind: rework
+    target: Input
+    es:
+      title: "Input sm mide 36px, ya no igual que md"
+      body: "Antes sm quedaba en 44px por el mínimo táctil y era igual que md. Ahora la escala es 28, 36, 44 y 48px, con pasos parejos."
+    en:
+      title: "Input sm is 36px, no longer the same as md"
+      body: "sm used to sit at 44px because of the touch floor and matched md. The scale is now 28, 36, 44 and 48px, in even steps."
+  - date: 2026-10-26
+    kind: feature
+    target: Input
+    es:
+      title: "Input tiene un tamaño xs"
+      body: "controlSize admite xs: 28px de alto con tipografía caption, para una barra densa."
+    en:
+      title: "Input has an xs size"
+      body: "controlSize takes xs: a 28px field with caption type, for a dense bar."
   - date: 2026-10-24
     kind: feature
     target: Input

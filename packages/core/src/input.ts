@@ -93,7 +93,7 @@ export const inputContract = {
      */
     variant: { type: "enum", values: ["ghost"], attr: "data-variant" },
     /** Named `controlSize` in the binding: `size` is already a native attribute of `<input>`. */
-    controlSize: { type: "enum", values: ["sm", "md", "lg"], attr: "data-size" },
+    controlSize: { type: "enum", values: ["xs", "sm", "md", "lg"], attr: "data-size" },
     /**
      * `Textarea` only: grows with its content instead of a fixed `rows`, via `field-sizing: content`
      * (Chromium/Edge today; a browser without it keeps the plain fixed-height box, not a broken one).

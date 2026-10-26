@@ -1,5 +1,5 @@
 import { segmentedContract, segmentedEvents, segmentedParts, type SegmentedOption } from "@skryensya/core/segmented";
-import { useLayoutEffect, useRef, useState, type HTMLAttributes, type KeyboardEvent as ReactKeyboardEvent } from "react";
+import { useLayoutEffect, useRef, useState, type HTMLAttributes, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from "react";
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
@@ -15,13 +15,16 @@ function getDirection(dir: HTMLAttributes<HTMLDivElement>["dir"], root: HTMLElem
 }
 
 /* Derived, never restated: the values and the default live in the contract. */
-const { appearance: appearanceOption, size: sizeOption } = segmentedContract.options;
+const { appearance: appearanceOption, iconPosition: iconPositionOption, size: sizeOption } = segmentedContract.options;
+
+/** An option whose label may carry an icon beside the words (`<><Icon name="sun" />Light</>`). */
+export type SegmentedControlOption = Omit<SegmentedOption, "label"> & { label: ReactNode };
 
 export type SegmentedControlProps = Omit<
   HTMLAttributes<HTMLDivElement>,
   "onChange" | "defaultValue" | "aria-label"
 > & {
-  options: readonly SegmentedOption[];
+  options: readonly SegmentedControlOption[];
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
@@ -31,12 +34,15 @@ export type SegmentedControlProps = Omit<
   appearance?: (typeof appearanceOption.values)[number];
   /** The track's size on Button's scale: `sm` (the default, beside a small button), `md` or `lg`. */
   size?: (typeof sizeOption.values)[number];
+  /** Where an option's icon sits: `inline` beside the word (the default) or `block` above it. */
+  iconPosition?: (typeof iconPositionOption.values)[number];
 };
 
 export function SegmentedControl({
   appearance = appearanceOption.default,
   className,
   defaultValue,
+  iconPosition = iconPositionOption.default,
   label,
   onValueChange,
   options,
@@ -120,6 +126,7 @@ export function SegmentedControl({
       aria-label={label}
       className={cx(segmentedParts.root, className)}
       data-appearance={appearance}
+      data-icon-position={iconPosition}
       data-size={size}
       data-sk-segmented=""
       data-value={selected}

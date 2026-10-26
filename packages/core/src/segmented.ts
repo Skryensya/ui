@@ -98,13 +98,18 @@ export const segmentedContract = {
      * documentation preview. Height, type and the options' inline padding move together.
      */
     size: { type: "enum", values: ["sm", "md", "lg"], default: "sm", attr: "data-size" },
+    /**
+     * Where an option's icon sits when its label carries one: `inline` beside the word (the default),
+     * `block` above it, which makes the track taller and every option narrower.
+     */
+    iconPosition: { type: "enum", values: ["inline", "block"], default: "inline", attr: "data-icon-position" },
   },
 
   signatures: {
     Segmented: {
       intent: ["small-exclusive-choice", "view-switcher", "two-or-three-options"],
       host: { element: "div" },
-      options: ["value", "label", "appearance", "size"],
+      options: ["value", "label", "appearance", "size", "iconPosition"],
       requires: ["value", "label"],
       /** Host id / a11y; label stays the option. */
       forward: ["id", "aria-*"],
@@ -119,7 +124,8 @@ export const segmentedContract = {
               value: { type: "string", attr: "data-value" },
               disabled: { type: "boolean", default: false, attr: "disabled", trueValue: "" },
             },
-            slots: { label: { accepts: "text", required: true } },
+            // A node, as in Tabs: words, or an Icon followed by words.
+            slots: { label: { accepts: "node", required: true } },
           },
         },
       },
