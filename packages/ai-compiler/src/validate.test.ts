@@ -5487,12 +5487,12 @@ describe("slider: a named thumb whose value sits inside its own range", () => {
     expect(dual).toContain('aria-label="Máximo"');
   });
 
-  it("publishes valueChange, mounts, and its own eight hooks", () => {
+  it("publishes valueChange, mounts, and its own nine hooks", () => {
     const contract = getContract("slider")!;
     expect(contract.events).toEqual({ valueChange: "sk:slidervaluechange" });
     expect(contract.signatures.Slider.mount).toBe("data-sk-slider");
     expect(contract.signatures.SliderRange.mount).toBe("data-sk-slider-range");
-    expect(contract.hooks).toHaveLength(8);
+    expect(contract.hooks).toHaveLength(9);
     expect(contract.hookSheets ?? []).toEqual([]);
     const { sheets, unplaced } = sheetsForTree(slider({ value: 10 }));
     expect(sheets).toEqual(["@skryensya/core/components/slider.css"]);
