@@ -837,9 +837,9 @@ async function compileRealization(authored: Realization, shared: Shared): Promis
         const stretchy = crossAlign === undefined || crossAlign === "normal" || crossAlign === "stretch";
         const stacking = downward && stretchy;
         // A flex row stretches its items to its height unless told otherwise (a Segmented's options).
-        // Drawn only where that height is set: in Figma, items filling a row that hugs them would leave
+        // A minimum counts as set (a Segmented's track grows with an icon above its label). Drawn only where that height is set: in Figma, items filling a row that hugs them would leave
         // it nothing to hug.
-        const rowHeight = computed.get("height");
+        const rowHeight = computed.get("height") ?? computed.get("min-height");
         const rowStretches = !downward && /flex/.test(display) && stretchy && rowHeight !== undefined && rowHeight !== "auto" && !/%/.test(rowHeight);
         // A flex row whose children all grow share its known width evenly (Steps: `flex: 1 1 0` each).
         const growing = Array.from(el.children).filter((c) => !clipped(c) && cascaded.get(c)?.get("position") !== "absolute");

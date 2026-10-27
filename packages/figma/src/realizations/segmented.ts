@@ -28,6 +28,6 @@ export const segmentedRealization: Realization = {
     },
   },
   icons,
-  grid: { columns: [], rows: ["size"], descending: ["size"] },
+  grid: { columns: ["iconPosition"], rows: ["size"], descending: ["size"] },
   stage,
 };
