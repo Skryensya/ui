@@ -19,6 +19,11 @@
  * keep a pair summing to a constant). This file stays ignorant of which, and only ever hands back a
  * `delta` (or a `home`/`end`/`reset` intent) for the caller to apply however its own value model
  * requires.
+ *
+ * NOT A CATALOGUE FAMILY, on purpose (decided 2026-10-28): no `contracts/semantic/splitter.yaml`. It
+ * hands back a delta and never renders, so there is no node for a usage tree to hold. The handle a
+ * composer can ask for is published by the families that own it: Sidebar, Treegrid, Table,
+ * Resizable and CompareSlider.
  */
 
 /** The one splitter every consumer starts from unless it has a reason not to. Sidebar and Treegrid

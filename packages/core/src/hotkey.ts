@@ -26,6 +26,11 @@ import {
  * SPEC SYNTAX is Zag's: modifiers first, then the key ("mod+shift+k", not "k+mod+shift"), and
  * `>` between the steps of a sequence ("g > i"), which `bindHotkey` supports and `matchesHotkey`,
  * being about one event, does not.
+ *
+ * NOT A CATALOGUE FAMILY, on purpose (decided 2026-10-28): there is no `contracts/semantic/hotkey.yaml`
+ * and there should not be. A contract describes markup a usage tree can emit, and a shortcut has no
+ * element of its own, so `validate_ui` would have nothing to write. It reaches a composer through the
+ * families that bind one: CommandPalette's trigger, and the audio, video and lightbox controllers.
  */
 
 export type { ParsedHotkey };

@@ -14,6 +14,11 @@ import { getPlacement } from "@zag-js/popper";
  *
  * What the stylesheet owns (`patterns/anchored.css`) is only what that engine leaves open: that the
  * box is fixed, where the arrow's diamond sits and which way it turns.
+ *
+ * NOT A CATALOGUE FAMILY, on purpose (decided 2026-10-28): no `contracts/semantic/anchored.yaml`.
+ * Placement is an option of the box being placed (`placement` on Tooltip and Popover; the others
+ * choose their own), never a node of its own, so a composer meets it there and a contract here would
+ * describe nothing `validate_ui` could emit.
  */
 
 /**
