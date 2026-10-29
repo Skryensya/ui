@@ -554,6 +554,31 @@ function renderTemplate(
     return [openLines[0]!, ...wrapText(text, depth + 1), `${pad}</${element}>`];
   }
 
+  /*
+   * MIXED CONTENT (text beside elements) whose edge is an ELEMENT starts right after `>`, or ends
+   * right before `</`. The indented break there is a text node of its own, and in a grid or flex
+   * container a whitespace run beside an absolutely positioned child became an item: a Segmented
+   * option holding "EN" and its visually hidden name grew a 0px column and a gap's worth of padding
+   * on one side. A TEXT edge needs nothing, the break folds into that text; elements alone keep their
+   * own lines, where the breaks are the layout's.
+   */
+  const contentItems = [
+    ...(node.itemSlot ? slotItems(ctx.item?.slots[node.itemSlot]) : []),
+    ...(node.slot ? slotItems(filled[node.slot]) : []),
+  ];
+  const kinds = [
+    ...(node.text !== undefined || node.textFromOption !== undefined ? ["text"] : []),
+    ...contentItems.flatMap((item) => (typeof item !== "string" ? ["element"] : item.trim() ? ["text"] : [])),
+    ...((node.children?.length ?? 0) > 0 ? ["element"] : []),
+  ];
+  if (kinds.includes("text") && kinds.includes("element")) {
+    const lines = [...openLines, ...children, `${pad}</${element}>`];
+    const openEnd = openLines.length - 1;
+    if (kinds[0] === "element") lines.splice(openEnd, 2, `${lines[openEnd]}${lines[openEnd + 1]!.trimStart()}`);
+    if (kinds.at(-1) === "element") lines.splice(-2, 2, `${lines.at(-2)}</${element}>`);
+    return lines;
+  }
+
   return [...openLines, ...children, `${pad}</${element}>`];
 }
 
