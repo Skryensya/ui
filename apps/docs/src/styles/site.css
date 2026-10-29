@@ -1020,45 +1020,8 @@ main {
 }
 
 /* ── the desktop preferences panel (PrefsPanel) ─────────────────────────────
-   A bare Popover laid out with Stack and Separator; Segmented, Switch and the swatches bring their own
-   look. What is left here is the site's own: the panel's width, its labels and the swatches. */
-
-.docs-prefs-pop__body {
-  inline-size: 16rem;
-}
-
-/* Row names inherit like the Switch's own label does, so every row reads at the same size. */
-.docs-prefs-pop__body .docs-prefs-pop__label {
-  margin: 0;
-  color: var(--color-text-primary);
-  font: inherit;
-}
-
-.docs-prefs-pop__value {
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-caption);
-}
-
-/* Six columns across the panel's full width: the grid is what sets that width. */
-.docs-prefs-pop__body .dimensions__palette-options {
-  grid-template-columns: repeat(6, 1fr);
-  gap: var(--space-inline-xs);
-  justify-items: center;
-}
-
-.docs-prefs-pop__body .dimensions__palette-option {
-  /* 24px: the smallest target WCAG 2.5.8 accepts without spacing exceptions. */
-  inline-size: 1.5rem;
-  block-size: 1.5rem;
-  border-radius: calc(var(--radius-control) / 2);
-  border-width: 1px;
-  box-shadow: none;
-}
-
-/* Selected: one hairline ring in the text colour, set off from the fill by the 1px gap. */
-.docs-prefs-pop__body .dimensions__palette-option[aria-pressed="true"] {
-  box-shadow: 0 0 0 1px var(--color-text-primary);
-}
+   Nothing here: a bare Popover laid out with Stack, Inline and Separator, the rows' words are Text,
+   and the swatches are the palette popover's own. Every piece brings its own look. */
 
 /* ── the reader-preference sheet (#docs-prefs-sheet) ─────────────────────────
    The SAME composition as the Command Palette on a phone: a `.sk-dialog` opting into Dialog Vaul

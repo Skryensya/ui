@@ -66,7 +66,7 @@ const modeControl = emitMarkup(
   {
     contract: "segmented",
     signature: "Segmented",
-    options: { value: "system", label: t("prefs.theme"), size: "sm", fill: true },
+    options: { value: "system", label: t("prefs.theme"), size: "sm", fill: true, iconLabel: "tooltip" },
     attrs: { id: "docs-prefs-mode" },
     slots: { items: modes.map((mode) => ({ options: { value: mode.value }, slots: { label: [{ contract: "icon", signature: "Icon", options: { name: `mode-${mode.value}`, size: "sm" } }, hidden(mode.label)] } })) },
   } as UsageTree,
@@ -75,6 +75,21 @@ const modeControl = emitMarkup(
 
 const contrastControl = emitMarkup(
   { contract: "switch", signature: "Switch", attrs: { id: "docs-prefs-contrast" }, children: t("prefs.contrast") } as UsageTree,
+  { fillDefaults: false },
+);
+
+/* Row names and the palette's current name: the kit's Text, so nothing here needs a stylesheet. */
+const rowLabel = (text: string) =>
+  emitMarkup({ contract: "typography", signature: "Text", options: { size: "sm", textElement: "span" }, children: text } as UsageTree, { fillDefaults: false });
+const paletteName = emitMarkup(
+  {
+    contract: "typography",
+    signature: "Text",
+    options: { size: "caption", tone: "secondary", textElement: "span" },
+    /* Filled by Base.astro's palette script. */
+    attrs: { "data-docs-palette-name": "" },
+    children: "",
+  } as UsageTree,
   { fillDefaults: false },
 );
 
@@ -96,10 +111,10 @@ const languageControl = emitMarkup(
 ---
 
 <Fragment set:html={before} /><Fragment set:html={iconMarkup("settings")} /><Fragment set:html={mid} />
-<div class="sk-stack docs-prefs-pop__body" data-gap="md">
+<div class="sk-stack" data-gap="md">
   <section class="sk-stack" data-gap="sm">
     <div class="sk-stack" data-gap="xs">
-      <h2 class="docs-prefs-pop__label">{t("prefs.theme")}</h2>
+      <Fragment set:html={rowLabel(t("prefs.theme"))} />
       <Fragment set:html={modeControl} />
     </div>
     <Fragment set:html={contrastControl} />
@@ -109,9 +124,8 @@ const languageControl = emitMarkup(
 
   <section class="sk-stack" data-gap="xs">
     <div class="sk-inline" data-justify="between" data-align="baseline" data-wrap="false">
-      <h2 class="docs-prefs-pop__label">{t("prefs.palette")}</h2>
-      {/* The current preset's name, written by Base.astro's palette script. */}
-      <span class="docs-prefs-pop__value" data-docs-palette-name></span>
+      <Fragment set:html={rowLabel(t("prefs.palette"))} />
+      <Fragment set:html={paletteName} />
     </div>
     <div class="dimensions__palette-options" role="group" aria-label={t("prefs.palette")}>
       {
@@ -135,7 +149,7 @@ const languageControl = emitMarkup(
       <Fragment>
         <Fragment set:html={separator} />
         <section class="sk-stack" data-gap="xs" data-hrefs={JSON.stringify(hrefs)} id="docs-prefs-language-row">
-          <h2 class="docs-prefs-pop__label">{t("prefs.language")}</h2>
+          <Fragment set:html={rowLabel(t("prefs.language"))} />
           <Fragment set:html={languageControl} />
         </section>
       </Fragment>
