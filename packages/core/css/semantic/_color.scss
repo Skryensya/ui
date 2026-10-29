@@ -86,7 +86,12 @@
 
     /* ── border ── */
     --color-border-subtle: light-dark(var(--palette-stone-300), var(--palette-stone-800));
-    --color-border-default: light-dark(var(--palette-stone-500), var(--palette-stone-500));
+    /* Field and control edges: about 3.4:1 on white and stone-100 (light) and 3.3:1 on stone-900 (dark),
+     * just above WCAG 1.4.11's 3:1 instead of stone-500's 4.8:1. High contrast keeps its own, stronger value. */
+    --color-border-default: light-dark(
+      color-mix(in oklch, var(--palette-stone-500) 60%, var(--palette-stone-400)),
+      color-mix(in oklch, var(--palette-stone-500) 80%, var(--palette-stone-600))
+    );
     --color-border-strong: light-dark(var(--palette-stone-600), var(--palette-stone-400));
     --color-border-accent: light-dark(var(--palette-accent-600), var(--palette-accent-500));
     --color-border-danger: light-dark(var(--palette-red-600), var(--palette-red-500));

@@ -15,7 +15,9 @@
   // pushed to the extreme rung. Borders carry the separation here, not a barely-there lightness
   // difference nobody asked HC mode to preserve.
   --color-bg-surface-overlay: light-dark(var(--palette-white), var(--palette-stone-950));
-  --color-bg-surface-sunken: light-dark(var(--palette-stone-100), var(--palette-black));
+  // Light: stone-200, not -100. Every other surface here is white, and -100 measured 1.09:1 against
+  // it, so a well (a preview stage, a field, a segmented track) read as the page it sits in.
+  --color-bg-surface-sunken: light-dark(var(--palette-stone-200), var(--palette-black));
   --color-bg-well: light-dark(var(--palette-stone-300), var(--palette-black));
   --color-bg-inverse: light-dark(var(--palette-black), var(--palette-white));
   --color-bg-accent-subtle: light-dark(var(--palette-accent-100), var(--palette-accent-950));
@@ -34,7 +36,9 @@
   --color-text-success: light-dark(var(--palette-emerald-900), var(--palette-emerald-200));
   --color-text-warning: light-dark(var(--palette-amber-900), var(--palette-amber-200));
   --color-text-info: light-dark(var(--palette-sky-900), var(--palette-sky-200));
-  --color-border-subtle: light-dark(var(--palette-stone-400), var(--palette-stone-700));
+  // Light: stone-500, not -400. With every surface white, these edges are what separates them, and
+  // -400 measured 2.59:1 on white: under WCAG 1.4.11's 3:1. -500 is about 4.8:1.
+  --color-border-subtle: light-dark(var(--palette-stone-500), var(--palette-stone-700));
   --color-border-default: light-dark(var(--palette-stone-600), var(--palette-stone-400));
   --color-border-strong: light-dark(var(--palette-stone-800), var(--palette-stone-200));
   --color-border-accent: light-dark(var(--palette-accent-700), var(--palette-accent-400));
