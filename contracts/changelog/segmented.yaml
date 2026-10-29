@@ -3,8 +3,16 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "bf5c126160e36664"
+surface: "603ae505b6d7729b"
 entries:
+  - date: 2026-10-28
+    kind: feature
+    es:
+      title: La barra puede ocupar todo el ancho
+      body: "Con <code>fill</code> la pista toma el ancho de su contenedor y las opciones lo reparten en partes iguales: para una elección que es una fila propia, como un panel de ajustes o un formulario."
+    en:
+      title: The bar can take the full width
+      body: "With <code>fill</code> the track takes its container's width and the options share it equally: for a choice that is a row of its own, like a settings panel or a form."
   - date: 2026-10-26
     kind: feature
     es:

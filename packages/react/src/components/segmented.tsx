@@ -15,7 +15,7 @@ function getDirection(dir: HTMLAttributes<HTMLDivElement>["dir"], root: HTMLElem
 }
 
 /* Derived, never restated: the values and the default live in the contract. */
-const { appearance: appearanceOption, iconPosition: iconPositionOption, size: sizeOption } = segmentedContract.options;
+const { appearance: appearanceOption, fill: fillOption, iconPosition: iconPositionOption, size: sizeOption } = segmentedContract.options;
 
 /** An option whose label may carry an icon beside the words (`<><Icon name="sun" />Light</>`). */
 export type SegmentedControlOption = Omit<SegmentedOption, "label"> & { label: ReactNode };
@@ -36,12 +36,15 @@ export type SegmentedControlProps = Omit<
   size?: (typeof sizeOption.values)[number];
   /** Where an option's icon sits: `inline` beside the word (the default) or `block` above it. */
   iconPosition?: (typeof iconPositionOption.values)[number];
+  /** Take the container's whole width, the options sharing it equally. */
+  fill?: boolean;
 };
 
 export function SegmentedControl({
   appearance = appearanceOption.default,
   className,
   defaultValue,
+  fill = fillOption.default,
   iconPosition = iconPositionOption.default,
   label,
   onValueChange,
@@ -126,6 +129,7 @@ export function SegmentedControl({
       aria-label={label}
       className={cx(segmentedParts.root, className)}
       data-appearance={appearance}
+      data-fill={fill ? "" : undefined}
       data-icon-position={iconPosition}
       data-size={size}
       data-sk-segmented=""

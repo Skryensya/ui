@@ -109,13 +109,18 @@ export const segmentedContract = {
      * `block` above it, which makes the track taller and every option narrower.
      */
     iconPosition: { type: "enum", values: ["inline", "block"], default: "inline", attr: "data-icon-position" },
+    /**
+     * The track takes its container's whole width and the options share it equally: for a choice
+     * that is a row of its own (a settings panel, a form field), not one control beside others.
+     */
+    fill: { type: "boolean", default: false, attr: "data-fill", trueValue: "" },
   },
 
   signatures: {
     Segmented: {
       intent: ["small-exclusive-choice", "view-switcher", "two-or-three-options"],
       host: { element: "div" },
-      options: ["value", "label", "appearance", "size", "iconPosition"],
+      options: ["value", "label", "appearance", "size", "iconPosition", "fill"],
       requires: ["value", "label"],
       /** Host id / a11y; label stays the option. */
       forward: ["id", "aria-*"],

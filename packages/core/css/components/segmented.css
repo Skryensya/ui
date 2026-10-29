@@ -93,6 +93,16 @@
     overscroll-behavior-inline: contain;
     scrollbar-width: none;
   }
+
+  /* `fill`: the track is the row, and each option an equal share of it. */
+  .sk-segmented[data-fill] {
+    display: flex;
+    inline-size: 100%;
+  }
+
+  .sk-segmented[data-fill] .sk-segmented__option {
+    flex: 1 1 0;
+  }
   /* `.sk-scrollbar *` (patterns/scrollbar.css) puts a thin scrollbar on every descendant at the same
      specificity, and this track scrolls only as a last resort: it must never draw one. */
   .sk-scrollbar .sk-segmented {
@@ -245,8 +255,23 @@
    * `[data-icon-only]`, but via `aspect-ratio` instead of a width=height var: the option's own
    * block-size is stretched to fit the track (see .sk-segmented above), never set here, so there
    * is no fixed height value to mirror into the inline axis. */
-  .sk-segmented__option[data-icon-only] {
-    aspect-ratio: 1;
+  /* Words with visually hidden words after them ("EN" + "English"): one thing on screen, so no gap.
+   * Emitted markup is indented, and the line break after the hidden span is a grid item of its own
+   * (0px wide); the column-gap before it measured as 4px of extra padding on the trailing side. */
+  .sk-segmented__option:has(> .sk-visually-hidden):not(:has(> .sk-icon, > [data-sk-icon])) {
+    column-gap: 0;
+  }
+
+  /* An icon whose words are visually hidden (they stay its accessible name) is icon-only too: the
+   * icon-before-words rule above would otherwise pad it 0.6 on one side and 1 on the other. */
+  .sk-segmented__option[data-icon-only],
+  .sk-segmented__option:has(> .sk-icon, > [data-sk-icon]):has(> .sk-visually-hidden) {
+    /* The track's floor minus its padding and border, which is the height every option is
+     * stretched to. `aspect-ratio: 1` alone measured 16px wide: a stretched height is not a
+     * definite one, so the ratio fell back to the icon's own width. */
+    min-inline-size: calc(
+      var(--sk-segmented-block-size) - 2 * var(--sk-segmented-padding) - 2 * var(--sk-segmented-border-width)
+    );
     padding-inline: 0;
   }
 
