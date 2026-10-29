@@ -118,6 +118,32 @@ CSS vocabulary (`16/9`, `cover`, `top`), never by use (`hero`, `thumbnail`). Dis
 which is a fixed circular identity token, not a general media frame.
 _Avoid_: image component, media box, thumbnail
 
+**Layout grid**:
+A layout pattern. The page's own grid: one flow of named tracks (`narrow`, `content`, `breakout`,
+`full-width`, a rail) that each direct child opts into by width. What a page is laid out with.
+_Avoid_: page grid, 12-column grid, container
+
+**Columns**:
+A layout pattern. Divides one track of the Layout grid into a breakpoint-dependent number of equal
+columns (4, then 8, then 12) that children claim by **span** and **start**. The space between columns
+belongs to the system, never to a page.
+_Avoid_: gutter, 12-column grid, row/col, offset
+
+**Responsive value**:
+A layout option given once or per **Breakpoint**: a plain value holds everywhere; a map holds from the
+base up and changes at each breakpoint it names, inheriting the last one it named.
+_Avoid_: expanded spacing, breakpoint variant, fluid value
+
+**Grid**:
+A layout pattern. A **collection** of like items in even lanes (a fixed count, or as many as fit a
+minimum width). Not how a page is laid out: that is the Layout grid.
+_Avoid_: page layout, columns system
+
+**Visually hidden**:
+Content that stays in the accessibility tree and is only removed from sight. The opposite of an
+element a layout hides, which leaves both.
+_Avoid_: sr-only, screen-reader text, hidden
+
 **Video player**:
 A component. Controls drawn over a real `<video>` with the system's own buttons, a seek bar and a keyboard scoped to
 the player. The element keeps playback, time, buffering, volume, tracks and fullscreen; the player only reads and
@@ -345,11 +371,12 @@ A dimension. A single runtime multiplier over spacing, never a second authored s
 concern only: type, radius, focus rings and hit areas are deliberately density-invariant.
 _Avoid_: compact mode, size mode, spacing scale
 
-**Expanded spacing**:
-The spacing a layout declares for screens at or past the `desktop` breakpoint, written as a second
-option beside the compact one (`paddingExpanded`, `gapExpanded`, `gutterExpanded`). The plain option
-is the compact value. Named for the room available, not the device; never inferred: see decision 30.
-_Avoid_: desktop spacing, responsive spacing, fluid spacing, breakpoint variant
+**Breakpoint**:
+One of the named widths a layout value can change at, always written with `@` (`@md` 48rem, `@lg`
+64rem, `@xl` 80rem, `@2xl` 96rem) so it never reads as a value (`xs`…`xl`). Below the first is the
+base. Asked of the query container, never the viewport. Not a **Tier**, which is a level of the token
+system.
+_Avoid_: tier, size class, screen size, expanded line, bare `md`/`lg` as a breakpoint
 
 **Query container**:
 The element a layout rule asks "how much room is there?": the nearest `Main`, `Sidebar` or, failing
@@ -357,10 +384,11 @@ those, the document. Every width rule in the layout family is a container query 
 viewport query: see decision 35.
 _Avoid_: breakpoint container, responsive wrapper, viewport
 
-**Show**:
-A layout primitive's side of the expanded line, `compact` or `expanded`. The element does not exist on
-the other side, for the eye or the accessibility tree.
-_Avoid_: hide on mobile, desktop only, visibility class, responsive visibility
+**Visible from / Hidden from**:
+The size a layout element starts or stops existing at (`visibleFrom: "md"`, `hiddenFrom: "xl"`, both
+for a range). On the other side it is gone for the eye and the accessibility tree alike; content that
+stays for assistive technology is **Visually hidden**, not this.
+_Avoid_: show, hide on mobile, desktop only, visibility class
 
 **Radius**:
 A dimension. Global corner *roundness*, five discrete steps `none · sm · md · lg · xl`, with `md`
