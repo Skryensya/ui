@@ -7,6 +7,8 @@ export const componentMessages = {
      */
     "component.tabUsage": "Uso",
     "component.examplesTitle": "Ejemplos",
+    "component.betaTitle": "En beta",
+    "component.betaBody": "Todavía se están definiendo partes de este componente. Sus opciones, su markup o sus hooks pueden cambiar entre versiones; revisa el historial de cambios antes de actualizar.",
     "component.whenTitle": "Cuándo usar",
     "component.whenNotTitle": "Cuándo no usar",
     "component.contentTitle": "Contenido",
@@ -53,6 +55,8 @@ export const componentMessages = {
 
     "component.tabUsage": "Usage",
     "component.examplesTitle": "Examples",
+    "component.betaTitle": "In beta",
+    "component.betaBody": "Parts of this component are still being decided. Its options, markup or hooks may change between versions; check the changelog before you upgrade.",
     "component.whenTitle": "When to use",
     "component.whenNotTitle": "When not to use",
     "component.contentTitle": "Content",

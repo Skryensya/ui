@@ -48,6 +48,11 @@ const explain = (option: string, values: readonly string[]) =>
   title="Toolbar"
   description={t("toolbarPage.description")}
   contractId="toolbar"
+  testFiles={[
+    "packages/core/src/toolbar.test.ts",
+    "packages/react/src/components/toolbar.test.tsx",
+    "packages/vanilla/src/components/toolbar.test.ts",
+  ]}
   appearanceTargetSelector=".sk-toolbar"
 >
   <Fragment slot="appearance">

@@ -2,9 +2,9 @@
 /*
  * Desktop reader preferences: the design system's Popover, dropped from the header's Preferences button.
  *
- * Nothing here is drawn by the site: the panel is a Popover, the mode a Segmented, the contrast a
- * Switch, the language a second Segmented, and the swatches are the palette Popover's
- * (`.dimensions__palette-option`). They are thin fronts for the toggles the site already runs
+ * Nothing here is drawn by the site: the panel is a bare Popover laid out with Stack and Separator,
+ * the mode a Segmented, the contrast a Switch, the language a second Segmented, and the swatches are
+ * the palette Popover's (`.dimensions__palette-option`). They are thin fronts for the toggles the site already runs
  * (`Base.astro` scripts): the mode and contrast controls press the hidden header-cluster toggles
  * until the state matches, and the swatches carry `data-docs-palette-set`, which the palette script
  * already listens for. Phones keep `#docs-prefs-sheet`.
@@ -38,21 +38,37 @@ const modes = [
 const [before = "", mid = "", after = ""] = emitMarkup(
   {
     contract: "popover",
-    signature: "Popover",
-    options: { panelId: "docs-prefs-pop", triggerLabel: t("prefs.title"), triggerIconOnly: true, placement: "block-end" },
-    attrs: { class: "docs-prefs-popover" },
+    signature: "Popover.bare",
+    options: {
+      panelId: "docs-prefs-pop",
+      bare: true,
+      triggerLabel: t("prefs.title"),
+      triggerVariant: "ghost",
+      triggerSize: "sm",
+      triggerIconOnly: true,
+      placement: "block-end",
+    },
     slots: { trigger: "@@", children: "@@" },
   } as UsageTree,
   { fillDefaults: false },
 ).split("@@");
 
+/* Words a screen reader needs and the eye does not: the icon or the code already says it on screen. */
+const hidden = (text: string) => ({
+  contract: "typography",
+  signature: "Text",
+  options: { textElement: "span" },
+  attrs: { class: "sk-visually-hidden" },
+  children: text,
+});
+
 const modeControl = emitMarkup(
   {
     contract: "segmented",
     signature: "Segmented",
-    options: { value: "system", label: t("prefs.theme"), size: "md", iconPosition: "block" },
+    options: { value: "system", label: t("prefs.theme"), size: "sm", fill: true },
     attrs: { id: "docs-prefs-mode" },
-    slots: { items: modes.map((mode) => ({ options: { value: mode.value }, slots: { label: [{ contract: "icon", signature: "Icon", options: { name: `mode-${mode.value}`, size: "sm" } }, mode.label] } })) },
+    slots: { items: modes.map((mode) => ({ options: { value: mode.value }, slots: { label: [{ contract: "icon", signature: "Icon", options: { name: `mode-${mode.value}`, size: "sm" } }, hidden(mode.label)] } })) },
   } as UsageTree,
   { fillDefaults: false },
 );
@@ -62,27 +78,41 @@ const contrastControl = emitMarkup(
   { fillDefaults: false },
 );
 
+/* Between topics, so not decorative; the Stack around it already spaces it. */
+const separator = emitMarkup({ contract: "separator", signature: "Separator", options: { tone: "subtle", spacing: "none" } } as UsageTree, {
+  fillDefaults: false,
+});
+
 const languageControl = emitMarkup(
   {
     contract: "segmented",
     signature: "Segmented",
-    options: { value: current, label: t("prefs.language"), size: "md" },
+    options: { value: current, label: t("prefs.language"), size: "sm", fill: true },
     attrs: { id: "docs-prefs-language" },
-    slots: { items: locales.map((locale) => ({ options: { value: locale }, slots: { label: localeNames[locale] } })) },
+    slots: { items: locales.map((locale) => ({ options: { value: locale }, slots: { label: [locale.toUpperCase(), hidden(localeNames[locale])] } })) },
   } as UsageTree,
   { fillDefaults: false },
 );
 ---
 
 <Fragment set:html={before} /><Fragment set:html={iconMarkup("settings")} /><Fragment set:html={mid} />
-<div class="docs-prefs-pop__body">
-  <section class="docs-prefs-pop__section">
-    <h2 class="docs-prefs-pop__label">{t("prefs.theme")}</h2>
-    <Fragment set:html={modeControl} />
+<div class="sk-stack docs-prefs-pop__body" data-gap="md">
+  <section class="sk-stack" data-gap="sm">
+    <div class="sk-stack" data-gap="xs">
+      <h2 class="docs-prefs-pop__label">{t("prefs.theme")}</h2>
+      <Fragment set:html={modeControl} />
+    </div>
+    <Fragment set:html={contrastControl} />
   </section>
 
-  <section class="docs-prefs-pop__section">
-    <h2 class="docs-prefs-pop__label">{t("prefs.palette")}</h2>
+  <Fragment set:html={separator} />
+
+  <section class="sk-stack" data-gap="xs">
+    <div class="sk-inline" data-justify="between" data-align="baseline" data-wrap="false">
+      <h2 class="docs-prefs-pop__label">{t("prefs.palette")}</h2>
+      {/* The current preset's name, written by Base.astro's palette script. */}
+      <span class="docs-prefs-pop__value" data-docs-palette-name></span>
+    </div>
     <div class="dimensions__palette-options" role="group" aria-label={t("prefs.palette")}>
       {
         presets.map((preset) => (
@@ -100,16 +130,15 @@ const languageControl = emitMarkup(
     </div>
   </section>
 
-  <section class="docs-prefs-pop__section">
-    <Fragment set:html={contrastControl} />
-  </section>
-
   {
     locales.length > 1 && (
-      <section class="docs-prefs-pop__section" data-hrefs={JSON.stringify(hrefs)} id="docs-prefs-language-row">
-        <h2 class="docs-prefs-pop__label">{t("prefs.language")}</h2>
-        <Fragment set:html={languageControl} />
-      </section>
+      <Fragment>
+        <Fragment set:html={separator} />
+        <section class="sk-stack" data-gap="xs" data-hrefs={JSON.stringify(hrefs)} id="docs-prefs-language-row">
+          <h2 class="docs-prefs-pop__label">{t("prefs.language")}</h2>
+          <Fragment set:html={languageControl} />
+        </section>
+      </Fragment>
     )
   }
 </div>

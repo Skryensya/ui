@@ -123,9 +123,12 @@ body {
   display: none;
 }
 
-/* Desktop: the Popover (`PrefsPanel`). Phones use the trigger above and the sheet. */
-.docs-prefs-popover {
-  display: inline-flex;
+
+
+/* Desktop: GitHub and the Preferences Popover (`PrefsPanel`), an Inline of their own. Phones use the
+   trigger above and the sheet. `md` after the search field: the field has a border, the buttons none. */
+.dimensions__actions {
+  margin-inline-start: calc(var(--space-inline-md) - var(--space-inline-lg));
 }
 
 
@@ -444,6 +447,20 @@ body {
   --sk-icon-toggle-on: 1;
 }
 
+/* Desktop with a mouse: the bar's controls drop to `control-sm`, the height the brand and nav links
+   already had, so the bar is ~49px rather than 58px. Touch keeps the 44px targets. */
+@media (width > 72rem) and (pointer: fine) {
+  body {
+    --docs-header-block-size: calc(var(--size-control-sm) + var(--space-inset-sm) * 2 + 1px);
+  }
+
+  /* The kbd hint sits as far from the right edge as from the top and bottom, the icon a step further in. */
+  .dimensions__search-trigger {
+    min-block-size: var(--size-control-sm);
+    padding-inline: var(--space-inset-sm) var(--space-inset-xs);
+  }
+}
+
 /* The global links and preference cluster move into the drawer until the header has room for the
    whole desktop row. The shell rail returns at 52rem, but the navbar itself still cannot fit there:
    the destination labels are squeezed to zero through the middle widths. Keep the compact header
@@ -466,7 +483,7 @@ body {
 
   .dimensions__global,
   .dimensions__prefs,
-  .docs-prefs-popover,
+  .dimensions__actions,
   .dimensions__version-menu {
     display: none;
   }
@@ -1003,59 +1020,36 @@ main {
 }
 
 /* ── the desktop preferences panel (PrefsPanel) ─────────────────────────────
-   The design system's Popover; Segmented, Switch and the palette swatches bring their own look. All that is
-   left is the panel's rhythm: rows of caption label + control, hairlines between, no cards. */
-/* The hook is declared on the content part, so it is set there: the hairlines then run edge to edge. */
-.docs-prefs-popover .sk-popover__content {
-  --sk-popover-padding: 0;
-}
-
-.docs-prefs-popover .sk-popover__close {
-  display: none;
-}
+   A bare Popover laid out with Stack and Separator; Segmented, Switch and the swatches bring their own
+   look. What is left here is the site's own: the panel's width, its labels and the swatches. */
 
 .docs-prefs-pop__body {
-  inline-size: 17rem;
+  inline-size: 16rem;
 }
 
-.docs-prefs-pop__section {
-  display: grid;
-  gap: var(--space-stack-xs);
-  padding: var(--space-inset-sm) var(--space-inset-md);
-}
-
-.docs-prefs-pop__section + .docs-prefs-pop__section {
-  border-block-start: 1px solid var(--color-border-subtle);
-}
-
+/* Row names inherit like the Switch's own label does, so every row reads at the same size. */
 .docs-prefs-pop__body .docs-prefs-pop__label {
   margin: 0;
+  color: var(--color-text-primary);
+  font: inherit;
+}
+
+.docs-prefs-pop__value {
   color: var(--color-text-secondary);
-  font-family: inherit;
   font-size: var(--font-size-caption);
-  font-weight: var(--font-weight-label);
 }
 
-/* Full width, the options sharing it equally; the swatches spread across the same width. */
-.docs-prefs-pop__body .sk-segmented {
-  display: flex;
-  inline-size: 100%;
-}
-
-.docs-prefs-pop__body .sk-segmented__option {
-  flex: 1 1 0;
-}
-
+/* Six columns across the panel's full width: the grid is what sets that width. */
 .docs-prefs-pop__body .dimensions__palette-options {
   grid-template-columns: repeat(6, 1fr);
-  gap: var(--space-inline-sm);
+  gap: var(--space-inline-xs);
   justify-items: center;
 }
 
-/* Roomier, square swatches: the same buttons the palette popover uses, only bigger and squared off. */
 .docs-prefs-pop__body .dimensions__palette-option {
-  inline-size: 2rem;
-  block-size: 2rem;
+  /* 24px: the smallest target WCAG 2.5.8 accepts without spacing exceptions. */
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
   border-radius: calc(var(--radius-control) / 2);
   border-width: 1px;
   box-shadow: none;
@@ -1930,10 +1924,16 @@ main[data-document-layout="grid"]:has(> .docs-component-shell) {
   );
 }
 
-main[data-document-layout="grid"]:has(> .docs-component-shell) :is(.docs-component-hero__spacer, .docs-component-hero, .docs-component-hero-tabs),
+main[data-document-layout="grid"]:has(> .docs-component-shell) :is(.docs-component-hero__spacer, .docs-component-hero, .docs-component-beta, .docs-component-hero-tabs),
 main[data-document-layout="grid"]:has(> .docs-component-shell) > :is(.docs-report-issue, .docs-page-nav, .docs-footer) {
   inline-size: var(--docs-measure-solved);
   margin-inline: auto;
+}
+
+/* The Beta notice sits in the flow between the hero and the pinned tab strip, so it scrolls away. */
+.docs-component-beta {
+  box-sizing: border-box;
+  margin-block: var(--space-stack-md);
 }
 /*
  * THE STICKY BAR HAS TO BE AS WIDE AS WHAT SCROLLS UNDER IT. This strip is `position: sticky` with

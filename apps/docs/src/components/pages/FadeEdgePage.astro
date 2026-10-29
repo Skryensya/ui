@@ -106,6 +106,11 @@ const explain = (option: string, values: readonly string[]) =>
   title="FadeEdge"
   description={t("fadeEdge.description")}
   contractId="fade-edge"
+  testFiles={[
+    "packages/core/src/fade-edge.test.ts",
+    "packages/react/src/components/fade-edge.test.tsx",
+    "packages/vanilla/src/components/fade-edge.test.ts",
+  ]}
 >
   <Fragment slot="usage">
     <p class="lede" set:html={t("fadeEdge.lede")} />

@@ -26,6 +26,7 @@
  * render. The contract-level prose these pages already carried stays exactly where every other
  * page keeps ITS un-compiled contract notes: inside the Uso slot, under `component.contractNotesTitle`.
  */
+import "@skryensya/core/components/callout.css";
 import "@skryensya/core/components/list.css";
 import "@skryensya/core/components/tabs.css";
 import "@skryensya/core/effects/collapse-header.css";
@@ -339,6 +340,9 @@ const componentSection = getNavigation(locale).find((section) => section.id === 
 const relatedGroup = componentSection?.groups.find((group) =>
   group.items.some((item) => normalizePath(item.href) === currentPath),
 );
+/* Beta comes from either place a page can say it: its own `badge`, or its entry in the rail. */
+const isBeta =
+  badge === "Beta" || relatedGroup?.items.find((item) => normalizePath(item.href) === currentPath)?.trailing === "Beta";
 const currentGroupIndex = relatedGroup
   ? relatedGroup.items.findIndex((item) => normalizePath(item.href) === currentPath)
   : -1;
@@ -454,6 +458,15 @@ const relatedComponents = chosen
         </div>
       </header>
     </div>
+    {/* Outside the hero, which pins on scroll. Static, not a live region: announcing it on load would be noise. */}
+    {isBeta && (
+      <div class="sk-callout docs-component-beta" data-tone="warning">
+        <div class="sk-callout__content">
+          <p class="sk-callout__title">{t("component.betaTitle")}</p>
+          <p class="sk-callout__description">{t("component.betaBody")}</p>
+        </div>
+      </div>
+    )}
     <div class="sk-tabs" data-orientation="horizontal" data-activation-mode="automatic" data-value="usage" data-sk-tabs>
       <div class="sk-tabs__list docs-component-hero-tabs" data-sk-tabs-list aria-label={t("component.tabsAriaLabel", { name: title })}>
         <button class="sk-tabs__trigger sk-interactive" data-sk-tabs-trigger data-value="usage" type="button">{hasGuidelines ? t("component.tabOverview") : t("component.tabUsage")}</button>

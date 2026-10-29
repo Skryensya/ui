@@ -137,7 +137,7 @@ import { indexDocument, indexHeroTabPanel } from "../lib/document-index";
 import { vanillaMountSections } from "../lib/vanilla-mount-sections";
 import VanillaMount from "../components/VanillaMount.astro";
 import { vanillaMounts } from "../lib/vanilla-mounts";
-import { iconMarkup, siteIconSet } from "../icons";
+import { githubLogo, iconDataMarkup, iconMarkup, siteIconSet } from "../icons";
 import { getGlobalNavigation, getNavigation, type NavigationGroup, type NavigationItem, type NavigationSection } from "../lib/navigation";
 import type { DrawerSection } from "../components/DrawerNav.astro";
 import { templateGroups } from "../lib/templates-nav";
@@ -456,6 +456,7 @@ const searchIcon = iconMarkup("search");
 const closeIcon = iconMarkup("close");
 const menuIcon = iconMarkup("menu");
 const settingsIcon = iconMarkup("settings");
+const githubIcon = iconDataMarkup("github", githubLogo);
 const previousIcon = iconMarkup("arrow-left");
 const nextIcon = iconMarkup("arrow-right");
 const reportIssueIcon = iconMarkup("external-link", { size: "sm" });
@@ -817,7 +818,7 @@ const [paletteBefore = "", paletteMid = "", paletteAfter = ""] = emitMarkup(
               <ul class="sk-nav-list__list" role="list">
                 <li class="sk-nav-list__item">
                   <a class="sk-nav-list__link sk-interactive" href={href("/")} aria-current={isGlobalItemCurrent("/") ? "page" : undefined}>
-                    <span class="sk-nav-list__label">skryensya/ui</span>
+                    <span class="sk-nav-list__label">Skryensya/ui</span>
                   </a>
                 </li>
               </ul>
@@ -929,8 +930,24 @@ const [paletteBefore = "", paletteMid = "", paletteAfter = ""] = emitMarkup(
           `data-sk-dialog-vaul-open` is the trigger attribute `connectVaul` reads for a Dialog Vaul
           root (`vaul.ts`), the same shape as the drawer's own `data-sk-vaul-open`.
         */}
-        {/* Desktop twin of the button below: a Popover (trigger + panel) rather than the phone sheet. */}
-        <PrefsPanel presets={PALETTE_PRESETS} />
+        {/* Desktop only: phones reach the repo from the footer, and Preferences through the sheet below. */}
+        <div class="sk-inline dimensions__actions" data-gap="xs" data-wrap="false">
+          <a
+            class="sk-button sk-interactive"
+            data-variant="ghost"
+            data-size="sm"
+            data-icon-only
+            href="https://github.com/Skryensya/ui"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub"
+          >
+            <Fragment set:html={githubIcon} />
+          </a>
+
+          {/* Desktop twin of the button below: a Popover (trigger + panel) rather than the phone sheet. */}
+          <PrefsPanel presets={PALETTE_PRESETS} />
+        </div>
 
         <button
           class="sk-button sk-interactive dimensions__prefs-trigger"
@@ -1946,6 +1963,7 @@ const [paletteBefore = "", paletteMid = "", paletteAfter = ""] = emitMarkup(
           document.querySelectorAll<HTMLElement>(".dimensions__palette-popover .dimensions__palette-dot").forEach((dot) => dot.style.setProperty("--swatch", preset.accent));
           document.querySelector(".dimensions__palette-popover [popovertarget]")?.setAttribute("aria-label", (paletteToggles[0]?.getAttribute("data-label-template") || "{name}").replace("{name}", preset.name));
           document.querySelectorAll<HTMLElement>("[data-docs-palette-set]").forEach((option) => option.setAttribute("aria-pressed", String(option.dataset.docsPaletteSet === preset.id)));
+          document.querySelectorAll<HTMLElement>("[data-docs-palette-name]").forEach((name) => (name.textContent = preset.name));
           paletteToggles.forEach((paletteToggle) => {
             const dot = paletteToggle.querySelector<HTMLElement>(".dimensions__palette-dot");
             /* the dot shows the current color; the label names it so the icon-only button stays legible */
