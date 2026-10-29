@@ -22,9 +22,11 @@
 # The version being written right now, still unpublished. Whatever did not make it into any release is
 # shown as `<working>-dev`, which is what it is: the number it will carry when it ships, marked as not
 # shipped. When a release is cut it is added below and this number goes up.
-working: "0.0.3"
+working: "0.0.4"
 
 releases:
+  - version: "0.0.3"
+    date: 2026-10-28
   - version: "0.0.2"
     date: 2026-10-12
   - version: "0.0.1"

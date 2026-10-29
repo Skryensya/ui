@@ -2,7 +2,7 @@
   "changelogs": {
     "accordion": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -43,7 +43,7 @@
             "target": "Details"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -104,7 +104,7 @@
     ],
     "app-bar": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-17",
@@ -119,7 +119,7 @@
             "kind": "feature"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -162,7 +162,7 @@
     ],
     "avatar": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -216,7 +216,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -257,7 +257,7 @@
     ],
     "back-to-top": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -273,7 +273,7 @@
             "target": "appearance"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -314,7 +314,7 @@
     ],
     "badge": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -330,7 +330,7 @@
             "target": "appearance"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -424,7 +424,7 @@
     ],
     "breadcrumb": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-19",
@@ -439,7 +439,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -462,7 +462,7 @@
     ],
     "button": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -540,7 +540,7 @@
             "target": "Button.action"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -563,7 +563,7 @@
     ],
     "button-group": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -626,7 +626,7 @@
             "kind": "feature"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -687,7 +687,7 @@
     ],
     "callout": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -703,7 +703,7 @@
             "target": "appearance"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -746,7 +746,7 @@
     ],
     "carousel": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-19",
@@ -774,7 +774,7 @@
             "kind": "feature"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -849,7 +849,7 @@
     ],
     "checkbox": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -865,7 +865,7 @@
             "target": "appearance"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -938,7 +938,7 @@
     ],
     "code-preview": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -966,7 +966,7 @@
             "kind": "breaking"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -1008,7 +1008,7 @@
     ],
     "color-picker": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-19",
@@ -1059,7 +1059,7 @@
             "kind": "breaking"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -1082,7 +1082,7 @@
     ],
     "combobox": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -1123,7 +1123,7 @@
             "kind": "feature"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -1206,7 +1206,7 @@
     ],
     "comparison-table": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-19",
@@ -1222,7 +1222,7 @@
             "target": "ComparisonTableScroll"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -1245,7 +1245,7 @@
     ],
     "content": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-17",
@@ -1274,7 +1274,7 @@
             "target": "Toast"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -1317,7 +1317,7 @@
     ],
     "date-picker": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -1345,7 +1345,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -1368,7 +1368,7 @@
     ],
     "description-list": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-18",
@@ -1384,7 +1384,7 @@
             "target": "layout"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -1427,7 +1427,7 @@
     ],
     "dialog": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -1455,7 +1455,7 @@
             "kind": "feature"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -1478,7 +1478,7 @@
     ],
     "dialog-stack": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-17",
@@ -1493,7 +1493,7 @@
             "kind": "feature"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -1516,7 +1516,7 @@
     ],
     "empty-state": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-14",
@@ -1531,7 +1531,7 @@
             "kind": "feature"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -1690,7 +1690,7 @@
     ],
     "form-field": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-17",
@@ -1705,7 +1705,7 @@
             "kind": "breaking"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -1766,7 +1766,7 @@
     ],
     "icon": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-17",
@@ -1782,7 +1782,7 @@
             "target": "name"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -1888,7 +1888,7 @@
     ],
     "input": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-26",
@@ -1981,7 +1981,7 @@
             "kind": "feature"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -2004,7 +2004,7 @@
     ],
     "kbd": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -2020,7 +2020,7 @@
             "target": "appearance"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -2061,7 +2061,7 @@
     ],
     "layout": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-17",
@@ -2077,7 +2077,7 @@
             "target": "AppShell"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -2261,7 +2261,7 @@
     ],
     "lightbox": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-13",
@@ -2288,7 +2288,7 @@
             "kind": "feature"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -2350,7 +2350,7 @@
     ],
     "listbox": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-23",
@@ -2365,7 +2365,7 @@
             "kind": "feature"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -2388,7 +2388,7 @@
     ],
     "loader": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-18",
@@ -2404,7 +2404,7 @@
             "target": "Loader"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -2510,7 +2510,7 @@
     ],
     "megamenu": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-26",
@@ -2537,7 +2537,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -2560,7 +2560,7 @@
     ],
     "menu": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-23",
@@ -2587,7 +2587,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -2610,7 +2610,7 @@
     ],
     "menubar": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-19",
@@ -2637,7 +2637,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -2750,7 +2750,7 @@
     ],
     "nav-list": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-17",
@@ -2766,7 +2766,7 @@
             "target": "NavListLink"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -2807,7 +2807,7 @@
     ],
     "navbar": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -2823,7 +2823,7 @@
             "target": "appearance"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -2865,7 +2865,7 @@
     ],
     "number-field": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -2881,7 +2881,7 @@
             "target": "appearance"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -2987,7 +2987,7 @@
     ],
     "pagination": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -3003,7 +3003,7 @@
             "target": "appearance"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -3026,7 +3026,7 @@
     ],
     "password-input": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -3042,7 +3042,7 @@
             "target": "appearance"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -3103,7 +3103,7 @@
     ],
     "popover": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -3131,7 +3131,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -3271,7 +3271,7 @@
     ],
     "questionnaire": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-18",
@@ -3326,7 +3326,7 @@
             "target": "Questionnaire"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -3368,7 +3368,7 @@
     ],
     "quote": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-18",
@@ -3384,7 +3384,7 @@
             "target": "Quote"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -3426,7 +3426,7 @@
     ],
     "radio-group": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -3442,7 +3442,7 @@
             "target": "appearance"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -3465,7 +3465,7 @@
     ],
     "rating": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-19",
@@ -3480,7 +3480,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -3522,7 +3522,7 @@
     ],
     "resizable": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-17",
@@ -3538,7 +3538,7 @@
             "target": "Resizable.Panel"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -3621,7 +3621,7 @@
     ],
     "search-field": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-28",
@@ -3636,13 +3636,49 @@
             "kind": "feature"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       }
     ],
     "segmented": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
+          {
+            "date": "2026-10-28",
+            "en": {
+              "body": "Emitted HTML marked the chosen option with an empty <code>aria-checked</code>, which is not a valid ARIA value; it now writes <code>true</code>. And an option whose content ends in an element (\"EN\" and its hidden name) no longer gets a line break before <code>&lt;/button&gt;</code>, which became an empty column and 4px of extra padding on one side.",
+              "title": "The chosen option says <code>aria-checked=\"true\"</code>"
+            },
+            "es": {
+              "body": "El HTML emitido marcaba la opción elegida con un <code>aria-checked</code> vacío, que no es un valor ARIA válido; ahora escribe <code>true</code>. Además, una opción cuyo texto termina en un elemento (\"EN\" y su nombre oculto) ya no recibe un salto de línea antes de <code>&lt;/button&gt;</code>, que se convertía en una columna vacía y 4px de relleno extra a un lado.",
+              "title": "La opción elegida dice <code>aria-checked=\"true\"</code>"
+            },
+            "kind": "bugfix"
+          },
+          {
+            "date": "2026-10-28",
+            "en": {
+              "body": "With <code>iconLabel=\"tooltip\"</code>, an option with an icon and visually hidden words (its accessible name) shows those words in the kit's Tooltip on hover or keyboard focus. It is visual only: a screen reader already reads the name, so it is not repeated as a description. It is opt-in: only that value loads <code>tooltip.css</code> and <code>anchored.css</code>.",
+              "title": "Icon-only options can show a tooltip"
+            },
+            "es": {
+              "body": "Con <code>iconLabel=\"tooltip\"</code>, una opción con un icono y su texto oculto visualmente (su nombre accesible) muestra ese texto en un Tooltip del kit al pasar el puntero o al llegar con el teclado. Es solo visual: el lector de pantalla ya lee el nombre, así que no se repite como descripción. Es opcional: solo ese valor carga <code>tooltip.css</code> y <code>anchored.css</code>.",
+              "title": "Las opciones de solo icono pueden mostrar un tooltip"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-10-28",
+            "en": {
+              "body": "With <code>fill</code> the track takes its container's width and the options share it equally: for a choice that is a row of its own, like a settings panel or a form.",
+              "title": "The bar can take the full width"
+            },
+            "es": {
+              "body": "Con <code>fill</code> la pista toma el ancho de su contenedor y las opciones lo reparten en partes iguales: para una elección que es una fila propia, como un panel de ajustes o un formulario.",
+              "title": "La barra puede ocupar todo el ancho"
+            },
+            "kind": "feature"
+          },
           {
             "date": "2026-10-26",
             "en": {
@@ -3669,7 +3705,7 @@
             "target": "appearance"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -3692,7 +3728,7 @@
     ],
     "select": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -3811,7 +3847,7 @@
             "target": "Select"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -3834,7 +3870,7 @@
     ],
     "separator": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-17",
@@ -3850,7 +3886,7 @@
             "target": "LabelledSeparator"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -3912,7 +3948,7 @@
     ],
     "sidebar": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -3928,7 +3964,7 @@
             "target": "appearance"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -4002,7 +4038,7 @@
     ],
     "slider": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -4017,7 +4053,7 @@
             "kind": "feature"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -4040,7 +4076,7 @@
     ],
     "stat": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-18",
@@ -4056,7 +4092,7 @@
             "target": "Stat"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -4172,7 +4208,7 @@
     ],
     "steps": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -4188,7 +4224,7 @@
             "target": "appearance"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -4211,7 +4247,7 @@
     ],
     "switch": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -4227,7 +4263,7 @@
             "target": "appearance"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -4250,7 +4286,7 @@
     ],
     "table": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-17",
@@ -4266,7 +4302,7 @@
             "target": "TableHeader"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -4309,7 +4345,7 @@
     ],
     "tabs": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-17",
@@ -4324,7 +4360,7 @@
             "kind": "feature"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -4347,7 +4383,7 @@
     ],
     "tag": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -4402,7 +4438,7 @@
             "target": "tone"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -4425,7 +4461,7 @@
     ],
     "tags-input": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -4453,7 +4489,7 @@
             "kind": "feature"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -4476,7 +4512,7 @@
     ],
     "tile": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -4492,7 +4528,7 @@
             "target": "appearance"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -4533,7 +4569,7 @@
     ],
     "time-field": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -4561,7 +4597,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -4584,7 +4620,7 @@
     ],
     "timeline": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-18",
@@ -4600,7 +4636,7 @@
             "target": "TimelineItem"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -4643,7 +4679,7 @@
     ],
     "toolbar": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -4671,7 +4707,7 @@
             "kind": "feature"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -4694,7 +4730,7 @@
     ],
     "tooltip": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-19",
@@ -4709,7 +4745,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -4732,7 +4768,7 @@
     ],
     "tour": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -4748,7 +4784,7 @@
             "target": "appearance"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -4771,7 +4807,7 @@
     ],
     "tree-view": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-17",
@@ -4786,7 +4822,7 @@
             "kind": "feature"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -4849,7 +4885,7 @@
     ],
     "user-select": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-19",
@@ -4864,7 +4900,7 @@
             "kind": "feature"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-01",
@@ -4945,7 +4981,7 @@
     ],
     "window": [
       {
-        "date": null,
+        "date": "2026-10-28",
         "entries": [
           {
             "date": "2026-10-25",
@@ -4961,7 +4997,7 @@
             "target": "appearance"
           }
         ],
-        "version": "0.0.3-dev"
+        "version": "0.0.3"
       },
       {
         "date": "2026-10-12",
@@ -38444,6 +38480,21 @@
             "frosted"
           ]
         },
+        "fill": {
+          "attr": "data-fill",
+          "default": false,
+          "trueValue": "",
+          "type": "boolean"
+        },
+        "iconLabel": {
+          "attr": "data-icon-label",
+          "default": "hidden",
+          "type": "enum",
+          "values": [
+            "hidden",
+            "tooltip"
+          ]
+        },
         "iconPosition": {
           "attr": "data-icon-position",
           "default": "inline",
@@ -38501,6 +38552,19 @@
       },
       "signatures": {
         "Segmented": {
+          "compose": [
+            {
+              "of": "tooltip",
+              "sheets": [
+                "@skryensya/core/components/tooltip.css",
+                "@skryensya/core/patterns/anchored.css"
+              ],
+              "systemOwned": true,
+              "when": {
+                "iconLabel": "tooltip"
+              }
+            }
+          ],
           "forward": [
             "id",
             "aria-*"
@@ -38519,7 +38583,9 @@
             "label",
             "appearance",
             "size",
-            "iconPosition"
+            "iconPosition",
+            "fill",
+            "iconLabel"
           ],
           "react": {
             "from": "@skryensya/react/segmented",
@@ -38588,7 +38654,8 @@
                 "repeat": "items",
                 "selectedBy": {
                   "attr": "aria-checked",
-                  "option": "value"
+                  "option": "value",
+                  "value": "true"
                 }
               }
             ],
@@ -52431,6 +52498,10 @@
   "releases": {
     "releases": [
       {
+        "date": "2026-10-28",
+        "version": "0.0.3"
+      },
+      {
         "date": "2026-10-12",
         "version": "0.0.2"
       },
@@ -52439,10 +52510,10 @@
         "version": "0.0.1"
       }
     ],
-    "working": "0.0.3"
+    "working": "0.0.4"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "72d07a6a5f228cbe",
+  "sourceHash": "d7a96992aeb86f13",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

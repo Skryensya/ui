@@ -9,7 +9,7 @@ The CLI is a GitHub Release asset like the rest of the kit, and it versions with
 release it belongs to, and `add` installs the packages of that same release.
 
 ```bash
-npx https://github.com/Skryensya/ui/releases/download/v0.0.2/skryensya-cli-0.0.2.tgz add button
+npx https://github.com/Skryensya/ui/releases/download/v0.0.3/skryensya-cli-0.0.3.tgz add button
 ```
 
 ```
