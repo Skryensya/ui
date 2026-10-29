@@ -1,5 +1,10 @@
+import { anchoredParts } from "@skryensya/core/anchored";
 import { segmentedEvents, segmentedParts } from "@skryensya/core/segmented";
+import { iconOnlyOptionLabels } from "@skryensya/core/segmented-dom";
+import { tooltipDefaultPlacement, tooltipParts } from "@skryensya/core/tooltip";
+import { flushSync, mount, unmount } from "svelte";
 import { applyAttrs, bindEvents } from "../runtime/apply.js";
+import SegmentedTips from "./SegmentedTips.svelte";
 import { createConnectMount } from "../runtime/svelte-hydrate.js";
 
 const rootSelector = "[data-sk-segmented]";
@@ -62,11 +67,42 @@ export function connectSegmented(root: HTMLElement): Cleanup {
   /* The observer's first callback lands after layout; measuring here too would force one mid-script. */
   render(!observer);
 
+  const tipCleanup = connectIconTooltips(root);
+
   return () => {
     for (const cleanup of cleanups) cleanup();
+    tipCleanup();
     observer?.disconnect();
     root.removeAttribute("data-sk-segmented-ready");
     root.removeAttribute("data-sk-segmented-motion");
+  };
+}
+
+/*
+ * ICON-ONLY OPTIONS GET A TOOLTIP when the root asks for one (`iconLabel="tooltip"`), React's machine
+ * and React's box (see core/segmented.ts's `iconLabel`). The box is
+ * appended to the body, where React portals it; `SegmentedTips.svelte` runs the machine over it.
+ */
+function connectIconTooltips(root: HTMLElement): Cleanup {
+  if (root.getAttribute("data-icon-label") !== "tooltip") return () => {};
+  const tips = iconOnlyOptionLabels(root);
+  if (tips.size === 0) return () => {};
+
+  const positioner = document.createElement("div");
+  positioner.className = `${tooltipParts.positioner} ${anchoredParts.positioner}`;
+  positioner.setAttribute("data-sk-placement", tooltipDefaultPlacement);
+  const content = document.createElement("div");
+  content.className = tooltipParts.content;
+  content.setAttribute("aria-hidden", "true");
+  positioner.append(content);
+  document.body.append(positioner);
+
+  const app = mount(SegmentedTips, { target: positioner, anchor: content, props: { root, tips, positioner, content } });
+  flushSync();
+
+  return () => {
+    void unmount(app);
+    positioner.remove();
   };
 }
 

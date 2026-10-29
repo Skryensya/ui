@@ -3715,6 +3715,12 @@ describe("segmented: small exclusive choice with a sliding thumb", () => {
     const { sheets, unplaced } = sheetsForTree(control());
     expect(sheets).toEqual(["@skryensya/core/components/segmented.css"]);
     expect(unplaced).toEqual([]);
+    /* The icon-only tooltip is opt-in, and only asking for it brings Tooltip's and Anchoring's sheets. */
+    expect(sheetsForTree(control({ options: { ...control().options, iconLabel: "tooltip" } })).sheets).toEqual([
+      "@skryensya/core/components/segmented.css",
+      "@skryensya/core/components/tooltip.css",
+      "@skryensya/core/patterns/anchored.css",
+    ]);
   });
 });
 

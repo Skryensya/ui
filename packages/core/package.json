@@ -526,6 +526,10 @@
       "types": "./src/scroll-hint-dom.ts",
       "default": "./src/scroll-hint-dom.ts"
     },
+    "./segmented-dom": {
+      "types": "./src/segmented-dom.ts",
+      "default": "./src/segmented-dom.ts"
+    },
     "./fade-edge-dom": {
       "types": "./src/fade-edge-dom.ts",
       "default": "./src/fade-edge-dom.ts"

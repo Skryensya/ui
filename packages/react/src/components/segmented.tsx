@@ -1,5 +1,11 @@
+import { anchoredPositioning } from "@skryensya/core/anchored";
+import { tooltip } from "@skryensya/core/machines";
 import { segmentedContract, segmentedEvents, segmentedParts, type SegmentedOption } from "@skryensya/core/segmented";
-import { useLayoutEffect, useRef, useState, type HTMLAttributes, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from "react";
+import { iconOnlyOptionLabels } from "@skryensya/core/segmented-dom";
+import { tooltipContract, tooltipDefaultPlacement, tooltipParts, tooltipPlacementToZag } from "@skryensya/core/tooltip";
+import { mergeProps, normalizeProps, Portal, useMachine } from "@zag-js/react";
+import { useId, useLayoutEffect, useRef, useState, type HTMLAttributes, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from "react";
+import { positionerProps } from "./anchored.js";
 
 const cx = (base: string, className: string | undefined) => (className ? `${base} ${className}` : base);
 
@@ -15,7 +21,7 @@ function getDirection(dir: HTMLAttributes<HTMLDivElement>["dir"], root: HTMLElem
 }
 
 /* Derived, never restated: the values and the default live in the contract. */
-const { appearance: appearanceOption, fill: fillOption, iconPosition: iconPositionOption, size: sizeOption } = segmentedContract.options;
+const { appearance: appearanceOption, fill: fillOption, iconLabel: iconLabelOption, iconPosition: iconPositionOption, size: sizeOption } = segmentedContract.options;
 
 /** An option whose label may carry an icon beside the words (`<><Icon name="sun" />Light</>`). */
 export type SegmentedControlOption = Omit<SegmentedOption, "label"> & { label: ReactNode };
@@ -38,6 +44,8 @@ export type SegmentedControlProps = Omit<
   iconPosition?: (typeof iconPositionOption.values)[number];
   /** Take the container's whole width, the options sharing it equally. */
   fill?: boolean;
+  /** What an icon-only option shows of its hidden words: nothing (the default) or a `tooltip`. */
+  iconLabel?: (typeof iconLabelOption.values)[number];
 };
 
 export function SegmentedControl({
@@ -45,6 +53,7 @@ export function SegmentedControl({
   className,
   defaultValue,
   fill = fillOption.default,
+  iconLabel = iconLabelOption.default,
   iconPosition = iconPositionOption.default,
   label,
   onValueChange,
@@ -59,6 +68,34 @@ export function SegmentedControl({
 
   const rootRef = useRef<HTMLDivElement>(null);
   const indicatorRef = useRef<HTMLSpanElement>(null);
+
+  /*
+   * Icon-only options and their hidden words, read off the rendered options: the label is any node,
+   * and the DOM is where "an icon plus visually hidden words" can be asked the same way Vanilla asks.
+   */
+  const [tips, setTips] = useState<ReadonlyMap<string, string>>(() => new Map());
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const next = iconLabel === "tooltip" ? iconOnlyOptionLabels(root) : new Map<string, string>();
+    setTips((prev) => (prev.size === next.size && [...next].every(([value, words]) => prev.get(value) === words) ? prev : next));
+  }, [options, iconLabel]);
+
+  /* One Tooltip machine for the group, each icon-only option a trigger of it (see core/segmented.ts). */
+  const tipId = useId();
+  const tipService = useMachine(tooltip.machine, {
+    id: tipId,
+    interactive: tooltipContract.options.interactive.default,
+    positioning: { placement: tooltipPlacementToZag[tooltipDefaultPlacement], ...anchoredPositioning },
+  });
+  const tipApi = tooltip.connect(tipService, normalizeProps);
+  /* Visual only: the option is already named by these words, so it is never described by them too. */
+  const tipTrigger = (value: string) => {
+    if (!tips.has(value)) return {};
+    const { "aria-describedby": _describedBy, ...props } = tipApi.getTriggerProps({ value });
+    return props;
+  };
+  const tipContent = tips.get(tipApi.triggerValue ?? "");
 
   useLayoutEffect(() => {
     const root = rootRef.current;
@@ -130,6 +167,7 @@ export function SegmentedControl({
       className={cx(segmentedParts.root, className)}
       data-appearance={appearance}
       data-fill={fill ? "" : undefined}
+      data-icon-label={iconLabel}
       data-icon-position={iconPosition}
       data-size={size}
       data-sk-segmented=""
@@ -140,14 +178,16 @@ export function SegmentedControl({
       <span aria-hidden="true" className={segmentedParts.indicator} ref={indicatorRef} />
       {options.map((option) => (
         <button
+          {...mergeProps(tipTrigger(option.value), {
+            onClick: () => select(option.value),
+            onKeyDown: (event: ReactKeyboardEvent<HTMLButtonElement>) => onOptionKeyDown(event, option.value),
+          })}
           aria-checked={option.value === selected}
           className={`${segmentedParts.option} sk-interactive`}
           data-sk-segmented-option=""
           data-value={option.value}
           disabled={option.disabled}
           key={option.value}
-          onClick={() => select(option.value)}
-          onKeyDown={(event) => onOptionKeyDown(event, option.value)}
           role="radio"
           tabIndex={option.value === selected && !option.disabled ? 0 : -1}
           type="button"
@@ -155,6 +195,15 @@ export function SegmentedControl({
           {option.label}
         </button>
       ))}
+      {tips.size > 0 ? (
+        <Portal>
+          <div {...positionerProps(tipApi.getPositionerProps(), tooltipParts.positioner)} data-sk-placement={tooltipDefaultPlacement}>
+            <div {...tipApi.getContentProps()} aria-hidden="true" className={tooltipParts.content}>
+              {tipContent}
+            </div>
+          </div>
+        </Portal>
+      ) : null}
     </div>
   );
 }

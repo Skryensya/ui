@@ -1,4 +1,4 @@
-import { fireEvent, render } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { SegmentedControl } from "./segmented.js";
 
@@ -112,5 +112,33 @@ describe("SegmentedControl", () => {
     // Day in document order, but visually to its LEFT) - so ArrowRight should NOT land on Week.
     expect(document.activeElement).not.toBe(week);
     expect(week.getAttribute("aria-checked")).toBe("false");
+  });
+
+  it("draws no tooltip unless asked", () => {
+    const iconOnly = [{ value: "dark", label: <><svg className="sk-icon" aria-hidden="true" /><span className="sk-visually-hidden">Dark</span></> }];
+    const ui = render(<SegmentedControl defaultValue="dark" label="Theme" options={iconOnly} />);
+    expect(ui.getByRole("radio", { name: "Dark" }).hasAttribute("data-ownedby")).toBe(false);
+    expect(document.querySelector(".sk-tooltip__content")).toBeNull();
+  });
+
+  it("with iconLabel=tooltip, gives an icon-only option a visual tooltip with its hidden words, and a worded option none", async () => {
+    const iconOnly = [
+      { value: "light", label: <><svg className="sk-icon" aria-hidden="true" /><span className="sk-visually-hidden">Light</span></> },
+      { value: "dark", label: <><svg className="sk-icon" aria-hidden="true" /><span className="sk-visually-hidden">Dark</span></> },
+      { value: "auto", label: "Auto" },
+    ];
+    const ui = render(<SegmentedControl defaultValue="light" iconLabel="tooltip" label="Theme" options={iconOnly} />);
+    const dark = ui.getByRole("radio", { name: "Dark" });
+    expect(ui.getByRole("radio", { name: "Auto" }).hasAttribute("data-ownedby")).toBe(false);
+
+    fireEvent.pointerMove(dark, { pointerType: "mouse" });
+    const content = await waitFor(() => {
+      const node = document.querySelector<HTMLElement>(".sk-tooltip__content:not([hidden])");
+      if (!node) throw new Error("tooltip not open");
+      return node;
+    });
+    expect(content.textContent).toBe("Dark");
+    expect(content.getAttribute("aria-hidden")).toBe("true");
+    expect(dark.hasAttribute("aria-describedby")).toBe(false);
   });
 });

@@ -56,4 +56,33 @@ describe("SegmentedControl Vanilla contracts", () => {
     expect(handler).toHaveBeenCalledTimes(2);
     expect(handler).toHaveBeenLastCalledWith(expect.objectContaining({ detail: { value: "day" } }));
   });
+
+  it("draws no tooltip unless asked", () => {
+    const root = mount(`<div class="sk-segmented" data-sk-segmented data-value="dark" aria-label="Theme">
+      <span class="sk-segmented__indicator" aria-hidden="true"></span>
+      <button class="sk-segmented__option" data-sk-segmented-option data-value="dark"><svg class="sk-icon" aria-hidden="true"></svg><span class="sk-visually-hidden">Dark</span></button>
+    </div>`);
+    mountSegmented(document);
+    expect(root.querySelector('[data-value="dark"]')!.hasAttribute("data-ownedby")).toBe(false);
+    expect(document.querySelector(".sk-tooltip__content")).toBeNull();
+  });
+
+  it("with iconLabel=tooltip, gives an icon-only option a visual tooltip with its hidden words, and a worded option none", async () => {
+    const root = mount(`<div class="sk-segmented" data-sk-segmented data-value="light" data-icon-label="tooltip" aria-label="Theme">
+      <span class="sk-segmented__indicator" aria-hidden="true"></span>
+      <button class="sk-segmented__option" data-sk-segmented-option data-value="light"><svg class="sk-icon" aria-hidden="true"></svg><span class="sk-visually-hidden">Light</span></button>
+      <button class="sk-segmented__option" data-sk-segmented-option data-value="dark"><svg class="sk-icon" aria-hidden="true"></svg><span class="sk-visually-hidden">Dark</span></button>
+      <button class="sk-segmented__option" data-sk-segmented-option data-value="auto">Auto</button>
+    </div>`);
+    mountSegmented(document);
+    const dark = root.querySelector<HTMLElement>('[data-value="dark"]')!;
+    expect(root.querySelector('[data-value="auto"]')!.hasAttribute("data-ownedby")).toBe(false);
+
+    fireEvent.pointerMove(dark, { pointerType: "mouse" });
+    await vi.waitFor(() => expect(document.querySelector(".sk-tooltip__content:not([hidden])")).not.toBeNull());
+    const content = document.querySelector<HTMLElement>(".sk-tooltip__content")!;
+    expect(content.textContent).toBe("Dark");
+    expect(content.getAttribute("aria-hidden")).toBe("true");
+    expect(dark.hasAttribute("aria-describedby")).toBe(false);
+  });
 });

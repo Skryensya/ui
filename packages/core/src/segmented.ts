@@ -114,13 +114,27 @@ export const segmentedContract = {
      * that is a row of its own (a settings panel, a form field), not one control beside others.
      */
     fill: { type: "boolean", default: false, attr: "data-fill", trueValue: "" },
+    /*
+     * What an icon-only option (an icon plus visually hidden words) shows of those words: nothing,
+     * the default, or a `tooltip`. The words are its accessible name either way; the tooltip is for
+     * the eye only, so it is `aria-hidden` and never the option's description, or a screen reader
+     * would read the name twice. Opt-in because it brings Tooltip's and Anchoring's sheets (the
+     * `compose` entry below, `when` this is `tooltip`).
+     * Both bindings run one Tooltip machine for the group, each such option a trigger of it.
+     */
+    iconLabel: {
+      type: "enum",
+      values: ["hidden", "tooltip"],
+      default: "hidden",
+      attr: "data-icon-label",
+    },
   },
 
   signatures: {
     Segmented: {
       intent: ["small-exclusive-choice", "view-switcher", "two-or-three-options"],
       host: { element: "div" },
-      options: ["value", "label", "appearance", "size", "iconPosition", "fill"],
+      options: ["value", "label", "appearance", "size", "iconPosition", "fill", "iconLabel"],
       requires: ["value", "label"],
       /** Host id / a11y; label stays the option. */
       forward: ["id", "aria-*"],
@@ -157,11 +171,19 @@ export const segmentedContract = {
             mount: "data-sk-segmented-option",
             repeat: "items",
             itemOptions: ["value", "disabled"],
-            selectedBy: { option: "value", attr: "aria-checked" },
+            selectedBy: { option: "value", attr: "aria-checked", value: "true" },
             itemSlot: "label",
           },
         ],
       },
+      compose: [
+        {
+          of: "tooltip",
+          sheets: ["@skryensya/core/components/tooltip.css", "@skryensya/core/patterns/anchored.css"],
+          systemOwned: true,
+          when: { iconLabel: "tooltip" },
+        },
+      ],
       // The export is `SegmentedControl`; the signature is `Segmented` because that is the concept.
       // Naming them apart is the point of a signature id being separate from an export name.
       react: { from: "@skryensya/react/segmented", name: "SegmentedControl" },

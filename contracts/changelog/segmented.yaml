@@ -3,8 +3,24 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "603ae505b6d7729b"
+surface: "a147b2b8fcfbd0a6"
 entries:
+  - date: 2026-10-28
+    kind: bugfix
+    es:
+      title: La opción elegida dice <code>aria-checked="true"</code>
+      body: "El HTML emitido marcaba la opción elegida con un <code>aria-checked</code> vacío, que no es un valor ARIA válido; ahora escribe <code>true</code>. Además, una opción cuyo texto termina en un elemento (\"EN\" y su nombre oculto) ya no recibe un salto de línea antes de <code>&lt;/button&gt;</code>, que se convertía en una columna vacía y 4px de relleno extra a un lado."
+    en:
+      title: The chosen option says <code>aria-checked="true"</code>
+      body: "Emitted HTML marked the chosen option with an empty <code>aria-checked</code>, which is not a valid ARIA value; it now writes <code>true</code>. And an option whose content ends in an element (\"EN\" and its hidden name) no longer gets a line break before <code>&lt;/button&gt;</code>, which became an empty column and 4px of extra padding on one side."
+  - date: 2026-10-28
+    kind: feature
+    es:
+      title: Las opciones de solo icono pueden mostrar un tooltip
+      body: "Con <code>iconLabel=\"tooltip\"</code>, una opción con un icono y su texto oculto visualmente (su nombre accesible) muestra ese texto en un Tooltip del kit al pasar el puntero o al llegar con el teclado. Es solo visual: el lector de pantalla ya lee el nombre, así que no se repite como descripción. Es opcional: solo ese valor carga <code>tooltip.css</code> y <code>anchored.css</code>."
+    en:
+      title: Icon-only options can show a tooltip
+      body: "With <code>iconLabel=\"tooltip\"</code>, an option with an icon and visually hidden words (its accessible name) shows those words in the kit's Tooltip on hover or keyboard focus. It is visual only: a screen reader already reads the name, so it is not repeated as a description. It is opt-in: only that value loads <code>tooltip.css</code> and <code>anchored.css</code>."
   - date: 2026-10-28
     kind: feature
     es:
