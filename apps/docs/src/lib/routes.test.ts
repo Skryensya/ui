@@ -21,7 +21,6 @@ const pagesDir = join(root, "pages");
 
 function walk(dir: string, out: string[] = []): string[] {
   for (const name of readdirSync(dir)) {
-    if (name === "x.profile") continue; // a gitignored Chrome profile: its dangling symlinks break statSync
     const full = join(dir, name);
     if (statSync(full).isDirectory()) walk(full, out);
     else out.push(full);

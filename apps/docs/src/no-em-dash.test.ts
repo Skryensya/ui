@@ -26,8 +26,6 @@ const skippedDirectories = {
   ".agents": true,
   /* `.claude/worktrees/`: other branches checked out inside this repo, each a full copy of it. */
   worktrees: true,
-  /* A Chrome user-data profile (gitignored): browser state and cached pages, not anything we write. */
-  "x.profile": true,
 } satisfies Record<string, true>;
 const checkedExtensions = {
   ".astro": true,
