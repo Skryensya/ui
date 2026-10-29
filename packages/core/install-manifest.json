@@ -2388,6 +2388,29 @@
     },
     "vanilla": null
   },
+  "search-field": {
+    "category": "forms",
+    "css": {
+      "entry": "@skryensya/core/components/search-field.css",
+      "files": [
+        "@skryensya/core/components/search-field.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/search-field",
+      "names": [
+        "SearchField"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/search-field",
+      "mount": "mountSearchField",
+      "selectors": [
+        "[data-sk-search-field]"
+      ],
+      "auto": true
+    }
+  },
   "segmented": {
     "category": "forms",
     "css": {

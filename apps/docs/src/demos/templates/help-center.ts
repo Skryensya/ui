@@ -115,20 +115,15 @@ export const helpCenterTree = (t: Translate): UsageTree => ({
                     children: t("demo.help.lede"),
                   },
                   {
-                    contract: "form-field",
-                    signature: "FormField",
-                    slots: {
-                      label: t("demo.help.searchLabel"),
-                      children: {
-                        contract: "input",
-                        signature: "Input",
-                        options: {
-                          type: "search",
-                          name: "q",
-                          placeholder: t("demo.help.searchPlaceholder"),
-                        },
-                      },
+                    contract: "search-field",
+                    signature: "SearchField.form",
+                    options: {
+                      action: "#",
+                      name: "q",
+                      placeholder: t("demo.help.searchPlaceholder"),
+                      clearLabel: t("searchField.clearLabel"),
                     },
+                    slots: { label: t("demo.help.searchLabel"), submit: t("searchField.submit") },
                   },
                 ],
               },

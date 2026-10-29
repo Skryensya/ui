@@ -260,6 +260,10 @@ const componentDescriptions = {
     es: "Un campo de contraseña con un botón para mostrar lo que se escribió.",
     en: "A password field with a button to show what was typed.",
   },
+  "/components/search-field": {
+    es: "Un campo de búsqueda con lupa, un botón para borrar y, si hace falta, el formulario que la envía.",
+    en: "A search box with a magnifier, a clear button and, when needed, the form that submits it.",
+  },
   "/components/number-field": {
     es: "Captura cantidades con límites y controles incrementales.",
     en: "Captures quantities with limits and step controls.",

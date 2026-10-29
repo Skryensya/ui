@@ -2819,19 +2819,15 @@ export const pageSnippets: readonly Snippet[] = [
                   },
                   "children": [
                     {
-                      "contract": "form-field",
-                      "signature": "FormField",
+                      "contract": "search-field",
+                      "signature": "SearchField",
+                      "options": {
+                        "name": "q",
+                        "placeholder": "Name or email",
+                        "clearLabel": "Clear search"
+                      },
                       "slots": {
-                        "label": "Search people",
-                        "children": {
-                          "contract": "input",
-                          "signature": "Input",
-                          "options": {
-                            "type": "search",
-                            "name": "q",
-                            "placeholder": "Name or email"
-                          }
-                        }
+                        "label": "Search people"
                       }
                     },
                     {
@@ -5985,19 +5981,17 @@ export const pageSnippets: readonly Snippet[] = [
                         "children": "Search for an answer or browse the most-read topics."
                       },
                       {
-                        "contract": "form-field",
-                        "signature": "FormField",
+                        "contract": "search-field",
+                        "signature": "SearchField.form",
+                        "options": {
+                          "action": "#",
+                          "name": "q",
+                          "placeholder": "For example: invite my team",
+                          "clearLabel": "Clear search"
+                        },
                         "slots": {
                           "label": "Search help",
-                          "children": {
-                            "contract": "input",
-                            "signature": "Input",
-                            "options": {
-                              "type": "search",
-                              "name": "q",
-                              "placeholder": "For example: invite my team"
-                            }
-                          }
+                          "submit": "Search"
                         }
                       }
                     ]

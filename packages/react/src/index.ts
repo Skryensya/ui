@@ -204,6 +204,8 @@ export type { FadeEdgeProps } from "./components/fade-edge.js";
 export { Presence } from "./components/presence.js";
 export { PasswordInput } from "./components/password-input.js";
 export type { PasswordInputProps } from "./components/password-input.js";
+export { SearchField } from "./components/search-field.js";
+export type { SearchFieldProps } from "./components/search-field.js";
 export type { PresenceProps } from "./components/presence.js";
 export { NavList, NavListGroup, NavListLink } from "./components/nav-list.js";
 export type {

@@ -154,20 +154,14 @@ export const teamTree = (t: Translate): UsageTree => {
                 options: { gap: "md", inlineAlign: "end", wrap: true },
                 children: [
                   {
-                    contract: "form-field",
-                    signature: "FormField",
-                    slots: {
-                      label: t("demo.team.searchLabel"),
-                      children: {
-                        contract: "input",
-                        signature: "Input",
-                        options: {
-                          type: "search",
-                          name: "q",
-                          placeholder: t("demo.team.searchPlaceholder"),
-                        },
-                      },
+                    contract: "search-field",
+                    signature: "SearchField",
+                    options: {
+                      name: "q",
+                      placeholder: t("demo.team.searchPlaceholder"),
+                      clearLabel: t("searchField.clearLabel"),
                     },
+                    slots: { label: t("demo.team.searchLabel") },
                   },
                   {
                     contract: "layout",

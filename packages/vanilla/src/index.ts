@@ -25,6 +25,7 @@ export { mountStat } from "./components/stat.js";
 export { mountFadeEdge } from "./components/fade-edge.js";
 export { mountScrollHint } from "./components/scroll-hint.js";
 export { mountPasswordInput } from "./components/password-input.js";
+export { mountSearchField } from "./components/search-field.js";
 export { connectSidebar, mountSidebar } from "./components/sidebar.js";
 export { mountSlider } from "./components/slider.js";
 export {

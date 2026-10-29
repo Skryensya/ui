@@ -118,6 +118,12 @@ export const vanillaMounts = {
     mount: "mountTablePager",
     selector: "[data-sk-table-pager]",
   },
+  "/components/search-field": {
+    name: "SearchField",
+    entrypoint: "@skryensya/vanilla/search-field",
+    mount: "mountSearchField",
+    selector: "[data-sk-search-field]",
+  },
   "/components/password-input": {
     name: "PasswordInput",
     entrypoint: "@skryensya/vanilla/password-input",

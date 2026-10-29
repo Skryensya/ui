@@ -220,8 +220,11 @@ function wiringFor(
 
   // "Supplied by the author" covers both channels: `error` is a slot, `required` is an option, and a
   // wiring rule names either without caring which.
+  const conditional = new Set<string>([...Object.keys(signature.slots ?? {}), ...(signature.options ?? [])]);
   const present = (node: string): boolean =>
     node === "control" ||
+    // A named template node that no slot or option gates is always drawn (SearchField's input).
+    !conditional.has(node) ||
     slotItems(filled[node]).length > 0 ||
     (tree.options?.[node] !== undefined && tree.options[node] !== false);
 

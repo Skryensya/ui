@@ -1,0 +1,90 @@
+/* TIER 3, SEARCH FIELD: an `sk-input` with a magnifier in front and a clear button behind.
+ *
+ * The input keeps every pixel of Input (well, edge, focus ring, sizes, appearances); this sheet only
+ * lays the two glyphs over it and pads the text clear of them. The control is the positioning box,
+ * so both glyphs stay centred on the input whatever height its `data-size` gives it.
+ */
+@layer components {
+  .sk-search-field {
+    --sk-search-field-gap: var(--space-stack-xs);
+    --sk-search-field-icon-color: var(--color-text-secondary);
+    --sk-search-field-label-color: var(--color-text-secondary);
+
+    display: grid;
+    gap: var(--sk-search-field-gap);
+  }
+
+  /* The form puts its submit button beside the control, on the control's row. */
+  form.sk-search-field {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+
+  form.sk-search-field > .sk-search-field__label {
+    grid-column: 1 / -1;
+  }
+
+  .sk-search-field__label {
+    color: var(--sk-search-field-label-color);
+    font-size: var(--font-size-body-sm);
+    font-weight: var(--font-weight-label);
+  }
+
+  /* FormField's clip, for FormField's reason: the label stays the input's name, only the eye skips it. */
+  .sk-search-field[data-label-visually-hidden] > .sk-search-field__label {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .sk-search-field__control {
+    position: relative;
+    min-inline-size: 0;
+  }
+
+  .sk-search-field__icon {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: var(--space-inset-md);
+    display: grid;
+    place-items: center;
+    color: var(--sk-search-field-icon-color);
+    pointer-events: none;
+  }
+
+  /* Room for the magnifier in front and the clear button behind. Fixed insets rather than Input's
+   * `--sk-input-padding-x`: that hook is declared on the input, and the magnifier is its sibling. */
+  .sk-search-field__input.sk-input {
+    padding-inline: calc(var(--space-inset-md) + 1.25rem + var(--space-inline-sm))
+      calc(var(--size-control-sm) + var(--space-inset-xs));
+  }
+
+  /* WebKit's own clear glyph: unstyleable and unnamed, and ours is right beside it. */
+  .sk-search-field__input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  /* Composed, PasswordInput's recipe: the icon-only ghost Button, fitted inside the well. */
+  .sk-search-field__clear.sk-button {
+    --sk-button-bg: transparent;
+    --sk-button-fg: var(--sk-search-field-icon-color);
+    --sk-button-border-color: transparent;
+    --sk-button-border-width: 0;
+    --sk-button-shadow: none;
+
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: var(--space-inset-xs);
+    margin-block: auto;
+  }
+
+  .sk-search-field__clear[hidden] {
+    display: none;
+  }
+}

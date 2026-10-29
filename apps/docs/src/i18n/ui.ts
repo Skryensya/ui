@@ -76,6 +76,7 @@ import { clipboardMessages } from "./messages/components/clipboard";
 import { listboxMessages } from "./messages/components/listbox";
 import { presenceMessages } from "./messages/components/presence";
 import { passwordInputMessages } from "./messages/components/password-input";
+import { searchFieldMessages } from "./messages/components/search-field";
 import { otpInputMessages } from "./messages/components/otp-input";
 import { tablePagerMessages } from "./messages/components/table-pager";
 import { mediaOverlayMessages } from "./messages/components/media-overlay";
@@ -236,6 +237,7 @@ export const ui = {
     ...listboxMessages.es,
     ...presenceMessages.es,
     ...passwordInputMessages.es,
+    ...searchFieldMessages.es,
     ...otpInputMessages.es,
     ...tablePagerMessages.es,
     ...mediaOverlayMessages.es,
@@ -393,6 +395,7 @@ export const ui = {
     ...listboxMessages.en,
     ...presenceMessages.en,
     ...passwordInputMessages.en,
+    ...searchFieldMessages.en,
     ...otpInputMessages.en,
     ...tablePagerMessages.en,
     ...mediaOverlayMessages.en,

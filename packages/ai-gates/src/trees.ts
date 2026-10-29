@@ -2382,6 +2382,28 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    /* The live filter: both bindings land on a hidden clear button and the label wired to the input. */
+    name: "search-field/filter",
+    enhanced: true,
+    tree: {
+      contract: "search-field",
+      signature: "SearchField",
+      options: { name: "q", placeholder: "Nombre o correo", clearLabel: "Borrar búsqueda" },
+      slots: { label: "Buscar personas" },
+    },
+  },
+  {
+    /* The site search: a GET form with the `search` landmark and its submit button. */
+    name: "search-field/form",
+    enhanced: true,
+    tree: {
+      contract: "search-field",
+      signature: "SearchField.form",
+      options: { action: "/buscar", name: "q", labelVisuallyHidden: true, clearLabel: "Borrar búsqueda" },
+      slots: { label: "Buscar en la ayuda", submit: "Buscar" },
+    },
+  },
+  {
     /*
      * Composition where the child is the point: a Toast alone has nowhere to be, so `parents` says
      * so and this tree is the pair. The dismiss control is structure the contract owns, declared

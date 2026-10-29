@@ -65,7 +65,11 @@ sumarla a `scripts/build-test-report.ts` / `artifacts/test-results.json`, agrega
 `TARGETS` + claves i18n en la página (`feedback-wire-tests-into-docs-tab` en la memoria del
 agente tiene el checklist completo), y correr `turbo check`.
 
-- [ ] **FadeEdge** (`/componentes/fade-edge`) - bloqueado ⏸️ (2026-09-03): la premisa original
+- [x] **FadeEdge** (`/componentes/fade-edge`) - hecho ✅ (2026-10-28): el bloqueo de abajo venció.
+  FadeEdge ya es una familia con contrato (`contracts/semantic/fade-edge.yaml`) y suites en las tres
+  capas (`core` 6, `react` 4, `vanilla` 5); `FadeEdgePage.astro` ganó `testFiles` y el reporte dio
+  15/15. Lo que sigue es el bloqueo original, conservado como registro. Era: bloqueado ⏸️
+  (2026-09-03): la premisa original
   ("efecto CSS puro, sin máquina: la suite más chica de este lote") estaba mal planteada. No es que
   la suite sea chica - es que **no hay archivo `.ts`/`.tsx` en `core`/`react`/`vanilla` al que
   atarla** (`grep -rln "fade-edge|fadeEdge|FadeEdge" packages/{core,react,vanilla}/src` vacío):
@@ -158,8 +162,10 @@ agente tiene el checklist completo), y correr `turbo check`.
   Al pasar: los dos redirects de `details` apuntaban mal (el ingles a `#native-details`, un fragmento
   que ningun elemento tiene, y el español a `/componentes/...` sin el prefijo `/es` que ADR-0021
   dejo). Corregidos los dos.
-- [ ] **Toolbar** (`/componentes/toolbar`) - roving tabindex real, la más involucrada del lote:
-  navegación por flechas, wrap, orientación.
+- [x] **Toolbar** (`/componentes/toolbar`) - hecho ✅ (2026-10-28): las tres suites ya existían
+  (`core/src/toolbar.test.ts` 11, `react/.../toolbar.test.tsx` 12, `vanilla/.../toolbar.test.ts` 11);
+  el gap era solo de wiring. `ToolbarPage.astro` ganó `testFiles`, y `build-test-report.ts --only
+  toolbar` dio 34/34.
 
 ### Las tres hojas sin contrato: drawer resuelto ✅ (2026-09-12), las otras dos son correctas
 
@@ -273,7 +279,9 @@ rows covered and reviewed, so **no gap below comes from the APG**. These come fr
 sources: machines we already pay for and never shipped, and markup the repo writes by hand because
 the kit has nothing to offer. Ascending effort, as this level requires.
 
-- [~] **`@zag-js/pin-input` is a paid-for dependency with zero importers.** IN PROGRESS elsewhere:
+- [x] **`@zag-js/pin-input` is a paid-for dependency with zero importers.** hecho ✅ (verified
+  2026-10-28): `otp-input` landed over that machine (`contracts/semantic/otp-input.yaml`,
+  `core/src/otp-input.ts`, re-exported in `machines.ts`). Was: IN PROGRESS elsewhere:
   a concurrent session is building `otp-input` over that machine (its contract, sheet, binding and
   canonical tree were in the working tree on 2026-09-20). Do not take this one; verify it is closed
   when that work lands.
@@ -311,7 +319,16 @@ the kit has nothing to offer. Ascending effort, as this level requires.
   is drawn per row rather than on one shared grid, so the name column is a length and not
   `max-content`: a shared grid needs `display: contents` on each pair, which takes that same element
   back out of the box tree. 6 React tests.
-- [ ] **No search field.** Deferred by the user on 2026-09-20, deliberately last of this group:
+- [x] **No search field.** hecho ✅ (2026-10-28). Published as `search-field`, two signatures
+  picked by `action`: `SearchField` (a live filter, a `<div>`) and `SearchField.form` (a GET
+  `<form role="search">` with a submit button). No machine: the input IS an `sk-input`, so sizes,
+  appearances and states are Input's, and the magnifier and clear button sit over it. The clear button
+  hides while empty; it and Escape empty the field and hand focus back, and Escape passes through
+  when the field is already empty so an enclosing dialog still closes. Vanilla clears by dispatching a
+  bubbling `input`; React clears through its own state. React 7 tests, vanilla 3. Help-center and team
+  templates migrated off `FormField` + `Input type="search"`. Found on the way: the emitter dropped
+  wiring that referenced an always-drawn named template node (it only counted slots and options as
+  present), fixed in `ai-compiler/src/emit.ts`. Was: Deferred by the user on 2026-09-20, deliberately last of this group:
   take it after the four above, which are done.
   `input`'s `type` is a free string, so `type="search"` renders, but the
   *pattern* - the leading icon, the clear button, the submit affordance, the suggestion list wiring -
@@ -337,6 +354,10 @@ the kit has nothing to offer. Ascending effort, as this level requires.
   day.
 
 ### And a decision, not a component: three primitives the catalogue cannot see
+
+hecho ✅ (2026-10-28): decided they stay out of the catalogue. The sentence is now in the banner of
+`core/src/hotkey.ts`, `splitter.ts` and `anchored.ts`: none renders a node of its own, so a contract
+would describe nothing `validate_ui` could emit, and each one names the families that publish it.
 
 `hotkey`, `splitter` and `anchored` each have code in all three layers and their own docs page
 (`/hotkey`, `/splitter`, `/anchoring`), and none of the three is one of the 84 families: no

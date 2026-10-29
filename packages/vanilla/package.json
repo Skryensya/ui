@@ -126,6 +126,10 @@
       "types": "./src/components/password-input.ts",
       "default": "./src/components/password-input.ts"
     },
+    "./search-field": {
+      "types": "./src/components/search-field.ts",
+      "default": "./src/components/search-field.ts"
+    },
     "./scroll-hint": {
       "types": "./src/components/scroll-hint.ts",
       "default": "./src/components/scroll-hint.ts"

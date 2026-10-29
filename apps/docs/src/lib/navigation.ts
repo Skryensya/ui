@@ -968,6 +968,11 @@ export const componentItems = [
     aliases: ["contraseña", "contrasena", "password", "mostrar contraseña", "show password", "clave"],
   },
   {
+    href: "/components/search-field",
+    label: "SearchField",
+    aliases: ["búsqueda", "busqueda", "buscador", "buscar", "search", "searchbar", "search box", "filtro", "filter"],
+  },
+  {
     /*
      * POPUP'S SEARCH WORDS LIVE HERE. Popup was a second page for `Popover.bare`, and merging it
      * into this one would have made the word "popup" stop finding anything: the rail is also the
@@ -1087,6 +1092,7 @@ const allComponentNavigation = [
       "/components/password-input",
       "/components/questionnaire",
       "/components/radio-group",
+      "/components/search-field",
       "/components/segmented",
       "/components/select",
       "/components/slider",

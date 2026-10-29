@@ -158,7 +158,7 @@ export const inputContract = {
 
   signatures: {
     Input: {
-      intent: ["text-entry", "single-line-input", "email", "password", "search-field"],
+      intent: ["text-entry", "single-line-input", "email", "password"],
       host: { element: "input" },
       options: ["controlSize", "type", "name", "placeholder", "disabled", "format", "country", "errorLabel", "appearance", "variant"],
       /*

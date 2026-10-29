@@ -32,6 +32,7 @@ import { fadeEdgeContract } from "./fade-edge.js";
 import { scrollHintContract } from "./scroll-hint.js";
 import { presenceContract } from "./presence.js";
 import { passwordInputContract } from "./password-input.js";
+import { searchFieldContract } from "./search-field.js";
 import { qrCodeContract } from "./qr-code.js";
 import { marqueeContract } from "./marquee.js";
 import { treeViewContract } from "./tree-view.js";
@@ -153,6 +154,7 @@ export const contracts = fromContracts(
   scrollHintContract,
   presenceContract,
   passwordInputContract,
+  searchFieldContract,
   qrCodeContract,
   kbdContract,
   shimmerContract,

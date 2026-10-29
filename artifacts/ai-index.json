@@ -2384,13 +2384,15 @@
             "Textarea",
             "Select",
             "NumberField",
-            "NativeInput"
+            "NativeInput",
+            "SearchField"
           ],
           "avoidWhen": [
             "the text is long or multi-line; that is Textarea",
             "validity depends on the server (a RUT that is already registered); that is FormField's `error` slot, written by the composer, and it wins over the `format` message",
             "a phone number should be validated without adding dependencies: there is no way; the numbering plan is data and the kit prefers not validating to validating wrongly",
             "the value is chosen from a closed set of options; that is a Select",
+            "the text is a query, with a magnifier and a way to clear it; that is SearchField",
             "the value is a number with a step and bounds; that is NumberField",
             "the platform should govern time/color/range and its native control is wanted; that is NativeInput"
           ],
@@ -2400,15 +2402,14 @@
             "text-entry",
             "single-line-input",
             "email",
-            "password",
-            "search-field"
+            "password"
           ],
           "parents": [
             "FormField",
             "ButtonGroup"
           ],
           "useWhen": [
-            "the user types one line of text: email, name, search",
+            "the user types one line of text: email, name",
             "the native type brings the browser's keyboard and validation (email, tel, url)",
             "the value has a validity the browser cannot check: a RUT with its check digit, a URL that can be opened; that is `format`",
             "it is a phone number from any country: `format=\"phone\"` plus `country`, which requires installing `@skryensya/phone` and registering it at startup"
@@ -4356,6 +4357,61 @@
             "a quiet, elegant transition between two blocks is wanted; the back recedes a little and the front settles, nothing more",
             "the page has to stay a plain document where the effect is unavailable: with no scroll-driven animation, or with reduced motion, the two sections simply follow one another",
             "the front section is a heading and what follows it, and each piece should arrive in turn as it rises: give the front slot several children"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "forms",
+      "css": "@skryensya/core/components/search-field.css",
+      "id": "search-field",
+      "signatures": [
+        {
+          "alternatives": [
+            "Combobox",
+            "Input"
+          ],
+          "avoidWhen": [
+            "the value has to be one of a known set of options; that is a Combobox",
+            "the query is sent to another page; that is SearchField.form",
+            "it is ordinary text entry that searches nothing; that is an Input"
+          ],
+          "host": "div",
+          "id": "SearchField",
+          "intent": [
+            "search",
+            "search-field",
+            "search-box",
+            "filter-as-you-type",
+            "live-filter"
+          ],
+          "parents": [],
+          "useWhen": [
+            "the query filters something already on the page as it is typed: a list, a table, a grid of cards",
+            "whoever types needs to empty the box in one move, with a button or Escape"
+          ]
+        },
+        {
+          "alternatives": [
+            "SearchField",
+            "CommandPalette"
+          ],
+          "avoidWhen": [
+            "the results filter in place as the person types; that is SearchField",
+            "it opens a palette of commands and destinations; that is a CommandPalette"
+          ],
+          "host": "form",
+          "id": "SearchField.form",
+          "intent": [
+            "site-search",
+            "search-form",
+            "search-landmark",
+            "submit-search"
+          ],
+          "parents": [],
+          "useWhen": [
+            "the query goes to a results page: a site search, a help centre",
+            "the box should be a `search` landmark a screen reader can jump to"
           ]
         }
       ]
@@ -6342,5 +6398,5 @@
     }
   ],
   "schemaVersion": "2.3",
-  "sourceHash": "3f415932f6d19c57"
+  "sourceHash": "72d07a6a5f228cbe"
 }

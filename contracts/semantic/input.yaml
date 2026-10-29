@@ -2,7 +2,7 @@
 
 Input:
   useWhen:
-    - "the user types one line of text: email, name, search"
+    - "the user types one line of text: email, name"
     - "the native type brings the browser's keyboard and validation (email, tel, url)"
     - "the value has a validity the browser cannot check: a RUT with its check digit, a URL that can be opened; that is `format`"
     - "it is a phone number from any country: `format=\"phone\"` plus `country`, which requires installing `@skryensya/phone` and registering it at startup"
@@ -11,6 +11,7 @@ Input:
     - "validity depends on the server (a RUT that is already registered); that is FormField's `error` slot, written by the composer, and it wins over the `format` message"
     - "a phone number should be validated without adding dependencies: there is no way; the numbering plan is data and the kit prefers not validating to validating wrongly"
     - "the value is chosen from a closed set of options; that is a Select"
+    - "the text is a query, with a magnifier and a way to clear it; that is SearchField"
     - "the value is a number with a step and bounds; that is NumberField"
     - "the platform should govern time/color/range and its native control is wanted; that is NativeInput"
   alternatives:
@@ -18,6 +19,7 @@ Input:
     - Select
     - NumberField
     - NativeInput
+    - SearchField
 
 Textarea:
   useWhen:

@@ -115,6 +115,7 @@ const loaders: Record<string, () => Promise<Record<string, unknown>>> = {
   "@skryensya/react/scroll-hint": () => import("./components/scroll-hint.js"),
   "@skryensya/react/presence": () => import("./components/presence.js"),
   "@skryensya/react/password-input": () => import("./components/password-input.js"),
+  "@skryensya/react/search-field": () => import("./components/search-field.js"),
   "@skryensya/react/qr-code": () => import("./components/qr-code.js"),
   "@skryensya/react/form-field": () => import("./components/form-field.js"),
   "@skryensya/react/input": () => import("./components/input.js"),

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-24T11:55:18.969Z",
+  "generatedAt": "2026-10-28T18:06:22.203Z",
   "results": {
     "apps/docs/src/components/pages/CardPage.test.ts": {
       "imports tile.css, which Base.astro never loads globally": "passed",
@@ -2590,6 +2590,81 @@
       "labels the input beside it with ButtonGroupLabel, and ButtonGroupText stays plain text": "passed",
       "holds the action and the menu's icon-only trigger as one named group": "passed",
       "keeps the action and the menu independent": "passed"
+    },
+    "packages/core/src/toolbar.test.ts": {
+      "ArrowRight moves to the next item, ArrowLeft to the previous": "passed",
+      "ArrowUp/ArrowDown do nothing in horizontal orientation": "passed",
+      "ArrowDown moves to the next item, ArrowUp to the previous": "passed",
+      "ArrowLeft/ArrowRight do nothing in vertical orientation": "passed",
+      "wraps at both ends when loopFocus is true": "passed",
+      "clamps at both ends when loopFocus is false": "passed",
+      "Home jumps to the first item, End to the last": "passed",
+      "no active stop found (currentIndex -1): the next key still resolves to the first item": "passed",
+      "an empty bar resolves to none": "passed",
+      "an unhandled key resolves to none": "passed",
+      "swaps ArrowLeft/ArrowRight under dir: \"rtl\", horizontal only": "passed"
+    },
+    "packages/react/src/components/toolbar.test.tsx": {
+      "serializes its appearance on the bar, plain by default": "passed",
+      "writes data-justify, start by default": "passed",
+      "sets role and aria-orientation": "passed",
+      "forwards arbitrary attrs to the root, same as ToolbarGroup already did. Vanilla always had this via the emitted template": "passed",
+      "Right/Left move between controls, skipping a NATIVELY disabled one": "passed",
+      "loops by default from the last control back to the first": "passed",
+      "does not loop when loopFocus is false": "passed",
+      "Home/End jump to the first/last control": "passed",
+      "treats a nested composite (radiogroup) as a SINGLE stop. The bug this session found and fixed": "passed",
+      "leaves exactly one tab stop in the bar, and a composite's other members out of it": "passed",
+      "moves the tab stop with focus and keeps it across a re-render": "passed",
+      "defers to a composite child that already handled the key itself (defaultPrevented). The other half of the bug": "passed"
+    },
+    "packages/vanilla/src/components/toolbar.test.ts": {
+      "sets role and aria-orientation on mount": "passed",
+      "Right/Left move between controls, skipping a NATIVELY disabled one (the browser refuses it focus regardless)": "passed",
+      "loops from the last control back to the first by default, with no attribute at all": "passed",
+      "does not loop when data-loop-focus is \"false\"": "passed",
+      "Home/End jump to the first/last control": "passed",
+      "treats a nested composite (radiogroup) as a SINGLE stop, landing on whichever member currently owns tabindex=0": "passed",
+      "leaves exactly one tab stop in the bar, and a composite's other members out of it": "passed",
+      "moves the tab stop with the arrow keys, so Tab returns to where the user left off": "passed",
+      "comes back into a parked composite on its checked member": "passed",
+      "takes in a control added after mount the first time focus enters the bar": "passed",
+      "defers to a composite child that already handled the key itself (defaultPrevented)": "passed"
+    },
+    "packages/core/src/fade-edge.test.ts": {
+      "sees more below until the scroll reaches the bottom": "passed",
+      "forgives the fractional pixel a zoomed layout leaves at the end": "passed",
+      "sees more above only once scrolled away from the top": "passed",
+      "reads the horizontal edges physically in left-to-right": "passed",
+      "reads them physically in right-to-left too, where scrollLeft runs negative from the right": "passed",
+      "sees nothing more anywhere when the content fits": "passed"
+    },
+    "packages/react/src/components/fade-edge.test.tsx": {
+      "writes mode and direction data attrs, including contract defaults": "passed",
+      "maps size and color onto the published style hooks": "passed",
+      "writes nothing extra unless opted in": "passed",
+      "marks content that fits as at its edge, and lets go of the attribute on unmount of the option": "passed"
+    },
+    "packages/vanilla/src/components/fade-edge.test.ts": {
+      "measures a plain FadeEdge's scrollbars, but never marks it at its edge": "passed",
+      "waits to mark a hidden FadeEdge measured: it has no box to measure yet": "passed",
+      "marks content that fits as already at its edge": "passed",
+      "keeps the fade while there is more, and retires it once the scroll reaches the edge": "passed",
+      "removes the attribute and the gutters on destroy, so the fade paints again unwatched": "passed"
+    },
+    "packages/react/src/components/search-field.test.tsx": {
+      "names a native search input by its label and composes Input's class": "passed",
+      "hides the clear button while empty and shows it once there is text": "passed",
+      "clears on the button, reports the empty value and hands focus back to the input": "passed",
+      "clears on Escape, but lets Escape through when the field is already empty": "passed",
+      "follows a controlled value": "passed",
+      "becomes a GET form with the search landmark and a submit button when given an action": "passed",
+      "keeps a visually hidden label as the input's name": "passed"
+    },
+    "packages/vanilla/src/components/search-field.test.ts": {
+      "shows the clear button for an authored value and hides it while empty": "passed",
+      "clears on the button, announces it as an input event and hands focus back": "passed",
+      "clears on Escape, but lets Escape through when the field is already empty": "passed"
     }
   }
 }

@@ -1,0 +1,68 @@
+---
+/* Appearances: the preview menu switches between them, so each one's sheet loads with the page. The field is an `sk-input`, so they are Input's. */
+import "@skryensya/core/components/search-field.css";
+import "@skryensya/core/components/input.css";
+import "@skryensya/core/components/input.brutalist.css";
+import "@skryensya/core/components/input.frosted.css";
+import "@skryensya/core/patterns/state-layer.css";
+import "@skryensya/core/components/button.css";
+/* Structure diagram: Annotated specimen; a preview frame only copies styles THIS page loaded. */
+import "@skryensya/core/components/annotation.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import AppearanceMenu from "../AppearanceMenu.astro";
+import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import { searchFieldAnatomyTree, searchFieldFilterTree, searchFieldFormTree } from "../../demos/search-field";
+import { annotationDemoCss } from "../../demos/annotation";
+import { getLocale, tList, useTranslations } from "../../i18n";
+
+const t = useTranslations(getLocale(Astro.url));
+---
+
+<ComponentPageShell
+  hookPlayground={{ tree: searchFieldFilterTree(t), fit: true }}
+  title="SearchField"
+  description={t("searchField.description")}
+  contractId="search-field"
+  extraSheets={["@skryensya/core/patterns/state-layer.css", "@skryensya/core/components/button.css", "@skryensya/core/components/input.css"]}
+  appearanceTargetSelector=".sk-search-field__input"
+  testFiles={["packages/react/src/components/search-field.test.tsx", "packages/vanilla/src/components/search-field.test.ts"]}
+>
+  <Fragment slot="appearance">
+    <AppearanceMenu label={t("prefs.appearance")} values={["plain", "brutalist", "frosted"]} unavailable={{ tactile: t("prefs.appearanceTactileUnavailable") }} />
+  </Fragment>
+
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("searchField.lede")} />
+
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={searchFieldFilterTree(t)} title={t("searchField.filterTitle")} description={t("searchField.filterBody")} stageMinBlockSize="8rem" storybookTitle="Components/SearchField" storybookStory="Filter" />
+    <UsagePreview tree={searchFieldFormTree(t)} title={t("searchField.formTitle")} description={t("searchField.formBody")} stageMinBlockSize="8rem" storybookTitle="Components/SearchField" storybookStory="Form" />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "searchField.contract").map((item) => <li set:html={item} />)}
+    </ul>
+
+    <h3>{t("component.anatomy")}</h3>
+    <p set:html={t("searchField.anatomyBody")} />
+    <UsagePreview tree={searchFieldAnatomyTree(t)} css={annotationDemoCss} label={t("searchField.anatomyPreviewLabel")} bare />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("searchField.guidelinesLede")} />
+    <WhenToUse use={tList(t, "searchField.when")} avoid={tList(t, "searchField.whenNot")} />
+    <ContentRules items={tList(t, "searchField.content")} />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("searchField.a11yIntro")}
+      does={tList(t, "searchField.a11yDoes")}
+      yours={tList(t, "searchField.a11yYours")}
+      keys={[{ keys: ["Escape"], action: t("searchField.key.escape") }]}
+    />
+  </Fragment>
+</ComponentPageShell>

@@ -91,6 +91,7 @@ const MAP: Record<string, string> = {
   "/components/pagination": "files",
   "/components/placeholder": "selection",
   "/components/password-input": "key",
+  "/components/search-field": "magnifying-glass",
   "/components/otp-input": "password",
   "/components/popover": "chat-text",
   "/components/presence": "eye",

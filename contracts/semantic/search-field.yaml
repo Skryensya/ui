@@ -1,0 +1,24 @@
+# The structure lives in packages/core/src/search-field.ts. Here, only why it is chosen.
+
+SearchField:
+  useWhen:
+    - "the query filters something already on the page as it is typed: a list, a table, a grid of cards"
+    - "whoever types needs to empty the box in one move, with a button or Escape"
+  avoidWhen:
+    - "the value has to be one of a known set of options; that is a Combobox"
+    - "the query is sent to another page; that is SearchField.form"
+    - "it is ordinary text entry that searches nothing; that is an Input"
+  alternatives:
+    - Combobox
+    - Input
+
+SearchField.form:
+  useWhen:
+    - "the query goes to a results page: a site search, a help centre"
+    - "the box should be a `search` landmark a screen reader can jump to"
+  avoidWhen:
+    - "the results filter in place as the person types; that is SearchField"
+    - "it opens a palette of commands and destinations; that is a CommandPalette"
+  alternatives:
+    - SearchField
+    - CommandPalette

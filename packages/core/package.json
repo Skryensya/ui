@@ -61,6 +61,10 @@
       "types": "./src/password-input.ts",
       "default": "./src/password-input.ts"
     },
+    "./search-field": {
+      "types": "./src/search-field.ts",
+      "default": "./src/search-field.ts"
+    },
     "./presence": {
       "types": "./src/presence.ts",
       "default": "./src/presence.ts"

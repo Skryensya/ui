@@ -50,6 +50,10 @@ const registrations: readonly Registration[] = [
     load: async () => (await import("../components/password-input.js")).mountPasswordInput,
   },
   {
+    selector: "[data-sk-search-field]",
+    load: async () => (await import("../components/search-field.js")).mountSearchField,
+  },
+  {
     selector: "[data-sk-rating]",
     load: async () => (await import("../components/rating.js")).mountRating,
   },

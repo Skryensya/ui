@@ -26,6 +26,10 @@
       "types": "./src/components/password-input.tsx",
       "default": "./src/components/password-input.tsx"
     },
+    "./search-field": {
+      "types": "./src/components/search-field.tsx",
+      "default": "./src/components/search-field.tsx"
+    },
     "./presence": {
       "types": "./src/components/presence.tsx",
       "default": "./src/components/presence.tsx"

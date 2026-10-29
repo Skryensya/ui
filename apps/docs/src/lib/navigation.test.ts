@@ -28,7 +28,7 @@ const expected: Record<(typeof expectedOrder)[number], readonly string[]> = {
   actions: ["AppBar", "Button", "ButtonGroup", "Clipboard", "CommandPalette", "Menu", "Menubar", "StateButton", "TileButton", "Toolbar"],
   forms: [
     "Calendar", "Checkbox", "ColorPicker", "Combobox", "DatePicker", "Drop zone", "FormField", "Input", "Listbox",
-    "NumberField", "OtpInput", "PasswordInput", "Questionnaire", "RadioGroup", "SegmentedControl", "Select", "Slider", "Switch",
+    "NumberField", "OtpInput", "PasswordInput", "Questionnaire", "RadioGroup", "SearchField", "SegmentedControl", "Select", "Slider", "Switch",
     "TagsInput", "TileCheckbox", "TileRadioGroup", "TileSwitch", "TimeField", "UserSelect",
   ],
   navigation: ["BackToTop", "Breadcrumb", "Link", "Megamenu", "Navbar", "Nav list", "Pagination", "Sidebar", "SkipLink", "Steps", "Tabs", "TileLink", "Table of contents"],

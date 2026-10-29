@@ -1,0 +1,15 @@
+# What changed in search-field, in the words its users read. Only appended to, never rewritten.
+#
+# `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
+# does not match, something a consumer depends on has moved: write the entry and paste in the new
+# hash.
+surface: "5905b6baf792051b"
+entries:
+  - date: 2026-10-28
+    kind: feature
+    es:
+      title: Primera versión
+      body: "Se publica por primera vez, con su contrato, un binding de React y un montaje en Vanilla."
+    en:
+      title: First release
+      body: "Published for the first time, with its contract, a React binding and a Vanilla mount."
