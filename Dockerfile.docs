@@ -51,6 +51,8 @@ COPY packages/react ./packages/react
 COPY packages/vanilla ./packages/vanilla
 COPY contracts ./contracts
 COPY artifacts ./artifacts
+# The release notes page reads each release's written notes (`docs/releases/*.md`).
+COPY docs/releases ./docs/releases
 # The docs build READS the generated story files as text (`apps/docs/src/lib/storybook-stories.ts` globs
 # `apps/storybook-react/src/stories/*.stories.ts`) to know which Storybook stories exist, and a link to one that
 # does not fails the build instead of shipping dead. No Storybook is built here, so only that folder is copied;

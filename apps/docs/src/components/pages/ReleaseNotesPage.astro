@@ -5,17 +5,46 @@
  * Distinct from `/components/changelog`, which documents the Changelog *component*. This page folds
  * every contract changelog into the shared release ledger so a reader who taps `v0.0.1-dev` learns
  * what that number means for the kit, not how to render an `<ol class="sk-changelog">`.
+ *
+ * Each release opens with its written notes (`docs/releases/v<version>.md`, the same file the GitHub
+ * Release publishes; `.es.md` beside it in Spanish), what changed and why, and keeps the per-contract
+ * entries below it in a Details, folded: the notes are the story, the entries are the evidence.
  */
+import { emitMarkup } from "@skryensya/ai-compiler/emit";
+import type { UsageTree } from "@skryensya/core/usage-tree";
 import Base from "../../layouts/Base.astro";
 import "@skryensya/core/components/changelog.css";
 import { badgeParts } from "@skryensya/core/badge";
 import { changeKindTones, changelogParts } from "@skryensya/core/changelog";
 import { entryText, kitReleaseNotes, summarizeRelease } from "../../lib/contract-reference";
 import { getLocale, hasTranslation, localizePath, useTranslations, type UIKey } from "../../i18n";
+import type { AstroComponentFactory } from "astro/runtime/server/index.js";
+import "@skryensya/core/components/details.css";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
 const releases = kitReleaseNotes();
+
+/* The written notes, by file name. Outside `src`, so the docs image copies `docs/releases` too. */
+const notes = import.meta.glob<{ Content: AstroComponentFactory }>("../../../../../docs/releases/*.md", { eager: true });
+const notesFor = (version: string) => {
+  const file = (suffix: string) => notes[`../../../../../docs/releases/v${version}${suffix}.md`]?.Content;
+  return (locale === "es" ? file(".es") : undefined) ?? file("");
+};
+
+/* The kit's Details, split around the entries so the entries stay this page's own markup. */
+const detailsAround = (summary: string) =>
+  emitMarkup(
+    {
+      contract: "accordion",
+      signature: "Details",
+      children: [
+        { contract: "accordion", signature: "Details.Summary", children: summary },
+        { contract: "accordion", signature: "Details.Content", children: "@@" },
+      ],
+    } as UsageTree,
+    { fillDefaults: false },
+  ).split("@@");
 /* The release each one follows: the list is newest first, so it is the next one down. */
 const previousOf = (index: number) => releases[index + 1]?.version;
 const dateFormat = new Intl.DateTimeFormat(locale, { dateStyle: "long", timeZone: "UTC" });
@@ -61,6 +90,18 @@ const surfaceHref = (id: string) => {
               over `grid-row: 2`. The body owns that cell; each surface's entry list is ordinary flow.
             */}
             <div class="release-notes__body">
+              {(() => {
+                const Notes = notesFor(release.version);
+                return Notes ? (
+                  <div class="release-notes__notes">
+                    <Notes />
+                  </div>
+                ) : null;
+              })()}
+              {(() => {
+                const [open = "", close = ""] = notesFor(release.version) ? detailsAround(t("releaseNotes.byComponent")) : ["", ""];
+                return <Fragment set:html={open} />;
+              })()}
               {(() => {
                 const summary = summarizeRelease(release);
                 const previous = previousOf(index);
@@ -117,6 +158,7 @@ const surfaceHref = (id: string) => {
                   </section>
                 );
               })}
+              {notesFor(release.version) && <Fragment set:html={detailsAround(t("releaseNotes.byComponent"))[1] ?? ""} />}
             </div>
           </li>
         ))}
@@ -132,6 +174,34 @@ const surfaceHref = (id: string) => {
     display: grid;
     gap: var(--space-stack-md);
     min-inline-size: 0;
+  }
+
+  .release-notes__notes {
+    display: grid;
+    gap: var(--space-stack-sm);
+    min-inline-size: 0;
+  }
+
+  /* The file's own "Skryensya UI 0.0.3" title: the version beside it already says it to the eye, but
+     it stays the release's heading for a screen reader. */
+  .release-notes__notes > :global(h2:first-child) {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .release-notes__notes :global(h3) {
+    margin: var(--space-stack-sm) 0 0;
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-label);
+  }
+
+  .release-notes__notes :global(:is(p, ul)) {
+    margin: 0;
   }
 
   .release-notes__since {
