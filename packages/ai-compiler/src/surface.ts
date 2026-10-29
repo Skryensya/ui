@@ -147,6 +147,7 @@ function signatureSurface(signature: ContractSignature) {
           of: entry.of,
           sheets: entry.sheets ? [...entry.sheets].sort() : undefined,
           systemOwned: entry.systemOwned,
+          when: entry.when,
         }))
       : undefined,
     deprecated: signature.deprecated,

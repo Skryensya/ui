@@ -777,6 +777,12 @@ export type ContractSignature = {
     readonly sheets?: readonly string[];
     /** True when the composed markup is binding/system-injected, not an authored UsageTree child. */
     readonly systemOwned?: boolean;
+    /**
+     * Only when these options hold these values (the default counts when the tree leaves one out):
+     * Segmented composes Tooltip only for `iconLabel: "tooltip"`, so only that tree loads its sheets.
+     * An option's own `sheets` cannot say it: those are its family's appearance siblings, nothing else.
+     */
+    readonly when?: Readonly<Record<string, string>>;
   }[];
   readonly deprecated?: { readonly replacement: string };
 };

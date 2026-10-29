@@ -130,6 +130,10 @@ export function sheetsForTree(tree: UsageTree): SheetsForTree {
 
     const signature = contract.signatures[node.signature];
     for (const entry of signature?.compose ?? []) {
+      const applies = Object.entries(entry.when ?? {}).every(
+        ([key, value]) => String(node.options?.[key] ?? contract.options[key]?.default ?? "") === value,
+      );
+      if (!applies) continue;
       for (const sheet of entry.sheets ?? []) sheets.add(sheet);
     }
     walkTemplate(signature?.template, (part) => {

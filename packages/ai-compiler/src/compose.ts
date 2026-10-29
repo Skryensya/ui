@@ -11,7 +11,7 @@ import { contractIds, getContract } from "@skryensya/core/registry";
 
 export type ComposeProblem = {
   readonly contract: string;
-  readonly rule: "unknown-compose-target" | "compose-sheet-missing" | "unknown-system-owned";
+  readonly rule: "unknown-compose-target" | "compose-sheet-missing" | "unknown-compose-when" | "unknown-system-owned";
   readonly message: string;
 };
 
@@ -43,6 +43,15 @@ export function checkCompose(): ComposeProblem[] {
             rule: "unknown-compose-target",
             message: `${sigName}.compose.of "${entry.of}" is not a published contract`,
           });
+        }
+        for (const [key, value] of Object.entries(entry.when ?? {})) {
+          if (!contract.options[key]?.values?.includes(value)) {
+            problems.push({
+              contract: id,
+              rule: "unknown-compose-when",
+              message: `${sigName}.compose.when "${key}: ${value}" is not a value of one of "${id}"'s options`,
+            });
+          }
         }
         for (const sheet of entry.sheets ?? []) {
           const rel = sheet.replace(/^@skryensya\/core\//, "");
