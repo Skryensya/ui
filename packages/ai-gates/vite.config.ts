@@ -12,4 +12,8 @@ export default defineConfig({
   root: "harness",
   plugins: [react(), svelte()],
   server: { port: 4180, strictPort: true },
+  /* Vite's CSS minify is lightningcss, which aborts the build on a pseudo-element it cannot parse
+     (`::picker(select)::-webkit-scrollbar-thumb`, which Chrome accepts); recover and keep the rule
+     as authored, as core's build-css and the docs' config already do. */
+  css: { lightningcss: { errorRecovery: true } },
 });
