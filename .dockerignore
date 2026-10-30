@@ -29,6 +29,7 @@ apps/docs/check-trees.mts
 # Regenerated on static app builds
 apps/docs/public/sandbox
 
-# Not needed to build the docs site
+# Not needed to build the docs site, except the release notes its notes page reads
 docs
+!docs/releases
 CONTEXT.md
