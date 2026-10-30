@@ -74,11 +74,14 @@ const buildable = (name: string) => Boolean(read(name).scripts?.build);
 function bump(version: string): void {
   if (!SEMVER.test(version)) throw new Error(`"${version}" is not a version (x.y.z).`);
   for (const name of shipped) write(name, { ...read(name), version });
+  writeFileSync(join(root, "version.txt"), `${version}\n`);
+  writeFileSync(join(root, ".release-please-manifest.json"), `${JSON.stringify({ ".": version }, null, 2)}\n`);
 
-  /* The README's install URLs name the version twice each (the tag and the file). */
+  /* Keep the manual rehearsal in sync with Release Please's annotated README blocks. */
   for (const file of ["README.md", "packages/cli/README.md"]) {
     const readme = join(root, file);
     const text = readFileSync(readme, "utf8")
+    .replace(/SKRYENSYA_VERSION=\d+\.\d+\.\d+(-[\w.]+)?/g, `SKRYENSYA_VERSION=${version}`)
     .replace(/## Consuming \d+\.\d+\.\d+(-[\w.]+)?/, `## Consuming ${version}`)
     .replace(/releases\/download\/v[\d.\w-]+\/(skryensya-[\w-]+)-[\d.\w-]+\.tgz/g, `releases/download/v${version}/$1-${version}.tgz`)
     .replace(/`\d+\.\d+\.\d+(-[\w.]+)?` is cut as a GitHub Release/, `\`${version}\` is cut as a GitHub Release`);

@@ -1,7 +1,7 @@
-# Cuts a GitHub Release from a version tag.
+# Builds the tarball assets for a version tag.
 #
-#   1. `node scripts/release.ts bump 0.0.2`, commit, and push the commit.
-#   2. `git tag v0.0.2 && git push origin v0.0.2`: this workflow takes it from there.
+# Release Please normally creates the tag and GitHub Release after its PR merges to main.
+# A manually pushed version tag still works as before; this workflow creates the release if needed.
 #
 # What it publishes is one npm-compatible tarball per shipped package plus `SHA256SUMS`, as release
 # assets. Nothing goes to a registry: consumers install by URL (README, "Consuming"). The steps are the
@@ -17,7 +17,7 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: "Build and verify only; do not create a release"
+        description: "Build and verify only; do not publish release assets"
         type: boolean
         default: true
 
@@ -34,7 +34,7 @@ jobs:
     name: build, pack and publish the release
     runs-on: ubuntu-latest
     env:
-      # Set only for a tag push; `pack` refuses a tag that is not the packages' version.
+      # `pack` refuses a tag that is not the packages' version, including manual reruns on tags.
       RELEASE_TAG: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
     steps:
       - uses: actions/checkout@v4
@@ -48,8 +48,8 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      # The same gate as every pull request, on the exact commit being released: a tag on a red commit
-      # does not become a release.
+      # The same gate as every pull request, on the exact commit being released: a red commit
+      # must not acquire installable release assets.
       - run: pnpm audit:gate
       - run: pnpm check
 
@@ -69,20 +69,27 @@ jobs:
           path: release/
           if-no-files-found: error
 
-      - name: Create the GitHub Release
-        if: github.ref_type == 'tag'
+      - name: Publish the release assets
+        if: github.ref_type == 'tag' && (github.event_name != 'workflow_dispatch' || !inputs.dry_run)
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.ref_name }}
         run: |
-          # Written notes win: `docs/releases/<tag>.md`. Without them the notes are generated from the
-          # commits since the previous tag, which is accurate and unedited.
-          if [ -f "docs/releases/$TAG.md" ]; then
-            notes=(--notes-file "docs/releases/$TAG.md")
+          # Written notes still win; otherwise keep Release Please's generated notes.
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            if [ -f "docs/releases/$TAG.md" ]; then
+              gh release edit "$TAG" --notes-file "docs/releases/$TAG.md"
+            fi
+            # Rerunning a failed upload must not require deleting the release or its tag.
+            gh release upload "$TAG" release/*.tgz release/SHA256SUMS --clobber
           else
-            notes=(--generate-notes)
+            # Preserve manual-tag releases, including their written notes and prerelease flag.
+            if [ -f "docs/releases/$TAG.md" ]; then
+              notes=(--notes-file "docs/releases/$TAG.md")
+            else
+              notes=(--generate-notes)
+            fi
+            case "$TAG" in *-*) flags=(--prerelease) ;; *) flags=() ;; esac
+            gh release create "$TAG" release/*.tgz release/SHA256SUMS \
+              --title "$TAG" "${notes[@]}" "${flags[@]}" --verify-tag
           fi
-          # A pre-release version (0.1.0-rc.1) is marked as one.
-          case "$TAG" in *-*) flags=(--prerelease) ;; *) flags=() ;; esac
-          gh release create "$TAG" release/*.tgz release/SHA256SUMS \
-            --title "$TAG" "${notes[@]}" "${flags[@]}" --verify-tag

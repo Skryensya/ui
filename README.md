@@ -49,19 +49,24 @@ pnpm check
 That is what `pre-push` AND CI run, and it skips the browser gates. `pnpm check:gates` runs those
 alone (about 19 minutes, worth it for anything visual) and `pnpm check:all` runs both.
 
+<!-- x-release-please-start-version -->
 ## Consuming 0.0.3
 
 `0.0.3` is cut as a GitHub Release, not published to npm yet. The release assets are npm-compatible
 tarballs, so install the Skryensya packages you need from the release URL.
+<!-- x-release-please-end -->
 
 For React:
 
+<!-- x-release-please-start-version -->
 ```bash
+SKRYENSYA_VERSION=0.0.3
 pnpm add react react-dom \
-  https://github.com/Skryensya/ui/releases/download/v0.0.3/skryensya-core-0.0.3.tgz \
-  https://github.com/Skryensya/ui/releases/download/v0.0.3/skryensya-icons-lucide-0.0.3.tgz \
-  https://github.com/Skryensya/ui/releases/download/v0.0.3/skryensya-react-0.0.3.tgz
+  https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-core-${SKRYENSYA_VERSION}.tgz \
+  https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-icons-lucide-${SKRYENSYA_VERSION}.tgz \
+  https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-react-${SKRYENSYA_VERSION}.tgz
 ```
+<!-- x-release-please-end -->
 
 ```tsx
 import "@skryensya/core/skryensya.css";
@@ -74,18 +79,24 @@ export function SaveButton() {
 
 Or let the CLI do it. It belongs to the release and installs that release's packages (the binding, core and the icon set) for you:
 
+<!-- x-release-please-start-version -->
 ```bash
-npx https://github.com/Skryensya/ui/releases/download/v0.0.3/skryensya-cli-0.0.3.tgz add button
+SKRYENSYA_VERSION=0.0.3
+npx https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-cli-${SKRYENSYA_VERSION}.tgz add button
 ```
+<!-- x-release-please-end -->
 
 For authored HTML plus progressive enhancement:
 
+<!-- x-release-please-start-version -->
 ```bash
+SKRYENSYA_VERSION=0.0.3
 pnpm add \
-  https://github.com/Skryensya/ui/releases/download/v0.0.3/skryensya-core-0.0.3.tgz \
-  https://github.com/Skryensya/ui/releases/download/v0.0.3/skryensya-icons-lucide-0.0.3.tgz \
-  https://github.com/Skryensya/ui/releases/download/v0.0.3/skryensya-vanilla-0.0.3.tgz
+  https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-core-${SKRYENSYA_VERSION}.tgz \
+  https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-icons-lucide-${SKRYENSYA_VERSION}.tgz \
+  https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-vanilla-${SKRYENSYA_VERSION}.tgz
 ```
+<!-- x-release-please-end -->
 
 ```ts
 import "@skryensya/core/skryensya.css";

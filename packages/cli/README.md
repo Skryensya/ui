@@ -8,9 +8,12 @@ stylesheet and installs the packages, the same two things you would do by hand.
 The CLI is a GitHub Release asset like the rest of the kit, and it versions with it: `skryensya --version` is the
 release it belongs to, and `add` installs the packages of that same release.
 
+<!-- x-release-please-start-version -->
 ```bash
-npx https://github.com/Skryensya/ui/releases/download/v0.0.3/skryensya-cli-0.0.3.tgz add button
+SKRYENSYA_VERSION=0.0.3
+npx https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-cli-${SKRYENSYA_VERSION}.tgz add button
 ```
+<!-- x-release-please-end -->
 
 ```
 skryensya list [--category <name>] [--json]    the catalog

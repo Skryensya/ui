@@ -119,6 +119,25 @@ docs(changelog): registra los arreglos de chart, command-palette y editor
 Describe the effect, not the file you touched. One commit is one subject: if you need a semicolon to
 join two unrelated changes, they are two commits.
 
+Release Please reads the commits that reach `main`. While the kit is below 1.0, `fix:`, `feat:`
+and `perf:` advance the patch version; a breaking change advances the minor version. From 1.0,
+`feat:` advances minor and a breaking change advances major. Other types do not normally open a
+release PR on their own.
+
+The hook does not accept `!` in the subject. Put breaking changes in the body instead:
+
+```text
+feat(button): replace the legacy size option
+
+BREAKING CHANGE: replace size="compact" with size="sm".
+```
+
+For **squash merge**, the PR title must have the same Conventional Commit format, for example
+`fix(select): keep the focused option visible`. Use that title as the squash commit subject;
+keep its body within 300 characters and preserve any `BREAKING CHANGE:` notice. On a release PR,
+keep Release Please's generated title and leave the squash commit body empty, rather than copying
+the generated release notes into it.
+
 ## Adding or changing a component
 
 The contract comes first and both bindings follow it. A binding that ships alone is the drift this
@@ -218,20 +237,66 @@ gates down with it.
 
 ## Cutting a release
 
-A release is a version tag. The `release` workflow builds, packs and publishes it as GitHub Release assets
-(one npm-compatible tarball per shipped package, plus `SHA256SUMS`); nothing goes to a registry.
+This pnpm/Turbo monorepo ships **one coordinated release**, not independent package releases.
+The eight packages in `scripts/release.ts#shipped` keep the same version and the existing `v*`
+tag format. Release Please uses a single root manifest entry with the `simple` strategy:
+`version.txt` tracks the kit version, and `extra-files` updates the shipped package manifests and
+annotated install examples. Internal apps and tooling keep their own versions.
 
-```bash
-node scripts/release.ts bump 0.0.2      # versions of the shipped packages, and the README's install URLs
-# write docs/releases/v0.0.2.md          # the release notes; without the file they are generated from commits
-git commit -am "chore(release): 0.0.2" && git push
-git tag v0.0.2 && git push origin v0.0.2
-```
+The initial manifest is **0.0.3**, the existing published release. `bootstrap-sha` is the commit
+tagged `v0.0.3`, so the first PR only includes subsequent commits, not the whole repository history.
+It is ignored after Release Please has established its own release history. Do not replace it with
+a permanent `last-release-sha`, which would keep including old changes.
 
-Rehearse it first with the same commands the workflow runs: `node scripts/release.ts build`, then `pack`,
-then `verify` (output in `release/`, ignored by git). From the Actions tab, running `release` by hand is a
-dry run: it builds and verifies and uploads the tarballs as an artifact without creating a release.
-A tag that is not the packages' version (`v0.0.3` on `0.0.2`) fails the pack step.
+1. Commit releasable changes to `main`, directly or through PRs.
+2. The `release-please` workflow opens or updates one release PR **against `main`**, containing
+   versions, install examples and `CHANGELOG.md`. Opening the PR publishes nothing.
+3. Review the version, changelog and CI. The existing bilingual contract ledger
+   (`contracts/changelog/releases.yaml`) remains separate: update it and regenerate artifacts when
+   cutting a contract release. Optional written notes remain in `docs/releases/v<version>.md`
+   and `v<version>.es.md`; existing notes are never rewritten.
+4. Merge the release PR without changing its generated title or removing its `autorelease: pending`
+   label. The next `main` run creates the tag and GitHub Release.
+5. That tag triggers the existing `release` workflow: audit, check, build, pack, verify, and attach
+   eight npm-compatible tarballs plus `SHA256SUMS`. Written English notes override the generated
+   GitHub notes when present. Nothing is published to npm and deployment is unchanged.
+
+Wait for `release` to finish before sharing install URLs: the GitHub Release exists before its
+assets are ready. If upload fails, rerun the failed workflow; uploads replace matching assets
+without recreating the release or moving its tag.
+
+Rehearse with `node scripts/release.ts build`, then `pack`, then `verify` (output in ignored
+`release/`). Actions -> `release` -> Run workflow defaults to a dry run, even on a tag.
+To publish assets manually, select a version tag and uncheck `dry_run`; a tag that disagrees with
+the package versions fails packing. The manual `bump` command and tag-push fallback still work,
+but are not the normal release path; do not combine them with a pending release PR.
+
+### Release automation setup
+
+Create a **fine-grained PAT** for the `Skryensya` resource owner, restricted to **only `ui`**,
+with **Contents: read and write** and **Pull requests: read and write** (Metadata read is automatic).
+No Actions, Workflows, Packages, administration or separate Issues write permission is needed.
+Approve it in the organization / authorize it as required by its policy, then store it under
+Settings -> Secrets and variables -> Actions as **`RELEASE_PLEASE_TOKEN`**. Set an expiration and
+rotate the secret before it expires. Never put the token in a tracked file.
+
+The new workflow deliberately has no `GITHUB_TOKEN` permissions and fails clearly if the PAT is
+missing. The ordinary token cannot start the existing tag-push workflow; it also prevents automatic
+CI runs on bot PRs (some GitHub versions instead require a manual approval). The PAT lets both
+`check.yml` on release PRs and `release.yml` on release tags run normally, without broadening the
+tokens used by those workflows.
+
+If using squash merge, configure Settings -> General -> Pull Requests -> Squash merging to use
+**the PR title** and **a blank default commit message**. This avoids commit lists or generated notes
+exceeding the hook's 300-character body limit; check the final message when adding a breaking-change
+notice. Keep existing branch/ruleset requirements and require CI to pass before merging. If an
+organization policy blocks automation PRs, have an administrator allow them; no auto-approval or
+branch-protection bypass is needed.
+
+Official references: [Release Please Action](https://github.com/googleapis/release-please-action),
+[manifest configuration](https://github.com/googleapis/release-please/blob/main/docs/manifest-releaser.md),
+[extra-file annotations](https://github.com/googleapis/release-please/blob/main/docs/customizing.md#updating-arbitrary-files),
+and [GitHub workflow triggering](https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-when-your-workflow-runs/triggering-a-workflow).
 
 ## Dependencies
 
