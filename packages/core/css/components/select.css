@@ -158,19 +158,11 @@
       background: var(--sk-select-content-wash) var(--sk-select-content-bg);
       color: var(--sk-select-fg);
       box-shadow: var(--sk-select-content-shadow);
-    }
-
-    /* shortcut: webkit-only (Firefox's scrollbar-color has no thumb inset), matches the inset
-     * .sk-select__content.sk-scrollbar::-webkit-scrollbar-thumb already uses below. */
-    .sk-select-native::picker(select)::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .sk-select-native::picker(select)::-webkit-scrollbar-thumb {
-      border-block: var(--space-inset-xs) solid transparent;
-      border-radius: var(--radius-control);
-      background-color: var(--color-border-default);
-      background-clip: padding-box;
+      /* The standard scrollbar properties, not `::picker(select)::-webkit-scrollbar-*`: lightningcss,
+       * Vite's default CSS minifier, cannot parse a pseudo-element chained after `::picker()` and
+       * aborts the consumer's whole build on it. The thumb loses the enhanced list's inset (below). */
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-border-default) transparent;
     }
 
     .sk-select-native option {

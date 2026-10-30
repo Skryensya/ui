@@ -5,6 +5,14 @@
 # hash.
 surface: "9606f8862eed9ac9"
 entries:
+  - date: 2026-10-29
+    kind: bugfix
+    es:
+      title: select.css ya no rompe el build de una app con Vite
+      body: "La barra de desplazamiento del selector nativo usaba <code>::picker(select)::-webkit-scrollbar-*</code>, que lightningcss (el minificador de CSS por defecto de Vite) no sabe leer, y abortaba el build entero. Ahora usa <code>scrollbar-width</code> y <code>scrollbar-color</code>: la barra es delgada y del mismo color, sin el margen interno del pulgar."
+    en:
+      title: select.css no longer breaks a Vite app's build
+      body: "The native picker's scrollbar used <code>::picker(select)::-webkit-scrollbar-*</code>, which lightningcss (Vite's default CSS minifier) cannot parse, and it aborted the whole build. It now uses <code>scrollbar-width</code> and <code>scrollbar-color</code>: a thin bar in the same color, without the thumb's inset."
   - date: 2026-10-25
     kind: breaking
     target: appearance

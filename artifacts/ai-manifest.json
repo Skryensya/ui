@@ -3728,6 +3728,24 @@
     ],
     "select": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-29",
+            "en": {
+              "body": "The native picker's scrollbar used <code>::picker(select)::-webkit-scrollbar-*</code>, which lightningcss (Vite's default CSS minifier) cannot parse, and it aborted the whole build. It now uses <code>scrollbar-width</code> and <code>scrollbar-color</code>: a thin bar in the same color, without the thumb's inset.",
+              "title": "select.css no longer breaks a Vite app's build"
+            },
+            "es": {
+              "body": "La barra de desplazamiento del selector nativo usaba <code>::picker(select)::-webkit-scrollbar-*</code>, que lightningcss (el minificador de CSS por defecto de Vite) no sabe leer, y abortaba el build entero. Ahora usa <code>scrollbar-width</code> y <code>scrollbar-color</code>: la barra es delgada y del mismo color, sin el margen interno del pulgar.",
+              "title": "select.css ya no rompe el build de una app con Vite"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.4-dev"
+      },
+      {
         "date": "2026-10-28",
         "entries": [
           {
@@ -52513,7 +52531,7 @@
     "working": "0.0.4"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "d7a96992aeb86f13",
+  "sourceHash": "a017a1f0881d5dc3",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",
