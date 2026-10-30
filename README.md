@@ -50,9 +50,9 @@ That is what `pre-push` AND CI run, and it skips the browser gates. `pnpm check:
 alone (about 19 minutes, worth it for anything visual) and `pnpm check:all` runs both.
 
 <!-- x-release-please-start-version -->
-## Consuming 0.0.3
+## Consuming 0.0.4
 
-`0.0.3` is cut as a GitHub Release, not published to npm yet. The release assets are npm-compatible
+`0.0.4` is cut as a GitHub Release, not published to npm yet. The release assets are npm-compatible
 tarballs, so install the Skryensya packages you need from the release URL.
 <!-- x-release-please-end -->
 
@@ -60,7 +60,7 @@ For React:
 
 <!-- x-release-please-start-version -->
 ```bash
-SKRYENSYA_VERSION=0.0.3
+SKRYENSYA_VERSION=0.0.4
 pnpm add react react-dom \
   https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-core-${SKRYENSYA_VERSION}.tgz \
   https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-icons-lucide-${SKRYENSYA_VERSION}.tgz \
@@ -81,7 +81,7 @@ Or let the CLI do it. It belongs to the release and installs that release's pack
 
 <!-- x-release-please-start-version -->
 ```bash
-SKRYENSYA_VERSION=0.0.3
+SKRYENSYA_VERSION=0.0.4
 npx https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-cli-${SKRYENSYA_VERSION}.tgz add button
 ```
 <!-- x-release-please-end -->
@@ -90,7 +90,7 @@ For authored HTML plus progressive enhancement:
 
 <!-- x-release-please-start-version -->
 ```bash
-SKRYENSYA_VERSION=0.0.3
+SKRYENSYA_VERSION=0.0.4
 pnpm add \
   https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-core-${SKRYENSYA_VERSION}.tgz \
   https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-icons-lucide-${SKRYENSYA_VERSION}.tgz \
