@@ -4,7 +4,7 @@ export const docsVersionMessages = {
     "version.controlHint": "La documentación se corta por major. El tip completo vive en el pie.",
     "version.named": "Versión: {name}",
     "version.latestOfMajor": "Último {version}",
-    "version.latest": "Última",
+    "version.latest": "Más reciente",
     "version.older": "Anterior",
   },
   en: {

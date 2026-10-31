@@ -34,11 +34,12 @@
   @supports (anchor-name: --probe) {
     /* The rail names itself so the button can point at it. Scoped to the pair's own toc: the same
        `.sk-toc` renders inside `ComponentPreview` frames, and a demo must not become the anchor. */
-    .docs-document-pair > .sk-toc {
+    .docs-document-pair > .sk-toc:not([data-empty]) {
       anchor-name: --docs-toc;
     }
 
-    .sk-back-to-top {
+    /* An empty, hidden Toc also hides its anchored button; keep the viewport-corner fallback. */
+    body:has(.docs-document-pair > .sk-toc:not([data-empty])) .sk-back-to-top {
       position-anchor: --docs-toc;
       /*
        * NO FALLBACK ARGUMENT, and that is load-bearing rather than an omission. Measured in Chrome
@@ -182,7 +183,7 @@
    * against 16px on every other page. The pair's gutter is the page edge on mobile, so the inner
    * ones stand down to nothing.
    */
-  main[data-document-layout="grid"]:has(> .docs-component-shell) {
+  main[data-document-layout="grid"]:has(> :is(.docs-component-shell, .component-explorer, .foundations-index)) {
     --docs-measure-room: 100%;
   }
 

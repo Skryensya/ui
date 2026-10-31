@@ -2,6 +2,7 @@ export const prefsMessages = {
   es: {
 
     "prefs.title": "Preferencias",
+    "prefs.openHint": "Cambiar tema, color e idioma",
     "prefs.palette": "Paleta de color",
     "prefs.paletteNamed": "Paleta: {name}",
     "prefs.paletteHint": "Cambia el color de acento del sitio.",
@@ -27,6 +28,7 @@ export const prefsMessages = {
   en: {
 
     "prefs.title": "Preferences",
+    "prefs.openHint": "Change theme, color and language",
     "prefs.palette": "Color palette",
     "prefs.paletteNamed": "Palette: {name}",
     "prefs.paletteHint": "Changes the site's accent color.",

@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { DatePicker, NativeDatePicker } from "@skryensya/react/date-picker";
 
 type Scenario = {
@@ -10,22 +10,20 @@ type Scenario = {
   min?: string;
   max?: string;
   disabled?: boolean;
+  locale?: string;
+  timeZone?: string;
+  placeholder?: string;
+  dir?: "rtl";
 };
 
-const SCENARIOS: readonly Scenario[] = [
+type DataMode = "demo" | "worst";
+
+const DEMO: readonly Scenario[] = [
   {
-    label: "Demo date",
+    label: "Typical single date",
     fieldLabel: "Check-in date",
     value: "2026-06-15",
     nativeValue: "2026-06-15",
-  },
-  {
-    label: "Earliest boundary and long label",
-    fieldLabel: "Date the international billing contact change takes effect",
-    value: "1900-01-01",
-    nativeValue: "1900-01-01",
-    min: "1900-01-01",
-    max: "2100-12-31",
   },
   {
     label: "Range across year boundary",
@@ -34,10 +32,7 @@ const SCENARIOS: readonly Scenario[] = [
     nativeValue: "2025-12-29",
     selectionMode: "range",
   },
-  {
-    label: "Empty",
-    fieldLabel: "Optional renewal date",
-  },
+  { label: "Empty", fieldLabel: "Optional renewal date" },
   {
     label: "Disabled",
     fieldLabel: "Confirmed invoice date",
@@ -46,6 +41,64 @@ const SCENARIOS: readonly Scenario[] = [
     disabled: true,
   },
 ];
+
+const WORST: readonly Scenario[] = [
+  {
+    label: "Long localized label, placeholder, and upper bound",
+    fieldLabel: "Benachrichtigungseinstellungen für internationale Abrechnungsänderungen",
+    value: "2100-12-31",
+    nativeValue: "2100-12-31",
+    min: "1900-01-01",
+    max: "2100-12-31",
+    locale: "de-DE",
+    timeZone: "Pacific/Kiritimati",
+    placeholder: "Bitte wählen Sie das Datum der Abrechnungsänderung aus",
+  },
+  {
+    label: "RTL range across the year boundary",
+    fieldLabel: "تاريخ بدء الإقامة ونهايتها بعد مراجعة الحساب السنوية",
+    value: ["2099-12-29", "2100-01-04"],
+    nativeValue: "2099-12-29",
+    selectionMode: "range",
+    min: "1900-01-01",
+    max: "2100-12-31",
+    locale: "ar-EG",
+    timeZone: "Pacific/Kiritimati",
+    placeholder: "اختر تاريخ بداية الإقامة ونهايتها",
+    dir: "rtl",
+  },
+  {
+    label: "Empty value and long placeholder",
+    fieldLabel: "Optional date after the annual billing review is complete",
+    locale: "vi-VN",
+    placeholder: "Select the date after the billing review has been completed",
+  },
+  {
+    label: "One-character label and lower bound",
+    fieldLabel: "J",
+    value: "1900-01-01",
+    nativeValue: "1900-01-01",
+    min: "1900-01-01",
+    max: "2100-12-31",
+    locale: "en-GB",
+  },
+  {
+    label: "Disabled at the upper bound",
+    fieldLabel: "Date on which the confirmed international billing transition takes effect",
+    value: "2100-12-31",
+    nativeValue: "2100-12-31",
+    min: "1900-01-01",
+    max: "2100-12-31",
+    disabled: true,
+    locale: "de-DE",
+  },
+];
+
+function initialMode(): DataMode {
+  return typeof window !== "undefined" && new URLSearchParams(window.location.search).get("data") === "worst"
+    ? "worst"
+    : "demo";
+}
 
 function Case({ label, width, children }: { label: string; width: string; children: ReactNode }) {
   return (
@@ -58,11 +111,12 @@ function Case({ label, width, children }: { label: string; width: string; childr
 
 function Fields({ scenario, id }: { scenario: Scenario; id: string }) {
   return (
-    <div className="break-date-picker-fields">
+    <div className="break-date-picker-fields" dir={scenario.dir}>
       <NativeDatePicker
         id={`${id}-native`}
         label={`${scenario.fieldLabel} - native`}
-        defaultValue={scenario.nativeValue}
+        locale={scenario.locale}
+        value={scenario.nativeValue}
         min={scenario.min}
         max={scenario.max}
         disabled={scenario.disabled}
@@ -75,41 +129,58 @@ function Fields({ scenario, id }: { scenario: Scenario; id: string }) {
         min={scenario.min}
         max={scenario.max}
         disabled={scenario.disabled}
-        locale="en-US"
-        placeholder="Select date"
+        locale={scenario.locale ?? "en-US"}
+        timeZone={scenario.timeZone}
+        placeholder={scenario.placeholder ?? "Select date"}
       />
     </div>
   );
 }
 
 export function DatePickerBreak() {
+  const [mode, setMode] = useState<DataMode>(initialMode);
+  const scenarios = mode === "worst" ? WORST : DEMO;
+  const wideScenario = scenarios.find((scenario) => scenario.selectionMode === "range") ?? scenarios[0];
+
+  function selectMode(next: DataMode) {
+    setMode(next);
+    const url = new URL(window.location.href);
+    if (next === "worst") url.searchParams.set("data", "worst");
+    else url.searchParams.delete("data");
+    window.history.replaceState(null, "", url);
+  }
+
   return (
-    <div className="break-page" data-toc-transparent>
+    <div className="break-page date-picker-break-page" data-toc-transparent>
       <header>
         <h1>break: DatePicker</h1>
         <p className="break-intro">
-          Native and enhanced date controls are paired for typical, boundary, range, empty and
-          disabled states. Open the enhanced picker to inspect its calendar and positioning.
+          Native and enhanced date fields under realistic boundary conditions. Open the enhanced
+          picker to test its calendar, keyboard navigation, and positioning.
         </p>
       </header>
-      <div className="break-scenario-grid">
-        {SCENARIOS.map((scenario, index) => (
+      <div className="break-scenario-grid" key={mode}>
+        {scenarios.map((scenario, index) => (
           <Case key={scenario.label} label={`DatePicker - ${scenario.label}`} width="break-w-320">
-            <Fields scenario={scenario} id={`date-${index}`} />
+            <Fields scenario={scenario} id={`date-${mode}-${index}`} />
           </Case>
         ))}
       </div>
-      <Case label="DatePicker - long-label boundary - wide container (1100px)" width="break-w-1100">
-        <DatePicker
-          id="date-wide"
-          label={SCENARIOS[1].fieldLabel}
-          defaultValue={SCENARIOS[1].value}
-          min={SCENARIOS[1].min}
-          max={SCENARIOS[1].max}
-          locale="en-US"
-          placeholder="Select date"
-        />
+      <Case label="DatePicker - worst range in a wide container (1100px)" width="break-w-1100">
+        <Fields scenario={wideScenario} id={`date-${mode}-wide`} />
       </Case>
+      <nav className="break-data-toggle" aria-label="DatePicker test data">
+        {(["demo", "worst"] as const).map((item) => (
+          <button
+            type="button"
+            key={item}
+            aria-pressed={mode === item}
+            onClick={() => selectMode(item)}
+          >
+            {item === "demo" ? "Demo data" : "Worst case"}
+          </button>
+        ))}
+      </nav>
     </div>
   );
 }

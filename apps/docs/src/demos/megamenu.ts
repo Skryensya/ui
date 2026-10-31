@@ -401,7 +401,7 @@ export const megamenuOpenTree = (t: Translate, variant: UsageTree): UsageTree =>
                 { contract: "nav-list", signature: "NavList", attrs: { class: "megamenu-open__columns" }, children: links },
                 ...media,
               ]),
-              attrs: { class: "sk-megamenu__panel", style: `--megamenu-open-columns: ${columns.length}` },
+              attrs: { class: "sk-megamenu__panel" },
             } as UsageTree,
           ]),
         ]),
@@ -456,9 +456,15 @@ export const megamenuOpenCss = `.sk-megamenu {
 
 .sk-megamenu__panel {
   display: grid;
-  grid-template-columns: repeat(var(--megamenu-open-columns, 3), minmax(0, 1fr));
+  /* Wraps instead of squeezing: on a phone-width card each column takes its own row. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
   gap: var(--space-inline-lg);
-  padding: var(--space-inset-lg);
+}
+
+/* The live panel's column tops sit on the content's own padding; the specimen's NavList root would add more. */
+.megamenu-open__columns .sk-nav-list__group-label {
+  margin-block-start: 0;
+  padding-block-start: 0;
 }
 
 .sk-megamenu__panel > .sk-image-frame {

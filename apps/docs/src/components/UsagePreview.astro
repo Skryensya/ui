@@ -385,7 +385,7 @@ const scope = css && !asPlayground ? `u${[...(css + JSON.stringify(tree))].reduc
               remountOnChange={remountOnChange}
               keepFrames={keepFrames}
               frame={(variants || asPlayground) && screen === "xl"
-                ? { screen: "xl", width: 1200, flush, css, note: t("preview.scaledNote") }
+                ? { screen: "xl", width: 1200, flush, css, viewport, minHeight: stageMinBlockSize, note: t("preview.scaledNote") }
                 : isolate || viewport !== "auto"
                   ? { flush, css, viewport, minHeight: stageMinBlockSize }
                   : undefined}

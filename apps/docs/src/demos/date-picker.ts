@@ -44,21 +44,52 @@ export const nativeDatePickerTree = (t: Translate): UsageTree => ({
   slots: { label: t("demo.datePicker.label") },
 });
 
-/* Do/Don't: a stay as one range, or as two pickers that know nothing of each other. */
-export const datePickerDoRangeTree = (t: Translate): UsageTree => ({
-  ...datePickerTree(t),
-  options: { ...datePickerTree(t).options, name: "stay", selectionMode: "range" },
-  attrs: { style: "inline-size: 18rem" },
-  slots: { label: t("demo.datePicker.dd.stay") },
-});
+/* Do/Don't: one connected range, or two independent dates with an impossible order. */
+const rangeFieldStyle = "inline-size: min(22rem, 100%)";
 
-export const datePickerDontRangeTree = (t: Translate): UsageTree => ({
-  contract: "layout",
-  signature: "Stack",
-  options: { gap: "md" },
-  attrs: { style: "inline-size: 18rem" },
-  children: [
-    { ...datePickerTree(t), options: { ...datePickerTree(t).options, name: "stay-start" }, slots: { label: t("demo.datePicker.dd.start") } },
-    { ...datePickerTree(t), options: { ...datePickerTree(t).options, name: "stay-end" }, slots: { label: t("demo.datePicker.dd.end") } },
-  ],
-});
+const sampleStay = () => {
+  const start = new Date();
+  start.setUTCDate(start.getUTCDate() + 7);
+  const end = new Date(start);
+  end.setUTCDate(end.getUTCDate() + 5);
+  return [start.toISOString().slice(0, 10), end.toISOString().slice(0, 10)] as const;
+};
+
+export const datePickerDoRangeTree = (t: Translate): UsageTree => {
+  const [start, end] = sampleStay();
+  return {
+    ...datePickerTree(t),
+    options: {
+      ...datePickerTree(t).options,
+      name: "stay",
+      selectionMode: "range",
+      value: `${start} ${end}`,
+    },
+    attrs: { style: rangeFieldStyle },
+    slots: { label: t("demo.datePicker.dd.stay") },
+  };
+};
+
+export const datePickerDontRangeTree = (t: Translate): UsageTree => {
+  const [start, end] = sampleStay();
+  return {
+    contract: "layout",
+    signature: "Stack",
+    options: { gap: "md" },
+    attrs: { style: rangeFieldStyle },
+    children: [
+      {
+        ...datePickerTree(t),
+        attrs: { style: rangeFieldStyle },
+        options: { ...datePickerTree(t).options, name: "stay-start", value: end },
+        slots: { label: t("demo.datePicker.dd.start") },
+      },
+      {
+        ...datePickerTree(t),
+        attrs: { style: rangeFieldStyle },
+        options: { ...datePickerTree(t).options, name: "stay-end", value: start },
+        slots: { label: t("demo.datePicker.dd.end") },
+      },
+    ],
+  };
+};

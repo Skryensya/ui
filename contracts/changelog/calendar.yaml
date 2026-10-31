@@ -3,8 +3,41 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "d53481185ba7d285"
+surface: "a290814e0686e3b9"
 entries:
+  - date: 2026-10-30
+    kind: bugfix
+    es:
+      title: "El calendario de rango se adapta a móvil"
+      body: "En pantallas estrechas, los meses del calendario de rango se navegan horizontalmente, uno a la vez, con ajuste por deslizamiento. En escritorio siguen visibles lado a lado."
+    en:
+      title: "Range calendar adapts to mobile"
+      body: "On narrow screens, range calendar months are navigated horizontally, one at a time, with swipe snapping. Desktop keeps both months side by side."
+  - date: 2026-10-30
+    kind: bugfix
+    es:
+      title: "Cabeceras de rango sin botón y texto centrado"
+      body: "Los rangos muestran mes y año como texto, sin selector de año. En la selección individual, el caret usa el slot post de Button para mantener el texto centrado verticalmente."
+    en:
+      title: "Static range headings and centered button labels"
+      body: "Ranges show month and year as text without a year selector. In single-date selection, the caret uses Button’s post slot to keep labels vertically centered."
+  - date: 2026-10-30
+    kind: feature
+    es:
+      title: "Cabeceras y días vecinos en la vista de dos meses"
+      body: "Cada mes integra su año en una cabecera propia. Los días de meses vecinos se muestran con el mismo estilo secundario de la vista de un mes, sin duplicar identificadores."
+    en:
+      title: "Month headers and adjacent days in the two-month view"
+      body: "Each month includes its year in its own header. Adjacent-month days use the same secondary styling as the single-month view, without duplicate identifiers."
+  - date: 2026-10-30
+    kind: feature
+    target: numOfMonths
+    es:
+      title: "Dos meses para seleccionar rangos"
+      body: "Los rangos muestran dos meses consecutivos, juntos o apilados según el espacio disponible. numOfMonths permite elegir uno o dos; usa 1 para conservar la vista de un mes."
+    en:
+      title: "Two months for range selection"
+      body: "Ranges show two consecutive months, side by side or stacked to fit the available space. numOfMonths accepts one or two; use 1 to keep the single-month view."
   - date: 2026-10-01
     kind: feature
     es:

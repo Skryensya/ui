@@ -28,7 +28,7 @@ const clearButton = () => document.querySelector<HTMLButtonElement>(".sk-date-pi
 const content = () => document.querySelector<HTMLElement>(".sk-date-picker__content")!;
 const dayLabelled = (fragment: string) =>
   Array.from(document.querySelectorAll<HTMLElement>(".sk-calendar__cell-trigger")).find((cell) =>
-    cell.getAttribute("aria-label")?.includes(fragment),
+    !cell.hasAttribute("data-outside-range") && cell.getAttribute("aria-label")?.includes(fragment),
   )!;
 
 afterEach(() => {
@@ -36,6 +36,34 @@ afterEach(() => {
 });
 
 describe("DatePicker Vanilla contracts", () => {
+  it("picks a range across two months and fills both input fields", async () => {
+    markup('data-locale="en-US" data-selection-mode="range" data-value="2026-03-10 2026-03-11"');
+    const inputs = document.querySelectorAll<HTMLInputElement>(".sk-date-picker__input");
+    expect(inputs).toHaveLength(2);
+    expect(inputs[0].value).toBe("03/10/2026");
+    expect(inputs[1].value).toBe("03/11/2026");
+    expect(inputs[1].getAttribute("aria-label")).toBe("End date");
+    fireEvent.click(trigger());
+    await waitFor(() => expect(content().getAttribute("data-state")).toBe("open"));
+    expect(content().querySelectorAll("table[data-view=day]")).toHaveLength(2);
+    fireEvent.click(dayLabelled("March 28, 2026"));
+    await waitFor(() => expect(inputs[0].value).not.toBe(""));
+    expect(content().getAttribute("data-state")).toBe("open");
+    fireEvent.click(dayLabelled("April 4, 2026"));
+    await waitFor(() => expect(inputs[1].value).not.toBe(""));
+    await waitFor(() => expect(content().getAttribute("data-state")).toBe("closed"));
+  });
+
+  it("supports a one-month range and keeps its month heading static", async () => {
+    markup('data-locale="en-US" data-selection-mode="range" data-num-of-months="1" data-value="2026-03-10"');
+    fireEvent.click(trigger());
+    await waitFor(() => expect(content().querySelectorAll("table[data-view=day]")).toHaveLength(1));
+    expect(content().querySelector(".sk-calendar__view-trigger")).toBeNull();
+    expect(content().querySelector(".sk-calendar__month-title")?.textContent).toBe("March 2026");
+    fireEvent.click(content().querySelector(".sk-calendar__next")!);
+    await waitFor(() => expect(content().querySelector(".sk-calendar__month-title")?.textContent).toBe("April 2026"));
+  });
+
   it("refuses markup that is missing a part it must patch", () => {
     document.body.innerHTML = `<div class="sk-date-picker" data-sk-date-picker></div>`;
     // Loud rather than half-mounted: a field with no control is not a field.

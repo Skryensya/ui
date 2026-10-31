@@ -47,7 +47,7 @@
   }
   .sk-date-picker__control {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-columns: minmax(0, 1fr);
     align-items: center;
     border: 1px solid var(--sk-date-picker-border-color);
     border-radius: var(--sk-date-picker-radius);
@@ -59,11 +59,18 @@
      * this sheet is imported AFTER the pattern and the two rules tie on specificity, that `none` beat
      * the pattern and left the calendar with no anchor. */
   }
+  .sk-date-picker[data-sk-date-picker] .sk-date-picker__control {
+    padding-inline-end: var(--space-inset-xs);
+    grid-template-columns: minmax(0, 1fr) var(--size-touch-target) calc(var(--size-control-sm) + var(--space-inline-xs));
+  }
+  .sk-date-picker[data-selection-mode="range"] {
+    --sk-date-picker-inline-size: min(24rem, calc(100vi - var(--space-inset-xl) * 2));
+  }
   /* A range draws TWO inputs (start, end) before the buttons. The single-input grid above gave the
    * second one the `auto` column and pushed Clear and the calendar onto a second row, so the two
    * dates share the track equally and a hairline tells where the first ends and the second begins. */
   .sk-date-picker[data-selection-mode="range"] .sk-date-picker__control {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) auto auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) var(--size-touch-target) calc(var(--size-control-sm) + var(--space-inline-xs));
     /*
      * `minmax(0, 1fr)` lets each date column shrink all the way to 0 - at 320px, after the two
      * icon buttons, that left each input narrower than a formatted date, so the native text
@@ -74,6 +81,12 @@
     overflow-x: auto;
     min-inline-size: 0;
     scrollbar-width: none;
+  }
+  .sk-date-picker[data-selection-mode="range"] .sk-date-picker__clear.sk-button {
+    grid-column: 3;
+  }
+  .sk-date-picker[data-selection-mode="range"] .sk-date-picker__trigger.sk-button {
+    grid-column: 4;
   }
   .sk-date-picker[data-selection-mode="range"] .sk-date-picker__input + .sk-date-picker__input {
     border-inline-start: 1px solid var(--sk-date-picker-border-color);
@@ -125,24 +138,19 @@
 
     align-self: center;
   }
-  /* Trigger reserves the FULL touch-target delta (12px: the 44px hit area painted at 32px) on BOTH
-   * sides, not half: its leading margin alone has to clear Clear's expanded hit zone when Clear is
-   * showing, AND double as the sole input-side reserve when Clear is hidden or never authored
-   * (Clear is optional, per the enhancer's own contract). Clear then reserves ONLY on its leading
-   * side, against the input, which has no expanded hit zone of its own to clear. Giving Clear a
-   * trailing margin too would double-count the same gap Trigger's leading margin already covers:
-   * that was the bug: clear↔trigger measured 12px while input↔clear measured only 6px. */
-  .sk-date-picker__trigger.sk-button {
-    --sk-button-fg: var(--sk-date-picker-fg);
-    margin-inline-start: calc(var(--size-touch-target) - var(--size-control-sm));
-    /* The icon sits as far from the field's end as from its top and bottom (the 6px the 32px button
-     * leaves inside the 44px row), not twice that: a 12px trailing gap read as the icon drifting
-     * inward. Its expanded hit zone reaches 6px past the button, so it still ends inside the border. */
-    margin-inline-end: calc((var(--size-touch-target) - var(--size-control-sm)) / 2);
-  }
+  /* The two 44px action tracks are always present, even when Clear is hidden. This reserves
+   * independent touch targets and keeps the calendar trigger from jumping as values change. */
   .sk-date-picker__clear.sk-button {
     --sk-button-fg: var(--sk-date-picker-affordance-color);
-    margin-inline-start: calc(var(--size-touch-target) - var(--size-control-sm));
+    grid-column: 2;
+    justify-self: end;
+    margin-inline-end: calc(var(--space-inline-xs) / 4);
+  }
+  .sk-date-picker__trigger.sk-button {
+    --sk-button-fg: var(--sk-date-picker-fg);
+    grid-column: 3;
+    justify-self: end;
+    margin-inline-end: var(--space-inline-xs);
   }
   /* THE NATIVE FIELD DRAWS THE SYSTEM'S CALENDAR. The UA's own indicator is a bitmap in whatever the
    * platform likes; Chromium accepts a mask on its pseudo-element (input.css documents the recipe for
@@ -190,6 +198,8 @@
    * `.sk-date-picker` declares does not reach it by inheritance and every hook read from here down
    * resolves empty (an empty `padding` is `0`). See the equivalent note in `select.css`. */
   .sk-date-picker__positioner {
+    /* Zag writes `--z-index: auto` inline; the calendar must outrank docs preview corner controls. */
+    --z-index: var(--z-overlay) !important;
     --sk-date-picker-content-bg: var(--color-bg-surface-overlay);
     --sk-date-picker-content-border-color: var(--color-border-subtle);
     --sk-date-picker-content-radius: var(--radius-surface);
@@ -200,7 +210,6 @@
 
   }
   .sk-date-picker__content {
-    display: none;
     box-sizing: border-box;
     inline-size: min(var(--sk-date-picker-content-inline-size), calc(100vi - 2 * var(--space-inset-md)));
     padding: var(--sk-date-picker-content-padding);
@@ -224,6 +233,19 @@
    */
   .sk-date-picker__content.sk-calendar {
     inline-size: min(var(--sk-date-picker-content-inline-size), calc(100vi - 2 * var(--space-inset-md)));
+  }
+  .sk-date-picker__content.sk-calendar[data-num-of-months="2"] {
+    inline-size: min(
+      calc(var(--sk-date-picker-content-inline-size) * 2 + var(--space-inline-lg)),
+      calc(100vi - 2 * var(--space-inset-md))
+    );
+  }
+  .sk-date-picker__close.sk-button {
+    display: none;
+  }
+  /* Calendar also sets display:grid; a closed or unmounted popup must win in either import order. */
+  .sk-date-picker__content:not([data-state="open"]) {
+    display: none;
   }
   .sk-date-picker__content[data-state="open"] {
     display: grid;
@@ -253,8 +275,12 @@
     }
 
     .sk-date-picker__positioner {
-      position: fixed;
-      inset: 0;
+      /* The mobile sheet replaces the popper's inline placement, including its max-content minimum. */
+      position: fixed !important;
+      inset: 0 !important;
+      transform: none !important;
+      min-inline-size: 0 !important;
+      container-type: inline-size;
       inline-size: auto;
       justify-self: stretch;
       align-self: stretch;
@@ -269,15 +295,34 @@
       display: grid;
     }
 
-    .sk-date-picker__content {
-      /* Roomier tap targets on the sheet: there is width to spare, unlike the compact desktop popover.
-       * A day cell's FACE is `sm` (32px) everywhere else; here the same hook takes it to the full
-       * touch target. */
-      --sk-calendar-cell-size: var(--size-touch-target);
+    .sk-date-picker__close.sk-button {
+      display: inline-flex;
+      justify-self: end;
+    }
+
+    .sk-date-picker__content[data-selection-mode="range"][data-num-of-months="2"] .sk-calendar__months {
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: thin;
+    }
+    .sk-date-picker__content[data-selection-mode="range"][data-num-of-months="2"] .sk-calendar__months > table {
+      flex: 0 0 100%;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+    .sk-date-picker__content.sk-calendar[data-num-of-months] {
+      /* Fit seven days without horizontal scrolling; use full touch-target faces when space allows. */
+      --sk-calendar-cell-size: min(
+        var(--size-touch-target),
+        calc((100cqi - var(--space-inset-md) * 2 - var(--space-inset-xs) * 7) / 7)
+      );
 
       inline-size: 100%;
       max-inline-size: none;
-      max-block-size: 100%;
+      max-block-size: calc(100% - var(--space-section));
       overflow-y: auto;
       overscroll-behavior: contain;
       padding: var(--space-inset-md) var(--space-inset-md) var(--space-inset-lg);

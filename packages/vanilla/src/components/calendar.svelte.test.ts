@@ -31,6 +31,21 @@ afterEach(() => {
 });
 
 describe("Calendar Vanilla contracts", () => {
+  it("shows both months of a range across the year boundary without duplicate day ids", () => {
+    const root = markup('data-locale="en" data-selection-mode="range" data-value="2026-12-28 2027-01-04"');
+    expect([...root.querySelectorAll("table")].map((node) => node.getAttribute("aria-label"))).toEqual(["December 2026", "January 2027"]);
+    expect(root.querySelectorAll("[data-outside-range]").length).toBeGreaterThan(0);
+    const ids = cells().map((cell) => cell.id).filter(Boolean);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(root.querySelectorAll(".sk-calendar__table")).toHaveLength(2);
+    expect(root.querySelector(".sk-calendar__view-trigger")).toBeNull();
+  });
+
+  it("supports an explicit single month for range selection", () => {
+    const root = markup('data-selection-mode="range" data-num-of-months="1"');
+    expect(root.querySelectorAll(".sk-calendar__table")).toHaveLength(1);
+  });
+
   it("generates the whole grid from an empty authored root, once", () => {
     const root = markup();
     expect(mountCalendar(document)).toBe(0);

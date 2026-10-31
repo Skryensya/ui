@@ -3,6 +3,27 @@ import { describe, expect, it, vi } from "vitest";
 import { Calendar } from "./calendar.js";
 
 describe("Calendar", () => {
+  it("shows consecutive months for a range and can be kept to one month", () => {
+    const ui = render(<Calendar label="Stay" locale="en" selectionMode="range" defaultValue="2026-03-28 2026-04-04" />);
+    expect(ui.getAllByRole("grid")).toHaveLength(2);
+    expect(ui.container.querySelector(".sk-calendar__view-trigger")).toBeNull();
+    expect(ui.getByRole("grid", { name: "March 2026" })).toBeTruthy();
+    expect(ui.getByRole("grid", { name: "April 2026" })).toBeTruthy();
+    expect(ui.container.querySelectorAll(".sk-calendar__cell-trigger[data-outside-range]").length).toBeGreaterThan(0);
+    const ids = [...ui.container.querySelectorAll("[id]")].map((node) => node.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    ui.rerender(<Calendar label="Stay" locale="en" selectionMode="range" numOfMonths={1} defaultValue="2026-03-28 2026-04-04" />);
+    expect(ui.getAllByRole("grid")).toHaveLength(1);
+  });
+
+  it("opens the month selector on the year of the chosen month header", async () => {
+    const ui = render(<Calendar label="Date" locale="en" numOfMonths={2} defaultValue="2026-12-28" />);
+    const january = ui.getByRole("grid", { name: "January 2027" });
+    fireEvent.click(january.querySelector(".sk-calendar__view-trigger")!);
+    await waitFor(() => expect(ui.container.querySelector(".sk-calendar__month-grid")).toBeTruthy());
+    expect(ui.container.querySelector(".sk-calendar__view-trigger")?.textContent?.trim()).toBe("2027");
+  });
+
   it("names every control in the language `locale` names, Spanish here", () => {
     const ui = render(<Calendar locale="es" label="Fecha" />);
 
@@ -83,5 +104,13 @@ describe("Calendar", () => {
     const heading = ui.container.querySelector(".sk-calendar__view-trigger")!;
 
     expect(heading.textContent).toBe("June 2026");
+  });
+
+  it("moves focus between days with the arrow keys when inline", async () => {
+    const ui = render(<Calendar label="Fecha" locale="en" defaultValue="2026-11-10" />);
+    const day = ui.getByRole("button", { name: /November 10, 2026/ });
+    day.focus();
+    fireEvent.keyDown(day, { key: "ArrowRight" });
+    await waitFor(() => expect(document.activeElement?.getAttribute("aria-label")).toMatch(/November 11, 2026/));
   });
 });

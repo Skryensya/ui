@@ -56,7 +56,7 @@ export const datePickerMessages = {
 
     "datePicker.contract1": "React y Vanilla usan la misma máquina y el mismo cuerpo que <code>Calendar</code>: no hay dos grids.",
 
-    "datePicker.prop.selectionMode.range": "Usa <code>range</code> para un inicio y un fin, como una reserva: se eligen en el mismo calendario.",
+    "datePicker.prop.selectionMode.range": "Usa <code>range</code> para un inicio y un fin, como una reserva: muestra dos meses consecutivos. Usa <code>numOfMonths={1}</code> si necesitas solo uno.",
 
     "datePicker.prop.selectionMode.single": "Usa <code>single</code>, el valor por defecto, para una fecha.",
 
@@ -69,8 +69,6 @@ export const datePickerMessages = {
     "datePicker.lede": 'DatePicker es un campo de fecha dentro de un formulario: se escribe o se elige en un calendario que se abre desde el campo. Tiene dos versiones: la nativa, un <code>&lt;input type="date"&gt;</code> sin JavaScript, y la propia, con un <a href="/es/componentes/calendar">Calendar</a> detrás de un botón, para rangos o un calendario igual en todos los navegadores.',
     "datePicker.nativeTitle": "Nativo: el control del sistema",
     "datePicker.nativeBody": "Sin JavaScript: el teclado, el formato local y el envío son del navegador.",
-    "datePicker.customTitle": "Con calendario: el mismo en todos los navegadores",
-    "datePicker.customBody": "El campo abre un Calendar. En pantallas angostas, el calendario sube como una hoja desde abajo.",
     "datePicker.disabledTitle": "Deshabilitado",
     "datePicker.disabledBody": "El campo, el input y el botón se deshabilitan juntos.",
     "datePicker.test1": "Rechaza markup al que le falta una parte que necesita parchar.",
@@ -80,9 +78,9 @@ export const datePickerMessages = {
     "demo.datePicker.dd.start": "Llegada",
     "demo.datePicker.dd.end": "Salida",
     "datePicker.guidelinesLede": "Empieza por la versión nativa y sube a la propia solo cuando no alcanza.",
-    "datePicker.dd.range.title": "Rango: un campo, no dos",
-    "datePicker.dd.range.do": 'Con <code>selectionMode="range"</code>, inicio y fin se eligen en el mismo calendario.',
-    "datePicker.dd.range.dont": "Dos campos sueltos dejan elegir una salida antes de la llegada.",
+    "datePicker.dd.range.title": "Rango: mantén llegada y salida conectadas",
+    "datePicker.dd.range.do": 'Un solo campo con <code>selectionMode="range"</code> mantiene las dos fechas conectadas y muestra la estadía completa.',
+    "datePicker.dd.range.dont": "Dos campos sin relación permiten poner la salida antes de la llegada.",
   },
   en: {
 
@@ -141,7 +139,7 @@ export const datePickerMessages = {
 
     "datePicker.contract1": "React and Vanilla use the same machine and the same body as <code>Calendar</code>: there are not two grids.",
 
-    "datePicker.prop.selectionMode.range": "Use <code>range</code> for a start and an end, like a booking: both are picked in the same calendar.",
+    "datePicker.prop.selectionMode.range": "Use <code>range</code> for a start and an end, like a booking: it shows two consecutive months. Use <code>numOfMonths={1}</code> when you only need one.",
 
     "datePicker.prop.selectionMode.single": "Use <code>single</code>, the default, for one date.",
 
@@ -154,8 +152,6 @@ export const datePickerMessages = {
     "datePicker.lede": 'DatePicker is a date field inside a form: typed, or picked from a calendar that opens from the field. It comes in two versions: the native one, an <code>&lt;input type="date"&gt;</code> with no JavaScript, and its own, with a <a href="/components/calendar">Calendar</a> behind a button, for ranges or a calendar that looks the same in every browser.',
     "datePicker.nativeTitle": "Native: the system control",
     "datePicker.nativeBody": "No JavaScript: keyboard, local format and submission belong to the browser.",
-    "datePicker.customTitle": "With a calendar: the same in every browser",
-    "datePicker.customBody": "The field opens a Calendar. On narrow screens, the calendar slides up as a bottom sheet.",
     "datePicker.disabledTitle": "Disabled",
     "datePicker.disabledBody": "The field, the input and the button are disabled together.",
     "datePicker.test1": "Refuses markup that is missing a part it must patch.",
@@ -165,8 +161,8 @@ export const datePickerMessages = {
     "demo.datePicker.dd.start": "Check-in",
     "demo.datePicker.dd.end": "Check-out",
     "datePicker.guidelinesLede": "Start with the native version and move to its own only when it falls short.",
-    "datePicker.dd.range.title": "Range: one field, not two",
-    "datePicker.dd.range.do": 'With <code>selectionMode="range"</code>, start and end are picked in the same calendar.',
-    "datePicker.dd.range.dont": "Two separate fields let people pick a check-out before the check-in.",
+    "datePicker.dd.range.title": "Keep check-in and check-out connected",
+    "datePicker.dd.range.do": 'A single field with <code>selectionMode="range"</code> keeps both dates connected and shows the whole stay.',
+    "datePicker.dd.range.dont": "Unlinked fields let check-out fall before check-in."
   },
 } as const;

@@ -2,6 +2,7 @@
   import { datePicker } from "@skryensya/core/machines";
   import {
     calendarContract,
+    calendarMonthCount,
     calendarEvents,
     calendarParts,
     defaultDayLabel,
@@ -29,9 +30,12 @@
 
   const service = useMachine(datePicker.machine, () => ({
     id: root.id,
+    // Inline, nothing renders `getContentProps()`, and the machine looks for the focused day inside that element: point it at the grid's own wrapper or the arrow keys move nothing.
+    ids: { root: root.id, content: root.id },
     locale,
     timeZone: root.dataset.timeZone || "UTC",
     selectionMode: (root.dataset.selectionMode === "range" ? "range" : "single") as "single" | "range",
+    numOfMonths: calendarMonthCount(Number(root.dataset.numOfMonths), root.dataset.selectionMode === "range" ? "range" : "single"),
     /*
      * The preselected date. Absent until now, which meant authored markup had no way to say one at
      * all. A calendar could only ever open on today, and the React binding accepted a value the
@@ -71,7 +75,7 @@
 
   const api = $derived(datePicker.connect(service, normalizeProps));
 
-  bindParts([{ part: "root", node: () => root, props: () => api.getRootProps() }]);
+  bindParts([{ part: "root", node: () => root, props: () => api.getRootProps(), after: () => { root.dataset.numOfMonths = String(api.numOfMonths); } }]);
 
   onMount(() => {
     remountIcons(root);

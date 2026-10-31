@@ -1,97 +1,63 @@
 ---
-/*
- * The foundations CATALOG, same grouped lists as the components explorer: a directory of
- * destinations, not a topic page with tabs. Hero + one List per group, at a component page's
- * reading measure, with a scoped search palette that indexes only this section's entries.
- */
+import "@skryensya/core/components/badge.css";
 import "@skryensya/core/components/list.css";
+import "@skryensya/core/components/typography.css";
+import "@skryensya/core/patterns/layout.css";
 import Base from "../../layouts/Base.astro";
-import CommandPalette from "../CommandPalette.astro";
+import IndexHero from "../IndexHero.astro";
 import { getLocale, useTranslations } from "../../i18n";
 import { iconMarkup } from "../../icons";
-import { getNavigation } from "../../lib/navigation";
+import { foundationGroups } from "../../lib/foundation-catalog";
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
-const foundationsSection = getNavigation(locale).find((section) => section.id === "foundations");
-if (!foundationsSection) throw new Error("Missing foundations navigation section");
-
-const searchIcon = iconMarkup("search");
-
-const foundationsSearchIndex = foundationsSection.groups.flatMap((group) =>
-  group.items
-    .filter((item) => !item.todo)
-    .map((item) => ({
-      label: item.label,
-      aliases: item.aliases ?? [],
-      href: item.href,
-      context: group.group,
-    })),
-);
-
+const groups = foundationGroups(locale);
+const arrow = iconMarkup("chevron-right", { size: "sm" });
 ---
 
 <Base title={t("foundationsPage.title")} description={t("foundationsPage.description")} documentLayout="grid">
-  <header class="docs-component-hero">
-    <h1>{t("foundationsPage.title")}</h1>
-  </header>
+  <IndexHero title={t("foundationsPage.title")} description={t("foundationsPage.lede")}>
+  <div class="foundations-index">
 
-  <p class="lede">{t("foundationsPage.lede")}</p>
+    <div class="foundations-index__groups sk-stack" data-gap="xl">
+      {groups.map((group) => (
+        <section aria-labelledby={group.headingId} data-foundation-group={group.id}>
+          <header class="foundations-index__group-header sk-stack" data-gap="xs">
+            <h2 class="sk-heading" data-size="h3" data-flush id={group.headingId}>{group.group}</h2>
+            {group.blurb && <p class="sk-text" data-size="sm" data-tone="secondary">{group.blurb}</p>}
+          </header>
 
-  <button
-    class="sk-button sk-interactive docs-catalog-search"
-    data-variant="ghost"
-    type="button"
-    aria-controls="docs-cmdk-foundations"
-    aria-expanded="false"
-    data-sk-command-palette-open
-  >
-    <Fragment set:html={searchIcon} />
-    <span class="docs-catalog-search__label">{t("foundationsPage.searchLabel")}</span>
-  </button>
-
-  <CommandPalette
-    slot="palette"
-    id="docs-cmdk-foundations"
-    entries={foundationsSearchIndex}
-    label={t("search.foundationsDialog")}
-    placeholder={t("search.foundationsPlaceholder")}
-  />
-
-  {/*
-    ONE BOX PER GROUP, flowing as two columns (`.docs-catalog-groups`, site.css). The boxes are
-    layout, not content, so both carry `data-toc-transparent`: `indexDocument()` reads a heading
-    inside them as a section of the page and the rail keeps every group.
-  */}
-  <div class="docs-catalog-groups" data-toc-transparent>
-    {
-      foundationsSection.groups.map((group, groupIndex) => {
-        const headingId = `foundations-group-${groupIndex}`;
-
-        return (
-          <section class="docs-catalog-section" aria-labelledby={headingId} data-toc-transparent>
-            <h2 class="docs-catalog-section__title" id={headingId} data-flush>{group.group}</h2>
-            {group.blurb && <p class="docs-catalog-section__blurb">{group.blurb}</p>}
-
-            <ul class="sk-list" role="list">
-              {group.items.map((item) => (
-                <li class="sk-list__item">
-                  <a href={item.href} class="sk-list__action sk-interactive">
-                    <span class="sk-list__content">
-                      <span class="sk-list__title">{item.label}</span>
-                    </span>
-                    {item.trailing && (
-                      <span class="sk-list__trailing">
-                        <span class="sk-badge" data-size="sm" data-tone="warning">{item.trailing}</span>
-                      </span>
-                    )}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </section>
-        );
-      })
-    }
+          <ul class="sk-list" role="list">
+            {group.items.map((item) => (
+              <li class="sk-list__item" data-foundation-entry>
+                <a href={item.href} class="sk-list__action sk-interactive">
+                  <span class="sk-list__content">
+                    <span class="sk-list__title">{item.label}</span>
+                    <span class="sk-list__description">{item.description}</span>
+                  </span>
+                  <span class="sk-list__trailing">
+                    {item.trailing && <span class="sk-badge" data-size="sm" data-tone="warning">{item.trailing}</span>}
+                    <Fragment set:html={arrow} />
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
   </div>
+  </IndexHero>
 </Base>
+
+<style>
+  .foundations-index__group-header {
+    margin-block-end: var(--space-stack-sm);
+  }
+
+  .sk-list {
+    --sk-list-title-font-size: var(--font-size-body);
+    --sk-list-description-font-size: var(--font-size-body-sm);
+    --sk-list-row-padding-y: var(--space-inset-md);
+  }
+</style>

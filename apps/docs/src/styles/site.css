@@ -374,7 +374,7 @@ body {
 }
 
 /* Open, the panel says what the "Color palette" hint would: hide the hint for as long as it is. */
-.dimensions__prefs .sk-tooltip:has(.sk-popover__content:popover-open) .sk-tooltip__content {
+:is(.dimensions__prefs, .dimensions__actions) .sk-tooltip:has(.sk-popover__content:popover-open) .sk-tooltip__content {
   display: none;
 }
 
@@ -674,7 +674,8 @@ body:has(.landing-page) .sk-back-to-top {
  * own headings). Letting `:has()` react to that would collapse and restore the rail track on every
  * tab click. A CLS the reader causes by clicking, not a page that genuinely has no TOC. Reserve
  * the track for the whole session instead; an empty tab just shows an empty rail. */
-.shell:has(.docs-document-pair > .sk-toc[data-empty]):not(:has(.docs-component-hero-tabs)) {
+/* The index pages keep the same document track as an individual page, even without an outline. */
+.shell:has(.docs-document-pair > .sk-toc[data-empty]):not(:has(.docs-component-hero-tabs, .component-explorer, .foundations-index)) {
   --docs-toc-inline-size: 0px;
 }
 
@@ -1875,7 +1876,7 @@ main[data-document-layout="grid"]
  * finds the card's edge (`.docs-component-hero__mark`). Every term still resolves at the USE site,
  * which is what keeps this identical to the per-element version it replaced: `100%` against each
  * element's own containing block, `--docs-reading-measure` against its own font. */
-main[data-document-layout="grid"]:has(> .docs-component-shell) {
+main[data-document-layout="grid"]:has(> :is(.docs-component-shell, .component-explorer, .foundations-index)) {
   --docs-measure-room: calc(100% - var(--space-inset-lg) * 2);
   --docs-measure-narrow: min(var(--docs-measure-room), var(--size-wrapper-sm));
   --docs-measure-solved: calc(
@@ -1887,17 +1888,17 @@ main[data-document-layout="grid"]:has(> .docs-component-shell) {
   );
 }
 
-main[data-document-layout="grid"]:has(> .docs-component-shell) :is(.docs-component-hero__spacer, .docs-component-hero, .docs-component-beta, .docs-component-hero-tabs),
-main[data-document-layout="grid"]:has(> .docs-component-shell) > :is(.docs-report-issue, .docs-page-nav, .docs-footer) {
+main[data-document-layout="grid"]:has(> .docs-component-shell) :is(.docs-component-hero__spacer, .docs-component-hero, .docs-component-hero-tabs),
+main[data-document-layout="grid"]:has(> :is(.docs-component-shell, .component-explorer, .foundations-index)) > :is(.component-explorer, .foundations-index, .docs-report-issue, .docs-page-nav, .docs-footer) {
   inline-size: var(--docs-measure-solved);
   margin-inline: auto;
 }
 
-/* The Beta notice sits in the flow between the hero and the pinned tab strip, so it scrolls away. */
 .docs-component-beta {
-  box-sizing: border-box;
-  margin-block: var(--space-stack-md);
+  justify-self: stretch;
+  margin-block-end: var(--space-stack-lg);
 }
+
 /*
  * THE STICKY BAR HAS TO BE AS WIDE AS WHAT SCROLLS UNDER IT. This strip is `position: sticky` with
  * an opaque background precisely so the panels pass beneath it, and on desktop the ComponentPreview
@@ -2463,23 +2464,19 @@ main .lede {
   gap: var(--space-inline-sm);
 }
 
+.docs-component-hero__title-row:has(> .docs-component-hero__actions) {
+  align-items: flex-end;
+}
+
+.docs-component-hero__actions {
+  flex: none;
+  margin-inline-start: auto;
+}
+
 .docs-component-hero__badge {
   /* Never part of the collapse: a fixed size reads as a stable label, not a fourth thing scaling
      on scroll alongside the eyebrow and the title. */
   flex: none;
-}
-
-/* Dev-only (see the prop's own comment in ComponentPageShell.astro). Plain and small on purpose:
-   it is chrome about the page, not of it, and must never read as a real part of the component. */
-.docs-component-hero__break-link {
-  flex: none;
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-caption);
-  color: var(--color-text-secondary);
-}
-
-.docs-component-hero__break-link:hover {
-  color: var(--color-text-primary);
 }
 
 .docs-component-hero h1 {

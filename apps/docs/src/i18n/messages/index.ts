@@ -20,11 +20,19 @@ export const indexMessages = {
     "demo.passwordField.hint": "Debe coincidir con la contraseña anterior.",
     "demo.passwordField.error": "Las contraseñas no coinciden.",
 
-    "indexPage.title": "Explorar componentes",
+    "indexPage.title": "Explora componentes",
     "indexPage.description": "Componentes, patrones y primitivas organizados según la tarea que resuelven.",
-    "indexPage.lede":
-      'Empieza por la tarea: capturar datos, orientar, presentar contenido o comunicar estado. Cada fila explica cuándo usar la pieza. Si buscas reglas, roles y sets de iconos, ve a <a href="/es/fundamentos">Fundamentos</a>.',
+    "indexPage.lede": "Encuentra la pieza que necesitas para tu interfaz.",
     "indexPage.searchLabel": "Buscar componentes",
+    "indexPage.searchPlaceholder": "Por ejemplo: botón, fecha, navegación",
+    "indexPage.categoryLabel": "Categorías",
+    "indexPage.allCategories": "Todas",
+    "indexPage.resultsCount": "{count} componentes disponibles",
+    "indexPage.clearSearch": "Borrar búsqueda",
+    "indexPage.clearFilters": "Limpiar filtros",
+    "indexPage.emptyTitle": "No hay componentes que coincidan",
+    "indexPage.emptyDescription": "No encontramos resultados para «{query}». Prueba otra búsqueda o limpia los filtros.",
+    "indexPage.noScript": "Puedes explorar todos los componentes. Activa JavaScript para buscar y filtrar.",
 
     "landing.title": "skryensya/ui",
     "landing.description":
@@ -301,9 +309,17 @@ export const indexMessages = {
 
     "indexPage.title": "Explore components",
     "indexPage.description": "Components, patterns, and primitives organized by the task they solve.",
-    "indexPage.lede":
-      'Start with the task: capture data, provide orientation, present content, or communicate status. Each row explains when to use the piece. For icon roles, sets, and rules, go to <a href="/foundations">Foundations</a>.',
+    "indexPage.lede": "Find the building blocks for your interface.",
     "indexPage.searchLabel": "Search components",
+    "indexPage.searchPlaceholder": "For example: button, date, navigation",
+    "indexPage.categoryLabel": "Categories",
+    "indexPage.allCategories": "All",
+    "indexPage.resultsCount": "{count} components available",
+    "indexPage.clearSearch": "Clear search",
+    "indexPage.clearFilters": "Clear filters",
+    "indexPage.emptyTitle": "No matching components",
+    "indexPage.emptyDescription": "No results for “{query}”. Try another search or clear the filters.",
+    "indexPage.noScript": "You can browse all components. Enable JavaScript to search and filter.",
 
     "landing.title": "skryensya/ui",
     "landing.description":

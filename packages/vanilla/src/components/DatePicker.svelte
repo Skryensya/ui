@@ -2,6 +2,7 @@
   import { anchoredParts, anchoredPositioning } from "@skryensya/core/anchored";
   import { datePicker } from "@skryensya/core/machines";
   import {
+    calendarMonthCount,
     defaultDayLabel,
     defaultNextTriggerLabel,
     defaultPrevTriggerLabel,
@@ -9,7 +10,7 @@
     parseCalendarDate,
     unusedIntlTranslations,
   } from "@skryensya/core/calendar";
-  import { datePickerContract, datePickerEvents, datePickerParts, defaultContentLabel, defaultTriggerLabel } from "@skryensya/core/date-picker";
+  import { datePickerContract, datePickerEvents, datePickerParts, defaultContentLabel, defaultEndDateLabel, defaultTriggerLabel } from "@skryensya/core/date-picker";
   import { calendarParts } from "@skryensya/core/calendar";
   import { normalizeProps, useMachine } from "@zag-js/svelte";
   import { onMount } from "svelte";
@@ -44,6 +45,15 @@
   if (!input) throw new Error(`[data-sk-date-picker] necesita un .${datePickerParts.input}.`);
   if (!trigger) throw new Error(`[data-sk-date-picker] necesita un .${datePickerParts.trigger}.`);
 
+  const inputs = [...control.querySelectorAll<HTMLInputElement>(`.${datePickerParts.input}`)];
+  if (root.dataset.selectionMode === "range" && inputs.length === 1) {
+    const endInput = input.cloneNode(true) as HTMLInputElement;
+    endInput.removeAttribute("id");
+    endInput.value = "";
+    input.after(endInput);
+    inputs.push(endInput);
+  }
+
   if (!root.id) root.id = uniqueId("sk-date-picker");
   const locale = root.dataset.locale || datePickerContract.options.locale.default;
 
@@ -52,13 +62,14 @@
   let positioner: HTMLElement | undefined = $state();
 
   const service = useMachine(datePicker.machine, () => ({
-    positioning: { placement: "bottom-start" as const, ...anchoredPositioning },
+    positioning: { ...anchoredPositioning, placement: root.dataset.selectionMode === "range" ? "bottom" as const : "bottom-start" as const },
     id: root.id,
     name: root.dataset.name || input.name || undefined,
     // Explicit date, never an ambiguous locale string: locale and time zone are authored or fall back to es/UTC.
     locale,
     timeZone: root.dataset.timeZone || "UTC",
     selectionMode: (root.dataset.selectionMode === "range" ? "range" : "single") as "single" | "range",
+    numOfMonths: calendarMonthCount(Number(root.dataset.numOfMonths), root.dataset.selectionMode === "range" ? "range" : "single"),
     /* The initial date and the allowed range. All three were missing: the authored markup had no way to
      * state any of them, while the React binding accepted props this half discarded. */
     defaultValue: root.dataset.value?.split(" ").filter(Boolean).map((date) => parseCalendarDate(date)!),
@@ -106,15 +117,19 @@
       props: () => api.getControlProps(),
       classes: [anchoredParts.anchor],
     },
-    {
+    ...inputs.map((node, index): PartBinding => ({
       part: "input",
-      node: () => input,
-      props: () => api.getInputProps({ index: 0 }),
+      node: () => node,
+      props: () => api.getInputProps({ index }),
       events: true,
       after: () => {
-        if (authoredPlaceholder !== null) input.placeholder = authoredPlaceholder;
+        const value = api.getInputProps({ index }).value;
+        if (typeof value === "string") node.value = value;
+        if (authoredPlaceholder !== null) node.placeholder = authoredPlaceholder;
+        if (index === 1) node.setAttribute("aria-label", defaultEndDateLabel(locale));
       },
-    },
+    })),
+
     { part: "trigger", node: () => trigger, props: () => api.getTriggerProps(), events: true },
     {
       part: "clearTrigger",
@@ -142,7 +157,16 @@
   {...api.getPositionerProps()}
   class="{datePickerParts.positioner} {anchoredParts.positioner}"
 >
-  <div {...api.getContentProps()} class="{datePickerParts.content} {calendarParts.root}">
+  <div {...api.getContentProps()} class="{datePickerParts.content} {calendarParts.root}" data-num-of-months={api.numOfMonths} data-selection-mode={root.dataset.selectionMode === "range" ? "range" : "single"}>
     <CalendarView {api} {locale} />
+    <button
+      type="button"
+      class="{datePickerParts.close} sk-button sk-interactive"
+      data-size="sm"
+      data-variant="ghost"
+      onclick={() => api.setOpen(false)}
+    >
+      {defaultTriggerLabel(locale)(true)}
+    </button>
   </div>
 </div>

@@ -932,6 +932,7 @@ const [paletteBefore = "", paletteMid = "", paletteAfter = ""] = emitMarkup(
         */}
         {/* Desktop only: phones reach the repo from the footer, and Preferences through the sheet below. */}
         <div class="sk-inline dimensions__actions" data-gap="xs" data-wrap="false">
+          <PrefTooltip label={t("nav.githubHint")}>
           <a
             class="sk-button sk-interactive"
             data-variant="ghost"
@@ -944,13 +945,17 @@ const [paletteBefore = "", paletteMid = "", paletteAfter = ""] = emitMarkup(
           >
             <Fragment set:html={githubIcon} />
           </a>
+          </PrefTooltip>
 
           {/* Desktop twin of the button below: a Popover (trigger + panel) rather than the phone sheet. */}
-          <PrefsPanel presets={PALETTE_PRESETS} />
+          <PrefTooltip label={t("prefs.openHint")}>
+            <PrefsPanel presets={PALETTE_PRESETS} />
+          </PrefTooltip>
         </div>
 
+        <PrefTooltip class="dimensions__prefs-trigger" label={t("prefs.openHint")}>
         <button
-          class="sk-button sk-interactive dimensions__prefs-trigger"
+          class="sk-button sk-interactive"
           data-variant="ghost"
           data-icon-only
           type="button"
@@ -960,6 +965,7 @@ const [paletteBefore = "", paletteMid = "", paletteAfter = ""] = emitMarkup(
         >
           <Fragment set:html={settingsIcon} />
         </button>
+        </PrefTooltip>
 
         {/*
           The reader-preference icon controls (palette + reach + mode + contrast) are one cluster: a

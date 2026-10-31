@@ -57,9 +57,9 @@
     flex: none;
     inline-size: 0.5em;
     block-size: 0.5em;
-    /* The label's gap is `xs`; the chevron wants a touch more air, and a rotated square overhangs
-     * its box by the diagonal, so the end margin hands that overhang back to the trigger's padding. */
-    margin-inline: var(--space-inline-xs) -0.125em;
+    /* The label's gap is `xs`; the chevron wants a touch more air. A rotated square overhangs its
+     * box by the diagonal, so the end margin reserves that overhang instead of eating the padding. */
+    margin-inline: var(--space-inline-xs) 0.125em;
     border-inline-end: 1.5px solid currentcolor;
     border-block-end: 1.5px solid currentcolor;
     /* The visible "V" is the lower half of the rotated square: lift it by a quarter of its size to
@@ -138,7 +138,7 @@
     --sk-nav-list-group-label-min-height: 0;
     /* `0`, not `nav-list.css`'s own `--space-stack-xs` default: a sidebar/navbar heading sits
      * beneath OTHER content it needs air from, a megamenu column's heading IS the top of its own
-     * column. The panel's own `padding` (`--space-inset-lg`) already supplies the air above it,
+     * column. The panel's own `padding` (`--space-inset-md`) already supplies the air above it,
      * so a second inset here would only push it further from the shared top edge every column
      * aligns to (`.sk-megamenu__panel`'s own `align-items: start`). */
     --sk-nav-list-group-label-padding-block-start: 0;
@@ -166,7 +166,7 @@
     box-sizing: border-box;
     inline-size: 100%;
     max-block-size: min(28rem, calc(100vb - 2 * var(--space-inset-md)));
-    padding: var(--space-inset-lg);
+    padding: var(--space-inset-md);
     overflow: auto;
     overscroll-behavior: contain;
     border: 1px solid var(--sk-megamenu-border-color);

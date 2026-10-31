@@ -244,7 +244,7 @@ const calendarGuideMarkup = (
 export const calendarRangeGuideHtml = (t: Translate): string =>
   calendarGuideMarkup(t, { range: true });
 export const calendarTwoGuideHtml = (t: Translate): string =>
-  `<div style="display:flex;gap:var(--space-inline-sm);align-items:start">${calendarGuideMarkup(t, { compact: true, endpoint: "end", label: t("demo.datePicker.dd.end") })}${calendarGuideMarkup(t, { compact: true, endpoint: "start", label: t("demo.datePicker.dd.start") })}</div>`;
+  `<div style="display:flex;gap:var(--space-inline-sm);align-items:start">${calendarGuideMarkup(t, { compact: true, endpoint: "start", label: t("demo.datePicker.dd.start") })}${calendarGuideMarkup(t, { compact: true, endpoint: "end", label: t("demo.datePicker.dd.end") })}</div>`;
 export const calendarLimitsGuideHtml = (t: Translate): string =>
   calendarGuideMarkup(t, { limits: true });
 export const calendarNoLimitsGuideHtml = (t: Translate): string =>

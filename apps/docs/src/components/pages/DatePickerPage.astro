@@ -65,7 +65,6 @@ import { dd2 } from "../../demos/dodont-labels";
 
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview tree={nativeDatePickerTree(t)} title={t("datePicker.nativeTitle")} description={t("datePicker.nativeBody")} storybookTitle="Components/DatePicker" storybookStory="NativeDatePicker" />
-    <UsagePreview tree={datePickerTree(t)} title={t("datePicker.customTitle")} description={t("datePicker.customBody")} stageMinBlockSize="26rem" storybookTitle={storybookTitle} storybookStory="Default" />
     <UsagePreview tree={datePickerDisabledTree(t)} title={t("datePicker.disabledTitle")} description={t("datePicker.disabledBody")} storybookTitle="Components/DatePicker" storybookStory="Disabled" />
 
     <h3>{t("component.contractNotesTitle")}</h3>
@@ -79,6 +78,7 @@ import { dd2 } from "../../demos/dodont-labels";
     <p class="lede" set:html={t("datePicker.guidelinesLede")} />
     <WhenToUse use={tList(t, "datePicker.when")} avoid={tList(t, "datePicker.whenNot")} />
     <DoDont
+      stacked
       title={t("datePicker.dd.range.title")}
       do={{ tree: datePickerDoRangeTree(t), caption: t("datePicker.dd.range.do") }}
       dont={{ tree: datePickerDontRangeTree(t), caption: t("datePicker.dd.range.dont") }}

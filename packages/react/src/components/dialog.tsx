@@ -1,7 +1,7 @@
 import { dialogParts, dialogContract } from "@skryensya/core/dialog";
 import { vaulDataParts, vaulScope } from "@skryensya/core/vaul";
 import type { SignatureOptionsOf } from "@skryensya/core/contract";
-import { useId, type DialogHTMLAttributes, type ReactNode } from "react";
+import { useId, type DialogHTMLAttributes, type ReactNode, type Ref } from "react";
 import { Icon } from "./icon.js";
 import { useModalTabWrap } from "./modal-tab-wrap.js";
 
@@ -30,6 +30,7 @@ const {
 type DialogOptions = SignatureOptionsOf<typeof dialogContract, "Dialog">;
 
 export type DialogProps = DialogHTMLAttributes<HTMLDialogElement> & {
+  ref?: Ref<HTMLDialogElement>;
   /** Matches the contract slot: plain text that names the dialog. */
   title: string;
   children: ReactNode;

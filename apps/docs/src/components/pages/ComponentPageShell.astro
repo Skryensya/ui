@@ -36,6 +36,8 @@ import ContractReference from "../ContractReference.astro";
 import StylingHooks, { type HookGroup } from "../StylingHooks.astro";
 import HookPlaygroundModal from "../HookPlaygroundModal.astro";
 import type { UsageTree } from "@skryensya/core/usage-tree";
+import { emitMarkup } from "@skryensya/ai-compiler/emit";
+import "@skryensya/core/components/button.css";
 import { getContract } from "@skryensya/core/registry";
 import TestCoverage, { type TestGroup } from "../TestCoverage.astro";
 import { changelogFor } from "../../lib/contract-reference";
@@ -453,20 +455,18 @@ const relatedComponents = chosen
             <span class="sk-badge docs-component-hero__badge" data-tone="warning">{badge}</span>
           )}
           {import.meta.env.DEV && breakHarness && (
-            <a href={breakHarness} class="docs-component-hero__break-link">break harness →</a>
+            <div class="docs-component-hero__actions">
+              <Fragment set:html={emitMarkup({
+                contract: "button",
+                signature: "Button.navigation",
+                options: { href: breakHarness, variant: "soft", size: "sm" },
+                children: "Break harness",
+              }, { fillDefaults: false })} />
+            </div>
           )}
         </div>
       </header>
     </div>
-    {/* Outside the hero, which pins on scroll. Static, not a live region: announcing it on load would be noise. */}
-    {isBeta && (
-      <div class="sk-callout docs-component-beta" data-tone="warning">
-        <div class="sk-callout__content">
-          <p class="sk-callout__title">{t("component.betaTitle")}</p>
-          <p class="sk-callout__description">{t("component.betaBody")}</p>
-        </div>
-      </div>
-    )}
     <div class="sk-tabs" data-orientation="horizontal" data-activation-mode="automatic" data-value="usage" data-sk-tabs>
       <div class="sk-tabs__list docs-component-hero-tabs" data-sk-tabs-list aria-label={t("component.tabsAriaLabel", { name: title })}>
         <button class="sk-tabs__trigger sk-interactive" data-sk-tabs-trigger data-value="usage" type="button">{hasGuidelines ? t("component.tabOverview") : t("component.tabUsage")}</button>
@@ -525,6 +525,14 @@ const relatedComponents = chosen
         {/* Visually hidden: the tab strip right above already says "Uso"/"Usage" out loud. Exists so
             the document outline has a real h2 to hang the slot's h3s off of. */}
         <h2 class="sk-visually-hidden">{hasGuidelines ? t("component.tabOverview") : t("component.tabUsage")}</h2>
+        {isBeta && (
+          <div class="sk-callout docs-component-beta" data-tone="warning" data-width="content">
+            <div class="sk-callout__content">
+              <p class="sk-callout__title">{t("component.betaTitle")}</p>
+              <p class="sk-callout__description">{t("component.betaBody")}</p>
+            </div>
+          </div>
+        )}
         <slot name="usage" />
 
         {/*

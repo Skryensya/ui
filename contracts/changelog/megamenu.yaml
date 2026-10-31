@@ -5,6 +5,14 @@
 # hash.
 surface: "2946ebd508a7c275"
 entries:
+  - date: 2026-10-30
+    kind: bugfix
+    es:
+      title: El panel siempre se abre hacia abajo
+      body: "Con poco espacio bajo la barra, el panel se volteaba y se abría por encima, fuera de la pantalla. Ahora siempre cae bajo la barra, como corresponde a una navegación de sitio."
+    en:
+      title: The panel always opens downward
+      body: "With little room under the bar, the panel flipped and opened above it, off screen. It now always drops below the bar, as site navigation should."
   - date: 2026-10-26
     kind: feature
     es:

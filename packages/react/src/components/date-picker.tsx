@@ -3,11 +3,13 @@ import {
   datePickerEvents,
   datePickerParts,
   defaultContentLabel,
+  defaultEndDateLabel,
   defaultTriggerLabel,
 } from "@skryensya/core/date-picker";
 import type { SignatureOptionsOf } from "@skryensya/core/contract";
 import {
   calendarParts,
+  calendarMonthCount,
   defaultDayLabel,
   defaultNextTriggerLabel,
   defaultPrevTriggerLabel,
@@ -29,7 +31,7 @@ const { clearLabel: clearLabelOption, locale: localeOption, selectionMode: selec
 // `selectionMode` comes from the contract, so Core stays the only place its values are defined.
 export type DatePickerProps = Pick<
   SignatureOptionsOf<typeof datePickerContract, "DatePicker">,
-  "selectionMode" | "appearance"
+  "selectionMode" | "numOfMonths" | "appearance"
 > & {
   /** Where the popover is portalled. Absent it goes to the body: see `ComboboxProps.container`. */
   container?: RefObject<HTMLElement>;
@@ -89,6 +91,7 @@ export function DatePicker({
   max,
   min,
   name,
+  numOfMonths,
   nextIcon,
   nextTriggerLabel,
   onValueChange,
@@ -107,12 +110,13 @@ export function DatePicker({
   const generatedId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
   const service = useMachine(datePicker.machine, {
-    positioning: { placement: "bottom-start", ...anchoredPositioning },
+    positioning: { ...anchoredPositioning, placement: selectionMode === "range" ? "bottom" : "bottom-start" },
     id: id ?? generatedId,
     name,
     locale,
     timeZone,
     selectionMode,
+    numOfMonths: calendarMonthCount(numOfMonths, selectionMode),
     value: asDates(value),
     defaultValue: asDates(defaultValue),
     min: asDate(min),
@@ -163,6 +167,7 @@ export function DatePicker({
         {Array.from({ length: inputCount }, (_, index) => (
           <input
             {...api.getInputProps({ index })}
+            aria-label={index === 1 ? defaultEndDateLabel(locale) : undefined}
             className={datePickerParts.input}
             key={index}
             placeholder={placeholder}
@@ -198,6 +203,8 @@ export function DatePicker({
           <div
             {...api.getContentProps()}
             className={`${datePickerParts.content} ${calendarParts.root}`}
+            data-num-of-months={api.numOfMonths}
+            data-selection-mode={selectionMode}
           >
             <CalendarBody
               api={api}
@@ -205,6 +212,15 @@ export function DatePicker({
               nextIcon={nextIcon}
               previousIcon={previousIcon}
             />
+            <button
+              type="button"
+              className={`${datePickerParts.close} sk-button sk-interactive`}
+              data-size="sm"
+              data-variant="ghost"
+              onClick={() => api.setOpen(false)}
+            >
+              {defaultTriggerLabel(locale)(true)}
+            </button>
           </div>
         </div>
       </Portal>

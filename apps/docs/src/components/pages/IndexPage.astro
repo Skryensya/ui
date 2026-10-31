@@ -1,154 +1,224 @@
 ---
-/*
- * The component CATALOG, not a component's own page: one List per component type, linking out to every
- * migrated page, so `ComponentPageShell`'s tabs (Uso/Instalación/Referencia…) do not apply. There
- * is no single "usage" to tab into. What carries over for visual consistency with the pages this
- * links to is only the hero header block itself (eyebrow + h1), used here directly rather than
- * through the shell, with no tab strip underneath it.
- */
+import { emitMarkup } from "@skryensya/ai-compiler/emit";
+import type { UsageTree } from "@skryensya/core/usage-tree";
+import "@skryensya/core/components/badge.css";
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/empty-state.css";
+import "@skryensya/core/components/input.css";
+import "@skryensya/core/components/tag.css";
 import "@skryensya/core/components/list.css";
+import "@skryensya/core/components/search-field.css";
+import "@skryensya/core/components/typography.css";
+import "@skryensya/core/patterns/layout.css";
+import "@skryensya/core/patterns/box.css";
 import Base from "../../layouts/Base.astro";
-import CommandPalette from "../CommandPalette.astro";
-import { getLocale, useTranslations } from "../../i18n";
+import IndexHero from "../IndexHero.astro";
+import { canonicalPath, getLocale, useTranslations } from "../../i18n";
 import { iconMarkup } from "../../icons";
 import { getComponentDescription } from "../../lib/component-catalog";
 import { componentIconMarkup } from "../../lib/component-icons";
+import { buildComponentSearchIndex } from "../../lib/component-search-index";
 import { getNavigation } from "../../lib/navigation";
 
 const locale = getLocale(Astro.url);
-const componentSection = getNavigation(locale).find((section) => section.id === "components");
-if (!componentSection) throw new Error("Missing components navigation section");
-
-const searchIcon = iconMarkup("search");
 const t = useTranslations(locale);
+const navigation = getNavigation(locale);
+const componentSection = navigation.find((section) => section.id === "components");
+if (!componentSection) throw new Error("Missing components navigation section");
+const searchIndex = buildComponentSearchIndex();
 
-/*
- * THIS PAGE'S SEARCH IS THE CATALOGUE'S, not the site's. The chrome's ⌘K palette still indexes every
- * documentation destination and is a keystroke away; a reader who came here and typed into the box
- * labelled "Buscar componentes" is asking about components, so the palette behind it indexes exactly
- * what the lists below hold. The components navigation section, and nothing from guides or ADRs.
- * `!todo` mirrors the site index: an entry with no page behind it is not a destination.
- */
-const componentSearchIndex = componentSection.groups.flatMap((group) =>
-  group.items
-    .filter((item) => !item.todo)
-    .map((item) => ({
-      label: item.label,
-      aliases: item.aliases ?? [],
-      href: item.href,
-      /* Section is constant here, so the context line carries the group alone: "Formularios" beside
-       * a result says something the page's own heading does not repeat. */
-      context: group.group,
-    })),
-);
+const groups = componentSection.groups.map((group, index) => ({
+  ...group,
+  key: group.id ?? String(index),
+  headingId: `catalog-group-${index}`,
+  items: group.items.filter((item) => !item.todo).map((item) => {
+    const description = getComponentDescription(item.href, locale);
+    const searchText = searchIndex.get(canonicalPath(item.href))!;
+    return {
+      ...item,
+      description,
+      names: searchText.names,
+      words: searchText.context,
+    };
+  }),
+}));
+const total = groups.reduce((count, group) => count + group.items.length, 0);
+const countTemplate = t("indexPage.resultsCount", { count: "{count}", total: "{total}" });
 
+const search: UsageTree = {
+  contract: "search-field",
+  signature: "SearchField",
+  options: { name: "q", placeholder: t("indexPage.searchPlaceholder"), clearLabel: t("indexPage.clearSearch") },
+  slots: { label: t("indexPage.searchLabel") },
+};
+// Page chrome needs SVGs on first paint, not placeholders waiting for mountIcons.
+const searchMarkup = emitMarkup(search, { fillDefaults: false, idPrefix: "component-search" })
+  .replace('<span data-sk-icon="search" data-sk-icon-size="sm"></span>', iconMarkup("search", { size: "md" }))
+  .replace('<span data-sk-icon="close" data-sk-icon-size="sm"></span>', iconMarkup("close", { size: "sm" }));
+const category: UsageTree = {
+  contract: "layout",
+  signature: "Inline",
+  options: { gap: "sm", wrap: true, inlineAlign: "center" },
+  children: [
+    { value: "", label: t("indexPage.allCategories") },
+    ...groups.map((group) => ({ value: group.key, label: group.group })),
+  ].map(({ value, label }): UsageTree => ({
+    contract: "tag",
+    signature: "Tag.toggle",
+    options: { selected: value === "" },
+    attrs: { "data-category": value, "aria-controls": "component-results" },
+    children: label,
+  })),
+};
+const arrow = iconMarkup("chevron-right", { size: "sm" });
+const resetIcon = iconMarkup("close", { size: "sm" });
 ---
 
 <Base title={t("indexPage.title")} description={t("indexPage.description")} documentLayout="grid">
-  <header class="docs-component-hero">
-    <h1>{t("indexPage.title")}</h1>
-  </header>
-
-  <p class="lede" set:html={t("indexPage.lede")} />
-
-  {/*
-    Opens the catalogue's OWN palette (`docs-cmdk-components`), not the chrome's: `aria-controls` is
-    what the enhancer reads to decide which triggers belong to which dialog, so pointing it here is
-    the whole scoping mechanism. No ⌘K badge and no `aria-keyshortcuts` either. That shortcut still
-    belongs to the site-wide palette, and this button is not it.
-  */}
-  <button
-    class="sk-button sk-interactive docs-catalog-search"
-    data-variant="ghost"
-    type="button"
-    aria-controls="docs-cmdk-components"
-    aria-expanded="false"
-    data-sk-command-palette-open
+  <IndexHero title={t("indexPage.title")} description={t("indexPage.lede")}>
+  <div
+    class="component-explorer sk-stack"
+    data-gap="xl"
+    data-component-explorer
+    data-count-template={countTemplate}
+    data-empty-template={t("indexPage.emptyDescription", { query: "{query}" })}
   >
-    <Fragment set:html={searchIcon} />
-    <span class="docs-catalog-search__label">{t("indexPage.searchLabel")}</span>
-  </button>
+    <div class="sk-stack" data-gap="sm">
+      <div class="sk-stack" data-gap="lg" role="search" aria-label={t("indexPage.searchLabel")}>
+        <div data-component-search set:html={searchMarkup} />
+        <div class="sk-stack" data-gap="xs">
+          <p class="sk-text" data-size="sm" data-weight="label" id="component-category-label">{t("indexPage.categoryLabel")}</p>
+          <div
+            class="component-explorer__categories sk-scrollbar sk-fade-edge"
+            role="group"
+            aria-labelledby="component-category-label"
+            data-component-category
+            data-sk-fade-edge
+            data-direction="horizontal"
+            data-scroll-aware
+            set:html={emitMarkup(category, { fillDefaults: false, idPrefix: "component-category" })}
+          />
+        </div>
+      </div>
 
-  <CommandPalette
-    slot="palette"
-    id="docs-cmdk-components"
-    entries={componentSearchIndex}
-    label={t("search.componentsDialog")}
-    placeholder={t("search.componentsPlaceholder")}
-  />
+    <div class="sk-inline" data-gap="sm" data-justify="between" data-align="center" data-wrap>
+      <p class="sk-text" data-size="sm" data-tone="secondary" role="status" aria-atomic="true" data-component-count>
+        {t("indexPage.resultsCount", { count: String(total), total: String(total) })}
+      </p>
+      <button class="sk-button sk-interactive" type="button" data-variant="ghost" data-size="sm" data-component-clear hidden>
+        <Fragment set:html={resetIcon} />
+        {t("indexPage.clearFilters")}
+      </button>
+    </div>
+    </div>
 
-  {/*
-    ONE BOX PER GROUP, flowing as two columns (`.docs-catalog-groups`, site.css). The boxes are
-    layout, not content, so both carry `data-toc-transparent`: `indexDocument()` reads a heading
-    inside them as a section of the page and the rail keeps every group.
-  */}
-  <div class="docs-catalog-groups" data-toc-transparent>
-    {
-      componentSection.groups.map((group, groupIndex) => {
-        const headingId = `catalog-group-${groupIndex}`;
+    <noscript><p class="sk-text" data-size="sm" data-tone="secondary">{t("indexPage.noScript")}</p></noscript>
 
-        return (
-          <section class="docs-catalog-section" aria-labelledby={headingId} data-toc-transparent>
-            <h2 class="docs-catalog-section__title" id={headingId} data-flush>{group.group}</h2>
-            {group.blurb && <p class="docs-catalog-section__blurb">{group.blurb}</p>}
+    <div id="component-results" class="sk-stack" data-gap="xl">
+      {groups.map((group) => (
+        <section aria-labelledby={group.headingId} data-component-group={group.key}>
+          <header class="sk-stack component-explorer__group-header" data-gap="xs">
+            <div class="sk-inline" data-gap="sm" data-align="center">
+              <h2 class="sk-heading" data-size="h3" data-flush id={group.headingId}>{group.group}</h2>
+              <span class="sk-badge" data-size="sm" data-tone="accent" aria-hidden="true" data-component-group-count>{group.items.length}</span>
+            </div>
+            {group.blurb && <p class="sk-text" data-size="sm" data-tone="secondary">{group.blurb}</p>}
+          </header>
 
-            <ul class="sk-list" role="list">
-              {group.items.map((item) => (
-                <li class="sk-list__item">
-                  <a href={item.href} class="sk-list__action sk-interactive">
-                    <span class="sk-list__leading" set:html={componentIconMarkup(item.href)} />
-                    <span class="sk-list__content">
-                      <span class="sk-list__title">{item.label}</span>
-                      <span class="sk-list__description">{getComponentDescription(item.href, locale)}</span>
-                    </span>
-                    {item.trailing && (
-                      <span class="sk-list__trailing">
-                        <span class="sk-badge" data-size="sm" data-tone="warning">{item.trailing}</span>
-                      </span>
-                    )}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </section>
-        );
-      })
-    }
+          <ul class="sk-list" role="list">
+            {group.items.map((item) => (
+              <li class="sk-list__item" data-component-entry data-component-names={JSON.stringify(item.names)} data-component-words={item.words}>
+                <a href={item.href} class="sk-list__action sk-interactive">
+                  <span class="sk-list__leading" set:html={componentIconMarkup(item.href)} />
+                  <span class="sk-list__content">
+                    <span class="sk-list__title">{item.label}</span>
+                    <span class="sk-list__description">{item.description}</span>
+                  </span>
+                  <span class="sk-list__trailing">
+                    {item.trailing && <span class="sk-badge" data-size="sm" data-tone="warning">{item.trailing}</span>}
+                    <Fragment set:html={arrow} />
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+
+    <div class="component-explorer__empty sk-box" data-surface="sunken" data-border="subtle" data-component-empty hidden>
+      <section class="sk-empty-state" aria-labelledby="component-empty-title">
+        <div class="sk-empty-state__icon" aria-hidden="true" set:html={iconMarkup("search")} />
+        <h2 class="sk-empty-state__title" id="component-empty-title">{t("indexPage.emptyTitle")}</h2>
+        <div class="sk-empty-state__description" data-component-empty-description />
+      </section>
+    </div>
   </div>
+  </IndexHero>
 </Base>
 
-<script>
-  /*
-   * THE RAIL READS ROW BY ROW, like the eye crossing two columns. The groups are in the DOM down the first
-   * column and then down the second (that is what multi-column does), so the rail's default order is a
-   * column at a time. Here it is rebuilt from where the groups actually sit: each column's list by rank,
-   * interleaved (left 1, right 1, left 2, right 2…). One column, or one group, leaves the DOM order alone.
-   */
-  const container = document.querySelector<HTMLElement>(".docs-catalog-groups");
-  const list = document.querySelector<HTMLElement>(".sk-toc__list");
-  if (container && list) {
-    const reorder = () => {
-      const byId = new Map<string, HTMLElement>();
-      for (const link of list.querySelectorAll<HTMLAnchorElement>(".sk-toc__link")) {
-        const item = link.closest<HTMLElement>(".sk-toc__item");
-        if (item) byId.set(decodeURIComponent(link.hash.slice(1)), item);
-      }
-      const columns = new Map<number, HTMLElement[]>();
-      for (const section of container.querySelectorAll<HTMLElement>(".docs-catalog-section")) {
-        const heading = section.querySelector<HTMLElement>("h2[id]");
-        const item = heading && byId.get(heading.id);
-        if (!item) continue;
-        const left = Math.round(section.offsetLeft);
-        columns.set(left, [...(columns.get(left) ?? []), item]);
-      }
-      const ordered = [...columns.entries()].sort(([a], [b]) => a - b).map(([, items]) => items);
-      const rows = Math.max(0, ...ordered.map((items) => items.length));
-      const sorted: HTMLElement[] = [];
-      for (let row = 0; row < rows; row++) for (const items of ordered) if (items[row]) sorted.push(items[row]!);
-      const current = [...list.children];
-      if (sorted.length === current.length && sorted.some((item, index) => item !== current[index])) list.append(...sorted);
-    };
-    reorder();
-    new ResizeObserver(reorder).observe(container);
+<style lang="scss">
+  @use "@skryensya/core/breakpoints" as bp;
+
+  .component-explorer :global([hidden]) {
+    display: none;
   }
+
+  /* Reserve the action footprint without exposing an inactive control to focus or assistive tech. */
+  .component-explorer :global([data-component-clear][hidden]) {
+    display: inline-flex;
+    visibility: hidden;
+  }
+
+  .component-explorer__categories {
+    --sk-fade-edge-size: var(--space-inset-lg);
+    /* Leave room for the design system focus ring inside the scrollport. */
+    padding: var(--space-inset-xs);
+    margin-inline: calc(var(--space-inset-xs) * -1);
+  }
+
+  .component-explorer__categories :global(.sk-tag) {
+    flex: none;
+  }
+
+  @include bp.down("compact") {
+    .component-explorer__categories {
+      overflow-x: auto;
+    }
+
+    .component-explorer__categories :global(.sk-inline) {
+      flex-wrap: nowrap;
+    }
+  }
+
+  @media (pointer: coarse) {
+    .component-explorer__categories :global(.sk-tag) {
+      --sk-tag-height: var(--size-touch-target);
+    }
+  }
+
+  .component-explorer__empty {
+    display: grid;
+    min-block-size: 28rem;
+  }
+
+  [data-component-group-count] {
+    font-family: var(--font-family-code);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .component-explorer__group-header {
+    margin-block-end: var(--space-stack-sm);
+  }
+
+  .sk-list {
+    --sk-list-title-font-size: var(--font-size-body);
+    --sk-list-description-font-size: var(--font-size-body-sm);
+    --sk-list-row-padding-y: var(--space-inset-md);
+  }
+</style>
+
+<script>
+  import { initComponentExplorer } from "../../scripts/component-explorer";
+  initComponentExplorer();
 </script>

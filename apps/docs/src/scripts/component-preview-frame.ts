@@ -642,7 +642,7 @@ function measureContent(body: HTMLElement): number {
    * folded in here; a closed one is `display: none` and contributes nothing, so this only grows the
    * frame for what the reader can currently see.
    */
-  for (const panel of document.querySelectorAll<HTMLElement>('.sk-menu__content[data-state="open"]')) {
+  for (const panel of document.querySelectorAll<HTMLElement>('.sk-menu__content[data-state="open"], .sk-megamenu__content[data-state="open"]')) {
     const bottom = panel.getBoundingClientRect().bottom;
     if (Number.isFinite(bottom)) contentBottom = Math.max(contentBottom, bottom);
   }

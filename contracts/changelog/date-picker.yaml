@@ -3,8 +3,25 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "cef83e06af79075a"
+surface: "3f2bc90f1f97ea16"
 entries:
+  - date: 2026-10-30
+    kind: bugfix
+    es:
+      title: "Popup de rango centrado bajo el campo"
+      body: "El popup de rango se centra bajo el campo, en lugar de alinearse a su inicio. Mantiene el ajuste al viewport y la hoja en móvil."
+    en:
+      title: "Range popup centered below the field"
+      body: "The range popup is centered below the field instead of aligned to its start. Viewport collision handling and the mobile sheet are preserved."
+  - date: 2026-10-30
+    kind: feature
+    target: numOfMonths
+    es:
+      title: "Rangos con dos meses y dos campos"
+      body: "El selector de rangos muestra dos meses por defecto y permite introducir ambas fechas en React y Vanilla. numOfMonths permite volver a uno. En móvil, los meses se apilan en una hoja con cierre explícito, sin reducir los botones de día."
+    en:
+      title: "Ranges with two months and two fields"
+      body: "Range pickers show two months by default and support entering both dates in React and Vanilla. numOfMonths can switch back to one. On mobile, months stack inside a sheet with an explicit close button, without shrinking day targets."
   - date: 2026-10-25
     kind: breaking
     target: appearance

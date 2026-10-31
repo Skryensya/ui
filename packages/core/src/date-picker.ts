@@ -1,5 +1,5 @@
 import type { ComponentContract } from "./contract.js";
-import { ISO_DATE_OR_RANGE_PATTERN, ISO_DATE_PATTERN } from "./calendar.js";
+import { calendarContract, ISO_DATE_OR_RANGE_PATTERN, ISO_DATE_PATTERN } from "./calendar.js";
 export type { DateValue } from "@zag-js/date-picker";
 
 /*
@@ -8,6 +8,10 @@ export type { DateValue } from "@zag-js/date-picker";
  * the shared day/view/prev/next ones. This file only adds what `Calendar` never renders.
  */
 const isEnglishLocale = (locale: string) => locale.toLocaleLowerCase().startsWith("en");
+
+export function defaultEndDateLabel(locale: string): string {
+  return isEnglishLocale(locale) ? "End date" : "Fecha de fin";
+}
 
 export function defaultTriggerLabel(locale: string) {
   const en = isEnglishLocale(locale);
@@ -33,6 +37,7 @@ export const datePickerParts = {
   clear: "sk-date-picker__clear",
   positioner: "sk-date-picker__positioner",
   content: "sk-date-picker__content",
+  close: "sk-date-picker__close",
 } as const;
 
 export const datePickerAttrs = {
@@ -139,6 +144,7 @@ export const datePickerContract = {
     },
     min: { type: "string", attr: "data-min", machineInput: true, pattern: ISO_DATE_PATTERN },
     max: { type: "string", attr: "data-max", machineInput: true, pattern: ISO_DATE_PATTERN },
+    numOfMonths: calendarContract.options.numOfMonths,
     selectionMode: {
       type: "enum",
       values: ["single", "range"],
@@ -173,6 +179,7 @@ export const datePickerContract = {
         "min",
         "max",
         "selectionMode",
+        "numOfMonths",
         "locale",
         "timeZone",
         "disabled",

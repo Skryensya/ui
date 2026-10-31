@@ -1,4 +1,5 @@
 import { canonicalPath, type Locale } from "../i18n";
+import { documentationNavigation, getNavigation, type NavigationSection } from "./navigation";
 
 type FoundationDescription = Readonly<Record<Locale, string>>;
 
@@ -8,6 +9,38 @@ type FoundationDescription = Readonly<Record<Locale, string>>;
  * `component-catalog.ts`.
  */
 const foundationDescriptions = {
+  "/prerequisites": {
+    es: "Reúne los conceptos de HTML, CSS y JavaScript que necesitas para usar el sistema.",
+    en: "Covers the HTML, CSS, and JavaScript concepts you need to use the system.",
+  },
+  "/installation": {
+    es: "Instala los paquetes, carga los estilos y elige el binding para tu proyecto.",
+    en: "Installs the packages, loads the styles, and chooses a binding for your project.",
+  },
+  "/first-component": {
+    es: "Construye tu primer componente con el mismo contrato en React o HTML.",
+    en: "Builds your first component from the same contract in React or HTML.",
+  },
+  "/automatic-mounting": {
+    es: "Activa el comportamiento del HTML con montaje automático o imports específicos.",
+    en: "Adds behavior to authored HTML through automatic mounting or targeted imports.",
+  },
+  "/dependencies": {
+    es: "Distingue qué resuelve el kit y qué delega en librerías de terceros.",
+    en: "Distinguishes what the kit owns from what it delegates to third-party libraries.",
+  },
+  "/appearance": {
+    es: "Compara las apariencias del kit sin cambiar la estructura ni el comportamiento de los componentes.",
+    en: "Compares the kit's appearances without changing component structure or behavior.",
+  },
+  "/react-hook-form": {
+    es: "Conecta los controles del kit con React Hook Form para manejar valores, validación y errores.",
+    en: "Connects kit controls to React Hook Form for values, validation, and errors.",
+  },
+  "/tanstack-table": {
+    es: "Compone tablas con ordenación, selección y paginación sobre TanStack Table.",
+    en: "Composes sorting, selection, and pagination on top of TanStack Table.",
+  },
   "/architecture": {
     es: "Explica cómo un Contract de Core define markup, comportamiento y bindings antes de React o Vanilla.",
     en: "Explains how a Core Contract defines markup, behavior, and bindings before React or Vanilla.",
@@ -98,4 +131,21 @@ export function getFoundationDescription(href: string, locale: Locale): string {
   }
 
   return description[locale];
+}
+
+/** Keep the authored reading path, rather than the sidebar's alphabetical order. */
+export function foundationGroups(locale: Locale) {
+  const section = getNavigation(locale).find((entry) => entry.id === "foundations");
+  if (!section) throw new Error("Missing foundations navigation section");
+  const authored: NavigationSection = documentationNavigation.find((entry) => entry.id === "foundations")!;
+  const order = new Map(authored.groups.flatMap((group) => group.items.map((item) => item.href))
+    .map((href, index) => [href, index]));
+
+  return section.groups.map((group, index) => ({
+    ...group,
+    headingId: `foundations-group-${index}`,
+    items: group.items.filter((item) => !item.todo)
+      .sort((a, b) => order.get(canonicalPath(a.href))! - order.get(canonicalPath(b.href))!)
+      .map((item) => ({ ...item, description: getFoundationDescription(item.href, locale) })),
+  }));
 }

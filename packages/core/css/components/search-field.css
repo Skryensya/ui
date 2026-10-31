@@ -60,8 +60,7 @@
   /* Room for the magnifier in front and the clear button behind. Fixed insets rather than Input's
    * `--sk-input-padding-x`: that hook is declared on the input, and the magnifier is its sibling. */
   .sk-search-field__input.sk-input {
-    padding-inline: calc(var(--space-inset-md) + 1.25rem + var(--space-inline-sm))
-      calc(var(--size-control-sm) + var(--space-inset-xs));
+    padding-inline: calc(var(--space-inset-md) + var(--size-icon-md) + var(--space-inline-sm));
   }
 
   /* WebKit's own clear glyph: unstyleable and unnamed, and ours is right beside it. */
@@ -80,7 +79,8 @@
 
     position: absolute;
     inset-block: 0;
-    inset-inline-end: var(--space-inset-xs);
+    /* Align the glyph, not the button's face, with the magnifier's inset. */
+    inset-inline-end: calc(var(--space-inset-md) - (var(--size-control-sm) - var(--size-icon-md)) / 2);
     margin-block: auto;
   }
 

@@ -64,7 +64,9 @@ const halves = [
 ] as const;
 ---
 
-<section class:list={["sk-do-dont", stacked && "sk-do-dont--stacked", compact && "sk-do-dont--compact"]}>
+<section
+  class:list={["sk-do-dont", stacked && "sk-do-dont--stacked", compact && "sk-do-dont--compact"]}
+>
   {title && <h3>{title}</h3>}
   <div class="sk-do-dont__pair">
     {

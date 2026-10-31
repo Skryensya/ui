@@ -1,0 +1,37 @@
+---
+import "@skryensya/core/effects/collapse-header.css";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<div class="docs-component-shell docs-index-shell" data-toc-transparent>
+  <div class="docs-component-head">
+    <div class="docs-component-hero__spacer sk-fx-collapse-header__spacer"></div>
+    <div aria-hidden="true" class="docs-component-hero__backing"></div>
+    <header class="docs-component-hero docs-index-hero sk-fx-collapse-header">
+      <div class="docs-component-hero__title-row">
+        <h1>{title}</h1>
+      </div>
+    </header>
+  </div>
+  <div class="docs-component-body sk-layout-grid" data-toc-transparent>
+    <div class="sk-stack" data-gap="xl" data-toc-transparent>
+      <p class="sk-text" data-size="lg" data-tone="secondary">{description}</p>
+      <slot />
+    </div>
+  </div>
+</div>
+
+<style>
+  .docs-index-shell,
+  .docs-index-hero {
+    --docs-hero-pad-start-max: var(--space-inset-xl);
+    --docs-hero-pad-end-max: var(--space-inset-xl);
+    --docs-hero-eyebrow-line: 0px;
+  }
+</style>

@@ -271,6 +271,20 @@ To publish assets manually, select a version tag and uncheck `dry_run`; a tag th
 the package versions fails packing. The manual `bump` command and tag-push fallback still work,
 but are not the normal release path; do not combine them with a pending release PR.
 
+Historical websites and maintenance-branch releases are **not automated yet**. The proposed
+[versioned docs plan](VERSIONED_DOCS_PLAN.md) prepares the machinery while keeping `0.0.3` current:
+patches such as `0.0.4` update the same pages; only a minor or major boundary creates a separate
+docs version. At that boundary, freeze the outgoing line's latest approved patch, not automatically
+`0.0.3`. Preparing this feature does not authorize merging the release PR or creating archives.
+The plan also covers later old-line security patches and docs corrections. Its
+[deployment and style policy](VERSIONED_DOCS_PLAN.md#8-deployment-topology-operator-runbook-and-documentation-styles)
+explains the shared-domain topology, independent builds, promotion/rollback steps and optional
+historical-docs redesigns. Future runbooks require implementation and verified host-specific commands;
+they are not ready-to-run production instructions. To resume preparation or plan an approved
+minor release in a later session, start with the plan's
+[resumption checklist](VERSIONED_DOCS_PLAN.md#11-resuming-this-plan-in-a-later-session), which requires
+rechecking the actual version and permissions rather than assuming the recorded baseline still holds.
+
 ### Release automation setup
 
 Create a **fine-grained PAT** for the `Skryensya` resource owner, restricted to **only `ui`**,

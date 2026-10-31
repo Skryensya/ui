@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { calendarParts, getTwoLetterWeekdayLabel } from "@skryensya/core/calendar";
+  import { calendarMonths, calendarParts, getTwoLetterWeekdayLabel } from "@skryensya/core/calendar";
+  import type { DateValue } from "@skryensya/core/calendar";
   import { buttonContract, buttonParts } from "@skryensya/core/button";
   import { datePicker } from "@skryensya/core/machines";
   import type { PropTypes } from "@zag-js/svelte";
@@ -60,17 +61,13 @@
   } as const;
   const iconOnly = { [iconOnlyOption.attr]: iconOnlyOption.trueValue } as const;
 
-  /*
-   * `api.focusedValue`, not `api.visibleRange.start`: the grid always renders full weeks, so its
-   * first cell is often a trailing day from the PREVIOUS month - found reproducing live, same bug
-   * and same fix as the React binding (see calendar.tsx's own comment on this).
-   */
+  // Use the machine's formatted month, not leading outside days or the browser's time zone.
   const headingLabel = $derived.by(() => {
     if (api.view === "day") {
-      return api.format(api.focusedValue, { month: "long", year: "numeric" });
+      return api.visibleRangeText.start;
     }
     if (api.view === "month") {
-      return api.format(api.focusedValue, { year: "numeric" });
+      return api.focusedValue.year.toLocaleString(locale, { useGrouping: false });
     }
     const decade = api.getDecade();
     return `${decade.start ?? ""}–${decade.end ?? ""}`;
@@ -127,6 +124,7 @@
   });
 </script>
 
+{#if api.view !== "day" || api.numOfMonths === 1}
 <div class={calendarParts.header}>
   <button
     {...prevTriggerProps}
@@ -137,6 +135,9 @@
   >
     <span data-sk-icon="chevron-left" data-sk-icon-size="sm"></span>
   </button>
+  {#if api.selectionMode === "range"}
+    <span class={calendarParts.monthTitle}>{headingLabel}</span>
+  {:else}
   <button
     {...api.getViewTriggerProps()}
     onclick={viewTriggerClick}
@@ -145,9 +146,12 @@
     class="{calendarParts.viewTrigger} {buttonClass}"
     type="button"
   >
-    {headingLabel}
-    <span aria-hidden="true" data-sk-icon="chevron-down" data-sk-icon-size="sm"></span>
+    <span class={buttonParts.label}>{headingLabel}</span>
+    <span class={buttonParts.post}>
+      <span aria-hidden="true" data-sk-icon="chevron-down" data-sk-icon-size="sm"></span>
+    </span>
   </button>
+  {/if}
   <button
     {...nextTriggerProps}
     {...smGhost}
@@ -158,36 +162,95 @@
     <span data-sk-icon="chevron-right" data-sk-icon-size="sm"></span>
   </button>
 </div>
+{/if}
 
 {#if api.view === "day"}
-  <table {...api.getTableProps()} class={calendarParts.table}>
-    <thead {...api.getTableHeadProps()} class={calendarParts.tableHeader}>
-      <tr {...api.getTableRowProps()}>
-        {#each api.weekDays as day (day.short)}
-          <th scope="col"><abbr title={day.long}>{getTwoLetterWeekdayLabel(day, locale)}</abbr></th>
-        {/each}
-      </tr>
-    </thead>
-    <tbody {...api.getTableBodyProps()} class={calendarParts.tableBody}>
-      {#each api.weeks as week, weekIndex (weekIndex)}
-        <tr {...api.getTableRowProps()}>
-          {#each week as day (day.toString())}
-            <td {...api.getDayTableCellProps({ value: day, visibleRange: api.visibleRange })} class={calendarParts.cell}>
+  <div class={calendarParts.months}>
+    {#each calendarMonths(api, locale) as month (month.index)}
+      <table
+        {...api.getTableProps({ id: String(month.index) })}
+        aria-label={api.numOfMonths > 1 ? month.visibleRangeText.start : undefined}
+        class={calendarParts.table}
+      >
+        {#if api.numOfMonths > 1}
+          <caption class={calendarParts.heading}>
+            <div class={calendarParts.header}>
+              {#if month.index === 0}
+                <button {...prevTriggerProps} {...smGhost} {...iconOnly} class="{calendarParts.previous} {buttonClass}" type="button">
+                  <span data-sk-icon="chevron-left" data-sk-icon-size="sm"></span>
+                </button>
+              {:else}
+                <span aria-hidden="true"></span>
+              {/if}
+              {#if api.selectionMode === "range"}
+                <span class={calendarParts.monthTitle}>
+                  {month.monthLabel}
+                  <span class={calendarParts.year}>{month.yearLabel}</span>
+                </span>
+              {:else}
               <button
-                {...api.getDayTableCellTriggerProps({ value: day, visibleRange: api.visibleRange })}
+                {...api.getViewTriggerProps()}
+                id={month.index === 0 ? api.getViewTriggerProps().id : `${api.getViewTriggerProps().id}-${month.index}`}
                 {...smGhost}
-                {...iconOnly}
-                class="{calendarParts.cellTrigger} {buttonClass}"
+                class="{calendarParts.viewTrigger} {buttonClass}"
                 type="button"
+                onclick={() => {
+                  api.setFocusedValue(month.visibleRange.start);
+                  api.setView("month");
+                }}
               >
-                {day.day}
+                <span class={buttonParts.label}>
+                  {month.monthLabel}
+                  <span class={calendarParts.year}>{month.yearLabel}</span>
+                </span>
+                <span class={buttonParts.post}>
+                  <span aria-hidden="true" data-sk-icon="chevron-down" data-sk-icon-size="sm"></span>
+                </span>
               </button>
-            </td>
+              {/if}
+              {#if month.index === api.numOfMonths - 1}
+                <button {...nextTriggerProps} {...smGhost} {...iconOnly} class="{calendarParts.next} {buttonClass}" type="button">
+                  <span data-sk-icon="chevron-right" data-sk-icon-size="sm"></span>
+                </button>
+              {:else}
+                <span aria-hidden="true"></span>
+              {/if}
+            </div>
+          </caption>
+        {/if}
+        <thead {...api.getTableHeadProps()} class={calendarParts.tableHeader}>
+          <tr {...api.getTableRowProps()}>
+            {#each api.weekDays as day (day.short)}
+              <th scope="col"><abbr title={day.long}>{getTwoLetterWeekdayLabel(day, locale)}</abbr></th>
+            {/each}
+          </tr>
+        </thead>
+        <tbody {...api.getTableBodyProps()} class={calendarParts.tableBody}>
+          {#each month.weeks as week, weekIndex (weekIndex)}
+            <tr {...api.getTableRowProps()}>
+              {#each week as day (day.toString())}
+                {@const props = { value: day, visibleRange: month.visibleRange }}
+                {@const triggerProps = api.getDayTableCellTriggerProps(props)}
+                {@const outside = api.getDayTableCellState(props).outsideRange}
+                <td {...api.getDayTableCellProps(props)} class={calendarParts.cell}>
+                    <button
+                      {...triggerProps}
+                      id={api.numOfMonths > 1 && outside ? undefined : triggerProps.id}
+                      {...smGhost}
+                      {...iconOnly}
+                      class="{calendarParts.cellTrigger} {buttonClass}"
+                      type="button"
+                    >
+                      {day.day}
+                    </button>
+                </td>
+              {/each}
+            </tr>
           {/each}
-        </tr>
-      {/each}
-    </tbody>
-  </table>
+        </tbody>
+      </table>
+    {/each}
+  </div>
 {:else if api.view === "month"}
   <table {...api.getTableProps({ view: "month" })} class="{calendarParts.table} {calendarParts.monthGrid}">
     <tbody {...api.getTableBodyProps({ view: "month" })} class={calendarParts.tableBody}>

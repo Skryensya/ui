@@ -116,6 +116,8 @@ export interface PlaceAnchoredOptions {
   sameWidth?: boolean;
   /** `absolute` scrolls with the document; `fixed` for a top-layer box, which is not in its flow. */
   strategy?: "absolute" | "fixed";
+  /** Move to the opposite side when the asked one has no room. Default `true`. */
+  flip?: boolean;
 }
 
 /**
@@ -129,7 +131,7 @@ export interface PlaceAnchoredOptions {
 export function placeAnchored(
   reference: HTMLElement,
   floating: HTMLElement,
-  { placement = "block-end", gutter = anchoredPositioning.gutter, sameWidth = false, strategy = "absolute" }: PlaceAnchoredOptions = {},
+  { placement = "block-end", gutter = anchoredPositioning.gutter, sameWidth = false, strategy = "absolute", flip = true }: PlaceAnchoredOptions = {},
 ): () => void {
   const arrow = floating.querySelector<HTMLElement>("[data-part=arrow]");
   floating.style.position = strategy;
@@ -139,6 +141,7 @@ export function placeAnchored(
     placement: anchorPlacementToZag[placement],
     gutter,
     sameWidth,
+    flip,
     onComplete(data) {
       const side = data.placement.split("-")[0];
       floating.dataset.side = side;

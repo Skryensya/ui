@@ -38,6 +38,9 @@ import { initComponents } from "@skryensya/vanilla/auto";
 mountIcons(document, phosphorIcons);
 initComponents();`;
 
+/* A site bar sits at the top of its page, so the frame stops centring it: the open panel drops into the room below. */
+const barAtTop = ".sk-component-preview__frame-body { align-content: flex-start; }";
+
 const hrefs = { overview: "#", pricing: "#", integrations: "#", teams: "#", enterprise: "#" };
 ---
 
@@ -60,7 +63,7 @@ const hrefs = { overview: "#", pricing: "#", integrations: "#", teams: "#", ente
     <h3>{t("component.examplesTitle")}</h3>
     <h3>{t("megamenuPage.siteTitle")}</h3>
     <p set:html={t("megamenuPage.siteBody")} />
-    <UsagePreview tree={megamenuTree(t, hrefs)} label="Megamenu" viewport="overlay" screen="xl" flush storybookTitle="Components/Megamenu" storybookStory="Default" />
+    <UsagePreview tree={megamenuTree(t, hrefs)} label="Megamenu" viewport="overlay" screen="xl" flush css={barAtTop} storybookTitle="Components/Megamenu" storybookStory="Default" />
 
     <h3>{t("megamenuPage.variantsTitle")}</h3>
     <UsagePreview

@@ -1,8 +1,9 @@
 import { parseDate } from "@internationalized/date";
 import type { ComponentContract } from "./contract.js";
-import type { DateView, DayTableCellState, IntlTranslations } from "@zag-js/date-picker";
+import type { DateView, DateValueOffset, DayTableCellState, IntlTranslations } from "@zag-js/date-picker";
 
 export type { DateValue, DateView, DayTableCellState } from "@zag-js/date-picker";
+
 
 /*
  * Zag's OWN `defaultTranslations` (`@zag-js/date-picker`) is English-only, unconditionally. Every
@@ -159,6 +160,9 @@ export const calendarParts = {
   root: "sk-calendar",
   label: "sk-calendar__label",
   header: "sk-calendar__header",
+  months: "sk-calendar__months",
+  year: "sk-calendar__year",
+  monthTitle: "sk-calendar__month-title",
   heading: "sk-calendar__heading",
   viewTrigger: "sk-calendar__view-trigger",
   previous: "sk-calendar__previous",
@@ -186,6 +190,28 @@ export const calendarParts = {
  * all, so authored markup could not express a preselected day: a calendar could only ever open on
  * today, while the React binding accepted a value the other half quietly dropped.
  */
+/** Range selection shows two months unless the consumer explicitly asks for one. */
+export function calendarMonthCount(value: number | undefined, selectionMode: "single" | "range"): number {
+  return value === 1 || value === 2 ? value : selectionMode === "range" ? 2 : 1;
+}
+
+/** Each grid owns one month, even though the machine tracks the whole two-month window. */
+export function calendarMonths(api: { numOfMonths: number; getOffset: (duration: { months: number }) => DateValueOffset }, locale = "en") {
+  return Array.from({ length: api.numOfMonths }, (_, index) => {
+    const month = api.getOffset({ months: index });
+    return {
+      ...month,
+      index,
+      monthLabel: new Intl.DateTimeFormat(locale, { month: "long", timeZone: "UTC", calendar: month.visibleRange.start.calendar.identifier }).format(month.visibleRange.start.toDate("UTC")),
+      yearLabel: new Intl.DateTimeFormat(locale, { year: "numeric", timeZone: "UTC", calendar: month.visibleRange.start.calendar.identifier }).format(month.visibleRange.start.toDate("UTC")),
+      visibleRange: {
+        start: month.visibleRange.start,
+        end: month.visibleRange.start.add({ months: 1 }).subtract({ days: 1 }),
+      },
+    };
+  });
+}
+
 export const calendarEvents = {
   /** Detail: `{ value: string[] }`, ISO dates; space-separated range ends match authored markup. */
   valueChange: "sk:calendarvaluechange",
@@ -202,6 +228,9 @@ export const calendarContract = {
    */
   systemOwned: [
     "header",
+    "months",
+    "year",
+    "monthTitle",
     "heading",
     "viewTrigger",
     "previous",
@@ -255,6 +284,8 @@ export const calendarContract = {
       attr: "data-selection-mode",
       machineInput: true,
     },
+    /** Visible months: ranges default to two; single-date selection defaults to one. */
+    numOfMonths: { type: "number", min: 1, max: 2, integer: true, attr: "data-num-of-months", machineInput: true },
     /** Which language names the months and weekdays. */
     locale: { type: "string", default: "en", attr: "data-locale", machineInput: true },
     timeZone: { type: "string", default: "UTC", attr: "data-time-zone", machineInput: true },
@@ -267,7 +298,7 @@ export const calendarContract = {
       intent: ["pick-a-date-inline", "show-a-month", "no-popover"],
       host: { element: "div" },
       mount: "data-sk-calendar",
-      options: ["value", "min", "max", "selectionMode", "locale", "timeZone", "disabled", "readOnly"],
+      options: ["value", "min", "max", "selectionMode", "numOfMonths", "locale", "timeZone", "disabled", "readOnly"],
       /** Host id / a11y; value bounds stay options. */
       forward: ["id", "aria-*"],
       slots: {

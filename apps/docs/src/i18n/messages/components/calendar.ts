@@ -98,7 +98,7 @@ export const calendarMessages = {
       "Seis semanas fijas, así el alto no cambia al pasar de mes.",
     "calendar.rangeTitle": "Rango: inicio y fin en el mismo calendario",
     "calendar.rangeBody1":
-      "El primer clic fija el inicio y el segundo el fin; los días del medio se marcan, también mientras se elige.",
+      "Muestra dos meses consecutivos. El primer clic fija el inicio y el segundo el fin; los días intermedios se resaltan. Usa numOfMonths={1} para mostrar solo un mes.",
     "calendar.minMaxTitle": "Límites: min y max",
     "calendar.minMaxBody1":
       "Lo que cae fuera del rango queda deshabilitado, en la vista de día, de mes y de año.",
@@ -118,11 +118,11 @@ export const calendarMessages = {
       "Usa <code>range</code> para un inicio y un fin, como una reserva.",
     "calendar.guidelinesLede":
       "Calendar hace de elegir una fecha la tarea de la pantalla.",
-    "calendar.dd.range.title": "Rango: un solo calendario",
+    "calendar.dd.range.title": "Muestra el rango completo en una sola cuadrícula",
     "calendar.dd.range.do":
-      "Inicio y fin en el mismo calendario: el rango se ve entero.",
+      "Elige llegada y salida en el mismo calendario; los días entre ambas quedan visibles.",
     "calendar.dd.range.dont":
-      "Dos calendarios no muestran el rango y dejan elegir un fin antes del inicio.",
+      "Dos calendarios ocultan el tramo y permiten elegir una salida anterior a la llegada.",
   },
   en: {
     "demo.calendar.locale": "en-US",
@@ -219,7 +219,7 @@ export const calendarMessages = {
       "Six fixed weeks, so the height does not change from month to month.",
     "calendar.rangeTitle": "Range: start and end in one calendar",
     "calendar.rangeBody1":
-      "The first click sets the start and the second the end; the days between are marked, also while choosing.",
+      "Shows two consecutive months. The first click sets the start and the second the end; the days between are highlighted. Use numOfMonths={1} to show only one month.",
     "calendar.minMaxTitle": "Limits: min and max",
     "calendar.minMaxBody1":
       "Anything outside the range is disabled, in the day, month and year views.",
@@ -238,10 +238,10 @@ export const calendarMessages = {
       "Use <code>range</code> for a start and an end, such as a booking.",
     "calendar.guidelinesLede":
       "Calendar makes picking a date the task of the screen.",
-    "calendar.dd.range.title": "Range: one calendar",
+    "calendar.dd.range.title": "Show the full range in one grid",
     "calendar.dd.range.do":
-      "Start and end in the same calendar: the whole range is visible.",
+      "Choose check-in and check-out in the same calendar; the days between stay visible.",
     "calendar.dd.range.dont":
-      "Two calendars do not show the range and let people pick an end before the start.",
+      "Two calendars hide the stay and allow check-out before check-in."
   },
 } as const;

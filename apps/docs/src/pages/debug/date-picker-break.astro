@@ -25,4 +25,52 @@ import DebugShell from "../../components/DebugShell.astro";
     flex-direction: column;
     gap: var(--space-stack-md);
   }
+
+  .date-picker-break-page {
+    padding-block-end: 5rem;
+  }
+
+  .date-picker-break-page .break-w-320 {
+    inline-size: min(320px, 100%);
+  }
+
+  body:has(.sk-date-picker__content[data-state="open"]) .break-data-toggle {
+    display: none;
+  }
+
+  .break-data-toggle {
+    position: fixed;
+    inset-block-end: max(12px, env(safe-area-inset-bottom));
+    inset-inline-start: 50%;
+    z-index: 401;
+    display: flex;
+    gap: 2px;
+    padding: 4px;
+    transform: translateX(-50%);
+    border: 1px solid light-dark(#d1d5db, #555);
+    border-radius: 999px;
+    background: light-dark(#e5e7eb, #343434);
+    box-shadow: 0 2px 12px rgb(0 0 0 / 18%);
+    font: 500 13px/1.2 system-ui, sans-serif;
+  }
+
+  .break-data-toggle button {
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: light-dark(#374151, #f3f4f6);
+    cursor: pointer;
+  }
+
+  .break-data-toggle button[aria-pressed="true"] {
+    background: light-dark(#fff, #f7f7f7);
+    color: #111;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 18%);
+  }
+
+  .break-data-toggle button:focus-visible {
+    outline: 2px solid var(--focus-ring-color);
+    outline-offset: 2px;
+  }
 </style>

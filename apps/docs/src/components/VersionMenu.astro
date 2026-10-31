@@ -4,8 +4,8 @@
  *
  * Docs change on majors (VERSIONED_DOCS_PLAN), and each major is named by its newest full version
  * (`v0.0.2`): the trigger and every menu row say that, and the row's secondary line says whether it
- * is the latest line or an older one. Until archives mount on the CDN there is usually one row,
- * which still earns a menu: opening it is how a reader learns which tip the major points at.
+ * is the latest line or an older one. When there is only one line, show its version as a quiet,
+ * non-interactive label instead of implying there are alternatives.
  *
  * Desktop: caption + bordered Button with chevron before search. Mobile: the same list inside the
  * prefs sheet. Rows without a mounted archive stay on the live bare URL when they are current, and
@@ -34,6 +34,7 @@ const canonical = canonicalPath(Astro.url.pathname);
 const lines = majorLinesFromLedger(releaseLedger());
 const current = lines.find((line) => line.isCurrent) ?? lines[0]!;
 const majorLabel = `v${current.latest}`;
+const hasMultipleLines = lines.length > 1;
 const chevronIcon = iconMarkup("chevron-down", { size: "sm" });
 const listId = "docs-prefs-version-label";
 const liveHref = localizePath(canonical, locale);
@@ -48,6 +49,7 @@ const rows = lines.map((line, index) => ({
   href: line.isCurrent ? liveHref : undefined,
   available: line.isCurrent,
 }));
+const currentStatus = rows.find((row) => row.isCurrent)?.status;
 ---
 
 {
@@ -59,17 +61,26 @@ const rows = lines.map((line, index) => ({
         <ul class="sk-nav-list__list" aria-labelledby={listId}>
           {rows.map((row) => (
             <li class="sk-nav-list__item" data-todo={row.available ? undefined : ""}>
-              <a
-                class="sk-nav-list__link sk-interactive"
-                href={row.available ? row.href : undefined}
-                aria-current={row.isCurrent ? "page" : undefined}
-                aria-disabled={row.available ? undefined : "true"}
-              >
-                <span class="sk-nav-list__label">
-                  <span class="docs-prefs-versions__major">{row.label}</span>
-                  <span class="docs-prefs-versions__latest"><Fragment set:html={row.status} /></span>
+              {hasMultipleLines ? (
+                <a
+                  class="sk-nav-list__link sk-interactive"
+                  href={row.available ? row.href : undefined}
+                  aria-current={row.isCurrent ? "page" : undefined}
+                  aria-disabled={row.available ? undefined : "true"}
+                >
+                  <span class="sk-nav-list__label">
+                    <span class="docs-prefs-versions__major">{row.label}</span>
+                    <span class="docs-prefs-versions__latest"><Fragment set:html={row.status} /></span>
+                  </span>
+                </a>
+              ) : (
+                <span class="sk-nav-list__link" aria-current="page">
+                  <span class="sk-nav-list__label">
+                    <span class="docs-prefs-versions__major">{row.label}</span>
+                    <span class="docs-prefs-versions__latest"><Fragment set:html={row.status} /></span>
+                  </span>
                 </span>
-              </a>
+              )}
             </li>
           ))}
         </ul>
@@ -80,45 +91,59 @@ const rows = lines.map((line, index) => ({
 
 {
   !tile && (
-    <div class="sk-menu dimensions__version-menu" data-sk-menu aria-label={t("version.control")}>
+    <div class:list={["dimensions__version-menu", hasMultipleLines && "sk-menu"]} data-sk-menu={hasMultipleLines ? "" : undefined} aria-label={t("version.control")}>
       <span class="dimensions__version-menu__caption">{t("version.control")}</span>
-      <button
-        class="sk-menu__trigger sk-button sk-interactive sk-anchor"
-        data-variant="soft"
-        data-size="sm"
-        data-sk-menu-trigger
-        type="button"
-        aria-label={t("version.named", { name: majorLabel })}
-      >
-        <span class="dimensions__version-menu__value">{majorLabel}</span>
-        <span class="sk-button__post" aria-hidden="true">
-          <Fragment set:html={chevronIcon} />
+      {hasMultipleLines ? (
+        <>
+          <button
+            class="sk-menu__trigger sk-button sk-interactive sk-anchor"
+            data-variant="soft"
+            data-size="sm"
+            data-sk-menu-trigger
+            type="button"
+            aria-label={t("version.named", { name: majorLabel })}
+          >
+            <span class="dimensions__version-menu__value">{majorLabel}</span>
+            <span class="sk-button__post" aria-hidden="true">
+              <Fragment set:html={chevronIcon} />
+            </span>
+          </button>
+          <div class="sk-menu__positioner sk-anchored" data-sk-menu-positioner>
+            <div class="sk-menu__content" data-sk-menu-content>
+              {rows.map((row) => (
+                <a
+                  class="sk-menu__item sk-interactive"
+                  data-sk-menu-item
+                  data-value={row.major}
+                  data-type="radio"
+                  data-checked={row.isCurrent ? "" : undefined}
+                  data-disabled={row.available ? undefined : ""}
+                  aria-disabled={row.available ? undefined : "true"}
+                  href={row.available ? row.href : undefined}
+                >
+                  <span class="sk-menu__item-label dimensions__version-menu__row">
+                    <span class="dimensions__version-menu__row-major">{row.label}</span>
+                    <span class="dimensions__version-menu__row-latest"><Fragment set:html={row.status} /></span>
+                  </span>
+                  <span class="sk-menu__item-indicator" aria-hidden="true">
+                    <span data-sk-icon="check" data-sk-icon-size="md" />
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </>
+      ) : (
+        <span
+          class="sk-button"
+          data-variant="soft"
+          data-size="sm"
+          aria-label={t("version.named", { name: majorLabel })}
+        >
+          <span class="dimensions__version-menu__value">{majorLabel}</span>
+          {currentStatus && <Fragment set:html={currentStatus} />}
         </span>
-      </button>
-      <div class="sk-menu__positioner sk-anchored" data-sk-menu-positioner>
-        <div class="sk-menu__content" data-sk-menu-content>
-          {rows.map((row) => (
-            <a
-              class="sk-menu__item sk-interactive"
-              data-sk-menu-item
-              data-value={row.major}
-              data-type="radio"
-              data-checked={row.isCurrent ? "" : undefined}
-              data-disabled={row.available ? undefined : ""}
-              aria-disabled={row.available ? undefined : "true"}
-              href={row.available ? row.href : undefined}
-            >
-              <span class="sk-menu__item-label dimensions__version-menu__row">
-                <span class="dimensions__version-menu__row-major">{row.label}</span>
-                <span class="dimensions__version-menu__row-latest"><Fragment set:html={row.status} /></span>
-              </span>
-              <span class="sk-menu__item-indicator" aria-hidden="true">
-                <span data-sk-icon="check" data-sk-icon-size="md" />
-              </span>
-            </a>
-          ))}
-        </div>
-      </div>
+      )}
     </div>
   )
 }

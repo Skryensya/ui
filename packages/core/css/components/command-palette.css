@@ -15,11 +15,7 @@
      * under the `60vh` ceiling on a short viewport so the two never cross. */
     --sk-command-palette-list-min-block-size: min(18rem, 45vh);
     --sk-command-palette-list-max-block-size: min(24rem, 60vh);
-    --sk-command-palette-option-bg-selected: color-mix(
-      in oklab,
-      var(--color-text-primary) 8%,
-      var(--color-bg-surface-raised)
-    );
+    --sk-command-palette-option-bg-selected: var(--color-bg-accent-subtle);
     --sk-command-palette-footer-bg: var(--color-bg-surface-sunken);
     --sk-command-palette-footer-fg: var(--color-text-tertiary);
     /* Mix, not `--color-border-subtle`: on the raised panel that token is the same rung as the
@@ -31,6 +27,8 @@
       var(--color-text-primary) 16%,
       var(--color-bg-surface-raised)
     );
+    /* How far the close button's painted face sits inside its touch-target box. */
+    --sk-command-palette-close-inset: calc((var(--size-touch-target) - var(--size-control-sm)) / 2);
   }
 
   /* What the palette changes on the Dialog it sits on, at `.sk-dialog`'s specificity plus one so it
@@ -50,10 +48,9 @@
     align-items: center;
     gap: var(--space-inline-sm);
     padding-inline-start: var(--space-inset-md);
-    padding-inline-end: max(
-      var(--space-inset-sm),
-      calc((var(--size-touch-target) - var(--size-control-sm)) * 0.5)
-    );
+    /* The close face sits `--sk-command-palette-close-inset` inside its 44px box, so this puts the
+     * FACE at the same `inset-md` from the edge the search icon keeps at the start. */
+    padding-inline-end: calc(var(--space-inset-md) - var(--sk-command-palette-close-inset));
     border-block-end: 1px solid var(--sk-command-palette-border-color);
   }
 
@@ -111,9 +108,22 @@
     content: none;
   }
 
+  /* The box stays the 44px target; only the PAINT shrinks to a `sm` face. A ghost button's face is
+   * its state layer, so insetting that (and the ring with it) is the whole visible size. */
+  .sk-command-palette__close.sk-button::before {
+    inset: var(--sk-command-palette-close-inset);
+  }
+
+  .sk-command-palette__close.sk-button:focus-visible {
+    outline-offset: calc(var(--focus-ring-offset) - var(--sk-command-palette-close-inset));
+  }
+
   .sk-command-palette__list {
     margin: 0;
     padding: var(--space-inset-xs);
+    /* `.sk-scrollbar--reveal` reserves a stable gutter on pointer devices; that gutter IS the end
+     * padding there, or the rows sit three times farther from the end edge than the start. */
+    padding-inline-end: 0;
     list-style: none;
     box-sizing: border-box;
     min-block-size: var(--sk-command-palette-list-min-block-size);
@@ -158,7 +168,10 @@
     align-items: baseline;
     justify-content: space-between;
     gap: var(--space-inline-md);
-    padding: var(--space-inset-sm);
+    /* Inline padding tops the list's own `inset-xs` up to `inset-md`, so labels start on the same
+     * line as the search icon above and the footer hints below. */
+    padding-block: var(--space-inset-sm);
+    padding-inline: calc(var(--space-inset-md) - var(--space-inset-xs));
     border-radius: var(--radius-control);
     color: inherit;
     cursor: pointer;

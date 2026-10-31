@@ -1,8 +1,32 @@
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import { fireEvent, render, waitFor, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { DatePicker, NativeDatePicker } from "./date-picker.js";
 
 describe("DatePicker", () => {
+  it("picks a range across two months and fills both input fields", async () => {
+    const ui = render(<DatePicker label="Stay" locale="en" selectionMode="range" defaultValue="2026-03-10 2026-03-11" />);
+    fireEvent.click(ui.getByRole("button", { name: "Open calendar" }));
+    await waitFor(() => expect(ui.getAllByRole("grid")).toHaveLength(2));
+    fireEvent.click(within(ui.getByRole("grid", { name: "March 2026" })).getByRole("button", { name: /March 28, 2026/ }));
+    expect(ui.getAllByRole("grid")).toHaveLength(2);
+    fireEvent.click(within(ui.getByRole("grid", { name: "April 2026" })).getByRole("button", { name: /April 4, 2026/ }));
+    await waitFor(() => expect((ui.getByLabelText("End date") as HTMLInputElement).value).not.toBe(""));
+    await waitFor(() => expect(ui.queryAllByRole("grid")).toHaveLength(0));
+  });
+
+  it("supports a one-month range without a month/year view button", async () => {
+    const ui = render(
+      <DatePicker label="Stay" locale="en" selectionMode="range" numOfMonths={1} defaultValue="2026-03-10" />,
+    );
+    fireEvent.click(ui.getByRole("button", { name: "Open calendar" }));
+
+    await waitFor(() => expect(ui.getAllByRole("grid")).toHaveLength(1));
+    expect(document.body.querySelector(".sk-calendar__view-trigger")).toBeNull();
+    expect(document.body.querySelector(".sk-calendar__month-title")?.textContent).toBe("March 2026");
+    fireEvent.click(document.body.querySelector(".sk-calendar__next")!);
+    await waitFor(() => expect(document.body.querySelector(".sk-calendar__month-title")?.textContent).toBe("April 2026"));
+  });
+
   it("writes an appearance on the root only when asked", () => {
     const plain = render(<DatePicker label="Plain" locale="es" />);
     expect(plain.container.querySelector(".sk-date-picker")?.hasAttribute("data-appearance")).toBe(false);

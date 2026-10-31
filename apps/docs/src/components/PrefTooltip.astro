@@ -19,15 +19,16 @@
  */
 interface Props {
   label: string;
+  class?: string;
 }
 
-const { label } = Astro.props;
+const { label, class: className } = Astro.props;
 const control = (await Astro.slots.render("default")).trim();
 ---
 
 {
   control && (
-    <span class="sk-tooltip" data-sk-anchor data-sk-placement="block-end">
+    <span class:list={["sk-tooltip", className]} data-sk-anchor data-sk-placement="block-end">
       <span class="sk-tooltip__trigger sk-anchor" data-sk-anchor-trigger set:html={control} />
       <div class="sk-tooltip__positioner sk-anchored" data-sk-anchor-positioner>
         <div class="sk-tooltip__content" data-sk-anchor-content role="tooltip">

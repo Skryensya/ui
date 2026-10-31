@@ -43,6 +43,34 @@
     gap: var(--sk-calendar-gap);
     inline-size: min(var(--sk-calendar-inline-size), 100%);
   }
+  .sk-calendar[data-num-of-months="2"] {
+    inline-size: min(calc(var(--sk-calendar-inline-size) * 2 + var(--space-inline-lg)), 100%);
+  }
+  .sk-calendar__months {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(calc(var(--sk-calendar-row-size) * 7), 100%), 1fr));
+    gap: var(--space-inline-lg);
+  }
+  .sk-calendar__months > table {
+    min-inline-size: 0;
+  }
+  .sk-calendar__heading {
+    padding-block-end: var(--space-stack-sm);
+    font-size: var(--font-size-body-sm);
+    font-weight: var(--font-weight-label);
+    text-align: center;
+  }
+  .sk-calendar__month-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-inline-xs);
+    min-block-size: var(--size-control-sm);
+  }
+  .sk-calendar__year {
+    color: var(--sk-calendar-affordance-color);
+    font-weight: var(--font-weight-body);
+  }
   .sk-calendar__label {
     color: var(--sk-calendar-affordance-color);
     font-size: var(--font-size-body-sm);
@@ -50,7 +78,7 @@
   }
   .sk-calendar__header {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-columns: var(--size-control-sm) minmax(0, 1fr) var(--size-control-sm);
     align-items: center;
     gap: var(--sk-calendar-header-gap);
   }
@@ -106,6 +134,14 @@
   .sk-calendar__cell {
     padding: calc(var(--space-inset-xs) * 0.5);
     text-align: center;
+  }
+  .sk-calendar__table[data-view="day"] .sk-calendar__cell {
+    block-size: var(--sk-calendar-row-size);
+  }
+  /* In a two-month range picker, each month already renders its neighbor's dates. Keep the grid
+     alignment, but don't paint the same day again in the adjacent month. */
+  .sk-calendar[data-selection-mode="range"] .sk-calendar__cell-trigger[data-outside-range] {
+    visibility: hidden;
   }
   /* A day cell is a ghost sm Button, SQUARE (width pinned to the same cell-size as its height)
    * rather than stretched to the width of its `<td>`: seven columns of small circular "bubbles"
@@ -197,7 +233,16 @@
    * range mode is on): the two never overlap in practice, so one rule covers both. */
   .sk-calendar__cell:has(.sk-calendar__cell-trigger[data-in-range]),
   .sk-calendar__cell:has(.sk-calendar__cell-trigger[data-in-hover-range]) {
-    background: var(--color-bg-accent-subtle);
+    background: light-dark(
+      var(--color-bg-accent-subtle),
+      color-mix(in oklab, var(--color-action-accent) 18%, var(--color-bg-surface-overlay))
+    );
+  }
+  /* A hidden duplicate day must not leave a stray segment of the range band behind. */
+  .sk-calendar[data-selection-mode="range"] .sk-calendar__cell:has(.sk-calendar__cell-trigger[data-outside-range][data-in-range]),
+  .sk-calendar[data-selection-mode="range"] .sk-calendar__cell:has(.sk-calendar__cell-trigger[data-outside-range][data-in-hover-range]) {
+    background: transparent;
+    border-radius: 0;
   }
   /* Only the band's outer edge rounds, to cap it like the pill it is flanking; the inner edge
    * (against the rest of the range) stays square so the fill still reads as one unbroken shape. */

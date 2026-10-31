@@ -241,7 +241,7 @@ function connect(root: HTMLElement): () => void {
       currentDefaultImage = defaultImageByIndex[state.openIndex];
     }
     sharedContent.dataset.state = "open";
-    stopPlacing ??= placeAnchored(root, sharedPositioner, { placement: "block-end" });
+    stopPlacing ??= placeAnchored(root, sharedPositioner, { placement: "block-end", flip: false });
   };
 
   const dispatch = (event: MegamenuEvent) => apply(resolveMegamenuEvent(state, event));

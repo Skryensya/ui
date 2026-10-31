@@ -667,6 +667,61 @@
     ],
     "calendar": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-30",
+            "en": {
+              "body": "On narrow screens, range calendar months are navigated horizontally, one at a time, with swipe snapping. Desktop keeps both months side by side.",
+              "title": "Range calendar adapts to mobile"
+            },
+            "es": {
+              "body": "En pantallas estrechas, los meses del calendario de rango se navegan horizontalmente, uno a la vez, con ajuste por deslizamiento. En escritorio siguen visibles lado a lado.",
+              "title": "El calendario de rango se adapta a móvil"
+            },
+            "kind": "bugfix"
+          },
+          {
+            "date": "2026-10-30",
+            "en": {
+              "body": "Ranges show month and year as text without a year selector. In single-date selection, the caret uses Button’s post slot to keep labels vertically centered.",
+              "title": "Static range headings and centered button labels"
+            },
+            "es": {
+              "body": "Los rangos muestran mes y año como texto, sin selector de año. En la selección individual, el caret usa el slot post de Button para mantener el texto centrado verticalmente.",
+              "title": "Cabeceras de rango sin botón y texto centrado"
+            },
+            "kind": "bugfix"
+          },
+          {
+            "date": "2026-10-30",
+            "en": {
+              "body": "Each month includes its year in its own header. Adjacent-month days use the same secondary styling as the single-month view, without duplicate identifiers.",
+              "title": "Month headers and adjacent days in the two-month view"
+            },
+            "es": {
+              "body": "Cada mes integra su año en una cabecera propia. Los días de meses vecinos se muestran con el mismo estilo secundario de la vista de un mes, sin duplicar identificadores.",
+              "title": "Cabeceras y días vecinos en la vista de dos meses"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-10-30",
+            "en": {
+              "body": "Ranges show two consecutive months, side by side or stacked to fit the available space. numOfMonths accepts one or two; use 1 to keep the single-month view.",
+              "title": "Two months for range selection"
+            },
+            "es": {
+              "body": "Los rangos muestran dos meses consecutivos, juntos o apilados según el espacio disponible. numOfMonths permite elegir uno o dos; usa 1 para conservar la vista de un mes.",
+              "title": "Dos meses para seleccionar rangos"
+            },
+            "kind": "feature",
+            "target": "numOfMonths"
+          }
+        ],
+        "version": "0.0.4-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -1316,6 +1371,37 @@
       }
     ],
     "date-picker": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-30",
+            "en": {
+              "body": "The range popup is centered below the field instead of aligned to its start. Viewport collision handling and the mobile sheet are preserved.",
+              "title": "Range popup centered below the field"
+            },
+            "es": {
+              "body": "El popup de rango se centra bajo el campo, en lugar de alinearse a su inicio. Mantiene el ajuste al viewport y la hoja en móvil.",
+              "title": "Popup de rango centrado bajo el campo"
+            },
+            "kind": "bugfix"
+          },
+          {
+            "date": "2026-10-30",
+            "en": {
+              "body": "Range pickers show two months by default and support entering both dates in React and Vanilla. numOfMonths can switch back to one. On mobile, months stack inside a sheet with an explicit close button, without shrinking day targets.",
+              "title": "Ranges with two months and two fields"
+            },
+            "es": {
+              "body": "El selector de rangos muestra dos meses por defecto y permite introducir ambas fechas en React y Vanilla. numOfMonths permite volver a uno. En móvil, los meses se apilan en una hoja con cierre explícito, sin reducir los botones de día.",
+              "title": "Rangos con dos meses y dos campos"
+            },
+            "kind": "feature",
+            "target": "numOfMonths"
+          }
+        ],
+        "version": "0.0.4-dev"
+      },
       {
         "date": "2026-10-28",
         "entries": [
@@ -2529,6 +2615,24 @@
             "en": {
               "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> and <code>--sk-anchored-size</code> were listed as hooks, but no stylesheet in the library ever declares them, not even the <code>anchored.css</code> pattern they came from: overriding any of them did nothing, silently. Only <code>--sk-anchored-z</code> remains, the one actually in use.",
               "title": "Eight dead anchoring hooks removed"
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-30",
+            "en": {
+              "body": "With little room under the bar, the panel flipped and opened above it, off screen. It now always drops below the bar, as site navigation should.",
+              "title": "The panel always opens downward"
+            },
+            "es": {
+              "body": "Con poco espacio bajo la barra, el panel se volteaba y se abría por encima, fuera de la pantalla. Ahora siempre cae bajo la barra, como corresponde a una navegación de sitio.",
+              "title": "El panel siempre se abre hacia abajo"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.4-dev"
+      },
             },
             "es": {
               "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> y <code>--sk-anchored-size</code> estaban en la lista de hooks, pero ninguna hoja de estilos de la librería los declara jamás, ni siquiera el patrón <code>anchored.css</code> que los originó: sobrescribir cualquiera de ellos no hacía nada, en silencio. Solo queda <code>--sk-anchored-z</code>, el único que de verdad se usa.",
@@ -11154,6 +11258,14 @@
         "timeZone": {
           "attr": "data-time-zone",
           "default": "UTC",
+        "numOfMonths": {
+          "attr": "data-num-of-months",
+          "integer": true,
+          "machineInput": true,
+          "max": 2,
+          "min": 1,
+          "type": "number"
+        },
           "machineInput": true,
           "type": "string"
         },
@@ -11195,6 +11307,8 @@
           ],
           "useWhen": [
             "choosing the date is the screen's task, not one more field of a form",
+        "months": "sk-calendar__months",
+        "monthTitle": "sk-calendar__month-title",
             "seeing the month helps decide: weekends, holidays, how many days are left",
             "there is room for an always-visible grid"
           ]
@@ -11202,6 +11316,7 @@
       },
       "signatures": {
         "Calendar": {
+        "year": "sk-calendar__year",
           "forward": [
             "id",
             "aria-*"
@@ -11240,6 +11355,7 @@
               {
                 "element": "p",
                 "part": "label",
+            "numOfMonths",
                 "slot": "label"
               }
             ],
@@ -11272,6 +11388,9 @@
           "markup": true,
           "portals": false,
           "react": "@skryensya/react/callout#Callout"
+        "months",
+        "year",
+        "monthTitle",
         }
       },
       "category": "feedback",
@@ -16009,7 +16128,7 @@
           "sheet": "@skryensya/core/components/command-palette.css"
         },
         "--sk-command-palette-option-bg-selected": {
-          "default": "color-mix(\n      in oklab,\n      var(--color-text-primary) 8%,\n      var(--color-bg-surface-raised)\n    )",
+          "default": "var(--color-bg-accent-subtle)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/command-palette.css"
@@ -19146,6 +19265,14 @@
         },
         "selectionMode": {
           "attr": "data-selection-mode",
+        "numOfMonths": {
+          "attr": "data-num-of-months",
+          "integer": true,
+          "machineInput": true,
+          "max": 2,
+          "min": 1,
+          "type": "number"
+        },
           "default": "single",
           "machineInput": true,
           "type": "enum",
@@ -19193,6 +19320,7 @@
           "useWhen": [
             "the date is a field of a form, next to other fields",
             "it should be possible both to type it and to look it up in the calendar"
+        "close": "sk-date-picker__close",
           ]
         },
         "DatePicker.native": {
@@ -19271,6 +19399,7 @@
           "slots": {
             "label": {
               "accepts": "text"
+            "numOfMonths",
             }
           },
           "template": {

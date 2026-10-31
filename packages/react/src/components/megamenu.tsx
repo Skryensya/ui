@@ -373,7 +373,7 @@ export function Megamenu({ children, className, container, label, onOpenChange, 
     const root = rootRef.current;
     const box = positionerRef.current;
     if (!isOpen || !root || !box) return;
-    return placeAnchored(root, box, { placement: "block-end" });
+    return placeAnchored(root, box, { placement: "block-end", flip: false });
   }, [isOpen]);
 
   const panel = (

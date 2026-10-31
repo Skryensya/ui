@@ -111,13 +111,12 @@ const languageControl = emitMarkup(
 ---
 
 <Fragment set:html={before} /><Fragment set:html={iconMarkup("settings")} /><Fragment set:html={mid} />
-<div class="sk-stack" data-gap="md">
+<div class="sk-stack" data-gap="sm">
   <section class="sk-stack" data-gap="sm">
     <div class="sk-stack" data-gap="xs">
       <Fragment set:html={rowLabel(t("prefs.theme"))} />
       <Fragment set:html={modeControl} />
     </div>
-    <Fragment set:html={contrastControl} />
   </section>
 
   <Fragment set:html={separator} />
@@ -155,5 +154,10 @@ const languageControl = emitMarkup(
       </Fragment>
     )
   }
+
+  <Fragment set:html={separator} />
+  <section class="sk-stack" data-gap="xs">
+    <Fragment set:html={contrastControl} />
+  </section>
 </div>
 <Fragment set:html={after} />

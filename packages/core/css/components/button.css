@@ -192,8 +192,10 @@
    * because the state layer owns `::before`. The POSITIONING is deliberately not set here: it
    * comes from `.sk-interactive`, which already establishes the containing block. A `position`
    * of our own would make a non-interactive button a containing block for anything absolutely
-   * positioned inside it (CodePreview's copy button is the case that caught this). */
-  .sk-button::after {
+   * positioned inside it (CodePreview's copy button is the case that caught this). Scoped to
+   * `.sk-interactive` for the same reason: on a static face (the docs' single-version label) the
+   * box had no containing block of its own and stretched over the whole header, eating its clicks. */
+  .sk-button:where(.sk-interactive)::after {
     content: "";
     position: absolute;
     inset-block: min(0px, calc((100% - var(--size-touch-target)) / 2));

@@ -2,6 +2,8 @@ import { calendarContract } from "@skryensya/core/calendar";
 import type { SignatureOptionsOf } from "@skryensya/core/contract";
 import {
   calendarParts,
+  calendarMonthCount,
+  calendarMonths,
   calendarEvents,
   defaultDayLabel,
   defaultNextTriggerLabel,
@@ -46,19 +48,12 @@ export function CalendarBody({
   nextIcon?: ReactNode;
   viewIcon?: ReactNode;
 }) {
-  /*
-   * `api.focusedValue`, not `api.visibleRange.start`: the grid always renders full weeks, so its
-   * first cell is often a trailing day from the PREVIOUS month (a range from June 12-17 2026
-   * starts its first row on Sunday May 31) - the heading then named that spillover day's month,
-   * not the month actually being viewed. Reproduced live: "May 2026" over a June grid, in any
-   * timezone, confirming this was never about time zones at all. `focusedValue` is the date Zag
-   * itself tracks as the one in view/being interacted with, which stays in the right month.
-   */
+  // Machine-formatted months avoid labels shifting into the previous month in another time zone.
   const headingLabel =
     api.view === "day"
-      ? api.format(api.focusedValue, { month: "long", year: "numeric" })
+      ? api.visibleRangeText.start
       : api.view === "month"
-        ? api.format(api.focusedValue, { year: "numeric" })
+        ? api.focusedValue.year.toLocaleString(locale, { useGrouping: false })
         : (() => {
             const decade = api.getDecade();
             return `${decade.start ?? ""}–${decade.end ?? ""}`;
@@ -116,6 +111,7 @@ export function CalendarBody({
    */
   return (
     <>
+      {(api.view !== "day" || api.numOfMonths === 1) && (
       <div className={calendarParts.header}>
         <Button
           {...api.getPrevTriggerProps()}
@@ -126,16 +122,19 @@ export function CalendarBody({
         >
           {previousIcon ?? <Icon name="chevron-left" size="sm" />}
         </Button>
+        {api.selectionMode === "range" ? (
+          <span className={calendarParts.monthTitle}>{headingLabel}</span>
+        ) : (
         <Button
           {...viewTriggerProps}
           className={calendarParts.viewTrigger}
           size="sm"
           variant="ghost"
+          post={viewIcon ?? <Icon name="chevron-down" size="sm" />}
         >
           {headingLabel}
-          {viewIcon ?? <Icon name="chevron-down" size="sm" />}
         </Button>
-        <Button
+        )}        <Button
           {...api.getNextTriggerProps()}
           className={calendarParts.next}
           iconOnly
@@ -145,53 +144,92 @@ export function CalendarBody({
           {nextIcon ?? <Icon name="chevron-right" size="sm" />}
         </Button>
       </div>
+      )}
 
       {api.view === "day" ? (
-        <table {...api.getTableProps()} className={calendarParts.table}>
-          <thead
-            {...api.getTableHeadProps()}
-            className={calendarParts.tableHeader}
-          >
-            <tr {...api.getTableRowProps()}>
-              {api.weekDays.map((day) => (
-                <th scope="col" key={day.short}>
-                  <abbr title={day.long}>
-                    {getTwoLetterWeekdayLabel(day, locale)}
-                  </abbr>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody
-            {...api.getTableBodyProps()}
-            className={calendarParts.tableBody}
-          >
-            {api.weeks.map((week, weekIndex) => (
-              <tr {...api.getTableRowProps()} key={weekIndex}>
-                {week.map((day) => {
-                  const props = { value: day, visibleRange: api.visibleRange };
-                  return (
-                    <td
-                      {...api.getDayTableCellProps(props)}
-                      className={calendarParts.cell}
-                      key={day.toString()}
-                    >
-                      <Button
-                        {...api.getDayTableCellTriggerProps(props)}
-                        className={calendarParts.cellTrigger}
-                        iconOnly
-                        size="sm"
-                        variant="ghost"
-                      >
-                        {day.day}
+        <div className={calendarParts.months}>
+          {calendarMonths(api, locale).map((month) => (
+            <table
+              {...api.getTableProps({ id: String(month.index) })}
+              aria-label={api.numOfMonths > 1 ? month.visibleRangeText.start : undefined}
+              className={calendarParts.table}
+              key={month.index}
+            >
+              {api.numOfMonths > 1 && (
+                <caption className={calendarParts.heading}>
+                  <div className={calendarParts.header}>
+                    {month.index === 0 ? (
+                      <Button {...api.getPrevTriggerProps()} className={calendarParts.previous} iconOnly size="sm" variant="ghost">
+                        {previousIcon ?? <Icon name="chevron-left" size="sm" />}
                       </Button>
-                    </td>
-                  );
-                })}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                    ) : <span aria-hidden="true" />}
+                    {api.selectionMode === "range" ? (
+                      <span className={calendarParts.monthTitle}>
+                        {month.monthLabel}
+                        <span className={calendarParts.year}>{month.yearLabel}</span>
+                      </span>
+                    ) : (
+                    <Button
+                      {...defaultViewTriggerProps}
+                      id={month.index === 0 ? defaultViewTriggerProps.id : `${defaultViewTriggerProps.id}-${month.index}`}
+                      className={calendarParts.viewTrigger}
+                      size="sm"
+                      variant="ghost"
+                      post={viewIcon ?? <Icon name="chevron-down" size="sm" />}
+                      onClick={() => {
+                        api.setFocusedValue(month.visibleRange.start);
+                        api.setView("month");
+                      }}
+                    >
+                      {month.monthLabel}
+                      <span className={calendarParts.year}>{month.yearLabel}</span>
+                    </Button>
+                    )}
+                    {month.index === api.numOfMonths - 1 ? (
+                      <Button {...api.getNextTriggerProps()} className={calendarParts.next} iconOnly size="sm" variant="ghost">
+                        {nextIcon ?? <Icon name="chevron-right" size="sm" />}
+                      </Button>
+                    ) : <span aria-hidden="true" />}
+                  </div>
+                </caption>
+              )}
+              <thead {...api.getTableHeadProps()} className={calendarParts.tableHeader}>
+                <tr {...api.getTableRowProps()}>
+                  {api.weekDays.map((day) => (
+                    <th scope="col" key={day.short}>
+                      <abbr title={day.long}>{getTwoLetterWeekdayLabel(day, locale)}</abbr>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody {...api.getTableBodyProps()} className={calendarParts.tableBody}>
+                {month.weeks.map((week, weekIndex) => (
+                  <tr {...api.getTableRowProps()} key={weekIndex}>
+                    {week.map((day) => {
+                      const props = { value: day, visibleRange: month.visibleRange };
+                      const triggerProps = api.getDayTableCellTriggerProps(props);
+                      const outside = api.getDayTableCellState(props).outsideRange;
+                      return (
+                        <td {...api.getDayTableCellProps(props)} className={calendarParts.cell} key={day.toString()}>
+                            <Button
+                              {...triggerProps}
+                              id={api.numOfMonths > 1 && outside ? undefined : triggerProps.id}
+                              className={calendarParts.cellTrigger}
+                              iconOnly
+                              size="sm"
+                              variant="ghost"
+                            >
+                              {day.day}
+                            </Button>
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ))}
+        </div>
       ) : api.view === "month" ? (
         <table
           {...api.getTableProps({ view: "month" })}
@@ -264,7 +302,7 @@ export function CalendarBody({
 // `selectionMode` and friends come from the contract, so Core stays the only place they are defined.
 export type CalendarProps = Pick<
   SignatureOptionsOf<typeof calendarContract, "Calendar">,
-  "selectionMode"
+  "selectionMode" | "numOfMonths"
 > & {
   id?: string;
   /** Names the grid. Matches the contract slot: plain text. */
@@ -317,6 +355,7 @@ export function Calendar({
   locale = localeOption.default,
   max,
   min,
+  numOfMonths,
   nextIcon,
   nextTriggerLabel,
   onValueChange,
@@ -333,9 +372,12 @@ export function Calendar({
   const rootRef = useRef<HTMLDivElement>(null);
   const service = useMachine(datePicker.machine, {
     id: id ?? generatedId,
+      // Inline, nothing renders `getContentProps()`, and the machine looks for the focused day inside that element: point it at the grid's own wrapper or the arrow keys move nothing.
+    ids: { root: id ?? generatedId, content: id ?? generatedId },
     locale,
     timeZone,
     selectionMode,
+    numOfMonths: calendarMonthCount(numOfMonths, selectionMode),
     value: asDates(value),
     defaultValue: asDates(defaultValue),
     min: asDate(min),
@@ -373,6 +415,7 @@ export function Calendar({
       aria-labelledby={labelId}
       className={calendarParts.root}
       data-sk-calendar=""
+      data-num-of-months={api.numOfMonths}
       ref={rootRef}
     >
       <p className={calendarParts.label} id={labelId}>

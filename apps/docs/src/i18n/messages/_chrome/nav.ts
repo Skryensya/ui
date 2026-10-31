@@ -29,6 +29,7 @@ export const navMessages = {
     /* The label of the site's BackToTop (chrome, not the component's on its own page). It names the
        destination, the same convention as the two above. */
     "nav.backToTop": "Volver arriba",
+    "nav.githubHint": "GitHub",
     "nav.skipToNav": "Ir a la navegación",
   },
   en: {
@@ -57,6 +58,7 @@ export const navMessages = {
     /* The site's own BackToTop label (chrome, not the component's own doc-page copy). Names the
        destination, the same convention as the two above. */
     "nav.backToTop": "Back to top",
+    "nav.githubHint": "GitHub",
     "nav.skipToNav": "Go to navigation",
   },
 } as const;
