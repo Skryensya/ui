@@ -24,6 +24,7 @@ export const buttonMessages = {
     "demo.button.dismiss": "Descartar",
 
     "button.description": "Ejecuta una acción en la página: enviar, guardar, confirmar o descartar.",
+    "button.canvasLink": "Ver canvas",
 
     "button.a11yKeyTab": "Mueve el foco al botón siguiente o al anterior.",
 
@@ -186,6 +187,7 @@ export const buttonMessages = {
     "demo.button.dismiss": "Dismiss",
 
     "button.description": "Runs an action on the page: submit, save, confirm or dismiss.",
+    "button.canvasLink": "View canvas",
 
     "button.a11yKeyTab": "Moves focus to the next or previous button.",
 

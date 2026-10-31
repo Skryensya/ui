@@ -454,6 +454,7 @@ const relatedComponents = chosen
           {badge && (
             <span class="sk-badge docs-component-hero__badge" data-tone="warning">{badge}</span>
           )}
+          <slot name="actions" />
           {import.meta.env.DEV && breakHarness && (
             <div class="docs-component-hero__actions">
               <Fragment set:html={emitMarkup({

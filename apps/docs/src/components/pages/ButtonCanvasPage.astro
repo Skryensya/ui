@@ -1,0 +1,183 @@
+---
+import "@skryensya/core/fonts/hanken-grotesk.css";
+import "@skryensya/core/fonts/jetbrains-mono.css";
+import "@skryensya/core/tokens.scss";
+import "@skryensya/core/dimensions/radius.scss";
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/button.tactile.css";
+import "@skryensya/core/components/button.brutalist.css";
+import "@skryensya/core/components/button.frosted.css";
+import "@skryensya/core/components/loader.css";
+import "@skryensya/core/components/theme-toggle.css";
+import "@skryensya/core/patterns/icon-toggle.css";
+import { emitMarkup } from "@skryensya/ai-compiler/emit";
+import { getLocale, localizePath, useTranslations } from "../../i18n";
+import { buttonAxes, buttonCanvas } from "../../lib/button-canvas";
+import { frostBackdrop } from "../../lib/frost-backdrop";
+import ThemeToggle from "../ThemeToggle.astro";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const docsHref = localizePath("/components/button", locale);
+const copy = locale === "es" ? {
+  canvas: "Canvas de componentes",
+  intro: "Todas las apariencias, énfasis y tonos. Tamaños, estados y anatomía de un vistazo, sin repetir cada combinación.",
+  back: "Documentación de Button",
+  interaction: "Pasa el cursor, mantén pulsado o usa Tab para probar hover, active y focus-visible. Los toggles se pueden activar.",
+  loading: "Guardando…",
+  size: "Tamaños",
+  state: "Estados",
+  slots: "Iconos y slots",
+  host: "Acción y navegación",
+} : {
+  canvas: "Component canvas",
+  intro: "Every appearance, emphasis and tone. Sizes, states and anatomy at a glance, without repeating every combination.",
+  back: "Button documentation",
+  interaction: "Hover, hold a button or use Tab to inspect hover, active and focus-visible. Toggle buttons are interactive.",
+  loading: "Saving…",
+  size: "Sizes",
+  state: "States",
+  slots: "Icons and slots",
+  host: "Action and navigation",
+};
+const boards = buttonAxes.appearance.values.map((appearance) => ({
+  appearance,
+  ...buttonCanvas(appearance, t("demo.button.save"), copy.loading, docsHref),
+}));
+---
+
+<!doctype html>
+<html lang={locale} data-scheme="system" data-radius="md">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={copy.intro} />
+    <title>Button · {copy.canvas} · skryensya/ui</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#canvas">{copy.canvas}</a>
+    <header class="canvas-header">
+      <a class="sk-button sk-interactive" data-variant="ghost" data-size="sm" href={docsHref}>{copy.back}</a>
+      <span class="canvas-header__label">skryensya/ui</span>
+      <ThemeToggle size="sm" />
+    </header>
+    <main id="canvas" tabindex="-1">
+      <div class="canvas-intro">
+        <p class="eyebrow">{copy.canvas}</p>
+        <h1>Button</h1>
+        <p>{copy.intro}</p>
+        <p class="interaction-note">{copy.interaction}</p>
+      </div>
+      <div class="boards">
+        {boards.map((board, index) => (
+          <section class="board" aria-labelledby={`appearance-${board.appearance}`} data-canvas-appearance={board.appearance}>
+            <header class="board__header">
+              <h2 id={`appearance-${board.appearance}`}>{board.appearance}</h2>
+              <span class="board__number" aria-hidden="true">0{index + 1}</span>
+            </header>
+            <div class="board__body" style={board.appearance === "frosted" ? { background: frostBackdrop } : undefined}>
+              <div class="matrix-scroll" role="region" aria-label={`${board.appearance}: variant × tone`} tabindex="0">
+                <table>
+                  <caption class="eyebrow">variant × tone</caption>
+                  <thead>
+                    <tr><td></td>{buttonAxes.tone.values.map((tone) => <th scope="col"><code>{tone}</code></th>)}</tr>
+                  </thead>
+                  <tbody>
+                    {board.matrix.map((row) => (
+                      <tr>
+                        <th scope="row"><code>{row.variant}</code></th>
+                        {row.cells.map((cell) => <td set:html={emitMarkup(cell.tree)} />)}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {board.groups.map((group) => (
+                <section class="specimen-group" aria-labelledby={`${board.appearance}-${group.id}`}>
+                  <h3 id={`${board.appearance}-${group.id}`}>{copy[group.id as "size" | "state" | "slots" | "host"]}</h3>
+                  <div class="specimens">
+                    {group.items.map((item) => (
+                      <figure>
+                        <div class="specimen" set:html={emitMarkup(item.tree)} />
+                        <figcaption><code>{item.label}</code></figcaption>
+                      </figure>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+    </main>
+  </body>
+</html>
+
+<script>
+  import { mountIcons } from "@skryensya/vanilla/icon";
+  import { mountButton } from "@skryensya/vanilla/button";
+  import { initThemeToggle } from "../../scripts/theme-toggle";
+  import { siteIcons } from "../../icons";
+
+  mountIcons(document, siteIcons);
+  mountButton(document);
+  initThemeToggle();
+  document.querySelectorAll<HTMLButtonElement>('.specimen button[aria-pressed]').forEach((button) => {
+    button.addEventListener("click", () => {
+      button.setAttribute("aria-pressed", String(button.getAttribute("aria-pressed") !== "true"));
+    });
+  });
+</script>
+
+<style>
+  :global(body) {
+    margin: 0;
+    background: var(--color-bg-canvas);
+    color: var(--color-text-primary);
+    font-family: var(--font-family-body);
+  }
+  :global(*) { box-sizing: border-box; }
+  .skip-link { position: fixed; inset: 1rem auto auto 1rem; translate: 0 -200%; z-index: 2; }
+  .skip-link:focus { translate: 0; background: var(--color-bg-surface); padding: 1rem; }
+  .canvas-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-inline-md);
+    padding: var(--space-inset-md);
+    border-block-end: 1px solid var(--color-border-subtle);
+  }
+  .canvas-header__label, .eyebrow, h3, figcaption, .board__number {
+    font-size: var(--font-size-caption);
+    color: var(--color-text-secondary);
+  }
+  main { padding: clamp(1rem, 3vw, 3rem); }
+  .canvas-intro { max-inline-size: 48rem; margin-block-end: var(--space-stack-xl); }
+  h1 { font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: -0.04em; margin: 0; }
+  p { line-height: 1.6; }
+  .eyebrow { font-weight: 600; text-align: start; margin-block: 0 var(--space-stack-sm); }
+  .interaction-note { color: var(--color-text-secondary); font-size: var(--font-size-caption); }
+  .boards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 36rem), 1fr)); gap: var(--space-stack-lg) var(--space-inline-lg); }
+  .board { min-inline-size: 0; border: 1px solid var(--color-border-subtle); border-radius: var(--radius-surface); overflow: clip; background: var(--color-bg-surface); }
+  .board__header { display: flex; align-items: baseline; justify-content: space-between; padding: var(--space-inset-lg); border-block-end: 1px solid var(--color-border-subtle); }
+  h2 { margin: 0; font-size: var(--font-size-body); font-weight: 600; }
+  .board__body { padding: var(--space-inset-lg); }
+  .board[data-canvas-appearance="frosted"] .board__body { color: #fff; }
+  .board[data-canvas-appearance="frosted"] :is(.eyebrow, h3, figcaption, th) { color: #fff; }
+  .matrix-scroll { overflow-x: auto; padding: var(--space-inset-xs); }
+  table { inline-size: 100%; border-collapse: separate; border-spacing: var(--space-inline-sm); }
+  caption { padding-block-end: var(--space-stack-sm); }
+  th { color: var(--color-text-secondary); font-weight: 400; text-align: start; }
+  td { text-align: center; padding: var(--space-inset-sm); }
+  code { font-family: var(--font-family-code); font-size: var(--font-size-caption); white-space: nowrap; }
+  .specimen-group { margin-block-start: var(--space-stack-lg); border-block-start: 1px solid var(--color-border-subtle); padding-block-start: var(--space-inset-lg); }
+  h3 { margin: 0 0 var(--space-stack-md); font-weight: 600; }
+  .specimens { display: flex; flex-wrap: wrap; align-items: end; gap: var(--space-stack-lg) var(--space-inline-lg); }
+  figure { margin: 0; display: grid; gap: var(--space-stack-sm); justify-items: start; }
+  .specimen { padding: var(--space-inset-xs); }
+  figcaption { padding-inline: var(--space-inset-xs); }
+  @media (max-width: 35rem) {
+    .canvas-header__label { display: none; }
+    .board__body, .board__header { padding: var(--space-inset-sm); }
+  }
+</style>

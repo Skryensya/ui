@@ -36,7 +36,7 @@ import {
   buttonDontTwoPrimaryTree,
 } from "../../demos/button";
 import { annotationDemoCss } from "../../demos/annotation";
-import { getLocale, tList, useTranslations } from "../../i18n";
+import { getLocale, localizePath, tList, useTranslations } from "../../i18n";
 
 const t = useTranslations(getLocale(Astro.url));
 const explain = (option: string, values: readonly string[]) =>
@@ -83,6 +83,9 @@ mountIcons(document, phosphorIcons);`;
   appearanceTargetSelector="[data-sk-button]"
   testFiles={["packages/react/src/components/button.test.tsx", "packages/vanilla/src/components/button.test.ts"]}
 >
+  <div slot="actions" class="docs-component-hero__actions">
+    <a class="sk-button sk-interactive" data-variant="soft" data-size="sm" href={localizePath("/canvas/button", getLocale(Astro.url))}>{t("button.canvasLink")}</a>
+  </div>
   <Fragment slot="appearance">
     <AppearanceMenu label={t("prefs.appearance")} />
   </Fragment>
