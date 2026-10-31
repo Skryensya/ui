@@ -1,0 +1,40 @@
+/*
+ * PRESET: Terminal. Developer tool: cyan on zinc, nearly square corners, tight controls, JetBrains Mono.
+ *
+ * Typeface: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace. Load it yourself (e.g. https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap).
+ */
+@use "preset";
+
+@include preset.look("terminal") {
+  --radius-multiplier: 0.25;
+  --font-family-body: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --sk-density-factor: 0.9;
+  --font-weight-label: 500;
+  --motion-press-scale: 1;
+}
+
+@include preset.colors("terminal") {
+  --color-action-accent: light-dark(var(--palette-cyan-600), var(--palette-cyan-500));
+  --color-text-accent: light-dark(var(--palette-cyan-700), var(--palette-cyan-300));
+  --color-border-accent: light-dark(var(--palette-cyan-600), var(--palette-cyan-500));
+  --color-bg-accent-subtle: light-dark(var(--palette-cyan-50), var(--palette-cyan-950));
+  --color-text-danger: light-dark(var(--palette-red-700), var(--palette-red-300));
+  --color-border-danger: light-dark(var(--palette-red-600), var(--palette-red-500));
+  --color-bg-danger-subtle: light-dark(var(--palette-red-50), var(--palette-red-950));
+  --color-text-success: light-dark(var(--palette-green-700), var(--palette-green-300));
+  --color-border-success: light-dark(var(--palette-green-600), var(--palette-green-500));
+  --color-bg-success-subtle: light-dark(var(--palette-green-50), var(--palette-green-950));
+  --color-text-warning: light-dark(var(--palette-amber-700), var(--palette-amber-300));
+  --color-border-warning: light-dark(var(--palette-amber-600), var(--palette-amber-500));
+  --color-bg-warning-subtle: light-dark(var(--palette-amber-50), var(--palette-amber-950));
+  --color-bg-canvas: light-dark(var(--palette-zinc-100), var(--palette-zinc-950));
+  --color-bg-surface: light-dark(var(--palette-white), var(--palette-zinc-900));
+  --color-bg-surface-raised: light-dark(var(--palette-white), var(--palette-zinc-800));
+  --color-bg-surface-sunken: light-dark(var(--palette-zinc-200), var(--palette-zinc-950));
+  --color-text-primary: light-dark(var(--palette-zinc-900), var(--palette-zinc-100));
+  --color-text-secondary: light-dark(var(--palette-zinc-700), var(--palette-zinc-300));
+  --color-text-tertiary: light-dark(var(--palette-zinc-600), var(--palette-zinc-400));
+  --color-border-subtle: light-dark(var(--palette-zinc-300), var(--palette-zinc-800));
+  --color-border-default: light-dark(var(--palette-zinc-500), var(--palette-zinc-500));
+  --color-border-strong: light-dark(var(--palette-zinc-600), var(--palette-zinc-400));
+}

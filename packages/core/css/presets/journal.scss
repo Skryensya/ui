@@ -1,0 +1,39 @@
+/*
+ * PRESET: Journal. Editorial and handmade: warm orange on neutral grays, soft corners, more air, Lora serif.
+ *
+ * Typeface: 'Lora', Georgia, 'Times New Roman', serif. Load it yourself (e.g. https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap).
+ */
+@use "preset";
+
+@include preset.look("journal") {
+  --radius-multiplier: 1.5;
+  --font-family-body: 'Lora', Georgia, 'Times New Roman', serif;
+  --sk-density-factor: 1.1;
+  --elevation-raised: 0 2px 6px -2px var(--shadow-sm);
+}
+
+@include preset.colors("journal") {
+  --color-action-accent: light-dark(var(--palette-orange-600), var(--palette-orange-500));
+  --color-text-accent: light-dark(var(--palette-orange-700), var(--palette-orange-300));
+  --color-border-accent: light-dark(var(--palette-orange-600), var(--palette-orange-500));
+  --color-bg-accent-subtle: light-dark(var(--palette-orange-50), var(--palette-orange-950));
+  --color-text-danger: light-dark(var(--palette-red-700), var(--palette-red-300));
+  --color-border-danger: light-dark(var(--palette-red-600), var(--palette-red-500));
+  --color-bg-danger-subtle: light-dark(var(--palette-red-50), var(--palette-red-950));
+  --color-text-success: light-dark(var(--palette-lime-700), var(--palette-lime-300));
+  --color-border-success: light-dark(var(--palette-lime-600), var(--palette-lime-500));
+  --color-bg-success-subtle: light-dark(var(--palette-lime-50), var(--palette-lime-950));
+  --color-text-warning: light-dark(var(--palette-amber-700), var(--palette-amber-300));
+  --color-border-warning: light-dark(var(--palette-amber-600), var(--palette-amber-500));
+  --color-bg-warning-subtle: light-dark(var(--palette-amber-50), var(--palette-amber-950));
+  --color-bg-canvas: light-dark(var(--palette-neutral-100), var(--palette-neutral-950));
+  --color-bg-surface: light-dark(var(--palette-white), var(--palette-neutral-900));
+  --color-bg-surface-raised: light-dark(var(--palette-white), var(--palette-neutral-800));
+  --color-bg-surface-sunken: light-dark(var(--palette-neutral-200), var(--palette-neutral-950));
+  --color-text-primary: light-dark(var(--palette-neutral-900), var(--palette-neutral-100));
+  --color-text-secondary: light-dark(var(--palette-neutral-700), var(--palette-neutral-300));
+  --color-text-tertiary: light-dark(var(--palette-neutral-600), var(--palette-neutral-400));
+  --color-border-subtle: light-dark(var(--palette-neutral-300), var(--palette-neutral-800));
+  --color-border-default: light-dark(var(--palette-neutral-500), var(--palette-neutral-500));
+  --color-border-strong: light-dark(var(--palette-neutral-600), var(--palette-neutral-400));
+}

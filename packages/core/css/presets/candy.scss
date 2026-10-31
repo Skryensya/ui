@@ -1,0 +1,41 @@
+/*
+ * PRESET: Candy. Playful consumer app: pink on warm stone, pill corners, generous air, a squishy press, Nunito.
+ *
+ * Typeface: 'Nunito', 'Segoe UI', Helvetica, Arial, sans-serif. Load it yourself (e.g. https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap).
+ */
+@use "preset";
+
+@include preset.look("candy") {
+  --radius-multiplier: 3;
+  --font-family-body: 'Nunito', 'Segoe UI', Helvetica, Arial, sans-serif;
+  --sk-density-factor: 1.2;
+  --elevation-raised: 0 10px 20px -10px var(--shadow-md);
+  --font-weight-label: 700;
+  --motion-press-scale: 0.92;
+}
+
+@include preset.colors("candy") {
+  --color-action-accent: light-dark(var(--palette-pink-600), var(--palette-pink-500));
+  --color-text-accent: light-dark(var(--palette-pink-700), var(--palette-pink-300));
+  --color-border-accent: light-dark(var(--palette-pink-600), var(--palette-pink-500));
+  --color-bg-accent-subtle: light-dark(var(--palette-pink-50), var(--palette-pink-950));
+  --color-text-danger: light-dark(var(--palette-rose-700), var(--palette-rose-300));
+  --color-border-danger: light-dark(var(--palette-rose-600), var(--palette-rose-500));
+  --color-bg-danger-subtle: light-dark(var(--palette-rose-50), var(--palette-rose-950));
+  --color-text-success: light-dark(var(--palette-emerald-700), var(--palette-emerald-300));
+  --color-border-success: light-dark(var(--palette-emerald-600), var(--palette-emerald-500));
+  --color-bg-success-subtle: light-dark(var(--palette-emerald-50), var(--palette-emerald-950));
+  --color-text-warning: light-dark(var(--palette-amber-700), var(--palette-amber-300));
+  --color-border-warning: light-dark(var(--palette-amber-600), var(--palette-amber-500));
+  --color-bg-warning-subtle: light-dark(var(--palette-amber-50), var(--palette-amber-950));
+  --color-bg-canvas: light-dark(var(--palette-stone-100), var(--palette-stone-950));
+  --color-bg-surface: light-dark(var(--palette-white), var(--palette-stone-900));
+  --color-bg-surface-raised: light-dark(var(--palette-white), var(--palette-stone-800));
+  --color-bg-surface-sunken: light-dark(var(--palette-stone-200), var(--palette-stone-950));
+  --color-text-primary: light-dark(var(--palette-stone-900), var(--palette-stone-100));
+  --color-text-secondary: light-dark(var(--palette-stone-700), var(--palette-stone-300));
+  --color-text-tertiary: light-dark(var(--palette-stone-600), var(--palette-stone-400));
+  --color-border-subtle: light-dark(var(--palette-stone-300), var(--palette-stone-800));
+  --color-border-default: light-dark(var(--palette-stone-500), var(--palette-stone-500));
+  --color-border-strong: light-dark(var(--palette-stone-600), var(--palette-stone-400));
+}

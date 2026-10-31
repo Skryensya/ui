@@ -5,6 +5,14 @@
 # hash.
 surface: "5905b6baf792051b"
 entries:
+  - date: 2026-10-30
+    kind: feature
+    es:
+      title: El campo y el botón de buscar van unidos
+      body: "En <code>SearchField.form</code> el campo y su botón ya no van separados: forman un solo control, con las esquinas interiores rectas y un borde compartido, como en <code>ButtonGroup</code>."
+    en:
+      title: The field and its search button are joined
+      body: "In <code>SearchField.form</code> the field and its button no longer sit apart: they form one control, with square inner corners and a shared border, as in <code>ButtonGroup</code>."
   - date: 2026-10-28
     kind: feature
     es:

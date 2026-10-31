@@ -1,0 +1,302 @@
+---
+/*
+ * /presets: pick a look & feel and watch one screen of real components change.
+ *
+ * The presets are core's own (`@skryensya/core/presets/<id>`), not page CSS: what this page shows
+ * is exactly what an app gets by importing the file and setting `data-preset`. The stage carries
+ * the attribute, so nothing outside it changes; the header's palette picker is a separate,
+ * site-only reader preference and is not touched here.
+ */
+import { emitMarkup } from "@skryensya/ai-compiler/emit";
+import type { UsageTree } from "@skryensya/core/usage-tree";
+import "@skryensya/core/components/badge.css";
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/callout.css";
+import "@skryensya/core/components/input.css";
+import "@skryensya/core/components/segmented.css";
+import "@skryensya/core/components/tag.css";
+import "@skryensya/core/components/typography.css";
+import "@skryensya/core/patterns/box.css";
+import "@skryensya/core/patterns/image-frame.css";
+import "@skryensya/core/patterns/layout.css";
+import "@skryensya/core/presets/uc.scss";
+import "@skryensya/core/presets/aurora.scss";
+import "@skryensya/core/presets/journal.scss";
+import "@skryensya/core/presets/archive.scss";
+import "@skryensya/core/presets/terminal.scss";
+import "@skryensya/core/presets/candy.scss";
+import "@skryensya/core/presets/forest.scss";
+import "@skryensya/core/presets/brutalist.scss";
+import "@skryensya/core/presets/ocean.scss";
+import "@skryensya/core/presets/bordeaux.scss";
+import Base from "../../layouts/Base.astro";
+import CodeBlock from "../CodeBlock.astro";
+import { getLocale, useTranslations } from "../../i18n";
+import { satin } from "../../lib/satin";
+
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+
+/* `font` is what the preset's file names; `fontUrl` is where this page loads it from. */
+const PRESETS = [
+  { id: "default", name: "Default" },
+  { id: "uc", name: "UC", font: "Roboto", fontUrl: "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" },
+  { id: "aurora", name: "Aurora", font: "Manrope", fontUrl: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" },
+  { id: "journal", name: "Journal", font: "Lora", fontUrl: "https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" },
+  { id: "archive", name: "Archive", font: "Space Grotesk", fontUrl: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" },
+  { id: "terminal", name: "Terminal", font: "JetBrains Mono", fontUrl: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" },
+  { id: "candy", name: "Candy", font: "Nunito", fontUrl: "https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" },
+  { id: "forest", name: "Forest", font: "Figtree", fontUrl: "https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" },
+  { id: "brutalist", name: "Brutalist", font: "Bricolage Grotesque", fontUrl: "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&display=swap" },
+  { id: "ocean", name: "Ocean", font: "IBM Plex Sans", fontUrl: "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" },
+  { id: "bordeaux", name: "Bordeaux", font: "Fraunces", fontUrl: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&display=swap" },
+] as const;
+
+const initial = PRESETS[2];
+
+const picker = emitMarkup(
+  {
+    contract: "layout",
+    signature: "Inline",
+    options: { gap: "sm", wrap: true },
+    children: PRESETS.map((preset): UsageTree => ({
+      contract: "tag",
+      signature: "Tag.toggle",
+      options: { selected: preset.id === initial.id },
+      attrs: { "data-preset-choice": preset.id, "aria-controls": "preset-stage" },
+      children: preset.name,
+    })),
+  } as UsageTree,
+  { fillDefaults: false, idPrefix: "preset-choice" },
+);
+
+const scheme = emitMarkup(
+  {
+    contract: "segmented",
+    signature: "Segmented",
+    options: { value: "light", label: t("presetsPage.schemeLabel"), size: "sm" },
+    attrs: { "data-preset-scheme": "" },
+    slots: {
+      items: [
+        { options: { value: "light" }, slots: { label: t("presetsPage.light") } },
+        { options: { value: "dark" }, slots: { label: t("presetsPage.dark") } },
+      ],
+    },
+  } as UsageTree,
+  { fillDefaults: false },
+);
+
+const installCode = (id: string, font?: string) =>
+  `import "@skryensya/core/presets/${id}.css";\n\n` +
+  `<!-- the whole app -->\n<html data-preset="${id}">\n\n` +
+  `<!-- or just one part -->\n<section data-preset="${id}">…</section>` +
+  (font ? `\n\n<!-- load the typeface yourself: ${font} -->` : "");
+
+const changes = ["color", "surfaces", "corners", "type", "density", "depth"] as const;
+---
+
+<Base title={t("presetsPage.title")} description={t("presetsPage.description")}>
+  {PRESETS.map((preset) => "fontUrl" in preset && <link rel="stylesheet" href={preset.fontUrl} />)}
+
+  <div class="presets sk-stack" data-gap="xl">
+    <header class="sk-stack" data-gap="sm">
+      <h1 class="sk-heading" data-size="h1" data-flush>{t("presetsPage.title")}</h1>
+      <p class="sk-text" data-size="lg" data-tone="secondary">{t("presetsPage.lede")}</p>
+    </header>
+
+    <section class="sk-stack" data-gap="md" aria-labelledby="preset-pick-label" data-presets>
+      <div class="sk-stack" data-gap="xs">
+        <p class="sk-text" data-size="sm" data-weight="label" id="preset-pick-label">{t("presetsPage.pickLabel")}</p>
+        <div role="group" aria-labelledby="preset-pick-label" set:html={picker} />
+      </div>
+
+      <div class="presets__summary">
+        <div class="sk-stack" data-gap="xs">
+          {PRESETS.map((preset) => (
+            <div class="sk-stack" data-gap="xs" data-preset-info={preset.id} hidden={preset.id !== initial.id}>
+              <h2 class="sk-heading" data-size="h3" data-flush>{preset.name}</h2>
+              <p class="sk-text" data-tone="secondary">{t(`presetsPage.${preset.id}.desc`)}</p>
+              <p class="sk-text" data-size="sm" data-tone="tertiary">
+                {t("presetsPage.typeface")}: {"font" in preset ? preset.font : t("presetsPage.kitSans")}
+              </p>
+            </div>
+          ))}
+        </div>
+        <div set:html={scheme} />
+      </div>
+
+      <div id="preset-stage" class="presets__stage" data-preset={initial.id} data-scheme-force="light" data-sk-density-scope>
+        <div class="presets__screen">
+          <div class="sk-box sk-stack" data-surface="raised" data-border="subtle" data-padding="lg" data-gap="md">
+            <div class="sk-stack" data-gap="xs">
+              <p class="sk-heading" data-size="h4" data-flush>{t("presetsPage.demo.title")}</p>
+              <p class="sk-text" data-size="sm" data-tone="secondary">{t("presetsPage.demo.body")}</p>
+            </div>
+            <div class="sk-stack" data-gap="xs">
+              <label class="sk-text" data-size="sm" data-weight="label" for="preset-demo-name">{t("presetsPage.demo.nameLabel")}</label>
+              <input class="sk-input" id="preset-demo-name" type="text" value={t("presetsPage.demo.nameValue")} />
+            </div>
+            <div class="sk-inline" data-gap="sm">
+              <span class="sk-badge" data-tone="success">{t("presetsPage.demo.active")}</span>
+              <span class="sk-badge" data-tone="warning">{t("presetsPage.demo.pending")}</span>
+              <span class="sk-badge" data-tone="accent">{t("presetsPage.demo.new")}</span>
+            </div>
+            <div class="sk-inline" data-gap="sm">
+              <button class="sk-button sk-interactive" data-tone="accent" type="button">{t("presetsPage.demo.save")}</button>
+              <button class="sk-button sk-interactive" type="button">{t("presetsPage.demo.cancel")}</button>
+              <button class="sk-button sk-interactive" data-tone="danger" data-variant="ghost" type="button">{t("presetsPage.demo.delete")}</button>
+            </div>
+          </div>
+
+          <div class="sk-stack" data-gap="md">
+            <div class="sk-box presets__card" data-surface="raised" data-border="subtle">
+              <div class="sk-image-frame presets__card-image">
+                <img class="sk-image-frame__media" src={satin("pearl")} alt="" />
+              </div>
+              <div class="sk-stack" data-gap="xs">
+                <p class="sk-heading" data-size="h5" data-flush>{t("presetsPage.demo.cardTitle")}</p>
+                <p class="sk-text" data-size="sm" data-tone="secondary">{t("presetsPage.demo.cardBody")}</p>
+                <a class="sk-text" data-size="sm" href="#preset-stage">{t("presetsPage.demo.cardLink")}</a>
+              </div>
+            </div>
+            <div class="sk-callout" data-tone="success" role="note">
+              <div class="sk-callout__content"><p>{t("presetsPage.demo.callout")}</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sk-stack" data-gap="sm" aria-labelledby="preset-changes">
+      <h2 class="sk-heading" data-size="h3" data-flush id="preset-changes">{t("presetsPage.changesTitle")}</h2>
+      <ul class="sk-stack presets__changes" data-gap="xs">
+        {changes.map((key) => <li class="sk-text">{t(`presetsPage.changes.${key}`)}</li>)}
+      </ul>
+      <p class="sk-text" data-size="sm" data-tone="secondary">{t("presetsPage.changesNote")}</p>
+    </section>
+
+    <section class="sk-stack" data-gap="sm" aria-labelledby="preset-use">
+      <h2 class="sk-heading" data-size="h3" data-flush id="preset-use">{t("presetsPage.useTitle")}</h2>
+      <p class="sk-text" set:html={t("presetsPage.useBody")} />
+      {PRESETS.filter((preset) => preset.id !== "default").map((preset) => (
+        <div data-preset-code={preset.id} hidden={preset.id !== initial.id}>
+          <CodeBlock code={installCode(preset.id, "font" in preset ? preset.font : undefined)} lang="html" />
+        </div>
+      ))}
+    </section>
+
+    <section class="sk-stack" data-gap="sm" aria-labelledby="preset-notes">
+      <h2 class="sk-heading" data-size="h3" data-flush id="preset-notes">{t("presetsPage.notesTitle")}</h2>
+      <ul class="sk-stack presets__changes" data-gap="xs">
+        <li class="sk-text">{t("presetsPage.notes.contrast")}</li>
+        <li class="sk-text">{t("presetsPage.notes.palette")}</li>
+      </ul>
+    </section>
+  </div>
+</Base>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-presets]");
+  const stage = document.querySelector<HTMLElement>("#preset-stage");
+  if (root && stage) {
+    const choices = [...root.querySelectorAll<HTMLButtonElement>("[data-preset-choice]")];
+    const pick = (id: string) => {
+      stage.dataset.preset = id;
+      for (const choice of choices) choice.setAttribute("aria-pressed", String(choice.dataset.presetChoice === id));
+      for (const el of document.querySelectorAll<HTMLElement>("[data-preset-info], [data-preset-code]")) {
+        el.hidden = (el.dataset.presetInfo ?? el.dataset.presetCode) !== id;
+      }
+      // Default has no file to install, so the install section keeps the last real preset's snippet.
+      if (id === "default") document.querySelector<HTMLElement>("[data-preset-code]")!.hidden = false;
+    };
+    for (const choice of choices) choice.addEventListener("click", () => pick(choice.dataset.presetChoice!));
+    root.querySelector("[data-preset-scheme]")?.addEventListener("sk:segmentedvaluechange", (event) => {
+      stage.dataset.schemeForce = (event as CustomEvent<{ value: string }>).detail.value;
+    });
+  }
+</script>
+
+<style>
+  /* Every level here is a grid (`.sk-stack`): without a zero floor the install snippet's longest
+     line sets each column's width, and the page scrolls sideways on a phone. */
+  .presets,
+  .presets > *,
+  .presets > section > * {
+    min-inline-size: 0;
+  }
+
+  .presets {
+    padding-block: var(--space-stack-xl);
+  }
+
+  /* `.sk-stack` sets `display`, which would otherwise outrank the `hidden` attribute. */
+  .presets [hidden] {
+    display: none;
+  }
+
+  .presets__summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--space-stack-md);
+  }
+
+  .presets__summary > :first-child {
+    flex: 1 1 24rem;
+  }
+
+  /* The preset's own canvas, so the surfaces, text and shadow read against the colour they were
+     chosen for, in the forced scheme rather than the reader's. */
+  .presets__stage {
+    padding: var(--space-inset-xl);
+    border-radius: var(--radius-surface);
+    background: var(--color-bg-canvas);
+    /* Re-read here so Default (no preset rule) also follows the forced scheme, not body's. */
+    color: var(--color-text-primary);
+    font-family: var(--font-family-body);
+  }
+
+  .presets__stage[data-scheme-force="light"] {
+    color-scheme: light;
+  }
+
+  .presets__stage[data-scheme-force="dark"] {
+    color-scheme: dark;
+  }
+
+  .presets__screen {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    gap: var(--space-stack-md);
+    align-items: start;
+  }
+
+  .presets__card {
+    display: grid;
+    gap: var(--space-stack-sm);
+    padding-block-end: var(--space-inset-md);
+    overflow: hidden;
+  }
+
+  .presets__card > .sk-stack {
+    padding-inline: var(--space-inset-md);
+  }
+
+  /* The card clips the top corners; the image's own radius would round its bottom edge too. */
+  .presets__card-image {
+    --sk-image-frame-aspect: 3 / 1;
+    --sk-image-frame-radius: 0;
+  }
+
+  .presets__changes {
+    margin: 0;
+    padding-inline-start: 1.25em;
+  }
+
+  @media (max-width: 40rem) {
+    .presets__stage {
+      padding: var(--space-inset-md);
+    }
+  }
+</style>

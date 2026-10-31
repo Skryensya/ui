@@ -24,6 +24,30 @@
     grid-column: 1 / -1;
   }
 
+  /* Field and submit are ONE control, welded the way ButtonGroup welds an Input to a Button: no gap,
+   * the facing corners squared, and the button pulled back one border so both share a single seam. */
+  form.sk-search-field {
+    column-gap: 0;
+  }
+
+  form.sk-search-field > .sk-search-field__control > .sk-search-field__input {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  form.sk-search-field > .sk-search-field__submit {
+    --sk-button-shadow: none;
+
+    margin-inline-start: calc(var(--sk-input-border-width, 1px) * -1);
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  }
+
+  /* The submit paints over the seam, so a focused field lifts itself above it, as in ButtonGroup. */
+  form.sk-search-field > .sk-search-field__control:focus-within {
+    z-index: var(--z-focus);
+  }
+
   .sk-search-field__label {
     color: var(--sk-search-field-label-color);
     font-size: var(--font-size-body-sm);

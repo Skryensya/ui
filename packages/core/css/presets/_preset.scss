@@ -1,0 +1,74 @@
+@use "../semantic/space";
+@use "../semantic/size";
+
+/*
+ * PRESETS: a whole look & feel in one attribute.
+ *
+ * A preset re-declares the semantic tokens that give the system its character, all together: the
+ * accent and feedback colours, the neutral surfaces, text and borders, corner roundness, the
+ * typeface, spacing density, the resting shadow (`--elevation-raised`), label weight and how far a button sinks on press.
+ * Components never change; they read the same tokens and come out looking like the preset.
+ *
+ * Activated with `data-preset="<id>"`: on `<html>` for the whole app, or on any element for a
+ * subtree (a preview, an embedded widget). Import the preset's file, then set the attribute.
+ *
+ * WHY EVERY RULE IS `:where()`: zero specificity, in the `overrides` layer. High contrast lives in
+ * that same layer on `[data-contrast="high"]`, so on the same element it always wins a tie with a
+ * preset. On a SUBTREE a nearer declaration would beat it anyway, which is why the colours are also
+ * gated on standard contrast below: a preset changes the look, it never weakens high contrast.
+ *
+ * WHY THE SCOPE BLOCK: derived tokens (`--radius-control` from `--radius-multiplier`, the density
+ * spacing from `--sk-density-factor`, `font-family` from `--font-family-body`) are computed where
+ * they are declared, on `:root`. Re-declaring them on the preset's own element makes them follow the
+ * preset's values, so a preset on a `<div>` behaves like one on `<html>`.
+ *
+ * Typefaces are NOT loaded here: a stylesheet that fetches fonts from a third party is a privacy and
+ * performance decision the app makes, not the kit. Each preset names its family; load it yourself.
+ */
+
+/* Everything but colour: applies under any contrast mode. */
+@mixin look($id) {
+  @layer overrides {
+    :where([data-preset="#{$id}"]) {
+      @content;
+
+      --font-family-heading: var(--font-family-body);
+      --radius-control: calc(var(--scale-radius-md) * var(--radius-multiplier));
+      --radius-surface: calc(var(--scale-radius-lg) * var(--radius-multiplier));
+      --sk-density: calc(var(--sk-density-system) * var(--sk-density-factor));
+
+      @include space.density-tokens;
+      @include size.density-tokens;
+
+      font-family: var(--font-family-body);
+      color: var(--color-text-primary);
+    }
+  }
+}
+
+/* Colour: only under standard contrast, explicit (`data-contrast` set to anything but "high") or
+ * by system preference (no `data-contrast`, and the reader has not asked for more contrast). */
+@mixin colors($id) {
+  @layer overrides {
+    @media not (prefers-contrast: more) {
+      :where([data-preset="#{$id}"]):not(:where([data-contrast="high"], [data-contrast="high"] *)) {
+        @content;
+        @include color-scope;
+      }
+    }
+
+    @media (prefers-contrast: more) {
+      :where([data-contrast]:not([data-contrast="high"])) :where([data-preset="#{$id}"]),
+      :where([data-preset="#{$id}"][data-contrast]:not([data-contrast="high"])) {
+        @content;
+        @include color-scope;
+      }
+    }
+  }
+}
+
+@mixin color-scope {
+  --color-text-link: var(--color-text-accent);
+  --color-border-focus: var(--color-border-accent);
+  --focus-ring-color: var(--color-border-focus);
+}

@@ -187,6 +187,13 @@ for (const [rel, label] of [
   results.push([label, writeDist(label, css, label), "optional, opt in like the Sass path"]);
 }
 
+// One file per preset, so an app ships only the look it uses (`_preset.scss` is the shared mixin).
+for (const file of readdirSync(join(CSS, "presets")).filter((f) => f.endsWith(".scss") && !f.startsWith("_"))) {
+  const label = `presets/${file.replace(/\.scss$/, ".css")}`;
+  const css = compile(join(CSS, "presets", file), { loadPaths: [CSS], style: "expanded" }).css;
+  results.push([label, writeDist(label, css, label), "optional preset, opt in with data-preset"]);
+}
+
 for (const [name, path, note] of results) {
   const kb = (readFileSync(path).length / 1024).toFixed(1);
   console.log(`✓ dist/${name}, ${kb} kB (${note})`);

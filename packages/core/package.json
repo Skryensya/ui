@@ -642,6 +642,8 @@
     "./dimensions/radius.css": "./dist/dimensions/radius.css",
     "./dimensions/press-scale.css": "./dist/dimensions/press-scale.css",
     "./dimensions/*": "./css/dimensions/*",
+    "./presets/*.css": "./dist/presets/*.css",
+    "./presets/*": "./css/presets/*",
     "./components/*": "./css/components/*",
     "./fonts/*": "./css/fonts/*",
     "./patterns/*": "./css/patterns/*",

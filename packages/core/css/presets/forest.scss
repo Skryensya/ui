@@ -1,0 +1,38 @@
+/*
+ * PRESET: Forest. Calm wellness product: deep emerald on gray, moderate corners, a quiet shadow, Figtree.
+ *
+ * Typeface: 'Figtree', 'Segoe UI', Helvetica, Arial, sans-serif. Load it yourself (e.g. https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap).
+ */
+@use "preset";
+
+@include preset.look("forest") {
+  --radius-multiplier: 1.25;
+  --font-family-body: 'Figtree', 'Segoe UI', Helvetica, Arial, sans-serif;
+  --elevation-raised: 0 1px 3px var(--shadow-sm);
+}
+
+@include preset.colors("forest") {
+  --color-action-accent: light-dark(var(--palette-emerald-600), var(--palette-emerald-500));
+  --color-text-accent: light-dark(var(--palette-emerald-700), var(--palette-emerald-300));
+  --color-border-accent: light-dark(var(--palette-emerald-600), var(--palette-emerald-500));
+  --color-bg-accent-subtle: light-dark(var(--palette-emerald-50), var(--palette-emerald-950));
+  --color-text-danger: light-dark(var(--palette-red-700), var(--palette-red-300));
+  --color-border-danger: light-dark(var(--palette-red-600), var(--palette-red-500));
+  --color-bg-danger-subtle: light-dark(var(--palette-red-50), var(--palette-red-950));
+  --color-text-success: light-dark(var(--palette-teal-700), var(--palette-teal-300));
+  --color-border-success: light-dark(var(--palette-teal-600), var(--palette-teal-500));
+  --color-bg-success-subtle: light-dark(var(--palette-teal-50), var(--palette-teal-950));
+  --color-text-warning: light-dark(var(--palette-orange-700), var(--palette-orange-300));
+  --color-border-warning: light-dark(var(--palette-orange-600), var(--palette-orange-500));
+  --color-bg-warning-subtle: light-dark(var(--palette-orange-50), var(--palette-orange-950));
+  --color-bg-canvas: light-dark(var(--palette-gray-100), var(--palette-gray-950));
+  --color-bg-surface: light-dark(var(--palette-white), var(--palette-gray-900));
+  --color-bg-surface-raised: light-dark(var(--palette-white), var(--palette-gray-800));
+  --color-bg-surface-sunken: light-dark(var(--palette-gray-200), var(--palette-gray-950));
+  --color-text-primary: light-dark(var(--palette-gray-900), var(--palette-gray-100));
+  --color-text-secondary: light-dark(var(--palette-gray-700), var(--palette-gray-300));
+  --color-text-tertiary: light-dark(var(--palette-gray-600), var(--palette-gray-400));
+  --color-border-subtle: light-dark(var(--palette-gray-300), var(--palette-gray-800));
+  --color-border-default: light-dark(var(--palette-gray-500), var(--palette-gray-500));
+  --color-border-strong: light-dark(var(--palette-gray-600), var(--palette-gray-400));
+}

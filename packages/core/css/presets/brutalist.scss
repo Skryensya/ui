@@ -1,0 +1,40 @@
+/*
+ * PRESET: Brutalist. Loud neo-brutalist poster: violet, square corners, a hard offset shadow, heavy labels, Bricolage Grotesque.
+ *
+ * Typeface: 'Bricolage Grotesque', 'Segoe UI', Helvetica, Arial, sans-serif. Load it yourself (e.g. https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&display=swap).
+ */
+@use "preset";
+
+@include preset.look("brutalist") {
+  --radius-multiplier: 0;
+  --font-family-body: 'Bricolage Grotesque', 'Segoe UI', Helvetica, Arial, sans-serif;
+  --elevation-raised: 4px 4px 0 0 light-dark(var(--palette-neutral-900), var(--palette-neutral-100));
+  --font-weight-label: 800;
+  --motion-press-scale: 0.96;
+}
+
+@include preset.colors("brutalist") {
+  --color-action-accent: light-dark(var(--palette-violet-600), var(--palette-violet-500));
+  --color-text-accent: light-dark(var(--palette-violet-700), var(--palette-violet-300));
+  --color-border-accent: light-dark(var(--palette-violet-600), var(--palette-violet-500));
+  --color-bg-accent-subtle: light-dark(var(--palette-violet-50), var(--palette-violet-950));
+  --color-text-danger: light-dark(var(--palette-red-700), var(--palette-red-300));
+  --color-border-danger: light-dark(var(--palette-red-600), var(--palette-red-500));
+  --color-bg-danger-subtle: light-dark(var(--palette-red-50), var(--palette-red-950));
+  --color-text-success: light-dark(var(--palette-green-700), var(--palette-green-300));
+  --color-border-success: light-dark(var(--palette-green-600), var(--palette-green-500));
+  --color-bg-success-subtle: light-dark(var(--palette-green-50), var(--palette-green-950));
+  --color-text-warning: light-dark(var(--palette-amber-700), var(--palette-amber-300));
+  --color-border-warning: light-dark(var(--palette-amber-600), var(--palette-amber-500));
+  --color-bg-warning-subtle: light-dark(var(--palette-amber-50), var(--palette-amber-950));
+  --color-bg-canvas: light-dark(var(--palette-neutral-100), var(--palette-neutral-950));
+  --color-bg-surface: light-dark(var(--palette-white), var(--palette-neutral-900));
+  --color-bg-surface-raised: light-dark(var(--palette-white), var(--palette-neutral-800));
+  --color-bg-surface-sunken: light-dark(var(--palette-neutral-200), var(--palette-neutral-950));
+  --color-text-primary: light-dark(var(--palette-neutral-900), var(--palette-neutral-100));
+  --color-text-secondary: light-dark(var(--palette-neutral-700), var(--palette-neutral-300));
+  --color-text-tertiary: light-dark(var(--palette-neutral-600), var(--palette-neutral-400));
+  --color-border-strong: light-dark(var(--palette-neutral-600), var(--palette-neutral-400));
+  --color-border-subtle: light-dark(var(--palette-neutral-900), var(--palette-neutral-100));
+  --color-border-default: light-dark(var(--palette-neutral-900), var(--palette-neutral-100));
+}

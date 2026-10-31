@@ -160,6 +160,7 @@ import { wrapperMessages } from "./messages/components/wrapper";
 import { appShellMessages } from "./messages/components/app-shell";
 import { layoutContainerMessages } from "./messages/components/layout-container";
 import { foundationsMessages } from "./messages/foundations";
+import { presetsMessages } from "./messages/presets";
 import { appearanceMessages } from "./messages/appearance";
 import { indexMessages } from "./messages/index";
 import { navListMessages } from "./messages/nav-list";
@@ -323,6 +324,7 @@ export const ui = {
     ...appShellMessages.es,
     ...layoutContainerMessages.es,
     ...foundationsMessages.es,
+    ...presetsMessages.es,
     ...appearanceMessages.es,
     ...indexMessages.es,
     ...navListMessages.es,
@@ -481,6 +483,7 @@ export const ui = {
     ...appShellMessages.en,
     ...layoutContainerMessages.en,
     ...foundationsMessages.en,
+    ...presetsMessages.en,
     ...appearanceMessages.en,
     ...indexMessages.en,
     ...navListMessages.en,

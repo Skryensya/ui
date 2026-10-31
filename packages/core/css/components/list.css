@@ -110,6 +110,9 @@
     flex: none;
     align-items: center;
     justify-content: center;
+    /* A notch past the row gap: beside a title-plus-description block, the gap alone left the icon
+     * crowding the text, while the trailing chevron is fine at the plain gap. */
+    margin-inline-end: var(--space-inline-xs);
     color: var(--sk-list-leading-fg);
   }
 

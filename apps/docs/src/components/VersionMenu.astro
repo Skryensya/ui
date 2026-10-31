@@ -134,15 +134,11 @@ const currentStatus = rows.find((row) => row.isCurrent)?.status;
           </div>
         </>
       ) : (
-        <span
-          class="sk-button"
-          data-variant="soft"
-          data-size="sm"
-          aria-label={t("version.named", { name: majorLabel })}
-        >
+        /* Plain text plus the Badge, not a Button face: nothing to press, so no squeeze, shadow or hit area. */
+        <>
           <span class="dimensions__version-menu__value">{majorLabel}</span>
           {currentStatus && <Fragment set:html={currentStatus} />}
-        </span>
+        </>
       )}
     </div>
   )

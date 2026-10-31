@@ -3725,6 +3725,24 @@
     ],
     "search-field": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-30",
+            "en": {
+              "body": "In <code>SearchField.form</code> the field and its button no longer sit apart: they form one control, with square inner corners and a shared border, as in <code>ButtonGroup</code>.",
+              "title": "The field and its search button are joined"
+            },
+            "es": {
+              "body": "En <code>SearchField.form</code> el campo y su botón ya no van separados: forman un solo control, con las esquinas interiores rectas y un borde compartido, como en <code>ButtonGroup</code>.",
+              "title": "El campo y el botón de buscar van unidos"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.4-dev"
+      },
+      {
         "date": "2026-10-28",
         "entries": [
           {
@@ -52660,7 +52678,7 @@
     "working": "0.0.4"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "1000cf2845654438",
+  "sourceHash": "bf0dbf0fc1329f06",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

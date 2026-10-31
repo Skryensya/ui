@@ -1,0 +1,40 @@
+/*
+ * PRESET: Ocean. Trustworthy fintech or health: sky blue on cool gray, soft corners, a gentle shadow, IBM Plex Sans.
+ *
+ * Typeface: 'IBM Plex Sans', 'Segoe UI', Helvetica, Arial, sans-serif. Load it yourself (e.g. https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap).
+ */
+@use "preset";
+
+@include preset.look("ocean") {
+  --radius-multiplier: 1.25;
+  --font-family-body: 'IBM Plex Sans', 'Segoe UI', Helvetica, Arial, sans-serif;
+  --sk-density-factor: 1.05;
+  --elevation-raised: 0 4px 12px -6px var(--shadow-md);
+  --font-weight-label: 500;
+}
+
+@include preset.colors("ocean") {
+  --color-action-accent: light-dark(var(--palette-sky-600), var(--palette-sky-500));
+  --color-text-accent: light-dark(var(--palette-sky-700), var(--palette-sky-300));
+  --color-border-accent: light-dark(var(--palette-sky-600), var(--palette-sky-500));
+  --color-bg-accent-subtle: light-dark(var(--palette-sky-50), var(--palette-sky-950));
+  --color-text-danger: light-dark(var(--palette-rose-700), var(--palette-rose-300));
+  --color-border-danger: light-dark(var(--palette-rose-600), var(--palette-rose-500));
+  --color-bg-danger-subtle: light-dark(var(--palette-rose-50), var(--palette-rose-950));
+  --color-text-success: light-dark(var(--palette-emerald-700), var(--palette-emerald-300));
+  --color-border-success: light-dark(var(--palette-emerald-600), var(--palette-emerald-500));
+  --color-bg-success-subtle: light-dark(var(--palette-emerald-50), var(--palette-emerald-950));
+  --color-text-warning: light-dark(var(--palette-amber-700), var(--palette-amber-300));
+  --color-border-warning: light-dark(var(--palette-amber-600), var(--palette-amber-500));
+  --color-bg-warning-subtle: light-dark(var(--palette-amber-50), var(--palette-amber-950));
+  --color-bg-canvas: light-dark(var(--palette-gray-100), var(--palette-gray-950));
+  --color-bg-surface: light-dark(var(--palette-white), var(--palette-gray-900));
+  --color-bg-surface-raised: light-dark(var(--palette-white), var(--palette-gray-800));
+  --color-bg-surface-sunken: light-dark(var(--palette-gray-200), var(--palette-gray-950));
+  --color-text-primary: light-dark(var(--palette-gray-900), var(--palette-gray-100));
+  --color-text-secondary: light-dark(var(--palette-gray-700), var(--palette-gray-300));
+  --color-text-tertiary: light-dark(var(--palette-gray-600), var(--palette-gray-400));
+  --color-border-subtle: light-dark(var(--palette-gray-300), var(--palette-gray-800));
+  --color-border-default: light-dark(var(--palette-gray-500), var(--palette-gray-500));
+  --color-border-strong: light-dark(var(--palette-gray-600), var(--palette-gray-400));
+}

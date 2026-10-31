@@ -1,0 +1,38 @@
+/*
+ * PRESET: UC. Pontificia Universidad Católica de Chile's digital kit: Celeste accent, pure grays, square corners, Roboto, no press motion.
+ *
+ * Typeface: 'Roboto', 'Segoe UI', Helvetica, Arial, sans-serif. Load it yourself (e.g. https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap).
+ */
+@use "preset";
+
+@include preset.look("uc") {
+  --radius-multiplier: 0.5;
+  --font-family-body: 'Roboto', 'Segoe UI', Helvetica, Arial, sans-serif;
+  --motion-press-scale: 1;
+}
+
+@include preset.colors("uc") {
+  --color-action-accent: oklch(57.02% 0.1812 254.01);
+  --color-text-accent: oklch(57.02% 0.1812 254.01);
+  --color-border-accent: oklch(57.02% 0.1812 254.01);
+  --color-bg-accent-subtle: light-dark(oklch(96% 0.04 254), oklch(24% 0.08 254));
+  --color-text-danger: oklch(65.42% 0.1996 24.53);
+  --color-border-danger: oklch(65.42% 0.1996 24.53);
+  --color-bg-danger-subtle: light-dark(oklch(96% 0.04 25), oklch(26% 0.08 25));
+  --color-text-success: oklch(63.94% 0.2176 142.5);
+  --color-border-success: oklch(63.94% 0.2176 142.5);
+  --color-bg-success-subtle: light-dark(oklch(96% 0.05 142), oklch(24% 0.08 142));
+  --color-text-warning: oklch(45% 0.13 86);
+  --color-border-warning: oklch(77.8% 0.1592 86.47);
+  --color-bg-warning-subtle: light-dark(oklch(96% 0.08 86), oklch(27% 0.07 86));
+  --color-bg-canvas: light-dark(var(--palette-gray-100), var(--palette-gray-950));
+  --color-bg-surface: light-dark(var(--palette-white), var(--palette-gray-900));
+  --color-bg-surface-raised: light-dark(var(--palette-white), var(--palette-gray-800));
+  --color-bg-surface-sunken: light-dark(var(--palette-gray-200), var(--palette-gray-950));
+  --color-text-primary: light-dark(var(--palette-gray-900), var(--palette-gray-100));
+  --color-text-secondary: light-dark(var(--palette-gray-700), var(--palette-gray-300));
+  --color-text-tertiary: light-dark(var(--palette-gray-600), var(--palette-gray-400));
+  --color-border-subtle: light-dark(var(--palette-gray-300), var(--palette-gray-800));
+  --color-border-default: light-dark(var(--palette-gray-500), var(--palette-gray-500));
+  --color-border-strong: light-dark(var(--palette-gray-600), var(--palette-gray-400));
+}
