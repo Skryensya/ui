@@ -2596,6 +2596,24 @@
     ],
     "megamenu": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-10-30",
+            "en": {
+              "body": "With little room under the bar, the panel flipped and opened above it, off screen. It now always drops below the bar, as site navigation should.",
+              "title": "The panel always opens downward"
+            },
+            "es": {
+              "body": "Con poco espacio bajo la barra, el panel se volteaba y se abría por encima, fuera de la pantalla. Ahora siempre cae bajo la barra, como corresponde a una navegación de sitio.",
+              "title": "El panel siempre se abre hacia abajo"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.4-dev"
+      },
+      {
         "date": "2026-10-28",
         "entries": [
           {
@@ -2615,24 +2633,6 @@
             "en": {
               "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> and <code>--sk-anchored-size</code> were listed as hooks, but no stylesheet in the library ever declares them, not even the <code>anchored.css</code> pattern they came from: overriding any of them did nothing, silently. Only <code>--sk-anchored-z</code> remains, the one actually in use.",
               "title": "Eight dead anchoring hooks removed"
-      {
-        "date": null,
-        "entries": [
-          {
-            "date": "2026-10-30",
-            "en": {
-              "body": "With little room under the bar, the panel flipped and opened above it, off screen. It now always drops below the bar, as site navigation should.",
-              "title": "The panel always opens downward"
-            },
-            "es": {
-              "body": "Con poco espacio bajo la barra, el panel se volteaba y se abría por encima, fuera de la pantalla. Ahora siempre cae bajo la barra, como corresponde a una navegación de sitio.",
-              "title": "El panel siempre se abre hacia abajo"
-            },
-            "kind": "bugfix"
-          }
-        ],
-        "version": "0.0.4-dev"
-      },
             },
             "es": {
               "body": "<code>--sk-anchored-align</code>, <code>--sk-anchored-arrow-edge</code>, <code>--sk-anchored-arrow-near</code>, <code>--sk-anchored-justify</code>, <code>--sk-anchored-offset</code>, <code>--sk-anchored-position-area</code>, <code>--sk-anchored-position-try</code> y <code>--sk-anchored-size</code> estaban en la lista de hooks, pero ninguna hoja de estilos de la librería los declara jamás, ni siquiera el patrón <code>anchored.css</code> que los originó: sobrescribir cualquiera de ellos no hacía nada, en silencio. Solo queda <code>--sk-anchored-z</code>, el único que de verdad se usa.",
@@ -11238,6 +11238,14 @@
           },
           "type": "string"
         },
+        "numOfMonths": {
+          "attr": "data-num-of-months",
+          "integer": true,
+          "machineInput": true,
+          "max": 2,
+          "min": 1,
+          "type": "number"
+        },
         "readOnly": {
           "attr": "data-readonly",
           "default": false,
@@ -11258,14 +11266,6 @@
         "timeZone": {
           "attr": "data-time-zone",
           "default": "UTC",
-        "numOfMonths": {
-          "attr": "data-num-of-months",
-          "integer": true,
-          "machineInput": true,
-          "max": 2,
-          "min": 1,
-          "type": "number"
-        },
           "machineInput": true,
           "type": "string"
         },
@@ -11287,6 +11287,8 @@
         "heading": "sk-calendar__heading",
         "label": "sk-calendar__label",
         "monthGrid": "sk-calendar__month-grid",
+        "months": "sk-calendar__months",
+        "monthTitle": "sk-calendar__month-title",
         "next": "sk-calendar__next",
         "previous": "sk-calendar__previous",
         "root": "sk-calendar",
@@ -11294,6 +11296,7 @@
         "tableBody": "sk-calendar__table-body",
         "tableHeader": "sk-calendar__table-header",
         "viewTrigger": "sk-calendar__view-trigger",
+        "year": "sk-calendar__year",
         "yearGrid": "sk-calendar__year-grid"
       },
       "semantics": {
@@ -11307,8 +11310,6 @@
           ],
           "useWhen": [
             "choosing the date is the screen's task, not one more field of a form",
-        "months": "sk-calendar__months",
-        "monthTitle": "sk-calendar__month-title",
             "seeing the month helps decide: weekends, holidays, how many days are left",
             "there is room for an always-visible grid"
           ]
@@ -11316,7 +11317,6 @@
       },
       "signatures": {
         "Calendar": {
-        "year": "sk-calendar__year",
           "forward": [
             "id",
             "aria-*"
@@ -11335,6 +11335,7 @@
             "min",
             "max",
             "selectionMode",
+            "numOfMonths",
             "locale",
             "timeZone",
             "disabled",
@@ -11355,7 +11356,6 @@
               {
                 "element": "p",
                 "part": "label",
-            "numOfMonths",
                 "slot": "label"
               }
             ],
@@ -11368,6 +11368,9 @@
       },
       "systemOwned": [
         "header",
+        "months",
+        "year",
+        "monthTitle",
         "heading",
         "viewTrigger",
         "previous",
@@ -11388,9 +11391,6 @@
           "markup": true,
           "portals": false,
           "react": "@skryensya/react/callout#Callout"
-        "months",
-        "year",
-        "monthTitle",
         }
       },
       "category": "feedback",
@@ -19245,6 +19245,14 @@
           "machineInput": true,
           "type": "string"
         },
+        "numOfMonths": {
+          "attr": "data-num-of-months",
+          "integer": true,
+          "machineInput": true,
+          "max": 2,
+          "min": 1,
+          "type": "number"
+        },
         "placeholder": {
           "attr": "placeholder",
           "type": "string"
@@ -19265,14 +19273,6 @@
         },
         "selectionMode": {
           "attr": "data-selection-mode",
-        "numOfMonths": {
-          "attr": "data-num-of-months",
-          "integer": true,
-          "machineInput": true,
-          "max": 2,
-          "min": 1,
-          "type": "number"
-        },
           "default": "single",
           "machineInput": true,
           "type": "enum",
@@ -19300,6 +19300,7 @@
       },
       "parts": {
         "clear": "sk-date-picker__clear",
+        "close": "sk-date-picker__close",
         "content": "sk-date-picker__content",
         "control": "sk-date-picker__control",
         "input": "sk-date-picker__input",
@@ -19320,7 +19321,6 @@
           "useWhen": [
             "the date is a field of a form, next to other fields",
             "it should be possible both to type it and to look it up in the calendar"
-        "close": "sk-date-picker__close",
           ]
         },
         "DatePicker.native": {
@@ -19379,6 +19379,7 @@
             "min",
             "max",
             "selectionMode",
+            "numOfMonths",
             "locale",
             "timeZone",
             "disabled",
@@ -19399,7 +19400,6 @@
           "slots": {
             "label": {
               "accepts": "text"
-            "numOfMonths",
             }
           },
           "template": {
@@ -52660,7 +52660,7 @@
     "working": "0.0.4"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "a017a1f0881d5dc3",
+  "sourceHash": "1000cf2845654438",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",
