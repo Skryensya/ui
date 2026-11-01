@@ -10,7 +10,7 @@ release it belongs to, and `add` installs the packages of that same release.
 
 <!-- x-release-please-start-version -->
 ```bash
-SKRYENSYA_VERSION=0.0.3
+SKRYENSYA_VERSION=0.0.4
 npx https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-cli-${SKRYENSYA_VERSION}.tgz add button
 ```
 <!-- x-release-please-end -->
