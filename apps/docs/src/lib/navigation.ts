@@ -953,13 +953,13 @@ export const componentItems = [
   {
     href: "/components/megamenu",
     label: "Megamenu",
+    trailing: "Beta",
     aliases: ["mega menu", "megamenú", "panel de navegación", "navegación borde a borde"],
   },
   {
     href: "/components/marquee",
     label: "Marquee",
     aliases: ["marquesina", "ticker", "cinta continua", "scrolling text", "logo wall"],
-    trailing: "Beta",
   },
   {
     href: "/components/media-overlay",
