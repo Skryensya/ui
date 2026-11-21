@@ -4,6 +4,14 @@ entries:
   - date: 2026-11-20
     kind: bugfix
     es:
+      title: "El foco del teclado se ve entero"
+      body: "Con el foco del teclado dentro de la tira, el borde difuminado se apaga y la pista pausada se desliza lo justo para mostrar el ítem enfocado, sin saltar a la copia oculta. El difuminado vuelve al salir el foco."
+    en:
+      title: "Keyboard focus is fully visible"
+      body: "With keyboard focus inside the strip, the edge fade turns off and the paused track slides just enough to show the focused item, never onto the hidden copy. The fade returns when focus leaves."
+  - date: 2026-11-20
+    kind: bugfix
+    es:
       title: "La velocidad es la correcta con los tokens publicados"
       body: "El CSS minificado publica la cadencia en segundos (<code>.96s</code>) y el binding la leía como milisegundos, así que la tira corría unas 1000 veces más rápido. Ahora entiende <code>ms</code> y <code>s</code>."
     en:

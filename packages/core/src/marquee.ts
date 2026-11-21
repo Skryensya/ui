@@ -32,6 +32,8 @@ export const marqueeAttrs = {
   state: "data-state",
   direction: "data-direction",
   speed: "data-speed",
+  /** Set while keyboard focus is being shown inside the strip: CSS drops the fade. */
+  revealing: "data-revealing",
 } as const;
 
 export const marqueeParts = {
@@ -97,6 +99,95 @@ export function marqueeGapFill(runSize: number, gapCount: number, viewportSize: 
 /** Unrequested motion never starts for a reader who asked the platform to reduce it. */
 export function marqueeInitialPlaying(start: MarqueeStart, reducedMotion: boolean): boolean {
   return start === "auto" && !reducedMotion;
+}
+
+/**
+ * The animation time that moves the track from `offset` px (≤ 0, its translate now) by `-delta` px,
+ * clamped to the real run so the strip never wraps onto the `aria-hidden` copy. The animation spans
+ * 0 → -`run` px going forward (left, up) and -`run` → 0 going back (right, down). Time `duration` is
+ * the next iteration's 0, the other end of the run, so the result stays just short of it.
+ */
+export function marqueeRevealTime(o: { offset: number; delta: number; run: number; duration: number; reverse: boolean }): number {
+  if (!(o.run > 0) || !(o.duration > 0)) return 0;
+  const offset = Math.min(0, Math.max(-o.run + 0.5, o.offset - o.delta));
+  const progress = o.reverse ? 1 + offset / o.run : -offset / o.run;
+  return Math.min(o.duration - 1, progress * o.duration) || 0;
+}
+
+const REVEAL_PAD = 16;
+
+/**
+ * Keyboard focus inside a strip lands on items under the edge fade or outside the viewport, and the
+ * paused animation (CSS pauses on `:focus-within`) leaves them there. On a `:focus-visible` focusin
+ * this drops the fade and moves the paused timeline just far enough to show the focused item; the
+ * fade returns when focus leaves. Both bindings call it; it touches only the strip it is given.
+ */
+export function connectMarqueeFocusReveal(root: HTMLElement): () => void {
+  const viewport = root.querySelector<HTMLElement>(`.${marqueeParts.viewport}`);
+  const track = root.querySelector<HTMLElement>(`.${marqueeParts.track}`);
+  if (!viewport || !track) return () => {};
+  let frame = 0;
+
+  const reveal = (item: HTMLElement): void => {
+    root.setAttribute(marqueeAttrs.revealing, "");
+    const direction = root.getAttribute(marqueeAttrs.direction);
+    const vertical = direction === "up" || direction === "down";
+    /* The browser may have scrolled the clipped viewport to reach the focus; the timeline is what
+     * positions the strip, so undo that. */
+    viewport.scrollLeft = 0;
+    viewport.scrollTop = 0;
+    const animation = track.getAnimations?.().find((a) => "animationName" in a);
+    if (!animation || animation.playState !== "paused") return; // reduced motion, or still running
+    const duration = Number(animation.effect?.getComputedTiming().duration) || 0;
+    const box = viewport.getBoundingClientRect();
+    const rect = item.getBoundingClientRect();
+    const [start, end, itemStart, itemEnd] = vertical
+      ? [Math.max(box.top, 0), Math.min(box.bottom, document.documentElement.clientHeight), rect.top, rect.bottom]
+      : [Math.max(box.left, 0), Math.min(box.right, document.documentElement.clientWidth), rect.left, rect.right];
+    const delta =
+      itemStart < start + REVEAL_PAD ? itemStart - start - REVEAL_PAD : itemEnd > end - REVEAL_PAD ? itemEnd - end + REVEAL_PAD : 0;
+    if (!delta || !duration) return;
+    const matrix = new DOMMatrix(getComputedStyle(track).transform);
+    const from = Number(animation.currentTime) || 0;
+    const to = marqueeRevealTime({
+      offset: vertical ? matrix.m42 : matrix.m41,
+      delta,
+      run: (vertical ? track.offsetHeight : track.offsetWidth) / 2,
+      duration,
+      reverse: direction === "right" || direction === "down",
+    });
+    /* A short glide rather than a jump. */
+    const began = performance.now();
+    cancelAnimationFrame(frame);
+    const step = (now: number): void => {
+      const k = Math.min(1, (now - began) / 260);
+      animation.currentTime = from + (to - from) * (1 - (1 - k) ** 3);
+      if (k < 1) frame = requestAnimationFrame(step);
+    };
+    frame = requestAnimationFrame(step);
+  };
+
+  const onFocusIn = (event: FocusEvent): void => {
+    const target = event.target as HTMLElement;
+    if (!target.matches(":focus-visible")) return;
+    const content = target.closest<HTMLElement>(`.${marqueeParts.content}`);
+    if (!content || !root.contains(content)) return;
+    const item = Array.from(content.children).find((child) => child.contains(target)) as HTMLElement | undefined;
+    reveal(item ?? target);
+  };
+
+  const onFocusOut = (event: FocusEvent): void => {
+    if (!root.contains(event.relatedTarget as Node | null)) root.removeAttribute(marqueeAttrs.revealing);
+  };
+
+  root.addEventListener("focusin", onFocusIn);
+  root.addEventListener("focusout", onFocusOut);
+  return () => {
+    cancelAnimationFrame(frame);
+    root.removeEventListener("focusin", onFocusIn);
+    root.removeEventListener("focusout", onFocusOut);
+    root.removeAttribute(marqueeAttrs.revealing);
+  };
 }
 
 const marqueeOptions = {

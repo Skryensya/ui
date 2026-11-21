@@ -90,20 +90,21 @@
    * THE FADE IS THE VIEWPORT'S, not a wrapper's. `:not([data-fade="none"])` and never
    * `[data-fade="edges"]`: `edges` is the default, so the emitter leaves the attribute off, and
    * keying on its presence would fade nothing in authored markup.
+   * `[data-revealing]` is written while keyboard focus is shown inside (`connectMarqueeFocusReveal`).
    *
    * It lands here rather than on the root because the root also holds the Play/Pause button, and a
    * mask reaches everything inside it. That is exactly what a FadeEdge wrapped around a Marquee got
    * wrong: it washed out the control along with the strip. The viewport is the only part that clips
    * anything, so it is the only part with an edge to soften.
    */
-  .sk-marquee:not([data-fade="none"]) .sk-marquee__viewport {
+  .sk-marquee:not([data-fade="none"], [data-revealing]) .sk-marquee__viewport {
     mask-image: linear-gradient(to right, var(--sk-marquee-fade-lead), var(--sk-marquee-fade-trail));
     mask-position: 0 0;
     mask-size: 100% 100%;
     mask-repeat: no-repeat;
   }
 
-  .sk-marquee:not([data-fade="none"]):is([data-direction="up"], [data-direction="down"]) .sk-marquee__viewport {
+  .sk-marquee:not([data-fade="none"], [data-revealing]):is([data-direction="up"], [data-direction="down"]) .sk-marquee__viewport {
     mask-image: linear-gradient(to bottom, var(--sk-marquee-fade-lead), var(--sk-marquee-fade-trail));
   }
 

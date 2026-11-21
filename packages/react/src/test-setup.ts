@@ -7,11 +7,15 @@
  * regex approximation where the shared version is the spec algorithm.
  */
 import "@skryensya/core/jsdom-floor";
-import { cleanup } from "@testing-library/react";
+import { cleanup, configure } from "@testing-library/react";
 import { afterEach, vi } from "vitest";
 
 /* `@testing-library/react`'s, so it belongs to this binding and not to the floor. */
 afterEach(cleanup);
+
+/* `waitFor`'s 1s default is the budget that runs out under load (vitest.config.ts measures why); the
+ * test's own 15s still catches a hang. */
+configure({ asyncUtilTimeout: 5_000 });
 
 /*
  * Every render gets a bound set, as every real app does: the kit ships no default (the project picks

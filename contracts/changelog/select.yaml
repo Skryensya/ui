@@ -5,6 +5,14 @@
 # hash.
 surface: "9606f8862eed9ac9"
 entries:
+  - date: 2026-11-20
+    kind: feature
+    es:
+      title: "En Vanilla, escribir data-value después de montar elige ese ítem"
+      body: "data-value ya no se lee solo al montar: cambiarlo desde código selecciona el ítem y emite sk:selectvaluechange, como una elección del usuario."
+    en:
+      title: "In Vanilla, writing data-value after mount selects that item"
+      body: "data-value is no longer read only at mount: changing it from code selects the item and emits sk:selectvaluechange, like a pick by the user."
   - date: 2026-10-29
     kind: bugfix
     es:

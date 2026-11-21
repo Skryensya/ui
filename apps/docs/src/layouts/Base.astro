@@ -1953,7 +1953,8 @@ const [paletteBefore = "", paletteMid = "", paletteAfter = ""] = emitMarkup(
       import { followIconSet, isSiteIconSet } from "../scripts/icon-set";
 
       followIconSet(document);
-      /* Seeded before `initComponents()` mounts the Selects (it reads `data-value` once, at mount). */
+      /* Seeded before `initComponents()` mounts the Selects; writing `data-value` later is how the
+       * popover's picker and the sheet's follow each other. */
       const pickers = document.querySelectorAll<HTMLElement>("[data-docs-icon-set-select]");
       for (const picker of pickers) {
         picker.dataset.value = getPreference(iconSetPreference);
@@ -1962,6 +1963,7 @@ const [paletteBefore = "", paletteMid = "", paletteAfter = ""] = emitMarkup(
           if (!isSiteIconSet(id) || id === document.documentElement.getAttribute("data-icon-set")) return;
           setPreference(iconSetPreference, id);
           document.documentElement.setAttribute("data-icon-set", id);
+          for (const other of pickers) if (other !== picker) other.dataset.value = id;
         });
       }
     </script>

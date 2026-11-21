@@ -1,4 +1,4 @@
-import { marqueeCadenceMilliseconds, marqueeDurationSeconds, marqueeGapFill, marqueeParts, marqueeProperties, type MarqueeDirection, type MarqueeFade, type MarqueeSpeed, type MarqueeStart, marqueeContract } from "@skryensya/core/marquee";
+import { connectMarqueeFocusReveal, marqueeCadenceMilliseconds, marqueeDurationSeconds, marqueeGapFill, marqueeParts, marqueeProperties, type MarqueeDirection, type MarqueeFade, type MarqueeSpeed, type MarqueeStart, marqueeContract } from "@skryensya/core/marquee";
 import {
   useEffect,
   useRef,
@@ -116,6 +116,9 @@ function MarqueeRoot({
     syncGeometry();
     return () => resizeObserver?.disconnect();
   }, [children, direction, speed]);
+
+  /* Keyboard focus inside the strip: drop the fade and slide the paused track to show the item. */
+  useEffect(() => (rootRef.current ? connectMarqueeFocusReveal(rootRef.current) : undefined), []);
 
   const toggle = () => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;

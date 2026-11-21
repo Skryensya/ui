@@ -101,6 +101,16 @@ describe("Select Vanilla contracts", () => {
     expect(handler).not.toHaveBeenCalled();
   });
 
+  it("selects from outside when data-value is written after mount", async () => {
+    const root = mount(markup());
+    const handler = vi.fn();
+    root.addEventListener("sk:selectvaluechange", handler);
+
+    root.dataset.value = "ember";
+    await waitFor(() => expect(root.querySelector("[data-sk-select-value]")?.textContent).toBe("ember"));
+    expect(handler).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: ["ember"] } }));
+  });
+
   it("never writes a class: the consumer's stay exactly as authored", async () => {
     const root = mount(markup());
     const trigger = root.querySelector("[data-sk-select-trigger]") as HTMLElement;

@@ -9,8 +9,9 @@
     /* Matches the trigger's OWN radius (`--radius-control`, the same token `.sk-button` and
      * `.sk-select` round with), not `--radius-surface`: the panel is an extension of the control
      * that opened it, not an unrelated card floating near it, and `select.css` already sets this
-     * precedent for its own listbox. */
-    --sk-menu-radius: var(--radius-control);
+     * precedent for its own listbox. Capped at `--radius-surface`: a theme with pill controls
+     * (`--radius-control: 999px`) must not turn the panel into a capsule. */
+    --sk-menu-radius: min(var(--radius-control), var(--radius-surface));
     /* How tall the panel grows before it scrolls inside itself. */
     --sk-menu-max-block-size: min(24rem, calc(100vb - 2 * var(--space-inset-md)));
     /* A group divider has to read as a RULE, not as unexplained whitespace: `--color-border-subtle`
@@ -51,7 +52,7 @@
     --sk-menu-bg: var(--color-bg-surface-raised);
     --sk-menu-fg: var(--color-text-primary);
     --sk-menu-border-color: var(--color-border-subtle);
-    --sk-menu-radius: var(--radius-control);
+    --sk-menu-radius: min(var(--radius-control), var(--radius-surface));
     --sk-menu-max-block-size: min(24rem, calc(100vb - 2 * var(--space-inset-md)));
     --sk-menu-shadow: var(--elevation-raised);
     --sk-menu-wash: var(--elevation-wash-raised);
@@ -209,7 +210,7 @@
     align-items: center;
     min-block-size: var(--sk-menu-item-min-height, var(--size-touch-target));
     padding: var(--space-inset-xs) var(--space-inset-sm);
-    border-radius: var(--radius-control);
+    border-radius: min(var(--radius-control), var(--radius-surface));
     color: var(--sk-menu-fg);
     cursor: pointer;
     outline: none;

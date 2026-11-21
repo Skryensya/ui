@@ -3,8 +3,16 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "3c7f0e8668c49c96"
+surface: "3bda5d82153e580f"
 entries:
+  - date: 2026-11-20
+    kind: feature
+    es:
+      title: "Pestañas con borde o con fondo, desde tokens"
+      body: "--sk-tabs-trigger-border-width y -border-color dibujan un borde abierto del lado del riel; --sk-tabs-trigger-selected-bg y -selected-border-color marcan la elegida; --sk-tabs-list-border-width afina o quita el riel. Por defecto nada cambia."
+    en:
+      title: "Outlined or filled tabs, from tokens"
+      body: "--sk-tabs-trigger-border-width and -border-color draw a border open on the rail side; --sk-tabs-trigger-selected-bg and -selected-border-color mark the selected one; --sk-tabs-list-border-width thins or removes the rail. Nothing changes by default."
   - date: 2026-11-20
     kind: bugfix
     es:

@@ -8,7 +8,7 @@
   } from "@skryensya/core/select";
   import { select } from "@skryensya/core/machines";
   import { normalizeProps, useMachine } from "@zag-js/svelte";
-  import { mount } from "svelte";
+  import { mount, onDestroy } from "svelte";
   import { bindParts, type PartBinding } from "../runtime/bind-part.svelte";
   import { getRoot, uniqueId } from "../runtime/svelte-hydrate";
   import { selectorsFor } from "@skryensya/core/selectors";
@@ -191,6 +191,15 @@
   }));
 
   const api = $derived(select.connect(service, normalizeProps));
+
+  /* `data-value` is also the way to set the value from outside after mount: writing it selects that
+   * item (and fires valueChange, like a pick). Clearing it leaves the selection alone. */
+  const valueObserver = new MutationObserver(() => {
+    const value = root.dataset.value;
+    if (value && api.value[0] !== value) api.setValue([value]);
+  });
+  valueObserver.observe(root, { attributes: true, attributeFilter: ["data-value"] });
+  onDestroy(() => valueObserver.disconnect());
 
   // Hoisted out of the patch: these are authored markup, so they are found once rather than re-queried
   // on every state change.

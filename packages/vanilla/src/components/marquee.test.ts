@@ -185,6 +185,19 @@ describe("connectMarquee", () => {
     expect(root.dataset.state).toBe("playing");
   });
 
+  it("drops the fade while keyboard focus is inside the strip, and restores it when focus leaves", () => {
+    const root = render("auto");
+    connect(root);
+    const item = root.querySelector<HTMLElement>(".sk-marquee__content span")!;
+    item.tabIndex = 0;
+    vi.spyOn(item, "matches").mockReturnValue(true); // jsdom has no :focus-visible
+
+    item.focus();
+    expect(root.hasAttribute("data-revealing")).toBe(true);
+    item.blur();
+    expect(root.hasAttribute("data-revealing")).toBe(false);
+  });
+
   it("mounts each authored root only once", () => {
     render();
     expect(mountMarquee(document)).toBe(1);

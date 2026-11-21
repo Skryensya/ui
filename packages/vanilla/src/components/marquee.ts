@@ -1,4 +1,5 @@
 import {
+  connectMarqueeFocusReveal,
   marqueeAttrs,
   marqueeCadenceMilliseconds,
   marqueeDurationSeconds,
@@ -82,10 +83,12 @@ export function connectMarquee(root: HTMLElement): Cleanup {
   const resizeObserver = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(syncGeometry);
   if (content) resizeObserver?.observe(content);
   if (viewport) resizeObserver?.observe(viewport);
+  const disconnectReveal = connectMarqueeFocusReveal(root);
   syncState();
   syncGeometry();
 
   return () => {
+    disconnectReveal();
     toggle?.removeEventListener("click", onToggle);
     reducedMotion.removeEventListener("change", onMotionPreference);
     resizeObserver?.disconnect();

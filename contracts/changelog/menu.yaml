@@ -6,6 +6,14 @@
 surface: "0b7e0453dfa2164e"
 entries:
   - date: 2026-11-20
+    kind: bugfix
+    es:
+      title: "Un tema con controles píldora ya no vuelve cápsula el panel"
+      body: "El radio del panel y de sus filas sigue al de los controles, pero nunca pasa de --radius-surface. Con los radios por defecto nada cambia."
+    en:
+      title: "A theme with pill controls no longer makes the panel a capsule"
+      body: "The panel and its rows still follow the control radius, but never exceed --radius-surface. Nothing changes with the default radii."
+  - date: 2026-11-20
     kind: feature
     es:
       title: "Hook para la altura máxima del panel"

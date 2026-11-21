@@ -10,6 +10,7 @@
     --sk-tabs-gap: var(--space-stack-md);
     --sk-tabs-list-gap: var(--space-inline-xs);
     --sk-tabs-list-border-color: var(--color-border-subtle);
+    --sk-tabs-list-border-width: 1px;
     --sk-tabs-trigger-height: var(--size-control-md);
     --sk-tabs-trigger-padding-x: var(--space-inset-md);
     --sk-tabs-trigger-font-size: var(--font-size-body);
@@ -17,6 +18,11 @@
     --sk-tabs-trigger-radius: var(--radius-control);
     --sk-tabs-trigger-fg: var(--color-text-secondary);
     --sk-tabs-trigger-selected-fg: var(--color-text-accent);
+    /* Outlined or raised tabs: a border open on the rail side, and a fill for the selected one. Off by default. */
+    --sk-tabs-trigger-border-width: 0;
+    --sk-tabs-trigger-border-color: transparent;
+    --sk-tabs-trigger-selected-bg: transparent;
+    --sk-tabs-trigger-selected-border-color: var(--sk-tabs-trigger-border-color);
     --sk-tabs-trigger-disabled-fg: var(--color-text-disabled);
     --sk-tabs-indicator-bg: var(--color-border-accent);
     --sk-tabs-indicator-size: 2px;
@@ -34,7 +40,7 @@
     position: relative;
     display: flex;
     gap: var(--sk-tabs-list-gap);
-    border-block-end: 1px solid var(--sk-tabs-list-border-color);
+    border-block-end: var(--sk-tabs-list-border-width) solid var(--sk-tabs-list-border-color);
     /* Nothing scrolled or clipped an oversized strip: 24 tabs ran to ~1,955px in a 229px
        container, dragging the panel wide with it. The tablist is the one place that should
        scroll on its own, independent of the panel. */
@@ -56,7 +62,8 @@
     gap: var(--sk-tabs-trigger-gap);
     min-height: var(--sk-tabs-trigger-height);
     padding-inline: var(--sk-tabs-trigger-padding-x);
-    border: 0;
+    border: var(--sk-tabs-trigger-border-width) solid var(--sk-tabs-trigger-border-color);
+    border-block-end-width: 0;
     border-radius: var(--sk-tabs-trigger-radius) var(--sk-tabs-trigger-radius) 0 0;
     background: transparent;
     color: var(--sk-tabs-trigger-fg);
@@ -67,6 +74,8 @@
      * No seam risk the way a welded button has: triggers sit in a plain gapped row, not touching. */
     transition:
       color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      background-color var(--motion-state-change-duration) var(--motion-state-change-easing),
+      border-color var(--motion-state-change-duration) var(--motion-state-change-easing),
       scale var(--motion-feedback-duration) var(--motion-feedback-easing);
   }
 
@@ -79,14 +88,14 @@
     scale: var(--motion-press-scale);
   }
 
-  /* The active bar: an accent segment straddling the list's 1px baseline, the full width of the tab. It
+  /* The active bar: an accent segment straddling the list's baseline, the full width of the tab. It
    * fades with the selection, a sliding bar would need JS to measure each tab's width, and the fade reads
    * clean without pretending to that. Rounded top so it looks drawn, not clipped. */
   .sk-tabs__trigger::after {
     content: "";
     position: absolute;
     inset-inline: 0;
-    inset-block-end: -1px;
+    inset-block-end: calc(var(--sk-tabs-list-border-width) * -1);
     block-size: var(--sk-tabs-indicator-size);
     border-start-start-radius: var(--radius-pill);
     border-start-end-radius: var(--radius-pill);
@@ -96,6 +105,8 @@
   }
 
   .sk-tabs__trigger[data-selected] {
+    border-color: var(--sk-tabs-trigger-selected-border-color);
+    background-color: var(--sk-tabs-trigger-selected-bg);
     color: var(--sk-tabs-trigger-selected-fg);
   }
 
@@ -149,11 +160,13 @@
     align-self: stretch;
     flex-direction: column;
     border-block-end: 0;
-    border-inline-end: 1px solid var(--sk-tabs-list-border-color);
+    border-inline-end: var(--sk-tabs-list-border-width) solid var(--sk-tabs-list-border-color);
   }
 
   .sk-tabs[data-orientation="vertical"] .sk-tabs__trigger {
     justify-content: flex-start;
+    border-block-end-width: var(--sk-tabs-trigger-border-width);
+    border-inline-end-width: 0;
     border-radius: 0;
     border-start-start-radius: var(--sk-tabs-trigger-radius);
     border-end-start-radius: var(--sk-tabs-trigger-radius);
@@ -161,7 +174,7 @@
 
   .sk-tabs[data-orientation="vertical"] .sk-tabs__trigger::after {
     inset-block: 0;
-    inset-inline: auto -1px;
+    inset-inline: auto calc(var(--sk-tabs-list-border-width) * -1);
     inline-size: var(--sk-tabs-indicator-size);
     block-size: auto;
     border-radius: var(--radius-pill);
@@ -178,15 +191,17 @@
    * layer and transitions are the underline recipe untouched. */
   .sk-tabs[data-variant="hanging"] .sk-tabs__list {
     border-block-end: 0;
-    border-block-start: 1px solid var(--sk-tabs-list-border-color);
+    border-block-start: var(--sk-tabs-list-border-width) solid var(--sk-tabs-list-border-color);
   }
 
   .sk-tabs[data-variant="hanging"] .sk-tabs__trigger {
+    border-block-start-width: 0;
+    border-block-end-width: var(--sk-tabs-trigger-border-width);
     border-radius: 0 0 var(--sk-tabs-trigger-radius) var(--sk-tabs-trigger-radius);
   }
 
   .sk-tabs[data-variant="hanging"] .sk-tabs__trigger::after {
-    inset-block-start: -1px;
+    inset-block-start: calc(var(--sk-tabs-list-border-width) * -1);
     inset-block-end: auto;
     border-radius: 0;
     border-end-start-radius: var(--radius-pill);
@@ -198,10 +213,12 @@
   .sk-tabs[data-variant="hanging"][data-orientation="vertical"] .sk-tabs__list {
     border-block-start: 0;
     border-inline-end: 0;
-    border-inline-start: 1px solid var(--sk-tabs-list-border-color);
+    border-inline-start: var(--sk-tabs-list-border-width) solid var(--sk-tabs-list-border-color);
   }
 
   .sk-tabs[data-variant="hanging"][data-orientation="vertical"] .sk-tabs__trigger {
+    border-width: var(--sk-tabs-trigger-border-width);
+    border-inline-start-width: 0;
     border-radius: 0;
     border-start-end-radius: var(--sk-tabs-trigger-radius);
     border-end-end-radius: var(--sk-tabs-trigger-radius);
@@ -209,7 +226,7 @@
 
   .sk-tabs[data-variant="hanging"][data-orientation="vertical"] .sk-tabs__trigger::after {
     inset-block: 0;
-    inset-inline: -1px auto;
+    inset-inline: calc(var(--sk-tabs-list-border-width) * -1) auto;
     border-radius: var(--radius-pill);
   }
 
