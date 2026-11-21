@@ -12,6 +12,7 @@
         "packages/core/package.json",
         "packages/react/package.json",
         "packages/vanilla/package.json",
+        "packages/phone/package.json",
         "packages/devtools/package.json",
         "packages/cli/package.json",
         "README.md",

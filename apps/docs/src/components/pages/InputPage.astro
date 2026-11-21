@@ -30,13 +30,14 @@ import {
   textareaTree,
 } from "../../demos/input";
 import { getLocale, tList, useTranslations } from "../../i18n";
+import { installCommand } from "../../lib/install-command";
 import { variantsTree } from "../../demos/variants";
 /* Do/Don't specimens put fields on a small surface so labels, hints and typed values are visible. */
 import "@skryensya/core/patterns/box.css";
 
 const t = useTranslations(getLocale(Astro.url));
 
-const phoneSetup = `pnpm add @skryensya/phone
+const phoneSetup = `${installCommand("phone")}
 
 // once, at application startup
 import { registerPhoneFormat } from "@skryensya/phone";

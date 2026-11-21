@@ -12,6 +12,7 @@ const needs = {
   cli: [],
   vanilla: ["core"],
   react: ["core"],
+  phone: ["core"],
 } as const satisfies Record<string, readonly string[]>;
 
 export type KitPackage = keyof typeof needs;

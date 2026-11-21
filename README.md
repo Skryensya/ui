@@ -130,18 +130,10 @@ import "./icons.css";
 await mountComponentsWithIcons(document, icons);
 ```
 
-Vite and Astro need one resolver setting: the vanilla layer depends on `@zag-js/svelte`, which only
-exports under the `svelte` condition. No Svelte plugin is needed, only the condition:
+No bundler setting is needed: the release compiles the Svelte layer it runs on.
 
-```ts
-// vite.config.ts (in Astro, under `vite` in astro.config.mjs)
-import { defaultClientConditions } from "vite"; // Vite 6+; on Vite 5 write just ["svelte"]
-
-export default { resolve: { conditions: [...defaultClientConditions, "svelte"] } };
-```
-
-Optional packages use the same release URL pattern: `skryensya-charts-0.0.1.tgz`,
-`skryensya-editor-0.0.1.tgz` and `skryensya-devtools-0.0.1.tgz`.
+Optional packages use the same release URL pattern: `skryensya-phone-<version>.tgz` and
+`skryensya-devtools-<version>.tgz`.
 
 [**ui.skryensya.dev**](https://ui.skryensya.dev) is the primary reference: every contract has a page
 with live previews in both bindings, its options, its accessibility notes, and a real pass/fail test
@@ -158,7 +150,7 @@ report. The command above serves the same site locally.
 | [`@skryensya/react`](packages/react) | React components rendering the same markup contract. |
 | [`@skryensya/editor`](packages/editor) | The ProseMirror engine behind the Editor contract: schema, commands, keymap, serialization. |
 | [`@skryensya/devtools`](packages/devtools) | Optional runtime debug overlay: hit-area visualization and inspection aids. |
-| [`@skryensya/phone`](packages/phone) | The numbering plans behind Input's phone format: `libphonenumber-js` wrapped as a registrable plan. Not part of the 0.0.1 release assets. |
+| [`@skryensya/phone`](packages/phone) | The numbering plans behind Input's phone format: `libphonenumber-js` wrapped as a registrable plan. Optional; installs from the release like the rest. |
 
 ### Tooling
 
