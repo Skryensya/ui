@@ -64,6 +64,7 @@ function swatchSeed(contract: string, signature: string): UsageTree | undefined 
 /** Specimens a static picture cannot explain. Listed on the page with the reason, not guessed at. */
 const excluded: Record<string, string> = {
   "scroll-expand.ScrollExpand": "driven by page scroll, it needs a tall page to scroll",
+  "command-palette.CommandPalette": "an overlay laid out against the viewport, it overlaps its own labels",
   "vaul.Vaul.drawer": "an open drawer is laid out against the viewport, not against a block",
 };
 
@@ -72,8 +73,12 @@ const MAX_VALUES = 5;
 const representative = (values: readonly string[]): readonly string[] =>
   values.length <= MAX_VALUES ? values : Array.from({ length: MAX_VALUES }, (_, i) => values[Math.round((i * (values.length - 1)) / (MAX_VALUES - 1))]!);
 
-/** Media is shown as a thumbnail: a 400px picture per value would make one component taller than the whole wall's row. */
-const thumbnail: Record<string, string> = { "image-frame": "12rem" };
+/** Page-sized parts and media are shown small: a 400px picture per value would make one component taller than the whole wall's row. */
+const specimenStyle: Record<string, string> = {
+  "image-frame": "inline-size: 12rem",
+  // A hero is a page section (26rem tall by default); `--sk-hero-min-height` is the kit's own hook for that.
+  hero: "--sk-hero-min-height: 14rem; inline-size: 36rem",
+};
 
 /** A node from the shipped examples (real content, images included) is the base; else the first generic seed that validates; none means "hand-build it". */
 function seedFor(contract: string, signature: string, required: readonly string[], oneOf: readonly (readonly string[])[], optionDefs: Record<string, ContractOption>): UsageTree | undefined {
@@ -122,7 +127,7 @@ function build(): CanvasComponent[] {
       if (id === "avatar" && typeof base.options?.src === "string") (base as { options?: unknown }).options = { ...base.options, src: "/demos/lightbox/coast-thumb.jpg" };
       // 3:2, not square: in a square frame cover, contain and fill are the same picture and `fit` explains nothing.
       if (id === "image-frame" && typeof base.options?.src === "string") (base as { options?: unknown }).options = { ...base.options, src: "/demos/lightbox/coast-small.jpg" };
-      if (thumbnail[id]) (base as { attrs?: unknown }).attrs = { ...base.attrs, style: `inline-size: ${thumbnail[id]}` };
+      if (specimenStyle[id]) (base as { attrs?: unknown }).attrs = { ...base.attrs, style: specimenStyle[id] };
       const groups: CanvasGroup[] = [];
       for (const name of def.options) {
         const option = contract.options[name];
