@@ -1,17 +1,24 @@
-import { fireEvent, render, waitFor, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { DatePicker, NativeDatePicker } from "./date-picker.js";
+
+/* Day cells are named by their `aria-label`. A selector reads it directly; `getByRole(…, { name })` would
+ * compute the accessible name of every button on every `waitFor` poll, which under load ran past 15s. */
+const grids = () => screen.queryAllByRole("grid"); // by role, without a name: skips a closed popover's tables
+
+const day = (root: ParentNode, label: string) => root.querySelector<HTMLElement>(`[aria-label*="${label}"]`)!;
+const daysLabelled = (prefix: string) => document.querySelectorAll(`[aria-label^="${prefix}"]`);
 
 describe("DatePicker", () => {
   it("picks a range across two months and fills both input fields", async () => {
     const ui = render(<DatePicker label="Stay" locale="en" selectionMode="range" defaultValue="2026-03-10 2026-03-11" />);
     fireEvent.click(ui.getByRole("button", { name: "Open calendar" }));
-    await waitFor(() => expect(ui.getAllByRole("grid")).toHaveLength(2));
-    fireEvent.click(within(ui.getByRole("grid", { name: "March 2026" })).getByRole("button", { name: /March 28, 2026/ }));
-    expect(ui.getAllByRole("grid")).toHaveLength(2);
-    fireEvent.click(within(ui.getByRole("grid", { name: "April 2026" })).getByRole("button", { name: /April 4, 2026/ }));
+    await waitFor(() => expect(grids()).toHaveLength(2));
+    fireEvent.click(day(ui.getByRole("grid", { name: "March 2026" }), "March 28, 2026"));
+    expect(grids()).toHaveLength(2);
+    fireEvent.click(day(ui.getByRole("grid", { name: "April 2026" }), "April 4, 2026"));
     await waitFor(() => expect((ui.getByLabelText("End date") as HTMLInputElement).value).not.toBe(""));
-    await waitFor(() => expect(ui.queryAllByRole("grid")).toHaveLength(0));
+    await waitFor(() => expect(grids()).toHaveLength(0));
   });
 
   it("supports a one-month range without a month/year view button", async () => {
@@ -20,7 +27,7 @@ describe("DatePicker", () => {
     );
     fireEvent.click(ui.getByRole("button", { name: "Open calendar" }));
 
-    await waitFor(() => expect(ui.getAllByRole("grid")).toHaveLength(1));
+    await waitFor(() => expect(grids()).toHaveLength(1));
     expect(document.body.querySelector(".sk-calendar__view-trigger")).toBeNull();
     expect(document.body.querySelector(".sk-calendar__month-title")?.textContent).toBe("March 2026");
     fireEvent.click(document.body.querySelector(".sk-calendar__next")!);
@@ -45,7 +52,7 @@ describe("DatePicker", () => {
     // before this fix, and nothing else. A day cell's accessible name is its `aria-label`, not its
     // text content (that's just the day number), so this queries by role.
     await waitFor(() =>
-      expect(ui.getAllByRole("button", { name: /^Elegir /i }).length).toBeGreaterThan(0),
+      expect(daysLabelled("Elegir ").length).toBeGreaterThan(0),
     );
   });
 
@@ -56,7 +63,7 @@ describe("DatePicker", () => {
     fireEvent.click(trigger);
 
     await waitFor(() =>
-      expect(ui.getAllByRole("button", { name: /^Choose /i }).length).toBeGreaterThan(0),
+      expect(daysLabelled("Choose ").length).toBeGreaterThan(0),
     );
   });
 

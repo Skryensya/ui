@@ -132,9 +132,9 @@ describe("expanded component inventory", () => {
     // closes the list for a pointer, with its own accessible name and Button's contract.
     const trigger = ui.container.querySelector(".sk-combobox__trigger")!;
     expect(trigger.tagName).toBe("BUTTON");
-    expect(trigger.getAttribute("aria-label")).toBe("Mostrar opciones");
+    expect(trigger.getAttribute("aria-label")).toBe("Show options");
     expect(trigger.classList.contains("sk-button")).toBe(true);
-    const clear = ui.getByRole("button", { name: "Limpiar selección" });
+    const clear = ui.getByRole("button", { name: "Clear selection" });
     expect(clear.tabIndex).toBe(0);
     expect(clear.classList.contains("sk-button")).toBe(true);
     expect(clear.classList.contains("sk-interactive")).toBe(true);
@@ -156,11 +156,11 @@ describe("expanded component inventory", () => {
       />,
     );
     const selected = ui.getByRole("list", {
-      name: "Valores seleccionados",
+      name: "Selected values",
     });
     expect(selected.textContent).toContain("Dominica");
     expect(selected.textContent).toContain("Argentina");
-    const remove = ui.getByRole("button", { name: "Quitar Argentina" });
+    const remove = ui.getByRole("button", { name: "Remove Argentina" });
     expect(remove.classList.contains("sk-button")).toBe(true);
     expect(remove.classList.contains("sk-interactive")).toBe(true);
     expect(remove.getAttribute("data-icon-only")).toBe("");
