@@ -60,6 +60,13 @@ export const carouselAttrs = {
   slidesPerMove: "data-slides-per-move",
   /** `data-snap="proximity"` on the root: a soft snap that lets a drag come to rest between slides. */
   snap: "data-snap",
+  /**
+   * `data-curve` on the root: the slides stand on a ring. `convex` sees it from outside (the centred
+   * slide nearest), `concave` from inside (the centred slide farthest). CSS only, horizontal only.
+   */
+  curve: "data-curve",
+  /** `data-default-page` on the root: the page the carousel opens on. 0 by default. */
+  defaultPage: "data-default-page",
 } as const;
 
 export const carouselParts = {
@@ -137,6 +144,8 @@ export const carouselContract = {
     "--sk-carousel-control-radius",
     "--sk-carousel-control-fg",
     "--sk-carousel-control-size",
+    "--sk-carousel-curve-angle",
+    "--sk-carousel-curve-depth",
     "--sk-carousel-dot-active-color",
     "--sk-carousel-dot-color",
     "--sk-carousel-dot-gap",
@@ -149,6 +158,7 @@ export const carouselContract = {
     "--sk-carousel-native-next-icon",
     "--sk-carousel-native-previous-disabled-icon",
     "--sk-carousel-native-previous-icon",
+    "--sk-carousel-perspective",
     "--sk-carousel-slide-size",
   ],
   events: carouselEvents,
@@ -201,11 +211,21 @@ export const carouselContract = {
     snap: { type: "enum", values: ["mandatory", "proximity"], attr: "data-snap" },
     /** Air before the first slide and after the last, as a CSS length. What lets `align="center"` centre the ends. */
     edgePadding: { type: "string", styleProperty: "--sk-carousel-edge-padding" },
+    /**
+     * The slides on a ring, for a hero rather than a shelf. `convex` looks at the ring from outside: the
+     * centred slide is nearest and the sides turn away. `concave` stands inside it: the centred slide is
+     * farthest and the sides wrap towards you. Pair it with `align="center"` and an `edgePadding`, so
+     * the slide at rest is the one in the middle. Pure CSS (scroll-driven animations): where they are
+     * missing, and under reduced motion, the track stays flat. Horizontal only.
+     */
+    curve: { type: "enum", values: ["flat", "convex", "concave"], attr: "data-curve" },
+    /** The page it opens on, counted from 0. A ring hero opens mid-way, so there are slides on both sides. */
+    defaultPage: { type: "number", min: 0, attr: "data-default-page" },
   },
 
   signatures: {
     Carousel: {
-      intent: ["carousel", "slider-of-cards", "snap-scroller", "gallery"],
+      intent: ["carousel", "slider-of-cards", "snap-scroller", "gallery", "hero-carousel", "ring", "3d-carousel"],
       host: { element: "section" },
       options: [
         "loop",
@@ -222,6 +242,8 @@ export const carouselContract = {
         "slidesPerMove",
         "snap",
         "edgePadding",
+        "curve",
+        "defaultPage",
       ],
       slots: { children: { accepts: "signature", of: ["CarouselSlide"], required: true } },
       template: {

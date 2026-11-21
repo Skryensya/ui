@@ -19,10 +19,12 @@ export default { title: "Components/Carousel", tags: ["autodocs"] } satisfies Me
 
 export const Anatomy: StoryObj = treeStory(demos.carouselAnatomyTree, { decorators: [withCss(annotationDemoCss)] });
 export const Cards: StoryObj = treeStory(demos.carouselCardsTree);
+export const RingConvex: StoryObj = treeStory(demos.carouselRingConvexTree);
 export const Autoplay: StoryObj = treeStory(demos.carouselAutoplayTree);
 export const Focusable: StoryObj = treeStory(demos.carouselFocusableTree);
 export const Stats: StoryObj = treeStory(demos.carouselStatsTree);
 export const Quotes: StoryObj = treeStory(demos.carouselQuotesTree);
 export const Products: StoryObj = treeStory(demos.carouselProductsTree);
 export const Bare: StoryObj = treeStory(demos.carouselBareTree);
+export const RingConcave: StoryObj = treeStory(demos.carouselRingConcaveTree);
 export const Native: StoryObj = treeStory(demos.carouselNativeTree);

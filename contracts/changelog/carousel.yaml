@@ -3,8 +3,16 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "ad12d94697fc6aed"
+surface: "e72bc223b434d59a"
 entries:
+  - date: 2026-11-21
+    kind: feature
+    es:
+      title: "curve: las slides sobre un anillo, desde fuera o desde dentro"
+      body: "curve=\"convex\" mira el anillo desde fuera (la slide del centro queda más cerca) y curve=\"concave\" desde dentro (queda más lejos). Es solo CSS sobre la misma pista, así que la máquina, los controles y el teclado no cambian; sin soporte o con movimiento reducido la pista queda plana. defaultPage elige la página en la que abre."
+    en:
+      title: "curve: the slides on a ring, from outside or from inside"
+      body: "curve=\"convex\" looks at the ring from outside (the centred slide is nearest) and curve=\"concave\" from inside (it is farthest). CSS only on the same track, so the machine, the controls and the keyboard are unchanged; without support or under reduced motion the track stays flat. defaultPage picks the page it opens on."
   - date: 2026-10-19
     kind: feature
     target: fade

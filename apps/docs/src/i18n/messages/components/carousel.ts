@@ -150,6 +150,16 @@ export const carouselMessages = {
     "carousel.prop.indicator.body": "Qué dice dónde estás: un punto por página, o un contador «n / n». Los botones anterior y siguiente quedan a los lados de la pista.",
 
     "carousel.prop.indicator.title": "Indicator: puntos o contador",
+    "carousel.prop.curve.title": "Curve: la pista como un anillo",
+    "carousel.prop.curve.body": "Pone las slides sobre un anillo, para un hero más que para un estante. Va con <code>align=\"center\"</code> y un <code>edgePadding</code>, así la slide en reposo es la del medio. Es solo CSS: donde el navegador no lo soporta, o con movimiento reducido, la pista queda plana.",
+    "carousel.prop.curve.flat": "Usa <code>flat</code> (o nada) para un estante de cards: la pista en línea recta.",
+    "carousel.prop.curve.convex": "Usa <code>convex</code> para mirar el anillo desde fuera: la slide del centro queda más cerca y las de los lados giran alejándose.",
+    "carousel.prop.curve.concave": "Usa <code>concave</code> para estar dentro del anillo: la slide del centro queda más lejos y las de los lados se curvan hacia ti.",
+    "carousel.ringConvexTitle": "Hero convexo: el anillo desde fuera",
+    "carousel.ringConvexBody": "Imágenes solas, centradas y en bucle. La del medio queda adelante; las demás giran hacia atrás a medida que se alejan del centro.",
+    "carousel.ringConcaveTitle": "Hero cóncavo: dentro del anillo",
+    "carousel.ringConcaveBody": "La misma pista vista desde dentro: la del medio retrocede y las de los lados se acercan, como una sala panorámica.",
+    "demo.carousel.ring.label": "Galería destacada",
 
     "carousel.prop.controls.none": "Usa <code>none</code> cuando la pista sola alcanza, como una fila corta en un teléfono. El teclado y el arrastre siguen funcionando.",
 
@@ -347,6 +357,16 @@ export const carouselMessages = {
     "carousel.prop.indicator.body": "What says where you are: one dot per page, or an \"n / n\" counter. The previous and next buttons sit at the sides of the track.",
 
     "carousel.prop.indicator.title": "Indicator: dots or count",
+    "carousel.prop.curve.title": "Curve: the track as a ring",
+    "carousel.prop.curve.body": "Stands the slides on a ring, for a hero rather than a shelf. Pair it with <code>align=\"center\"</code> and an <code>edgePadding</code>, so the slide at rest is the middle one. It is CSS only: where the browser lacks it, or under reduced motion, the track stays flat.",
+    "carousel.prop.curve.flat": "Use <code>flat</code> (or nothing) for a shelf of cards: the track in a straight line.",
+    "carousel.prop.curve.convex": "Use <code>convex</code> to look at the ring from outside: the centred slide is nearest and the sides turn away.",
+    "carousel.prop.curve.concave": "Use <code>concave</code> to stand inside the ring: the centred slide is farthest and the sides wrap towards you.",
+    "carousel.ringConvexTitle": "Convex hero: the ring from outside",
+    "carousel.ringConvexBody": "Pictures only, centred and looping. The middle one stands forward; the others turn back as they move away from the centre.",
+    "carousel.ringConcaveTitle": "Concave hero: inside the ring",
+    "carousel.ringConcaveBody": "The same track seen from inside: the middle one recedes and the sides come closer, like a panorama room.",
+    "demo.carousel.ring.label": "Featured gallery",
 
     "carousel.prop.controls.none": "Use <code>none</code> when the track alone is enough, like a short row on a phone. Keyboard and dragging still work.",
 

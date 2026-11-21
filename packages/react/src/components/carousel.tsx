@@ -75,6 +75,10 @@ export type CarouselProps = HTMLAttributes<HTMLElement> & {
   snap?: OptionValue<typeof carouselContract.options.snap>;
   /** Air before the first slide and after the last, as a CSS length. */
   edgePadding?: string;
+  /** The slides on a ring: `convex` seen from outside, `concave` from inside. Pair with `align="center"`. */
+  curve?: OptionValue<typeof carouselContract.options.curve>;
+  /** The page it opens on, counted from 0. */
+  defaultPage?: number;
 };
 
 type CarouselApi = ReturnType<typeof carousel.connect>;
@@ -130,8 +134,10 @@ function rootStyle({ edgePadding, slideSize, style }: InnerProps): CSSProperties
 /* One step travels `slidesPerMove` slides, so only every Nth slide is a stop. */
 const stepOf = (slidesPerMove: number | undefined) => (slidesPerMove && slidesPerMove > 1 ? Math.floor(slidesPerMove) : 1);
 
-function rootAttributes({ align, autoplay, controls, fade, indicator, loop, mouseDrag, orientation, slidesPerMove, snap }: InnerProps) {
+function rootAttributes({ align, autoplay, controls, curve, defaultPage, fade, indicator, loop, mouseDrag, orientation, slidesPerMove, snap }: InnerProps) {
   return {
+    "data-curve": curve,
+    "data-default-page": defaultPage,
     "data-align": align,
     "data-slides-per-move": slidesPerMove,
     "data-snap": snap,
@@ -152,6 +158,8 @@ function StaticCarousel(inner: InnerProps) {
     children,
     className,
     controls: _controls,
+    curve: _curve,
+    defaultPage: _defaultPage,
     fade: _fade,
     indicator: _indicator,
     edgePadding: _edgePadding,
@@ -191,6 +199,8 @@ function MountedCarousel(inner: InnerProps) {
     children,
     className,
     controls,
+    curve: _curve,
+    defaultPage,
     dir,
     fade,
     indicator,
@@ -245,6 +255,7 @@ function MountedCarousel(inner: InnerProps) {
     orientation: orientation === "vertical" ? "vertical" : "horizontal",
     dir: dir === "rtl" ? "rtl" : "ltr",
     loop: Boolean(loop),
+    defaultPage: defaultPage ?? 0,
     autoplay: initialAutoplay,
     allowMouseDrag: mouseDrag !== "off",
     autoSize: true,

@@ -26,6 +26,22 @@ describe("Carousel", () => {
     expect(track.querySelectorAll("div.sk-carousel__slide")).toHaveLength(3);
   });
 
+  it("writes the curve and the default page on the root, for the sheet and for DOM parity", () => {
+    const ui = render(
+      <Carousel aria-label="Ring" curve="convex" align="center" defaultPage={2}>
+        <CarouselSlide>Uno</CarouselSlide>
+        <CarouselSlide>Dos</CarouselSlide>
+        <CarouselSlide>Tres</CarouselSlide>
+      </Carousel>,
+    );
+    const region = ui.container.querySelector<HTMLElement>(".sk-carousel")!;
+    expect(region.getAttribute("data-curve")).toBe("convex");
+    expect(region.getAttribute("data-default-page")).toBe("2");
+    expect(region.hasAttribute("curve")).toBe(false);
+    // Which page it opens on is the machine's `defaultPage`; jsdom has no layout to measure pages
+    // with, so the vanilla suite (same machine, faked geometry) is the one that proves it.
+  });
+
   it("writes align, step, snap and edge padding on the root and marks the slides that are not stops", () => {
     const ui = render(
       <Carousel aria-label="Focused" align="center" edgePadding="2rem" slidesPerMove={2} snap="proximity">

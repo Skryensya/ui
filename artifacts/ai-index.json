@@ -846,7 +846,10 @@
             "carousel",
             "slider-of-cards",
             "snap-scroller",
-            "gallery"
+            "gallery",
+            "hero-carousel",
+            "ring",
+            "3d-carousel"
           ],
           "parents": [],
           "useWhen": [
@@ -6398,5 +6401,5 @@
     }
   ],
   "schemaVersion": "2.3",
-  "sourceHash": "4fcabd49e6a3dd1c"
+  "sourceHash": "fd47a7eff9f9b998"
 }

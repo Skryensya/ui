@@ -1475,5 +1475,8 @@
   "/components/search-field||Anatomy||||": 1474,
   "/es/componentes/search-field|Filtrar en la página|||Components/SearchField|Filter|": 1475,
   "/es/componentes/search-field|Buscar en el sitio|||Components/SearchField|Form|": 1476,
-  "/es/componentes/search-field||Anatomía||||": 1477
+  "/es/componentes/search-field||Anatomía||||": 1477,
+  "/components/carousel|Curve: the track as a ring||curve|Components/Carousel|RingConvex|": 1478,
+  "/components/carousel|Convex hero: the ring from outside|||Components/Carousel|RingConvex|": 1479,
+  "/components/carousel|Concave hero: inside the ring|||Components/Carousel|RingConcave|": 1480
 }

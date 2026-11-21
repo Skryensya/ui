@@ -142,6 +142,25 @@ describe("Carousel Vanilla contracts", () => {
     expect((handler.mock.calls[0][0] as CustomEvent).detail).toEqual({ index: 2, count: 3 });
   });
 
+  it("opens on data-default-page", () => {
+    const root = mount(4, 'data-default-page="1"');
+    mountCarousel(root);
+    flushSync();
+
+    expect(dots(root)[1].getAttribute("aria-current")).toBe("true");
+    expect(buttons(root)[0].disabled).toBe(false);
+  });
+
+  it("leaves data-curve to CSS: the machine, the pages and the controls are the flat carousel's", () => {
+    const root = mount(4, 'data-curve="concave"');
+    mountCarousel(root);
+    flushSync();
+
+    expect(root.getAttribute("data-curve")).toBe("concave");
+    expect(dots(root)).toHaveLength(3);
+    expect(root.querySelector(".sk-carousel__slide")!.getAttribute("style") ?? "").not.toContain("transform");
+  });
+
   it("accepts sk:carouselgoto as the snap command", () => {
     const root = mount(4);
     mountCarousel(root);

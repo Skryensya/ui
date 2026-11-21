@@ -81,6 +81,7 @@ import { trackPlayer } from "./media/track-player.js";
 import { selectableGrid } from "./table/selectable-grid.js";
 import { fileExplorerGrid } from "./table/file-explorer-grid.js";
 import { photoGallery } from "./media/photo-gallery.js";
+import { pictureRing } from "./media/picture-ring.js";
 import { shortcutHint } from "./action/shortcut-hint.js";
 import { quantityStepper } from "./form/quantity-stepper.js";
 import { installSteps } from "./list/install-steps.js";
@@ -128,6 +129,7 @@ export const modules: readonly PatternModule[] = [
   quantityStepper,
   shortcutHint,
   photoGallery,
+  pictureRing,
   fileExplorerGrid,
   selectableGrid,
   trackPlayer,

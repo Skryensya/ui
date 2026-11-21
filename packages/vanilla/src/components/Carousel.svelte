@@ -103,6 +103,7 @@
       | "horizontal",
     dir: (root.closest("[dir=rtl]") ? "rtl" : "ltr") as "ltr" | "rtl",
     loop: root.hasAttribute("data-loop"),
+    defaultPage: Number(root.getAttribute("data-default-page")) || 0,
     autoplay,
     // ON by default. A vertical wheel scrolls the PAGE, not a horizontal track, so a mouse has no
     // other way through: without this a desktop pointer cannot move a carousel that has no controls.

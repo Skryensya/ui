@@ -822,6 +822,18 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-11-21",
+            "en": {
+              "body": "curve=\"convex\" looks at the ring from outside (the centred slide is nearest) and curve=\"concave\" from inside (it is farthest). CSS only on the same track, so the machine, the controls and the keyboard are unchanged; without support or under reduced motion the track stays flat. defaultPage picks the page it opens on.",
+              "title": "curve: the slides on a ring, from outside or from inside"
+            },
+            "es": {
+              "body": "curve=\"convex\" mira el anillo desde fuera (la slide del centro queda más cerca) y curve=\"concave\" desde dentro (queda más lejos). Es solo CSS sobre la misma pista, así que la máquina, los controles y el teclado no cambian; sin soporte o con movimiento reducido la pista queda plana. defaultPage elige la página en la que abre.",
+              "title": "curve: las slides sobre un anillo, desde fuera o desde dentro"
+            },
+            "kind": "feature"
+          },
+          {
             "date": "2026-11-20",
             "en": {
               "body": "With <code>@zag-js/svelte</code> 1.47 or later the Vanilla bindings stopped writing the machine's styles (<code>position</code> among them), so menus, selects and tooltips drifted on scroll. They are applied with any version now.",
@@ -12510,6 +12522,18 @@
           "part": "root",
           "sheet": "@skryensya/core/components/carousel.css"
         },
+        "--sk-carousel-curve-angle": {
+          "default": "40deg",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/carousel.css"
+        },
+        "--sk-carousel-curve-depth": {
+          "default": "10rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/carousel.css"
+        },
         "--sk-carousel-dot-active-color": {
           "default": "var(--color-action-accent)",
           "output": false,
@@ -12582,6 +12606,12 @@
           "part": "root",
           "sheet": "@skryensya/core/components/carousel.css"
         },
+        "--sk-carousel-perspective": {
+          "default": "60rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/carousel.css"
+        },
         "--sk-carousel-slide-size": {
           "default": "min(100%, 20rem)",
           "output": false,
@@ -12596,6 +12626,8 @@
         "--sk-carousel-control-radius",
         "--sk-carousel-control-fg",
         "--sk-carousel-control-size",
+        "--sk-carousel-curve-angle",
+        "--sk-carousel-curve-depth",
         "--sk-carousel-dot-active-color",
         "--sk-carousel-dot-color",
         "--sk-carousel-dot-gap",
@@ -12608,6 +12640,7 @@
         "--sk-carousel-native-next-icon",
         "--sk-carousel-native-previous-disabled-icon",
         "--sk-carousel-native-previous-icon",
+        "--sk-carousel-perspective",
         "--sk-carousel-slide-size"
       ],
       "id": "carousel",
@@ -12640,6 +12673,20 @@
             "auto",
             "none"
           ]
+        },
+        "curve": {
+          "attr": "data-curve",
+          "type": "enum",
+          "values": [
+            "flat",
+            "convex",
+            "concave"
+          ]
+        },
+        "defaultPage": {
+          "attr": "data-default-page",
+          "min": 0,
+          "type": "number"
         },
         "edgePadding": {
           "styleProperty": "--sk-carousel-edge-padding",
@@ -12751,7 +12798,10 @@
             "carousel",
             "slider-of-cards",
             "snap-scroller",
-            "gallery"
+            "gallery",
+            "hero-carousel",
+            "ring",
+            "3d-carousel"
           ],
           "options": [
             "loop",
@@ -12767,7 +12817,9 @@
             "align",
             "slidesPerMove",
             "snap",
-            "edgePadding"
+            "edgePadding",
+            "curve",
+            "defaultPage"
           ],
           "react": {
             "from": "@skryensya/react/carousel",
@@ -53383,7 +53435,7 @@
     "working": "0.0.4"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "4fcabd49e6a3dd1c",
+  "sourceHash": "fd47a7eff9f9b998",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",
