@@ -32,7 +32,7 @@ const navigationKeys = new Set([
 // single `data-value`, so a lone string has to reach it as the one-element array it means.
 const asValues = (value: string | readonly string[] | undefined) =>
   value === undefined ? undefined : typeof value === "string" ? [value] : [...value];
-const defaultRemoveLabel = (item: ComboboxItem) => `Quitar ${item.label}`;
+const defaultRemoveLabel = (item: ComboboxItem) => `Remove ${item.label}`;
 const defaultResultCountLabel = ({ count }: { count: number }) =>
   count === 1 ? "1 resultado disponible" : `${count} resultados disponibles`;
 
@@ -96,14 +96,14 @@ export function Combobox({
   appearance,
   "aria-label": ariaLabel,
   "aria-labelledby": ariaLabelledby,
-  clearLabel = "Limpiar selección",
-  triggerLabel = "Mostrar opciones",
+  clearLabel = "Clear selection",
+  triggerLabel = "Show options",
   clearIndicator,
   container,
   defaultInputValue = "",
   defaultValue,
   disabled,
-  emptyLabel = "Sin resultados",
+  emptyLabel = "No results.",
   error,
   hint,
   id,
@@ -124,7 +124,7 @@ export function Combobox({
   removeLabel = defaultRemoveLabel,
   required,
   resultCountLabel = defaultResultCountLabel,
-  selectedLabel = "Valores seleccionados",
+  selectedLabel = "Selected values",
   triggerIndicator,
   value,
 }: ComboboxProps) {

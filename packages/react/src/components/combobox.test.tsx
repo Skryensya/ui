@@ -72,13 +72,13 @@ describe("Combobox", () => {
   it("removes a selected Tag and disables its remove action with the field", async () => {
     const { ui } = setup({ multiple: true, defaultValue: ["argentina"] });
 
-    fireEvent.click(ui.getByRole("button", { name: "Quitar Argentina" }));
+    fireEvent.click(ui.getByRole("button", { name: "Remove Argentina" }));
     await waitFor(() => expect(ui.queryByRole("listitem")).toBeNull());
     ui.unmount();
 
     const disabled = setup({ multiple: true, defaultValue: ["argentina"], disabled: true });
     expect(disabled.ui.getByRole("listitem").getAttribute("aria-disabled")).toBe("true");
-    const remove = disabled.ui.getByRole("button", { name: "Quitar Argentina" }) as HTMLButtonElement;
+    const remove = disabled.ui.getByRole("button", { name: "Remove Argentina" }) as HTMLButtonElement;
     expect(remove.disabled).toBe(true);
   });
 

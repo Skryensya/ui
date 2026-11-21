@@ -5,6 +5,14 @@
 # hash.
 surface: "55ea955bf1773367"
 entries:
+  - date: 2026-11-20
+    kind: bugfix
+    es:
+      title: "Los textos por defecto están en inglés, como en el resto del kit"
+      body: "El estado vacío, el botón de limpiar, el de abrir, la lista de seleccionados y el de quitar cada chip venían en español. Ahora dicen No results., Clear selection, Show options, Selected values y Remove <ítem>; pasa tus propios textos para otro idioma."
+    en:
+      title: "Default labels are in English, like the rest of the kit"
+      body: "The empty state, the clear and open buttons, the selected list and each chip's remove button were in Spanish. They now say No results., Clear selection, Show options, Selected values and Remove <item>; pass your own labels for another language."
   - date: 2026-10-25
     kind: breaking
     target: appearance

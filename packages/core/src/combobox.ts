@@ -382,7 +382,7 @@ export const comboboxContract = {
                     part: "empty",
                     mount: "data-sk-combobox-empty",
                     attrs: { role: "presentation" },
-                    text: "Sin resultados",
+                    text: "No results.",
                   },
                 ],
               },
