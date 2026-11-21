@@ -78,9 +78,23 @@ fi
 # ends red because of something you did not break teaches people to use --no-verify, and that habit
 # carries over to the secret check too. It comes in when it is stable.
 #
-# --concurrency=1 because in parallel this check has intermittent timeouts in this repo.
+# ONLY WHAT THE PUSH CHANGED, at low priority. `check:pushed` checks the packages the commits since the
+# remote's main touched, and everything that depends on them (`...[origin/main...HEAD]`), so a docs or
+# CLI commit no longer re-runs every suite; a change to core still reaches nearly all of them, because
+# nearly all depend on it. A commit range, not `--affected`: that one also counts the working tree,
+# which holds whatever is not being pushed. With no `origin/main` (a clone that never fetched) it
+# checks everything.
+# `nice` keeps the machine usable while it runs: same work, but anything you are doing comes first.
+#
+# --concurrency=2: it was 1 for intermittent timeouts; the ones traced so far were `waitFor`'s 1s budget
+# and role queries over large grids, both fixed. Back to 1 if timeouts return.
 echo "pre-push: running check..."
-if ! pnpm check; then
+if git rev-parse --verify -q origin/main >/dev/null; then
+  check() { nice -n 15 pnpm check:pushed; }
+else
+  check() { nice -n 15 pnpm check; }
+fi
+if ! check; then
   echo "" >&2
   echo "pre-push: 'check' failed. The output above says which package and why." >&2
   echo "  If you are pushing work in progress to a branch of your own: 'git push --no-verify'." >&2
