@@ -104,6 +104,7 @@ const skipped = components.flatMap((c) => c.skipped.map((s) => `${c.id}.${s}`));
 
 <script>
   import { mountComponentsWithIcons } from "@skryensya/vanilla/auto";
+  import { canvasEvents } from "@skryensya/core/canvas";
   import { siteIcons } from "../../icons";
 
   const board = document.querySelector<HTMLElement>(".board");
@@ -167,7 +168,8 @@ const skipped = components.flatMap((c) => c.skipped.map((s) => `${c.id}.${s}`));
        not stutter. The canvas writes its transform inline on every move, so a mutation of it means "moving". */
     let moving = false;
     let settle = 0;
-    const content = board.closest<HTMLElement>(".sk-canvas__content");
+    const canvasRoot = board.closest<HTMLElement>(".sk-canvas")!;
+    let zoom = 1;
     /* Names keep a steady apparent size with a gentle curve (scale^-0.5, capped), updated every frame so they grow with
        the zoom instead of stepping. Past FAR the name moves onto its block and the block blurs under it. Written on the
        labels themselves, not on the board: a variable on the board would restyle every specimen on every frame. */
@@ -175,11 +177,9 @@ const skipped = components.flatMap((c) => c.skipped.map((s) => `${c.id}.${s}`));
     const room_ = new Map<HTMLElement, number>();
     const labels = [...board.querySelectorAll<HTMLElement>(".label, .cluster__title")];
     let frame = 0;
-    // The canvas eases discrete zooms in CSS, so the transform keeps changing after the last mutation: keep reading for a while.
-    let until = 0;
     const updateLabels = () => {
-      frame = performance.now() < until ? requestAnimationFrame(updateLabels) : 0;
-      const scale = content ? new DOMMatrixReadOnly(getComputedStyle(content).transform).a || 1 : 1;
+      frame = 0;
+      const scale = zoom;
       const far = scale < FAR;
       if (board.hasAttribute("data-far") !== far) board.toggleAttribute("data-far", far);
       const grow = far ? Math.min(3, 0.9 / scale) : Math.min(1.8, scale ** -0.5);
@@ -198,20 +198,20 @@ const skipped = components.flatMap((c) => c.skipped.map((s) => `${c.id}.${s}`));
       }
     };
     const scheduleLabels = () => {
-      until = performance.now() + 500;
       frame ||= requestAnimationFrame(updateLabels);
     };
     scheduleLabels();
-    if (content)
-      new MutationObserver(() => {
-        scheduleLabels();
-        moving = true;
-        clearTimeout(settle);
-        settle = window.setTimeout(() => {
-          moving = false;
-          drain();
-        }, 150);
-      }).observe(content, { attributes: true, attributeFilter: ["style"] });
+    /* The canvas tells us its view (`sk-canvas-view`, in the kit): no style observer, no computed-style read per frame. */
+    canvasRoot.addEventListener(canvasEvents.view, (event) => {
+      zoom = (event as CustomEvent<{ scale: number }>).detail.scale;
+      scheduleLabels();
+      moving = true;
+      clearTimeout(settle);
+      settle = window.setTimeout(() => {
+        moving = false;
+        drain();
+      }, 150);
+    });
     const pending = new Set<HTMLElement>();
     let active = 0;
     const drain = () => {
