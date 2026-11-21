@@ -349,7 +349,10 @@
   "dependencies": {
     "@skryensya/core": "workspace:*",
     "@tanstack/virtual-core": "^3.17.11",
+    "@zag-js/core": "^1.43.3",
     "@zag-js/svelte": "^1.43.3",
+    "@zag-js/types": "^1.43.3",
+    "@zag-js/utils": "^1.43.3",
     "@zag-js/vanilla": "^1.43.3",
     "motion": "12.23.24",
     "svelte": "^5.56.7"

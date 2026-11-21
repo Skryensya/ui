@@ -1202,9 +1202,18 @@ importers:
       '@tanstack/virtual-core':
         specifier: ^3.17.11
         version: 3.17.11
+      '@zag-js/core':
+        specifier: ^1.43.3
+        version: 1.43.3
       '@zag-js/svelte':
         specifier: ^1.43.3
         version: 1.43.3(svelte@5.56.7)
+      '@zag-js/types':
+        specifier: ^1.43.3
+        version: 1.43.3
+      '@zag-js/utils':
+        specifier: ^1.43.3
+        version: 1.43.3
       '@zag-js/vanilla':
         specifier: ^1.43.3
         version: 1.43.3

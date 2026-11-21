@@ -42,8 +42,15 @@ for (const condition of Object.values(pkg.exports)) {
   entries[name] = resolve(root, file);
 }
 
+/*
+ * Shipped as runes source (`machine.svelte.js` calls `$effect`), so left external it reaches a consumer
+ * uncompiled and throws unless their bundler runs the Svelte plugin. Compiled in here instead; its own
+ * imports (`@zag-js/core`, `-types`, `-utils`, `svelte`) stay external, as the package's dependencies.
+ */
+const compiled = new Set(["@zag-js/svelte"]);
+
 const external = [
-  ...Object.keys(pkg.dependencies ?? {}),
+  ...Object.keys(pkg.dependencies ?? {}).filter((name) => !compiled.has(name)),
   ...Object.keys(pkg.peerDependencies ?? {}),
   "svelte",
   "react",
@@ -94,7 +101,7 @@ const bundle = await rolldown({
   resolve: {
     extensions: [".ts", ".tsx", ".svelte.ts", ".svelte", ".js"],
     extensionAlias: { ".js": [".ts", ".tsx", ".js"] },
-    conditionNames: ["import", "default"],
+    conditionNames: ["svelte", "import", "default"],
   },
   // Type-only imports and unused exports are what tree-shaking is for; module side effects are the
   // package's own (`sideEffects` in its package.json), so none are assumed here.
@@ -106,7 +113,8 @@ await bundle.write({
   format: "esm",
   preserveModules: true,
   preserveModulesRoot: "src",
-  entryFileNames: "[name].js",
+  /* A compiled dependency would land under `dist/node_modules/`, which `npm pack` leaves out. */
+  entryFileNames: (chunk) => `${chunk.name.replace(/^.*node_modules\//, "vendor/")}.js`,
   sourcemap: false,
 });
 await bundle.close();
