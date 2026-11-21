@@ -32,10 +32,17 @@ const placeholder = (contract: string, name: string, option: ContractOption): Op
 
 /** The first node per signature, lifted out of the shipped examples, that validates on its own. Slot-heavy components get real content this way. */
 const exampleSeeds = new Map<string, UsageTree>();
+/** For a part that is not valid alone (a table row, an accordion item): the nearest valid ancestor in an example, shown in context. */
+const ancestorSeeds = new Map<string, UsageTree>();
 for (const entry of entries("en"))
-  walkUsageTree(entry.tree, (node) => {
+  walkUsageTree(entry.tree, (node, ancestors) => {
     const key = `${node.contract}|${node.signature}`;
-    if (!exampleSeeds.has(key) && isValid(node)) exampleSeeds.set(key, node);
+    if (isValid(node)) {
+      if (!exampleSeeds.has(key)) exampleSeeds.set(key, node);
+    } else if (!ancestorSeeds.has(key)) {
+      const parent = [...ancestors].reverse().find(isValid);
+      if (parent) ancestorSeeds.set(key, parent);
+    }
   });
 
 /**
@@ -92,6 +99,11 @@ function build(): CanvasComponent[] {
         continue;
       }
       const base = seedFor(id, signature, def.requires ?? [], def.exactlyOneOf ?? [], contract.options);
+      const context = base ? undefined : ancestorSeeds.get(`${id}|${signature}`);
+      if (context) {
+        out.signatures.push({ signature: `${signature} (in context)`, base: context, groups: [] });
+        continue;
+      }
       if (!base) {
         out.skipped.push(signature);
         continue;

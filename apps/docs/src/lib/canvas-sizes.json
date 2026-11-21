@@ -3,8 +3,28 @@
   103.25,
   80.75
  ],
+ "accordion.Accordion.Content (in context)": [
+  43.25,
+  25.75
+ ],
+ "accordion.Accordion.Item (in context)": [
+  43.25,
+  25.75
+ ],
+ "accordion.Accordion.Trigger (in context)": [
+  43.25,
+  25.75
+ ],
  "app-bar.AppBar": [
   18.75,
+  12.5
+ ],
+ "app-bar.AppBarMenu (in context)": [
+  23.5,
+  12.5
+ ],
+ "app-bar.AppBarStatus (in context)": [
+  24,
   12.5
  ],
  "audio-player.AudioPlayer": [
@@ -75,6 +95,14 @@
   43.25,
   46.75
  ],
+ "changelog.ChangelogEntry (in context)": [
+  43.25,
+  46.75
+ ],
+ "changelog.ChangelogRelease (in context)": [
+  43.25,
+  46.75
+ ],
  "checkbox.Checkbox": [
   59.75,
   16.75
@@ -111,6 +139,10 @@
   18.5,
   11
  ],
+ "comment-thread.Comment (in context)": [
+  43.25,
+  23.5
+ ],
  "comment-thread.CommentActions": [
   18.75,
   13
@@ -123,9 +155,25 @@
   53.5,
   19.25
  ],
+ "comparison-table.ComparisonCell (in context)": [
+  29.25,
+  20.5
+ ],
+ "comparison-table.ComparisonColumn (in context)": [
+  29.25,
+  20.5
+ ],
+ "comparison-table.ComparisonRow (in context)": [
+  29.25,
+  20.5
+ ],
  "comparison-table.ComparisonTable": [
   57.5,
   20.5
+ ],
+ "content.Toast (in context)": [
+  19,
+  11
  ],
  "content.ToastRegion": [
   15.5,
@@ -135,9 +183,21 @@
   45,
   16.25
  ],
+ "data-grid.DataGridCell (in context)": [
+  22.5,
+  16.25
+ ],
+ "data-grid.DataGridRow (in context)": [
+  22.75,
+  16.25
+ ],
  "date-picker.DatePicker": [
   103.25,
   40
+ ],
+ "description-list.DescriptionItem (in context)": [
+  24.5,
+  16.5
  ],
  "description-list.DescriptionList": [
   78.5,
@@ -199,6 +259,10 @@
   67,
   37.5
  ],
+ "feed.FeedArticle (in context)": [
+  24.5,
+  23
+ ],
  "file-upload.FileUpload": [
   92.75,
   48
@@ -223,9 +287,17 @@
   103.25,
   664
  ],
+ "input.Input (in context)": [
+  17.75,
+  15.5
+ ],
  "input.NativeInput": [
   90,
   19.25
+ ],
+ "input.Textarea (in context)": [
+  20,
+  21
  ],
  "kbd.Kbd": [
   16,
@@ -259,9 +331,25 @@
   43,
   11
  ],
+ "lightbox.Lightbox.Trigger (in context)": [
+  43.25,
+  23.75
+ ],
  "list.List": [
   41.25,
   21.5
+ ],
+ "list.ListItem (in context)": [
+  19,
+  21.5
+ ],
+ "list.ListItemLink (in context)": [
+  22,
+  21.5
+ ],
+ "list.ListItemPlain (in context)": [
+  22.5,
+  23
  ],
  "listbox.Listbox": [
   103.25,
@@ -282,6 +370,14 @@
  "marquee.Marquee.autoplay": [
   94,
   27
+ ],
+ "media-overlay.MediaOverlay (in context)": [
+  43.25,
+  35.25
+ ],
+ "media-overlay.MediaOverlayShade (in context)": [
+  43.25,
+  53
  ],
  "menu.Menu": [
   43.25,
@@ -323,9 +419,25 @@
   45.5,
   21
  ],
+ "nav-list.NavListGroup (in context)": [
+  25,
+  21
+ ],
+ "nav-list.NavListLink (in context)": [
+  23.5,
+  21
+ ],
  "navbar.Navbar": [
   12.5,
   14
+ ],
+ "navbar.NavbarActions (in context)": [
+  25.75,
+  67.25
+ ],
+ "navbar.NavbarBrand (in context)": [
+  24.75,
+  67.25
  ],
  "number-field.NumberField": [
   63.25,
@@ -367,6 +479,10 @@
   25.5,
   28
  ],
+ "procedure.ProcedureStep (in context)": [
+  25.5,
+  28
+ ],
  "progress.Progress": [
   24.25,
   11.5
@@ -378,6 +494,10 @@
  "questionnaire.Questionnaire": [
   103.25,
   263.5
+ ],
+ "questionnaire.QuestionnaireItem (in context)": [
+  34.25,
+  46.25
  ],
  "quote.Quote": [
   73.25,
@@ -439,6 +559,30 @@
   55.75,
   35
  ],
+ "sidebar.SidebarContent (in context)": [
+  26.25,
+  35
+ ],
+ "sidebar.SidebarFooter (in context)": [
+  25.25,
+  35
+ ],
+ "sidebar.SidebarHeader (in context)": [
+  25.75,
+  35
+ ],
+ "sidebar.SidebarResizeHandle (in context)": [
+  30,
+  30.5
+ ],
+ "sidebar.SidebarSeparator (in context)": [
+  27.75,
+  35
+ ],
+ "sidebar.SidebarTrigger (in context)": [
+  25.75,
+  35
+ ],
  "skip-link.SkipLink": [
   13.5,
   11
@@ -465,6 +609,30 @@
  ],
  "table.Table": [
   14,
+  20
+ ],
+ "table.TableBody (in context)": [
+  20.75,
+  20
+ ],
+ "table.TableCaption (in context)": [
+  22.75,
+  20
+ ],
+ "table.TableCell (in context)": [
+  20,
+  20
+ ],
+ "table.TableHead (in context)": [
+  21,
+  20
+ ],
+ "table.TableHeader (in context)": [
+  22.25,
+  20
+ ],
+ "table.TableRow (in context)": [
+  20.25,
   20
  ],
  "table.TableScroll": [
@@ -499,6 +667,14 @@
   80.5,
   23.75
  ],
+ "tile.TileChevron (in context)": [
+  25.75,
+  24.75
+ ],
+ "tile.TileContent (in context)": [
+  32.25,
+  17.75
+ ],
  "tile.TileLink": [
   71.25,
   52.25
@@ -519,6 +695,10 @@
   22.75,
   31.75
  ],
+ "timeline.TimelineItem (in context)": [
+  23.5,
+  31.75
+ ],
  "toc.Toc": [
   17.25,
   20.5
@@ -527,11 +707,43 @@
   102.5,
   27
  ],
+ "toolbar.ToolbarGroup (in context)": [
+  24,
+  14.25
+ ],
+ "toolbar.ToolbarSeparator (in context)": [
+  26.75,
+  14.25
+ ],
  "tooltip.Tooltip": [
   57.25,
   13.75
  ],
  "treegrid.Treegrid": [
+  43.25,
+  23
+ ],
+ "treegrid.TreegridBody (in context)": [
+  43.25,
+  23
+ ],
+ "treegrid.TreegridCell (in context)": [
+  43.25,
+  23
+ ],
+ "treegrid.TreegridColumnHeader (in context)": [
+  43.25,
+  23
+ ],
+ "treegrid.TreegridHead (in context)": [
+  43.25,
+  23
+ ],
+ "treegrid.TreegridHeadRow (in context)": [
+  43.25,
+  23
+ ],
+ "treegrid.TreegridRow (in context)": [
   43.25,
   23
  ],
@@ -570,6 +782,10 @@
  "vaul.Vaul.Close": [
   15.25,
   13.75
+ ],
+ "vaul.Vaul.Trigger (in context)": [
+  23.25,
+  67.25
  ],
  "video-player.VideoPlayer": [
   85.75,
