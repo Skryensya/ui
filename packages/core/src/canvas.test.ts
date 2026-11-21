@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 import { describe, expect, it } from "vitest";
 import {
   CANVAS_MAX_ZOOM,
@@ -183,5 +184,23 @@ describe("the small ones", () => {
 
   it("writes the transform the way both bindings will", () => {
     expect(canvasTransform({ x: 12.5, y: -3, scale: 0.5 })).toBe("translate(12.5px, -3px) scale(0.5)");
+  });
+});
+
+describe("the view event", () => {
+  it("tells the root the new view on every change", async () => {
+    const { connectCanvasView, canvasEvents, canvasParts } = await import("./canvas.js");
+    const root = document.createElement("div");
+    root.innerHTML = `<div class="${canvasParts.viewport}"><div class="${canvasParts.content}"></div></div>`;
+    document.body.append(root);
+    const seen: number[] = [];
+    root.addEventListener(canvasEvents.view, (event) => seen.push((event as CustomEvent<{ scale: number }>).detail.scale));
+    const disconnect = connectCanvasView(root);
+    const before = seen.length;
+    root.querySelector(`.${canvasParts.viewport}`)!.dispatchEvent(new KeyboardEvent("keydown", { key: "+", bubbles: true }));
+    expect(seen.length).toBeGreaterThan(before);
+    expect(seen.at(-1)).toBeGreaterThan(1);
+    disconnect();
+    root.remove();
   });
 });

@@ -60,6 +60,17 @@ export const canvasParts = {
   hint: "sk-canvas__hint",
 } as const;
 
+/**
+ * Events the canvas dispatches on its root. `view` fires whenever the view changes (a drag, a pinch, a wheel, a key, a button, a
+ * refit) with `{ x, y, scale }` as the detail: the TARGET view, since a discrete zoom is eased in CSS and the content is still
+ * on its way when this fires. Anything that follows the view (lazy content, labels that keep their size, a minimap) listens
+ * to this instead of observing the content's inline style and reading its computed transform, which forces a style recalculation
+ * on every frame of a gesture. Both bindings get it, because both call `connectCanvasView`.
+ */
+export const canvasEvents = {
+  view: "sk-canvas-view",
+} as const;
+
 export const canvasAttrs = {
   /** The enhancer's attachment point. */
   root: "data-sk-canvas",
@@ -312,6 +323,7 @@ export function connectCanvasView(root: HTMLElement, options: CanvasViewOptions 
 
   const apply = (): void => {
     content.style.transform = canvasTransform(view);
+    root.dispatchEvent(new CustomEvent<CanvasView>(canvasEvents.view, { detail: view }));
     /*
      * The same view for the dotted ground, which pans and zooms with the drawing. It is written on the VIEWPORT's own background,
      * inline, and not as three custom properties on the root: a custom property is inherited, so changing one on the root
