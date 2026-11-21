@@ -1,4 +1,5 @@
 ---
+import { installCommand } from "../../lib/install-command";
 /* Appearances: the preview menu switches between them, so each one's sheet loads with the page (each base, then its appearances). */
 import "@skryensya/core/components/accordion.css";
 import "@skryensya/core/components/accordion.tactile.css";
@@ -78,7 +79,7 @@ mountIcons(document, phosphorIcons);`;
  * Accordion's enhanced surface is a composition: accordion.css owns the frame and tile.css owns
  * each expandable item. Details is its own native, CSS-only path below.
  */
-const nativeInstall = `pnpm add @skryensya/core`;
+const nativeInstall = installCommand("core");
 const nativeStyles = `@import "@skryensya/core/components/details.css";`;
 
 /* Same Storybook handoff Badge uses: every fixed preview below points at the generated story for

@@ -5,6 +5,7 @@
 export const installMessages = {
   es: {
     "install.stepInstall": "Instalar",
+    "install.notOnNpm": "Los paquetes todavía no están en npm (llegan con la v0.1.0): se instalan desde el GitHub Release.",
     "install.stepStyles": "Estilos",
     "install.stepImport": "Importar",
     "install.stepMount": "Montaje",
@@ -31,6 +32,7 @@ export const installMessages = {
   },
   en: {
     "install.stepInstall": "Install",
+    "install.notOnNpm": "The packages are not on npm yet (that starts with v0.1.0): they install from the GitHub Release.",
     "install.stepStyles": "Styles",
     "install.stepImport": "Import",
     "install.stepMount": "Mounting",

@@ -1,4 +1,5 @@
 ---
+import { installCommand } from "../../lib/install-command";
 /*
  * A composition guide, not a component page: there is no `sk-card`, no `@skryensya/react/card` and
  * no compiled contract to publish. This page therefore teaches the decision rule, not a gallery of
@@ -34,7 +35,7 @@ const explain = (option: string, values: readonly string[]) =>
   Object.fromEntries(values.map((value) => [value, t(`cardPage.prop.${option}.${value}` as Parameters<typeof t>[0])]));
 
 const install = `# There is no Card package.
-pnpm add @skryensya/core @skryensya/react
+${installCommand("react")}
 
 # Import the pieces your composition actually uses, for example:
 @import "@skryensya/core/patterns/box.css";

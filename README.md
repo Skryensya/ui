@@ -56,6 +56,9 @@ alone (about 19 minutes, worth it for anything visual) and `pnpm check:all` runs
 tarballs, so install the Skryensya packages you need from the release URL.
 <!-- x-release-please-end -->
 
+npm publication starts with v0.1.0. Until then, list every Skryensya package you use by its release
+URL: a tarball names its Skryensya dependencies by version, and npm cannot resolve those.
+
 For React:
 
 <!-- x-release-please-start-version -->
@@ -104,6 +107,16 @@ import { lucideIcons } from "@skryensya/icons-lucide";
 import { mountComponentsWithIcons } from "@skryensya/vanilla/auto";
 
 await mountComponentsWithIcons(document, lucideIcons);
+```
+
+Vite and Astro need one resolver setting: the vanilla layer depends on `@zag-js/svelte`, which only
+exports under the `svelte` condition. No Svelte plugin is needed, only the condition:
+
+```ts
+// vite.config.ts (in Astro, under `vite` in astro.config.mjs)
+import { defaultClientConditions } from "vite"; // Vite 6+; on Vite 5 write just ["svelte"]
+
+export default { resolve: { conditions: [...defaultClientConditions, "svelte"] } };
 ```
 
 Optional packages use the same release URL pattern: `skryensya-charts-0.0.1.tgz`,

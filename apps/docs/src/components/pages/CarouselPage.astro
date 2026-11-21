@@ -1,4 +1,5 @@
 ---
+import { installCommand } from "../../lib/install-command";
 /* The anatomy diagram at the top of the page is an Annotated frame, so this page needs its sheet. */
 import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/avatar.css";
@@ -38,7 +39,7 @@ const explain = (option: string, values: readonly string[]) =>
 // The dot box is 1.5rem (the 24px target minimum); at 0.8 zoom it would draw 19px, so it is sized up by the same factor.
 const zoomOut = ".sk-carousel { zoom: 0.8; } .sk-carousel__dot { --sk-carousel-dot-box: 1.875rem; }";
 
-const installIcons = `pnpm add @skryensya/icons-phosphor`;
+const installIcons = installCommand("icons-phosphor");
 
 const bootstrap = `import { initComponents } from "@skryensya/vanilla/auto";
 import { mountIcons } from "@skryensya/vanilla/icon";

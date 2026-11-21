@@ -1,4 +1,5 @@
 ---
+import { installCommand } from "../../lib/install-command";
 /*
  * A survey page, not a single component's page: Box, Wrapper, ImageFrame, Stack, Inline, Grid,
  * Text, Heading and Link each already have their own contract and their own migrated page under
@@ -13,7 +14,7 @@ import WhenToUse from "../WhenToUse.astro";
 import { primitivesTree } from "../../demos/layout";
 import { getLocale, tList, useTranslations } from "../../i18n";
 
-const install = `pnpm add @skryensya/core @skryensya/react`;
+const install = installCommand("react");
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
 const path = "/components/primitives";

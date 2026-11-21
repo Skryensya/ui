@@ -4,8 +4,10 @@ import CodeBlock from "../../components/CodeBlock.astro";
 import UsagePreview from "../../components/UsagePreview.astro";
 import { installUsageTree } from "../../demos/installation";
 import { getLocale, useTranslations } from "../../i18n";
+import { installCommand, kitVersion } from "../../lib/install-command";
 
-const install = `pnpm add @skryensya/vanilla   # o @skryensya/react`;
+const installVanilla = installCommand("vanilla");
+const installReact = installCommand("react");
 
 const imports = `/* Base: ramps, escala, semánticos y state layer. */
 @import "@skryensya/vanilla/css/tokens.css";
@@ -28,12 +30,18 @@ const t = useTranslations(getLocale(Astro.url));
   </p>
 
   <h2>Instalar</h2>
-  <CodeBlock code={install} label="terminal" />
   <p>
-    Instala un binding y nada más: trae el core consigo y re-exporta sus hojas de estilo bajo
-    <code>css/</code>, así que nunca instalas ni importas <code>@skryensya/core</code> tú mismo. Para
-    compilar los tokens con tu propio Sass, instala <code>@skryensya/core</code> e importa
-    <code>tokens.scss</code> desde él.
+    Los paquetes todavía no están en npm: eso empieza con la v0.1.0. Mientras tanto, cada uno se instala
+    desde el tarball de su GitHub Release (aquí, la {kitVersion}). Un tarball nombra por versión los
+    paquetes de Skryensya de los que depende, y npm no puede resolverlos, así que el comando también los
+    incluye.
+  </p>
+  <CodeBlock code={installVanilla} label="Vanilla" />
+  <CodeBlock code={installReact} label="React" />
+  <p>
+    El binding re-exporta las hojas de estilo del core bajo <code>css/</code>, así que nunca importas
+    <code>@skryensya/core</code> tú mismo. Para compilar los tokens con tu propio Sass, importa
+    <code>tokens.scss</code> desde <code>@skryensya/core</code>.
   </p>
 
   <h2>Importar</h2>

@@ -1,4 +1,5 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
+import { releaseUrl } from "./install-command";
 
 /*
  * The landing page's bento marquee. Twelve boxes laid out once (`bentoSlots`), five sets of
@@ -1044,25 +1045,16 @@ export function bentoSets(es: boolean): BentoTile[][] {
       stack(
         [
           title(t("Instalación", "Installation")),
-          between([
-            {
-              contract: "typography",
-              signature: "Code",
-              children: "pnpm add @skryensya/react",
-            },
-            {
-              contract: "clipboard",
-              signature: "CopyButton",
-              options: {
-                value: "pnpm add @skryensya/react",
-                label: t("Copiar comando", "Copy command"),
-              },
-            },
-          ]),
+          // A real, runnable command that fits the tile: the release's CLI installs core, the binding and its icons.
+          {
+            contract: "code-preview",
+            signature: "CodePreview",
+            slots: { children: `pnpm dlx ${releaseUrl("cli")} add button` },
+          },
           hint(
             t(
-              "Elige un binding: React o Vanilla.",
-              "Pick a binding: React or Vanilla.",
+              "Instala el core, el binding y los íconos desde el GitHub Release.",
+              "Installs core, the binding and its icons from the GitHub Release.",
             ),
           ),
         ],

@@ -1,4 +1,5 @@
 ---
+import { installCommand } from "../../lib/install-command";
 import FoundationPage from "../../components/FoundationPage.astro";
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/components/table.css";
@@ -20,9 +21,8 @@ const vocabCss = `.sk-grid {
 
 
 const install = `# Lucide comes with @skryensya/react.
-# Another set is installed only when it is chosen as the brand:
-pnpm add @skryensya/icons-phosphor
-pnpm add @skryensya/icons-material`;
+# Another set is installed only when it is chosen as the brand (or icons-material):
+${installCommand("icons-phosphor")}`;
 
 const swap = `import { materialIcons } from "@skryensya/icons-material";
 import { IconSetProvider } from "@skryensya/react";

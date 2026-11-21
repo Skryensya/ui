@@ -1,4 +1,5 @@
 ---
+import { installCommand } from "../../lib/install-command";
 import ComponentPageShell from "./ComponentPageShell.astro";
 import CodeBlock from "../CodeBlock.astro";
 import DoDont from "../DoDont.astro";
@@ -180,12 +181,12 @@ const modDont = `<div class="hotkey-dd hotkey-dd--platform"><code>isMac ? "⌘K"
   </Fragment>
 
   <Fragment slot="install">
-    <CodeBlock code="pnpm add @skryensya/core @skryensya/react" label="terminal" lang="bash" />
+    <CodeBlock code={installCommand("react")} label="terminal" lang="bash" />
     <CodeBlock code={react} label="React" lang="tsx" />
   </Fragment>
 
   <Fragment slot="installVanilla">
-    <CodeBlock code="pnpm add @skryensya/core @skryensya/vanilla" label="terminal" lang="bash" />
+    <CodeBlock code={installCommand("vanilla")} label="terminal" lang="bash" />
     <CodeBlock code={vanilla} label="Vanilla" lang="ts" />
   </Fragment>
 

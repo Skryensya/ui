@@ -4,8 +4,10 @@ import CodeBlock from "../components/CodeBlock.astro";
 import UsagePreview from "../components/UsagePreview.astro";
 import { installUsageTree } from "../demos/installation";
 import { getLocale, useTranslations } from "../i18n";
+import { installCommand, kitVersion } from "../lib/install-command";
 
-const install = `pnpm add @skryensya/vanilla   # or @skryensya/react`;
+const installVanilla = installCommand("vanilla");
+const installReact = installCommand("react");
 
 const imports = `/* Base: palettes, scale, semantics and state layer. */
 @import "@skryensya/vanilla/css/tokens.css";
@@ -26,12 +28,17 @@ const t = useTranslations(getLocale(Astro.url));
   </p>
 
   <h2>Install</h2>
-  <CodeBlock code={install} label="terminal" />
   <p>
-    Install one binding and nothing else: it brings the core with it and re-exports its stylesheets
-    under <code>css/</code>, so you never install or import <code>@skryensya/core</code> yourself. To
-    compile the tokens with your own Sass instead, install <code>@skryensya/core</code> and import
-    <code>tokens.scss</code> from it.
+    The packages are not on npm yet: that starts with v0.1.0. Until then each one installs from the
+    tarball on its GitHub Release ({kitVersion} here). A tarball names the Skryensya packages it depends
+    on by version, which npm cannot resolve, so the command lists them too.
+  </p>
+  <CodeBlock code={installVanilla} label="Vanilla" />
+  <CodeBlock code={installReact} label="React" />
+  <p>
+    The binding re-exports the core's stylesheets under <code>css/</code>, so you never import
+    <code>@skryensya/core</code> yourself. To compile the tokens with your own Sass instead, import
+    <code>tokens.scss</code> from <code>@skryensya/core</code>.
   </p>
 
   <h2>Importing</h2>

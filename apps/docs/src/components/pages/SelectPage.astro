@@ -1,4 +1,5 @@
 ---
+import { installCommand } from "../../lib/install-command";
 /* Appearances: the preview menu switches between them, so each one's sheet loads with the page (each base, then its appearances). */
 import "@skryensya/core/components/select.css";
 import "@skryensya/core/components/select.brutalist.css";
@@ -28,7 +29,7 @@ const t = useTranslations(getLocale(Astro.url));
 const nativeStyles = `@import "@skryensya/core/patterns/anchored.css";
 @import "@skryensya/core/components/select.css";`;
 
-const nativeInstall = `pnpm add @skryensya/core`;
+const nativeInstall = installCommand("core");
 
 const js = `import { initComponents } from "@skryensya/vanilla/auto";
 import { mountIcons } from "@skryensya/vanilla/icon";

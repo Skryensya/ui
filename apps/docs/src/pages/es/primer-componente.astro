@@ -5,8 +5,9 @@ import CodeBlock from "../../components/CodeBlock.astro";
 import UsagePreview from "../../components/UsagePreview.astro";
 import { firstComponentButtonsTree } from "../../demos/button";
 import { getLocale, useTranslations } from "../../i18n";
+import { installCommand } from "../../lib/install-command";
 
-const step1 = `pnpm add @skryensya/core`;
+const step1 = installCommand("core");
 
 const step2 = `@import "@skryensya/core/tokens.scss";`;
 

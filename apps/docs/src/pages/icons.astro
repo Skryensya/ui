@@ -1,4 +1,5 @@
 ---
+import { installCommand } from "../lib/install-command";
 import FoundationPage from "../components/FoundationPage.astro";
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/components/table.css";
@@ -22,8 +23,8 @@ const vocabCss = `.sk-grid {
 
 
 const bind = `# nothing: Lucide is the @skryensya/react default
-# another set? install it, and only then is it bundled:
-pnpm add @skryensya/icons-phosphor   # or @skryensya/icons-material`;
+# another set? install it, and only then is it bundled (or icons-material):
+${installCommand("icons-phosphor")}`;
 
 const swap = `- import { phosphorIcons } from "@skryensya/icons-phosphor";
 + import { materialIcons } from "@skryensya/icons-material";

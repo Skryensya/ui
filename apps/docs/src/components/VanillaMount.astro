@@ -1,4 +1,5 @@
 ---
+import { installCommand } from "../lib/install-command";
 /*
  * One installation contract for every enhanced docs page.
  *
@@ -47,7 +48,7 @@ const [titleSection, autoSection, onlySection] = vanillaMountSections(t, name);
  */
 const autoLink = `<a href="${localizePath("/automatic-mounting", locale)}">${t("vanilla.autoLinkLabel")}</a>`;
 
-const install = `pnpm add @skryensya/core @skryensya/vanilla`;
+const install = installCommand("vanilla");
 
 const auto = `import { initComponents } from "@skryensya/vanilla/auto";
 
