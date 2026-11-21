@@ -5,27 +5,27 @@
  ],
  "accordion.Accordion.Content (in context)": [
   43.25,
-  25.75
+  23.5
  ],
  "accordion.Accordion.Item (in context)": [
   43.25,
-  25.75
+  23.5
  ],
  "accordion.Accordion.Trigger (in context)": [
   43.25,
-  25.75
+  23.5
  ],
  "app-bar.AppBar": [
   18.75,
-  12.5
+  10
  ],
  "app-bar.AppBarMenu (in context)": [
   23.5,
-  12.5
+  10
  ],
  "app-bar.AppBarStatus (in context)": [
   24,
-  12.5
+  10
  ],
  "audio-player.AudioPlayer": [
   89.75,
@@ -33,7 +33,7 @@
  ],
  "audio-player.AudioPlayerMinimal": [
   20.25,
-  14
+  11.75
  ],
  "avatar.Avatar.image": [
   57.75,
@@ -45,11 +45,11 @@
  ],
  "avatar.AvatarGroup": [
   15.5,
-  13.5
+  11
  ],
  "back-to-top.BackToTop": [
   15,
-  11
+  8.5
  ],
  "badge.Badge": [
   41.75,
@@ -65,7 +65,7 @@
  ],
  "breadcrumb.Breadcrumb": [
   23.75,
-  12.5
+  10
  ],
  "button-group.ButtonGroup": [
   51,
@@ -93,15 +93,15 @@
  ],
  "changelog.Changelog": [
   43.25,
-  46.75
+  44.5
  ],
  "changelog.ChangelogEntry (in context)": [
   43.25,
-  46.75
+  44.5
  ],
  "changelog.ChangelogRelease (in context)": [
   43.25,
-  46.75
+  44.5
  ],
  "checkbox.Checkbox": [
   59.75,
@@ -141,7 +141,7 @@
  ],
  "comment-thread.Comment (in context)": [
   43.25,
-  23.5
+  21
  ],
  "comment-thread.CommentActions": [
   18.75,
@@ -149,7 +149,7 @@
  ],
  "comment-thread.CommentThread": [
   43.25,
-  23.5
+  21
  ],
  "compare-slider.CompareSlider": [
   53.5,
@@ -157,27 +157,27 @@
  ],
  "comparison-table.ComparisonCell (in context)": [
   29.25,
-  20.5
+  18
  ],
  "comparison-table.ComparisonColumn (in context)": [
   29.25,
-  20.5
+  18
  ],
  "comparison-table.ComparisonRow (in context)": [
   29.25,
-  20.5
+  18
  ],
  "comparison-table.ComparisonTable": [
   57.5,
-  20.5
+  18.5
  ],
  "content.Toast (in context)": [
   19,
-  11
+  8.5
  ],
  "content.ToastRegion": [
   15.5,
-  11
+  8.5
  ],
  "data-grid.DataGrid": [
   45,
@@ -185,11 +185,11 @@
  ],
  "data-grid.DataGridCell (in context)": [
   22.5,
-  16.25
+  15.75
  ],
  "data-grid.DataGridRow (in context)": [
   22.75,
-  16.25
+  13.75
  ],
  "date-picker.DatePicker": [
   103.25,
@@ -197,7 +197,7 @@
  ],
  "description-list.DescriptionItem (in context)": [
   24.5,
-  16.5
+  14
  ],
  "description-list.DescriptionList": [
   78.5,
@@ -205,43 +205,43 @@
  ],
  "diagram.Diagram": [
   12.5,
-  25.75
+  23.25
  ],
  "dialog-stack.DialogStackClose": [
   19,
-  13.75
+  11.25
  ],
  "dialog-stack.DialogStackDescription": [
   23,
-  12.25
+  10
  ],
  "dialog-stack.DialogStackFooter": [
   19.5,
-  14
+  11.5
  ],
  "dialog-stack.DialogStackHeader": [
   20,
-  12.5
+  10
  ],
  "dialog-stack.DialogStackNext": [
   18.25,
-  13.75
+  11.25
  ],
  "dialog-stack.DialogStackOverlay": [
   20.5,
-  11
+  8.5
  ],
  "dialog-stack.DialogStackPrevious": [
   21,
-  13.75
+  11.25
  ],
  "dialog-stack.DialogStackTitle": [
   18.25,
-  12.75
+  10.25
  ],
  "dialog-stack.DialogStackTrigger": [
   20,
-  13.75
+  11.25
  ],
  "empty-state.EmptyState": [
   65.5,
@@ -261,7 +261,7 @@
  ],
  "feed.FeedArticle (in context)": [
   24.5,
-  23
+  20.5
  ],
  "file-upload.FileUpload": [
   92.75,
@@ -289,7 +289,7 @@
  ],
  "input.Input (in context)": [
   17.75,
-  15.5
+  13.25
  ],
  "input.NativeInput": [
   90,
@@ -297,7 +297,7 @@
  ],
  "input.Textarea (in context)": [
   20,
-  21
+  20.75
  ],
  "kbd.Kbd": [
   16,
@@ -317,7 +317,7 @@
  ],
  "layout.LayoutGrid": [
   43.25,
-  70.25
+  68
  ],
  "layout.Main": [
   41,
@@ -333,23 +333,23 @@
  ],
  "lightbox.Lightbox.Trigger (in context)": [
   43.25,
-  23.75
+  21.5
  ],
  "list.List": [
   41.25,
-  21.5
+  21.25
  ],
  "list.ListItem (in context)": [
   19,
-  21.5
+  21
  ],
  "list.ListItemLink (in context)": [
   22,
-  21.5
+  19
  ],
  "list.ListItemPlain (in context)": [
   22.5,
-  23
+  20.5
  ],
  "listbox.Listbox": [
   103.25,
@@ -361,7 +361,7 @@
  ],
  "loader.Loader.status": [
   16.5,
-  11
+  8.5
  ],
  "marquee.Marquee": [
   103.25,
@@ -373,11 +373,11 @@
  ],
  "media-overlay.MediaOverlay (in context)": [
   43.25,
-  35.25
+  32.75
  ],
  "media-overlay.MediaOverlayShade (in context)": [
   43.25,
-  53
+  50.5
  ],
  "menu.Menu": [
   43.25,
@@ -389,27 +389,27 @@
  ],
  "message.MessageActions": [
   17.75,
-  12.5
+  10
  ],
  "message.MessageAvatar": [
   17.25,
-  13
+  10.5
  ],
  "message.MessageContent": [
   35.75,
-  17.5
+  15
  ],
  "message.MessageFooter": [
   17.25,
-  12.5
+  10
  ],
  "message.MessageGroup": [
   17,
-  12.5
+  10
  ],
  "message.MessageHeader": [
   17.75,
-  12.5
+  10
  ],
  "meter.Meter": [
   52.25,
@@ -421,23 +421,23 @@
  ],
  "nav-list.NavListGroup (in context)": [
   25,
-  21
+  18.75
  ],
  "nav-list.NavListLink (in context)": [
   23.5,
-  21
+  18.75
  ],
  "navbar.Navbar": [
   12.5,
-  14
+  11.75
  ],
  "navbar.NavbarActions (in context)": [
   25.75,
-  67.25
+  64.75
  ],
  "navbar.NavbarBrand (in context)": [
   24.75,
-  67.25
+  64.75
  ],
  "number-field.NumberField": [
   63.25,
@@ -449,7 +449,7 @@
  ],
  "pagination.Pagination": [
   24.5,
-  13
+  10.5
  ],
  "password-input.PasswordInput": [
   94,
@@ -473,15 +473,15 @@
  ],
  "presence.Presence": [
   15.25,
-  12.5
+  11
  ],
  "procedure.Procedure": [
   25.5,
-  28
+  25.75
  ],
  "procedure.ProcedureStep (in context)": [
   25.5,
-  28
+  25.75
  ],
  "progress.Progress": [
   24.25,
@@ -497,7 +497,7 @@
  ],
  "questionnaire.QuestionnaireItem (in context)": [
   34.25,
-  46.25
+  43.75
  ],
  "quote.Quote": [
   73.25,
@@ -561,31 +561,31 @@
  ],
  "sidebar.SidebarContent (in context)": [
   26.25,
-  35
+  34.75
  ],
  "sidebar.SidebarFooter (in context)": [
   25.25,
-  35
+  34.75
  ],
  "sidebar.SidebarHeader (in context)": [
   25.75,
-  35
+  32.75
  ],
  "sidebar.SidebarResizeHandle (in context)": [
   30,
-  30.5
+  28.25
  ],
  "sidebar.SidebarSeparator (in context)": [
   27.75,
-  35
+  32.75
  ],
  "sidebar.SidebarTrigger (in context)": [
   25.75,
-  35
+  32.75
  ],
  "skip-link.SkipLink": [
   13.5,
-  11
+  8.5
  ],
  "slider.Slider": [
   12.5,
@@ -597,7 +597,7 @@
  ],
  "stat.Stat": [
   8.5,
-  15
+  12.75
  ],
  "steps.Steps": [
   56.5,
@@ -609,31 +609,31 @@
  ],
  "table.Table": [
   14,
-  20
+  17.75
  ],
  "table.TableBody (in context)": [
   20.75,
-  20
+  17.75
  ],
  "table.TableCaption (in context)": [
   22.75,
-  20
+  17.75
  ],
  "table.TableCell (in context)": [
   20,
-  20
+  17.75
  ],
  "table.TableHead (in context)": [
   21,
-  20
+  17.75
  ],
  "table.TableHeader (in context)": [
   22.25,
-  20
+  19.75
  ],
  "table.TableRow (in context)": [
   20.25,
-  20
+  17.75
  ],
  "table.TableScroll": [
   80.5,
@@ -669,11 +669,11 @@
  ],
  "tile.TileChevron (in context)": [
   25.75,
-  24.75
+  22.25
  ],
  "tile.TileContent (in context)": [
   32.25,
-  17.75
+  15.5
  ],
  "tile.TileLink": [
   71.25,
@@ -693,15 +693,15 @@
  ],
  "timeline.Timeline": [
   22.75,
-  31.75
+  29.25
  ],
  "timeline.TimelineItem (in context)": [
   23.5,
-  31.75
+  29.25
  ],
  "toc.Toc": [
   17.25,
-  20.5
+  18
  ],
  "toolbar.Toolbar": [
   102.5,
@@ -709,11 +709,11 @@
  ],
  "toolbar.ToolbarGroup (in context)": [
   24,
-  14.25
+  14
  ],
  "toolbar.ToolbarSeparator (in context)": [
   26.75,
-  14.25
+  12
  ],
  "tooltip.Tooltip": [
   57.25,
@@ -721,39 +721,39 @@
  ],
  "treegrid.Treegrid": [
   43.25,
-  23
+  20.5
  ],
  "treegrid.TreegridBody (in context)": [
   43.25,
-  23
+  20.5
  ],
  "treegrid.TreegridCell (in context)": [
   43.25,
-  23
+  20.5
  ],
  "treegrid.TreegridColumnHeader (in context)": [
   43.25,
-  23
+  20.5
  ],
  "treegrid.TreegridHead (in context)": [
   43.25,
-  23
+  20.5
  ],
  "treegrid.TreegridHeadRow (in context)": [
   43.25,
-  23
+  20.5
  ],
  "treegrid.TreegridRow (in context)": [
   43.25,
-  23
+  20.5
  ],
  "treegrid.TreegridScroll": [
   43.25,
-  23
+  20.5
  ],
  "typography.Code": [
   10.25,
-  12.5
+  10
  ],
  "typography.Heading": [
   68.5,
@@ -765,11 +765,11 @@
  ],
  "typography.Output": [
   11.5,
-  12.5
+  10
  ],
  "typography.Strong": [
   11.25,
-  12.5
+  10
  ],
  "typography.Text": [
   103.25,
@@ -785,7 +785,7 @@
  ],
  "vaul.Vaul.Trigger (in context)": [
   23.25,
-  67.25
+  64.75
  ],
  "video-player.VideoPlayer": [
   85.75,

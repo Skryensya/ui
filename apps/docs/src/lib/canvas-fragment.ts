@@ -15,7 +15,7 @@ export const canvasBlocks = (components: CanvasComponent[]): CanvasBlock[] =>
 /** The body of one block, served on its own so the page only pays for what the reader looks at. */
 export function blockFragment({ signature: s }: CanvasBlock): string {
   return hardenInputsInHtml(`
-      <div class="group"><p class="group__label">base</p><div class="specimens">${figures([{ label: "default", tree: s.base }])}</div></div>
+      <div class="group"><div class="specimens">${figures([{ label: "default", tree: s.base }])}</div></div>
       ${s.groups.map((g) => `<div class="group"><p class="group__label">${esc(g.option)}</p><div class="specimens">${figures(g.specimens)}</div></div>`).join("")}`)
     // Emitted markup is indented for humans; collapsing it is about a third of the bytes and of the text nodes held in RAM.
     .replace(/\s*\n\s*/g, " ")

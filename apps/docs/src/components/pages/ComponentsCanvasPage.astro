@@ -32,7 +32,7 @@ const sizeOf = (b: ReturnType<typeof canvasBlocks>[number]) => {
 const columns = layoutColumns(canvasBlocks(components), sizeOf);
 const board = columns.map((column) => `
   <div class="column" style="inline-size:${column.w}rem">${column.parts.map((b) => `
-    <section class="part" id="${b.id}" data-canvas-part="${b.id}"${measured[b.id] ? " data-measured" : ""} data-appearances="${b.appearances.join(" ")}" style="${measured[b.id] ? "block-size" : "min-block-size"}:${sizeOf(b).h}rem">
+    <section class="part" id="${b.id}" data-canvas-part="${b.id}"${measured[b.id] ? " data-measured" : ""} data-appearances="${b.appearances.join(" ")}" style="${measured[b.id] ? `block-size:${sizeOf(b).h}rem;inline-size:${sizeOf(b).w}rem` : `min-block-size:${sizeOf(b).h}rem`}">
       <header class="part__header"><h2 class="part__title">${esc(b.title)}</h2><span class="part__category">${esc(b.category)}</span></header>
       <div class="part__body" inert></div>
     </section>`).join("")}
@@ -127,6 +127,7 @@ const skipped = components.flatMap((c) => c.skipped.map((s) => `${c.id}.${s}`));
     /* A small pool, not one at a time: the cost of a part is mostly waiting (network, chunk, frame), so four in flight
        keep the canvas filling as fast as the reader pans, while four mounts a frame still leave room for the gesture.
        Parts that left the screen while waiting are skipped. */
+    const MIN_PX = 100;
     const IDLE_POOL = Math.min(6, Math.max(2, (navigator.hardwareConcurrency || 4) >> 1));
     /* While the view is moving only one part mounts at a time: a mount is a long task, and it is the gesture that must
        not stutter. The canvas writes its transform inline on every move, so a mutation of it means "moving". */
@@ -145,8 +146,11 @@ const skipped = components.flatMap((c) => c.skipped.map((s) => `${c.id}.${s}`));
     const pending = new Set<HTMLElement>();
     let active = 0;
     const drain = () => {
-      while (active < (moving ? 1 : IDLE_POOL) && pending.size) {
-        const part = pending.values().next().value!;
+      for (const part of [...pending]) {
+        if (active >= (moving ? 1 : IDLE_POOL)) break;
+        // A block drawn under MIN_PX wide is a speck: loading it costs a mount and shows nothing. It stays pending
+        // and loads when the reader zooms in (drain runs again on every settle).
+        if (part.getBoundingClientRect().width < MIN_PX) continue;
         pending.delete(part);
         active++;
         void load(part).finally(() => {
@@ -231,7 +235,7 @@ const skipped = components.flatMap((c) => c.skipped.map((s) => `${c.id}.${s}`));
   .column { flex: none; display: grid; gap: 1rem; }
   /* One hairline per component, no fill: the wall reads as a Figma showcase, not as cards. A part is as wide as its
      content needs and every part of a column takes the column's width, so a wide component widens its column only. */
-  .part { border: 1px solid var(--color-border-subtle); border-radius: var(--radius-surface); padding: 1.5rem; box-sizing: border-box; inline-size: 100%;
+  .part { border: 1px solid var(--color-border-subtle); border-radius: var(--radius-surface); padding: 1.5rem; box-sizing: border-box;
     /* Size containment: the part is exactly the measured box, so its content cannot move anything. content-visibility
        makes the browser skip layout and paint of every part that is off screen. */
     contain: strict; content-visibility: auto; overflow: clip; }
