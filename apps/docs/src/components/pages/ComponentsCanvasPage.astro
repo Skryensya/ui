@@ -54,7 +54,7 @@ const board = layoutColumns(clusters, (c) => ({ w: c.w, h: c.h }), 6)
 const canvas = emitMarkup({
   contract: "canvas",
   signature: "Canvas",
-  options: { label: copy.label },
+  options: { label: copy.label, minZoom: 0.125 },
   children: "__BOARD__",
 }).replace("__BOARD__", `<div class="board" data-fragments="${fragments}" data-all-appearances="${canvasAppearances.join(" ")}">${board}</div>`);
 const appearancePicker = emitMarkup({
