@@ -154,6 +154,7 @@ const skipped = components.flatMap((c) => c.skipped.map((s) => `${c.id}.${s}`));
        the zoom instead of stepping. Past FAR the name moves onto its block and the block blurs under it. Written on the
        labels themselves, not on the board: a variable on the board would restyle every specimen on every frame. */
     const FAR = 0.35;
+    const room_ = new Map<HTMLElement, number>();
     const labels = [...board.querySelectorAll<HTMLElement>(".label, .cluster__title")];
     let frame = 0;
     // The canvas eases discrete zooms in CSS, so the transform keeps changing after the last mutation: keep reading for a while.
@@ -163,8 +164,20 @@ const skipped = components.flatMap((c) => c.skipped.map((s) => `${c.id}.${s}`));
       const scale = content ? new DOMMatrixReadOnly(getComputedStyle(content).transform).a || 1 : 1;
       const far = scale < FAR;
       if (board.hasAttribute("data-far") !== far) board.toggleAttribute("data-far", far);
-      const grow = far ? Math.min(7, 1.1 / scale) : Math.min(2.2, scale ** -0.5);
-      for (const label of labels) label.style.setProperty("--grow", label.classList.contains("cluster__title") ? String(Math.min(3, scale ** -0.5)) : String(grow));
+      const grow = far ? Math.min(3, 0.9 / scale) : Math.min(1.8, scale ** -0.5);
+      for (const label of labels) {
+        if (label.classList.contains("cluster__title")) {
+          label.style.setProperty("--grow", String(Math.min(2, scale ** -0.5)));
+          continue;
+        }
+        // Never wider than its own block: widths are unscaled layout boxes, read once (reading them per frame forces layout).
+        let room = room_.get(label);
+        if (room === undefined) {
+          room = ((label.nextElementSibling as HTMLElement).offsetWidth * 0.9) / label.offsetWidth;
+          room_.set(label, room);
+        }
+        label.style.setProperty("--grow", String(Math.max(0.6, Math.min(grow, room))));
+      }
     };
     const scheduleLabels = () => {
       until = performance.now() + 500;
