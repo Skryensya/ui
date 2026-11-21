@@ -6,6 +6,7 @@ import "@skryensya/core/components/canvas.css";
 import "@skryensya/core/components/megamenu.css";
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/patterns/anchored.css";
+import "@skryensya/core/patterns/box.css";
 import "@skryensya/core/patterns/image-frame.css";
 import "@skryensya/core/patterns/layout.css";
 import "@skryensya/core/patterns/media-overlay.css";
@@ -19,6 +20,7 @@ export default { title: "Components/Megamenu", tags: ["autodocs"] } satisfies Me
 
 export const Anatomy: StoryObj = treeStory(demos.megamenuAnatomyTree, { decorators: [withCss(megamenuAnatomyCss)] });
 export const Default: StoryObj = treeStory(demos.megamenuTree);
+export const Pill: StoryObj = treeStory(demos.megamenuPillTree);
 export const TwoColumns: StoryObj = treeStory((t) => demos.megamenuTwoColumnsTree(t, placeholderHrefs()));
 export const FourColumns: StoryObj = treeStory((t) => demos.megamenuFourColumnsTree(t, placeholderHrefs()));
 export const ThreeColumns: StoryObj = treeStory((t) => demos.megamenuThreeColumnsTree(t, placeholderHrefs()));
