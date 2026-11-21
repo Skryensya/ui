@@ -1,0 +1,582 @@
+{
+ "accordion.Accordion": [
+  103.25,
+  80.75
+ ],
+ "app-bar.AppBar": [
+  18.75,
+  12.5
+ ],
+ "audio-player.AudioPlayer": [
+  89.75,
+  54.75
+ ],
+ "audio-player.AudioPlayerMinimal": [
+  20.25,
+  14
+ ],
+ "avatar.Avatar.image": [
+  57.75,
+  15.5
+ ],
+ "avatar.Avatar.initials": [
+  24,
+  15
+ ],
+ "avatar.AvatarGroup": [
+  15.5,
+  13.5
+ ],
+ "back-to-top.BackToTop": [
+  15,
+  11
+ ],
+ "badge.Badge": [
+  41.75,
+  12.75
+ ],
+ "badge.BadgeDot": [
+  33.5,
+  12.5
+ ],
+ "box.Box": [
+  103.25,
+  143.5
+ ],
+ "breadcrumb.Breadcrumb": [
+  23.75,
+  12.5
+ ],
+ "button-group.ButtonGroup": [
+  51,
+  16.5
+ ],
+ "button.Button.action": [
+  88.5,
+  14
+ ],
+ "button.Button.navigation": [
+  58.25,
+  14
+ ],
+ "calendar.Calendar": [
+  103.25,
+  105.25
+ ],
+ "callout.Callout": [
+  73.25,
+  61.25
+ ],
+ "canvas.Canvas": [
+  12,
+  56
+ ],
+ "changelog.Changelog": [
+  43.25,
+  46.75
+ ],
+ "checkbox.Checkbox": [
+  59.75,
+  16.75
+ ],
+ "checkbox.CheckboxGroup": [
+  56,
+  18.5
+ ],
+ "clipboard.CopyButton": [
+  25.5,
+  13.75
+ ],
+ "code-preview.CodePreview": [
+  85.75,
+  22
+ ],
+ "color-picker.ColorPicker": [
+  58.5,
+  23
+ ],
+ "color-picker.ColorPicker.compact": [
+  55.75,
+  19.75
+ ],
+ "color-picker.ColorPicker.swatch": [
+  26.5,
+  14
+ ],
+ "combobox.Combobox": [
+  60.75,
+  34.75
+ ],
+ "command-palette.CommandPalette": [
+  18.5,
+  11
+ ],
+ "comment-thread.CommentActions": [
+  18.75,
+  13
+ ],
+ "comment-thread.CommentThread": [
+  43.25,
+  23.5
+ ],
+ "compare-slider.CompareSlider": [
+  53.5,
+  19.25
+ ],
+ "comparison-table.ComparisonTable": [
+  57.5,
+  20.5
+ ],
+ "content.ToastRegion": [
+  15.5,
+  11
+ ],
+ "data-grid.DataGrid": [
+  45,
+  16.25
+ ],
+ "date-picker.DatePicker": [
+  103.25,
+  40
+ ],
+ "description-list.DescriptionList": [
+  78.5,
+  21.25
+ ],
+ "diagram.Diagram": [
+  12.5,
+  25.75
+ ],
+ "dialog-stack.DialogStackClose": [
+  19,
+  13.75
+ ],
+ "dialog-stack.DialogStackDescription": [
+  23,
+  12.25
+ ],
+ "dialog-stack.DialogStackFooter": [
+  19.5,
+  14
+ ],
+ "dialog-stack.DialogStackHeader": [
+  20,
+  12.5
+ ],
+ "dialog-stack.DialogStackNext": [
+  18.25,
+  13.75
+ ],
+ "dialog-stack.DialogStackOverlay": [
+  20.5,
+  11
+ ],
+ "dialog-stack.DialogStackPrevious": [
+  21,
+  13.75
+ ],
+ "dialog-stack.DialogStackTitle": [
+  18.25,
+  12.75
+ ],
+ "dialog-stack.DialogStackTrigger": [
+  20,
+  13.75
+ ],
+ "empty-state.EmptyState": [
+  65.5,
+  110.75
+ ],
+ "expressive-avatar.ExpressiveAvatar": [
+  94.25,
+  21.5
+ ],
+ "fade-edge.FadeEdge": [
+  57.25,
+  12.5
+ ],
+ "feed.Feed": [
+  67,
+  37.5
+ ],
+ "file-upload.FileUpload": [
+  92.75,
+  48
+ ],
+ "footer.Footer": [
+  103.25,
+  40.75
+ ],
+ "form-field.FormField": [
+  58.75,
+  21
+ ],
+ "hero.Hero": [
+  103.25,
+  209.25
+ ],
+ "icon.Icon": [
+  57.5,
+  175.75
+ ],
+ "image-frame.ImageFrame": [
+  103.25,
+  664
+ ],
+ "input.NativeInput": [
+  90,
+  19.25
+ ],
+ "kbd.Kbd": [
+  16,
+  12.5
+ ],
+ "layout.AppShell": [
+  103.25,
+  309
+ ],
+ "layout.Grid": [
+  103.25,
+  278.5
+ ],
+ "layout.Inline": [
+  103.25,
+  203.75
+ ],
+ "layout.LayoutGrid": [
+  43.25,
+  70.25
+ ],
+ "layout.Main": [
+  41,
+  248.75
+ ],
+ "layout.Stack": [
+  103.25,
+  238.75
+ ],
+ "lightbox.Lightbox": [
+  43,
+  11
+ ],
+ "list.List": [
+  41.25,
+  21.5
+ ],
+ "listbox.Listbox": [
+  103.25,
+  37.5
+ ],
+ "loader.Loader": [
+  68.75,
+  12.5
+ ],
+ "loader.Loader.status": [
+  16.5,
+  11
+ ],
+ "marquee.Marquee": [
+  103.25,
+  87.75
+ ],
+ "marquee.Marquee.autoplay": [
+  94,
+  27
+ ],
+ "menu.Menu": [
+  43.25,
+  16
+ ],
+ "message.Message": [
+  84.75,
+  27
+ ],
+ "message.MessageActions": [
+  17.75,
+  12.5
+ ],
+ "message.MessageAvatar": [
+  17.25,
+  13
+ ],
+ "message.MessageContent": [
+  35.75,
+  17.5
+ ],
+ "message.MessageFooter": [
+  17.25,
+  12.5
+ ],
+ "message.MessageGroup": [
+  17,
+  12.5
+ ],
+ "message.MessageHeader": [
+  17.75,
+  12.5
+ ],
+ "meter.Meter": [
+  52.25,
+  13.25
+ ],
+ "nav-list.NavList": [
+  45.5,
+  21
+ ],
+ "navbar.Navbar": [
+  12.5,
+  14
+ ],
+ "number-field.NumberField": [
+  63.25,
+  23
+ ],
+ "otp-input.OtpInput": [
+  103.25,
+  46.75
+ ],
+ "pagination.Pagination": [
+  24.5,
+  13
+ ],
+ "password-input.PasswordInput": [
+  94,
+  30.25
+ ],
+ "placeholder.Placeholder": [
+  57.75,
+  21
+ ],
+ "placeholder.Placeholder.block": [
+  19.5,
+  19
+ ],
+ "placeholder.Placeholder.circle": [
+  27.75,
+  14
+ ],
+ "placeholder.Placeholder.paragraph": [
+  57.75,
+  40.75
+ ],
+ "presence.Presence": [
+  15.25,
+  12.5
+ ],
+ "procedure.Procedure": [
+  25.5,
+  28
+ ],
+ "progress.Progress": [
+  24.25,
+  11.5
+ ],
+ "qr-code.QRCode": [
+  103.25,
+  64.25
+ ],
+ "questionnaire.Questionnaire": [
+  103.25,
+  263.5
+ ],
+ "quote.Quote": [
+  73.25,
+  18.75
+ ],
+ "radio-group.Radio": [
+  27,
+  12.75
+ ],
+ "radio-group.RadioGroup": [
+  84,
+  14.5
+ ],
+ "rating.Rating": [
+  78,
+  13.5
+ ],
+ "rating.RatingDisplay": [
+  59.5,
+  17.25
+ ],
+ "scroll-hint.ScrollHint": [
+  20.75,
+  12.75
+ ],
+ "search-field.SearchField": [
+  99.25,
+  22.5
+ ],
+ "search-field.SearchField.form": [
+  103.25,
+  52.25
+ ],
+ "segmented.Segmented": [
+  100.5,
+  14
+ ],
+ "select.Select": [
+  48.25,
+  15.5
+ ],
+ "select.Select.native": [
+  24.75,
+  13.75
+ ],
+ "separator.LabelledSeparator": [
+  41.5,
+  15.25
+ ],
+ "separator.Separator": [
+  49.5,
+  14
+ ],
+ "shimmer.Shimmer": [
+  24,
+  12.5
+ ],
+ "sidebar.Sidebar": [
+  55.75,
+  35
+ ],
+ "skip-link.SkipLink": [
+  13.5,
+  11
+ ],
+ "slider.Slider": [
+  12.5,
+  13
+ ],
+ "slider.SliderRange": [
+  14.25,
+  13
+ ],
+ "stat.Stat": [
+  8.5,
+  15
+ ],
+ "steps.Steps": [
+  56.5,
+  23.25
+ ],
+ "switch.Switch": [
+  20,
+  12.5
+ ],
+ "table.Table": [
+  14,
+  20
+ ],
+ "table.TableScroll": [
+  80.5,
+  50.25
+ ],
+ "tabs.Tabs": [
+  103.25,
+  71.25
+ ],
+ "tag.Tag": [
+  23.25,
+  12.75
+ ],
+ "tag.Tag.link": [
+  16,
+  12.75
+ ],
+ "tag.Tag.toggle": [
+  29,
+  12.75
+ ],
+ "tags-input.TagsInput": [
+  80,
+  40.5
+ ],
+ "tile.TileButton": [
+  56.5,
+  16.5
+ ],
+ "tile.TileCheckbox": [
+  80.5,
+  23.75
+ ],
+ "tile.TileLink": [
+  71.25,
+  52.25
+ ],
+ "tile.TileRadioGroup": [
+  99.75,
+  41.25
+ ],
+ "tile.TileSwitch": [
+  103.25,
+  88.25
+ ],
+ "time-field.TimeField": [
+  85.5,
+  29
+ ],
+ "timeline.Timeline": [
+  22.75,
+  31.75
+ ],
+ "toc.Toc": [
+  17.25,
+  20.5
+ ],
+ "toolbar.Toolbar": [
+  102.5,
+  27
+ ],
+ "tooltip.Tooltip": [
+  57.25,
+  13.75
+ ],
+ "treegrid.Treegrid": [
+  43.25,
+  23
+ ],
+ "treegrid.TreegridScroll": [
+  43.25,
+  23
+ ],
+ "typography.Code": [
+  10.25,
+  12.5
+ ],
+ "typography.Heading": [
+  68.5,
+  45
+ ],
+ "typography.Link": [
+  63.5,
+  12.5
+ ],
+ "typography.Output": [
+  11.5,
+  12.5
+ ],
+ "typography.Strong": [
+  11.25,
+  12.5
+ ],
+ "typography.Text": [
+  103.25,
+  19.25
+ ],
+ "user-select.UserSelect": [
+  69.75,
+  13.75
+ ],
+ "vaul.Vaul.Close": [
+  15.25,
+  13.75
+ ],
+ "video-player.VideoPlayer": [
+  85.75,
+  33.5
+ ],
+ "wrapper.Wrapper": [
+  103.25,
+  136.75
+ ]
+}

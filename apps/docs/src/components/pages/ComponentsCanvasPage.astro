@@ -1,0 +1,242 @@
+---
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/canvas.css";
+import { emitMarkup } from "@skryensya/ai-compiler/emit";
+import type { UsageTree } from "@skryensya/core/usage-tree";
+import { getLocale } from "../../i18n";
+import { canvasAppearances, componentsCanvas } from "../../lib/components-canvas";
+import { canvasBlocks, estimateRem } from "../../lib/canvas-fragment";
+import { layoutColumns } from "../../lib/canvas-layout";
+import sizes from "../../lib/canvas-sizes.json";
+
+const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
+
+// Every component stylesheet, so a specimen never renders unstyled; appearance sheets are scoped by attribute.
+import.meta.glob("../../../../../packages/core/css/components/*.css", { eager: true });
+
+const locale = getLocale(Astro.url);
+const copy = locale === "es"
+  ? { title: "Canvas de todos los componentes", intro: "Cada valor y cada estado de cada componente. Arrastra para mover, Ctrl/Cmd + rueda para acercar.", skipped: "Sin especimen automático (necesitan un canvas propio)", label: "Canvas de componentes", appearance: "Apariencia" }
+  : { title: "All components canvas", intro: "Every value and state of every component. Drag to pan, Ctrl/Cmd + wheel to zoom.", skipped: "No automatic specimen (need a hand-built canvas)", label: "Component canvas", appearance: "Appearance" };
+
+const components = componentsCanvas();
+const fragments = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/canvas/fragments/`;
+// A bento without a grid, squarish. Sizes are MEASURED in a real browser (`pnpm canvas:measure`, the max over every
+// appearance) so a part is its final size before anything loads: that is what keeps the canvas free of layout shift.
+// A component not measured yet falls back to an estimate and is clipped to it until the script is rerun.
+const measured = sizes as Record<string, [number, number]>;
+const sizeOf = (b: ReturnType<typeof canvasBlocks>[number]) => {
+  const m = measured[b.id];
+  return m ? { w: m[0], h: m[1] } : { w: 36, h: estimateRem(b) };
+};
+const columns = layoutColumns(canvasBlocks(components), sizeOf);
+const board = columns.map((column) => `
+  <div class="column" style="inline-size:${column.w}rem">${column.parts.map((b) => `
+    <section class="part" id="${b.id}" data-canvas-part="${b.id}"${measured[b.id] ? " data-measured" : ""} data-appearances="${b.appearances.join(" ")}" style="${measured[b.id] ? "block-size" : "min-block-size"}:${sizeOf(b).h}rem">
+      <header class="part__header"><h2 class="part__title">${esc(b.title)}</h2><span class="part__category">${esc(b.category)}</span></header>
+      <div class="part__body" inert></div>
+    </section>`).join("")}
+  </div>`).join("");
+
+const canvas = emitMarkup({
+  contract: "canvas",
+  signature: "Canvas",
+  options: { label: copy.label },
+  children: "__BOARD__",
+}).replace("__BOARD__", `<div class="board" data-fragments="${fragments}" data-all-appearances="${canvasAppearances.join(" ")}">${board}</div>`);
+const appearancePicker = emitMarkup({
+  contract: "layout",
+  signature: "Inline",
+  options: { gap: "xs", wrap: true, inlineAlign: "center" },
+  attrs: { role: "group", "aria-label": copy.appearance, "data-canvas-appearance-picker": "" },
+  children: canvasAppearances.map((value): UsageTree => ({
+    contract: "button",
+    signature: "Button.action",
+    options: { variant: "outline", size: "sm", pressed: value === "plain" },
+    attrs: { "data-appearance-value": value },
+    children: value,
+  })),
+});
+const skipped = components.flatMap((c) => c.skipped.map((s) => `${c.id}.${s}`));
+---
+
+<h1 class="canvas-title">{copy.title}</h1>
+<p class="intro">{copy.intro}</p>
+<div class="canvas-toolbar" set:html={appearancePicker} />
+<div class="canvas-stage" set:html={canvas} />
+<details class="skipped">
+  <summary>{copy.skipped} ({skipped.length})</summary>
+  <p><code>{skipped.join(", ")}</code></p>
+</details>
+
+<script>
+  import { mountComponentsWithIcons } from "@skryensya/vanilla/auto";
+  import { siteIcons } from "../../icons";
+
+  const board = document.querySelector<HTMLElement>(".board");
+  if (board) {
+    const base = board.dataset.fragments!;
+    const measuring = new URLSearchParams(location.search).has("measure");
+    if (measuring) document.documentElement.classList.add("canvas-measuring");
+
+    /* One appearance for the whole canvas. Only elements that already carry `data-appearance` change, and only to a
+       value their component offers (`data-appearances` on the part); the rest keep their own. */
+    let appearance = "plain";
+    const applyAppearance = (part: HTMLElement) => {
+      if (!(part.dataset.appearances ?? "").split(" ").includes(appearance)) return;
+      part.querySelectorAll("[data-appearance]").forEach((el) => el.setAttribute("data-appearance", appearance));
+    };
+    const setAppearance = (value: string) => {
+      appearance = value;
+      board.dataset.appearance = value;
+      board.querySelectorAll<HTMLElement>("[data-canvas-part]").forEach(applyAppearance);
+    };
+    const picker = document.querySelector<HTMLElement>("[data-canvas-appearance-picker]");
+    if (picker) {
+      void mountComponentsWithIcons(picker, siteIcons);
+      picker.addEventListener("click", (event) => {
+        const button = (event.target as Element).closest<HTMLElement>("[data-appearance-value]");
+        if (!button) return;
+        setAppearance(button.dataset.appearanceValue!);
+        picker.querySelectorAll("[data-appearance-value]").forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+      });
+    }
+
+    /* The part is already its final size (measured, see `pnpm canvas:measure`), so filling it moves nothing. */
+    const load = async (part: HTMLElement) => {
+      io.unobserve(part);
+      const body = part.querySelector<HTMLElement>(".part__body")!;
+      try {
+        const res = await fetch(`${base}${part.dataset.canvasPart}.html`);
+        if (!res.ok) throw new Error(String(res.status));
+        body.innerHTML = await res.text();
+        // Mounted so every component renders its real DOM; `inert` (on the body) keeps it a picture, not a control.
+        await mountComponentsWithIcons(body, siteIcons);
+        applyAppearance(part);
+        // Decoded before the block is revealed or measured: an image with no size yet is a block of the wrong size.
+        // Capped at 4s each: one slow or broken image must not hold a block (or the whole measurement) hostage.
+        await Promise.all([...body.querySelectorAll("img")].map((img) => Promise.race([img.decode().catch(() => {}), new Promise((r) => setTimeout(r, 4000))])));
+      } catch {
+        body.textContent = "×";
+      } finally {
+        // Revealed only once mounted: markup becoming components changes heights inside the box, and a hidden box shifts nothing.
+        body.setAttribute("data-ready", "");
+      }
+    };
+
+    /* A small pool, not one at a time: the cost of a part is mostly waiting (network, chunk, frame), so four in flight
+       keep the canvas filling as fast as the reader pans, while four mounts a frame still leave room for the gesture.
+       Parts that left the screen while waiting are skipped. */
+    const POOL = Math.min(6, Math.max(2, (navigator.hardwareConcurrency || 4) >> 1));
+    const pending = new Set<HTMLElement>();
+    let active = 0;
+    const drain = () => {
+      while (active < POOL && pending.size) {
+        const part = pending.values().next().value!;
+        pending.delete(part);
+        active++;
+        void load(part).finally(() => {
+          active--;
+          drain();
+        });
+      }
+    };
+    /* RAM: a block far from the viewport gives its DOM back. It keeps its measured size, so emptying it shifts nothing,
+       and it is observed again so panning back reloads it (the fragment is in the HTTP cache). Unmeasured blocks stay. */
+    const far = new IntersectionObserver(
+      (records) => {
+        for (const r of records) {
+          const part = r.target as HTMLElement;
+          const body = part.querySelector<HTMLElement>(".part__body")!;
+          if (r.isIntersecting || !body.hasAttribute("data-ready") || !part.hasAttribute("data-measured")) continue;
+          body.replaceChildren();
+          body.removeAttribute("data-ready");
+          io.observe(part);
+        }
+      },
+      { root: board.closest(".sk-canvas__viewport"), rootMargin: "1200px" },
+    );
+    const io = new IntersectionObserver(
+      (records) => {
+        for (const r of records) r.isIntersecting ? pending.add(r.target as HTMLElement) : pending.delete(r.target as HTMLElement);
+        drain();
+      },
+      // Rooted on the canvas viewport, not the page: the viewport clips, so a page-rooted margin would never reach past it.
+      { root: board.closest(".sk-canvas__viewport"), rootMargin: "900px" },
+    );
+
+    if (measuring) {
+      /* `pnpm canvas:measure` drives this in a real browser: every part at its natural size, in every appearance, the
+         largest wins, so switching appearance later cannot resize a part either. */
+      (window as unknown as { __canvasMeasure: () => Promise<Record<string, [number, number]>> }).__canvasMeasure = async () => {
+        const parts = [...board.querySelectorAll<HTMLElement>("[data-canvas-part]")];
+        for (let i = 0; i < parts.length; i += 8) await Promise.all(parts.slice(i, i + 8).map(load));
+        await document.fonts.ready;
+        const out: Record<string, [number, number]> = {};
+        for (const value of board.dataset.allAppearances!.split(" ")) {
+          setAppearance(value);
+          await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+          for (const part of parts) {
+            const id = part.dataset.canvasPart!;
+            const [w, h] = [part.offsetWidth / 16, part.offsetHeight / 16];
+            out[id] = [Math.max(out[id]?.[0] ?? 0, w), Math.max(out[id]?.[1] ?? 0, h)];
+          }
+        }
+        return Object.fromEntries(Object.entries(out).map(([id, [w, h]]) => [id, [Math.ceil(w * 4) / 4, Math.ceil(h * 4) / 4]]));
+      };
+    } else {
+      /* Only what enters the canvas viewport is fetched. The canvas rests fitted, where everything would be in view,
+         so it starts at 100% instead (the primitive's own "1" key) and the reader pans and zooms from there. */
+      const root = board.closest<HTMLElement>(".sk-canvas")!;
+      const viewport = root.querySelector<HTMLElement>(".sk-canvas__viewport")!;
+      let tries = 0;
+      const start = () => {
+        // The enhancer writes this once its listeners are on; before that the key would go nowhere.
+        if (!root.style.getPropertyValue("--sk-canvas-fit-block-size") && tries++ < 120) return void requestAnimationFrame(start);
+        viewport.dispatchEvent(new KeyboardEvent("keydown", { key: "1", bubbles: true }));
+        requestAnimationFrame(() => requestAnimationFrame(() => board.querySelectorAll<HTMLElement>("[data-canvas-part]").forEach((part) => { io.observe(part); far.observe(part); })));
+      };
+      start();
+    }
+  }
+</script>
+
+<style is:global>
+  .intro, .skipped { padding-inline: var(--space-inset-md); color: var(--color-text-secondary); font-size: var(--font-size-caption); }
+  .canvas-toolbar { padding: var(--space-inset-sm) var(--space-inset-md); }
+  /* Frosted needs something behind it to frost: the docs' own backdrop, set on :root by Base. */
+  .board[data-appearance="frosted"] .part { background: var(--docs-frost-backdrop); }
+  .canvas-title { margin: 0; padding-inline: var(--space-inset-md); }
+  /* No fixed content width: the board is as wide as its widest columns, the canvas fits whatever that is. */
+  .canvas-stage {
+    --sk-canvas-max-block-size: calc(100vh - 9rem);
+    --sk-canvas-min-block-size: calc(100vh - 9rem);
+    --sk-canvas-grid-size: 24px;
+  }
+  .board { inline-size: max-content; padding: 3rem; display: flex; align-items: flex-start; gap: 1rem; }
+  .column { flex: none; display: grid; gap: 1rem; }
+  /* One hairline per component, no fill: the wall reads as a Figma showcase, not as cards. A part is as wide as its
+     content needs and every part of a column takes the column's width, so a wide component widens its column only. */
+  .part { border: 1px solid var(--color-border-subtle); border-radius: var(--radius-surface); padding: 1.5rem; box-sizing: border-box; inline-size: 100%;
+    /* Size containment: the part is exactly the measured box, so its content cannot move anything. content-visibility
+       makes the browser skip layout and paint of every part that is off screen. */
+    contain: strict; content-visibility: auto; overflow: clip; }
+  /* Not measured yet: no size containment, so nothing is ever cut; rerun `pnpm canvas:measure` to fix its size. */
+  .part:not([data-measured]) { contain: layout paint; content-visibility: visible; overflow: visible; }
+  /* `contain: layout` stays: it is what anchors a fixed-position descendant (a drawer) to its block, as in the real page. */
+  html.canvas-measuring .part { contain: layout; content-visibility: visible; inline-size: max-content; block-size: auto !important; }
+  html.canvas-measuring .column { inline-size: auto !important; }
+  .part__body:not([data-ready]) { visibility: hidden; }
+  .part__header { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-block-end: 1rem; }
+  .part__title { margin: 0; font-size: 1.125rem; }
+  .part__category { font-size: var(--font-size-caption); color: var(--color-text-secondary); }
+  .part .group__label, .part figcaption { margin: .75rem 0 .5rem; font-size: var(--font-size-caption); color: var(--color-text-secondary); }
+  .part figcaption { margin: 0; }
+  /* Wraps at 40rem, but never narrower than its widest specimen: min-inline-size beats max-inline-size on purpose. */
+  /* An option's group sits beside the others and wraps, so a block grows wide before it grows tall. Soft cap: min-content wins. */
+  .part__body { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 1rem 2.5rem; inline-size: max-content; max-inline-size: 100rem; min-inline-size: min-content; }
+  .specimens { display: flex; flex-wrap: wrap; gap: 1rem 1.25rem; align-items: end; inline-size: max-content; max-inline-size: 40rem; min-inline-size: min-content; }
+  .part figure { margin: 0; display: grid; gap: .5rem; justify-items: start; }
+  .part code, .skipped code { font-family: var(--font-family-code); font-size: var(--font-size-caption); }
+  .part img { max-inline-size: 100%; block-size: auto; }
+</style>
