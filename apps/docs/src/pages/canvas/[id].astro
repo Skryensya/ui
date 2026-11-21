@@ -1,0 +1,17 @@
+---
+import Base from "../../layouts/Base.astro";
+import ComponentCanvasPage from "../../components/pages/ComponentCanvasPage.astro";
+import { componentsCanvas } from "../../lib/components-canvas";
+
+export function getStaticPaths() {
+  return componentsCanvas()
+    .filter((component) => component.signatures.length)
+    .map((component) => ({ params: { id: component.id }, props: { component } }));
+}
+
+const { component } = Astro.props;
+---
+
+<Base fullBleed rail="canvas" title={`${component.id} · Canvas`} description={`Every value and state of ${component.id}.`}>
+  <ComponentCanvasPage component={component} />
+</Base>

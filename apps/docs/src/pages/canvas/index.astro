@@ -1,11 +1,6 @@
 ---
-import Base from "../../layouts/Base.astro";
-import ComponentsCanvasPage from "../../components/pages/ComponentsCanvasPage.astro";
-import { getLocale, useTranslations } from "../../i18n";
+import { localizePath } from "../../i18n";
+import { getLocale } from "../../i18n";
 
-const t = useTranslations(getLocale(Astro.url));
+return Astro.redirect(localizePath("/canvas/accordion", getLocale(Astro.url)));
 ---
-
-<Base fullBleed title={t("nav.canvas")} description={t("nav.canvas")}>
-  <ComponentsCanvasPage />
-</Base>

@@ -1,0 +1,131 @@
+---
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/canvas.css";
+import "@skryensya/core/patterns/box.css";
+import "@skryensya/core/patterns/anchored.css";
+import "@skryensya/core/patterns/scroll-lock.css";
+import "@skryensya/core/patterns/visually-hidden.css";
+import "@skryensya/core/patterns/hero.css";
+import "@skryensya/core/patterns/footer.css";
+import "@skryensya/core/patterns/icon.css";
+import "@skryensya/core/patterns/image-frame.css";
+import "@skryensya/core/patterns/layout.css";
+import "@skryensya/core/patterns/media-overlay.css";
+import "@skryensya/core/patterns/nav-list.css";
+import "@skryensya/core/patterns/table-pager.css";
+import "@skryensya/core/patterns/splitter.css";
+import "@skryensya/core/patterns/dialog-vaul.css";
+import "@skryensya/core/patterns/wrapper.css";
+import "@skryensya/core/patterns/vaul.css";
+import { emitMarkup } from "@skryensya/ai-compiler/emit";
+import type { UsageTree } from "@skryensya/core/usage-tree";
+import { getLocale } from "../../i18n";
+import { canvasAppearances, type CanvasComponent } from "../../lib/components-canvas";
+import { blockFragment, canvasBlocks } from "../../lib/canvas-fragment";
+
+interface Props {
+  component: CanvasComponent;
+}
+const { component } = Astro.props;
+
+// Every component stylesheet, so a specimen never renders unstyled; appearance sheets are scoped by attribute.
+import.meta.glob("../../../../../packages/core/css/components/*.css", { eager: true });
+
+const locale = getLocale(Astro.url);
+const copy = locale === "es"
+  ? { label: "Canvas del componente", appearance: "Apariencia", inContext: "en contexto" }
+  : { label: "Component canvas", appearance: "Appearance", inContext: "in context" };
+const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
+
+const blocks = canvasBlocks([component]);
+const board = blocks.map((block) => `
+  <section class="block" aria-labelledby="block-${esc(block.id)}">
+    <h2 class="block__title" id="block-${esc(block.id)}">${esc(block.title.replace(" (in context)", ""))}${block.title.endsWith("(in context)") ? ` <small>${copy.inContext}</small>` : ""}</h2>
+    <div class="block__body" inert>${blockFragment(block)}</div>
+  </section>`).join("");
+
+const canvas = emitMarkup({
+  contract: "canvas",
+  signature: "Canvas",
+  options: { label: `${copy.label}: ${component.id}`, minZoom: 0.25 },
+  children: "__BOARD__",
+}).replace("__BOARD__", `<div class="board">${board}</div>`);
+
+// The appearances this component offers, if more than its default. One choice for the whole canvas, remembered across components.
+const appearances = canvasAppearances.filter((value) => component.appearances.includes(value));
+const picker = appearances.length > 1
+  ? emitMarkup({
+      contract: "layout",
+      signature: "Inline",
+      options: { gap: "xs", wrap: true, inlineAlign: "center" },
+      attrs: { role: "group", "aria-label": copy.appearance, "data-canvas-appearance-picker": "" },
+      children: appearances.map((value): UsageTree => ({
+        contract: "button",
+        signature: "Button.action",
+        options: { variant: "outline", size: "sm", pressed: value === "plain" },
+        attrs: { "data-appearance-value": value },
+        children: value,
+      })),
+    })
+  : "";
+---
+
+<h1 class="sk-visually-hidden">{component.id}</h1>
+<div class="canvas-stage">
+  {picker && <div class="canvas-toolbar" set:html={picker} />}
+  <div set:html={canvas} />
+</div>
+
+<script>
+  import { mountComponentsWithIcons } from "@skryensya/vanilla/auto";
+  import { siteIcons } from "../../icons";
+
+  const KEY = "docs-canvas-appearance";
+  const board = document.querySelector<HTMLElement>(".board");
+  const picker = document.querySelector<HTMLElement>("[data-canvas-appearance-picker]");
+  if (board) {
+    void mountComponentsWithIcons(board, siteIcons);
+    /* Only elements that already carry `data-appearance` change, so a specimen that does not have one keeps its own. */
+    const setAppearance = (value: string) => {
+      board.querySelectorAll("[data-appearance]").forEach((el) => el.setAttribute("data-appearance", value));
+      picker?.querySelectorAll("[data-appearance-value]").forEach((b) => b.setAttribute("aria-pressed", String(b.getAttribute("data-appearance-value") === value)));
+      board.dataset.appearance = value;
+    };
+    if (picker) {
+      void mountComponentsWithIcons(picker, siteIcons);
+      const offered = [...picker.querySelectorAll<HTMLElement>("[data-appearance-value]")].map((b) => b.dataset.appearanceValue!);
+      const saved = localStorage.getItem(KEY);
+      if (saved && offered.includes(saved)) setAppearance(saved);
+      picker.addEventListener("click", (event) => {
+        const button = (event.target as Element).closest<HTMLElement>("[data-appearance-value]");
+        if (!button) return;
+        localStorage.setItem(KEY, button.dataset.appearanceValue!);
+        setAppearance(button.dataset.appearanceValue!);
+      });
+    }
+  }
+</script>
+
+<style is:global>
+  /* The page is the canvas: it fills the space beside the rail. */
+  .shell > .docs-canvas-main { grid-column: 2; min-inline-size: 0; }
+  .canvas-stage { position: relative; }
+  /* On the canvas root itself: the kit declares these tokens there, so a value on a parent would never reach it. */
+  .canvas-stage .sk-canvas { --sk-canvas-max-block-size: calc(100svh - 4rem); --sk-canvas-min-block-size: calc(100svh - 4rem); --sk-canvas-grid-size: 24px; }
+  .canvas-toolbar { position: absolute; inset: var(--space-inset-md) auto auto var(--space-inset-md); z-index: 3; }
+  /* Frosted needs something behind it to frost: the docs' own backdrop, set on :root by Base. */
+  .board[data-appearance="frosted"] .block { background: var(--docs-frost-backdrop); }
+  .board { inline-size: max-content; max-inline-size: 140rem; padding: 4rem; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 2rem; }
+  /* One hairline per block, on the kit's own surface. */
+  .block { flex: 0 1 auto; max-inline-size: 100%; min-inline-size: 0; box-sizing: border-box; padding: 1.5rem; border: 1px solid var(--color-border-subtle); border-radius: var(--radius-surface); background: var(--color-bg-surface); }
+  .block__title { margin: 0 0 1rem; font-size: 1.125rem; }
+  .block__title small { font-size: var(--font-size-caption); font-weight: 400; color: var(--color-text-secondary); }
+  .block__body { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 1rem 2.5rem; }
+  .block .group { border-block-start: 1px solid var(--color-border-subtle); padding-block: .5rem .75rem; }
+  .block .group__label { margin-block: 0 .75rem; }
+  .block .group__label, .block figcaption { font-size: var(--font-size-caption); color: var(--color-text-secondary); }
+  .block figcaption { margin: 0; }
+  .specimens { display: flex; flex-wrap: wrap; gap: 1rem 1.25rem; align-items: end; max-inline-size: 56rem; }
+  .block figure { margin: 0; display: grid; gap: .5rem; justify-items: start; }
+  .block code { font-family: var(--font-family-code); font-size: var(--font-size-caption); }
+</style>

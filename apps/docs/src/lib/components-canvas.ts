@@ -68,11 +68,6 @@ const excluded: Record<string, string> = {
   "vaul.Vaul.drawer": "an open drawer is laid out against the viewport, not against a block",
 };
 
-/** Capabilities, not the full table: an option with more values than this shows its first, its last and an even spread between. */
-const MAX_VALUES = 5;
-const representative = (values: readonly string[]): readonly string[] =>
-  values.length <= MAX_VALUES ? values : Array.from({ length: MAX_VALUES }, (_, i) => values[Math.round((i * (values.length - 1)) / (MAX_VALUES - 1))]!);
-
 /** Page-sized parts and media are shown small: a 400px picture per value would make one component taller than the whole wall's row. */
 const specimenStyle: Record<string, string> = {
   "image-frame": "inline-size: 12rem",
@@ -93,6 +88,9 @@ function seedFor(contract: string, signature: string, required: readonly string[
 }
 
 /** One-factor-at-a-time: every enum value of each option on top of the base, not the Cartesian product. */
+/** Layout primitives (spacing, not components) and Canvas itself (a pan/zoom view nested in this one) have no canvas page. */
+const OFF_WALL = new Set(["layout", "canvas"]);
+
 let cache: CanvasComponent[] | undefined;
 export function componentsCanvas(): CanvasComponent[] {
   return (cache ??= build());
@@ -101,7 +99,7 @@ export function componentsCanvas(): CanvasComponent[] {
 function build(): CanvasComponent[] {
   return contractIds().flatMap((id) => {
     const contract = getContract(id);
-    if (!contract) return [];
+    if (!contract || OFF_WALL.has(id)) return [];
     const own = contract.options.appearance?.values ?? [];
     const appearances = own.filter((v) => (canvasAppearances as readonly string[]).includes(v));
     const out: CanvasComponent = { id, category: contract.category ?? "other", appearances, signatures: [], skipped: [] };
@@ -134,7 +132,7 @@ function build(): CanvasComponent[] {
         // A global switch owns `appearance`; showing it per component would repeat the whole page four times.
         if (name === "appearance" && appearances.length) continue;
         if (option?.type !== "enum" || !option.values || option.element || option.keyOf || option.refersTo) continue;
-        const specimens = representative(option.values)
+        const specimens = option.values
           .map((value) => ({ label: value, tree: { ...base, options: { ...base.options, [name]: value } } }))
           .filter((s) => isValid(s.tree));
         if (specimens.length) groups.push({ option: name, specimens });

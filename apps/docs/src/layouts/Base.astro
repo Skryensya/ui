@@ -192,6 +192,8 @@ interface Props {
   description?: string;
   /** Full-width tool layout: drop the docs rail, toc, page-nav and footer, render the slot alone. */
   fullBleed?: boolean;
+  /** With `fullBleed`: draws the docs rail (the component categories) beside the page, its links pointing at the canvas pages. */
+  rail?: "canvas";
   /** Content geometry inside the docs shell. Grid keeps the shell rails but exposes named content spans. */
   documentLayout?: "column" | "grid";
   /**
@@ -209,6 +211,7 @@ const {
   title,
   description,
   fullBleed = false,
+  rail,
   documentLayout = "column",
   hideVanillaMount = false,
   debugPage = false,
@@ -375,6 +378,20 @@ const belongsToFoundations =
   canonical.startsWith("/referencia/") ||
   (foundationsSection?.groups.some((group) => group.items.some((item) => item.href === path)) ?? false);
 const sectionNavigation = [currentSection] satisfies readonly NavigationSection[];
+/* The canvas pages borrow the components rail: the same categories, each component linking to its own canvas. Only the
+   components that have a canvas are listed (a layout primitive has none), and the module is read only when a page asks. */
+const canvasRail: NavigationSection | undefined =
+  rail === "canvas" && componentSection
+    ? await (async () => {
+        const { componentsCanvas } = await import("../lib/components-canvas");
+        const ids = new Set(componentsCanvas().filter((component) => component.signatures.length).map((component) => component.id));
+        const slugOf = (item: { href: string }) => item.href.split("/").pop()!;
+        const groups = componentSection.groups
+          .map((group) => ({ ...group, items: group.items.filter((item) => ids.has(slugOf(item))).map((item) => ({ ...item, href: href(`/canvas/${slugOf(item)}`) })) }))
+          .filter((group) => group.items.length);
+        return { ...componentSection, groups };
+      })()
+    : undefined;
 const isGlobalItemCurrent = (href: string): boolean => {
   const itemCanonical = canonicalPath(href);
   if (itemCanonical === "/components") return canonical === "/components" || (canonical.startsWith("/components/") || canonical.startsWith("/componentes/"));
@@ -1190,7 +1207,36 @@ const [paletteBefore = "", paletteMid = "", paletteAfter = ""] = emitMarkup(
     {/* Both `<main>`s below carry the skip link's destination: the same id, because a page has one
         main region and only one of these two ever renders. `tabindex="-1"` is what makes an element
         a focus target without adding a tab stop; see the rail's own copy of this comment. */}
-    {fullBleed ? (
+    {fullBleed && canvasRail ? (
+      <div class="shell" data-document-layout="column">
+        <aside class="sk-sidebar docs-sidebar" data-sk-sidebar data-storage-key="docs-rail">
+          <div
+            class="sk-sidebar__content sk-scrollbar sk-scrollbar--reveal sk-fade-edge"
+            id="docs-nav"
+            tabindex="-1"
+            data-sk-fade-edge
+            data-scroll-aware
+            data-direction="vertical"
+          >
+            <SidebarNav nav={[canvasRail]} path={path} idPrefix="docs-nav" />
+          </div>
+          <div
+            class="sk-sidebar__resize-handle"
+            data-sk-sidebar-resize
+            role="separator"
+            aria-orientation="vertical"
+            aria-label={t("nav.resizeRail")}
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="50"
+            tabindex="0"
+          ></div>
+        </aside>
+        <main class="sk-main docs-canvas-main" id="main-content" tabindex="-1">
+          <slot />
+        </main>
+      </div>
+    ) : fullBleed ? (
       <main class="sk-main" id="main-content" tabindex="-1">
         <slot />
       </main>
@@ -1951,8 +1997,10 @@ const [paletteBefore = "", paletteMid = "", paletteAfter = ""] = emitMarkup(
       import { iconSetPreference } from "../lib/preferences";
       import { selectEvents } from "@skryensya/core/select";
       import { followIconSet, isSiteIconSet } from "../scripts/icon-set";
+      import { hardenInputs } from "../lib/no-password-manager";
 
       followIconSet(document);
+      hardenInputs(document);
       /* Seeded before `initComponents()` mounts the Selects; writing `data-value` later is how the
        * popover's picker and the sheet's follow each other. */
       const pickers = document.querySelectorAll<HTMLElement>("[data-docs-icon-set-select]");
