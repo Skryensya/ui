@@ -1,7 +1,7 @@
 export type Size = { readonly w: number; readonly h: number };
 export type Column<T> = { w: number; h: number; parts: T[] };
 
-const GAP = 1;
+const GAP = 2;
 
 /** Greedy: each part goes to the currently shortest column, which then is as wide as its widest part. */
 function fill<T>(items: readonly T[], size: (item: T) => Size, n: number): Column<T>[] {

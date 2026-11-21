@@ -1,770 +1,770 @@
 {
  "accordion.Accordion": [
   103.25,
-  81.25
+  78.5
  ],
  "accordion.Accordion.Content (in context)": [
   43.25,
-  24
+  21
  ],
  "accordion.Accordion.Item (in context)": [
   43.25,
-  24
+  21
  ],
  "accordion.Accordion.Trigger (in context)": [
   43.25,
-  24
+  21
  ],
  "app-bar.AppBar": [
   18.75,
-  10.5
+  7.75
  ],
  "app-bar.AppBarMenu (in context)": [
   23.5,
-  10.5
+  7.75
  ],
  "app-bar.AppBarStatus (in context)": [
   24,
-  10.5
+  7.75
  ],
  "audio-player.AudioPlayer": [
   89.75,
-  55
+  51.75
  ],
  "audio-player.AudioPlayerMinimal": [
   20.25,
-  12.5
+  9.25
  ],
  "avatar.Avatar.image": [
   57.75,
-  15.75
+  12.5
  ],
  "avatar.Avatar.initials": [
   24,
-  15.25
+  12
  ],
  "avatar.AvatarGroup": [
   15.5,
-  11.5
+  8.75
  ],
  "back-to-top.BackToTop": [
   15,
-  9.25
+  6.25
  ],
  "badge.Badge": [
   41.75,
-  13
+  9.75
  ],
  "badge.BadgeDot": [
   33.5,
-  12.75
+  9.5
  ],
  "box.Box": [
   103.25,
-  144.75
+  143
  ],
  "breadcrumb.Breadcrumb": [
   23.75,
-  10.5
+  7.75
  ],
  "button-group.ButtonGroup": [
   51,
-  16.75
+  13.5
  ],
  "button.Button.action": [
   88.5,
-  14.25
+  11
  ],
  "button.Button.navigation": [
   58.25,
-  14.25
+  11
  ],
  "calendar.Calendar": [
   103.25,
-  105.75
+  103
  ],
  "callout.Callout": [
   73.25,
-  61.5
+  58.25
  ],
  "changelog.Changelog": [
   43.25,
-  45
+  42
  ],
  "changelog.ChangelogEntry (in context)": [
   43.25,
-  45
+  42
  ],
  "changelog.ChangelogRelease (in context)": [
   43.25,
-  45
+  42
  ],
  "checkbox.Checkbox": [
   59.75,
-  17
+  13.75
  ],
  "checkbox.CheckboxGroup": [
   56,
-  18.75
+  15.5
  ],
  "clipboard.CopyButton": [
   25.5,
-  14
+  10.75
  ],
  "code-preview.CodePreview": [
   85.75,
-  22.25
+  19
  ],
  "color-picker.ColorPicker": [
   58.5,
-  23.25
+  20
  ],
  "color-picker.ColorPicker.compact": [
   55.75,
-  20.25
+  17
  ],
  "color-picker.ColorPicker.swatch": [
   26.5,
-  14.5
+  11.25
  ],
  "combobox.Combobox": [
   60.75,
-  35
+  31.75
  ],
  "command-palette.CommandPalette": [
   18.5,
-  11.5
+  8
  ],
  "comment-thread.Comment (in context)": [
   43.25,
-  21.5
+  18.75
  ],
  "comment-thread.CommentActions": [
   18.75,
-  13.5
+  10
  ],
  "comment-thread.CommentThread": [
   43.25,
-  21.5
+  18.75
  ],
  "compare-slider.CompareSlider": [
   53.5,
-  19.75
+  16.25
  ],
  "comparison-table.ComparisonCell (in context)": [
   29.25,
-  18.5
+  15.75
  ],
  "comparison-table.ComparisonColumn (in context)": [
   29.25,
-  18.5
+  15.75
  ],
  "comparison-table.ComparisonRow (in context)": [
   29.25,
-  18.5
+  15.75
  ],
  "comparison-table.ComparisonTable": [
   57.5,
-  18.75
+  15.75
  ],
  "content.Toast (in context)": [
   19,
-  9
+  6.25
  ],
  "content.ToastRegion": [
   15.5,
-  9
+  6.25
  ],
  "data-grid.DataGrid": [
   45,
-  16.5
+  13.25
  ],
  "data-grid.DataGridCell (in context)": [
   22.5,
-  14.25
+  11.25
  ],
  "data-grid.DataGridRow (in context)": [
   22.75,
-  14.25
+  11.25
  ],
  "date-picker.DatePicker": [
   103.25,
-  40.5
+  37.75
  ],
  "description-list.DescriptionItem (in context)": [
   24.5,
-  14.5
+  11.75
  ],
  "description-list.DescriptionList": [
   78.5,
-  21.5
+  18.25
  ],
  "diagram.Diagram": [
   12.5,
-  23.75
+  21
  ],
  "dialog-stack.DialogStackClose": [
   19,
-  12
+  9
  ],
  "dialog-stack.DialogStackDescription": [
   23,
-  10.5
+  7.5
  ],
  "dialog-stack.DialogStackFooter": [
   19.5,
-  12.25
+  9.25
  ],
  "dialog-stack.DialogStackHeader": [
   20,
-  10.75
+  7.75
  ],
  "dialog-stack.DialogStackNext": [
   18.25,
-  12
+  9
  ],
  "dialog-stack.DialogStackOverlay": [
   20.5,
-  9.25
+  6.25
  ],
  "dialog-stack.DialogStackPrevious": [
   21,
-  12
+  9
  ],
  "dialog-stack.DialogStackTitle": [
   18.25,
-  11
+  7.75
  ],
  "dialog-stack.DialogStackTrigger": [
   20,
-  12
+  9
  ],
  "empty-state.EmptyState": [
   65.5,
-  111
+  107.75
  ],
  "expressive-avatar.ExpressiveAvatar": [
   94.25,
-  21.75
+  18.5
  ],
  "fade-edge.FadeEdge": [
   57.25,
-  12.75
+  9.5
  ],
  "feed.Feed": [
   67,
-  38
+  34.75
  ],
  "feed.FeedArticle (in context)": [
   24.5,
-  21
+  18.25
  ],
  "file-upload.FileUpload": [
   92.75,
-  48.25
+  45
  ],
  "footer.Footer": [
   103.25,
-  41.5
+  39.25
  ],
  "form-field.FormField": [
   58.75,
-  21.25
+  18
  ],
  "hero.Hero": [
   103.25,
-  210.25
+  208
  ],
  "icon.Icon": [
   57.5,
-  176.25
+  173
  ],
  "image-frame.ImageFrame": [
   103.25,
-  665
+  662.75
  ],
  "input.Input (in context)": [
   17.75,
-  13.75
+  10.75
  ],
  "input.NativeInput": [
   90,
-  19.75
+  16.5
  ],
  "input.Textarea (in context)": [
   20,
-  19.25
+  16.25
  ],
  "kbd.Kbd": [
   16,
-  12.75
+  9.5
  ],
  "lightbox.Lightbox": [
   43,
-  11.25
+  8
  ],
  "lightbox.Lightbox.Trigger (in context)": [
   43.25,
-  22
+  19
  ],
  "list.List": [
   41.25,
-  21.5
+  18.25
  ],
  "list.ListItem (in context)": [
   19,
-  19.5
+  16.5
  ],
  "list.ListItemLink (in context)": [
   22,
-  19.5
+  16.5
  ],
  "list.ListItemPlain (in context)": [
   22.5,
-  21
+  18.25
  ],
  "listbox.Listbox": [
   103.25,
-  38.25
+  35.5
  ],
  "loader.Loader": [
   68.75,
-  12.75
+  9.5
  ],
  "loader.Loader.status": [
   16.5,
-  9
+  6.25
  ],
  "marquee.Marquee": [
   103.25,
-  88.5
+  85.75
  ],
  "marquee.Marquee.autoplay": [
   94,
-  27.25
+  24
  ],
  "media-overlay.MediaOverlay (in context)": [
   43.25,
-  33.25
+  30.5
  ],
  "media-overlay.MediaOverlayShade (in context)": [
   43.25,
-  51
+  48.25
  ],
  "menu.Menu": [
   43.25,
-  16.25
+  13
  ],
  "message.Message": [
   84.75,
-  27.5
+  24.25
  ],
  "message.MessageActions": [
   17.75,
-  10.5
+  7.75
  ],
  "message.MessageAvatar": [
   17.25,
-  11
+  8.25
  ],
  "message.MessageContent": [
   35.75,
-  15.5
+  12.75
  ],
  "message.MessageFooter": [
   17.25,
-  10.5
+  7.75
  ],
  "message.MessageGroup": [
   17,
-  10.5
+  7.75
  ],
  "message.MessageHeader": [
   17.75,
-  10.5
+  7.75
  ],
  "meter.Meter": [
   52.25,
-  13.5
+  10.25
  ],
  "nav-list.NavList": [
   45.5,
-  21.5
+  18.25
  ],
  "nav-list.NavListGroup (in context)": [
   25,
-  19.25
+  16.25
  ],
  "nav-list.NavListLink (in context)": [
   23.5,
-  19.25
+  16.25
  ],
  "navbar.Navbar": [
   12.5,
-  12.25
+  9.25
  ],
  "navbar.NavbarActions (in context)": [
   25.75,
-  65.25
+  62.5
  ],
  "navbar.NavbarBrand (in context)": [
   24.75,
-  65.25
+  62.5
  ],
  "number-field.NumberField": [
   63.25,
-  23.25
+  20
  ],
  "otp-input.OtpInput": [
   103.25,
-  47.25
+  44.5
  ],
  "pagination.Pagination": [
   24.5,
-  11
+  8.25
  ],
  "password-input.PasswordInput": [
   94,
-  30.5
+  27.25
  ],
  "placeholder.Placeholder": [
   57.75,
-  21.25
+  18
  ],
  "placeholder.Placeholder.block": [
   19.5,
-  19.25
+  16
  ],
  "placeholder.Placeholder.circle": [
   27.75,
-  14.25
+  11
  ],
  "placeholder.Placeholder.paragraph": [
   57.75,
-  41
+  37.75
  ],
  "presence.Presence": [
   15.25,
-  11.25
+  8
  ],
  "procedure.Procedure": [
   25.5,
-  26.25
+  23.25
  ],
  "procedure.ProcedureStep (in context)": [
   25.5,
-  26.25
+  23.25
  ],
  "progress.Progress": [
   24.25,
-  11.75
+  8.5
  ],
  "qr-code.QRCode": [
   103.25,
-  65.25
+  63
  ],
  "questionnaire.Questionnaire": [
   103.25,
-  264
+  261.25
  ],
  "questionnaire.QuestionnaireItem (in context)": [
   34.25,
-  44.25
+  41.25
  ],
  "quote.Quote": [
   73.25,
-  19
+  15.75
  ],
  "radio-group.Radio": [
   27,
-  13.25
+  10
  ],
  "radio-group.RadioGroup": [
   84,
-  14.75
+  11.5
  ],
  "rating.Rating": [
   78,
-  13.75
+  10.5
  ],
  "rating.RatingDisplay": [
   59.5,
-  17.75
+  14.5
  ],
  "scroll-hint.ScrollHint": [
   20.75,
-  13
+  9.75
  ],
  "search-field.SearchField": [
   99.25,
-  22.75
+  19.5
  ],
  "search-field.SearchField.form": [
   103.25,
-  53
+  50.25
  ],
  "segmented.Segmented": [
   100.5,
-  14.25
+  11
  ],
  "select.Select": [
   48.25,
-  15.75
+  12.5
  ],
  "select.Select.native": [
   24.75,
-  14
+  10.75
  ],
  "separator.LabelledSeparator": [
   41.5,
-  15.5
+  12.25
  ],
  "separator.Separator": [
   49.5,
-  14.25
+  11
  ],
  "shimmer.Shimmer": [
   24,
-  12.75
+  9.5
  ],
  "sidebar.Sidebar": [
   55.75,
-  35.5
+  32.25
  ],
  "sidebar.SidebarContent (in context)": [
   26.25,
-  33.25
+  30.25
  ],
  "sidebar.SidebarFooter (in context)": [
   25.25,
-  33.25
+  30.25
  ],
  "sidebar.SidebarHeader (in context)": [
   25.75,
-  33.25
+  30.25
  ],
  "sidebar.SidebarResizeHandle (in context)": [
   30,
-  28.75
+  25.75
  ],
  "sidebar.SidebarSeparator (in context)": [
   27.75,
-  33.25
+  30.25
  ],
  "sidebar.SidebarTrigger (in context)": [
   25.75,
-  33.25
+  30.25
  ],
  "skip-link.SkipLink": [
   13.5,
-  9
+  6.25
  ],
  "slider.Slider": [
   12.5,
-  13.25
+  10
  ],
  "slider.SliderRange": [
   14.25,
-  13.25
+  10
  ],
  "stat.Stat": [
   8.5,
-  13.25
+  10.25
  ],
  "steps.Steps": [
   56.5,
-  23.5
+  20.25
  ],
  "switch.Switch": [
   20,
-  13
+  9.75
  ],
  "table.Table": [
   14,
-  18.25
+  15.25
  ],
  "table.TableBody (in context)": [
   20.75,
-  18.25
+  15.25
  ],
  "table.TableCaption (in context)": [
   22.75,
-  18.25
+  15.25
  ],
  "table.TableCell (in context)": [
   20,
-  18.25
+  15.25
  ],
  "table.TableHead (in context)": [
   21,
-  18.25
+  15.25
  ],
  "table.TableHeader (in context)": [
   22.25,
-  18.25
+  15.25
  ],
  "table.TableRow (in context)": [
   20.25,
-  18.25
+  15.25
  ],
  "table.TableScroll": [
   80.5,
-  50.75
+  47.5
  ],
  "tabs.Tabs": [
   103.25,
-  72.25
+  70
  ],
  "tag.Tag": [
   23.25,
-  13
+  9.75
  ],
  "tag.Tag.link": [
   16,
-  13
+  9.75
  ],
  "tag.Tag.toggle": [
   29,
-  13
+  9.75
  ],
  "tags-input.TagsInput": [
   80,
-  41
+  37.75
  ],
  "tile.TileButton": [
   56.5,
-  17
+  13.75
  ],
  "tile.TileCheckbox": [
   80.5,
-  24.25
+  21
  ],
  "tile.TileChevron (in context)": [
   25.75,
-  22.75
+  20
  ],
  "tile.TileContent (in context)": [
   32.25,
-  16
+  13
  ],
  "tile.TileLink": [
   71.25,
-  52.5
+  49.25
  ],
  "tile.TileRadioGroup": [
   99.75,
-  41.75
+  38.5
  ],
  "tile.TileSwitch": [
   103.25,
-  88.75
+  86
  ],
  "time-field.TimeField": [
   85.5,
-  29.25
+  26
  ],
  "timeline.Timeline": [
   22.75,
-  29.75
+  26.75
  ],
  "timeline.TimelineItem (in context)": [
   23.5,
-  29.75
+  26.75
  ],
  "toc.Toc": [
   17.25,
-  18.5
+  15.75
  ],
  "toolbar.Toolbar": [
   102.5,
-  27.5
+  24.25
  ],
  "toolbar.ToolbarGroup (in context)": [
   24,
-  12.5
+  9.5
  ],
  "toolbar.ToolbarSeparator (in context)": [
   26.75,
-  12.5
+  9.5
  ],
  "tooltip.Tooltip": [
   57.25,
-  14
+  10.75
  ],
  "treegrid.Treegrid": [
   43.25,
-  21
+  18
  ],
  "treegrid.TreegridBody (in context)": [
   43.25,
-  21
+  18
  ],
  "treegrid.TreegridCell (in context)": [
   43.25,
-  21
+  18
  ],
  "treegrid.TreegridColumnHeader (in context)": [
   43.25,
-  21
+  18
  ],
  "treegrid.TreegridHead (in context)": [
   43.25,
-  21
+  18
  ],
  "treegrid.TreegridHeadRow (in context)": [
   43.25,
-  21
+  18
  ],
  "treegrid.TreegridRow (in context)": [
   43.25,
-  21
+  18
  ],
  "treegrid.TreegridScroll": [
   43.25,
-  21
+  18
  ],
  "typography.Code": [
   10.25,
-  10.5
+  7.75
  ],
  "typography.Heading": [
   68.5,
-  45.5
+  42
  ],
  "typography.Link": [
   63.5,
-  12.75
+  9.5
  ],
  "typography.Output": [
   11.5,
-  10.5
+  7.75
  ],
  "typography.Strong": [
   11.25,
-  10.5
+  7.75
  ],
  "typography.Text": [
   103.25,
-  19.75
+  17
  ],
  "user-select.UserSelect": [
   69.75,
-  14
+  10.75
  ],
  "vaul.Vaul.Close": [
   15.25,
-  14
+  10.75
  ],
  "vaul.Vaul.Trigger (in context)": [
   23.25,
-  65.25
+  62.5
  ],
  "video-player.VideoPlayer": [
   85.75,
-  33.75
+  30.5
  ],
  "wrapper.Wrapper": [
   103.25,
-  137.5
+  134.75
  ]
 }

@@ -33,14 +33,16 @@ const sizeOf = (b: ReturnType<typeof canvasBlocks>[number]) => {
 };
 const clusters = clusterBlocks(canvasBlocks(components), copy.other).map((cluster) => {
   const columns = layoutColumns(cluster.blocks, sizeOf);
-  return { ...cluster, columns, w: columns.reduce((n, c) => n + c.w, 0) + columns.length - 1, h: Math.max(...columns.map((c) => c.h)) + 6 };
+  return { ...cluster, columns, w: columns.reduce((n, c) => n + c.w, 0) + columns.length - 1, h: Math.max(...columns.map((c) => c.h)) + 8 };
 });
 const label = (key: string) => (key.startsWith("group.") ? t(key as never) : key);
 const partHtml = (b: ReturnType<typeof canvasBlocks>[number]) => `
-    <section class="part" id="${b.id}" data-canvas-part="${b.id}"${measured[b.id] ? " data-measured" : ""} data-appearances="${b.appearances.join(" ")}" style="${measured[b.id] ? `block-size:${sizeOf(b).h}rem;inline-size:${sizeOf(b).w}rem` : `min-block-size:${sizeOf(b).h}rem`}">
-      <header class="part__header"><h2 class="part__title">${esc(b.title.replace(" (in context)", ""))}</h2><span class="part__category">${esc(b.component)}${b.title.endsWith("(in context)") ? " · in context" : ""}</span></header>
-      <div class="part__body" inert></div>
-    </section>`;
+    <div class="block">
+      <div class="label"><h2 class="label__title">${esc(b.title.replace(" (in context)", ""))}</h2><span class="label__meta">${esc(b.component)}${b.title.endsWith("(in context)") ? " · in context" : ""}</span></div>
+      <section class="part" id="${b.id}" data-canvas-part="${b.id}"${measured[b.id] ? " data-measured" : ""} data-appearances="${b.appearances.join(" ")}" aria-label="${esc(b.title)}" style="${measured[b.id] ? `block-size:${sizeOf(b).h}rem;inline-size:${sizeOf(b).w}rem` : `min-block-size:${sizeOf(b).h}rem`}">
+        <div class="part__body" inert></div>
+      </section>
+    </div>`;
 const clusterHtml = (c: (typeof clusters)[number]) => `
   <section class="cluster" aria-labelledby="cluster-${c.id}">
     <h2 class="cluster__title" id="cluster-${c.id}">${esc(label(c.label))}</h2>
@@ -140,11 +142,13 @@ const skipped = components.flatMap((c) => c.skipped.map((s) => `${c.id}.${s}`));
     /* A small pool, not one at a time: the cost of a part is mostly waiting (network, chunk, frame), so four in flight
        keep the canvas filling as fast as the reader pans, while four mounts a frame still leave room for the gesture.
        Parts that left the screen while waiting are skipped. */
-    const MIN_PX = 100;
+    const viewport = board.closest<HTMLElement>(".sk-canvas__viewport")!;
+    const MIN_PX = 48;
     const IDLE_POOL = Math.min(6, Math.max(2, (navigator.hardwareConcurrency || 4) >> 1));
     /* While the view is moving only one part mounts at a time: a mount is a long task, and it is the gesture that must
        not stutter. The canvas writes its transform inline on every move, so a mutation of it means "moving". */
     let moving = false;
+    board.style.setProperty("--canvas-scale", "1");
     let settle = 0;
     const content = board.closest<HTMLElement>(".sk-canvas__content");
     if (content)
@@ -152,6 +156,8 @@ const skipped = components.flatMap((c) => c.skipped.map((s) => `${c.id}.${s}`));
         moving = true;
         clearTimeout(settle);
         settle = window.setTimeout(() => {
+          // Labels counter-scale with this, set once per gesture: a variable that changed every frame would restyle every label every frame.
+          board.style.setProperty("--canvas-scale", String(new DOMMatrixReadOnly(getComputedStyle(content).transform).a || 1));
           moving = false;
           drain();
         }, 150);
@@ -159,7 +165,14 @@ const skipped = components.flatMap((c) => c.skipped.map((s) => `${c.id}.${s}`));
     const pending = new Set<HTMLElement>();
     let active = 0;
     const drain = () => {
-      for (const part of [...pending]) {
+      // Nearest to the centre of the view first: what the reader is about to see is ready before what is merely close.
+      const view = viewport.getBoundingClientRect();
+      const [cx, cy] = [view.left + view.width / 2, view.top + view.height / 2];
+      const distance = (el: HTMLElement) => {
+        const r = el.getBoundingClientRect();
+        return Math.hypot(r.left + r.width / 2 - cx, r.top + r.height / 2 - cy);
+      };
+      for (const part of [...pending].sort((a, b) => distance(a) - distance(b))) {
         if (active >= (moving ? 1 : IDLE_POOL)) break;
         // A block drawn under MIN_PX wide is a speck: loading it costs a mount and shows nothing. It stays pending
         // and loads when the reader zooms in (drain runs again on every settle).
@@ -185,7 +198,7 @@ const skipped = components.flatMap((c) => c.skipped.map((s) => `${c.id}.${s}`));
           io.observe(part);
         }
       },
-      { root: board.closest(".sk-canvas__viewport"), rootMargin: "1200px" },
+      { root: board.closest(".sk-canvas__viewport"), rootMargin: "4000px" },
     );
     const io = new IntersectionObserver(
       (records) => {
@@ -193,7 +206,7 @@ const skipped = components.flatMap((c) => c.skipped.map((s) => `${c.id}.${s}`));
         drain();
       },
       // Rooted on the canvas viewport, not the page: the viewport clips, so a page-rooted margin would never reach past it.
-      { root: board.closest(".sk-canvas__viewport"), rootMargin: "900px" },
+      { root: board.closest(".sk-canvas__viewport"), rootMargin: "2000px" },
     );
 
     if (measuring) {
@@ -245,13 +258,13 @@ const skipped = components.flatMap((c) => c.skipped.map((s) => `${c.id}.${s}`));
     --sk-canvas-grid-size: 24px;
   }
   .board { inline-size: max-content; padding: 4rem; display: flex; align-items: flex-start; gap: 6rem; }
-  .stack { flex: none; display: grid; gap: 6rem; align-content: start; }
+  .stack { flex: none; display: grid; gap: 4rem; align-content: start; }
   .cluster__title { margin: 0 0 1.5rem; font-size: 2.5rem; letter-spacing: -.03em; }
-  .cluster__body { display: flex; align-items: flex-start; gap: 1rem; }
-  .column { flex: none; display: grid; gap: 1rem; justify-items: start; }
+  .cluster__body { display: flex; align-items: flex-start; gap: 2rem; }
+  .column { flex: none; display: grid; gap: 6rem; justify-items: start; padding-block-start: 3rem; }
   /* One hairline per component, no fill: the wall reads as a Figma showcase, not as cards. A part is as wide as its
      content needs and every part of a column takes the column's width, so a wide component widens its column only. */
-  .part { border: 1px solid var(--color-border-subtle); border-radius: var(--radius-surface); padding: 1.5rem; box-sizing: border-box;
+  .part { background: var(--color-bg-surface); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-surface); padding: 1.5rem; box-sizing: border-box;
     /* Size containment: the part is exactly the measured box, so its content cannot move anything. content-visibility
        makes the browser skip layout and paint of every part that is off screen. */
     contain: strict; content-visibility: auto; overflow: clip; }
@@ -261,11 +274,16 @@ const skipped = components.flatMap((c) => c.skipped.map((s) => `${c.id}.${s}`));
   html.canvas-measuring .part { contain: layout; content-visibility: visible; inline-size: max-content; block-size: auto !important; }
   html.canvas-measuring .column { inline-size: auto !important; }
   .part__body:not([data-ready]) { visibility: hidden; }
-  .part__header { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-block-end: 1rem; }
-  .part__title { margin: 0; font-size: 1.125rem; }
-  .part__category { font-size: var(--font-size-caption); color: var(--color-text-secondary); }
-  .part .group__label { padding-block-end: .25rem; border-block-end: 1px solid var(--color-border-subtle); margin-block: 0 .75rem; }
-  .part .group { padding-block-end: .5rem; }
+  /* Names that keep roughly one size at every zoom: scaled up by the inverse of the canvas zoom (capped), around the
+     corner they hang from. A transform changes no box, so the measured block sizes stay true. */
+  .board { --label-grow: clamp(1, calc(1 / var(--canvas-scale, 1)), 3); }
+  .block { position: relative; }
+  .label { position: absolute; inset-inline-start: 0; inset-block-end: calc(100% + .5rem); padding: .25rem .625rem; border-radius: var(--radius-control); background: var(--color-bg-surface); border: 1px solid var(--color-border-subtle); inline-size: max-content; max-inline-size: 60rem; display: flex; align-items: baseline; gap: .75rem; transform: scale(var(--label-grow)); transform-origin: left bottom; transition: transform .15s ease-out; pointer-events: none; }
+  .label__title { margin: 0; font-size: 1.125rem; }
+  .label__meta { font-size: var(--font-size-caption); color: var(--color-text-secondary); }
+  .cluster__title { transform: scale(clamp(1, calc(1 / var(--canvas-scale, 1)), 3)); transform-origin: left bottom; transition: transform .15s ease-out; }
+  .part .group { border-block-start: 1px solid var(--color-border-subtle); padding-block: .5rem .75rem; }
+  .part .group__label { margin-block: 0 .75rem; }
   .part .group__label, .part figcaption { font-size: var(--font-size-caption); color: var(--color-text-secondary); }
   .part figcaption { margin: 0; }
   /* Wraps at 40rem, but never narrower than its widest specimen: min-inline-size beats max-inline-size on purpose. */

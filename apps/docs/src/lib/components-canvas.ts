@@ -108,6 +108,8 @@ function build(): CanvasComponent[] {
         out.skipped.push(signature);
         continue;
       }
+      // A square photo: the satin texture used elsewhere is 16:9, grey and pale at the bottom, and reads as a broken avatar.
+      if (id === "avatar" && typeof base.options?.src === "string") base.options = { ...base.options, src: "/demos/lightbox/coast-thumb.jpg" };
       const groups: CanvasGroup[] = [];
       for (const name of def.options) {
         const option = contract.options[name];
