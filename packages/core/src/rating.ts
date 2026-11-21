@@ -20,11 +20,11 @@ import { clampedFraction } from "./fraction.js";
  * draws things. The icon vocabulary names ROLES ("delete", "close"): things a set draws its own way.
  * A rating symbol is not one of those. It is a unit of a scale, closer to a Progress bar's fill than
  * to an action, and the vocabulary cannot express it anyway: `attrs` on an icon set is per SET, not
- * per icon (`scripts/emit-icon-set.ts`), so "filled star" and "empty star" cannot be two roles
+ * per icon, so "filled star" and "empty star" cannot be two roles
  * without one published set being degenerate. Lucide has no filled star; Material's star cannot
  * become an outline. So the glyph is a mask behind `--sk-rating-symbol`, identical in every set,
  * and swapping it for a heart or a thumb is one custom property rather than a change to the
- * vocabulary that all three icon packages would have to follow.
+ * vocabulary that every mapped set would have to follow.
  */
 export const ratingParts = {
   root: "sk-rating",

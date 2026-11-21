@@ -11,6 +11,20 @@ packages:
 # @types/node 26, which describes APIs this repo does not run.
 catalog:
   "@types/node": "^24.13.3"
+  # Icon geometry: a consumer picks one; the repo maps three (core/src/iconify.ts).
+  "@iconify-json/lucide": "^1.2.0"
+  "@iconify-json/ph": "^1.2.0"
+  "@iconify-json/material-symbols": "^1.2.0"
+  "@iconify-json/bi": "^1.2.0"
+  "@iconify-json/carbon": "^1.2.0"
+  "@iconify-json/fluent": "^1.2.0"
+  "@iconify-json/heroicons": "^1.2.0"
+  "@iconify-json/hugeicons": "^1.2.0"
+  "@iconify-json/iconoir": "^1.2.0"
+  "@iconify-json/mdi": "^1.2.0"
+  "@iconify-json/mingcute": "^1.2.0"
+  "@iconify-json/ri": "^1.2.0"
+  "@iconify-json/tabler": "^1.2.0"
 
 # ─────────────────────────────────────────────────────────────────────────────────────────────────
 # QUARANTINE FOR NEW VERSIONS. 30 days, in minutes.

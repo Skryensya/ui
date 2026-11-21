@@ -10,13 +10,13 @@
   },
   "dependencies": {
     "@skryensya/core": "workspace:*",
-    "@skryensya/icons-lucide": "workspace:*",
     "@skryensya/react": "workspace:*",
     "@skryensya/vanilla": "workspace:*",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   },
   "devDependencies": {
+    "@iconify-json/lucide": "catalog:",
     "@skryensya/devtools": "workspace:*",
     "@sveltejs/vite-plugin-svelte": "^7.0.0",
     "@types/node": "catalog:",

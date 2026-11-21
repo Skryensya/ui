@@ -1,5 +1,5 @@
 ---
-import { installCommand } from "../../lib/install-command";
+import { installCommand, releaseUrl } from "../../lib/install-command";
 /* The anatomy diagram at the top of the page is an Annotated frame, so this page needs its sheet. */
 import "@skryensya/core/components/annotation.css";
 import "@skryensya/core/components/avatar.css";
@@ -27,7 +27,7 @@ import "@skryensya/core/components/button.css";
 import "@skryensya/core/patterns/state-layer.css";
 import "@skryensya/core/components/carousel.css";
 import "@skryensya/core/components/fade-edge.css";
-import "@skryensya/icons-phosphor/carousel.css";
+import "@/icon-sets/ph.css";
 import "../../examples/carousel.css";
 
 const t = useTranslations(getLocale(Astro.url));
@@ -39,11 +39,13 @@ const explain = (option: string, values: readonly string[]) =>
 // The dot box is 1.5rem (the 24px target minimum); at 0.8 zoom it would draw 19px, so it is sized up by the same factor.
 const zoomOut = ".sk-carousel { zoom: 0.8; } .sk-carousel__dot { --sk-carousel-dot-box: 1.875rem; }";
 
-const installIcons = installCommand("icons-phosphor");
+const installIcons = `${installCommand("vanilla")}
+pnpm add -D @iconify-json/ph
+pnpm dlx ${releaseUrl("cli")} icons ph`;
 
 const bootstrap = `import { initComponents } from "@skryensya/vanilla/auto";
 import { mountIcons } from "@skryensya/vanilla/icon";
-import { phosphorIcons } from "@skryensya/icons-phosphor";
+import { icons as phosphorIcons } from "./icons"; // written by: skryensya icons ph
 
 mountIcons(document, phosphorIcons);
 await initComponents(); // ${t("carousel.bootstrapComment")}`;
@@ -66,7 +68,7 @@ import { carouselTitlesDoTree, carouselTitlesDontTree } from "../../demos/dodont
   description={t("carousel.description")}
   contractId="carousel"
   badge="Beta"
-  extraSheets={["@skryensya/core/components/button.css", "@skryensya/core/patterns/state-layer.css", "@skryensya/icons-phosphor/carousel.css", "@skryensya/core/components/fade-edge.css", "@skryensya/core/patterns/image-frame.css", "@skryensya/core/patterns/media-overlay.css"]}
+  extraSheets={["@skryensya/core/components/button.css", "@skryensya/core/patterns/state-layer.css", "./icons.css", "@skryensya/core/components/fade-edge.css", "@skryensya/core/patterns/image-frame.css", "@skryensya/core/patterns/media-overlay.css"]}
   vanillaInstallSteps={[
     { title: t("install.stepInstall"), blocks: [{ kind: "code", code: installIcons, lang: "bash", label: "terminal" }] },
     { title: t("install.stepMount"), blocks: [{ kind: "code", code: bootstrap, lang: "ts", label: "JavaScript" }] },

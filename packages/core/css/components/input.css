@@ -161,7 +161,7 @@
    * unstyled, exactly as before this rule existed) turns out to accept a `mask-image` the same way
    * any other box would, so the browser-drawn bitmap CAN be swapped for this system's own glyph -
    * confirmed against a live render, not assumed. The SVG below is Lucide's own `clock` outline,
-   * byte-for-byte the same `viewBox`/path data `packages/icons-lucide` ships (this site's default
+   * byte-for-byte the same `viewBox`/path data Lucide draws (this site's default
    * icon set, `apps/docs/src/icons.ts`'s own `siteIconSet`). Hardcoded rather than read from that
    * package, because a CSS `url()` cannot import a JS module; a reader who switches the site to a
    * different icon set sees this one glyph stay Lucide's while the LIVE `Icon` renders elsewhere

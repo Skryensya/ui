@@ -13,12 +13,12 @@
     "@bramus/specificity": "^2.4.2",
     "@skryensya/ai-compiler": "workspace:*",
     "@skryensya/core": "workspace:*",
-    "@skryensya/icons-lucide": "workspace:*",
     "jsdom": "^29.1.1",
     "postcss": "^8.5.26"
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.136.0",
+    "@iconify-json/lucide": "catalog:",
     "@types/node": "catalog:",
     "esbuild": "^0.28.1",
     "tsx": "^4.19.2",

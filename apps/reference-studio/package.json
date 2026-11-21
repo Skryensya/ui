@@ -13,20 +13,20 @@
     "@skryensya/reference-model": "workspace:*",
     "@skryensya/react": "workspace:*",
     "@skryensya/core": "workspace:*",
-    "@skryensya/icons-lucide": "workspace:*",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   },
   "devDependencies": {
+    "@iconify-json/lucide": "catalog:",
+    "@testing-library/react": "^16.3.2",
     "@types/node": "catalog:",
-    "typescript": "^5.9.3",
-    "vitest": "^4.1.11",
-    "vite": "^8.1.6",
-    "@vitejs/plugin-react": "^5.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "jsdom": "^29.1.1",
     "sass": "^1.83.0",
-    "@testing-library/react": "^16.3.2",
-    "jsdom": "^29.1.1"
+    "typescript": "^5.9.3",
+    "vite": "^8.1.6",
+    "vitest": "^4.1.11"
   }
 }

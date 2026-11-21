@@ -42,8 +42,8 @@ function warnNonIntegerPaginationProp(name: "page" | "total", value: number): vo
 const escapeAttr = (value: string) => value.replaceAll("&", "&amp;").replaceAll('"', "&quot;");
 
 /** An icon as markup, for the nav the shared pager builds outside React's tree. Decorative. */
-function iconMarkup(set: IconSet, name: "chevron-left" | "chevron-right"): string {
-  const icon = set[name];
+function iconMarkup(set: IconSet | undefined, name: "chevron-left" | "chevron-right"): string {
+  const icon = set?.[name];
   if (!icon) return "";
   const { presentation, box, body } = renderIconBox({ icon, dataIcon: name, size: "sm" });
   const attrs = [...presentation, ...box].map(([key, value]) => `${key}="${escapeAttr(value)}"`).join(" ");

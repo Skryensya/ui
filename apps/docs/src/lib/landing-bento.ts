@@ -1053,8 +1053,8 @@ export function bentoSets(es: boolean): BentoTile[][] {
           },
           hint(
             t(
-              "Instala el core, el binding y los íconos desde el GitHub Release.",
-              "Installs core, the binding and its icons from the GitHub Release.",
+              "Instala el core y el binding desde el GitHub Release.",
+              "Installs core and the binding from the GitHub Release.",
             ),
           ),
         ],

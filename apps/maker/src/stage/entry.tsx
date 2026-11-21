@@ -4,7 +4,9 @@ import { loadTree, renderTree, setPortalContainer } from "@skryensya/react/rende
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import "@skryensya/core/fonts/hanken-grotesk.css";
 import "@skryensya/core/tokens.scss";
-import "@skryensya/icons-lucide/select.css";
+import { IconSetProvider } from "@skryensya/react/icon";
+import { icons } from "../icon-set";
+import "../icon-set.css";
 import "./stage.css";
 
 /*
@@ -48,7 +50,7 @@ window.makerStage = {
     await loadTree(tree);
     if (request !== latest) return;
     /* Synchronous, so the parent can measure the moment this resolves. */
-    flushSync(() => root.render(renderTree(tree)));
+    flushSync(() => root.render(<IconSetProvider set={icons}>{renderTree(tree)}</IconSetProvider>));
   },
 };
 

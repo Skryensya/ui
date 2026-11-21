@@ -117,11 +117,11 @@ const groups: readonly Group[] = [
     entries: [
       {
         id: "optional-peers",
-        name: "@skryensya/icons-material, @skryensya/icons-phosphor",
+        name: "@iconify-json/lucide, @iconify-json/ph, @iconify-json/material-symbols",
         used: "react, vanilla",
         why: {
-          es: "Se marcan como peer opcional para que el árbol de instalación de quien no usa un set de iconos concreto no los incluya. Los iconos de Lucide sí vienen por defecto porque los componentes los necesitan para funcionar.",
-          en: "Marked as optional peers so the install tree of someone not using a given icon set does not include them. The Lucide icons do ship by default because the components need them to work.",
+          es: "El kit no trae íconos. El proyecto instala el set que elige como dependencia de desarrollo, y `skryensya icons <set>` escribe solo los íconos que piden los componentes. El resto de la colección nunca llega al bundle.",
+          en: "The kit ships no icons. The project installs the set it picks as a dev dependency, and `skryensya icons <set>` writes only the icons the components ask for. The rest of the collection never reaches the bundle.",
         },
       },
     ],

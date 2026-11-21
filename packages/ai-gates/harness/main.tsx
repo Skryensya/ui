@@ -3,7 +3,8 @@ import { flushSync } from "react-dom";
 import { emitMarkup } from "@skryensya/ai-compiler/emit";
 import { mountComponentsWithIcons } from "@skryensya/vanilla/auto";
 import { mountCodePreview } from "@skryensya/vanilla/code-preview";
-import { lucideIcons } from "@skryensya/icons-lucide";
+import { IconSetProvider } from "@skryensya/react/icon";
+import { icons as lucideIcons } from "./icons";
 import { canonicalTrees } from "../src/trees.js";
 import { loadTree, renderTree, setPortalContainer } from "./react-render.js";
 
@@ -117,7 +118,7 @@ async function stage(): Promise<void> {
     // failed with "is not loaded", and so did the whole stage, in global setup.
     await loadTree(tree);
     // Synchronous commit, so the DOM is final by the time the loop moves on.
-    flushSync(() => createRoot(react).render(renderTree(tree)));
+    flushSync(() => createRoot(react).render(<IconSetProvider set={lucideIcons}>{renderTree(tree)}</IconSetProvider>));
   }
 
   /*

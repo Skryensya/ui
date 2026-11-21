@@ -1,0 +1,44 @@
+---
+/*
+ * The reader's icon set: the kit's Select over the sets the site has written (`lib/icon-set-options`).
+ * `data-docs-icon-set-select` is the hook Base.astro's icon-set script wires; this only draws it, in the
+ * popover's row shape or as a tile for the phone sheet, beside the other preferences.
+ */
+import { emitMarkup } from "@skryensya/ai-compiler/emit";
+import type { UsageTree } from "@skryensya/core/usage-tree";
+import { defaultIconSet, siteIconSets } from "../lib/icon-set-options";
+
+interface Props {
+  label: string;
+  description?: string;
+  tile?: boolean;
+}
+
+const { label, description, tile = false } = Astro.props;
+const id = tile ? "docs-icon-set-sheet" : "docs-icon-set-panel";
+
+const select = emitMarkup(
+  {
+    contract: "select",
+    signature: "Select",
+    options: { value: defaultIconSet },
+    attrs: { id, "data-docs-icon-set-select": "" },
+    slots: { label, items: siteIconSets.map((set) => ({ options: { value: set.id }, slots: { label: set.label } })) },
+  } as UsageTree,
+  { fillDefaults: false },
+);
+const hint = description
+  ? emitMarkup({ contract: "typography", signature: "Text", options: { size: "caption", tone: "secondary", textElement: "span" }, children: description } as UsageTree, { fillDefaults: false })
+  : "";
+---
+
+{
+  tile ? (
+    <div class="sk-tile docs-prefs-tile sk-stack" data-padding="md" data-gap="xs">
+      <Fragment set:html={select} />
+      <Fragment set:html={hint} />
+    </div>
+  ) : (
+    <Fragment set:html={select} />
+  )
+}

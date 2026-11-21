@@ -9,5 +9,7 @@ export default defineConfig({
   test: {
     exclude: [...configDefaults.exclude, ".astro/**", "dist/**"],
     environment: "node",
+    /* Vitest blanks CSS by default, `?raw` included; the icon-set switch reads these sheets as text. */
+    css: { include: [/src\/icon-sets\//] },
   },
 });

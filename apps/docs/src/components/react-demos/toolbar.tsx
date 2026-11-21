@@ -3,12 +3,11 @@
  * `react` source (see toolbar.astro) so it stays vanilla-only; only the plain-buttons example gets
  * a live island. `bold`/`italic`/`link` are not in the STABLE vocabulary at all (no set-independent
  * role names them), so this demo binds a set that draws them, the same way theme-toggle.tsx does.
- * Lucide is the binding's own default, so the provider below is what binds the site's Phosphor
- * rather than inherited: the cast under it is only sound while some set that draws these is bound.
+ * The provider below binds the site's Phosphor explicitly: the cast under it is only sound while some set that draws these is bound.
  */
 import { IconSetProvider, Icon } from "@skryensya/react/icon";
 import type { StableIconName } from "@skryensya/core/icon";
-import { phosphorIcons } from "@skryensya/icons-phosphor";
+import { icons as phosphorIcons } from "../../icon-sets/ph";
 import { Toolbar, ToolbarGroup, ToolbarSeparator } from "@skryensya/react/toolbar";
 import { Tooltip } from "@skryensya/react/tooltip";
 import { framedIn } from "./framed";

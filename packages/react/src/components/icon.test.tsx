@@ -1,14 +1,23 @@
-import { stableIconNames, type IconData, type IconSet } from "@skryensya/core/icon";
-import { lucideIcons } from "@skryensya/icons-lucide";
-import { materialIcons } from "@skryensya/icons-material";
-import { phosphorIcons } from "@skryensya/icons-phosphor";
+import { isComponentIconName, stableIconNames, type IconData, type IconSet } from "@skryensya/core/icon";
+
+/* The roles every set draws; the component marks are optional and written only on request. */
+const interfaceRoles = stableIconNames.filter((name) => !isComponentIconName(name));
+import { createRequire } from "node:module";
+import { iconSetFromIconify, iconifyPresets, type IconifyJSON } from "@skryensya/core/iconify";
+import { lucideIcons } from "../test-icons.js";
 import { render, within } from "@testing-library/react";
 import axe from "axe-core";
+import { Fragment } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { Icon, IconSetProvider } from "./icon.js";
 
 /* The real sets, not fixtures. A stub here would let the shipped geometry rot, and these three are
  * the whole portability claim: the same call sites, three drawings. */
+const load = (prefix: string) =>
+  iconSetFromIconify(createRequire(import.meta.url)(`@iconify-json/${prefix}/icons.json`) as IconifyJSON, iconifyPresets[prefix]!);
+const phosphorIcons = load("ph");
+const materialIcons = load("material-symbols");
+
 const sets: [string, IconSet][] = [
   ["lucide", lucideIcons],
   ["phosphor", phosphorIcons],
@@ -43,20 +52,13 @@ describe("Icon React contracts", () => {
     expect(container.querySelector("svg")!.innerHTML).toContain("M12 3l2.2 5.8");
   });
 
-  it("falls back to the default set (Lucide) with no provider bound", () => {
-    // ADR-19 revisited: a stable name renders zero-config against the default set, the way
-    // brands/default.scss ships in core. Opting out is still explicit, install another set and
-    // wrap the tree in <IconSetProvider set={…} />.
-    const { container } = render(<Icon name="close" />);
-    const svg = container.querySelector("svg")!;
-
-    // viewBox is exact (an attribute); the body is asserted by a distinctive substring because jsdom
-    // re-serializes the self-closing <path/> into <path></path>, the same way the data= test does.
-    expect(svg.getAttribute("viewBox")).toBe(lucideIcons.close.viewBox);
-    expect(svg.innerHTML).toContain("M18 6 6 18");
-    // The set that used to be the default must now only ever arrive through a provider: this is the
-    // assertion that catches the default quietly sliding back.
-    expect(svg.innerHTML).not.toContain(phosphorIcons.close.body.slice(0, 24));
+  it("draws nothing for a stable name with no set bound, and says so once in development", () => {
+    // The kit ships no icons: a default set would put a library in every consumer's bundle.
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+    const { container } = render(<><Icon name="close" /><Icon name="check" /></>, { wrapper: Fragment });
+    expect(container.querySelector("svg")).toBeNull();
+    expect(error.mock.calls.filter((call) => call.join(" ").includes("no icon set is bound"))).toHaveLength(1);
+    error.mockRestore();
   });
 
   it("is decorative without a label, and content with one", () => {
@@ -98,10 +100,11 @@ describe("Icon React contracts", () => {
   it("carries the set's own fill and stroke, so an outline set stays outline", () => {
     // The whole reason IconData has `attrs`: a CSS `fill: currentColor` would beat a presentation
     // attribute and silently fill every outline set, so the pattern never declares one.
+    // Iconify bodies carry the paint on their own elements, which a CSS rule on `.sk-icon` cannot beat.
     const { svg } = renderIcon(<Icon name="danger" />);
 
-    expect(svg().getAttribute("fill")).toBe("none");
-    expect(svg().getAttribute("stroke")).toBe("currentColor");
+    expect(svg().innerHTML).toContain('fill="none"');
+    expect(svg().innerHTML).toContain('stroke="currentColor"');
   });
 
   it("writes size as data-size and keeps the class, so one hook does the sizing", () => {
@@ -165,7 +168,7 @@ describe.each(sets)("the %s set", (_name, iconSet) => {
   it("covers every stable role with real geometry", () => {
     // `satisfies IconSet` proves completeness at compile time; this proves none of it is a stub and
     // that a library rename didn't silently leave a hole.
-    for (const role of stableIconNames) {
+    for (const role of interfaceRoles) {
       expect(iconSet[role].body.length, role).toBeGreaterThan(0);
       expect(iconSet[role].viewBox, role).toMatch(/^-?[\d.]+ -?[\d.]+ -?[\d.]+ -?[\d.]+$/);
     }
@@ -173,7 +176,7 @@ describe.each(sets)("the %s set", (_name, iconSet) => {
 
   it("renders every role through the same call site, whatever the drawing", () => {
     // The portability claim, executed: one vocabulary, three libraries, no call site moves.
-    for (const role of stableIconNames) {
+    for (const role of interfaceRoles) {
       const { container, unmount } = render(
         <IconSetProvider set={iconSet}>
           <Icon name={role} />
@@ -190,10 +193,10 @@ describe.each(sets)("the %s set", (_name, iconSet) => {
     // An icon has no color of its own: it inherits currentColor. A set whose root declares neither
     // fill nor stroke would paint black, invisible in dark mode. Material's raw assets do exactly
     // that, which is why its generator declares fill explicitly.
-    for (const role of stableIconNames) {
-      const attrs = iconSet[role].attrs ?? {};
-      const paints = [attrs.fill, attrs.stroke].filter(Boolean);
-      expect(paints.some((p) => p === "currentColor"), `${role}: ${JSON.stringify(attrs)}`).toBe(true);
+    for (const role of interfaceRoles) {
+      const { attrs = {}, body } = iconSet[role];
+      const paints = [attrs.fill, attrs.stroke].includes("currentColor") || body.includes("currentColor");
+      expect(paints, `${role}: ${JSON.stringify(attrs)}`).toBe(true);
     }
   });
 
@@ -203,7 +206,7 @@ describe.each(sets)("the %s set", (_name, iconSet) => {
        before this fix, which is exactly what happened the first time this contract was exercised
        with an unrecognized name (see the comment on `iconContract.options.name`). */
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
-    const { container } = render(<Icon name={"not-a-real-icon" as never} />);
+    const { container } = render(<IconSetProvider set={iconSet}><Icon name={"not-a-real-icon" as never} /></IconSetProvider>);
 
     expect(container.querySelector("svg")).toBeNull();
     expect(spy).toHaveBeenCalled();

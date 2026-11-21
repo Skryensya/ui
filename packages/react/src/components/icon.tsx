@@ -7,7 +7,6 @@
  * the markup contract is documented and never shipped (decision 8).
  */
 import { renderIconBox, type IconData, type IconSet, type IconSize, type StableIconName, iconContract } from "@skryensya/core/icon";
-import { lucideIcons } from "@skryensya/icons-lucide";
 import { createContext, useContext, type ReactNode, type SVGAttributes } from "react";
 import { a11yWarnRef, dev, devTicket } from "../dev-warning.js";
 
@@ -22,23 +21,12 @@ const { size: sizeOption } = iconContract.options;
  * And it goes through context and not a global module registry because the site, the real consumer
  * (decision 12), will want to show two sets on the same page, and a module variable can only hold one.
  *
- * The default is LUCIDE: `<Icon name="close" />` draws with no configuration (decision 15, revised).
- * The price is that Lucide, and only Lucide, travels in every React consumer's bundle, just like
- * `brands/default.scss` travels in core. Stepping outside the default is still opt-in: you install
- * `@skryensya/icons-phosphor` or `@skryensya/icons-material` and wrap the tree in
- * `<IconSetProvider set={…}>`. Those two are NOT bundled until they are imported.
- *
- * WHY LUCIDE AND NOT PHOSPHOR, which this default used to be. The default is not a statement about
- * which set is better, it is a statement about which set a consumer gets when they say nothing, and
- * the one thing it must not do is disagree with the app around it. Every surface in this repo draws
- * Lucide: the documentation binds it (`apps/docs/src/icons.ts`), so did every preview frame, which
- * had to wrap each React demo in an `IconSetProvider` for no reason except to talk this default out
- * of Phosphor (`component-preview-frame.ts` says so in its own comment), and the Playground picked
- * Phosphor for its chrome only because the island inside it could not cheaply be anything else. One
- * set is a choice; two, with a default pulling one way and the app pulling the other, is a bug
- * waiting for the one call site that forgets to wrap.
+ * There is NO default set. The geometry is the consumer's dependency (an `@iconify-json/<set>` they
+ * install, written into their project by `skryensya icons <set>`), so the kit's bundle carries no icon
+ * library and the consumer's carries only the roles. Until a provider binds one, `<Icon name>` draws
+ * nothing and says so once in development.
  */
-const IconSetContext = createContext<IconSet>(lucideIcons);
+const IconSetContext = createContext<IconSet | undefined>(undefined);
 
 export type IconSetProviderProps = {
   /** The set that occupies the stable vocabulary. Binding it is the same as choosing a brand. */
@@ -47,7 +35,7 @@ export type IconSetProviderProps = {
 };
 
 /** The bound set, for a component that draws an icon outside JSX (into DOM a shared helper builds). */
-export function useIconSet(): IconSet {
+export function useIconSet(): IconSet | undefined {
   return useContext(IconSetContext);
 }
 
@@ -87,6 +75,17 @@ type IconBaseProps = Omit<
 export type IconProps = IconBaseProps &
   ({ name: StableIconName; data?: never } | { data: IconData; name?: never });
 
+let warnedNoSet = false;
+function warnNoSet() {
+  if (!dev || warnedNoSet) return;
+  warnedNoSet = true;
+  console.error(...devTicket("<Icon>", {
+    issue: "has a `name` but no icon set is bound, so it draws nothing.",
+    why: "The kit ships no icons: the project picks a set.",
+    fix: "Run `skryensya icons lucide` (after installing @iconify-json/lucide) and wrap the app in <IconSetProvider set={icons}>.",
+  }));
+}
+
 export function Icon({ name, data, label, decorative = true, size = sizeOption.default, className, ...props }: IconProps) {
   const missingLabel = decorative === false && !label;
   if (dev && missingLabel) {
@@ -96,10 +95,13 @@ export function Icon({ name, data, label, decorative = true, size = sizeOption.d
       fix: 'Add `label="…"` or leave it decorative.',
     }));
   }
-  // The context always has a set: Lucide by default, or whichever an IconSetProvider higher up binds.
   // `data` does not read the context, it is project geometry, portable without a set (decision 15).
   const set = useContext(IconSetContext);
-  const icon = name !== undefined ? set[name] : data!;
+  if (name !== undefined && !set) {
+    warnNoSet();
+    return null;
+  }
+  const icon = name !== undefined ? set![name] : data!;
 
   /*
    * `name`'s type is the closed vocabulary (`StableIconName`), which `validate_ui` checks for a tree

@@ -117,6 +117,10 @@ export function add(ids: string[], options: AddOptions, ctx: Context): number {
 
   const wiring = adapter.wiring(project, cssFile);
   const notes = adapter.notes(project, binding);
+  // The kit ships no icons: the project picks a set (a dev dependency) and writes only the roles it needs.
+  const declared = Object.keys({ ...project.pkg.dependencies, ...project.pkg.devDependencies });
+  if (!declared.some((name) => name.startsWith("@iconify-json/")))
+    notes.push("pick an icon set: install @iconify-json/lucide (or ph, material-symbols) as a dev dependency, then run: skryensya icons lucide");
   if (!wiring.wired || notes.length) {
     ctx.log();
     ctx.log("Next");

@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "9d1cbd0dabf84fdc"
+surface: "04bcf358a26210a6"
 entries:
   - date: 2026-09-26
     kind: feature
@@ -45,3 +45,11 @@ entries:
     en:
       title: First release
       body: "Published for the first time, with its contract, a React binding and a stylesheet for plain markup."
+  - date: 2026-11-20
+    kind: feature
+    es:
+      title: Los nombres de icono incluyen las marcas de componentes
+      body: "La lista de roles de icono que acepta <code>StateButton</code> crece con los roles <code>component-*</code>, uno por componente del kit. No cambia nada de su comportamiento."
+    en:
+      title: Icon names include the component marks
+      body: "The icon roles <code>StateButton</code> accepts grow by the <code>component-*</code> roles, one per kit component. Nothing about its behaviour changes."

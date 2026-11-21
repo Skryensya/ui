@@ -1,5 +1,5 @@
 import type { UsageTree } from "@skryensya/core/usage-tree";
-import { stableIconNames } from "@skryensya/core/icon";
+import { isComponentIconName, stableIconNames } from "@skryensya/core/icon";
 
 /*
  * The whole stable icon vocabulary, one cell per role, with the role's own name under it.
@@ -13,7 +13,8 @@ export const iconVocabTree: UsageTree = {
   contract: "layout",
   signature: "Grid",
   options: { gap: "md" },
-  children: stableIconNames.map((name) => ({
+  // The interface roles; the `component-*` marks are listed on each component's page and in the catalogue.
+  children: stableIconNames.filter((name) => !isComponentIconName(name)).map((name) => ({
     contract: "layout",
     signature: "Stack",
     options: { gap: "xs", align: "center" },

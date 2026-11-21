@@ -4281,3 +4281,10 @@ html[data-sk-component-preview-pref="vanilla"] [data-sk-install-binding="react"]
 /* THE BACKDROP FROSTED NEEDS, for every example that has the appearance menu: a frosted material over a blank stage
    has nothing to process. It is the docs' own grainy satin (`lib/frost-backdrop.ts`, served from `public/demos/frost/`), written onto
    `:root` as `--docs-frost-backdrop` (and `-motion`) by `Base.astro` so the cards and the hook playground cannot drift. */
+
+/* ICON SET WITHOUT A FLASH: the page is built in the default set and the reader's set arrives as a chunk
+   (`scripts/icon-set.ts`). Until it is painted the glyphs are hidden, not removed: `visibility` keeps every
+   box, so nothing shifts when they appear. `ph` is `defaultIconSet`. */
+html:not([data-icon-set="ph"]):not([data-sk-icons-ready]) svg[data-icon]:not([data-icon-set-fixed] *) {
+  visibility: hidden;
+}

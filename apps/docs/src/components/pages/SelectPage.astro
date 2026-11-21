@@ -33,7 +33,7 @@ const nativeInstall = installCommand("core");
 
 const js = `import { initComponents } from "@skryensya/vanilla/auto";
 import { mountIcons } from "@skryensya/vanilla/icon";
-import { phosphorIcons } from "@skryensya/icons-phosphor";
+import { icons as phosphorIcons } from "./icons"; // written by: skryensya icons ph
 
 // ${t("selectPage.iconsComment").split("\n").join("\n// ")}
 mountIcons(document, phosphorIcons);

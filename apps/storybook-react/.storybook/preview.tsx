@@ -12,10 +12,17 @@ import "@skryensya/core/tokens.scss"; // brings the state layer and the icon pat
 import "@skryensya/core/dimensions/radius.scss";
 import "@skryensya/core/dimensions/press-scale.scss";
 import "@skryensya/core/patterns/scrollbar.css"; // the scroll boxes of the examples use it
+import { IconSetProvider } from "@skryensya/react/icon";
+import { icons } from "../src/icons";
+import "../src/icons.css";
 
 const withPage: Decorator = (Story, { globals }) => {
   applyPage(globals);
-  return <Story />;
+  return (
+    <IconSetProvider set={icons}>
+      <Story />
+    </IconSetProvider>
+  );
 };
 
 /* Foundations first, then the components A to Z, then the playground. Inline because Storybook reads `storySort` from this file statically; names are not compared, so a component's stories keep the order the generator wrote. */

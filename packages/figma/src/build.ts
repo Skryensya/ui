@@ -7,6 +7,7 @@
  */
 
 import { createHash } from "node:crypto";
+import { createRequire } from "node:module";
 import { emitMarkup } from "@skryensya/ai-compiler/emit";
 import { canonical } from "@skryensya/ai-compiler/manifest";
 import { sheetsForTree } from "@skryensya/ai-compiler/sheets-for-tree";
@@ -1289,9 +1290,13 @@ export function cellId(setId: string, props: Record<string, string>): string {
 
 async function iconSetOf(realization: Realization, iconContract: ComponentContract): Promise<IconSet> {
   const option = iconContract.options.name as { values: readonly string[] };
-  const module = (await import(realization.icons.module)) as Record<string, Record<string, { body: string; viewBox: string; attrs?: Record<string, string> }>>;
-  const set = module[realization.icons.export];
-  if (!set) throw new Error(`${realization.icons.module} has no export ${realization.icons.export}`);
+  // The set is an Iconify collection bound by one of core's presets, the same path a consumer takes.
+  const { iconSetFromIconify, iconifyPresets } = await import("@skryensya/core/iconify");
+  const preset = iconifyPresets[realization.icons.export];
+  if (!preset) throw new Error(`no icon preset ${realization.icons.export}`);
+  const json = createRequire(import.meta.url)(`${realization.icons.module}/icons.json`);
+  // Every name the contract declares, component marks included: Figma draws the whole vocabulary.
+  const set = iconSetFromIconify(json, preset, { components: true }) as Record<string, { body: string; viewBox: string; attrs?: Record<string, string> }>;
   if (!option.values.includes(DEFAULT_ICON)) throw new Error(`the icon vocabulary has no ${DEFAULT_ICON}`);
 
   const first = set[option.values[0]];

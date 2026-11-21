@@ -470,7 +470,7 @@
    * indicator showed a thin, undersized tick beside the one demo that passes a real
    * `chevron-right`, and the two did not look like the same control. Treegrid's disclosure already
    * draws its own for exactly this reason; this is the same path from the same icon set
-   * (`packages/icons-lucide` `chevron-right`: viewBox 0 0 24 24, `m9 18 6-6-6-6`, 2px round
+   * (Lucide `chevron-right`: viewBox 0 0 24 24, `m9 18 6-6-6-6`, 2px round
    * joins), so a tree and a treegrid on one page show one chevron.
    *
    * `mask-image`, not `background-image`: a mask paints with `background-color`, so the glyph

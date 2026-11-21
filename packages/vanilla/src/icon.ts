@@ -15,8 +15,8 @@
  *   <span data-sk-icon="arrow-up"></span>
  *
  *   import { mountIcons } from "@skryensya/vanilla/icon";
- *   import { lucideIcons } from "@skryensya/icons-lucide";
- *   mountIcons(document, lucideIcons);
+ *   import { icons } from "./icons"; // written by `skryensya icons lucide`
+ *   mountIcons(document, icons);
  *
  * The `<span>` is replaced by the same `<svg class="sk-icon" data-icon="arrow-up" viewBox…>` you would
  * write by hand or that React emits. Since the result carries `data-icon` (not `data-sk-icon`), it is

@@ -1,17 +1,18 @@
 /*
  * The site's icons.
  *
- * The site brings no geometry of its own: it binds a published set, which is the path it documents.
- * Phosphor is the site's choice, not the system's: core names no tenants (decision 2), so there is no
- * "official" set, there are three published ones and you choose.
+ * The site binds sets the way it documents: `pnpm icons` writes them into src/icon-sets/ from the
+ * `@iconify-json/*` dev dependencies, with the kit's own CLI. Phosphor is the site's choice, not the
+ * system's: the kit has no default set, there are three mapped ones and you choose.
  *
- * Changing sets is changing the two lines below. No call site moves, and that is exactly what the
+ * Changing sets is changing the lines below. No call site moves, and that is exactly what the
  * stable vocabulary buys.
  */
+import { defaultIconSet } from "./lib/icon-set-options";
 import { renderIconBox, type IconData, type IconSet, type IconSize, type StableIconName } from "@skryensya/core/icon";
-import { lucideIcons } from "@skryensya/icons-lucide";
-import { materialIcons } from "@skryensya/icons-material";
-import { phosphorIcons } from "@skryensya/icons-phosphor";
+import { icons as lucideIcons } from "./icon-sets/lucide";
+import { icons as materialIcons } from "./icon-sets/material-symbols";
+import { icons as phosphorIcons } from "./icon-sets/ph";
 
 /*
  * THE SET AND ITS ID ARE THE SAME FACT, and that is why they come from the same place.
@@ -20,10 +21,10 @@ import { phosphorIcons } from "@skryensya/icons-phosphor";
  * on `<html>` so CSS and preview frames can name the same set. Keeping both beside each other avoids
  * a runtime icon-swap module in the docs shell: the chrome ships already painted in the site set.
  */
-export const siteIconSet = "phosphor";
+export const siteIconSet = defaultIconSet;
 export const siteIcons = phosphorIcons;
 
-/** The three published sets, so the page shows them side by side instead of asserting they exist. */
+/** The three mapped sets, so the page shows them side by side instead of asserting they exist. */
 export const allSets: readonly { id: string; label: string; licence: string; set: IconSet }[] = [
   { id: "lucide", label: "Lucide", licence: "ISC", set: lucideIcons },
   { id: "phosphor", label: "Phosphor", licence: "MIT", set: phosphorIcons },
@@ -65,7 +66,10 @@ export function iconMarkup(
   name: StableIconName,
   { className, size, set = siteIcons }: { className?: string; size?: IconSize; set?: IconSet } = {},
 ): string {
-  return svgString(set[name], name, { size, className });
+  // The component marks are optional in a set: the site writes them (`--components`), so a gap is a build error.
+  const icon = set[name];
+  if (!icon) throw new Error(`The icon set has no "${name}": regenerate it with \`pnpm icons\``);
+  return svgString(icon, name, { size, className });
 }
 
 /**

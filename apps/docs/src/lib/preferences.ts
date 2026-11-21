@@ -20,6 +20,7 @@ import { definePreference, oneOf, stringValue } from "@skryensya/core/storage";
  * route shards, which a bundler cannot prove pure, so importing it retains the whole dictionary
  * (measured: an 814 kB `preferences` chunk). `locales` imports nothing and is five lines. */
 import { defaultLocale, locales, type Locale } from "../i18n/locales";
+import { defaultIconSet, siteIconSetIds, type SiteIconSetId } from "./icon-set-options";
 
 export { colorModePreference } from "@skryensya/core/theme-toggle";
 export {
@@ -39,6 +40,13 @@ export const palettePreference = definePreference<string>({
   slot: "palette",
   fallback: "",
   parse: stringValue(64),
+});
+
+/** The icon set the site draws with, from Preferences. Phosphor, the site's own, by default. */
+export const iconSetPreference = definePreference<SiteIconSetId>({
+  slot: "icons",
+  fallback: defaultIconSet,
+  parse: oneOf(siteIconSetIds),
 });
 
 /*

@@ -147,11 +147,13 @@ describe("tokens", () => {
 describe("the Icon set", () => {
   it("has one variant per name the icon contract declares, drawn by the chosen set", async () => {
     const { iconContract } = await import("@skryensya/core/icon");
-    const { lucideIcons } = await import("@skryensya/icons-lucide");
+    const { iconSetFromIconify, iconifyPresets } = await import("@skryensya/core/iconify");
+    const { createRequire } = await import("node:module");
+    const lucideIcons = iconSetFromIconify(createRequire(import.meta.url)("@iconify-json/lucide/icons.json"), iconifyPresets.lucide!, { components: true });
     const icons = manifest.components.find((c) => c.kind === "icon-set")!;
     if (icons.kind !== "icon-set") throw new Error("no icon set");
     expect(icons.icons.map((i) => i.name)).toEqual([...iconContract.options.name.values]);
-    expect(icons.icons[0].svg).toContain(lucideIcons[icons.icons[0].name as keyof typeof lucideIcons].body);
+    expect(icons.icons[0].svg).toContain(lucideIcons[icons.icons[0].name as keyof typeof lucideIcons]!.body.replaceAll("currentColor", "#000000"));
     expect(icons.icons.map((i) => i.name)).toContain(icons.default);
   });
 

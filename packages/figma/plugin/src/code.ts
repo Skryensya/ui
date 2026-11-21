@@ -2450,7 +2450,7 @@ async function reconcileRun(
   const progress = new Progress(apply, [
     // Every token, always: they are the file's variables whichever components bind them.
     { id: "variables", label: "Variables", total: manifest.variables.length },
-    ...(withIcons ? [{ id: "icons", label: `${iconSpec.name} (${iconSpec.source.replace("@skryensya/icons-", "")})`, total: iconSpec.icons.length }] : []),
+    ...(withIcons ? [{ id: "icons", label: `${iconSpec.name} (${iconSpec.source.replace("@iconify-json/", "")})`, total: iconSpec.icons.length }] : []),
     ...setSpecs.map((s) => ({ id: s.id, label: s.name, total: s.cells.length })),
     ...(darkDemo && setSpecs.length ? [{ id: "dark", label: `Dark demos (${DEMO})`, total: setSpecs.length }] : []),
   ]);

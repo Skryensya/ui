@@ -13,6 +13,7 @@ import { emitMarkup } from "@skryensya/ai-compiler/emit";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import { availableLocales, canonicalPath, getLocale, localeNames, localizePath, useTranslations } from "../i18n";
 import { iconMarkup } from "../icons";
+import IconSetPicker from "./IconSetPicker.astro";
 
 interface Props {
   presets: { id: string; name: string; accent: string }[];
@@ -154,6 +155,9 @@ const languageControl = emitMarkup(
       </Fragment>
     )
   }
+
+  <Fragment set:html={separator} />
+  <IconSetPicker label={t("prefs.icons")} />
 
   <Fragment set:html={separator} />
   <section class="sk-stack" data-gap="xs">

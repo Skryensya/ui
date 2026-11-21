@@ -207,6 +207,132 @@ export const stableIconNames = [
   "screen-desktop",
   "screen-tablet",
   "screen-mobile",
+
+  /* THE KIT'S OWN COMPONENTS, one mark each: what a catalogue, a sidebar or a command palette draws
+   * beside "Accordion" or "QR code". A role like the rest: `component-carousel` names "the Carousel
+   * component", and a set draws it as slides, a gallery or a play strip. They are here and not in each
+   * app because every app that lists the kit's components needs them, and a list drawn half by the set
+   * and half by fixed geometry stops following the set. A new component adds its name here, and every
+   * mapped set (iconify-presets.ts) has to draw it; the test says which one does not.
+   *
+   * Components whose mark is already a role (Calendar → `calendar`, CodePreview → `code`) reuse it. */
+  "component-accordion",
+  "component-app-shell",
+  "component-annotation",
+  "component-diagram",
+  "component-avatar",
+  "component-expressive-avatar",
+  "component-back-to-top",
+  "component-badge",
+  "component-box",
+  "component-breadcrumb",
+  "component-button",
+  "component-callout",
+  "component-card",
+  "component-canvas",
+  "component-carousel",
+  "component-changelog",
+  "component-checkbox",
+  "component-clipboard",
+  "component-listbox",
+  "component-color-picker",
+  "component-combobox",
+  "component-comment-thread",
+  "component-data-grid",
+  "component-date-picker",
+  "component-comparison-table",
+  "component-description-list",
+  "component-dialog",
+  "component-dialog-stack",
+  "component-drawer",
+  "component-empty-state",
+  "component-fade-edge",
+  "component-feed",
+  "component-drop-zone",
+  "component-footer",
+  "component-form-field",
+  "component-grid",
+  "component-heading",
+  "component-hero",
+  "component-icon",
+  "component-image-frame",
+  "component-media-overlay",
+  "component-morph-stack",
+  "component-lightbox",
+  "component-inline",
+  "component-input",
+  "component-kbd",
+  "component-layout-grid",
+  "component-link",
+  "component-list",
+  "component-loader",
+  "component-marquee",
+  "component-megamenu",
+  "component-menu",
+  "component-app-bar",
+  "component-menubar",
+  "component-message",
+  "component-meter",
+  "component-navbar",
+  "component-number-field",
+  "component-pagination",
+  "component-placeholder",
+  "component-password-input",
+  "component-search-field",
+  "component-otp-input",
+  "component-popover",
+  "component-presence",
+  "component-procedure",
+  "component-timeline",
+  "component-progress",
+  "component-qr-code",
+  "component-quote",
+  "component-questionnaire",
+  "component-radio-group",
+  "component-rating",
+  "component-segmented",
+  "component-select",
+  "component-resizable",
+  "component-compare-slider",
+  "component-video-player",
+  "component-audio-player",
+  "component-scroll-expand",
+  "component-scroll-stack",
+  "component-separator",
+  "component-sidebar",
+  "component-skip-link",
+  "component-slider",
+  "component-button-group",
+  "component-stack",
+  "component-stat",
+  "component-state-button",
+  "component-steps",
+  "component-switch",
+  "component-table",
+  "component-table-pager",
+  "component-tags-input",
+  "component-tabs",
+  "component-tag",
+  "component-text",
+  "component-tile-link",
+  "component-tile-checkbox",
+  "component-tile-switch",
+  "component-tile-radio-group",
+  "component-expandable-tile",
+  "component-tile-button",
+  "component-toast",
+  "component-toc",
+  "component-toolbar",
+  "component-tooltip",
+  "component-tour",
+  "component-tree-view",
+  "component-treegrid",
+  "component-user-select",
+  "component-window",
+  "component-wrapper",
+  "component-hotkey",
+  "component-scrollbar",
+  "component-vaul",
 ] as const;
 
 export type StableIconName = (typeof stableIconNames)[number];
@@ -214,15 +340,24 @@ export type StableIconName = (typeof stableIconNames)[number];
 /**
  * The binding of each role to a geometry; an icon set is a brand.
  *
- * Complete, not partial: a set that does not cover the vocabulary leaves a foundational component
- * without its icon at runtime, just like a brand missing a ramp position leaves a broken color.
+ * Complete over the interface roles: a set that does not cover them leaves a foundational component
+ * without its icon at runtime, just like a brand missing a ramp position leaves a broken color. The
+ * `component-*` marks are the exception, optional, so an app that never lists the kit's components does
+ * not carry 116 drawings it never shows (`skryensya icons <set> --components` adds them).
  *
- * Core ships none, and cannot: a real set comes from an external library, and @skryensya/core's
- * dependencies are empty on purpose. Sets live in separate packages,
- * `@skryensya/icons-lucide`, `@skryensya/icons-phosphor`, `@skryensya/icons-material`, which is the
- * exit decision 15 had already anticipated: additive, and without core naming a tenant.
+ * Core ships none: a real set is the project's dependency (an `@iconify-json/<set>`), bound to the roles
+ * by `iconSetFromIconify` in `@skryensya/core/iconify` and written into the project by `skryensya icons`,
+ * so only the roles reach a bundle. A hand-written object literal is a set too.
  */
-export type IconSet = Readonly<Record<StableIconName, IconData>>;
+export type IconSet = Readonly<Record<InterfaceIconName, IconData>> & Readonly<Partial<Record<ComponentIconName, IconData>>>;
+
+/** The marks of the kit's own components (`component-carousel`…), for an app that lists them. */
+export type ComponentIconName = Extract<StableIconName, `component-${string}`>;
+
+/** The roles every set must draw: everything but the component marks, which a set carries only when asked. */
+export type InterfaceIconName = Exclude<StableIconName, ComponentIconName>;
+
+export const isComponentIconName = (name: string): name is ComponentIconName => name.startsWith("component-");
 
 /**
  * The pattern's three sizes, which the renderer writes as `data-size`.

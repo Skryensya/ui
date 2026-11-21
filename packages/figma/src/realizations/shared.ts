@@ -25,7 +25,7 @@ export const stage: Realization["stage"] = {
   },
 };
 
-export const icons: Realization["icons"] = { module: "@skryensya/icons-lucide", export: "lucideIcons" };
+export const icons: Realization["icons"] = { module: "@iconify-json/lucide", export: "lucide" };
 
 /** A component that is never hovered, pressed or focused: no state axis at all. */
 export const noStates: Realization["state"] = { axis: "state", rest: "rest", options: [], interactions: [] };

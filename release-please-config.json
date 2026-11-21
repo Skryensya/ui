@@ -10,9 +10,6 @@
     ".": {
       "extra-files": [
         "packages/core/package.json",
-        "packages/icons-lucide/package.json",
-        "packages/icons-material/package.json",
-        "packages/icons-phosphor/package.json",
         "packages/react/package.json",
         "packages/vanilla/package.json",
         "packages/devtools/package.json",

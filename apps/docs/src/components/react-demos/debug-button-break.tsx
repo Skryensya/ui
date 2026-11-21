@@ -9,7 +9,7 @@
 import { Button } from "@skryensya/react/button";
 import { ButtonGroup } from "@skryensya/react/button-group";
 import { Icon, IconSetProvider } from "@skryensya/react/icon";
-import { phosphorIcons } from "@skryensya/icons-phosphor";
+import { icons as phosphorIcons } from "../../icon-sets/ph";
 import type { ReactNode } from "react";
 
 const VARIANTS = ["solid", "soft", "ghost"] as const;

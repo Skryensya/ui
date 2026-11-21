@@ -50,7 +50,7 @@ const vanillaHydrate = `<!-- You write the role's name, not the <svg>. -->
 <span data-sk-icon="close" data-sk-icon-label="Cerrar"></span>`;
 
 const vanillaBind = `import { mountIcons } from "@skryensya/vanilla/icon";
-import { lucideIcons } from "@skryensya/icons-lucide";
+import { icons as lucideIcons } from "./icons"; // written by: skryensya icons lucide
 
 // replaces every [data-sk-icon] with the set's <svg>. The
 // set is explicit.
@@ -58,7 +58,7 @@ mountIcons(document, lucideIcons);`;
 
 const reactApi = `import { Icon } from "@skryensya/react/icon";
 
-// no configuration: it draws with Lucide, the default set
+// inside the IconSetProvider below: the kit has no default set
 <Icon name="chevron-down" />
 {/* a system role */}
 <Icon name="close" label="Cerrar" />
@@ -67,10 +67,9 @@ const reactApi = `import { Icon } from "@skryensya/react/icon";
 {/* outside the set, the only opt-in part */}`;
 
 const provider = `import { IconSetProvider, Icon } from "@skryensya/react/icon";
-import { lucideIcons } from "@skryensya/icons-lucide";
+import { icons as lucideIcons } from "./icons"; // written by: skryensya icons lucide
 
-// another set? you bind it once, at the root, just like
-// choosing a brand
+// bind the set once, at the root, just like choosing a brand
 <IconSetProvider set={lucideIcons}>
   <App />
 </IconSetProvider>;`;

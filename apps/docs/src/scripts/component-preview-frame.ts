@@ -6,6 +6,7 @@
 import { siteIcons } from "../icons";
 import { mountComponentsWithIcons } from "@skryensya/vanilla/auto";
 import { mountIcons } from "@skryensya/vanilla/icon";
+import { followIconSet } from "./icon-set";
 
 /*
  * Root cause (do not regress): `window.frameElement instanceof HTMLIFrameElement` is FALSE inside
@@ -747,6 +748,9 @@ async function boot(): Promise<void> {
   }
 
   syncRootState();
+  /* The reader's icon set, mirrored from the page as `data-icon-set`: this frame mounts in the site
+   * set and repaints whatever it draws, now and on every later change. */
+  followIconSet(document);
   const rootObserver = new MutationObserver(syncRootState);
   rootObserver.observe(parentRoot, { attributes: true });
   window.addEventListener("pagehide", () => rootObserver.disconnect(), {

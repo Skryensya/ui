@@ -23,6 +23,8 @@ import "@skryensya/core/components/button.css";
 import "@skryensya/core/patterns/wrapper.css";
 import "@skryensya/core/components/popover.css";
 import "@skryensya/core/components/segmented.css";
+/* Preferences' icon-set picker is the kit's Select, in the header on every page. */
+import "@skryensya/core/components/select.css";
 import "@skryensya/core/components/switch.css";
 import "@skryensya/core/components/theme-toggle.css";
 import "@skryensya/core/components/kbd.css";
@@ -30,7 +32,7 @@ import "@skryensya/core/components/loader.css";
 /* The site's icon set (Phosphor) drawing the native select's chevron and check, the same glyphs the
    enhanced Select renders. Global because every native select on the site, and every preview frame
    that copies this page's styles, should read as the same control. */
-import "@skryensya/icons-phosphor/select.css";
+import "@/icon-sets/ph.css";
 /* The palette composes over `.sk-dialog` (decision 11), and its sheet says so on the first line: it
  * owns the search row, the list and the footer, not the modal frame. Without this sheet ⌘K came out
  * with the browser's black border and square corners. It goes first for that reason: it is the base,
@@ -164,7 +166,10 @@ import {
   LANGUAGE_COOKIE,
   languagePreference,
   palettePreference,
+  iconSetPreference,
 } from "../lib/preferences";
+import { siteIconSetIds } from "../lib/icon-set-options";
+import IconSetPicker from "../components/IconSetPicker.astro";
 
 /*
  * What the pre-paint script is allowed to know: the storage key and the slot names, taken from the
@@ -178,6 +183,8 @@ const PREPAINT = {
   binding: componentPreviewBindingPreference.slot,
   screen: componentPreviewScreenPreference.slot,
   palette: palettePreference.slot,
+  icons: iconSetPreference.slot,
+  iconSets: siteIconSetIds,
 };
 
 interface Props {
@@ -609,7 +616,10 @@ const [paletteBefore = "", paletteMid = "", paletteAfter = ""] = emitMarkup(
         else d.removeAttribute("data-contrast");
         d.style.setProperty("--sk-density", "1");
         d.setAttribute("data-radius", "md");
-        d.setAttribute("data-icon-set", siteIconSet);
+        /* The reader's icon set, named before paint so the preview frames read it as they boot; the
+         * geometry itself is swapped by scripts/icon-set.ts once that chunk loads. */
+        var iconSet = stored(PREPAINT.icons);
+        d.setAttribute("data-icon-set", PREPAINT.iconSets.indexOf(iconSet) >= 0 ? iconSet : siteIconSet);
         /* Shared Vanilla | React preference for every ComponentPreview on the site. */
         d.setAttribute(
           "data-sk-component-preview-pref",
@@ -1107,6 +1117,7 @@ const [paletteBefore = "", paletteMid = "", paletteAfter = ""] = emitMarkup(
           </span>
           <span class="dimensions__palette-dot" aria-hidden="true"></span>
         </button>
+        <IconSetPicker tile label={t("prefs.icons")} description={t("prefs.iconsHint")} />
         <LanguageMenu tile label={t("prefs.language")} description={t("prefs.languageHint")} />
         <VersionMenu tile label={t("version.control")} description={t("version.controlHint")} />
       </div>
@@ -1931,6 +1942,28 @@ const [paletteBefore = "", paletteMid = "", paletteAfter = ""] = emitMarkup(
       });
       new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ["data-scheme", "data-contrast"] });
       sync();
+    </script>
+
+    <script>
+      /* The icon set: Preferences writes it, `<html data-icon-set>` carries it, and the page and every
+       * preview frame (which mirror that attribute) repaint from it. */
+      import { getPreference, setPreference } from "@skryensya/vanilla/storage";
+      import { iconSetPreference } from "../lib/preferences";
+      import { selectEvents } from "@skryensya/core/select";
+      import { followIconSet, isSiteIconSet } from "../scripts/icon-set";
+
+      followIconSet(document);
+      /* Seeded before `initComponents()` mounts the Selects (it reads `data-value` once, at mount). */
+      const pickers = document.querySelectorAll<HTMLElement>("[data-docs-icon-set-select]");
+      for (const picker of pickers) {
+        picker.dataset.value = getPreference(iconSetPreference);
+        picker.addEventListener(selectEvents.valueChange, (event) => {
+          const id = (event as CustomEvent<{ value: string[] }>).detail.value[0];
+          if (!isSiteIconSet(id) || id === document.documentElement.getAttribute("data-icon-set")) return;
+          setPreference(iconSetPreference, id);
+          document.documentElement.setAttribute("data-icon-set", id);
+        });
+      }
     </script>
 
     <script>

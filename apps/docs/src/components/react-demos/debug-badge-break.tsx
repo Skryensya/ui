@@ -9,7 +9,7 @@
 import { Badge, BadgeDot, BadgeHolder } from "@skryensya/react/badge";
 import { Button } from "@skryensya/react/button";
 import { Icon, IconSetProvider } from "@skryensya/react/icon";
-import { phosphorIcons } from "@skryensya/icons-phosphor";
+import { icons as phosphorIcons } from "../../icon-sets/ph";
 import type { ReactNode } from "react";
 
 const TONES = ["neutral", "accent", "success", "warning", "danger"] as const;

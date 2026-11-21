@@ -2,7 +2,8 @@ import { createRoot } from "react-dom/client";
 import { flushSync } from "react-dom";
 import { emitMarkup } from "@skryensya/ai-compiler/emit";
 import { mountComponentsWithIcons } from "@skryensya/vanilla/auto";
-import { lucideIcons } from "@skryensya/icons-lucide";
+import { IconSetProvider } from "@skryensya/react/icon";
+import { icons as lucideIcons } from "./icons";
 import { snippets } from "../../../contracts/examples/index.js";
 import { loadTree, renderTree } from "./react-render.js";
 
@@ -41,7 +42,7 @@ async function render(): Promise<void> {
 
   if (params.get("binding") === "react") {
     await loadTree(snippet.tree);
-    flushSync(() => createRoot(host).render(renderTree(snippet.tree)));
+    flushSync(() => createRoot(host).render(<IconSetProvider set={lucideIcons}>{renderTree(snippet.tree)}</IconSetProvider>));
   } else {
     host.innerHTML = emitMarkup(snippet.tree, { idPrefix: snippet.id });
     await mountComponentsWithIcons(host, lucideIcons);

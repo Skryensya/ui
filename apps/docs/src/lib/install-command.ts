@@ -11,10 +11,7 @@ const needs = {
   core: [],
   cli: [],
   vanilla: ["core"],
-  react: ["core", "icons-lucide"],
-  "icons-lucide": ["core"],
-  "icons-phosphor": ["core"],
-  "icons-material": ["core"],
+  react: ["core"],
 } as const satisfies Record<string, readonly string[]>;
 
 export type KitPackage = keyof typeof needs;

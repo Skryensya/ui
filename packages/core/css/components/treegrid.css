@@ -231,7 +231,7 @@
     cursor: pointer;
   }
   /*
-   * The chevron. The SAME glyph the icon set ships as `chevron-right` (`packages/icons-lucide`:
+   * The chevron. The SAME glyph the icon set ships as `chevron-right` (Lucide:
    * viewBox 0 0 24 24, `m9 18 6-6-6-6`, 2px round-joined stroke). A bare `content: "›"` character
    * depends on whatever glyph the reader's font ships for that code point, which varies enough
    * across system fonts to read as a thin, slightly-off mark next to every OTHER chevron in this

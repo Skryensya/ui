@@ -8,11 +8,10 @@ describe("installCommand", () => {
   });
 
   it("brings the Skryensya packages a tarball depends on, once and first", () => {
-    expect(installCommand("react", "icons-phosphor").split("\n").slice(1).map((line) => line.match(/skryensya-([a-z-]+)-\d/)![1])).toEqual([
+    expect(installCommand("react", "vanilla").split("\n").slice(1).map((line) => line.match(/skryensya-([a-z-]+)-\d/)![1])).toEqual([
       "core",
-      "icons-lucide",
       "react",
-      "icons-phosphor",
+      "vanilla",
     ]);
   });
 });

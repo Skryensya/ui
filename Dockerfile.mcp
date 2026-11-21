@@ -29,9 +29,6 @@ COPY packages/ai-compiler/package.json ./packages/ai-compiler/package.json
 COPY packages/ai-gates/package.json ./packages/ai-gates/package.json
 COPY packages/core/package.json ./packages/core/package.json
 COPY packages/devtools/package.json ./packages/devtools/package.json
-COPY packages/icons-lucide/package.json ./packages/icons-lucide/package.json
-COPY packages/icons-material/package.json ./packages/icons-material/package.json
-COPY packages/icons-phosphor/package.json ./packages/icons-phosphor/package.json
 COPY packages/maker-agent/package.json ./packages/maker-agent/package.json
 COPY packages/maker-model/package.json ./packages/maker-model/package.json
 COPY packages/mcp/package.json ./packages/mcp/package.json

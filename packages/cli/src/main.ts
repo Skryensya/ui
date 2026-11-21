@@ -1,5 +1,6 @@
 import { parseArgs } from "node:util";
 import { add } from "./commands/add.js";
+import { icons } from "./commands/icons.js";
 import { info } from "./commands/info.js";
 import { list } from "./commands/list.js";
 import type { Context } from "./context.js";
@@ -13,6 +14,7 @@ Usage
   skryensya list [--category <name>] [--json]   the catalog
   skryensya info <name>                          what one component needs and exports
   skryensya add <name> [<name>...]               add its CSS and packages to this project
+  skryensya icons <set>                          write the roles from your @iconify-json/<set>
 
 Options for add
   --framework <${adapters.map((adapter) => adapter.id).join("|")}>
@@ -22,6 +24,13 @@ Options for add
   --no-install               write the stylesheet, print the install line
   --cwd <dir>                run as if from another directory
   --version                  the release this CLI belongs to (add installs that release)
+
+Options for icons
+  --out <path>               default src/icons (writes .ts and .css)
+  --check                    fail if those files are stale
+  --components               also write the marks of the kit's components (a catalogue, a sidebar)
+  sets: lucide, ph (and ph-thin|light|bold|fill|duotone), material-symbols (and -rounded|-sharp|-filled),
+        tabler, heroicons, ri, mingcute, hugeicons, fluent, carbon, iconoir, bi, mdi
 
 It never copies component source: it connects the packages to your project.`;
 
@@ -59,6 +68,8 @@ export function main(argv: string[], ctx: Context): number {
       }
       return add(rest, { binding: values.binding as Binding | undefined, framework: values.framework, dryRun: values["dry-run"], install: !values["no-install"] }, local);
     }
+    case "icons":
+      return icons(rest[0], { out: values.out, check: values.check, components: values.components }, local);
     default:
       ctx.error(`Unknown command "${command}". Run: skryensya help`);
       return 1;
@@ -75,6 +86,9 @@ function parse(argv: string[]) {
       binding: { type: "string" },
       framework: { type: "string" },
       cwd: { type: "string" },
+      out: { type: "string" },
+      check: { type: "boolean" },
+      components: { type: "boolean" },
       "dry-run": { type: "boolean" },
       "no-install": { type: "boolean" },
       help: { type: "boolean", short: "h" },

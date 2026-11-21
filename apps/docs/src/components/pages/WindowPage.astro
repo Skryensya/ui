@@ -25,7 +25,7 @@ import { getLocale, tList, useTranslations } from "../../i18n";
 const t = useTranslations(getLocale(Astro.url));
 
 const js = `import { mountIcons } from "@skryensya/vanilla/icon";
-import { phosphorIcons } from "@skryensya/icons-phosphor";
+import { icons as phosphorIcons } from "./icons"; // written by: skryensya icons ph
 
 mountIcons(document, phosphorIcons);`;
 import { windowTitleDoTree, windowTitleDontTree, windowBesideDoTree, windowBesideDontTree } from "../../demos/dodont-mocks";

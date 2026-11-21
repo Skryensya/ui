@@ -3,7 +3,9 @@ import { createRoot } from "react-dom/client";
 import { App } from "./App";
 import "@skryensya/core/fonts/hanken-grotesk.css";
 import "@skryensya/core/tokens.scss";
-import "@skryensya/icons-lucide/select.css";
+import { IconSetProvider } from "@skryensya/react/icon";
+import { icons } from "./icon-set";
+import "./icon-set.css";
 import "./app.css";
 
 /* The chrome is built from the kit, so it loads the kit's sheets; the stage loads its own. */
@@ -17,6 +19,8 @@ document.documentElement.style.colorScheme = "light";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
+    <IconSetProvider set={icons}>
+      <App />
+    </IconSetProvider>
   </StrictMode>,
 );

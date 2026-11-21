@@ -168,7 +168,8 @@ export type Realization = {
    */
   samples?: { slot: string; title: string; values: readonly string[] };
   /**
-   * The icon set that draws the Icon contract in Figma, as a module and export. A set is a brand the
+   * The icon set that draws the Icon contract in Figma: an Iconify collection and the core preset that
+   * binds it (`{ module: "@iconify-json/lucide", export: "lucide" }`). A set is a brand the
    * consumer picks (decision 15), so Figma draws with the one the docs draw with.
    */
   icons: { module: string; export: string };

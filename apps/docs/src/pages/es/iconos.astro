@@ -1,11 +1,14 @@
 ---
-import { installCommand } from "../../lib/install-command";
+import { releaseUrl } from "../../lib/install-command";
 import FoundationPage from "../../components/FoundationPage.astro";
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/components/table.css";
 import CodeBlock from "../../components/CodeBlock.astro";
 import UsagePreview from "../../components/UsagePreview.astro";
 import { stableIconNames } from "@skryensya/core/icon";
+import { iconifyPresets } from "@skryensya/core/iconify";
+import { isComponentIconName } from "@skryensya/core/icon";
+const interfaceRoles = stableIconNames.filter((name) => !isComponentIconName(name));
 import { iconVocabTree } from "../../demos/icons";
 import { allSets, iconMarkup } from "../../icons";
 
@@ -20,16 +23,21 @@ const vocabCss = `.sk-grid {
 }`;
 
 
-const install = `# Lucide comes with @skryensya/react.
-# Another set is installed only when it is chosen as the brand (or icons-material):
-${installCommand("icons-phosphor")}`;
+const install = `# el set es tuyo: una dependencia de desarrollo que se lee en build
+pnpm add -D @iconify-json/lucide
 
-const swap = `import { materialIcons } from "@skryensya/icons-material";
-import { IconSetProvider } from "@skryensya/react";
+# escribe src/icons.ts (solo los roles) y src/icons.css
+pnpm dlx ${releaseUrl("cli")} icons lucide`;
 
-<IconSetProvider set={materialIcons}>
+const swap = `import { icons } from "./icons";
+import "./icons.css"; // los íconos del select y del carousel nativos
+import { IconSetProvider } from "@skryensya/react/icon";
+
+<IconSetProvider set={icons}>
   <App />
-</IconSetProvider>`;
+</IconSetProvider>
+
+// Vanilla: mountIcons(document, icons) desde @skryensya/vanilla/icon`;
 ---
 
 <FoundationPage
@@ -53,8 +61,10 @@ import { IconSetProvider } from "@skryensya/react";
 
   <h2>El vocabulario</h2>
   <p>
-    Hay {stableIconNames.length} nombres estables. Cubren acciones, navegación, feedback y estados
-    comunes de una app, no solo los iconos que consume un componente del sistema. Un rol omitido vuelve
+    Hay {interfaceRoles.length} nombres estables. Cubren acciones, navegación, feedback y estados
+    comunes de una app, no solo los iconos que consume un componente del sistema. Además hay
+    {stableIconNames.length - interfaceRoles.length} marcas <code>component-*</code>, una por componente del kit, para una app
+    que los lista (un catálogo, un sidebar). Un rol omitido vuelve
     con nombres distintos en cada producto.
   </p>
   <p>
@@ -66,51 +76,41 @@ import { IconSetProvider } from "@skryensya/react";
 
   <h2>Sets como marca</h2>
   <p>
-    Core no envía geometría ni depende de una librería de iconos. Cada Icon set es completo: si existe
-    un Stable icon name, el set debe dibujarlo. Por eso cambiar de set es cambiar la marca visual, no
-    reescribir cada uso de <code>&lt;Icon name="..." /&gt;</code>.
+    El kit no trae íconos ni un set por defecto: el set lo instala tu proyecto, desde
+    <a href="https://iconify.design">Iconify</a>. Cada Icon set es completo: si existe un Stable icon name,
+    el set debe dibujarlo. Por eso cambiar de set es cambiar la marca visual, no reescribir cada uso de
+    <code>&lt;Icon name="..." /&gt;</code>. Estos ya tienen cada rol mapeado. Prueba los que el sitio tiene escritos desde Preferencias (el engranaje del header): los componentes siguen pidiendo los mismos roles y la página se redibuja.
   </p>
   <div class="sk-table-scroll">
     <table class="sk-table">
       <thead class="sk-table__head">
-        <tr class="sk-table__row">
-          <th class="sk-table__header">Paquete</th>
-          <th class="sk-table__header">Librería</th>
-          <th class="sk-table__header">Geometría</th>
-          <th class="sk-table__header">Licencia</th>
-        </tr>
+        <tr class="sk-table__row"><th class="sk-table__header"><code>skryensya icons</code></th><th class="sk-table__header">Paquete</th><th class="sk-table__header">Librería y estilo</th></tr>
       </thead>
       <tbody class="sk-table__body">
-        <tr class="sk-table__row">
-          <td class="sk-table__cell"><code>@skryensya/icons-phosphor</code></td>
-          <td class="sk-table__cell">Phosphor regular</td>
-          <td class="sk-table__cell"><code>0 0 256 256</code>, relleno</td>
-          <td class="sk-table__cell">MIT</td>
-        </tr>
-        <tr class="sk-table__row">
-          <td class="sk-table__cell"><code>@skryensya/icons-lucide</code></td>
-          <td class="sk-table__cell">Lucide</td>
-          <td class="sk-table__cell"><code>0 0 24 24</code>, contorno</td>
-          <td class="sk-table__cell">ISC</td>
-        </tr>
-        <tr class="sk-table__row">
-          <td class="sk-table__cell"><code>@skryensya/icons-material</code></td>
-          <td class="sk-table__cell">Material Symbols outlined</td>
-          <td class="sk-table__cell"><code>0 -960 960 960</code>, relleno</td>
-          <td class="sk-table__cell">Apache-2.0</td>
-        </tr>
+        {
+          Object.entries(iconifyPresets).map(([id, preset]) => (
+            <tr class="sk-table__row"><td class="sk-table__cell"><code>{id}</code></td><td class="sk-table__cell"><code>@iconify-json/{preset.prefix}</code></td><td class="sk-table__cell">{preset.licence}</td></tr>
+          ))
+        }
       </tbody>
     </table>
   </div>
+  <p>
+    Solo los roles llegan a tu bundle. La colección es una dependencia de desarrollo que se lee en build:
+    <code>skryensya icons</code> escribe los {interfaceRoles.length} roles en tu proyecto (y las marcas de componentes con <code>--components</code>) y deja los miles
+    de dibujos restantes en <code>node_modules</code>. Otro set de Iconify también sirve: mapea cada rol a
+    uno de sus nombres y llama a <code>iconSetFromIconify(json, {"{ map }"})</code> desde
+    <code>@skryensya/core/iconify</code> en un script de build.
+  </p>
   <CodeBlock code={install} label="terminal" />
-  <CodeBlock code={swap} label="React" note="ningún nombre de icono cambia" />
+  <CodeBlock code={swap} label="React" note="ningún nombre de icono cambia al cambiar de set" />
 
   <h2>El mismo rol, tres dibujos</h2>
   <p>
     Cada fila mantiene el mismo nombre público. Las columnas muestran cómo cada set lo realiza con su
     propia geometría.
   </p>
-  <div class="sk-table-scroll">
+  <div class="sk-table-scroll" data-icon-set-fixed>
     <table class="sk-table">
       <thead class="sk-table__head">
         <tr class="sk-table__row">

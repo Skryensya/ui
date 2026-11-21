@@ -37,9 +37,9 @@ export const iconMessages = {
       "<code>Icon</code> toma <code>name</code> <strong>o</strong> <code>data</code>, nunca los dos. <code>name</code> es un rol portable que sobrevive un cambio de set; <code>data</code> es geometría tuya, acoplada a propósito y visible en el call site.",
     "iconPage.reactNote": "React renderiza (decisión 14)",
     "iconPage.reactBody2":
-      '<code>&lt;Icon name="…"&gt;</code> dibuja sin configuración: Lucide viaja con <code>@skryensya/react</code>. Para otro set, lo instalas y envuelves la app una vez.',
-    "iconPage.providerNote": "Lucide/Material son opt-in",
-    "iconPage.providerLabel": "cambiar el set por defecto",
+      '<code>&lt;Icon name="…"&gt;</code> dibuja con el set que bindea un <code>IconSetProvider</code>. El kit no trae íconos ni un set por defecto: instalas un set de Iconify, escribes sus roles con <code>skryensya icons</code> y envuelves la app una vez.',
+    "iconPage.providerNote": "solo los roles llegan al bundle",
+    "iconPage.providerLabel": "bindear el set",
     "iconPage.vanillaTitle": "En Vanilla: hidratar por nombre o escribir el SVG",
     "iconPage.vanillaBody1":
       '<code>mountIcons(root, set)</code> reemplaza un placeholder con el <strong>nombre</strong> del rol por el mismo <code>&lt;svg class="sk-icon"&gt;</code> que escribirías a mano. El set es siempre explícito; para dos sets en una página, hidratas cada subárbol con el suyo.',
@@ -147,9 +147,9 @@ export const iconMessages = {
       "<code>Icon</code> takes <code>name</code> <strong>or</strong> <code>data</code>, never both. <code>name</code> is a portable role that survives a set change; <code>data</code> is your own geometry, deliberately coupled and visible at the call site.",
     "iconPage.reactNote": "React renders it (decision 14)",
     "iconPage.reactBody2":
-      '<code>&lt;Icon name="…"&gt;</code> draws with no configuration: Lucide ships with <code>@skryensya/react</code>. For a different set, install it and wrap the app once.',
-    "iconPage.providerNote": "Lucide/Material are opt-in",
-    "iconPage.providerLabel": "switching the default set",
+      '<code>&lt;Icon name="…"&gt;</code> draws from the set an <code>IconSetProvider</code> binds. The kit ships no icons and no default: install a set from Iconify, write its roles with <code>skryensya icons</code>, and wrap the app once.',
+    "iconPage.providerNote": "only the roles reach the bundle",
+    "iconPage.providerLabel": "binding the set",
     "iconPage.vanillaTitle": "In Vanilla: hydrate by name or write the SVG",
     "iconPage.vanillaBody1":
       '<code>mountIcons(root, set)</code> replaces a placeholder carrying the role\'s <strong>name</strong> with the same <code>&lt;svg class="sk-icon"&gt;</code> you would write by hand. The set is always explicit; for two sets on one page, hydrate each subtree with its own.',

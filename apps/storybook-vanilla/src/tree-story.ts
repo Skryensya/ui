@@ -1,7 +1,7 @@
 import type { Decorator, Meta as HtmlMeta, StoryObj as HtmlStoryObj } from "@storybook/html-vite";
 import { emitMarkup } from "@skryensya/ai-compiler/emit";
 import type { UsageTree } from "@skryensya/core/usage-tree";
-import { lucideIcons } from "@skryensya/icons-lucide";
+import { icons as lucideIcons } from "./icons";
 import { mountComponentsWithIcons } from "@skryensya/vanilla/auto";
 import type { Translate } from "@docs/i18n";
 import { isLocale, translator } from "@skryensya/storybook-kit/translate";

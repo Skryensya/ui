@@ -30,7 +30,7 @@ export const buttonRealization: Realization = {
     post: { holds: "icon", icon: "arrow-right" },
     children: { holds: "text", sample: "Button", iconWhen: "iconOnly", icon: "arrow-right" },
   },
-  icons: { module: "@skryensya/icons-lucide", export: "lucideIcons" },
+  icons: { module: "@iconify-json/lucide", export: "lucide" },
   // A section per size, largest first; within it a group per variant, a row per tone.
   grid: { columns: ["iconOnly", "state"], rows: ["size", "variant", "tone"], descending: ["size"] },
   // The docs preview card's surface, so the frame and the browser show a Button on the same one.

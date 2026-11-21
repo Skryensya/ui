@@ -71,13 +71,12 @@ else
   echo "  Install it with 'brew install gitleaks'." >&2
 fi
 
-if echo "$staged" | grep -qE '^(packages/core/src/icon\.ts|packages/icons-(lucide|material|phosphor)/)'; then
-  echo "pre-commit: the icon vocabulary changed, verifying the three sets are still complete..."
-  if ! pnpm --filter @skryensya/icons-lucide --filter @skryensya/icons-material --filter @skryensya/icons-phosphor run check; then
+if echo "$staged" | grep -qE '^packages/core/src/(icon|iconify)\.ts'; then
+  echo "pre-commit: the icon vocabulary or its maps changed, verifying every mapped set is still complete..."
+  if ! pnpm --filter @skryensya/core exec vitest run src/iconify.test.ts; then
     echo "" >&2
-    echo "pre-commit: an icon set is incomplete or out of date." >&2
-    echo "  Run 'pnpm --filter @skryensya/icons-lucide --filter @skryensya/icons-material --filter @skryensya/icons-phosphor generate'" >&2
-    echo "  and add the missing role to each set's MAP (scripts/generate.mjs)." >&2
+    echo "pre-commit: a mapped icon set is incomplete. Add the missing role to each preset's map in" >&2
+    echo "  packages/core/src/iconify.ts, then regenerate the docs sets: pnpm --filter @skryensya/docs icons" >&2
     exit 1
   fi
 fi

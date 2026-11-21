@@ -11,7 +11,8 @@ import "@skryensya/core/patterns/layout.css";
 /* PasswordInput's show/hide toggle; validate_ui's sheet list leaves it out. */
 import "@skryensya/core/patterns/icon-toggle.css";
 import "./popup.css";
-import { lucideIcons } from "@skryensya/icons-lucide";
+import { icons as lucideIcons } from "./icons";
+import "./icons.css";
 import { mountButton } from "@skryensya/vanilla/button";
 import { mountIcons } from "@skryensya/vanilla/icon";
 import { mountPasswordInput } from "@skryensya/vanilla/password-input";

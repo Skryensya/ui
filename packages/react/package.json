@@ -536,26 +536,17 @@
   },
   "dependencies": {
     "@skryensya/core": "workspace:*",
-    "@skryensya/icons-lucide": "workspace:*",
     "@tanstack/virtual-core": "^3.17.11",
     "@zag-js/react": "^1.43.3",
     "motion": "12.23.24"
   },
   "peerDependencies": {
-    "@skryensya/icons-material": "workspace:*",
-    "@skryensya/icons-phosphor": "workspace:*",
     "@tanstack/react-table": ">=9",
     "react": ">=19",
     "react-dom": ">=19",
     "react-hook-form": ">=7.50"
   },
   "peerDependenciesMeta": {
-    "@skryensya/icons-material": {
-      "optional": true
-    },
-    "@skryensya/icons-phosphor": {
-      "optional": true
-    },
     "@tanstack/react-table": {
       "optional": true
     },
@@ -565,8 +556,9 @@
   },
   "devDependencies": {
     "@hookform/resolvers": "^5.9.1",
-    "@skryensya/icons-material": "workspace:*",
-    "@skryensya/icons-phosphor": "workspace:*",
+    "@iconify-json/lucide": "catalog:",
+    "@iconify-json/material-symbols": "catalog:",
+    "@iconify-json/ph": "catalog:",
     "@tanstack/react-table": "^9.2.4",
     "@testing-library/react": "^16.3.2",
     "@types/react": "^19.2.7",

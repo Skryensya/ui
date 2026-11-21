@@ -18,7 +18,7 @@ button.css ─────┤   cascade simulated per cell (jsdom + postcss, var
 state-layer.css ┤
 icon.css ───────┤
 parseTokens() ──┤   token graph → Figma variables (alias / literal / evaluated)
-icons-lucide ───┤
+iconify lucide ─┤
 Figma realization (49 lines)
         ↓
 packages/figma  →  artifacts/figma-manifest.json  →  local plugin  →  native Figma
@@ -27,7 +27,7 @@ packages/figma  →  artifacts/figma-manifest.json  →  local plugin  →  nati
 **Sources read, never restated:** `buttonContract` (axes, values, defaults, slots, template order,
 surface hash), `button.css`, `state-layer.css` and `icon.css` (every paint and dimension per cell,
 through the cascade), `parseTokens()` (variables and aliases), `iconContract` plus
-`@skryensya/icons-lucide` (the Icon set), `component-preview.css` (the stage colour, through its own
+`@iconify-json/lucide` through core's `lucide` preset (the Icon set), `component-preview.css` (the stage colour, through its own
 cascade), `sheetsForTree()` and `emitMarkup()` (which sheets, and the real markup of each cell).
 
 **Derived, with a test each:** option values and defaults; which options are visual (`type` dropped

@@ -263,7 +263,7 @@ describe("add, from a release", () => {
     expect(add(["button"], { framework: "next" }, { ...run.ctx, release: "0.0.2" })).toBe(0);
     const base = "https://github.com/Skryensya/ui/releases/download/v0.0.2";
     expect(run.runs).toEqual([
-      `npm install ${base}/skryensya-core-0.0.2.tgz ${base}/skryensya-icons-lucide-0.0.2.tgz ${base}/skryensya-react-0.0.2.tgz`,
+      `npm install ${base}/skryensya-core-0.0.2.tgz ${base}/skryensya-react-0.0.2.tgz`,
     ]);
   });
 

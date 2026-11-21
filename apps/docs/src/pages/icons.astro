@@ -1,5 +1,5 @@
 ---
-import { installCommand } from "../lib/install-command";
+import { releaseUrl } from "../lib/install-command";
 import FoundationPage from "../components/FoundationPage.astro";
 import "@skryensya/core/components/typography.css";
 import "@skryensya/core/components/table.css";
@@ -8,6 +8,9 @@ import UsagePreview from "../components/UsagePreview.astro";
 import { iconVocabTree } from "../demos/icons";
 import { allSets, iconMarkup } from "../icons";
 import { stableIconNames } from "@skryensya/core/icon";
+import { iconifyPresets } from "@skryensya/core/iconify";
+import { isComponentIconName } from "@skryensya/core/icon";
+const interfaceRoles = stableIconNames.filter((name) => !isComponentIconName(name));
 
 /* The roles shown side by side. A handful is enough to see that the drawing changes and the name
  * not; all 32 are up. */
@@ -22,17 +25,25 @@ const vocabCss = `.sk-grid {
 }`;
 
 
-const bind = `# nothing: Lucide is the @skryensya/react default
-# another set? install it, and only then is it bundled (or icons-material):
-${installCommand("icons-phosphor")}`;
+const bind = `# the set is yours: a dev dependency, read at build time
+pnpm add -D @iconify-json/lucide
 
-const swap = `- import { phosphorIcons } from "@skryensya/icons-phosphor";
-+ import { materialIcons } from "@skryensya/icons-material";
+# writes src/icons.ts (the roles, nothing else) and src/icons.css
+pnpm dlx ${releaseUrl("cli")} icons lucide`;
 
-- <IconSetProvider set={phosphorIcons}>
-+ <IconSetProvider set={materialIcons}>
+const use = `import { icons } from "./icons";
+import "./icons.css"; // the native select and carousel icons
 
-  // and nothing more. Not a <Icon name="…"> moves.`;
+// React
+<IconSetProvider set={icons}>…</IconSetProvider>
+
+// Vanilla
+mountIcons(document, icons);`;
+
+const swap = `pnpm add -D @iconify-json/ph
+pnpm dlx ${releaseUrl("cli")} icons ph
+
+// and nothing more. Not a <Icon name="…"> moves.`;
 ---
 
 <FoundationPage
@@ -55,7 +66,7 @@ const swap = `- import { phosphorIcons } from "@skryensya/icons-phosphor";
 
   <h2>The stable vocabulary</h2>
   <p>
-    {stableIconNames.length} roles, covering what an app actually reaches for rather than only what the kit's own components consume. The reason is portability: if the vocabulary went up to <code>chevron-down</code> and nothing more, each project would declare <code>search</code> or <code>delete</code> on its own, and the most common system role would be called differently in each app.
+    {interfaceRoles.length} roles, covering what an app actually reaches for rather than only what the kit's own components consume, plus {stableIconNames.length - interfaceRoles.length} <code>component-*</code> marks, one per component of the kit, for an app that lists them (a catalogue, a sidebar). The reason is portability: if the vocabulary went up to <code>chevron-down</code> and nothing more, each project would declare <code>search</code> or <code>delete</code> on its own, and the most common system role would be called differently in each app.
   </p>
   <p>
     Each name is a <strong>role</strong>, never a drawing: <code>delete</code> and not <code>trash</code>, <code>edit</code> and not <code>pencil</code>, <code>search</code> and not <code>magnifying-glass</code>, <code>visibility</code> and not <code>eye</code>. The name has to remain true when another set draws the different role. And it is <code>danger</code>, not <code>error</code>, because the system already says <code>danger</code> in and in <code>BadgeTone</code>, a word does not coexist with its synonym.
@@ -66,30 +77,36 @@ const swap = `- import { phosphorIcons } from "@skryensya/icons-phosphor";
 
   <h2>Choose a set</h2>
   <p>
-    <strong>An icon set is a brand.</strong> <code>@skryensya/core</code> names the position (<code>chevron-down</code>) and the set says which drawing occupies it. <strong>Lucide is the default</strong> (travels with React); Phosphor and Material are interchangeable, opt-in:
+    <strong>An icon set is a brand, and it is yours.</strong> The kit ships no icons and has no default: <code>@skryensya/core</code> names the position (<code>chevron-down</code>) and the set you install says which drawing occupies it. Sets come from <a href="https://iconify.design">Iconify</a>, and these are already mapped to every role. Try any of the ones the site has written from Preferences (the gear in the header): the components keep asking for the same roles and the page redraws.
   </p>
   <div class="sk-table-scroll">
-  <table class="sk-table">
-    <thead class="sk-table__head">
-      <tr class="sk-table__row"><th class="sk-table__header">Package</th><th class="sk-table__header">Library</th><th class="sk-table__header">Drawing</th><th class="sk-table__header">viewBox</th><th class="sk-table__header">License</th></tr>
-    </thead>
-    <tbody class="sk-table__body">
-      <tr class="sk-table__row"><td class="sk-table__cell"><code>@skryensya/icons-lucide</code></td><td class="sk-table__cell">Lucide</td><td class="sk-table__cell">outline, 2px</td><td class="sk-table__cell"><code>0 0 24 24</code></td><td class="sk-table__cell">ISC</td></tr>
-      <tr class="sk-table__row"><td class="sk-table__cell"><code>@skryensya/icons-phosphor</code></td><td class="sk-table__cell">Phosphor, regular weight</td><td class="sk-table__cell">filled</td><td class="sk-table__cell"><code>0 0 256 256</code></td><td class="sk-table__cell">MIT</td></tr>
-      <tr class="sk-table__row"><td class="sk-table__cell"><code>@skryensya/icons-material</code></td><td class="sk-table__cell">Material Symbols, outlined 400</td><td class="sk-table__cell">filled</td><td class="sk-table__cell"><code>0 -960 960 960</code></td><td class="sk-table__cell">Apache-2.0</td></tr>
-    </tbody>
-  </table>
+    <table class="sk-table">
+      <thead class="sk-table__head">
+        <tr class="sk-table__row"><th class="sk-table__header"><code>skryensya icons</code></th><th class="sk-table__header">Package</th><th class="sk-table__header">Library and style</th></tr>
+      </thead>
+      <tbody class="sk-table__body">
+        {
+          Object.entries(iconifyPresets).map(([id, preset]) => (
+            <tr class="sk-table__row"><td class="sk-table__cell"><code>{id}</code></td><td class="sk-table__cell"><code>@iconify-json/{preset.prefix}</code></td><td class="sk-table__cell">{preset.licence}</td></tr>
+          ))
+        }
+      </tbody>
+    </table>
   </div>
   <p>
-    None live in <code>@skryensya/core</code>: core does not name tenants, and their <code>dependencies</code> are empty. They are separate packages.
+    Only the roles reach your bundle. The collection is a dev dependency read at build time: <code>skryensya icons</code> writes the {interfaceRoles.length} roles into your project (and the component marks with <code>--components</code>) and leaves the other thousands of drawings in <code>node_modules</code>.
   </p>
-  <CodeBlock code={bind} label="install" note="Default Lucide; the others, opt-in" />
+  <CodeBlock code={bind} label="install" note="Install the set, write the roles" />
+  <CodeBlock code={use} label="ts" note="Bind it once" />
+  <p>
+    Another Iconify set works too: map each role to one of its names and call <code>iconSetFromIconify(json, {"{ map }"})</code> from <code>@skryensya/core/iconify</code> in a build script. A hand-written object that satisfies <code>IconSet</code> is a set as well.
+  </p>
 
   <h2>The same name, three drawings</h2>
   <p>
     Each row is <strong>a role</strong> and each column is one set. A preview frame carries a single set; this table sits on the page so all three can be compared at once. The name you write is the one on the left, <code>search</code>, not <code>magnifying-glass</code> or the codepoint of a source.
   </p>
-  <div class="sk-table-scroll">
+  <div class="sk-table-scroll" data-icon-set-fixed>
     <table class="sk-table">
       <thead class="sk-table__head">
         <tr class="sk-table__row">

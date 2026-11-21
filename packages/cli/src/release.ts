@@ -16,8 +16,8 @@ const repository = "https://github.com/Skryensya/ui";
 
 /** What a binding drags in that the release does not resolve for it: its own dependencies are tarballs too. */
 const companions: Record<string, string[]> = {
-  "@skryensya/react": ["@skryensya/core", "@skryensya/icons-lucide"],
-  "@skryensya/vanilla": ["@skryensya/core", "@skryensya/icons-lucide"],
+  "@skryensya/react": ["@skryensya/core"],
+  "@skryensya/vanilla": ["@skryensya/core"],
 };
 
 export const isSystemPackage = (name: string): boolean => name.startsWith("@skryensya/");

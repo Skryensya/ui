@@ -3,8 +3,25 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "ed1e50dbea78c58d"
+surface: "d1b6caf01839593a"
 entries:
+  - date: 2026-11-20
+    kind: feature
+    target: name
+    es:
+      title: Una marca por componente del kit
+      body: "Nuevos roles <code>component-*</code> (<code>component-carousel</code>, <code>component-qr-code</code>…), uno por componente, para un catálogo o un sidebar. Son opcionales en un set: <code>skryensya icons &lt;set&gt; --components</code> los escribe, y todos los presets los dibujan."
+    en:
+      title: One mark per kit component
+      body: "New <code>component-*</code> roles (<code>component-carousel</code>, <code>component-qr-code</code>…), one per component, for a catalogue or a sidebar. Optional in a set: <code>skryensya icons &lt;set&gt; --components</code> writes them, and every preset draws them."
+  - date: 2026-11-20
+    kind: breaking
+    es:
+      title: Los sets vienen de Iconify y no hay uno por defecto
+      body: "Los paquetes <code>@skryensya/icons-*</code> ya no existen y React no trae Lucide. Instalas <code>@iconify-json/&lt;set&gt;</code> como dependencia de desarrollo y <code>skryensya icons &lt;set&gt;</code> escribe solo los roles en tu proyecto. Receta en <code>docs/migrations/0003-icons-from-iconify.md</code>."
+    en:
+      title: Sets come from Iconify, and there is no default
+      body: "The <code>@skryensya/icons-*</code> packages are gone and React no longer ships Lucide. Install <code>@iconify-json/&lt;set&gt;</code> as a dev dependency and <code>skryensya icons &lt;set&gt;</code> writes only the roles into your project. Recipe in <code>docs/migrations/0003-icons-from-iconify.md</code>."
   - date: 2026-10-17
     kind: feature
     target: name

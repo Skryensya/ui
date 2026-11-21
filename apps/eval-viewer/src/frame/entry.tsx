@@ -1,6 +1,7 @@
 import { createRoot } from "react-dom/client";
 import { mountComponentsWithIcons } from "@skryensya/vanilla/auto";
-import { lucideIcons } from "@skryensya/icons-lucide";
+import { IconSetProvider } from "@skryensya/react/icon";
+import { icons as lucideIcons } from "../icons";
 import { loadTree, renderTree, setPortalContainer } from "@skryensya/react/render-tree";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 /*
@@ -114,7 +115,7 @@ async function boot(): Promise<void> {
   } else if (data.tree) {
     setPortalContainer({ current: stage as HTMLElement });
     await loadTree(data.tree);
-    createRoot(stage).render(renderTree(data.tree));
+    createRoot(stage).render(<IconSetProvider set={lucideIcons}>{renderTree(data.tree)}</IconSetProvider>);
   }
 
   reportInitialHeight();

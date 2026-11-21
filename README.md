@@ -66,7 +66,6 @@ For React:
 SKRYENSYA_VERSION=0.0.3
 pnpm add react react-dom \
   https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-core-${SKRYENSYA_VERSION}.tgz \
-  https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-icons-lucide-${SKRYENSYA_VERSION}.tgz \
   https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-react-${SKRYENSYA_VERSION}.tgz
 ```
 <!-- x-release-please-end -->
@@ -80,7 +79,29 @@ export function SaveButton() {
 }
 ```
 
-Or let the CLI do it. It belongs to the release and installs that release's packages (the binding, core and the icon set) for you:
+The kit ships no icons and has no default set. Pick one from [Iconify](https://iconify.design) as a dev
+dependency and let the CLI write the roles the components ask for into your project (Lucide, Phosphor in
+every weight, Material Symbols in every style, Tabler, Heroicons, Remix, MingCute, Hugeicons, Fluent, Carbon,
+Iconoir, Bootstrap Icons and Material Design Icons are mapped; any other set works with your own map). Only those roles reach your
+bundle:
+
+<!-- x-release-please-start-version -->
+```bash
+SKRYENSYA_VERSION=0.0.3
+pnpm add -D @iconify-json/lucide
+npx https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-cli-${SKRYENSYA_VERSION}.tgz icons lucide
+```
+<!-- x-release-please-end -->
+
+```tsx
+import { IconSetProvider } from "@skryensya/react/icon";
+import { icons } from "./icons"; // written by the command above
+import "./icons.css"; // the native select and carousel icons
+
+<IconSetProvider set={icons}><App /></IconSetProvider>;
+```
+
+Or let the CLI do it. It belongs to the release and installs that release's packages (the binding and core) for you:
 
 <!-- x-release-please-start-version -->
 ```bash
@@ -96,17 +117,17 @@ For authored HTML plus progressive enhancement:
 SKRYENSYA_VERSION=0.0.3
 pnpm add \
   https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-core-${SKRYENSYA_VERSION}.tgz \
-  https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-icons-lucide-${SKRYENSYA_VERSION}.tgz \
   https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-vanilla-${SKRYENSYA_VERSION}.tgz
 ```
 <!-- x-release-please-end -->
 
 ```ts
 import "@skryensya/core/skryensya.css";
-import { lucideIcons } from "@skryensya/icons-lucide";
 import { mountComponentsWithIcons } from "@skryensya/vanilla/auto";
+import { icons } from "./icons"; // skryensya icons lucide, as above
+import "./icons.css";
 
-await mountComponentsWithIcons(document, lucideIcons);
+await mountComponentsWithIcons(document, icons);
 ```
 
 Vite and Astro need one resolver setting: the vanilla layer depends on `@zag-js/svelte`, which only
@@ -120,8 +141,7 @@ export default { resolve: { conditions: [...defaultClientConditions, "svelte"] }
 ```
 
 Optional packages use the same release URL pattern: `skryensya-charts-0.0.1.tgz`,
-`skryensya-editor-0.0.1.tgz`, `skryensya-devtools-0.0.1.tgz`, `skryensya-icons-material-0.0.1.tgz`
-and `skryensya-icons-phosphor-0.0.1.tgz`.
+`skryensya-editor-0.0.1.tgz` and `skryensya-devtools-0.0.1.tgz`.
 
 [**ui.skryensya.dev**](https://ui.skryensya.dev) is the primary reference: every contract has a page
 with live previews in both bindings, its options, its accessibility notes, and a real pass/fail test
@@ -139,7 +159,6 @@ report. The command above serves the same site locally.
 | [`@skryensya/editor`](packages/editor) | The ProseMirror engine behind the Editor contract: schema, commands, keymap, serialization. |
 | [`@skryensya/devtools`](packages/devtools) | Optional runtime debug overlay: hit-area visualization and inspection aids. |
 | [`@skryensya/phone`](packages/phone) | The numbering plans behind Input's phone format: `libphonenumber-js` wrapped as a registrable plan. Not part of the 0.0.1 release assets. |
-| [`@skryensya/icons-lucide`](packages/icons-lucide) · [`-material`](packages/icons-material) · [`-phosphor`](packages/icons-phosphor) | Three icon libraries bound to one stable icon vocabulary. Each ships data, not a runtime. |
 
 ### Tooling
 
@@ -184,7 +203,7 @@ See [setup, workflow, API and tests](docs/reference-ingestion.md) and
 
 ```
 .
-├── packages/          the system: core, both bindings, icons, tooling
+├── packages/          the system: core, both bindings, tooling
 ├── apps/docs/         the documentation site, and the system's own biggest consumer
 ├── apps/reference-studio/   the internal reference workbench
 ├── apps/reference-clipper/  the Chrome evidence collector
