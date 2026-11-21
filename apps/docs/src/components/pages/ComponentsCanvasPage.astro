@@ -9,6 +9,24 @@ import { canvasBlocks, estimateRem } from "../../lib/canvas-fragment";
 import { layoutColumns } from "../../lib/canvas-layout";
 import { clusterBlocks } from "../../lib/canvas-clusters";
 import sizes from "../../lib/canvas-sizes.json";
+// Contracts keep some sheets under patterns/ (the glob below only reaches components/); without them Box, Hero, ImageFrame,
+// Wrapper, NavList... rendered unstyled. These are every non-component sheet `allSheetsOf` lists across the registry.
+import "@skryensya/core/patterns/box.css";
+import "@skryensya/core/patterns/anchored.css";
+import "@skryensya/core/patterns/scroll-lock.css";
+import "@skryensya/core/patterns/visually-hidden.css";
+import "@skryensya/core/patterns/hero.css";
+import "@skryensya/core/patterns/footer.css";
+import "@skryensya/core/patterns/icon.css";
+import "@skryensya/core/patterns/image-frame.css";
+import "@skryensya/core/patterns/layout.css";
+import "@skryensya/core/patterns/media-overlay.css";
+import "@skryensya/core/patterns/nav-list.css";
+import "@skryensya/core/patterns/table-pager.css";
+import "@skryensya/core/patterns/splitter.css";
+import "@skryensya/core/patterns/dialog-vaul.css";
+import "@skryensya/core/patterns/wrapper.css";
+import "@skryensya/core/patterns/vaul.css";
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
 
@@ -325,5 +343,4 @@ const skipped = components.flatMap((c) => c.skipped.map((s) => `${c.id}.${s}`));
   .specimens { display: flex; flex-wrap: wrap; gap: 1rem 1.25rem; align-items: end; inline-size: max-content; max-inline-size: 40rem; min-inline-size: min-content; }
   .part figure { margin: 0; display: grid; gap: .5rem; justify-items: start; }
   .part code, .skipped code { font-family: var(--font-family-code); font-size: var(--font-size-caption); }
-  .part img { max-inline-size: 100%; block-size: auto; }
 </style>

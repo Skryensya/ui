@@ -67,6 +67,14 @@ const excluded: Record<string, string> = {
   "vaul.Vaul.drawer": "an open drawer is laid out against the viewport, not against a block",
 };
 
+/** Capabilities, not the full table: an option with more values than this shows its first, its last and an even spread between. */
+const MAX_VALUES = 5;
+const representative = (values: readonly string[]): readonly string[] =>
+  values.length <= MAX_VALUES ? values : Array.from({ length: MAX_VALUES }, (_, i) => values[Math.round((i * (values.length - 1)) / (MAX_VALUES - 1))]!);
+
+/** Media is shown as a thumbnail: a 400px picture per value would make one component taller than the whole wall's row. */
+const thumbnail: Record<string, string> = { "image-frame": "12rem" };
+
 /** A node from the shipped examples (real content, images included) is the base; else the first generic seed that validates; none means "hand-build it". */
 function seedFor(contract: string, signature: string, required: readonly string[], oneOf: readonly (readonly string[])[], optionDefs: Record<string, ContractOption>): UsageTree | undefined {
   // `exactlyOneOf` groups that name an option (ImageFrame: src | children) get that option, so media shows as media.
@@ -98,25 +106,30 @@ function build(): CanvasComponent[] {
         out.skipped.push(`${signature}: ${why}`);
         continue;
       }
-      const base = seedFor(id, signature, def.requires ?? [], def.exactlyOneOf ?? [], contract.options);
-      const context = base ? undefined : ancestorSeeds.get(`${id}|${signature}`);
+      const seed = seedFor(id, signature, def.requires ?? [], def.exactlyOneOf ?? [], contract.options);
+      const context = seed ? undefined : ancestorSeeds.get(`${id}|${signature}`);
       if (context) {
         out.signatures.push({ signature: `${signature} (in context)`, base: context, groups: [] });
         continue;
       }
-      if (!base) {
+      if (!seed) {
         out.skipped.push(signature);
         continue;
       }
+      // A copy: seeds are shared with the example library, which other pages read.
+      const base: UsageTree = { ...seed };
       // A square photo: the satin texture used elsewhere is 16:9, grey and pale at the bottom, and reads as a broken avatar.
-      if (id === "avatar" && typeof base.options?.src === "string") base.options = { ...base.options, src: "/demos/lightbox/coast-thumb.jpg" };
+      if (id === "avatar" && typeof base.options?.src === "string") (base as { options?: unknown }).options = { ...base.options, src: "/demos/lightbox/coast-thumb.jpg" };
+      // 3:2, not square: in a square frame cover, contain and fill are the same picture and `fit` explains nothing.
+      if (id === "image-frame" && typeof base.options?.src === "string") (base as { options?: unknown }).options = { ...base.options, src: "/demos/lightbox/coast-small.jpg" };
+      if (thumbnail[id]) (base as { attrs?: unknown }).attrs = { ...base.attrs, style: `inline-size: ${thumbnail[id]}` };
       const groups: CanvasGroup[] = [];
       for (const name of def.options) {
         const option = contract.options[name];
         // A global switch owns `appearance`; showing it per component would repeat the whole page four times.
         if (name === "appearance" && appearances.length) continue;
         if (option?.type !== "enum" || !option.values || option.element || option.keyOf || option.refersTo) continue;
-        const specimens = option.values
+        const specimens = representative(option.values)
           .map((value) => ({ label: value, tree: { ...base, options: { ...base.options, [name]: value } } }))
           .filter((s) => isValid(s.tree));
         if (specimens.length) groups.push({ option: name, specimens });
