@@ -1,7 +1,14 @@
 import { fireEvent } from "@testing-library/dom";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { destroyMount } from "../runtime/svelte-hydrate.js";
+import { placeAnchored } from "@skryensya/core/anchored";
 import { mountMegamenu } from "./megamenu.js";
+
+// The real popper still runs; the spy only records what the panel was placed against, and how.
+vi.mock("@skryensya/core/anchored", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@skryensya/core/anchored")>();
+  return { ...actual, placeAnchored: vi.fn(actual.placeAnchored) };
+});
 
 /*
  * The exact shape `megamenuContract`'s template (core/src/megamenu.ts) emits: a `<nav>` root, a
@@ -10,8 +17,8 @@ import { mountMegamenu } from "./megamenu.js";
  * comment), which is exactly the behavior under test here. "Products" carries both a links column
  * and an image column (for the preview-swap tests); "Resources" is links-only.
  */
-function markup(): HTMLElement {
-  document.body.innerHTML = `<nav data-sk-megamenu aria-label="Main">
+function markup({ attrs = "", wrap = false } = {}): HTMLElement {
+  document.body.innerHTML = `${wrap ? '<header class="site-header">' : ""}<nav data-sk-megamenu aria-label="Main" ${attrs}>
     <ul class="sk-megamenu__list" role="list">
       <li class="sk-megamenu__item">
         <button data-sk-megamenu-trigger type="button" aria-expanded="false">Products</button>
@@ -39,8 +46,8 @@ function markup(): HTMLElement {
         </div>
       </li>
     </ul>
-  </nav>`;
-  const root = document.body.firstElementChild as HTMLElement;
+  </nav>${wrap ? "</header>" : ""}`;
+  const root = document.querySelector<HTMLElement>("[data-sk-megamenu]")!;
   expect(mountMegamenu(document)).toBe(1);
   return root;
 }
@@ -66,6 +73,7 @@ afterEach(() => {
   if (root) destroyMount(root);
   document.body.innerHTML = "";
   vi.useRealTimers();
+  vi.mocked(placeAnchored).mockClear();
 });
 
 describe("Megamenu vanilla enhancer", () => {
@@ -293,5 +301,81 @@ describe("Megamenu vanilla enhancer", () => {
     fireEvent.pointerOut(pricing!, { relatedTarget: root });
     expect(img.src).toContain("/default.jpg");
     expect(img.alt).toBe("Default");
+  });
+
+  describe("panel placement attributes", () => {
+    const positioner = (root: HTMLElement) => root.querySelector<HTMLElement>("[data-sk-megamenu-positioner]")!;
+    const placedWith = () => vi.mocked(placeAnchored).mock.calls.at(-1)!;
+
+    it("without them, centres the panel under the root exactly as before", () => {
+      const root = markup();
+      triggers(root)[0]!.click();
+      const [anchor, floating, options] = placedWith();
+      expect(anchor).toBe(root);
+      expect(floating).toBe(positioner(root));
+      expect(options).toEqual({ sameWidth: false, placement: "block-end", flip: false });
+      expect(positioner(root).style.getPropertyValue("inline-size")).toBe("");
+    });
+
+    it("data-anchor hangs it from a matching ancestor", () => {
+      const root = markup({ attrs: 'data-anchor=".site-header"', wrap: true });
+      triggers(root)[0]!.click();
+      expect(placedWith()[0]).toBe(document.querySelector(".site-header"));
+    });
+
+    it("data-anchor that matches nothing falls back to the root and warns", () => {
+      const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+      const root = markup({ attrs: 'data-anchor=".nope"' });
+      triggers(root)[0]!.click();
+      expect(placedWith()[0]).toBe(root);
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining('data-anchor=".nope"'));
+      warn.mockRestore();
+    });
+
+    it.each([
+      ["block-end-start", "start"],
+      ["block-end-end", "end"],
+      ["block-end", undefined],
+      ["sideways", undefined],
+    ])("data-placement=%s aligns it to %s", (placement, align) => {
+      const root = markup({ attrs: `data-placement="${placement}"` });
+      triggers(root)[0]!.click();
+      expect(placedWith()[2]!.align).toBe(align);
+    });
+
+    it("data-offset sets the gap, and a non-number keeps the default", () => {
+      const root = markup({ attrs: 'data-offset="6"' });
+      triggers(root)[0]!.click();
+      expect(placedWith()[2]!.gutter).toBe(6);
+      destroyMount(root);
+      triggers(markup({ attrs: 'data-offset="wide"' }))[0]!.click();
+      expect(placedWith()[2]).not.toHaveProperty("gutter");
+    });
+
+    it("data-match-width makes the panel as wide as the anchor", () => {
+      const root = markup({ attrs: "data-match-width" });
+      triggers(root)[0]!.click();
+      expect(placedWith()[2]!.sameWidth).toBe(true);
+      expect(positioner(root).style.getPropertyValue("inline-size")).toBe("var(--reference-width)");
+    });
+
+    it("keeps the same placement across switching menus and reopening, and lets go on teardown", () => {
+      const root = markup({ attrs: 'data-anchor=".site-header" data-placement="block-end-start" data-offset="6"', wrap: true });
+      const header = document.querySelector(".site-header");
+      triggers(root)[0]!.click();
+      triggers(root)[1]!.click();
+      // Switching menus keeps the one placement running instead of starting another.
+      expect(placeAnchored).toHaveBeenCalledTimes(1);
+      triggers(root)[1]!.click();
+      triggers(root)[0]!.click();
+      expect(placeAnchored).toHaveBeenCalledTimes(2);
+      for (const [anchor, , options] of vi.mocked(placeAnchored).mock.calls) {
+        expect(anchor).toBe(header);
+        expect(options).toMatchObject({ align: "start", gutter: 6 });
+      }
+      destroyMount(root);
+      // The popper writes `data-placed` once it has measured; the undo removes it.
+      expect(positioner(root).hasAttribute("data-placed")).toBe(false);
+    });
   });
 });

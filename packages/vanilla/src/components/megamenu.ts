@@ -1,7 +1,7 @@
 import { placeAnchored } from "@skryensya/core/anchored";
 import { imageFrameParts } from "@skryensya/core/image-frame";
 import { megamenuAttrs, megamenuEvents, megamenuParts } from "@skryensya/core/megamenu";
-import { resolveMegamenuEvent, type MegamenuEvent, type MegamenuState } from "@skryensya/core/megamenu";
+import { readMegamenuPlacement, resolveMegamenuEvent, type MegamenuEvent, type MegamenuState } from "@skryensya/core/megamenu";
 import { createConnectMount, uniqueId } from "../runtime/svelte-hydrate.js";
 import { selectorsFor } from "@skryensya/core/selectors";
 
@@ -46,6 +46,8 @@ import { selectorsFor } from "@skryensya/core/selectors";
  * content swap (`apply()` only ever replaces ITS children), so one pair of listeners set up once at
  * connect covers every trigger for the panel's whole lifetime.
  */
+
+const dev = (import.meta as ImportMeta & { env?: { DEV?: boolean } }).env?.DEV ?? true;
 
 const OPEN_DELAY_MS = 150;
 const CLOSE_DELAY_MS = 150;
@@ -181,8 +183,10 @@ function connect(root: HTMLElement): () => void {
   // moment a canonical tree first rendered this contract.
   sharedContent.dataset.state = "closed";
 
-  // One box shared by every trigger, placed against the bar by the popper while any of them is open.
+  // One box shared by every trigger, placed against the bar (or `data-anchor`) while any of them is open.
   let stopPlacing: (() => void) | undefined;
+  const { anchor, ...placement } = readMegamenuPlacement(root, dev ? console.warn : undefined);
+  if (placement.sameWidth) sharedPositioner.style.setProperty("inline-size", "var(--reference-width)");
 
   const triggers = parsed.map(({ trigger }) => trigger);
 
@@ -241,7 +245,7 @@ function connect(root: HTMLElement): () => void {
       currentDefaultImage = defaultImageByIndex[state.openIndex];
     }
     sharedContent.dataset.state = "open";
-    stopPlacing ??= placeAnchored(root, sharedPositioner, { placement: "block-end", flip: false });
+    stopPlacing ??= placeAnchored(anchor, sharedPositioner, { ...placement, placement: "block-end", flip: false });
   };
 
   const dispatch = (event: MegamenuEvent) => apply(resolveMegamenuEvent(state, event));

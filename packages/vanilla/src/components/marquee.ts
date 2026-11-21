@@ -1,5 +1,6 @@
 import {
   marqueeAttrs,
+  marqueeCadenceMilliseconds,
   marqueeDurationSeconds,
   marqueeGapFill,
   marqueeInitialPlaying,
@@ -48,7 +49,7 @@ export function connectMarquee(root: HTMLElement): Cleanup {
 
   const syncGeometry = (): void => {
     if (!content) return;
-    const cadenceMilliseconds = Number.parseFloat(
+    const cadenceMilliseconds = marqueeCadenceMilliseconds(
       getComputedStyle(root).getPropertyValue("--sk-marquee-cadence-duration"),
     );
     /* Measure at the authored gap, never at the one a previous pass wrote: reading back a filled run

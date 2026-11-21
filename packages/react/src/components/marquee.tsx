@@ -1,4 +1,4 @@
-import { marqueeDurationSeconds, marqueeGapFill, marqueeParts, marqueeProperties, type MarqueeDirection, type MarqueeFade, type MarqueeSpeed, type MarqueeStart, marqueeContract } from "@skryensya/core/marquee";
+import { marqueeCadenceMilliseconds, marqueeDurationSeconds, marqueeGapFill, marqueeParts, marqueeProperties, type MarqueeDirection, type MarqueeFade, type MarqueeSpeed, type MarqueeStart, marqueeContract } from "@skryensya/core/marquee";
 import {
   useEffect,
   useRef,
@@ -96,7 +96,7 @@ function MarqueeRoot({
     const vertical = direction === "up" || direction === "down";
 
     const syncGeometry = () => {
-      const cadenceMilliseconds = Number.parseFloat(
+      const cadenceMilliseconds = marqueeCadenceMilliseconds(
         getComputedStyle(root).getPropertyValue("--sk-marquee-cadence-duration"),
       );
       // Measure at the authored gap; reading back a filled run and filling it again would compound.

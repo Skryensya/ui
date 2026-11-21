@@ -118,6 +118,8 @@ export interface PlaceAnchoredOptions {
   strategy?: "absolute" | "fixed";
   /** Move to the opposite side when the asked one has no room. Default `true`. */
   flip?: boolean;
+  /** Line the box up with the anchor's start or end edge instead of centring it. Logical, so RTL swaps it. */
+  align?: "start" | "end";
 }
 
 /**
@@ -131,14 +133,14 @@ export interface PlaceAnchoredOptions {
 export function placeAnchored(
   reference: HTMLElement,
   floating: HTMLElement,
-  { placement = "block-end", gutter = anchoredPositioning.gutter, sameWidth = false, strategy = "absolute", flip = true }: PlaceAnchoredOptions = {},
+  { placement = "block-end", gutter = anchoredPositioning.gutter, sameWidth = false, strategy = "absolute", flip = true, align }: PlaceAnchoredOptions = {},
 ): () => void {
   const arrow = floating.querySelector<HTMLElement>("[data-part=arrow]");
   floating.style.position = strategy;
   const stop = getPlacement(reference, floating, {
     ...anchoredPositioning,
     strategy,
-    placement: anchorPlacementToZag[placement],
+    placement: align ? `${anchorPlacementToZag[placement]}-${align}` : anchorPlacementToZag[placement],
     gutter,
     sameWidth,
     flip,

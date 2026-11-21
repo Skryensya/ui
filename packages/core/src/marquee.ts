@@ -59,6 +59,14 @@ export type MarqueeStart = "manual" | "auto";
 export const MARQUEE_CADENCE_DISTANCE_PX = 48;
 
 /** A measured distance becomes a duration, keeping token-scaled velocity stable as content changes. */
+/** A CSS `<time>` read off a custom property (`960ms`, `0.96s`) in ms; a bare number is ms. NaN when unreadable. */
+export function marqueeCadenceMilliseconds(value: string): number {
+  const match = /^\s*(-?[\d.]+(?:e-?\d+)?)\s*(ms|s)?\s*$/i.exec(value);
+  if (!match) return Number.NaN;
+  const amount = Number.parseFloat(match[1]!);
+  return match[2]?.toLowerCase() === "s" ? amount * 1000 : amount;
+}
+
 export function marqueeDurationSeconds(distance: number, cadenceMilliseconds: number): number {
   if (!Number.isFinite(distance) || distance <= 0) return 0;
   if (!Number.isFinite(cadenceMilliseconds) || cadenceMilliseconds <= 0) return 0;

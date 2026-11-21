@@ -1,6 +1,6 @@
 import { imageFrameParts } from "@skryensya/core/image-frame";
 import { megamenuAttrs, megamenuEvents, megamenuParts } from "@skryensya/core/megamenu";
-import { resolveMegamenuEvent, type MegamenuEvent, type MegamenuState } from "@skryensya/core/megamenu";
+import { readMegamenuPlacement, resolveMegamenuEvent, type MegamenuEvent, type MegamenuState } from "@skryensya/core/megamenu";
 import {
   cloneElement,
   createContext,
@@ -373,7 +373,10 @@ export function Megamenu({ children, className, container, label, onOpenChange, 
     const root = rootRef.current;
     const box = positionerRef.current;
     if (!isOpen || !root || !box) return;
-    return placeAnchored(root, box, { placement: "block-end", flip: false });
+    const dev = (import.meta as ImportMeta & { env?: { DEV?: boolean } }).env?.DEV ?? true;
+    const { anchor, ...placement } = readMegamenuPlacement(root, dev ? console.warn : undefined);
+    if (placement.sameWidth) box.style.setProperty("inline-size", "var(--reference-width)");
+    return placeAnchored(anchor, box, { ...placement, placement: "block-end", flip: false });
   }, [isOpen]);
 
   const panel = (

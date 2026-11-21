@@ -86,7 +86,58 @@ export const megamenuAttrs = {
   previewAlt: "data-sk-megamenu-preview-alt",
 } as const;
 
-export type MegamenuOpenChangeDetails = { readonly open: boolean; readonly index: number | null };
+/**
+ * Where the shared panel hangs, authored on the root and read once at mount. All optional: without
+ * them the panel is centred under the root, 4px below it, as it always was.
+ */
+export const megamenuPlacementAttrs = {
+  /** A selector for the element the panel hangs from: an ancestor of the root first, else the document. */
+  anchor: "data-anchor",
+  /** `block-end` (centred, the default), `block-end-start` or `block-end-end` (flush with that edge). */
+  placement: "data-placement",
+  /** The gap to the anchor, in px. */
+  offset: "data-offset",
+  /** Present: the panel is exactly as wide as the anchor. */
+  matchWidth: "data-match-width",
+} as const;
+
+export const megamenuPlacements = ["block-end", "block-end-start", "block-end-end"] as const;
+export type MegamenuPlacement = (typeof megamenuPlacements)[number];
+
+export interface MegamenuPlacementOptions {
+  readonly anchor: HTMLElement;
+  readonly align?: "start" | "end";
+  readonly gutter?: number;
+  readonly sameWidth: boolean;
+}
+
+/**
+ * The root's placement attributes, resolved. An anchor selector that matches nothing falls back to
+ * the root and says so through `warn`, so a typo degrades to today's panel instead of no panel.
+ */
+export function readMegamenuPlacement(root: HTMLElement, warn?: (message: string) => void): MegamenuPlacementOptions {
+  const selector = root.getAttribute(megamenuPlacementAttrs.anchor);
+  let anchor: HTMLElement | null = null;
+  if (selector) {
+    try {
+      anchor = root.closest<HTMLElement>(selector) ?? root.ownerDocument.querySelector<HTMLElement>(selector);
+    } catch {
+      anchor = null;
+    }
+    if (!anchor) warn?.(`Megamenu: data-anchor="${selector}" matches no element; anchoring to the megamenu root.`);
+  }
+  const placement = root.getAttribute(megamenuPlacementAttrs.placement);
+  const align = placement === "block-end-start" ? "start" : placement === "block-end-end" ? "end" : undefined;
+  const offset = Number.parseFloat(root.getAttribute(megamenuPlacementAttrs.offset) ?? "");
+  return {
+    anchor: anchor ?? root,
+    ...(align ? { align } : {}),
+    ...(Number.isFinite(offset) ? { gutter: offset } : {}),
+    sameWidth: root.hasAttribute(megamenuPlacementAttrs.matchWidth),
+  };
+}
+
+export type MegamenuOpenChangeDetails ={ readonly open: boolean; readonly index: number | null };
 
 /** The DOM events this family dispatches on its root, `sk:<family><event>` like every other. */
 export const megamenuEvents = {

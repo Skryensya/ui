@@ -86,7 +86,7 @@ export function SegmentedControl({
   const tipService = useMachine(tooltip.machine, {
     id: tipId,
     interactive: tooltipContract.options.interactive.default,
-    positioning: { placement: tooltipPlacementToZag[tooltipDefaultPlacement], ...anchoredPositioning },
+    positioning: { placement: tooltipPlacementToZag[tooltipDefaultPlacement], ...anchoredPositioning, strategy: "fixed" },
   });
   const tipApi = tooltip.connect(tipService, normalizeProps);
   /* Visual only: the option is already named by these words, so it is never described by them too. */

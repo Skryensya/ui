@@ -62,7 +62,8 @@ export function Tooltip({
     openDelay,
     closeDelay,
     interactive,
-    positioning: { placement: tooltipPlacementToZag[side], ...anchoredPositioning },
+    // Fixed, like `.sk-anchored`: the popper measures in the same space the box is laid out in, scroll or not.
+    positioning: { placement: tooltipPlacementToZag[side], ...anchoredPositioning, strategy: "fixed" },
     disabled,
     open,
     defaultOpen,

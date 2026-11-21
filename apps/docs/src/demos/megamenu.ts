@@ -410,6 +410,21 @@ export const megamenuOpenTree = (t: Translate, variant: UsageTree): UsageTree =>
   ]);
 };
 
+/*
+ * A floating "pill" header: the panel hangs from the pill instead of the bar, edge to edge with it
+ * and 6px below. Placement attributes on the root, read once at mount (`megamenuPlacementAttrs`).
+ */
+export const megamenuPillTree = (t: Translate, hrefs?: Parameters<typeof megamenuTree>[1]): UsageTree => ({
+  contract: "box",
+  signature: "Box",
+  options: { padding: "xs", surface: "raised", border: "subtle", radius: "surface" },
+  attrs: { class: "site-header" },
+  children: {
+    ...megamenuTree(t, hrefs),
+    attrs: { "data-anchor": ".site-header", "data-match-width": "", "data-offset": "6" },
+  },
+});
+
 export const megamenuOpenCss = `.sk-megamenu {
   inline-size: min(100%, 52rem);
 }

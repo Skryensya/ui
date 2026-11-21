@@ -46,6 +46,8 @@ export const megamenuMessages = {
     "megamenuPage.siteBody": "Abre una categoría con clic o con <kbd>Enter</kbd>; <kbd>Esc</kbd> la cierra y devuelve el foco.",
 
     "megamenuPage.siteTitle": "Barra de sitio: tres categorías",
+    "megamenuPage.pillTitle": "Header flotante: el panel cuelga del pill",
+    "megamenuPage.pillBody": 'Por defecto el panel se centra bajo la barra. En un header flotante, <code>data-anchor</code> lo cuelga del header, <code>data-match-width</code> le da su mismo ancho y <code>data-offset</code> fija el espacio debajo. <code>data-placement</code> lo alinea al borde de inicio o de fin.',
     "megamenuPage.variantsTitle": "Variantes",
     "demo.megamenu.vague1": "Ver más",
     "demo.megamenu.vague2": "Haz clic aquí",
@@ -181,6 +183,8 @@ export const megamenuMessages = {
     "megamenuPage.siteBody": "Open a category with a click or <kbd>Enter</kbd>; <kbd>Esc</kbd> closes it and returns focus.",
 
     "megamenuPage.siteTitle": "Site bar: three categories",
+    "megamenuPage.pillTitle": "Floating header: the panel hangs from the pill",
+    "megamenuPage.pillBody": 'By default the panel centres under the bar. In a floating header, <code>data-anchor</code> hangs it from the header, <code>data-match-width</code> gives it the same width and <code>data-offset</code> sets the gap below. <code>data-placement</code> lines it up with the start or end edge.',
     "megamenuPage.variantsTitle": "Variants",
     "demo.megamenu.vague1": "See more",
     "demo.megamenu.vague2": "Click here",

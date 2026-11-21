@@ -124,6 +124,44 @@ describe("Tooltip Vanilla contracts", () => {
     expect(arrow.getAttribute("data-side")).toBe(content().getAttribute("data-side"));
   });
 
+  /*
+   * The box is `position: fixed` (`.sk-anchored`), so the popper has to measure in viewport space too.
+   * Placed in document space it lands one scroll offset away from its trigger. jsdom lays nothing out,
+   * so the geometry is stubbed: a 80x20 trigger 300px down the VIEWPORT, a 120x30 box.
+   */
+  it.each([
+    ["no scroll", 0, 0],
+    ["the document scrolled", 700, 0],
+    ["a scrolling container", 0, 250],
+  ])("places itself against its trigger in viewport space with %s", async (_, pageScroll, containerScroll) => {
+    document.body.innerHTML = `<div class="scroller" style="overflow: auto; height: 200px"><span class="sk-tooltip" data-sk-anchor>
+      <button class="sk-tooltip__trigger" data-sk-anchor-trigger type="button">Eliminar</button>
+      <span class="sk-tooltip__positioner sk-anchored" data-sk-anchor-positioner>
+        <span class="sk-tooltip__content" data-sk-anchor-content>Elimina</span>
+      </span>
+    </span></div>`;
+    const scroller = document.querySelector<HTMLElement>(".scroller")!;
+    const positioner = document.querySelector<HTMLElement>("[data-sk-anchor-positioner]")!;
+    const rect = (x: number, y: number, width: number, height: number) => () => DOMRect.fromRect({ x, y, width, height });
+    vi.spyOn(window, "scrollY", "get").mockReturnValue(pageScroll);
+    vi.spyOn(window, "pageYOffset", "get").mockReturnValue(pageScroll);
+    scroller.scrollTop = containerScroll;
+    trigger().getBoundingClientRect = rect(100, 300, 80, 20);
+    positioner.getBoundingClientRect = rect(0, 0, 120, 30);
+    Object.defineProperty(positioner, "offsetWidth", { value: 120 });
+    Object.defineProperty(positioner, "offsetHeight", { value: 30 });
+    expect(mountTooltip(document)).toBe(1);
+
+    fireEvent.pointerMove(trigger(), { pointerType: "mouse" });
+
+    await waitFor(() => expect(positioner.style.getPropertyValue("--y")).not.toBe(""));
+    expect(positioner.style.position).toBe("fixed");
+    // Above the trigger (the tooltip's default side), 4px gutter: 300 - 30 - 4, whatever has scrolled.
+    // (`--x` is not asserted: jsdom's viewport is 0px wide, so the popper's shift clamps it.)
+    expect(positioner.style.getPropertyValue("--y")).toBe("266px");
+    vi.restoreAllMocks();
+  });
+
   it("gives itself an id when the author left none", () => {
     const root = markup();
     expect(root.id).toMatch(/^sk-tooltip-\d+$/);

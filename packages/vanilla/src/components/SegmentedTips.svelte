@@ -21,7 +21,7 @@
   const service = useMachine(tooltip.machine, () => ({
     id: uniqueId("sk-segmented-tip"),
     interactive: tooltipContract.options.interactive.default,
-    positioning: { placement: tooltipPlacementToZag[tooltipDefaultPlacement], ...anchoredPositioning },
+    positioning: { placement: tooltipPlacementToZag[tooltipDefaultPlacement], ...anchoredPositioning, strategy: "fixed" as const },
   }));
   const api = $derived(tooltip.connect(service, normalizeProps));
 

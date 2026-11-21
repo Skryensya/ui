@@ -67,7 +67,8 @@
     openDelay: numberAttr("data-open-delay"),
     closeDelay: numberAttr("data-close-delay"),
     interactive,
-    positioning: { placement: tooltipPlacementToZag[placement], ...anchoredPositioning },
+    // Fixed, like `.sk-anchored`: the popper measures in the same space the box is laid out in, scroll or not.
+    positioning: { placement: tooltipPlacementToZag[placement], ...anchoredPositioning, strategy: "fixed" as const },
     disabled: root.hasAttribute("data-disabled"),
     onOpenChange(details: { open: boolean }) {
       root.dispatchEvent(
