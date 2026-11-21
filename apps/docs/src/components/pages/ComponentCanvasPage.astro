@@ -65,6 +65,7 @@ const picker = emitMarkup({
 });
 ---
 
+<noscript><style>.board { visibility: visible !important; }</style></noscript>
 {sheetLinks.map((href) => <link rel="stylesheet" href={href} />)}
 <h1 class="sk-visually-hidden">{component.id}</h1>
 <div class="canvas-stage">

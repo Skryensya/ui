@@ -1,4 +1,5 @@
 import { emitMarkup } from "@skryensya/ai-compiler/emit";
+import { paintIconPlaceholders } from "./paint-icons";
 import { hardenInputsInHtml } from "./no-password-manager";
 import type { CanvasComponent, CanvasSignature, Specimen } from "./components-canvas";
 
@@ -14,10 +15,10 @@ export const canvasBlocks = (components: CanvasComponent[]): CanvasBlock[] =>
 
 /** The body of one block: every value of every option and every state, one figure each. */
 export function blockFragment({ signature: s }: CanvasBlock): string {
-  return hardenInputsInHtml(`
+  const html = hardenInputsInHtml(`
       <div class="group"><div class="specimens">${figures([{ label: "default", tree: s.base }])}</div></div>
-      ${s.groups.map((g) => `<div class="group"><p class="group__label">${esc(g.option)}</p><div class="specimens">${figures(g.specimens)}</div></div>`).join("")}`)
-    // Emitted markup is indented for humans; collapsing it is about a third of the bytes and of the text nodes held in RAM.
-    .replace(/\s*\n\s*/g, " ")
-    .replace(/>\s+</g, "><");
+      ${s.groups.map((g) => `<div class="group"><p class="group__label">${esc(g.option)}</p><div class="specimens">${figures(g.specimens)}</div></div>`).join("")}`);
+  // Emitted markup is indented for humans; collapsing it is about a third of the bytes and of the text nodes held in RAM.
+  // Before the icons are painted: their placeholders are matched on one line.
+  return paintIconPlaceholders(html.replace(/\s*\n\s*/g, " ").replace(/>\s+</g, "><").replace(/\s+>/g, ">"));
 }
