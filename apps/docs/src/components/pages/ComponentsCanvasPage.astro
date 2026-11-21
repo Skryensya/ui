@@ -3,10 +3,11 @@ import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
 import { emitMarkup } from "@skryensya/ai-compiler/emit";
 import type { UsageTree } from "@skryensya/core/usage-tree";
-import { getLocale } from "../../i18n";
+import { getLocale, useTranslations } from "../../i18n";
 import { canvasAppearances, componentsCanvas } from "../../lib/components-canvas";
 import { canvasBlocks, estimateRem } from "../../lib/canvas-fragment";
 import { layoutColumns } from "../../lib/canvas-layout";
+import { clusterBlocks } from "../../lib/canvas-clusters";
 import sizes from "../../lib/canvas-sizes.json";
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
@@ -15,9 +16,10 @@ const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&l
 import.meta.glob("../../../../../packages/core/css/components/*.css", { eager: true });
 
 const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
 const copy = locale === "es"
-  ? { title: "Canvas de todos los componentes", intro: "Cada valor y cada estado de cada componente. Arrastra para mover, Ctrl/Cmd + rueda para acercar.", skipped: "Sin especimen automático (necesitan un canvas propio)", label: "Canvas de componentes", appearance: "Apariencia" }
-  : { title: "All components canvas", intro: "Every value and state of every component. Drag to pan, Ctrl/Cmd + wheel to zoom.", skipped: "No automatic specimen (need a hand-built canvas)", label: "Component canvas", appearance: "Appearance" };
+  ? { title: "Canvas de todos los componentes", intro: "Cada valor y cada estado de cada componente. Arrastra para mover, Ctrl/Cmd + rueda para acercar.", skipped: "Sin especimen automático (necesitan un canvas propio)", label: "Canvas de componentes", appearance: "Apariencia", other: "Otros" }
+  : { title: "All components canvas", intro: "Every value and state of every component. Drag to pan, Ctrl/Cmd + wheel to zoom.", skipped: "No automatic specimen (need a hand-built canvas)", label: "Component canvas", appearance: "Appearance", other: "Other" };
 
 const components = componentsCanvas();
 const fragments = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/canvas/fragments/`;
@@ -29,14 +31,25 @@ const sizeOf = (b: ReturnType<typeof canvasBlocks>[number]) => {
   const m = measured[b.id];
   return m ? { w: m[0], h: m[1] } : { w: 36, h: estimateRem(b) };
 };
-const columns = layoutColumns(canvasBlocks(components), sizeOf);
-const board = columns.map((column) => `
-  <div class="column" style="inline-size:${column.w}rem">${column.parts.map((b) => `
+const clusters = clusterBlocks(canvasBlocks(components), copy.other).map((cluster) => {
+  const columns = layoutColumns(cluster.blocks, sizeOf);
+  return { ...cluster, columns, w: columns.reduce((n, c) => n + c.w, 0) + columns.length - 1, h: Math.max(...columns.map((c) => c.h)) + 6 };
+});
+const label = (key: string) => (key.startsWith("group.") ? t(key as never) : key);
+const partHtml = (b: ReturnType<typeof canvasBlocks>[number]) => `
     <section class="part" id="${b.id}" data-canvas-part="${b.id}"${measured[b.id] ? " data-measured" : ""} data-appearances="${b.appearances.join(" ")}" style="${measured[b.id] ? `block-size:${sizeOf(b).h}rem;inline-size:${sizeOf(b).w}rem` : `min-block-size:${sizeOf(b).h}rem`}">
-      <header class="part__header"><h2 class="part__title">${esc(b.title)}</h2><span class="part__category">${esc(b.category)}</span></header>
+      <header class="part__header"><h2 class="part__title">${esc(b.title.replace(" (in context)", ""))}</h2><span class="part__category">${esc(b.component)}${b.title.endsWith("(in context)") ? " · in context" : ""}</span></header>
       <div class="part__body" inert></div>
-    </section>`).join("")}
-  </div>`).join("");
+    </section>`;
+const clusterHtml = (c: (typeof clusters)[number]) => `
+  <section class="cluster" aria-labelledby="cluster-${c.id}">
+    <h2 class="cluster__title" id="cluster-${c.id}">${esc(label(c.label))}</h2>
+    <div class="cluster__body">${c.columns.map((column) => `<div class="column" style="inline-size:${column.w}rem">${column.parts.map(partHtml).join("")}</div>`).join("")}</div>
+  </section>`;
+// Clusters are packed with the same squarish layout as the blocks inside them.
+const board = layoutColumns(clusters, (c) => ({ w: c.w, h: c.h }), 6)
+  .map((stack) => `<div class="stack" style="inline-size:${stack.w}rem">${stack.parts.map(clusterHtml).join("")}</div>`)
+  .join("");
 
 const canvas = emitMarkup({
   contract: "canvas",
@@ -231,8 +244,11 @@ const skipped = components.flatMap((c) => c.skipped.map((s) => `${c.id}.${s}`));
     --sk-canvas-min-block-size: calc(100vh - 9rem);
     --sk-canvas-grid-size: 24px;
   }
-  .board { inline-size: max-content; padding: 3rem; display: flex; align-items: flex-start; gap: 1rem; }
-  .column { flex: none; display: grid; gap: 1rem; }
+  .board { inline-size: max-content; padding: 4rem; display: flex; align-items: flex-start; gap: 6rem; }
+  .stack { flex: none; display: grid; gap: 6rem; align-content: start; }
+  .cluster__title { margin: 0 0 1.5rem; font-size: 2.5rem; letter-spacing: -.03em; }
+  .cluster__body { display: flex; align-items: flex-start; gap: 1rem; }
+  .column { flex: none; display: grid; gap: 1rem; justify-items: start; }
   /* One hairline per component, no fill: the wall reads as a Figma showcase, not as cards. A part is as wide as its
      content needs and every part of a column takes the column's width, so a wide component widens its column only. */
   .part { border: 1px solid var(--color-border-subtle); border-radius: var(--radius-surface); padding: 1.5rem; box-sizing: border-box;
@@ -248,7 +264,9 @@ const skipped = components.flatMap((c) => c.skipped.map((s) => `${c.id}.${s}`));
   .part__header { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-block-end: 1rem; }
   .part__title { margin: 0; font-size: 1.125rem; }
   .part__category { font-size: var(--font-size-caption); color: var(--color-text-secondary); }
-  .part .group__label, .part figcaption { margin: .75rem 0 .5rem; font-size: var(--font-size-caption); color: var(--color-text-secondary); }
+  .part .group__label { padding-block-end: .25rem; border-block-end: 1px solid var(--color-border-subtle); margin-block: 0 .75rem; }
+  .part .group { padding-block-end: .5rem; }
+  .part .group__label, .part figcaption { font-size: var(--font-size-caption); color: var(--color-text-secondary); }
   .part figcaption { margin: 0; }
   /* Wraps at 40rem, but never narrower than its widest specimen: min-inline-size beats max-inline-size on purpose. */
   /* An option's group sits beside the others and wraps, so a block grows wide before it grows tall. Soft cap: min-content wins. */

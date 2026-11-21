@@ -7,10 +7,10 @@ const figures = (items: Specimen[]) =>
   items.map((i) => `<figure><div class="specimen">${emitMarkup(i.tree)}</div><figcaption><code>${esc(i.label)}</code></figcaption></figure>`).join("");
 
 /** One block of the wall: a signature of a component. Its id doubles as its fragment's file name and its size's key. */
-export type CanvasBlock = { id: string; title: string; category: string; appearances: string[]; signature: CanvasSignature };
+export type CanvasBlock = { id: string; component: string; title: string; category: string; appearances: string[]; signature: CanvasSignature };
 
 export const canvasBlocks = (components: CanvasComponent[]): CanvasBlock[] =>
-  components.flatMap((c) => c.signatures.map((signature) => ({ id: `${c.id}.${signature.signature}`, title: signature.signature, category: c.category, appearances: c.appearances, signature })));
+  components.flatMap((c) => c.signatures.map((signature) => ({ id: `${c.id}.${signature.signature}`, component: c.id, title: signature.signature, category: c.category, appearances: c.appearances, signature })));
 
 /** The body of one block, served on its own so the page only pays for what the reader looks at. */
 export function blockFragment({ signature: s }: CanvasBlock): string {
