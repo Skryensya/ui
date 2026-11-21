@@ -5,6 +5,14 @@
 # hash.
 surface: "679f368ed1b20800"
 entries:
+  - date: 2026-11-20
+    kind: bugfix
+    es:
+      title: "Una fila que es botón tiene el tamaño de las de enlace"
+      body: "Un <code>&lt;button&gt;</code> con <code>sk-nav-list__link</code> tomaba el tamaño de letra del padre en vez del de la lista. Ahora usa el mismo tamaño y peso que los enlaces."
+    en:
+      title: "A button row matches the link rows"
+      body: "A <code>&lt;button&gt;</code> with <code>sk-nav-list__link</code> took its parent's font size instead of the list's. It now uses the same size and weight as the links."
   - date: 2026-10-17
     kind: feature
     target: NavListLink

@@ -333,6 +333,7 @@ export const menuContract = {
     "--sk-menu-fg",
     "--sk-menu-item-gap",
     "--sk-menu-item-min-height",
+    "--sk-menu-max-block-size",
     "--sk-menu-radius",
     "--sk-menu-separator-color",
     "--sk-menu-separator-margin",

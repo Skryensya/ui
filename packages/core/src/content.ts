@@ -35,6 +35,41 @@ export function hasToastTimeout(timeout: number | undefined): timeout is number 
 }
 
 /**
+ * The auto-dismiss timer, held while the pointer is over the toast or focus is inside it (WCAG 2.2.1)
+ * and resumed with the time it had left. Returns the stop.
+ */
+export function startToastTimer(root: HTMLElement, timeout: number, onExpire: () => void): () => void {
+  let remaining = timeout;
+  let startedAt = 0;
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  let hovered = false;
+  let focused = false;
+  const sync = () => {
+    const held = hovered || focused;
+    if (held && timer !== undefined) {
+      clearTimeout(timer);
+      timer = undefined;
+      remaining -= Date.now() - startedAt;
+    } else if (!held && timer === undefined) {
+      startedAt = Date.now();
+      timer = setTimeout(onExpire, Math.max(0, remaining));
+    }
+  };
+  const listeners: [string, (event: Event) => void][] = [
+    ["pointerenter", () => ((hovered = true), sync())],
+    ["pointerleave", () => ((hovered = false), sync())],
+    ["focusin", () => ((focused = true), sync())],
+    ["focusout", (event) => ((focused = root.contains((event as FocusEvent).relatedTarget as Node | null)), sync())],
+  ];
+  for (const [name, listener] of listeners) root.addEventListener(name, listener);
+  sync();
+  return () => {
+    clearTimeout(timer);
+    for (const [name, listener] of listeners) root.removeEventListener(name, listener);
+  };
+}
+
+/**
  * Toast reuses Callout anatomy for everything BUT the dismiss control: the region class is
  * toast-specific, and icon/content/title/description/actions are callout parts so the floating
  * message and the inline message stay one visual panel. Dismiss is not shared; Callout has no such

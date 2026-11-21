@@ -5,6 +5,14 @@
 # hash.
 surface: "3c7f0e8668c49c96"
 entries:
+  - date: 2026-11-20
+    kind: bugfix
+    es:
+      title: "Un panel ancho ya no ensancha las pestañas"
+      body: "La columna de las Tabs horizontales podía crecer con su contenido: un panel ancho empujaba la lista y el panel fuera de una pantalla angosta. Ahora la columna se ajusta al contenedor."
+    en:
+      title: "A wide panel no longer widens the tabs"
+      body: "The horizontal Tabs column grew with its content: a wide panel pushed the list and the panel past a narrow screen. The column now fits its container."
   - date: 2026-10-17
     kind: feature
     es:

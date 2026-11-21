@@ -3,8 +3,16 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "f488f4ef6a7049f5"
+surface: "14d410376afbef06"
 entries:
+  - date: 2026-11-20
+    kind: feature
+    es:
+      title: "Hook para la altura máxima del menú de elementos ocultos"
+      body: "El menú de los elementos ocultos es un Menu, así que acepta <code>--sk-menu-max-block-size</code>."
+    en:
+      title: "A hook for the collapsed items menu's maximum height"
+      body: "The collapsed items menu is a Menu, so it takes <code>--sk-menu-max-block-size</code>."
   - date: 2026-10-19
     kind: bugfix
     es:

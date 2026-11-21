@@ -5,6 +5,14 @@
 # hash.
 surface: "4316ecc63a91a121"
 entries:
+  - date: 2026-11-20
+    kind: bugfix
+    es:
+      title: "Abre junto a su trigger después de hacer scroll"
+      body: "El tooltip calculaba su posición en coordenadas del documento mientras la caja es <code>position: fixed</code>, así que tras hacer scroll abría desplazado lo mismo que se había scrolleado. Ahora usa coordenadas de la ventana de punta a punta."
+    en:
+      title: "Opens next to its trigger after a scroll"
+      body: "The tooltip measured its position in document coordinates while the box is <code>position: fixed</code>, so after a scroll it opened as far off as the page had moved. It now uses viewport coordinates end to end."
   - date: 2026-10-19
     kind: bugfix
     es:

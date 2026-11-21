@@ -35,9 +35,9 @@
     display: block;
     min-inline-size: 0;
     /* Claim the full line even when an ancestor is a wrapping flex row (the docs preview stage is
-     * one), the same guard `hero.css` documents at length. Inert in ordinary block flow. */
+     * one): the 100% is the flex basis there. No `flex: 100%`: in a flex COLUMN that basis is the
+     * parent's height, and the footer grew as tall as its container. */
     inline-size: 100%;
-    flex: 1 1 100%;
     padding: var(--sk-footer-padding);
     border-block-start: var(--sk-footer-divider-width) solid var(--sk-footer-divider-color);
     border-radius: var(--sk-footer-radius);

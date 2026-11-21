@@ -143,6 +143,8 @@ export function placeAnchored(
     placement: align ? `${anchorPlacementToZag[placement]}-${align}` : anchorPlacementToZag[placement],
     gutter,
     sameWidth,
+    // A box as wide as its anchor belongs exactly under it: sliding it off the viewport edge misaligns it.
+    slide: !sameWidth,
     flip,
     onComplete(data) {
       const side = data.placement.split("-")[0];

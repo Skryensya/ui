@@ -263,6 +263,9 @@
     appearance: none;
     border: 0;
     font: inherit;
+    /* The shorthand above also reset the row's own size and weight; a button row matches its links. */
+    font-size: var(--sk-nav-list-link-font-size);
+    font-weight: var(--sk-nav-list-link-font-weight);
     text-align: start;
     cursor: pointer;
   }

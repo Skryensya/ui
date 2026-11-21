@@ -2,6 +2,7 @@ import {
   contentParts,
   getToastLiveRegion,
   hasToastTimeout,
+  startToastTimer,
   toastEvents,
   toastLiveRegions,
   type ToastDismissDetails,
@@ -33,12 +34,12 @@ export function connectToast(root: HTMLElement, options: ToastOptions = {}): Cle
   if (dismiss) applyAttrs(dismiss, { type: "button" });
 
   let dismissed = false;
-  let timer: ReturnType<typeof setTimeout> | undefined;
+  let stopTimer: (() => void) | undefined;
   const requestDismiss = (reason: ToastDismissDetails["reason"]) => {
     if (dismissed) return;
 
     dismissed = true;
-    if (timer !== undefined) clearTimeout(timer);
+    stopTimer?.();
 
     const finish = () => {
       const details: ToastDismissDetails = { reason };
@@ -63,11 +64,11 @@ export function connectToast(root: HTMLElement, options: ToastOptions = {}): Cle
   };
 
   const cleanup = dismiss ? bindEvents(dismiss, { click: () => requestDismiss("dismiss") }) : () => {};
-  if (hasToastTimeout(options.timeout)) timer = setTimeout(() => requestDismiss("timeout"), options.timeout);
+  if (hasToastTimeout(options.timeout)) stopTimer = startToastTimer(root, options.timeout, () => requestDismiss("timeout"));
 
   return () => {
     cleanup();
-    if (timer !== undefined) clearTimeout(timer);
+    stopTimer?.();
   };
 }
 

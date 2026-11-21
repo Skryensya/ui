@@ -5,6 +5,15 @@
 # hash.
 surface: "17bc1036fc4eb51c"
 entries:
+  - date: 2026-11-20
+    kind: bugfix
+    target: Toast
+    es:
+      title: "El toast espera mientras lo lees"
+      body: "El cierre automático se pausa mientras el puntero está sobre el toast o el foco está dentro, y sigue con el tiempo que le quedaba (WCAG 2.2.1). Antes corría desde el montaje sin parar."
+    en:
+      title: "The toast waits while you read it"
+      body: "The auto-dismiss pauses while the pointer is over the toast or focus is inside it, and resumes with the time it had left (WCAG 2.2.1). It used to run from mount without stopping."
   - date: 2026-10-17
     kind: feature
     target: Toast

@@ -69,6 +69,35 @@ describe("Toast Vanilla contracts", () => {
     vi.useRealTimers();
   });
 
+  it("holds its timeout while hovered or focused, then finishes the time it had left", () => {
+    vi.useFakeTimers();
+    const root = mount(markup());
+    const reasons: string[] = [];
+    root.addEventListener("sk:toastdismiss", (event) => reasons.push((event as CustomEvent<{ reason: string }>).detail.reason));
+    const cleanup = connectToast(root, { timeout: 1_000 });
+    const dismiss = root.querySelector<HTMLButtonElement>("button")!;
+
+    vi.advanceTimersByTime(600);
+    fireEvent.pointerEnter(root);
+    vi.advanceTimersByTime(5_000);
+    expect(reasons).toEqual([]);
+
+    // Focus inside keeps holding it after the pointer leaves.
+    fireEvent.focusIn(dismiss);
+    fireEvent.pointerLeave(root);
+    vi.advanceTimersByTime(5_000);
+    expect(reasons).toEqual([]);
+
+    fireEvent.focusOut(dismiss, { relatedTarget: document.body });
+    vi.advanceTimersByTime(399);
+    expect(reasons).toEqual([]);
+    vi.advanceTimersByTime(1);
+    expect(reasons).toEqual(["timeout"]);
+
+    cleanup();
+    vi.useRealTimers();
+  });
+
   it("mounts authored toast markup through the registry enhancer", () => {
     const root = mount(markup()); // no timeout: nothing to schedule or leak past the test
 

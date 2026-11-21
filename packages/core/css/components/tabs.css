@@ -25,6 +25,8 @@
 
     /* Underline tabs: the selection is an accent bar on the baseline, not a filled tab. */
     display: grid;
+    /* One column that can shrink below its content: a wide panel scrolls inside, never widens the tabs. */
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--sk-tabs-gap);
   }
 

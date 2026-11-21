@@ -3,8 +3,16 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "f9267f9dc4b2cb2c"
+surface: "0b7e0453dfa2164e"
 entries:
+  - date: 2026-11-20
+    kind: feature
+    es:
+      title: "Hook para la altura máxima del panel"
+      body: "<code>--sk-menu-max-block-size</code> fija cuánto crece el panel antes de hacer scroll por dentro. Por defecto, lo mismo de antes: <code>min(24rem, alto de la ventana menos un margen)</code>."
+    en:
+      title: "A hook for the panel's maximum height"
+      body: "<code>--sk-menu-max-block-size</code> sets how tall the panel grows before it scrolls inside itself. The default is unchanged: <code>min(24rem, the viewport height minus a margin)</code>."
   - date: 2026-10-23
     kind: breaking
     es:

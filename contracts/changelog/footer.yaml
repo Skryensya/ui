@@ -5,6 +5,14 @@
 # hash.
 surface: "669fd03da743e380"
 entries:
+  - date: 2026-11-20
+    kind: bugfix
+    es:
+      title: "No se estira dentro de una columna flex"
+      body: "En un contenedor flex en columna, el Footer tomaba toda la altura del contenedor. Ahora mide lo que su contenido; en una fila flex sigue ocupando la línea completa."
+    en:
+      title: "No longer stretches inside a flex column"
+      body: "Inside a flex column the Footer grew as tall as its container. It is now as tall as its content; in a flex row it still takes the whole line."
   - date: 2026-10-06
     kind: bugfix
     es:

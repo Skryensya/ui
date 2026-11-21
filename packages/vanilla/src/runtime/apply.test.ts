@@ -32,4 +32,19 @@ describe("applyZagProps", () => {
     applyZagProps(node, { "aria-describedby": undefined });
     expect(node.hasAttribute("aria-describedby")).toBe(false);
   });
+
+  it("runs the style attachment newer @zag-js/svelte puts under a Symbol, unless style is off", () => {
+    // The shape `normalizeProps` returns from 1.47 on: no `style` key, an attachment instead.
+    const styleKey = Symbol("attachment");
+    const props = { "data-part": "positioner", [styleKey]: (node: HTMLElement) => node.style.setProperty("position", "absolute") };
+
+    const node = document.createElement("div");
+    applyZagProps(node, props);
+    expect(node.style.position).toBe("absolute");
+
+    const untouched = document.createElement("div");
+    applyZagProps(untouched, props, { style: false });
+    expect(untouched.style.position).toBe("");
+    expect(untouched.getAttribute("data-part")).toBe("positioner");
+  });
 });

@@ -1,6 +1,14 @@
 # What changed in marquee, in the words its users read. Only appended to, never rewritten.
 surface: "7a936cd95e85f6a1"
 entries:
+  - date: 2026-11-20
+    kind: bugfix
+    es:
+      title: "La velocidad es la correcta con los tokens publicados"
+      body: "El CSS minificado publica la cadencia en segundos (<code>.96s</code>) y el binding la leía como milisegundos, así que la tira corría unas 1000 veces más rápido. Ahora entiende <code>ms</code> y <code>s</code>."
+    en:
+      title: "The speed is right with the shipped tokens"
+      body: "The minified CSS ships the cadence in seconds (<code>.96s</code>) and the binding read it as milliseconds, so the strip ran about 1000× too fast. It now reads both <code>ms</code> and <code>s</code>."
   - date: 2026-10-01
     kind: feature
     es:

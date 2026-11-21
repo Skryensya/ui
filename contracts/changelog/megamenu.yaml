@@ -5,6 +5,14 @@
 # hash.
 surface: "2946ebd508a7c275"
 entries:
+  - date: 2026-11-20
+    kind: feature
+    es:
+      title: "El panel se puede colgar de otro elemento"
+      body: "Cuatro atributos opcionales en la raíz: <code>data-anchor</code> (selector del elemento del que cuelga el panel), <code>data-placement</code> (<code>block-end</code>, <code>block-end-start</code> o <code>block-end-end</code>), <code>data-offset</code> (el espacio en px) y <code>data-match-width</code> (mismo ancho que el ancla). Sin ellos, el panel se coloca igual que antes."
+    en:
+      title: "The panel can hang from another element"
+      body: "Four optional attributes on the root: <code>data-anchor</code> (a selector for the element the panel hangs from), <code>data-placement</code> (<code>block-end</code>, <code>block-end-start</code> or <code>block-end-end</code>), <code>data-offset</code> (the gap in px) and <code>data-match-width</code> (as wide as the anchor). Without them the panel is placed as before."
   - date: 2026-10-30
     kind: bugfix
     es:

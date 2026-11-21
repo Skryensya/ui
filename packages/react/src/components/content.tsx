@@ -2,6 +2,7 @@ import {
   contentParts,
   getToastLiveRegion,
   hasToastTimeout,
+  startToastTimer,
   toastEvents,
   toastLiveRegions,
   type ToastDismissDetails,
@@ -130,10 +131,10 @@ export function Toast({
   );
 
   useEffect(() => {
-    if (isBlueprint || !hasToastTimeout(timeout)) return;
+    const root = rootRef.current;
+    if (isBlueprint || !hasToastTimeout(timeout) || !root) return;
 
-    const timer = window.setTimeout(() => dismiss("timeout"), timeout);
-    return () => window.clearTimeout(timer);
+    return startToastTimer(root, timeout, () => dismiss("timeout"));
   }, [dismiss, isBlueprint, timeout]);
 
   return (

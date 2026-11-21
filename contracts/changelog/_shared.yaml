@@ -6,4 +6,14 @@
 #
 # An entry here is an ordinary entry plus `contracts:`, and it is appended to each of those
 # contracts' own changelogs and validated against every one of them.
-entries: []
+entries:
+  - date: 2026-11-20
+    kind: bugfix
+    contracts: [menu, menubar, select, combobox, date-picker, color-picker, time-field, user-select, tooltip, carousel]
+    es:
+      title: "Las cajas ancladas quedan en su lugar con versiones nuevas de Zag"
+      body: "Con <code>@zag-js/svelte</code> 1.47 o posterior, los bindings Vanilla dejaban de escribir los estilos de la máquina (entre ellos <code>position</code>), así que menús, selects y tooltips se desplazaban al hacer scroll. Ahora se aplican con cualquier versión."
+    en:
+      title: "Anchored boxes stay put with newer Zag versions"
+      body: "With <code>@zag-js/svelte</code> 1.47 or later the Vanilla bindings stopped writing the machine's styles (<code>position</code> among them), so menus, selects and tooltips drifted on scroll. They are applied with any version now."
+

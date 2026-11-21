@@ -206,6 +206,18 @@ export function applyZagProps(
     owned.add(key);
   }
 
+  /*
+   * `@zag-js/svelte` >= 1.47 hands `style` over as a Svelte attachment under a Symbol key, which
+   * `for…in` never sees: without this, a consumer resolving that version got NO machine style at all
+   * (no inline `position`, so `.sk-anchored`'s `fixed` won and every popper box drifted by the scroll).
+   * An attachment is `(node) => void`; running it is what Svelte would do with the spread.
+   */
+  if (writeStyle)
+    for (const key of Object.getOwnPropertySymbols(props)) {
+      const attachment = (props as Record<symbol, unknown>)[key];
+      if (typeof attachment === "function") attachment(node);
+    }
+
   // Sweep of the stale: an attribute THIS runtime wrote in the previous patch and that the current
   // props no longer bring is a state that turned off (e.g. the `data-highlighted` of the row that
   // stopped being highlighted). It never touches authored attributes: only the ones we put there leave.

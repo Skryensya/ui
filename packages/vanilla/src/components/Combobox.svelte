@@ -1,3 +1,6 @@
+<!-- Runes mode on purpose: legacy mode needs `svelte/internal/flags/legacy`, which a consumer does not import. -->
+<svelte:options runes />
+
 <script lang="ts">
   import { anchoredPositioning } from "@skryensya/core/anchored";
   import { combobox } from "@skryensya/core/machines";

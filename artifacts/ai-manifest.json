@@ -424,6 +424,24 @@
     ],
     "breadcrumb": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-11-20",
+            "en": {
+              "body": "The collapsed items menu is a Menu, so it takes <code>--sk-menu-max-block-size</code>.",
+              "title": "A hook for the collapsed items menu's maximum height"
+            },
+            "es": {
+              "body": "El menú de los elementos ocultos es un Menu, así que acepta <code>--sk-menu-max-block-size</code>.",
+              "title": "Hook para la altura máxima del menú de elementos ocultos"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.4-dev"
+      },
+      {
         "date": "2026-10-28",
         "entries": [
           {
@@ -801,6 +819,24 @@
     ],
     "carousel": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-11-20",
+            "en": {
+              "body": "With <code>@zag-js/svelte</code> 1.47 or later the Vanilla bindings stopped writing the machine's styles (<code>position</code> among them), so menus, selects and tooltips drifted on scroll. They are applied with any version now.",
+              "title": "Anchored boxes stay put with newer Zag versions"
+            },
+            "es": {
+              "body": "Con <code>@zag-js/svelte</code> 1.47 o posterior, los bindings Vanilla dejaban de escribir los estilos de la máquina (entre ellos <code>position</code>), así que menús, selects y tooltips se desplazaban al hacer scroll. Ahora se aplican con cualquier versión.",
+              "title": "Las cajas ancladas quedan en su lugar con versiones nuevas de Zag"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.4-dev"
+      },
+      {
         "date": "2026-10-28",
         "entries": [
           {
@@ -1063,6 +1099,24 @@
     ],
     "color-picker": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-11-20",
+            "en": {
+              "body": "With <code>@zag-js/svelte</code> 1.47 or later the Vanilla bindings stopped writing the machine's styles (<code>position</code> among them), so menus, selects and tooltips drifted on scroll. They are applied with any version now.",
+              "title": "Anchored boxes stay put with newer Zag versions"
+            },
+            "es": {
+              "body": "Con <code>@zag-js/svelte</code> 1.47 o posterior, los bindings Vanilla dejaban de escribir los estilos de la máquina (entre ellos <code>position</code>), así que menús, selects y tooltips se desplazaban al hacer scroll. Ahora se aplican con cualquier versión.",
+              "title": "Las cajas ancladas quedan en su lugar con versiones nuevas de Zag"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.4-dev"
+      },
+      {
         "date": "2026-10-28",
         "entries": [
           {
@@ -1136,6 +1190,24 @@
       }
     ],
     "combobox": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-11-20",
+            "en": {
+              "body": "With <code>@zag-js/svelte</code> 1.47 or later the Vanilla bindings stopped writing the machine's styles (<code>position</code> among them), so menus, selects and tooltips drifted on scroll. They are applied with any version now.",
+              "title": "Anchored boxes stay put with newer Zag versions"
+            },
+            "es": {
+              "body": "Con <code>@zag-js/svelte</code> 1.47 o posterior, los bindings Vanilla dejaban de escribir los estilos de la máquina (entre ellos <code>position</code>), así que menús, selects y tooltips se desplazaban al hacer scroll. Ahora se aplican con cualquier versión.",
+              "title": "Las cajas ancladas quedan en su lugar con versiones nuevas de Zag"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.4-dev"
+      },
       {
         "date": "2026-10-28",
         "entries": [
@@ -1300,6 +1372,25 @@
     ],
     "content": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-11-20",
+            "en": {
+              "body": "The auto-dismiss pauses while the pointer is over the toast or focus is inside it, and resumes with the time it had left (WCAG 2.2.1). It used to run from mount without stopping.",
+              "title": "The toast waits while you read it"
+            },
+            "es": {
+              "body": "El cierre automático se pausa mientras el puntero está sobre el toast o el foco está dentro, y sigue con el tiempo que le quedaba (WCAG 2.2.1). Antes corría desde el montaje sin parar.",
+              "title": "El toast espera mientras lo lees"
+            },
+            "kind": "bugfix",
+            "target": "Toast"
+          }
+        ],
+        "version": "0.0.4-dev"
+      },
+      {
         "date": "2026-10-28",
         "entries": [
           {
@@ -1374,6 +1465,18 @@
       {
         "date": null,
         "entries": [
+          {
+            "date": "2026-11-20",
+            "en": {
+              "body": "With <code>@zag-js/svelte</code> 1.47 or later the Vanilla bindings stopped writing the machine's styles (<code>position</code> among them), so menus, selects and tooltips drifted on scroll. They are applied with any version now.",
+              "title": "Anchored boxes stay put with newer Zag versions"
+            },
+            "es": {
+              "body": "Con <code>@zag-js/svelte</code> 1.47 o posterior, los bindings Vanilla dejaban de escribir los estilos de la máquina (entre ellos <code>position</code>), así que menús, selects y tooltips se desplazaban al hacer scroll. Ahora se aplican con cualquier versión.",
+              "title": "Las cajas ancladas quedan en su lugar con versiones nuevas de Zag"
+            },
+            "kind": "bugfix"
+          },
           {
             "date": "2026-10-30",
             "en": {
@@ -1737,6 +1840,24 @@
       }
     ],
     "footer": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-11-20",
+            "en": {
+              "body": "Inside a flex column the Footer grew as tall as its container. It is now as tall as its content; in a flex row it still takes the whole line.",
+              "title": "No longer stretches inside a flex column"
+            },
+            "es": {
+              "body": "En un contenedor flex en columna, el Footer tomaba toda la altura del contenedor. Ahora mide lo que su contenido; en una fila flex sigue ocupando la línea completa.",
+              "title": "No se estira dentro de una columna flex"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.4-dev"
+      },
       {
         "date": "2026-10-12",
         "entries": [
@@ -2513,6 +2634,24 @@
     ],
     "marquee": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-11-20",
+            "en": {
+              "body": "The minified CSS ships the cadence in seconds (<code>.96s</code>) and the binding read it as milliseconds, so the strip ran about 1000× too fast. It now reads both <code>ms</code> and <code>s</code>.",
+              "title": "The speed is right with the shipped tokens"
+            },
+            "es": {
+              "body": "El CSS minificado publica la cadencia en segundos (<code>.96s</code>) y el binding la leía como milisegundos, así que la tira corría unas 1000 veces más rápido. Ahora entiende <code>ms</code> y <code>s</code>.",
+              "title": "La velocidad es la correcta con los tokens publicados"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.4-dev"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -2599,6 +2738,18 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-11-20",
+            "en": {
+              "body": "Four optional attributes on the root: <code>data-anchor</code> (a selector for the element the panel hangs from), <code>data-placement</code> (<code>block-end</code>, <code>block-end-start</code> or <code>block-end-end</code>), <code>data-offset</code> (the gap in px) and <code>data-match-width</code> (as wide as the anchor). Without them the panel is placed as before.",
+              "title": "The panel can hang from another element"
+            },
+            "es": {
+              "body": "Cuatro atributos opcionales en la raíz: <code>data-anchor</code> (selector del elemento del que cuelga el panel), <code>data-placement</code> (<code>block-end</code>, <code>block-end-start</code> o <code>block-end-end</code>), <code>data-offset</code> (el espacio en px) y <code>data-match-width</code> (mismo ancho que el ancla). Sin ellos, el panel se coloca igual que antes.",
+              "title": "El panel se puede colgar de otro elemento"
+            },
+            "kind": "feature"
+          },
+          {
             "date": "2026-10-30",
             "en": {
               "body": "With little room under the bar, the panel flipped and opened above it, off screen. It now always drops below the bar, as site navigation should.",
@@ -2664,6 +2815,36 @@
     ],
     "menu": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-11-20",
+            "en": {
+              "body": "<code>--sk-menu-max-block-size</code> sets how tall the panel grows before it scrolls inside itself. The default is unchanged: <code>min(24rem, the viewport height minus a margin)</code>.",
+              "title": "A hook for the panel's maximum height"
+            },
+            "es": {
+              "body": "<code>--sk-menu-max-block-size</code> fija cuánto crece el panel antes de hacer scroll por dentro. Por defecto, lo mismo de antes: <code>min(24rem, alto de la ventana menos un margen)</code>.",
+              "title": "Hook para la altura máxima del panel"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-11-20",
+            "en": {
+              "body": "With <code>@zag-js/svelte</code> 1.47 or later the Vanilla bindings stopped writing the machine's styles (<code>position</code> among them), so menus, selects and tooltips drifted on scroll. They are applied with any version now.",
+              "title": "Anchored boxes stay put with newer Zag versions"
+            },
+            "es": {
+              "body": "Con <code>@zag-js/svelte</code> 1.47 o posterior, los bindings Vanilla dejaban de escribir los estilos de la máquina (entre ellos <code>position</code>), así que menús, selects y tooltips se desplazaban al hacer scroll. Ahora se aplican con cualquier versión.",
+              "title": "Las cajas ancladas quedan en su lugar con versiones nuevas de Zag"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.4-dev"
+      },
+      {
         "date": "2026-10-28",
         "entries": [
           {
@@ -2713,6 +2894,24 @@
       }
     ],
     "menubar": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-11-20",
+            "en": {
+              "body": "With <code>@zag-js/svelte</code> 1.47 or later the Vanilla bindings stopped writing the machine's styles (<code>position</code> among them), so menus, selects and tooltips drifted on scroll. They are applied with any version now.",
+              "title": "Anchored boxes stay put with newer Zag versions"
+            },
+            "es": {
+              "body": "Con <code>@zag-js/svelte</code> 1.47 o posterior, los bindings Vanilla dejaban de escribir los estilos de la máquina (entre ellos <code>position</code>), así que menús, selects y tooltips se desplazaban al hacer scroll. Ahora se aplican con cualquier versión.",
+              "title": "Las cajas ancladas quedan en su lugar con versiones nuevas de Zag"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.4-dev"
+      },
       {
         "date": "2026-10-28",
         "entries": [
@@ -2853,6 +3052,24 @@
       }
     ],
     "nav-list": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-11-20",
+            "en": {
+              "body": "A <code>&lt;button&gt;</code> with <code>sk-nav-list__link</code> took its parent's font size instead of the list's. It now uses the same size and weight as the links.",
+              "title": "A button row matches the link rows"
+            },
+            "es": {
+              "body": "Un <code>&lt;button&gt;</code> con <code>sk-nav-list__link</code> tomaba el tamaño de letra del padre en vez del de la lista. Ahora usa el mismo tamaño y peso que los enlaces.",
+              "title": "Una fila que es botón tiene el tamaño de las de enlace"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.4-dev"
+      },
       {
         "date": "2026-10-28",
         "entries": [
@@ -3853,6 +4070,18 @@
         "date": null,
         "entries": [
           {
+            "date": "2026-11-20",
+            "en": {
+              "body": "With <code>@zag-js/svelte</code> 1.47 or later the Vanilla bindings stopped writing the machine's styles (<code>position</code> among them), so menus, selects and tooltips drifted on scroll. They are applied with any version now.",
+              "title": "Anchored boxes stay put with newer Zag versions"
+            },
+            "es": {
+              "body": "Con <code>@zag-js/svelte</code> 1.47 o posterior, los bindings Vanilla dejaban de escribir los estilos de la máquina (entre ellos <code>position</code>), así que menús, selects y tooltips se desplazaban al hacer scroll. Ahora se aplican con cualquier versión.",
+              "title": "Las cajas ancladas quedan en su lugar con versiones nuevas de Zag"
+            },
+            "kind": "bugfix"
+          },
+          {
             "date": "2026-10-29",
             "en": {
               "body": "The native picker's scrollbar used <code>::picker(select)::-webkit-scrollbar-*</code>, which lightningcss (Vite's default CSS minifier) cannot parse, and it aborted the whole build. It now uses <code>scrollbar-width</code> and <code>scrollbar-color</code>: a thin bar in the same color, without the thumb's inset.",
@@ -4485,6 +4714,24 @@
     ],
     "tabs": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-11-20",
+            "en": {
+              "body": "The horizontal Tabs column grew with its content: a wide panel pushed the list and the panel past a narrow screen. The column now fits its container.",
+              "title": "A wide panel no longer widens the tabs"
+            },
+            "es": {
+              "body": "La columna de las Tabs horizontales podía crecer con su contenido: un panel ancho empujaba la lista y el panel fuera de una pantalla angosta. Ahora la columna se ajusta al contenedor.",
+              "title": "Un panel ancho ya no ensancha las pestañas"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.4-dev"
+      },
+      {
         "date": "2026-10-28",
         "entries": [
           {
@@ -4709,6 +4956,24 @@
     ],
     "time-field": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-11-20",
+            "en": {
+              "body": "With <code>@zag-js/svelte</code> 1.47 or later the Vanilla bindings stopped writing the machine's styles (<code>position</code> among them), so menus, selects and tooltips drifted on scroll. They are applied with any version now.",
+              "title": "Anchored boxes stay put with newer Zag versions"
+            },
+            "es": {
+              "body": "Con <code>@zag-js/svelte</code> 1.47 o posterior, los bindings Vanilla dejaban de escribir los estilos de la máquina (entre ellos <code>position</code>), así que menús, selects y tooltips se desplazaban al hacer scroll. Ahora se aplican con cualquier versión.",
+              "title": "Las cajas ancladas quedan en su lugar con versiones nuevas de Zag"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.4-dev"
+      },
+      {
         "date": "2026-10-28",
         "entries": [
           {
@@ -4870,6 +5135,36 @@
     ],
     "tooltip": [
       {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-11-20",
+            "en": {
+              "body": "The tooltip measured its position in document coordinates while the box is <code>position: fixed</code>, so after a scroll it opened as far off as the page had moved. It now uses viewport coordinates end to end.",
+              "title": "Opens next to its trigger after a scroll"
+            },
+            "es": {
+              "body": "El tooltip calculaba su posición en coordenadas del documento mientras la caja es <code>position: fixed</code>, así que tras hacer scroll abría desplazado lo mismo que se había scrolleado. Ahora usa coordenadas de la ventana de punta a punta.",
+              "title": "Abre junto a su trigger después de hacer scroll"
+            },
+            "kind": "bugfix"
+          },
+          {
+            "date": "2026-11-20",
+            "en": {
+              "body": "With <code>@zag-js/svelte</code> 1.47 or later the Vanilla bindings stopped writing the machine's styles (<code>position</code> among them), so menus, selects and tooltips drifted on scroll. They are applied with any version now.",
+              "title": "Anchored boxes stay put with newer Zag versions"
+            },
+            "es": {
+              "body": "Con <code>@zag-js/svelte</code> 1.47 o posterior, los bindings Vanilla dejaban de escribir los estilos de la máquina (entre ellos <code>position</code>), así que menús, selects y tooltips se desplazaban al hacer scroll. Ahora se aplican con cualquier versión.",
+              "title": "Las cajas ancladas quedan en su lugar con versiones nuevas de Zag"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.4-dev"
+      },
+      {
         "date": "2026-10-28",
         "entries": [
           {
@@ -5024,6 +5319,24 @@
       }
     ],
     "user-select": [
+      {
+        "date": null,
+        "entries": [
+          {
+            "date": "2026-11-20",
+            "en": {
+              "body": "With <code>@zag-js/svelte</code> 1.47 or later the Vanilla bindings stopped writing the machine's styles (<code>position</code> among them), so menus, selects and tooltips drifted on scroll. They are applied with any version now.",
+              "title": "Anchored boxes stay put with newer Zag versions"
+            },
+            "es": {
+              "body": "Con <code>@zag-js/svelte</code> 1.47 o posterior, los bindings Vanilla dejaban de escribir los estilos de la máquina (entre ellos <code>position</code>), así que menús, selects y tooltips se desplazaban al hacer scroll. Ahora se aplican con cualquier versión.",
+              "title": "Las cajas ancladas quedan en su lugar con versiones nuevas de Zag"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.4-dev"
+      },
       {
         "date": "2026-10-28",
         "entries": [
@@ -10030,6 +10343,12 @@
           "part": null,
           "sheet": "@skryensya/core/components/menu.css"
         },
+        "--sk-menu-max-block-size": {
+          "default": "min(24rem, calc(100vb - 2 * var(--space-inset-md)))",
+          "output": false,
+          "part": null,
+          "sheet": "@skryensya/core/components/menu.css"
+        },
         "--sk-menu-radius": {
           "default": "var(--radius-control)",
           "output": false,
@@ -10074,6 +10393,7 @@
         "--sk-menu-fg",
         "--sk-menu-item-gap",
         "--sk-menu-item-min-height",
+        "--sk-menu-max-block-size",
         "--sk-menu-radius",
         "--sk-menu-separator-color",
         "--sk-menu-separator-margin",
@@ -28668,6 +28988,12 @@
           "part": "positioner",
           "sheet": "@skryensya/core/components/menu.css"
         },
+        "--sk-menu-max-block-size": {
+          "default": "min(24rem, calc(100vb - 2 * var(--space-inset-md)))",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/menu.css"
+        },
         "--sk-menu-radius": {
           "default": "var(--radius-control)",
           "output": false,
@@ -28706,6 +29032,7 @@
         "--sk-menu-fg",
         "--sk-menu-item-gap",
         "--sk-menu-item-min-height",
+        "--sk-menu-max-block-size",
         "--sk-menu-radius",
         "--sk-menu-separator-color",
         "--sk-menu-separator-margin",
@@ -52678,7 +53005,7 @@
     "working": "0.0.4"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "bf0dbf0fc1329f06",
+  "sourceHash": "20577919ef0bf336",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",
