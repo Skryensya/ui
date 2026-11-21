@@ -1,43 +1,31 @@
 ---
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
-import "@skryensya/core/patterns/box.css";
-import "@skryensya/core/patterns/anchored.css";
-import "@skryensya/core/patterns/scroll-lock.css";
-import "@skryensya/core/patterns/visually-hidden.css";
-import "@skryensya/core/patterns/hero.css";
-import "@skryensya/core/patterns/footer.css";
-import "@skryensya/core/patterns/icon.css";
-import "@skryensya/core/patterns/image-frame.css";
-import "@skryensya/core/patterns/layout.css";
-import "@skryensya/core/patterns/media-overlay.css";
-import "@skryensya/core/patterns/nav-list.css";
-import "@skryensya/core/patterns/table-pager.css";
-import "@skryensya/core/patterns/splitter.css";
-import "@skryensya/core/patterns/dialog-vaul.css";
-import "@skryensya/core/patterns/wrapper.css";
-import "@skryensya/core/patterns/vaul.css";
 import { emitMarkup } from "@skryensya/ai-compiler/emit";
 import type { UsageTree } from "@skryensya/core/usage-tree";
-import { getLocale } from "../../i18n";
+import { getLocale, localizePath } from "../../i18n";
+import { componentItems } from "../../lib/navigation";
 import { canvasAppearances, type CanvasComponent } from "../../lib/components-canvas";
 import { blockFragment, canvasBlocks } from "../../lib/canvas-fragment";
+import { canvasSheets } from "../../lib/canvas-sheets";
 
 interface Props {
   component: CanvasComponent;
 }
 const { component } = Astro.props;
 
-// Every component stylesheet, so a specimen never renders unstyled; appearance sheets are scoped by attribute.
-import.meta.glob("../../../../../packages/core/css/components/*.css", { eager: true });
+/* Only this component's sheets, as links: the globs are lazy `?url` imports, so the page pays for what it names and nothing else. */
+const sheetUrls = import.meta.glob<string>("../../../../../packages/core/css/**/*.css", { query: "?url", import: "default" });
+const sheetKey = (specifier: string) => `../../../../../packages/core/css/${specifier.replace("@skryensya/core/", "")}`;
 
 const locale = getLocale(Astro.url);
 const copy = locale === "es"
-  ? { label: "Canvas del componente", appearance: "Apariencia", inContext: "en contexto" }
-  : { label: "Component canvas", appearance: "Appearance", inContext: "in context" };
+  ? { label: "Canvas del componente", appearance: "Apariencia", inContext: "en contexto", docs: "Documentación" }
+  : { label: "Component canvas", appearance: "Appearance", inContext: "in context", docs: "Docs" };
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
 
 const blocks = canvasBlocks([component]);
+const sheetLinks = (await Promise.all(canvasSheets(blocks).map((sheet) => sheetUrls[sheetKey(sheet)]?.()))).filter((url): url is string => !!url);
 const board = blocks.map((block) => `
   <section class="block" aria-labelledby="block-${esc(block.id)}">
     <h2 class="block__title" id="block-${esc(block.id)}">${esc(block.title.replace(" (in context)", ""))}${block.title.endsWith("(in context)") ? ` <small>${copy.inContext}</small>` : ""}</h2>
@@ -51,28 +39,36 @@ const canvas = emitMarkup({
   children: "__BOARD__",
 }).replace("__BOARD__", `<div class="board">${board}</div>`);
 
-// The appearances this component offers, if more than its default. One choice for the whole canvas, remembered across components.
+// The toolbar: the component's name and a way back to its documentation, then the appearances it offers (if more than its
+// default), one choice for the whole canvas, remembered across components.
+const docsHref = componentItems.some((item) => item.href === `/components/${component.id}`) ? localizePath(`/components/${component.id}`, locale) : undefined;
 const appearances = canvasAppearances.filter((value) => component.appearances.includes(value));
-const picker = appearances.length > 1
-  ? emitMarkup({
-      contract: "layout",
-      signature: "Inline",
-      options: { gap: "xs", wrap: true, inlineAlign: "center" },
-      attrs: { role: "group", "aria-label": copy.appearance, "data-canvas-appearance-picker": "" },
-      children: appearances.map((value): UsageTree => ({
+const toolbarChildren: UsageTree[] = [
+  { contract: "typography", signature: "Text", options: { size: "caption", tone: "secondary" }, children: component.id },
+  ...(docsHref ? [{ contract: "button", signature: "Button.navigation", options: { variant: "ghost", size: "sm", href: docsHref }, children: copy.docs } satisfies UsageTree] : []),
+  ...(appearances.length > 1
+    ? appearances.map((value): UsageTree => ({
         contract: "button",
         signature: "Button.action",
         options: { variant: "outline", size: "sm", pressed: value === "plain" },
         attrs: { "data-appearance-value": value },
         children: value,
-      })),
-    })
-  : "";
+      }))
+    : []),
+];
+const picker = emitMarkup({
+  contract: "layout",
+  signature: "Inline",
+  options: { gap: "xs", wrap: true, inlineAlign: "center" },
+  attrs: { role: "group", "aria-label": copy.appearance, "data-canvas-appearance-picker": "" },
+  children: toolbarChildren,
+});
 ---
 
+{sheetLinks.map((href) => <link rel="stylesheet" href={href} />)}
 <h1 class="sk-visually-hidden">{component.id}</h1>
 <div class="canvas-stage">
-  {picker && <div class="canvas-toolbar" set:html={picker} />}
+  <div class="canvas-toolbar" set:html={picker} />
   <div set:html={canvas} />
 </div>
 
@@ -84,7 +80,8 @@ const picker = appearances.length > 1
   const board = document.querySelector<HTMLElement>(".board");
   const picker = document.querySelector<HTMLElement>("[data-canvas-appearance-picker]");
   if (board) {
-    void mountComponentsWithIcons(board, siteIcons);
+    // Revealed once mounted: a component that changes size as it mounts would shift the page, and a hidden box shifts nothing.
+    void mountComponentsWithIcons(board, siteIcons).finally(() => board.setAttribute("data-mounted", ""));
     /* Only elements that already carry `data-appearance` change, so a specimen that does not have one keeps its own. */
     const setAppearance = (value: string) => {
       board.querySelectorAll("[data-appearance]").forEach((el) => el.setAttribute("data-appearance", value));
@@ -115,6 +112,7 @@ const picker = appearances.length > 1
   .canvas-toolbar { position: absolute; inset: var(--space-inset-md) auto auto var(--space-inset-md); z-index: 3; }
   /* Frosted needs something behind it to frost: the docs' own backdrop, set on :root by Base. */
   .board[data-appearance="frosted"] .block { background: var(--docs-frost-backdrop); }
+  .board:not([data-mounted]) { visibility: hidden; }
   .board { inline-size: max-content; max-inline-size: 140rem; padding: 4rem; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 2rem; }
   /* One hairline per block, on the kit's own surface. */
   .block { flex: 0 1 auto; max-inline-size: 100%; min-inline-size: 0; box-sizing: border-box; padding: 1.5rem; border: 1px solid var(--color-border-subtle); border-radius: var(--radius-surface); background: var(--color-bg-surface); }
