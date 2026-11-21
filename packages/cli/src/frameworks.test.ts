@@ -96,9 +96,9 @@ describe("Astro adapter", () => {
     expect(astro.wiring(p, "src/styles/skryensya.css").wired).toBe(true);
   });
 
-  it("tells the vanilla binding to load the auto-loader, and the React one to register its integration", () => {
+  it("puts the vanilla setup in the base layout, and tells the React one to register its integration", () => {
     const bare = project({ "package.json": pkg({ astro: "5" }) });
-    expect(astro.notes(bare, "vanilla").join(" ")).toContain("@skryensya/vanilla/auto");
+    expect(astro.notes(bare, "vanilla").join(" ")).toContain("<script> of your base layout");
     expect(astro.notes(bare, "react").join(" ")).toContain("astro add react");
     expect(astro.notes(project({ "package.json": pkg({ astro: "5", "@astrojs/react": "4" }) }), "react").join(" ")).not.toContain("astro add react");
   });
@@ -124,9 +124,8 @@ describe("Vite adapter", () => {
     expect(vite.wiring(project({ "package.json": pkg({ vite: "7" }), "index.html": '<link href="/src/skryensya.css">' }), "src/skryensya.css").wired).toBe(true);
   });
 
-  it("tells the vanilla binding to load the auto-loader", () => {
-    expect(vite.notes(project({ "package.json": pkg({ vite: "7" }) }), "vanilla").join(" ")).toContain("@skryensya/vanilla/auto");
-    expect(vite.notes(project({ "package.json": pkg({ vite: "7" }) }), "react")).toEqual([]);
+  it("has nothing to add: the setup `add` prints is the same for every Vite app", () => {
+    expect(vite.notes(project({ "package.json": pkg({ vite: "7" }) }), "vanilla")).toEqual([]);
   });
 });
 

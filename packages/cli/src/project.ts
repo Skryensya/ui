@@ -91,9 +91,10 @@ export class Project {
 }
 
 /** The command that adds packages with a manager. */
-export function addCommand(manager: PackageManager, packages: readonly string[]): [string, string[]] {
+export function addCommand(manager: PackageManager, packages: readonly string[], dev = false): [string, string[]] {
   const verb = manager === "npm" ? "install" : "add";
-  return [manager, [verb, ...packages]];
+  const flag = !dev ? [] : manager === "npm" ? ["--save-dev"] : manager === "bun" ? ["--dev"] : ["-D"];
+  return [manager, [verb, ...flag, ...packages]];
 }
 
 /** `./skryensya.css` from the file that imports it: the form a bundler expects. */

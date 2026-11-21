@@ -20,6 +20,7 @@ Options for add
   --framework <${adapters.map((adapter) => adapter.id).join("|")}>
                              skip detection
   --binding <react|vanilla>  default: the framework's own
+  --icons <set>              also install @iconify-json/<set> and write src/icons.ts/.css (see icons)
   --dry-run                  show what would change, change nothing
   --no-install               write the stylesheet, print the install line
   --cwd <dir>                run as if from another directory
@@ -66,7 +67,7 @@ export function main(argv: string[], ctx: Context): number {
         ctx.error(`--binding is react or vanilla, got "${values.binding}".`);
         return 1;
       }
-      return add(rest, { binding: values.binding as Binding | undefined, framework: values.framework, dryRun: values["dry-run"], install: !values["no-install"] }, local);
+      return add(rest, { binding: values.binding as Binding | undefined, framework: values.framework, dryRun: values["dry-run"], install: !values["no-install"], icons: values.icons }, local);
     }
     case "icons":
       return icons(rest[0], { out: values.out, check: values.check, components: values.components }, local);
@@ -87,6 +88,7 @@ function parse(argv: string[]) {
       framework: { type: "string" },
       cwd: { type: "string" },
       out: { type: "string" },
+      icons: { type: "string" },
       check: { type: "boolean" },
       components: { type: "boolean" },
       "dry-run": { type: "boolean" },

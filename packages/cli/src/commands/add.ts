@@ -1,4 +1,6 @@
+import { iconifyPresets } from "@skryensya/core/iconify";
 import type { Context } from "../context.js";
+import { icons } from "./icons.js";
 import { readIds, renderCss } from "../css.js";
 import { resolveAdapter } from "../frameworks/index.js";
 import { catalog, suggest, type Binding, type Entry } from "../manifest.js";
@@ -12,6 +14,8 @@ export type AddOptions = {
   dryRun?: boolean;
   /** Install the packages. Off, the command prints the line to run instead. */
   install?: boolean;
+  /** An icon set preset (`lucide`, `ph`…): install its `@iconify-json` package and write `src/icons`. */
+  icons?: string;
 };
 
 const unique = <T>(items: T[]): T[] => [...new Set(items)];
@@ -21,9 +25,17 @@ function usage(entry: Entry, binding: Binding): string[] {
   if (entry.appearance) return [`write appearance="${entry.appearance.value}" on ${entry.appearance.of}; the sheet is in the stylesheet now.`];
   if (binding === "react") return entry.react ? [`import { ${entry.react.names.join(", ")} } from "${entry.react.entry}";`] : [];
   if (!entry.vanilla) return ["CSS only: the markup and the stylesheet are all it needs."];
-  const lines = entry.vanilla.mount ? [`import { ${entry.vanilla.mount} } from "${entry.vanilla.entry}";`] : [];
-  if (entry.vanilla.auto) lines.push(`(mounted by the auto-loader for ${entry.vanilla.selectors.join(", ")})`);
-  return lines;
+  // The setup's one call mounts it; the per-component import is only for a page that mounts by hand.
+  if (entry.vanilla.auto) return [`markup with ${entry.vanilla.selectors.join(", ")}: the Setup's mountComponentsWithIcons mounts it`];
+  return entry.vanilla.mount ? [`import { ${entry.vanilla.mount} } from "${entry.vanilla.entry}";`] : [];
+}
+
+/** The entry-module lines that bind the icon set (and, in Vanilla, mount the components). */
+function setup(binding: Binding): string[] {
+  const head = ['import "./icons.css";', 'import { icons } from "./icons";'];
+  return binding === "react"
+    ? [...head, 'import { IconSetProvider } from "@skryensya/react/icon";', "", "<IconSetProvider set={icons}>{/* your app */}</IconSetProvider>"]
+    : [...head, 'import { mountComponentsWithIcons } from "@skryensya/vanilla/auto";', "", "mountComponentsWithIcons(document, icons);"];
 }
 
 export function add(ids: string[], options: AddOptions, ctx: Context): number {
@@ -38,6 +50,12 @@ export function add(ids: string[], options: AddOptions, ctx: Context): number {
       const near = suggest(id);
       ctx.error(`No component "${id}".${near.length ? ` Did you mean ${near.join(", ")}?` : ""}`);
     }
+    return 1;
+  }
+
+  const preset = options.icons ? iconifyPresets[options.icons] : undefined;
+  if (options.icons && !preset) {
+    ctx.error(`No mapped icon set "${options.icons}". Mapped: ${Object.keys(iconifyPresets).join(", ")}.`);
     return 1;
   }
 
@@ -108,6 +126,29 @@ export function add(ids: string[], options: AddOptions, ctx: Context): number {
     ctx.log("  packages are already installed");
   }
 
+  if (preset) {
+    const iconPackage = `@iconify-json/${preset.prefix}`;
+    const [command, args] = addCommand(manager, [iconPackage], true);
+    const line = [command, ...args].join(" ");
+    if (options.dryRun) {
+      if (!project.has(iconPackage)) ctx.log(`  would run    ${line}`);
+      ctx.log(`  would write  src/icons.ts, src/icons.css  (${options.icons})`);
+    } else if (options.install === false && !project.has(iconPackage)) {
+      ctx.log(`  run    ${line}\n  then   skryensya icons ${options.icons}`);
+    } else {
+      if (!project.has(iconPackage)) {
+        ctx.log(`  running  ${line}`);
+        const code = ctx.run(command, args, project.root);
+        if (code !== 0) {
+          ctx.error(`\n\`${line}\` failed (exit ${code}). Run it yourself, then: skryensya icons ${options.icons}`);
+          return code;
+        }
+      }
+      const code = icons(options.icons, { usage: false }, { ...ctx, cwd: project.root });
+      if (code !== 0) return code;
+    }
+  }
+
   ctx.log();
   ctx.log("Use");
   for (const entry of entries) {
@@ -115,12 +156,22 @@ export function add(ids: string[], options: AddOptions, ctx: Context): number {
     for (const line of usage(entry, binding)) ctx.log(`    ${line}`);
   }
 
+  // The setup every app needs once, printed until the project has it: binding the icon set and, in
+  // Vanilla, mounting. Found by name in the sources, so a project that already did it hears nothing.
+  const setupDone = project.files("src", [".ts", ".tsx", ".js", ".jsx", ".astro"])
+    .some((file) => /IconSetProvider|mountComponentsWithIcons/.test(project.read(file) ?? ""));
+  if (!setupDone) {
+    ctx.log();
+    ctx.log("Setup, once (the icon set comes from: skryensya icons <set>)");
+    for (const line of setup(binding)) ctx.log(`    ${line}`);
+  }
+
   const wiring = adapter.wiring(project, cssFile);
   const notes = adapter.notes(project, binding);
   // The kit ships no icons: the project picks a set (a dev dependency) and writes only the roles it needs.
   const declared = Object.keys({ ...project.pkg.dependencies, ...project.pkg.devDependencies });
-  if (!declared.some((name) => name.startsWith("@iconify-json/")))
-    notes.push("pick an icon set: install @iconify-json/lucide (or ph, material-symbols) as a dev dependency, then run: skryensya icons lucide");
+  if (!preset && !declared.some((name) => name.startsWith("@iconify-json/")))
+    notes.push(`pick an icon set: skryensya add ${ids.join(" ")} --icons lucide (or ph, material-symbols, tabler…; skryensya help lists them)`);
   if (!wiring.wired || notes.length) {
     ctx.log();
     ctx.log("Next");

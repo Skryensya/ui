@@ -46,8 +46,5 @@ export const vite: FrameworkAdapter = {
     };
   },
 
-  notes: (_project, binding) =>
-    binding === "vanilla"
-      ? ["Vanilla mounts its components itself. Load the auto-loader once, in your entry module:\n    import \"@skryensya/vanilla/auto\";"]
-      : [],
+  notes: () => [],
 };

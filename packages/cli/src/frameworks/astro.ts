@@ -35,9 +35,7 @@ export const astro: FrameworkAdapter = {
 
   notes(project, binding) {
     if (binding === "vanilla") {
-      return [
-        "Vanilla mounts its components itself. Load the auto-loader once, in a <script> of your base layout:\n    import \"@skryensya/vanilla/auto\";",
-      ];
+      return ["Put the Setup below in a <script> of your base layout, so every page mounts its components."];
     }
     return [
       ...(project.has("@astrojs/react") ? [] : ["The React binding needs Astro's React integration. Run: npx astro add react"]),

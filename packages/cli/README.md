@@ -11,7 +11,7 @@ release it belongs to, and `add` installs the packages of that same release.
 <!-- x-release-please-start-version -->
 ```bash
 SKRYENSYA_VERSION=0.0.3
-npx https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-cli-${SKRYENSYA_VERSION}.tgz add button
+npx https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-cli-${SKRYENSYA_VERSION}.tgz add button --icons lucide
 ```
 <!-- x-release-please-end -->
 
@@ -19,9 +19,10 @@ npx https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skry
 skryensya list [--category <name>] [--json]    the catalog
 skryensya info <name>                           CSS, imports and extra packages of one entry
 skryensya add <name> [<name>...]                add it to this project
+skryensya icons <set>                           write the icons the components use, from @iconify-json/<set>
 ```
 
-`add` options: `--framework <next|astro|react-router|tanstack-start|vite>`, `--binding <react|vanilla>`, `--dry-run`, `--no-install`,
+`add` options: `--framework <next|astro|react-router|tanstack-start|vite>`, `--binding <react|vanilla>`, `--icons <set>`, `--dry-run`, `--no-install`,
 `--cwd <dir>`.
 
 ## What `add` does
@@ -34,8 +35,11 @@ skryensya add <name> [<name>...]                add it to this project
    `packageManager` field or the nearest lockfile): the binding (`@skryensya/react` or `vanilla`) and a
    third-party peer when an integration needs one. **Never `@skryensya/core`**: the binding brings it
    and re-exports its stylesheets under `css/`, which is what the managed file imports.
-4. Prints how to use each entry and what is left to do by hand (the one import that wires the
-   stylesheet, a client directive, an integration to register).
+4. With `--icons <set>`, installs `@iconify-json/<set>` as a dev dependency and writes `src/icons.ts` and
+   `src/icons.css` with only the roles the components use (what `skryensya icons <set>` does).
+5. Prints how to use each entry and what is left to do by hand: the one import that wires the
+   stylesheet, the setup that binds the icon set (and, in Vanilla, mounts the components) until the
+   sources contain it, a client directive, an integration to register.
 
 ## Adapters
 

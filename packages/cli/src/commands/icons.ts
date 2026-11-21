@@ -10,6 +10,8 @@ export type IconsOptions = {
   check?: boolean;
   /** Also write the `component-*` marks, for an app that lists the kit's components. */
   components?: boolean;
+  /** Print how to bind the set. `add` prints its own setup instead. */
+  usage?: boolean;
 };
 
 /*
@@ -62,6 +64,7 @@ export function icons(prefix: string | undefined, options: IconsOptions, ctx: Co
     writeFileSync(path, text);
     ctx.log(`  wrote  ${path}`);
   }
+  if (options.usage === false) return 0;
   ctx.log();
   ctx.log("Use");
   ctx.log(`  React    <IconSetProvider set={icons}> from @skryensya/react/icon`);

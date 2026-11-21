@@ -59,6 +59,24 @@ tarballs, so install the Skryensya packages you need from the release URL.
 npm publication starts with v0.1.0. Until then, list every Skryensya package you use by its release
 URL: a tarball names its Skryensya dependencies by version, and npm cannot resolve those.
 
+### One command
+
+The CLI belongs to the release. In a Vite, Astro, Next, React Router or TanStack Start app it installs the
+binding and core, writes the stylesheet for the components you name, installs an Iconify set and writes
+only the icons the components use:
+
+<!-- x-release-please-start-version -->
+```bash
+SKRYENSYA_VERSION=0.0.3
+npx https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-cli-${SKRYENSYA_VERSION}.tgz add button select --icons lucide
+```
+<!-- x-release-please-end -->
+
+It ends by printing the few lines your entry module needs (the stylesheet, and binding the icon set or
+mounting), and stops printing them once they are there. Run it again to add more components.
+
+### By hand
+
 For React:
 
 <!-- x-release-please-start-version -->
@@ -101,15 +119,6 @@ import "./icons.css"; // the native select and carousel icons
 <IconSetProvider set={icons}><App /></IconSetProvider>;
 ```
 
-Or let the CLI do it. It belongs to the release and installs that release's packages (the binding and core) for you:
-
-<!-- x-release-please-start-version -->
-```bash
-SKRYENSYA_VERSION=0.0.3
-npx https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-cli-${SKRYENSYA_VERSION}.tgz add button
-```
-<!-- x-release-please-end -->
-
 For authored HTML plus progressive enhancement:
 
 <!-- x-release-please-start-version -->
@@ -127,7 +136,7 @@ import { mountComponentsWithIcons } from "@skryensya/vanilla/auto";
 import { icons } from "./icons"; // skryensya icons lucide, as above
 import "./icons.css";
 
-await mountComponentsWithIcons(document, icons);
+mountComponentsWithIcons(document, icons);
 ```
 
 No bundler setting is needed: the release compiles the Svelte layer it runs on.

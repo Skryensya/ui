@@ -27,7 +27,7 @@ export function info(id: string | undefined, ctx: Context): number {
     ctx.log();
     ctx.log("Vanilla");
     if (entry.vanilla.mount) ctx.log(`  import { ${entry.vanilla.mount} } from "${entry.vanilla.entry}";`);
-    if (entry.vanilla.auto) ctx.log(`  mounted by @skryensya/vanilla/auto for ${entry.vanilla.selectors.join(", ")}`);
+    if (entry.vanilla.auto) ctx.log(`  mounted by mountComponentsWithIcons (@skryensya/vanilla/auto) for ${entry.vanilla.selectors.join(", ")}`);
   } else if (entry.kind === "component") {
     ctx.log();
     ctx.log("Vanilla: the stylesheet is all it needs.");

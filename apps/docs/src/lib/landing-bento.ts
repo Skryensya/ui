@@ -1049,7 +1049,7 @@ export function bentoSets(es: boolean): BentoTile[][] {
           {
             contract: "code-preview",
             signature: "CodePreview",
-            slots: { children: `pnpm dlx ${releaseUrl("cli")} add button` },
+            slots: { children: `pnpm dlx ${releaseUrl("cli")} add button --icons lucide` },
           },
           hint(
             t(

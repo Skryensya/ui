@@ -72,13 +72,13 @@ describe("add, on Next", () => {
 });
 
 describe("add, on Astro", () => {
-  it("defaults to vanilla without the React integration, and points at the auto-loader", () => {
+  it("defaults to vanilla without the React integration, and prints the mount it needs", () => {
     const dir = astroVanilla();
     const run = capture(dir);
     expect(add(["tooltip"], { install: false }, run.ctx)).toBe(0);
     expect(read(dir, "src/styles/skryensya.css")).toContain("tooltip.css");
     expect(run.out()).toContain("Astro · vanilla · npm");
-    expect(run.out()).toContain("@skryensya/vanilla/auto");
+    expect(run.out()).toContain("mountComponentsWithIcons(document, icons);");
     expect(run.out()).toContain('import "../styles/skryensya.css";');
     expect(run.out()).toContain("npm install @skryensya/vanilla");
   });
@@ -280,5 +280,34 @@ describe("add, from a release", () => {
     const run = capture(dir);
     add(["button"], { framework: "next" }, { ...run.ctx, release: "0.0.2" });
     expect(run.runs).toEqual([]);
+  });
+});
+
+describe("add, setup and --icons", () => {
+  const viteApp = (files: Record<string, string> = {}) =>
+    makeProject({ "package.json": pkg({ vite: "7", react: "19" }), "pnpm-lock.yaml": "", "src/main.tsx": "", ...files });
+
+  it("prints the React setup until the project binds an icon set", () => {
+    const fresh = capture(viteApp());
+    add(["select"], { install: false }, fresh.ctx);
+    expect(fresh.out()).toContain("<IconSetProvider set={icons}>");
+    expect(fresh.out()).toContain("--icons lucide");
+
+    const bound = capture(viteApp({ "src/main.tsx": "<IconSetProvider set={icons} />" }));
+    add(["select"], { install: false }, bound.ctx);
+    expect(bound.out()).not.toContain("Setup, once");
+  });
+
+  it("installs the Iconify package as a dev dependency with the project's manager", () => {
+    const run = capture(viteApp());
+    expect(add(["select"], { icons: "ph", dryRun: true }, run.ctx)).toBe(0);
+    expect(run.out()).toContain("would run    pnpm add -D @iconify-json/ph");
+    expect(run.out()).toContain("would write  src/icons.ts, src/icons.css  (ph)");
+  });
+
+  it("refuses a set it has no map for", () => {
+    const run = capture(viteApp());
+    expect(add(["select"], { icons: "feather" }, run.ctx)).toBe(1);
+    expect(run.err()).toContain("tabler");
   });
 });
