@@ -119,6 +119,10 @@ export async function generateStories({ app, check = false }: GenerateOptions): 
   const outDir = join(app, "src/stories");
   const vite = await createServer({
     root: docs,
+    /* Its own cache, not `<root>/node_modules/.vite`: that one belongs to the docs dev server, and a
+     * second Vite with another config writing there (this runs inside `pnpm check`) left the running
+     * server with a production prebundle of React (`_jsxDEV is not a function`). */
+    cacheDir: join(app, "node_modules/.vite-stories"),
     configFile: false,
     logLevel: "error",
     appType: "custom",

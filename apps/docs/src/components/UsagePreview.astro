@@ -239,7 +239,12 @@ if (variants) {
 
 const codeStory = storybookTitle && storybookStory ? resolveStorybookStory(storybookTitle, storybookStory) : null;
 if (storybookTitle && storybookStory && !codeStory) {
-  throw new Error(`UsagePreview: no published Storybook story for "${storybookTitle}" / "${storybookStory}".`);
+  const message = `UsagePreview: no published Storybook story for "${storybookTitle}" / "${storybookStory}".`;
+  /* The story list is a glob outside this app, and a running dev server does not re-read it when
+   * `pnpm generate` adds a file: the new page would 500 until a restart. In dev it warns; the build and
+   * storybook-links.test.ts still fail on a story that is really missing. */
+  if (import.meta.env.DEV) console.warn(message);
+  else throw new Error(message);
 }
 const reactCodeHref = codeStory ? storybookDocsUrl(storybookReactUrl, codeStory.title, codeStory.story) : null;
 const vanillaCodeHref = codeStory ? storybookDocsUrl(storybookVanillaUrl, codeStory.title, codeStory.story) : null;
