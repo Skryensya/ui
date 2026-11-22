@@ -15,28 +15,20 @@ const { pattern, use } = definePattern<Content>({
   subject: "media",
   scale: "component",
   title: { en: "Picture ring", es: "Anillo de imágenes" },
-  layout: { en: "A centred Carousel of pictures on a ring, looping, opening mid-way so there are pictures on both sides.", es: "Un Carousel centrado de imágenes sobre un anillo, en bucle, que abre a la mitad para que haya imágenes a ambos lados." },
+  layout: { en: "A CurveCarousel of pictures on a wheel that rolls without end, opening on the middle one.", es: "Un CurveCarousel de imágenes sobre una rueda que gira sin fin, que abre en la del medio." },
   fields: {
     label: { en: "What the set is, for assistive tech.", es: "Qué es el conjunto, para la tecnología de asistencia." },
     curve: { en: "convex to see the ring from outside, concave to stand inside it.", es: "convex para ver el anillo desde fuera, concave para estar dentro." },
     pictures: { en: "The pictures, six to ten: a satin tint and what each shows.", es: "Las imágenes, de seis a diez: un tono de satén y qué muestra cada una." },
   },
   notes: [
-    { en: "align=\"center\" with an edgePadding of half the track minus half a slide: the picture at rest is the middle one, and the first and last can reach it.", es: "align=\"center\" con un edgePadding de la mitad de la pista menos media slide: la imagen en reposo es la del medio, y la primera y la última pueden llegar ahí." },
-    { en: "defaultPage opens it mid-way. Opened on the first picture, a ring has an empty half.", es: "defaultPage lo abre a la mitad. Abierto en la primera imagen, un anillo tiene una mitad vacía." },
+    { en: "Only the curve is written: CurveCarousel centres the slide at rest, sizes the slides and the air at the ends, and opens on the middle one by itself.", es: "Solo se escribe la curva: CurveCarousel centra la slide en reposo, dimensiona las slides y el aire en los extremos, y abre en la del medio por sí solo." },
     { en: "One picture per slide: the curve turns the slide's content, so a slide holding two things would turn them apart.", es: "Una imagen por slide: la curva gira el contenido de la slide, así que una slide con dos cosas las giraría por separado." },
   ],
   build: (content) => ({
     contract: "carousel",
-    signature: "Carousel",
-    options: {
-      curve: content.curve,
-      align: "center",
-      edgePadding: "calc(50% - min(30%, 9rem))",
-      slideSize: "min(60%, 18rem)",
-      loop: true,
-      defaultPage: Math.floor(content.pictures.length / 2) - 1,
-    },
+    signature: "Carousel.curve",
+    options: { curve: content.curve },
     attrs: { "aria-label": content.label },
     children: content.pictures.map((picture) => ({
       contract: "carousel",

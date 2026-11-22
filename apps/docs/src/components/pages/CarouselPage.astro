@@ -20,8 +20,6 @@ import {
   carouselQuotesTree,
   carouselProductsTree,
   carouselDontFewTree,
-  carouselRingConcaveTree,
-  carouselRingConvexTree,
 } from "../../demos/carousel";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
@@ -102,16 +100,6 @@ import { carouselTitlesDoTree, carouselTitlesDontTree } from "../../demos/dodont
       storybookTitle={storybookTitle}
       storybookStory="Cards" />
 
-    <UsagePreview
-      tree={carouselRingConvexTree(t)}
-      optionName="curve"
-      title={t("carousel.prop.curve.title")}
-      description={t("carousel.prop.curve.body")}
-      explain={explain("curve", ["flat", "convex", "concave"])}
-      stageMinBlockSize="24rem"
-      storybookTitle={storybookTitle}
-      storybookStory="RingConvex" />
-
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview css={zoomOut} tree={carouselCardsTree(t)} title={t("carousel.cardsTitle")} description={t("carousel.cardsBody")} storybookTitle={storybookTitle} storybookStory="Cards" />
     <UsagePreview css={zoomOut} tree={carouselAutoplayTree(t)} title={t("carousel.multiTitle")} description={t("carousel.multiBody1")} storybookTitle={storybookTitle} storybookStory="Autoplay" />
@@ -120,8 +108,6 @@ import { carouselTitlesDoTree, carouselTitlesDontTree } from "../../demos/dodont
     <UsagePreview css={zoomOut} tree={carouselQuotesTree(t)} title={t("carousel.quotesTitle")} description={t("carousel.quotesBody")} storybookTitle={storybookTitle} storybookStory="Quotes" />
     <UsagePreview css={zoomOut} tree={carouselProductsTree(t)} title={t("carousel.productsTitle")} description={t("carousel.productsBody")} storybookTitle={storybookTitle} storybookStory="Products" />
     <UsagePreview css={zoomOut} tree={carouselBareTree(t)} title={t("carousel.bareTitle")} description={t("carousel.bareBody1")} storybookTitle={storybookTitle} storybookStory="Bare" />
-    <UsagePreview tree={carouselRingConvexTree(t)} title={t("carousel.ringConvexTitle")} description={t("carousel.ringConvexBody")} storybookTitle={storybookTitle} storybookStory="RingConvex" />
-    <UsagePreview tree={carouselRingConcaveTree(t)} title={t("carousel.ringConcaveTitle")} description={t("carousel.ringConcaveBody")} storybookTitle={storybookTitle} storybookStory="RingConcave" />
 
     <h3>{t("carousel.apiTitle")}</h3>
     <p set:html={t("carousel.apiBody")} />

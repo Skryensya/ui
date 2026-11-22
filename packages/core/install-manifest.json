@@ -609,6 +609,7 @@
       "entry": "@skryensya/react/carousel",
       "names": [
         "Carousel",
+        "CurveCarousel",
         "CarouselSlide"
       ]
     },

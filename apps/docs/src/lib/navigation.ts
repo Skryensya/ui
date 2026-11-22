@@ -313,6 +313,12 @@ export const componentItems = [
     ],
   },
   {
+    href: "/components/curve-carousel",
+    label: "CurveCarousel",
+    trailing: "Beta",
+    aliases: ["carrusel curvo", "carrusel 3d", "carrusel en perspectiva", "anillo de imágenes", "curve carousel", "3d carousel", "ring carousel", "coverflow", "hero carousel"],
+  },
+  {
     href: "/components/carousel",
     label: "Carousel",
     trailing: "Beta",
@@ -1268,6 +1274,7 @@ const allComponentNavigation = [
       "/components/annotation",
       "/components/canvas",
       "/components/carousel",
+      "/components/curve-carousel",
       "/components/compare-slider",
       "/components/diagram",
       "/components/image-frame",

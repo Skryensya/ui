@@ -12,9 +12,20 @@ Carousel:
     - Grid
     - List
 
+"Carousel.curve":
+  useWhen:
+    - "a page or section opens with a few pictures as its centrepiece, the middle one the star: a hero"
+    - "the pictures should read as one set seen in perspective, from outside the ring or from inside it"
+  avoidWhen:
+    - "people browse and compare a collection; the turned sides are hard to read, use a flat Carousel"
+    - "the slides carry much text; turned, the text on the sides cannot be read"
+  alternatives:
+    - Carousel
+    - Grid
+
 CarouselSlide:
   useWhen:
     - "it is one item of the carousel; anything can go inside, usually a card"
   avoidWhen:
-    - "it is outside a Carousel; there is no track to fit into"
+    - "it is outside a Carousel or CurveCarousel; there is no track to fit into"
   alternatives: []

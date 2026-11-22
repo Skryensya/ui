@@ -846,10 +846,7 @@
             "carousel",
             "slider-of-cards",
             "snap-scroller",
-            "gallery",
-            "hero-carousel",
-            "ring",
-            "3d-carousel"
+            "gallery"
           ],
           "parents": [],
           "useWhen": [
@@ -858,9 +855,33 @@
           ]
         },
         {
+          "alternatives": [
+            "Carousel",
+            "Grid"
+          ],
+          "avoidWhen": [
+            "people browse and compare a collection; the turned sides are hard to read, use a flat Carousel",
+            "the slides carry much text; turned, the text on the sides cannot be read"
+          ],
+          "host": "section",
+          "id": "Carousel.curve",
+          "intent": [
+            "hero-carousel",
+            "ring-carousel",
+            "3d-carousel",
+            "perspective-carousel",
+            "coverflow"
+          ],
+          "parents": [],
+          "useWhen": [
+            "a page or section opens with a few pictures as its centrepiece, the middle one the star: a hero",
+            "the pictures should read as one set seen in perspective, from outside the ring or from inside it"
+          ]
+        },
+        {
           "alternatives": [],
           "avoidWhen": [
-            "it is outside a Carousel; there is no track to fit into"
+            "it is outside a Carousel or CurveCarousel; there is no track to fit into"
           ],
           "host": "div",
           "id": "CarouselSlide",
@@ -869,7 +890,8 @@
             "carousel-item"
           ],
           "parents": [
-            "Carousel"
+            "Carousel",
+            "Carousel.curve"
           ],
           "useWhen": [
             "it is one item of the carousel; anything can go inside, usually a card"
@@ -6401,5 +6423,5 @@
     }
   ],
   "schemaVersion": "2.3",
-  "sourceHash": "fd47a7eff9f9b998"
+  "sourceHash": "79e4c94345073f78"
 }

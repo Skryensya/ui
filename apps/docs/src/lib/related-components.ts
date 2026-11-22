@@ -10,6 +10,7 @@
  * Keys and values are page paths. A path may point into another category: the page is what matters, not where it is filed.
  */
 export const relatedComponents: Readonly<Record<string, readonly string[]>> = {
+  "/components/curve-carousel": ["/components/carousel", "/components/image-frame", "/components/marquee", "/components/lightbox"],
   "/components/video-player": ["/components/audio-player", "/components/lightbox", "/components/image-frame", "/components/carousel"],
   "/components/audio-player": ["/components/video-player", "/components/slider", "/components/list", "/components/progress"],
 };

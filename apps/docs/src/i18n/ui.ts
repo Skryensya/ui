@@ -80,6 +80,7 @@ import { searchFieldMessages } from "./messages/components/search-field";
 import { otpInputMessages } from "./messages/components/otp-input";
 import { tablePagerMessages } from "./messages/components/table-pager";
 import { mediaOverlayMessages } from "./messages/components/media-overlay";
+import { curveCarouselMessages } from "./messages/components/curve-carousel";
 import { messageMessages } from "./messages/components/message";
 import { qrCodeMessages } from "./messages/components/qr-code";
 import { feedMessages } from "./messages/components/feed";
@@ -242,6 +243,7 @@ export const ui = {
     ...otpInputMessages.es,
     ...tablePagerMessages.es,
     ...mediaOverlayMessages.es,
+    ...curveCarouselMessages.es,
     ...messageMessages.es,
     ...qrCodeMessages.es,
     ...feedMessages.es,
@@ -401,6 +403,7 @@ export const ui = {
     ...otpInputMessages.en,
     ...tablePagerMessages.en,
     ...mediaOverlayMessages.en,
+    ...curveCarouselMessages.en,
     ...messageMessages.en,
     ...qrCodeMessages.en,
     ...feedMessages.en,

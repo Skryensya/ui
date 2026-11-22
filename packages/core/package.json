@@ -213,6 +213,10 @@
       "types": "./src/carousel.ts",
       "default": "./src/carousel.ts"
     },
+    "./curve-ring": {
+      "types": "./src/curve-ring.ts",
+      "default": "./src/curve-ring.ts"
+    },
     "./changelog": {
       "types": "./src/changelog.ts",
       "default": "./src/changelog.ts"

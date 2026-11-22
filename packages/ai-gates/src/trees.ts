@@ -2613,6 +2613,22 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    /* The ring: the same enhanced carousel, with its curve and the centring its signature fixes. */
+    name: "carousel/curve-ring",
+    enhanced: true,
+    tree: {
+      contract: "carousel",
+      signature: "Carousel.curve",
+      options: { curve: "convex" },
+      attrs: { "aria-label": "Trabajos destacados" },
+      children: [
+        { contract: "carousel", signature: "CarouselSlide", children: "Atlas" },
+        { contract: "carousel", signature: "CarouselSlide", children: "Brújula" },
+        { contract: "carousel", signature: "CarouselSlide", children: "Cardumen" },
+      ],
+    },
+  },
+  {
     /*
      * The shell, which is all an author writes. The list of chosen files is runtime state the two
      * bindings meet differently (React renders it, the enhancer never renders markup), and the

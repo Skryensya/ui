@@ -64,11 +64,10 @@
     --sk-carousel-dot-active-color: var(--color-action-accent);
     --sk-carousel-motion-duration: var(--motion-state-change-duration);
     --sk-carousel-motion-easing: var(--motion-state-change-easing);
-    /* `data-curve`: how far a slide at the track's edge turns, how far the curve recedes, and the
-     * viewer's distance. Shared by both curves; see CURVE below. */
-    --sk-carousel-curve-angle: 40deg;
-    --sk-carousel-curve-depth: 10rem;
-    --sk-carousel-perspective: 60rem;
+    /* `data-curve`: how much the ends of the wheel grow (concave) or shrink (convex): it brings the
+     * camera closer. 1 is the default lens; 2 twice as strong, 0.5 half; the engine clamps it to
+     * 0.25..2.5, past which the side slides of a concave wheel would reach the camera. */
+    --sk-carousel-curve-strength: 1;
 
     box-sizing: border-box;
     /* Row 1 is the track; row 2 is the control row, whichever layer draws it. The row is IMPLICIT on
@@ -390,139 +389,162 @@
   }
 
   /*
-   * CURVE: the slides stand on a ring instead of a line. `convex` looks at the ring from outside (the
-   * centred slide is nearest); `concave` stands inside it (the centred slide is farthest, the sides
-   * wrap towards you).
+   * CURVE (CurveCarousel, `data-curve`): the slides on a WHEEL. `convex` looks at it from outside (the
+   * front slide nearest, the sides going back round the cylinder); `concave` stands inside it (the
+   * front slide farthest, the sides wrapping towards you).
    *
-   * Pure CSS on the SAME track: each slide's view timeline (`view(inline)`, its passage across the
-   * scrollport) drives the turn and the depth, so the machine, the snap points, the controls, drag
-   * and the keyboard are the flat carousel's, untouched. The perspective sits on the track, the scroll
-   * container, whose origin stays put while the slides scroll under it: one vanishing point for the
-   * whole ring, not one per slide.
-   *
-   * THE SLIDE'S CONTENT TURNS, NOT THE SLIDE. Zag measures the snap points from the slides' boxes, and
-   * a transformed box is a moved one: inside the ring every slide but the centred one would report
-   * the wrong place, and the carousel would come to rest off-centre. So the slide keeps its flat box
-   * (and only carries `z-index`, so the nearer slide paints over its neighbour) and passes the
-   * perspective down with `preserve-3d`; its child (a slide holds one: a card, a picture) turns.
-   *
-   * Five keyframes trace the arc: half the angle costs a quarter of the depth, which is a circle's
-   * (1 - cos) to within a few per cent at these angles.
-   *
-   * Longhands, not the `animation` shorthand: the shorthand only resets `animation-timeline`, and a
-   * minifier that folds the four into one writes a declaration the browser drops.
-   *
-   * Without scroll-driven animations (Firefox today) the `@supports` drops it and the carousel is the
-   * flat one. Horizontal only: a vertical track keeps its line.
+   * The engine (`curve-ring.ts`) owns the place of every slide once it has mounted: one position, a
+   * full 360° wheel, drag with momentum, an endless roll. It writes each slide's transform, the
+   * track's perspective and each bent band's place; this sheet only lays the stage. Before it mounts,
+   * or with no JavaScript, the ring is the flat Carousel's centred snap scroller, sized as a hero here.
    */
-  @supports (animation-timeline: view()) {
-    .sk-carousel:is([data-curve="convex"], [data-curve="concave"]):not([data-orientation="vertical"]) .sk-carousel__track {
-      perspective: var(--sk-carousel-perspective);
-    }
-
-    .sk-carousel:is([data-curve="convex"], [data-curve="concave"]):not([data-orientation="vertical"]) .sk-carousel__slide {
-      transform-style: preserve-3d;
-      animation-timing-function: linear;
-      animation-fill-mode: both;
-      animation-timeline: view(inline);
-    }
-
-    .sk-carousel:is([data-curve="convex"], [data-curve="concave"]):not([data-orientation="vertical"]) .sk-carousel__slide > * {
-      animation-timing-function: linear;
-      animation-fill-mode: both;
-      animation-timeline: view(inline);
-    }
-
-    .sk-carousel[data-curve="convex"]:not([data-orientation="vertical"]) .sk-carousel__slide {
-      animation-name: sk-carousel-curve-near-middle;
-    }
-
-    .sk-carousel[data-curve="convex"]:not([data-orientation="vertical"]) .sk-carousel__slide > * {
-      animation-name: sk-carousel-curve-convex;
-    }
-
-    /* Inside the ring the sides turn their near edge towards you, past the track's plane: room above and
-     * below, or the track's `overflow` clips them. */
-    .sk-carousel[data-curve="concave"]:not([data-orientation="vertical"]) .sk-carousel__track {
-      padding-block: calc(var(--sk-carousel-curve-depth) * 0.2);
-    }
-
-    .sk-carousel[data-curve="concave"]:not([data-orientation="vertical"]) .sk-carousel__slide {
-      animation-name: sk-carousel-curve-near-sides;
-    }
-
-    .sk-carousel[data-curve="concave"]:not([data-orientation="vertical"]) .sk-carousel__slide > * {
-      animation-name: sk-carousel-curve-concave;
-    }
+  .sk-carousel:is([data-curve="convex"], [data-curve="concave"]) {
+    /* A size container (for `cqi`) takes no width from its content: a hero spans what it is given. */
+    container-type: inline-size;
+    inline-size: 100%;
+    /* Five slides in view on a desktop hero (the front one and two each side); fewer on a phone, where
+     * the floor keeps a slide legible. Inside the ring the sides swell, so its slides are smaller. */
+    --sk-carousel-slide-size: clamp(5rem, 15cqi, 12rem);
+    --sk-carousel-gap: var(--space-inline-sm);
+    --sk-carousel-edge-padding: calc(50% - var(--sk-carousel-slide-size) / 2);
   }
 
-  /* 0% is a slide entering at the inline end, 100% leaving at the start. */
-  @keyframes sk-carousel-curve-near-middle {
-    0%,
-    100% {
-      z-index: 0;
-    }
-    50% {
-      z-index: 2;
-    }
+  /* Outside the ring the sides turn away and narrow, so its slides can be larger. */
+  .sk-carousel[data-curve="convex"] {
+    --sk-carousel-slide-size: clamp(6rem, 20cqi, 15rem);
   }
 
-  @keyframes sk-carousel-curve-near-sides {
-    0%,
-    100% {
-      z-index: 2;
-    }
-    50% {
-      z-index: 0;
-    }
+  .sk-carousel[data-curve][data-sk-carousel-ready] .sk-carousel__track {
+    display: grid;
+    overflow: hidden;
+    scroll-snap-type: none;
+    padding-inline: 0;
+    /* The sides swell inside the ring (concave): room above and below, or the track clips them. */
+    padding-block: calc(var(--sk-carousel-slide-size) * 0.12);
+    cursor: grab;
+    /* Vertical swipes stay the page's; horizontal ones turn the wheel. */
+    touch-action: pan-y;
+    user-select: none;
   }
 
-  @keyframes sk-carousel-curve-convex {
-    0% {
-      transform: translateZ(calc(var(--sk-carousel-curve-depth) * -1)) rotateY(calc(var(--sk-carousel-curve-angle) * -1));
-    }
-    25% {
-      transform: translateZ(calc(var(--sk-carousel-curve-depth) * -0.25)) rotateY(calc(var(--sk-carousel-curve-angle) * -0.5));
-    }
-    50% {
-      transform: translateZ(0) rotateY(0deg);
-    }
-    75% {
-      transform: translateZ(calc(var(--sk-carousel-curve-depth) * -0.25)) rotateY(calc(var(--sk-carousel-curve-angle) * 0.5));
-    }
-    100% {
-      transform: translateZ(calc(var(--sk-carousel-curve-depth) * -1)) rotateY(var(--sk-carousel-curve-angle));
-    }
+  .sk-carousel[data-curve="concave"][data-sk-carousel-ready] .sk-carousel__track {
+    padding-block: calc(var(--sk-carousel-slide-size) * 0.35);
   }
 
-  @keyframes sk-carousel-curve-concave {
-    0% {
-      transform: translateZ(0) rotateY(var(--sk-carousel-curve-angle));
-    }
-    25% {
-      transform: translateZ(calc(var(--sk-carousel-curve-depth) * -0.75)) rotateY(calc(var(--sk-carousel-curve-angle) * 0.5));
-    }
-    50% {
-      transform: translateZ(calc(var(--sk-carousel-curve-depth) * -1)) rotateY(0deg);
-    }
-    75% {
-      transform: translateZ(calc(var(--sk-carousel-curve-depth) * -0.75)) rotateY(calc(var(--sk-carousel-curve-angle) * -0.5));
-    }
-    100% {
-      transform: translateZ(0) rotateY(calc(var(--sk-carousel-curve-angle) * -1));
-    }
+  .sk-carousel[data-curve][data-dragging] .sk-carousel__track {
+    cursor: grabbing;
+  }
+
+  /* Every slide stacked in one cell at the centre; the engine's transform puts it on the wheel. */
+  .sk-carousel[data-curve][data-sk-carousel-ready] .sk-carousel__slide {
+    grid-area: 1 / 1;
+    justify-self: center;
+    transform-style: preserve-3d;
+    will-change: transform, opacity;
+  }
+
+  /* BEND: a slide cut into bands (`bendCarouselSlides`) that the engine lays on the circle, so the
+   * picture curves. The content itself stays for assistive tech and its links, hidden from sight; the
+   * bands are `aria-hidden` copies. Each is widened a hair about its own centre (`scale`, composing
+   * with the engine's `transform`) to cover the seam between two turned planes. */
+  .sk-carousel[data-bend] .sk-carousel__slide {
+    position: relative;
+  }
+
+  .sk-carousel[data-bend][data-sk-carousel-ready] .sk-carousel__slide > :not(.sk-carousel__bend) {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+  }
+
+  .sk-carousel__bend {
+    display: flex;
+    transform-style: preserve-3d;
+  }
+
+  .sk-carousel[data-bend]:not([data-sk-carousel-ready]) .sk-carousel__bend {
+    display: none;
+  }
+
+  .sk-carousel__band {
+    flex: none;
+    overflow: hidden;
+    scale: 1.15 1;
+  }
+
+  /* THE STEPPER: CurveCarousel's only indicator, a flat row of one segment per slide (no prev/next:
+   * the wheel is dragged, flicked, or stepped from here). Under autoplay the current segment fills
+   * with the time left; the engine writes `--sk-carousel-step-progress` (0 to 1), so the fill stops
+   * exactly when the timer does. */
+  .sk-carousel__stepper {
+    grid-row: 2;
+    grid-column: 1 / -1;
+    display: flex;
+    gap: var(--space-inline-xs);
+    align-items: center;
+    justify-self: center;
+    inline-size: min(100%, calc(var(--sk-carousel-slide-size) * 1.6));
+  }
+
+  /* With autoplay the pause toggle sits at the start of the same row: the stepper keeps the centre and
+   * leaves the toggle's width clear on both sides, so it stays centred under the wheel. */
+  .sk-carousel:has(.sk-carousel__autoplay) .sk-carousel__stepper {
+    padding-inline: calc(var(--sk-carousel-control-size) + var(--space-inline-sm));
+    inline-size: min(100%, calc(var(--sk-carousel-slide-size) * 1.6 + 2 * (var(--sk-carousel-control-size) + var(--space-inline-sm))));
+  }
+
+  .sk-carousel__step {
+    flex: 1 1 0;
+    min-inline-size: 0;
+    /* A thin bar to see, a 24px target to hit. */
+    block-size: 1.5rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+
+  .sk-carousel__step::before {
+    content: "";
+    display: block;
+    block-size: 3px;
+    border-radius: var(--radius-pill);
+    background: var(--sk-carousel-dot-color);
+    opacity: 0.45;
+  }
+
+  .sk-carousel__step-progress {
+    display: block;
+    margin-block-start: -3px;
+    block-size: 3px;
+    border-radius: var(--radius-pill);
+    background: var(--sk-carousel-dot-active-color);
+    transform-origin: left center;
+    scale: 0 1;
+  }
+
+  .sk-carousel__step:dir(rtl) .sk-carousel__step-progress {
+    transform-origin: right center;
+  }
+
+  /* The current segment is full, unless autoplay is timing it: then it shows the time gone. */
+  .sk-carousel__step[aria-current="true"] .sk-carousel__step-progress {
+    scale: 1 1;
+  }
+
+  .sk-carousel[data-playing] .sk-carousel__step[aria-current="true"] .sk-carousel__step-progress {
+    scale: var(--sk-carousel-step-progress, 0) 1;
+  }
+
+  .sk-carousel__step:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset, 2px);
+    border-radius: var(--radius-control);
   }
 
   @media (prefers-reduced-motion: reduce) {
     .sk-carousel__track {
       scroll-behavior: auto;
-    }
-
-    /* A ring that turns as you scroll is motion the reader did not ask for: the line stays. The selector
-     * matches the curve's own weight, so coming later is what wins. */
-    .sk-carousel[data-curve]:not([data-orientation="vertical"]) .sk-carousel__slide,
-    .sk-carousel[data-curve]:not([data-orientation="vertical"]) .sk-carousel__slide > * {
-      animation: none;
     }
 
     .sk-carousel__dot {
@@ -534,13 +556,6 @@
   :where(:root[data-motion="reduced"]) {
     .sk-carousel__track {
       scroll-behavior: auto;
-    }
-
-    /* A ring that turns as you scroll is motion the reader did not ask for: the line stays. The selector
-     * matches the curve's own weight, so coming later is what wins. */
-    .sk-carousel[data-curve]:not([data-orientation="vertical"]) .sk-carousel__slide,
-    .sk-carousel[data-curve]:not([data-orientation="vertical"]) .sk-carousel__slide > * {
-      animation: none;
     }
 
     .sk-carousel__dot {

@@ -67,6 +67,12 @@ export const carouselAttrs = {
   curve: "data-curve",
   /** `data-default-page` on the root: the page the carousel opens on. 0 by default. */
   defaultPage: "data-default-page",
+  /** `data-bend` on a CurveCarousel root: each slide bends along the ring, not just its place on it. */
+  bend: "data-bend",
+  /** `data-infinite="off"` on a CurveCarousel root: stop at the first and the last slide. Infinite by default. */
+  infinite: "data-infinite",
+  /** `data-momentum="off"` on a CurveCarousel root: a release settles at once instead of gliding. */
+  momentum: "data-momentum",
 } as const;
 
 export const carouselParts = {
@@ -82,6 +88,16 @@ export const carouselParts = {
   /** The page counter ("2 / 5") `data-indicator="count"` draws instead of the dots. */
   count: "sk-carousel__count",
   dot: "sk-carousel__dot",
+  /** `bend` (CurveCarousel): the decorative layer of bands a slide's content is cut into. */
+  bend: "sk-carousel__bend",
+  /** One vertical band of a bent slide: a clipped copy of its content that turns on the ring alone. */
+  band: "sk-carousel__band",
+  /** CurveCarousel's indicator: a flat row of one segment per slide (it has no prev/next buttons). */
+  stepper: "sk-carousel__stepper",
+  /** One segment of the stepper: a button to that slide, the current one filled. */
+  step: "sk-carousel__step",
+  /** The fill inside a segment; under autoplay it grows with the time left on the current slide. */
+  stepProgress: "sk-carousel__step-progress",
 } as const;
 
 export type CarouselPart = keyof typeof carouselParts;
@@ -136,7 +152,7 @@ export const carouselContract = {
    * Template authors root + track + slides. Prev/next, dots, and autoplay pause are enhancer-
    * injected (or native pseudo-elements until ready); class names stay owned here for CSS.
    */
-  systemOwned: ["controls", "button", "autoplay", "dots", "dot", "count"],
+  systemOwned: ["controls", "button", "autoplay", "dots", "dot", "count", "bend", "band", "stepper", "step", "stepProgress"],
   hooks: [
     "--sk-carousel-control-bg",
     "--sk-carousel-control-border",
@@ -144,8 +160,6 @@ export const carouselContract = {
     "--sk-carousel-control-radius",
     "--sk-carousel-control-fg",
     "--sk-carousel-control-size",
-    "--sk-carousel-curve-angle",
-    "--sk-carousel-curve-depth",
     "--sk-carousel-dot-active-color",
     "--sk-carousel-dot-color",
     "--sk-carousel-dot-gap",
@@ -158,7 +172,7 @@ export const carouselContract = {
     "--sk-carousel-native-next-icon",
     "--sk-carousel-native-previous-disabled-icon",
     "--sk-carousel-native-previous-icon",
-    "--sk-carousel-perspective",
+    "--sk-carousel-curve-strength",
     "--sk-carousel-slide-size",
   ],
   events: carouselEvents,
@@ -212,20 +226,37 @@ export const carouselContract = {
     /** Air before the first slide and after the last, as a CSS length. What lets `align="center"` centre the ends. */
     edgePadding: { type: "string", styleProperty: "--sk-carousel-edge-padding" },
     /**
-     * The slides on a ring, for a hero rather than a shelf. `convex` looks at the ring from outside: the
-     * centred slide is nearest and the sides turn away. `concave` stands inside it: the centred slide is
-     * farthest and the sides wrap towards you. Pair it with `align="center"` and an `edgePadding`, so
-     * the slide at rest is the one in the middle. Pure CSS (scroll-driven animations): where they are
-     * missing, and under reduced motion, the track stays flat. Horizontal only.
+     * The ring of `Carousel.curve` (CurveCarousel): `convex` looks at it from outside, the centred slide
+     * nearest and the sides turning away; `concave` stands inside it, the centred slide farthest and
+     * the sides wrapping towards you. Pure CSS (scroll-driven animations): where they are missing,
+     * under reduced motion and in right-to-left, the track stays flat.
      */
-    curve: { type: "enum", values: ["flat", "convex", "concave"], attr: "data-curve" },
-    /** The page it opens on, counted from 0. A ring hero opens mid-way, so there are slides on both sides. */
+    curve: { type: "enum", values: ["convex", "concave"], attr: "data-curve" },
+    /**
+     * How strong the ring's lens is: how much the slides at the ends grow inside the ring (`concave`)
+     * or shrink outside it (`convex`). 1 is the default; 2 is twice as strong, 0.5 half as strong.
+     */
+    curveStrength: { type: "number", min: 0.25, max: 2.5, styleProperty: "--sk-carousel-curve-strength" },
+    /**
+     * Bend each slide along the ring, the wide-lens look where a picture's top and bottom edges arc,
+     * instead of standing it flat on it. The bindings cut each slide's content into vertical bands
+     * (decorative copies, hidden from assistive tech; the content itself stays for it).
+     */
+    bend: { type: "boolean", default: false, attr: "data-bend", trueValue: "" },
+    /** Roll without end: past the last slide comes the first. On by default; off stops at both ends. */
+    infinite: { type: "enum", values: ["on", "off"], attr: "data-infinite" },
+    /**
+     * A drag that lets go keeps the wheel turning and slows down little by little, like a real wheel,
+     * before it comes to rest on a slide. On by default; off settles on the nearest slide at once.
+     */
+    momentum: { type: "enum", values: ["on", "off"], attr: "data-momentum" },
+    /** The page it opens on, counted from 0. A CurveCarousel without one opens on the middle slide. */
     defaultPage: { type: "number", min: 0, attr: "data-default-page" },
   },
 
   signatures: {
     Carousel: {
-      intent: ["carousel", "slider-of-cards", "snap-scroller", "gallery", "hero-carousel", "ring", "3d-carousel"],
+      intent: ["carousel", "slider-of-cards", "snap-scroller", "gallery"],
       host: { element: "section" },
       options: [
         "loop",
@@ -242,7 +273,6 @@ export const carouselContract = {
         "slidesPerMove",
         "snap",
         "edgePadding",
-        "curve",
         "defaultPage",
       ],
       slots: { children: { accepts: "signature", of: ["CarouselSlide"], required: true } },
@@ -261,10 +291,32 @@ export const carouselContract = {
       react: { from: "@skryensya/react/carousel", name: "Carousel" },
     },
 
+    /*
+     * THE RING: the same carousel (machine, snap points, controls, keyboard) with its slides on a ring,
+     * for a hero rather than a shelf. A signature and not just an option of Carousel because what makes
+     * a ring work is fixed, not chosen: the slide at rest is the middle one (`align` is always centre),
+     * the track is horizontal, and the sheet sizes the slides and the air at the ends to match.
+     */
+    "Carousel.curve": {
+      intent: ["hero-carousel", "ring-carousel", "3d-carousel", "perspective-carousel", "coverflow"],
+      host: { element: "section" },
+      options: ["curve", "curveStrength", "bend", "fade", "infinite", "momentum", "autoplay", "autoplayDelay", "mounted", "slideSize", "defaultPage"],
+      requires: ["curve"],
+      slots: { children: { accepts: "signature", of: ["CarouselSlide"], required: true } },
+      template: {
+        element: "section",
+        part: "root",
+        host: true,
+        attrs: { "data-align": "center" },
+        children: [{ element: "div", part: "track", slot: "children" }],
+      },
+      react: { from: "@skryensya/react/carousel", name: "CurveCarousel" },
+    },
+
     CarouselSlide: {
       intent: ["slide", "carousel-item"],
       host: { element: "div" },
-      parents: ["Carousel"],
+      parents: ["Carousel", "Carousel.curve"],
       options: [],
       slots: { children: { accepts: "node", required: true } },
       template: { element: "div", part: "slide", host: true, slot: "children" },
@@ -274,7 +326,7 @@ export const carouselContract = {
 
   a11y: [
     {
-      signatures: ["Carousel"],
+      signatures: ["Carousel", "Carousel.curve"],
       when: {},
       requiresOneOf: ["aria-label", "aria-labelledby"],
       because:
@@ -285,3 +337,50 @@ export const carouselContract = {
     },
   ],
 } as const satisfies ComponentContract;
+
+/** How many bands a bent slide is cut into: a slide spans about 26° of the wheel, so ~3° a band reads
+ * round, and every band is a 3D layer the compositor turns each frame. */
+export const CAROUSEL_BEND_BANDS = 8;
+
+/**
+ * BEND (`data-bend`): cut each slide's content into vertical bands so the slide bends along the ring
+ * instead of standing flat on it. A flat CSS box cannot curve, but a row of narrow ones can: each band
+ * is a copy of the content clipped to its slice, and each turns on its own view timeline, so the
+ * neighbours turn a little more than one another and the slide reads as a curved surface.
+ *
+ * The bands are decoration: the layer is `aria-hidden` and `inert`, and the original content stays in
+ * the slide (the sheet hides it visually) as the thing assistive tech reads and the place a link or a
+ * button keeps working from. Both bindings call this after mount and the cleanup before unmount.
+ */
+export function bendCarouselSlides(root: HTMLElement, bands: number = CAROUSEL_BEND_BANDS): () => void {
+  const layers: HTMLElement[] = [];
+  for (const slide of Array.from(root.querySelectorAll<HTMLElement>(`.${carouselParts.slide}`))) {
+    const content = Array.from(slide.children).find((child: Element) => !child.classList.contains(carouselParts.bend));
+    if (!content) continue;
+    const layer = document.createElement("div");
+    layer.className = carouselParts.bend;
+    layer.setAttribute("aria-hidden", "true");
+    layer.inert = true;
+    for (let index = 0; index < bands; index++) {
+      const band = document.createElement("div");
+      band.className = carouselParts.band;
+      band.style.inlineSize = `${100 / bands}%`;
+      const copy = content.cloneNode(true) as HTMLElement;
+      copy.removeAttribute("id");
+      for (const named of Array.from(copy.querySelectorAll("[id]"))) named.removeAttribute("id");
+      // The copy is the slide's full width, shifted so this band shows its own slice.
+      copy.style.inlineSize = `${bands * 100}%`;
+      copy.style.marginInlineStart = `${-index * 100}%`;
+      band.append(copy);
+      layer.append(band);
+    }
+    slide.append(layer);
+    layers.push(layer);
+  }
+  return () => {
+    for (const layer of layers) layer.remove();
+  };
+}
+
+/* The ring engine of CurveCarousel, also at `@skryensya/core/curve-ring`. */
+export * from "./curve-ring.js";

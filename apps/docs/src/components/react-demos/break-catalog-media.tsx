@@ -7,6 +7,7 @@ import { CompareSlider } from "@skryensya/react/compare-slider";
 import { ExpressiveAvatar } from "@skryensya/react/expressive-avatar";
 import { FadeEdge } from "@skryensya/react/fade-edge";
 import { Marquee } from "@skryensya/react/marquee";
+import { CarouselSlide, CurveCarousel } from "@skryensya/react/carousel";
 import { MorphStack } from "@skryensya/react/morph-stack";
 import { Presence } from "@skryensya/react/presence";
 import { ScrollExpand } from "@skryensya/react/scroll-expand";
@@ -23,6 +24,7 @@ import "@skryensya/core/components/compare-slider.css";
 import "@skryensya/core/components/expressive-avatar.css";
 import "@skryensya/core/components/fade-edge.css";
 import "@skryensya/core/components/marquee.css";
+import "@skryensya/core/components/carousel.css";
 import "@skryensya/core/components/morph-stack.css";
 import "@skryensya/core/components/presence.css";
 import "@skryensya/core/components/scroll-expand.css";
@@ -45,6 +47,8 @@ function Specimen({ id, data, index }: { id: string; data: Fixture; index: numbe
     case "compare-slider": return <CompareSlider label={title} before={picture} after={<img src="/demos/lightbox/fjord.jpg" alt="Fjord" />} position={data.label === "Empty" ? 0 : data.label === "One item" ? 100 : 50} style={{ aspectRatio: "4/3" }} />;
     case "expressive-avatar": return <><ExpressiveAvatar name={title} src={worst ? "/debug/missing-avatar.jpg" : data.label === "Empty" ? undefined : "/demos/lightbox/puppy.jpg"} interactive phrases={{ greetings: [{ text: body || "Hello, Jo." }], general: items.map((text) => ({ text })) }} onSpeak={({ text }) => setStatus(text)} /><output>{status}</output></>;
     case "fade-edge": return <FadeEdge scrollAware tabIndex={0} role="region" aria-label={title} style={{ maxBlockSize: "12rem", overflow: "auto" }}>{rows}</FadeEdge>;
+    // One piece per slide (the curve turns the slide's content): the worst case is long text in it.
+    case "curve-carousel": return <CurveCarousel aria-label={title} curve={index % 2 ? "concave" : "convex"}>{items.map((text, i) => <CarouselSlide key={i}><Box padding="md" border="subtle">{text}</Box></CarouselSlide>)}</CurveCarousel>;
     case "marquee": return <Marquee playLabel="Play project strip" pauseLabel="Pause project strip">{items.map((text, i) => <span key={i}>{text}</span>)}</Marquee>;
     case "morph-stack": return <MorphStack back={prose} middle={prose} front={prose} state={worst ? "expanded" : "auto"} nearest={worst ? prose : undefined} deepest={worst ? prose : undefined} />;
     case "presence": return <><Button onClick={() => setPresent((value) => !value)}>Toggle notice</Button><Presence present={present} unmountOnExit onExitComplete={() => setStatus("Exit complete")}>{prose}</Presence><output>{status}</output></>;

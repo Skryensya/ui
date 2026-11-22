@@ -3,8 +3,32 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "e72bc223b434d59a"
+surface: "6fd67326321920e2"
 entries:
+  - date: 2026-11-21
+    kind: feature
+    es:
+      title: "CurveCarousel es una rueda: gira sin fin, con inercia, y con un stepper"
+      body: "Se arrastra con el mouse o el dedo y sigue girando hasta detenerse en una slide (momentum), sin fin (infinite); los dos se apagan con \"off\". Cinco slides a la vez en escritorio. En vez de prev/next lleva un stepper, que con autoplay muestra el progreso. Nuevos: curveStrength, bend y fade. loop, controls, indicator, snap, mouseDrag y edgePadding salen de esta firma."
+    en:
+      title: "CurveCarousel is a wheel: it rolls without end, with momentum, and a stepper"
+      body: "Drag it with the mouse or a finger and it keeps turning until it rests on a slide (momentum), without end (infinite); both turn off with \"off\". Five slides at a time on a desktop. Instead of prev/next it has a stepper, which shows the progress under autoplay. New: curveStrength, bend and fade. loop, controls, indicator, snap, mouseDrag and edgePadding leave this signature."
+  - date: 2026-11-21
+    kind: feature
+    es:
+      title: "CurveCarousel: un anillo de verdad, con la cámara dentro"
+      body: "Las slides avanzan por el arco de una circunferencia, con el mismo espacio entre ellas, y cada una sigue la tangente del anillo. En concave la cámara está cerca del centro, así que los lados se agrandan como con un gran angular. --sk-carousel-perspective ajusta ese efecto; --sk-carousel-curve-angle y --sk-carousel-curve-depth desaparecen."
+    en:
+      title: "CurveCarousel: a real ring, with the camera inside it"
+      body: "Slides move along the arc of a circle, evenly spaced, each lying along the ring's tangent. In concave the camera sits near the centre, so the sides swell as through a wide lens. --sk-carousel-perspective tunes that; --sk-carousel-curve-angle and --sk-carousel-curve-depth are gone."
+  - date: 2026-11-21
+    kind: feature
+    es:
+      title: "CurveCarousel: el anillo como componente propio"
+      body: "La curva pasa a su propia firma, Carousel.curve (CurveCarousel en React), con su página. Centra la slide en reposo, dimensiona las slides y el aire en los extremos, y abre en la del medio: solo se escribe curve. Carousel queda plano y ya no acepta curve."
+    en:
+      title: "CurveCarousel: the ring as a component of its own"
+      body: "The curve moves to its own signature, Carousel.curve (CurveCarousel in React), with its own page. It centres the slide at rest, sizes the slides and the air at the ends, and opens on the middle one: only curve is written. Carousel stays flat and no longer takes curve."
   - date: 2026-11-21
     kind: feature
     es:

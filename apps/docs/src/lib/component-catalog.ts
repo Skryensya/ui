@@ -72,6 +72,10 @@ const componentDescriptions = {
     es: "Recorre colecciones visuales horizontales mediante pasos definidos.",
     en: "Browses visual collections horizontally in discrete steps.",
   },
+  "/components/curve-carousel": {
+    es: "Presenta unas pocas imágenes sobre un anillo, visto desde fuera o desde dentro.",
+    en: "Presents a few pictures on a ring, seen from outside or from inside.",
+  },
   "/components/checkbox": {
     es: "Permite marcar una o varias opciones independientes en un formulario.",
     en: "Lets people select one or more independent form choices.",

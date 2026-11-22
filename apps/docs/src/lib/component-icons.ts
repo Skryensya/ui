@@ -9,6 +9,8 @@ const sharedRole: Readonly<Record<string, StableIconName>> = {
   "command-palette": "search",
   "time-field": "clock",
   "nav-list": "menu",
+  // A Carousel signature with its own page: it wears the Carousel's mark.
+  "curve-carousel": "component-carousel",
 };
 
 /**

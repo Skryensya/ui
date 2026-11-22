@@ -2,7 +2,7 @@ import type { UsageTree } from "@skryensya/core/usage-tree";
 import { createRef } from "react";
 import { render } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { Carousel, CarouselSlide, type CarouselHandle } from "./carousel.js";
+import { Carousel, CarouselSlide, CurveCarousel, type CarouselHandle } from "./carousel.js";
 import { loadTree, renderTree } from "../render-tree.js";
 
 describe("Carousel", () => {
@@ -26,20 +26,38 @@ describe("Carousel", () => {
     expect(track.querySelectorAll("div.sk-carousel__slide")).toHaveLength(3);
   });
 
-  it("writes the curve and the default page on the root, for the sheet and for DOM parity", () => {
+  it("CurveCarousel is a wheel: a stepper instead of prev/next, opening on the middle slide", () => {
     const ui = render(
-      <Carousel aria-label="Ring" curve="convex" align="center" defaultPage={2}>
+      <CurveCarousel aria-label="Ring" curve="concave">
         <CarouselSlide>Uno</CarouselSlide>
         <CarouselSlide>Dos</CarouselSlide>
         <CarouselSlide>Tres</CarouselSlide>
-      </Carousel>,
+        <CarouselSlide>Cuatro</CarouselSlide>
+        <CarouselSlide>Cinco</CarouselSlide>
+      </CurveCarousel>,
     );
     const region = ui.container.querySelector<HTMLElement>(".sk-carousel")!;
-    expect(region.getAttribute("data-curve")).toBe("convex");
-    expect(region.getAttribute("data-default-page")).toBe("2");
-    expect(region.hasAttribute("curve")).toBe(false);
-    // Which page it opens on is the machine's `defaultPage`; jsdom has no layout to measure pages
-    // with, so the vanilla suite (same machine, faked geometry) is the one that proves it.
+    expect(region.getAttribute("data-curve")).toBe("concave");
+    expect(region.getAttribute("data-sk-carousel-ready")).toBe("true");
+    expect(region.querySelector(".sk-carousel__button")).toBeNull();
+    const steps = Array.from(region.querySelectorAll(".sk-carousel__step"));
+    expect(steps).toHaveLength(5);
+    expect(steps.findIndex((step) => step.getAttribute("aria-current") === "true")).toBe(2);
+    expect(region.querySelector(".sk-carousel__autoplay")).toBeNull();
+  });
+
+  it("CurveCarousel draws the pause toggle under autoplay and writes its settings on the root", () => {
+    const ui = render(
+      <CurveCarousel aria-label="Ring" curve="convex" autoplay={3000} infinite="off" momentum="off" curveStrength={2}>
+        <CarouselSlide>Uno</CarouselSlide>
+        <CarouselSlide>Dos</CarouselSlide>
+      </CurveCarousel>,
+    );
+    const region = ui.container.querySelector<HTMLElement>(".sk-carousel")!;
+    expect(region.querySelector(".sk-carousel__autoplay")).not.toBeNull();
+    expect(region.getAttribute("data-infinite")).toBe("off");
+    expect(region.getAttribute("data-momentum")).toBe("off");
+    expect(region.style.getPropertyValue("--sk-carousel-curve-strength")).toBe("2");
   });
 
   it("writes align, step, snap and edge padding on the root and marks the slides that are not stops", () => {

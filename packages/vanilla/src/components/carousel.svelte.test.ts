@@ -151,16 +151,6 @@ describe("Carousel Vanilla contracts", () => {
     expect(buttons(root)[0].disabled).toBe(false);
   });
 
-  it("leaves data-curve to CSS: the machine, the pages and the controls are the flat carousel's", () => {
-    const root = mount(4, 'data-curve="concave"');
-    mountCarousel(root);
-    flushSync();
-
-    expect(root.getAttribute("data-curve")).toBe("concave");
-    expect(dots(root)).toHaveLength(3);
-    expect(root.querySelector(".sk-carousel__slide")!.getAttribute("style") ?? "").not.toContain("transform");
-  });
-
   it("accepts sk:carouselgoto as the snap command", () => {
     const root = mount(4);
     mountCarousel(root);
@@ -397,5 +387,72 @@ describe("Carousel Vanilla contracts", () => {
     flushSync();
 
     expect(root.querySelector(".sk-carousel__controls")).toBeNull();
+  });
+});
+
+describe("CurveCarousel (data-curve): the wheel", () => {
+  const ring = (count: number, attrs = "") => {
+    document.body.innerHTML = markup(count, `data-curve="concave" ${attrs}`);
+    return document.body.firstElementChild as HTMLElement;
+  };
+  const steps = (root: HTMLElement) => Array.from(root.querySelectorAll<HTMLButtonElement>(".sk-carousel__step"));
+  const current = (root: HTMLElement) => steps(root).findIndex((step) => step.getAttribute("aria-current") === "true");
+  // Reduced motion lands every turn at once, so the tests read where it stops without waiting frames.
+  const reduced = () => document.documentElement.setAttribute("data-motion", "reduced");
+
+  it("draws a stepper instead of prev/next and opens on the middle slide", () => {
+    const root = ring(5);
+    mountCarousel(root);
+
+    expect(root.querySelector(".sk-carousel__button")).toBeNull();
+    expect(steps(root)).toHaveLength(5);
+    expect(current(root)).toBe(2);
+    expect(root.getAttribute("aria-roledescription")).toBe("carousel");
+    expect(root.querySelector(".sk-carousel__slide")!.getAttribute("aria-label")).toBe("1 de 5");
+  });
+
+  it("rolls without end: past the last slide comes the first", () => {
+    reduced();
+    const root = ring(4, 'data-default-page="3"');
+    const handler = vi.fn();
+    root.addEventListener("sk:carouselchange", handler);
+    mountCarousel(root);
+
+    fireEvent.keyDown(root, { key: "ArrowRight" });
+    expect(current(root)).toBe(0);
+    expect((handler.mock.calls[0]![0] as CustomEvent).detail).toEqual({ index: 0, count: 4 });
+    document.documentElement.removeAttribute("data-motion");
+  });
+
+  it("stops at the ends when data-infinite is off", () => {
+    reduced();
+    const root = ring(4, 'data-default-page="3" data-infinite="off"');
+    mountCarousel(root);
+
+    fireEvent.keyDown(root, { key: "ArrowRight" });
+    expect(current(root)).toBe(3);
+    document.documentElement.removeAttribute("data-motion");
+  });
+
+  it("goes to a slide from its step, and takes sk:carouselgoto", () => {
+    reduced();
+    const root = ring(6);
+    mountCarousel(root);
+
+    fireEvent.click(steps(root)[5]!);
+    expect(current(root)).toBe(5);
+    root.dispatchEvent(new CustomEvent("sk:carouselgoto", { detail: { index: 1 } }));
+    expect(current(root)).toBe(1);
+    document.documentElement.removeAttribute("data-motion");
+  });
+
+  it("draws the pause toggle only under autoplay (WCAG 2.2.2)", () => {
+    const plain = ring(3);
+    mountCarousel(plain);
+    expect(plain.querySelector(".sk-carousel__autoplay")).toBeNull();
+
+    const auto = ring(3, "data-autoplay");
+    mountCarousel(auto);
+    expect(auto.querySelector(".sk-carousel__autoplay")).not.toBeNull();
   });
 });

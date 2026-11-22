@@ -824,6 +824,42 @@
           {
             "date": "2026-11-21",
             "en": {
+              "body": "Drag it with the mouse or a finger and it keeps turning until it rests on a slide (momentum), without end (infinite); both turn off with \"off\". Five slides at a time on a desktop. Instead of prev/next it has a stepper, which shows the progress under autoplay. New: curveStrength, bend and fade. loop, controls, indicator, snap, mouseDrag and edgePadding leave this signature.",
+              "title": "CurveCarousel is a wheel: it rolls without end, with momentum, and a stepper"
+            },
+            "es": {
+              "body": "Se arrastra con el mouse o el dedo y sigue girando hasta detenerse en una slide (momentum), sin fin (infinite); los dos se apagan con \"off\". Cinco slides a la vez en escritorio. En vez de prev/next lleva un stepper, que con autoplay muestra el progreso. Nuevos: curveStrength, bend y fade. loop, controls, indicator, snap, mouseDrag y edgePadding salen de esta firma.",
+              "title": "CurveCarousel es una rueda: gira sin fin, con inercia, y con un stepper"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-11-21",
+            "en": {
+              "body": "Slides move along the arc of a circle, evenly spaced, each lying along the ring's tangent. In concave the camera sits near the centre, so the sides swell as through a wide lens. --sk-carousel-perspective tunes that; --sk-carousel-curve-angle and --sk-carousel-curve-depth are gone.",
+              "title": "CurveCarousel: a real ring, with the camera inside it"
+            },
+            "es": {
+              "body": "Las slides avanzan por el arco de una circunferencia, con el mismo espacio entre ellas, y cada una sigue la tangente del anillo. En concave la cámara está cerca del centro, así que los lados se agrandan como con un gran angular. --sk-carousel-perspective ajusta ese efecto; --sk-carousel-curve-angle y --sk-carousel-curve-depth desaparecen.",
+              "title": "CurveCarousel: un anillo de verdad, con la cámara dentro"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-11-21",
+            "en": {
+              "body": "The curve moves to its own signature, Carousel.curve (CurveCarousel in React), with its own page. It centres the slide at rest, sizes the slides and the air at the ends, and opens on the middle one: only curve is written. Carousel stays flat and no longer takes curve.",
+              "title": "CurveCarousel: the ring as a component of its own"
+            },
+            "es": {
+              "body": "La curva pasa a su propia firma, Carousel.curve (CurveCarousel en React), con su página. Centra la slide en reposo, dimensiona las slides y el aire en los extremos, y abre en la del medio: solo se escribe curve. Carousel queda plano y ya no acepta curve.",
+              "title": "CurveCarousel: el anillo como componente propio"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-11-21",
+            "en": {
               "body": "curve=\"convex\" looks at the ring from outside (the centred slide is nearest) and curve=\"concave\" from inside (it is farthest). CSS only on the same track, so the machine, the controls and the keyboard are unchanged; without support or under reduced motion the track stays flat. defaultPage picks the page it opens on.",
               "title": "curve: the slides on a ring, from outside or from inside"
             },
@@ -12443,7 +12479,8 @@
             "aria-labelledby"
           ],
           "signatures": [
-            "Carousel"
+            "Carousel",
+            "Carousel.curve"
           ],
           "when": {}
         }
@@ -12454,6 +12491,12 @@
           "markup": true,
           "portals": false,
           "react": "@skryensya/react/carousel#Carousel"
+        },
+        "Carousel.curve": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/carousel#CurveCarousel"
         },
         "CarouselSlide": {
           "enhancer": null,
@@ -12522,14 +12565,8 @@
           "part": "root",
           "sheet": "@skryensya/core/components/carousel.css"
         },
-        "--sk-carousel-curve-angle": {
-          "default": "40deg",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/carousel.css"
-        },
-        "--sk-carousel-curve-depth": {
-          "default": "10rem",
+        "--sk-carousel-curve-strength": {
+          "default": "1",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/carousel.css"
@@ -12606,12 +12643,6 @@
           "part": "root",
           "sheet": "@skryensya/core/components/carousel.css"
         },
-        "--sk-carousel-perspective": {
-          "default": "60rem",
-          "output": false,
-          "part": "root",
-          "sheet": "@skryensya/core/components/carousel.css"
-        },
         "--sk-carousel-slide-size": {
           "default": "min(100%, 20rem)",
           "output": false,
@@ -12626,8 +12657,6 @@
         "--sk-carousel-control-radius",
         "--sk-carousel-control-fg",
         "--sk-carousel-control-size",
-        "--sk-carousel-curve-angle",
-        "--sk-carousel-curve-depth",
         "--sk-carousel-dot-active-color",
         "--sk-carousel-dot-color",
         "--sk-carousel-dot-gap",
@@ -12640,7 +12669,7 @@
         "--sk-carousel-native-next-icon",
         "--sk-carousel-native-previous-disabled-icon",
         "--sk-carousel-native-previous-icon",
-        "--sk-carousel-perspective",
+        "--sk-carousel-curve-strength",
         "--sk-carousel-slide-size"
       ],
       "id": "carousel",
@@ -12666,6 +12695,12 @@
           "prop": "autoplay",
           "type": "number"
         },
+        "bend": {
+          "attr": "data-bend",
+          "default": false,
+          "trueValue": "",
+          "type": "boolean"
+        },
         "controls": {
           "attr": "data-controls",
           "type": "enum",
@@ -12678,10 +12713,15 @@
           "attr": "data-curve",
           "type": "enum",
           "values": [
-            "flat",
             "convex",
             "concave"
           ]
+        },
+        "curveStrength": {
+          "max": 2.5,
+          "min": 0.25,
+          "styleProperty": "--sk-carousel-curve-strength",
+          "type": "number"
         },
         "defaultPage": {
           "attr": "data-default-page",
@@ -12706,11 +12746,27 @@
             "count"
           ]
         },
+        "infinite": {
+          "attr": "data-infinite",
+          "type": "enum",
+          "values": [
+            "on",
+            "off"
+          ]
+        },
         "loop": {
           "attr": "data-loop",
           "default": false,
           "trueValue": "",
           "type": "boolean"
+        },
+        "momentum": {
+          "attr": "data-momentum",
+          "type": "enum",
+          "values": [
+            "on",
+            "off"
+          ]
         },
         "mounted": {
           "attr": "data-sk-carousel",
@@ -12754,6 +12810,8 @@
       },
       "parts": {
         "autoplay": "sk-carousel__autoplay",
+        "band": "sk-carousel__band",
+        "bend": "sk-carousel__bend",
         "button": "sk-carousel__button",
         "controls": "sk-carousel__controls",
         "count": "sk-carousel__count",
@@ -12761,6 +12819,9 @@
         "dots": "sk-carousel__dots",
         "root": "sk-carousel",
         "slide": "sk-carousel__slide",
+        "step": "sk-carousel__step",
+        "stepper": "sk-carousel__stepper",
+        "stepProgress": "sk-carousel__step-progress",
         "track": "sk-carousel__track"
       },
       "semantics": {
@@ -12779,10 +12840,24 @@
             "it should show there is more to the side, with the next item peeking in"
           ]
         },
+        "Carousel.curve": {
+          "alternatives": [
+            "Carousel",
+            "Grid"
+          ],
+          "avoidWhen": [
+            "people browse and compare a collection; the turned sides are hard to read, use a flat Carousel",
+            "the slides carry much text; turned, the text on the sides cannot be read"
+          ],
+          "useWhen": [
+            "a page or section opens with a few pictures as its centrepiece, the middle one the star: a hero",
+            "the pictures should read as one set seen in perspective, from outside the ring or from inside it"
+          ]
+        },
         "CarouselSlide": {
           "alternatives": [],
           "avoidWhen": [
-            "it is outside a Carousel; there is no track to fit into"
+            "it is outside a Carousel or CurveCarousel; there is no track to fit into"
           ],
           "useWhen": [
             "it is one item of the carousel; anything can go inside, usually a card"
@@ -12798,10 +12873,7 @@
             "carousel",
             "slider-of-cards",
             "snap-scroller",
-            "gallery",
-            "hero-carousel",
-            "ring",
-            "3d-carousel"
+            "gallery"
           ],
           "options": [
             "loop",
@@ -12818,7 +12890,6 @@
             "slidesPerMove",
             "snap",
             "edgePadding",
-            "curve",
             "defaultPage"
           ],
           "react": {
@@ -12847,6 +12918,62 @@
             "part": "root"
           }
         },
+        "Carousel.curve": {
+          "host": {
+            "element": "section"
+          },
+          "intent": [
+            "hero-carousel",
+            "ring-carousel",
+            "3d-carousel",
+            "perspective-carousel",
+            "coverflow"
+          ],
+          "options": [
+            "curve",
+            "curveStrength",
+            "bend",
+            "fade",
+            "infinite",
+            "momentum",
+            "autoplay",
+            "autoplayDelay",
+            "mounted",
+            "slideSize",
+            "defaultPage"
+          ],
+          "react": {
+            "from": "@skryensya/react/carousel",
+            "name": "CurveCarousel"
+          },
+          "requires": [
+            "curve"
+          ],
+          "slots": {
+            "children": {
+              "accepts": "signature",
+              "of": [
+                "CarouselSlide"
+              ],
+              "required": true
+            }
+          },
+          "template": {
+            "attrs": {
+              "data-align": "center"
+            },
+            "children": [
+              {
+                "element": "div",
+                "part": "track",
+                "slot": "children"
+              }
+            ],
+            "element": "section",
+            "host": true,
+            "part": "root"
+          }
+        },
         "CarouselSlide": {
           "host": {
             "element": "div"
@@ -12857,7 +12984,8 @@
           ],
           "options": [],
           "parents": [
-            "Carousel"
+            "Carousel",
+            "Carousel.curve"
           ],
           "react": {
             "from": "@skryensya/react/carousel",
@@ -12883,7 +13011,12 @@
         "autoplay",
         "dots",
         "dot",
-        "count"
+        "count",
+        "bend",
+        "band",
+        "stepper",
+        "step",
+        "stepProgress"
       ]
     },
     "changelog": {
@@ -53435,7 +53568,7 @@
     "working": "0.0.4"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "fd47a7eff9f9b998",
+  "sourceHash": "79e4c94345073f78",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

@@ -1,4 +1,5 @@
 import {
+  bendCarouselSlides,
   carouselContract,
   carouselEvents,
   carouselParts,
@@ -9,6 +10,7 @@ import {
 import type { OptionValue } from "@skryensya/core/contract";
 import { fadeEdgeAttrs } from "@skryensya/core/fade-edge";
 import { watchFadeEdge } from "@skryensya/core/fade-edge-dom";
+import { connectCurveRing } from "@skryensya/core/carousel";
 import { carousel } from "@skryensya/core/machines";
 import { prefersReducedMotion as reducedMotion } from "@skryensya/core/reduced-motion";
 import { normalizeProps, useMachine } from "@zag-js/react";
@@ -24,8 +26,10 @@ import {
   useRef,
   useState,
   type CSSProperties,
+  type ForwardRefExoticComponent,
   type HTMLAttributes,
   type ReactNode,
+  type RefAttributes,
 } from "react";
 import { Icon } from "./icon.js";
 
@@ -49,7 +53,7 @@ export type CarouselHandle = {
   element: HTMLElement | null;
 };
 
-export type CarouselProps = HTMLAttributes<HTMLElement> & {
+type CarouselAllProps = HTMLAttributes<HTMLElement> & {
   children: ReactNode;
   /** Names the carousel region for assistive tech. */
   "aria-label"?: string;
@@ -75,11 +79,11 @@ export type CarouselProps = HTMLAttributes<HTMLElement> & {
   snap?: OptionValue<typeof carouselContract.options.snap>;
   /** Air before the first slide and after the last, as a CSS length. */
   edgePadding?: string;
-  /** The slides on a ring: `convex` seen from outside, `concave` from inside. Pair with `align="center"`. */
-  curve?: OptionValue<typeof carouselContract.options.curve>;
   /** The page it opens on, counted from 0. */
   defaultPage?: number;
 };
+
+export type CarouselProps = CarouselAllProps;
 
 type CarouselApi = ReturnType<typeof carousel.connect>;
 
@@ -98,14 +102,17 @@ const CarouselSnapContext = createContext<{ align: OptionValue<typeof carouselCo
  *
  * `mounted={false}` is the zero-JS baseline: the section and the track, no machine.
  */
-export const Carousel = forwardRef<CarouselHandle, CarouselProps>(function Carousel(
+const CarouselRoot = forwardRef<CarouselHandle, CarouselAllProps>(function Carousel(
   { mounted = mountedOption.default, ...props },
   ref,
 ) {
   return mounted ? <MountedCarousel {...props} handleRef={ref} /> : <StaticCarousel {...props} handleRef={ref} />;
 });
 
-type InnerProps = Omit<CarouselProps, "mounted"> & { handleRef: React.ForwardedRef<CarouselHandle> };
+export const Carousel: ForwardRefExoticComponent<CarouselProps & RefAttributes<CarouselHandle>> = CarouselRoot;
+
+
+type InnerProps = Omit<CarouselAllProps, "mounted"> & { handleRef: React.ForwardedRef<CarouselHandle> };
 
 function useCarouselHandle(handleRef: InnerProps["handleRef"], rootRef: React.RefObject<HTMLElement | null>) {
   useImperativeHandle(
@@ -134,9 +141,8 @@ function rootStyle({ edgePadding, slideSize, style }: InnerProps): CSSProperties
 /* One step travels `slidesPerMove` slides, so only every Nth slide is a stop. */
 const stepOf = (slidesPerMove: number | undefined) => (slidesPerMove && slidesPerMove > 1 ? Math.floor(slidesPerMove) : 1);
 
-function rootAttributes({ align, autoplay, controls, curve, defaultPage, fade, indicator, loop, mouseDrag, orientation, slidesPerMove, snap }: InnerProps) {
+function rootAttributes({ align, autoplay, controls, defaultPage, fade, indicator, loop, mouseDrag, orientation, slidesPerMove, snap }: InnerProps) {
   return {
-    "data-curve": curve,
     "data-default-page": defaultPage,
     "data-align": align,
     "data-slides-per-move": slidesPerMove,
@@ -158,7 +164,6 @@ function StaticCarousel(inner: InnerProps) {
     children,
     className,
     controls: _controls,
-    curve: _curve,
     defaultPage: _defaultPage,
     fade: _fade,
     indicator: _indicator,
@@ -199,7 +204,6 @@ function MountedCarousel(inner: InnerProps) {
     children,
     className,
     controls,
-    curve: _curve,
     defaultPage,
     dir,
     fade,
@@ -450,3 +454,126 @@ export function CarouselSlide({ children, className, ...props }: CarouselSlidePr
     </div>
   );
 }
+
+/*
+ * CURVE CAROUSEL (`Carousel.curve`): the slides on a wheel, dragged with momentum and rolling without
+ * end. No machine: the ring engine in core (`connectCurveRing`, the same one the vanilla enhancer runs)
+ * owns the behaviour; this renders the markup it drives, the stepper and, under autoplay, the pause
+ * toggle (WCAG 2.2.2). `mounted={false}` is the zero-JS baseline: the flat, centred snap scroller.
+ */
+export type CurveCarouselProps = HTMLAttributes<HTMLElement> & {
+  children: ReactNode;
+  /** Names the carousel region for assistive tech. */
+  "aria-label"?: string;
+  /** `convex` sees the wheel from outside (the front slide nearest), `concave` from inside (farthest). */
+  curve: OptionValue<typeof carouselContract.options.curve>;
+  /** How much the ends grow (concave) or shrink (convex): 1 by default, 0.25 to 2.5. */
+  curveStrength?: number;
+  /** Bend each picture along the wheel, the wide-lens look. */
+  bend?: boolean;
+  /** Fade the two sides with FadeEdge (needs `@skryensya/core/components/fade-edge.css`). */
+  fade?: boolean;
+  /** Roll without end (`on`, the default) or stop at both ends (`off`). */
+  infinite?: OptionValue<typeof carouselContract.options.infinite>;
+  /** Keep turning after a drag and slow down (`on`, the default), or settle at once (`off`). */
+  momentum?: OptionValue<typeof carouselContract.options.momentum>;
+  /** Advance on a timer (true is every 4s, a number is milliseconds); the stepper shows the time left. */
+  autoplay?: boolean | number;
+  /** CSS length for each slide, e.g. `14rem` (a length: a percentage cannot reach the ring's depth). */
+  slideSize?: string;
+  /** The slide it opens on; without one, the middle one. */
+  defaultPage?: number;
+  /** Set false to leave the flat, centred scroller unenhanced. */
+  mounted?: boolean;
+};
+
+export const CurveCarousel = forwardRef<CarouselHandle, CurveCarouselProps>(function CurveCarousel(
+  { autoplay, bend, children, className, curve, curveStrength, defaultPage, fade, infinite, momentum, mounted = true, slideSize, style, ...props },
+  ref,
+) {
+  const rootRef = useRef<HTMLElement>(null);
+  useCarouselHandle(ref, rootRef);
+  const [ready, setReady] = useState(false);
+  const count = Children.toArray(children).filter(isValidElement).length;
+  const delay = typeof autoplay === "number" ? autoplay : autoplay ? 4000 : 0;
+
+  useEffect(() => {
+    const root = rootRef.current;
+    const track = root?.querySelector<HTMLElement>(`.${carouselParts.track}`);
+    if (!mounted || !root) return;
+    const cleanups: Array<() => void> = [];
+    if (fade && track) cleanups.push(watchFadeEdge(track));
+    // The bands are cut before the engine measures, so it lays them on the circle at once.
+    if (bend) cleanups.push(bendCarouselSlides(root));
+    const ring = connectCurveRing(root, {
+      curve,
+      infinite: infinite !== "off",
+      momentum: momentum !== "off",
+      autoplay: delay,
+      defaultPage,
+      dir: root.closest("[dir=rtl]") ? "rtl" : "ltr",
+      reducedMotion: reducedMotion(),
+    });
+    setReady(true);
+    return () => {
+      ring.destroy();
+      for (const cleanup of cleanups.reverse()) cleanup();
+      setReady(false);
+    };
+  }, [mounted, curve, infinite, momentum, delay, defaultPage, bend, fade, children]);
+
+  return (
+    <section
+      {...props}
+      className={cx(carouselParts.root, className)}
+      data-sk-carousel={mounted ? "" : undefined}
+      data-curve={curve}
+      data-align="center"
+      data-bend={bend ? "" : undefined}
+      data-fade-edge={fade ? "" : undefined}
+      data-infinite={infinite}
+      data-momentum={momentum}
+      data-autoplay={typeof autoplay === "number" ? autoplay : autoplay ? "" : undefined}
+      data-default-page={defaultPage}
+      data-sk-carousel-ready={ready ? "true" : undefined}
+      ref={rootRef}
+      style={{
+        ...style,
+        ...(slideSize ? { "--sk-carousel-slide-size": slideSize } : {}),
+        ...(curveStrength !== undefined ? { "--sk-carousel-curve-strength": curveStrength } : {}),
+      } as CSSProperties}
+    >
+      <div
+        {...(fade ? { [fadeEdgeAttrs.direction]: "horizontal", [fadeEdgeAttrs.scrollAware]: "" } : {})}
+        className={fade ? `${carouselParts.track} sk-fade-edge` : carouselParts.track}
+      >
+        <CarouselSnapContext.Provider value={{ align: "center", step: 1 }}>{children}</CarouselSnapContext.Provider>
+      </div>
+      {mounted && count > 1 ? (
+        <div className={carouselParts.controls}>
+          {delay ? (
+            <button
+              type="button"
+              className={`${carouselParts.button} ${carouselParts.autoplay} sk-button sk-interactive`}
+              data-icon-only=""
+              data-size="sm"
+              data-tone="neutral"
+              data-variant="soft"
+              aria-label={carouselTranslations.autoplayStop}
+            >
+              <span data-glyph="pause"><Icon name="pause" /></span>
+              <span data-glyph="play"><Icon name="play" /></span>
+            </button>
+          ) : null}
+          <div className={carouselParts.stepper} role="group">
+            {Array.from({ length: count }, (_, index) => (
+              <button key={index} type="button" className={carouselParts.step}>
+                <span className={carouselParts.stepProgress} />
+              </button>
+            ))}
+          </div>
+        </div>
+      ) : null}
+    </section>
+  );
+});

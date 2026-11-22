@@ -390,27 +390,6 @@ export const carouselProductsTree = (t: Translate): UsageTree => ({
   })),
 });
 
-/*
- * THE RING. Pictures only, centred, with air at both ends so the first and the last can reach the middle:
- * `curve` puts them on a ring seen from outside (`convex`) or from inside (`concave`). A hero, not a shelf.
- */
-const ringTints = ["blue", "sand", "sage", "lilac", "slate", "graphite", "blue", "sand"] as const;
-
-const ringTree = (t: Translate, curve: "convex" | "concave"): UsageTree => ({
-  contract: "carousel",
-  signature: "Carousel",
-  options: { mounted: true, curve, align: "center", edgePadding: "calc(50% - min(30%, 9rem))", slideSize: "min(60%, 18rem)", loop: true, defaultPage: 3 },
-  attrs: { "aria-label": t("demo.carousel.ring.label") },
-  children: ringTints.map((tint) => ({
-    contract: "carousel",
-    signature: "CarouselSlide",
-    children: { contract: "image-frame", signature: "ImageFrame", options: { src: satin(tint, "4x3"), alt: "", aspect: "3/4", radius: "surface" } },
-  })),
-});
-
-export const carouselRingConvexTree = (t: Translate) => ringTree(t, "convex");
-export const carouselRingConcaveTree = (t: Translate) => ringTree(t, "concave");
-
 /** Same scroll-snap markup with the enhancer intentionally absent. */
 export const carouselNativeTree = (t: Translate): UsageTree => ({
   contract: "carousel",
