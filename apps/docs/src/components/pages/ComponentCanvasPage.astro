@@ -1,6 +1,7 @@
 ---
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/components/canvas.css";
+import "@skryensya/core/components/loader.css";
 import { emitMarkup } from "@skryensya/ai-compiler/emit";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import { getLocale, localizePath } from "../../i18n";
@@ -11,8 +12,10 @@ import { canvasSheets } from "../../lib/canvas-sheets";
 
 interface Props {
   component: CanvasComponent;
+  previous?: string;
+  next?: string;
 }
-const { component } = Astro.props;
+const { component, previous, next } = Astro.props;
 
 /* Only this component's sheets, as links: the globs are lazy `?url` imports, so the page pays for what it names and nothing else. */
 const sheetUrls = import.meta.glob<string>("../../../../../packages/core/css/**/*.css", { query: "?url", import: "default" });
@@ -20,8 +23,8 @@ const sheetKey = (specifier: string) => `../../../../../packages/core/css/${spec
 
 const locale = getLocale(Astro.url);
 const copy = locale === "es"
-  ? { label: "Canvas del componente", appearance: "Apariencia", inContext: "en contexto", docs: "Documentación" }
-  : { label: "Component canvas", appearance: "Appearance", inContext: "in context", docs: "Docs" };
+  ? { label: "Canvas del componente", appearance: "Apariencia", inContext: "en contexto", docs: "Documentación", previous: "Anterior", next: "Siguiente", loading: "Cargando el canvas" }
+  : { label: "Component canvas", appearance: "Appearance", inContext: "in context", docs: "Docs", previous: "Previous", next: "Next", loading: "Loading the canvas" };
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
 
 const blocks = canvasBlocks([component]);
@@ -43,8 +46,12 @@ const canvas = emitMarkup({
 // default), one choice for the whole canvas, remembered across components.
 const docsHref = componentItems.some((item) => item.href === `/components/${component.id}`) ? localizePath(`/components/${component.id}`, locale) : undefined;
 const appearances = canvasAppearances.filter((value) => component.appearances.includes(value));
+const step = (id: string | undefined, label: string, icon: string): UsageTree[] =>
+  id ? [{ contract: "button", signature: "Button.navigation", options: { variant: "ghost", size: "sm", iconOnly: true, href: localizePath(`/canvas/${id}`, locale) }, attrs: { "aria-label": `${label}: ${id}`, rel: label === copy.previous ? "prev" : "next" }, children: { contract: "icon", signature: "Icon", options: { name: icon } } }] : [];
 const toolbarChildren: UsageTree[] = [
+  ...step(previous, copy.previous, "chevron-left"),
   { contract: "typography", signature: "Text", options: { size: "caption", tone: "secondary" }, children: component.id },
+  ...step(next, copy.next, "chevron-right"),
   ...(docsHref ? [{ contract: "button", signature: "Button.navigation", options: { variant: "ghost", size: "sm", href: docsHref }, children: copy.docs } satisfies UsageTree] : []),
   ...(appearances.length > 1
     ? appearances.map((value): UsageTree => ({
@@ -56,6 +63,7 @@ const toolbarChildren: UsageTree[] = [
       }))
     : []),
 ];
+const loader = emitMarkup({ contract: "loader", signature: "Loader", options: { label: copy.loading } });
 const picker = emitMarkup({
   contract: "layout",
   signature: "Inline",
@@ -65,11 +73,12 @@ const picker = emitMarkup({
 });
 ---
 
-<noscript><style>.board { visibility: visible !important; }</style></noscript>
+<noscript><style>.board { visibility: visible !important; } .canvas-loading { display: none; }</style></noscript>
 {sheetLinks.map((href) => <link rel="stylesheet" href={href} />)}
 <h1 class="sk-visually-hidden">{component.id}</h1>
 <div class="canvas-stage">
   <div class="canvas-toolbar" set:html={picker} />
+  <div class="canvas-loading" set:html={loader} />
   <div set:html={canvas} />
 </div>
 
@@ -110,6 +119,9 @@ const picker = emitMarkup({
   .canvas-stage { position: relative; }
   /* On the canvas root itself: the kit declares these tokens there, so a value on a parent would never reach it. */
   .canvas-stage .sk-canvas { --sk-canvas-max-block-size: calc(100svh - 4rem); --sk-canvas-min-block-size: calc(100svh - 4rem); --sk-canvas-grid-size: 24px; }
+  /* Until the board is mounted (it is hidden so nothing shifts) there is something to look at. */
+  .canvas-loading { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; z-index: 2; }
+  .canvas-stage:has(.board[data-mounted]) .canvas-loading { display: none; }
   .canvas-toolbar { position: absolute; inset: var(--space-inset-md) auto auto var(--space-inset-md); z-index: 3; }
   /* Frosted needs something behind it to frost: the docs' own backdrop, set on :root by Base. */
   .board[data-appearance="frosted"] .block { background: var(--docs-frost-backdrop); }

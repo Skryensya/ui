@@ -2,16 +2,22 @@
 import Base from "../../../layouts/Base.astro";
 import ComponentCanvasPage from "../../../components/pages/ComponentCanvasPage.astro";
 import { componentsCanvas } from "../../../lib/components-canvas";
+import { componentItems, componentNavigation } from "../../../lib/navigation";
 
 export function getStaticPaths() {
-  return componentsCanvas()
-    .filter((component) => component.signatures.length)
-    .map((component) => ({ params: { id: component.id }, props: { component } }));
+  const all = componentsCanvas().filter((component) => component.signatures.length);
+  /* Previous and next in the sidebar's order (its categories, in turn), not alphabetical: it is the order the reader sees. */
+  const order = componentNavigation.flatMap((group) => group.items.map((item) => item.href.split("/").pop()!)).filter((id) => all.some((c) => c.id === id));
+  return all.map((component) => {
+    const at = order.indexOf(component.id);
+    return { params: { id: component.id }, props: { component, previous: order[at - 1], next: order[at + 1] } };
+  });
 }
 
-const { component } = Astro.props;
+const { component, previous, next } = Astro.props;
+const name = componentItems.find((item) => item.href === `/components/${component.id}`)?.label ?? component.id;
 ---
 
-<Base fullBleed rail="canvas" title={`${component.id} · Canvas`} description={`Every value and state of ${component.id}.`}>
-  <ComponentCanvasPage component={component} />
+<Base fullBleed rail="canvas" title={`${name} · Canvas`} description={`Every value and state of ${name}.`}>
+  <ComponentCanvasPage component={component} previous={previous} next={next} />
 </Base>
