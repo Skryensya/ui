@@ -617,7 +617,7 @@
       "entry": "@skryensya/vanilla/carousel",
       "mount": "mountCarousel",
       "selectors": [
-        "[data-sk-carousel]"
+        "[data-sk-carousel]:not([data-curve])"
       ],
       "auto": true
     }

@@ -74,6 +74,7 @@ export { mountAppBar } from "./components/app-bar.js";
 export { mountBreadcrumb } from "./components/breadcrumb.js";
 export { mountMeter } from "./components/meter.js";
 export { mountCarousel } from "./components/carousel.js";
+export { mountCurveCarousel } from "./components/curve-carousel.js";
 export { mountCheckboxGroup } from "./components/checkbox-group.js";
 export { connectCommandPalette, mountCommandPalette } from "./components/command-palette.js";
 export { mountCommentThread } from "./components/comment-thread.js";

@@ -48,7 +48,7 @@ describe("Carousel", () => {
 
   it("CurveCarousel draws the pause toggle under autoplay and writes its settings on the root", () => {
     const ui = render(
-      <CurveCarousel aria-label="Ring" curve="convex" autoplay={3000} infinite="off" momentum="off" curveStrength={2}>
+      <CurveCarousel aria-label="Ring" curve="convex" autoplay={3000} infinite="off" momentum="off" curveStrength={2} tall focus>
         <CarouselSlide>Uno</CarouselSlide>
         <CarouselSlide>Dos</CarouselSlide>
       </CurveCarousel>,
@@ -58,6 +58,8 @@ describe("Carousel", () => {
     expect(region.getAttribute("data-infinite")).toBe("off");
     expect(region.getAttribute("data-momentum")).toBe("off");
     expect(region.style.getPropertyValue("--sk-carousel-curve-strength")).toBe("2");
+    expect(region.hasAttribute("data-tall")).toBe(true);
+    expect(region.hasAttribute("data-focus")).toBe(true);
   });
 
   it("writes align, step, snap and edge padding on the root and marks the slides that are not stops", () => {

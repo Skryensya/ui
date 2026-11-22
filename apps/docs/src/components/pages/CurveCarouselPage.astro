@@ -4,7 +4,8 @@ import UsagePreview from "../UsagePreview.astro";
 import WhenToUse from "../WhenToUse.astro";
 import ContentRules from "../ContentRules.astro";
 import A11yNotes from "../A11yNotes.astro";
-import { curveCarouselAutoplayTree, curveCarouselBentTree, curveCarouselCardsTree, curveCarouselFiniteTree, curveCarouselConcaveTree, curveCarouselConvexTree, curveCarouselFadeTree, curveCarouselStrongTree } from "../../demos/curve-carousel";
+import DoDont from "../DoDont.astro";
+import { curveCarouselFocusTree, curveCarouselTallTree, curveCarouselAutoplayTree, curveCarouselBentTree, curveCarouselCardsTree, curveCarouselFiniteTree, curveCarouselConcaveTree, curveCarouselConvexTree, curveCarouselFadeTree, curveCarouselStrongTree, curveCarouselDoOnePieceTree, curveCarouselDontOnePieceTree, curveCarouselDoSameAspectTree, curveCarouselDontSameAspectTree, curveCarouselDoPicturesTree, curveCarouselDontTextTree, curveCarouselDoCountTree, curveCarouselDontCountTree, curveCarouselDoFadeTree, curveCarouselDontFadeTree, curveCarouselDoLensTree, curveCarouselDontLensTree } from "../../demos/curve-carousel";
 import { getLocale, tList, useTranslations } from "../../i18n";
 import "@skryensya/core/components/button.css";
 import "@skryensya/core/patterns/state-layer.css";
@@ -46,6 +47,8 @@ const explain = (option: string, values: readonly string[]) =>
     <h3>{t("component.examplesTitle")}</h3>
     <UsagePreview tree={curveCarouselConcaveTree(t)} title={t("curveCarousel.concaveTitle")} description={t("curveCarousel.concaveBody")} storybookTitle={storybookTitle} storybookStory="Concave" />
     <UsagePreview tree={curveCarouselConvexTree(t)} title={t("curveCarousel.convexTitle")} description={t("curveCarousel.convexBody")} storybookTitle={storybookTitle} storybookStory="Convex" />
+    <UsagePreview tree={curveCarouselFocusTree(t)} title={t("curveCarousel.focusTitle")} description={t("curveCarousel.focusBody")} storybookTitle={storybookTitle} storybookStory="Focus" />
+    <UsagePreview tree={curveCarouselTallTree(t)} title={t("curveCarousel.tallTitle")} description={t("curveCarousel.tallBody")} storybookTitle={storybookTitle} storybookStory="Tall" />
     <UsagePreview tree={curveCarouselAutoplayTree(t)} title={t("curveCarousel.autoplayTitle")} description={t("curveCarousel.autoplayBody")} storybookTitle={storybookTitle} storybookStory="Autoplay" />
     <UsagePreview tree={curveCarouselFadeTree(t)} title={t("curveCarousel.fadeTitle")} description={t("curveCarousel.fadeBody")} storybookTitle={storybookTitle} storybookStory="Fade" />
     <UsagePreview tree={curveCarouselBentTree(t)} title={t("curveCarousel.bentTitle")} description={t("curveCarousel.bentBody")} storybookTitle={storybookTitle} storybookStory="Bent" />
@@ -60,6 +63,42 @@ const explain = (option: string, values: readonly string[]) =>
   <Fragment slot="guidelines">
     <p class="lede" set:html={t("curveCarousel.guidelinesLede")} />
     <WhenToUse use={tList(t, "curveCarousel.when")} avoid={tList(t, "curveCarousel.whenNot")} />
+    <DoDont
+      canvas
+      title={t("curveCarousel.dd.piece.title")}
+      do={{ tree: curveCarouselDoOnePieceTree(t), caption: t("curveCarousel.dd.piece.do") }}
+      dont={{ tree: curveCarouselDontOnePieceTree(t), caption: t("curveCarousel.dd.piece.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("curveCarousel.dd.aspect.title")}
+      do={{ tree: curveCarouselDoSameAspectTree(t), caption: t("curveCarousel.dd.aspect.do") }}
+      dont={{ tree: curveCarouselDontSameAspectTree(t), caption: t("curveCarousel.dd.aspect.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("curveCarousel.dd.text.title")}
+      do={{ tree: curveCarouselDoPicturesTree(t), caption: t("curveCarousel.dd.text.do") }}
+      dont={{ tree: curveCarouselDontTextTree(t), caption: t("curveCarousel.dd.text.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("curveCarousel.dd.count.title")}
+      do={{ tree: curveCarouselDoCountTree(t), caption: t("curveCarousel.dd.count.do") }}
+      dont={{ tree: curveCarouselDontCountTree(t), caption: t("curveCarousel.dd.count.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("curveCarousel.dd.fade.title")}
+      do={{ tree: curveCarouselDoFadeTree(t), caption: t("curveCarousel.dd.fade.do") }}
+      dont={{ tree: curveCarouselDontFadeTree(t), caption: t("curveCarousel.dd.fade.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("curveCarousel.dd.lens.title")}
+      do={{ tree: curveCarouselDoLensTree(t), caption: t("curveCarousel.dd.lens.do") }}
+      dont={{ tree: curveCarouselDontLensTree(t), caption: t("curveCarousel.dd.lens.dont") }}
+    />
     <ContentRules items={tList(t, "curveCarousel.content")} />
   </Fragment>
 

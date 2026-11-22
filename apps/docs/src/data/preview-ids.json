@@ -1507,5 +1507,9 @@
   "/es/componentes/curve-carousel|Autoplay con progreso|||Components/CurveCarousel|Autoplay|": 1506,
   "/es/componentes/curve-carousel|Con extremos y sin inercia|||Components/CurveCarousel|Finite|": 1507,
   "/components/curve-carousel|Autoplay with progress|||Components/CurveCarousel|Autoplay|": 1508,
-  "/components/curve-carousel|With ends and no glide|||Components/CurveCarousel|Finite|": 1509
+  "/components/curve-carousel|With ends and no glide|||Components/CurveCarousel|Finite|": 1509,
+  "/es/componentes/curve-carousel|Una en foco|||Components/CurveCarousel|Focus|": 1510,
+  "/es/componentes/curve-carousel|Tarjetas más altas|||Components/CurveCarousel|Tall|": 1511,
+  "/components/curve-carousel|One in focus|||Components/CurveCarousel|Focus|": 1512,
+  "/components/curve-carousel|Taller cards|||Components/CurveCarousel|Tall|": 1513
 }

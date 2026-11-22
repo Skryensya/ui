@@ -13,6 +13,7 @@ describe("the wheel's geometry", () => {
     expect((ringStep("concave", 8) * 180) / Math.PI).toBeCloseTo(26);
     expect((ringStep("convex", 12) * 180) / Math.PI).toBeCloseTo(32);
     expect((ringStep("concave", 4) * 180) / Math.PI).toBeCloseTo(42.5); // the hand-off at ±2 stays at 85°
+    expect((ringStep("concave", 4, true) * 180) / Math.PI).toBeCloseTo(60); // focus: one slide covers a wide arc
     const step = ringStep("concave", 8);
     // neighbours just meet: the chord between them is one pitch
     expect(2 * ringRadius(step, 200) * Math.sin(step / 2)).toBeCloseTo(200);

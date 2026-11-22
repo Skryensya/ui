@@ -30,8 +30,12 @@ export function wrapDelta(from: number, to: number, count: number): number {
  * the endless roll hands a slide from one end to the other unseen. With few slides that hand-off would
  * come into view, so they then spread just far enough to keep it out of sight.
  */
-export function ringStep(curve: RingCurve, count: number): number {
+export function ringStep(curve: RingCurve, count: number, focus = false): number {
   const deg = Math.PI / 180;
+  // In focus one large slide fills the front: a tighter wheel makes it cover a wide arc, so the ring
+  // reads in the slide itself (bent, its edges arc) and the neighbours wrap round the sides. The track
+  // clips at its edges, so the hand-off, a slide and a half away or more, is always out of it.
+  if (focus) return 60 * deg;
   const fixed = (curve === "concave" ? 26 : 32) * deg;
   // The hand-off happens half the count away from the front: keep it past where slides are gone.
   const gone = (curve === "concave" ? 85 : 100) * deg;
@@ -47,9 +51,11 @@ export function ringRadius(step: number, pitch: number): number {
 const CAMERA = { concave: 2, convex: 3 } as const;
 
 /** Where the camera stands, in px: `strength` > 1 brings it closer (the ends grow / shrink more). */
-export function ringPerspective(curve: RingCurve, radius: number, strength: number): number {
+export function ringPerspective(curve: RingCurve, radius: number, strength: number, focus = false): number {
   const s = Math.min(2.5, Math.max(0.25, Number.isFinite(strength) ? strength : 1));
-  return (CAMERA[curve] * radius) / s;
+  // In focus the camera comes close, so the one large slide's arc reads as a curved screen.
+  const camera = focus ? (curve === "concave" ? 1.2 : 2) : CAMERA[curve];
+  return (camera * radius) / s;
 }
 
 export type RingPlacement = { x: number; z: number; angle: number; opacity: number; zIndex: number };
@@ -113,6 +119,8 @@ export type CurveRingOptions = {
   dir?: "ltr" | "rtl";
   /** Under reduced motion nothing glides and autoplay starts paused. */
   reducedMotion?: boolean;
+  /** One large slide with its neighbours peeking (`data-focus`): a flatter wheel. */
+  focus?: boolean;
 };
 
 export type CurveRing = {
@@ -158,6 +166,12 @@ export function connectCurveRing(root: HTMLElement, options: CurveRingOptions): 
   let destroyed = false;
 
   // ARIA: the WAI carousel pattern, the same names the flat Carousel's machine gives.
+  const live = document.createElement("span");
+  live.className = "sk-visually-hidden";
+  live.setAttribute("aria-live", "polite");
+  live.setAttribute("aria-atomic", "true");
+  root.append(live);
+  steps.forEach((step) => step.setAttribute("tabindex", "-1"));
   root.setAttribute("role", "region");
   root.setAttribute("aria-roledescription", "carousel");
   slides.forEach((slide, i) => {
@@ -171,19 +185,29 @@ export function connectCurveRing(root: HTMLElement, options: CurveRingOptions): 
     const width = slides[0]!.offsetWidth || 1;
     const gap = Number.parseFloat(getComputedStyle(track).columnGap) || 0;
     pitch = width + gap;
-    step = ringStep(options.curve, count);
+    step = ringStep(options.curve, count, options.focus);
     radius = ringRadius(step, pitch);
     const strength = Number.parseFloat(getComputedStyle(root).getPropertyValue("--sk-carousel-curve-strength"));
-    perspective = ringPerspective(options.curve, radius, strength);
+    perspective = ringPerspective(options.curve, radius, strength, options.focus);
     track.style.perspective = `${perspective}px`;
     for (const last of written) last.transform = "";
     // A bent slide's bands sit on the same circle: their place relative to the slide is fixed per size.
     for (const slide of slides) {
       const bands = Array.from(slide.querySelectorAll<HTMLElement>(`.${carouselParts.band}`));
+      const slice = width / (bands.length || 1);
       bands.forEach((band, i) => {
-        const offset = (i + 0.5 - bands.length / 2) * (width / bands.length);
+        const offset = (i + 0.5 - bands.length / 2) * slice;
         const p = bandPlacement(offset, options.curve, radius);
         band.style.transform = `translate3d(${p.x}px, 0, ${p.z}px) rotateY(${p.angle}deg)`;
+        // Its slice, a pixel wider each side so two turned neighbours overlap instead of leaving a seam,
+        // and its copy the slide's full width shifted onto that slice.
+        band.style.insetInlineStart = `${i * slice - 1}px`;
+        band.style.inlineSize = `${slice + 2}px`;
+        const copy = band.firstElementChild as HTMLElement | null;
+        if (copy) {
+          copy.style.inlineSize = `${width}px`;
+          copy.style.marginInlineStart = `${1 - i * slice}px`;
+        }
       });
     }
     render();
@@ -204,6 +228,8 @@ export function connectCurveRing(root: HTMLElement, options: CurveRingOptions): 
       if (opacity !== last.opacity) {
         slide.style.opacity = String(opacity);
         slide.style.visibility = opacity === 0 ? "hidden" : "";
+        // A slide round the back is out of reach too: Tab never lands on a link nobody can see.
+        slide.inert = opacity === 0;
         last.opacity = opacity;
       }
       if (opacity === 0) return;
@@ -219,8 +245,11 @@ export function connectCurveRing(root: HTMLElement, options: CurveRingOptions): 
     });
     const current = normal(position);
     if (current !== shownStep) {
+      // A roving stepper: one Tab stop, the current segment; the arrows walk the rest.
       steps[shownStep]?.removeAttribute("aria-current");
+      steps[shownStep]?.setAttribute("tabindex", "-1");
       steps[current]?.setAttribute("aria-current", "true");
+      steps[current]?.setAttribute("tabindex", "0");
       shownStep = current;
     }
   };
@@ -239,6 +268,8 @@ export function connectCurveRing(root: HTMLElement, options: CurveRingOptions): 
       progress = 0;
       steps.forEach((step) => step.style.removeProperty("--sk-carousel-step-progress"));
       root.dispatchEvent(new CustomEvent(carouselEvents.change, { bubbles: true, detail: { index, count } }));
+      // Said to a screen reader, unless it turns by itself: a rotation that talks every few seconds is noise.
+      if (live && !playing) live.textContent = carouselTranslations.item(index, count);
     }
   };
 
@@ -291,6 +322,7 @@ export function connectCurveRing(root: HTMLElement, options: CurveRingOptions): 
   // vertical swipes to the page.
   let dragging = false;
   let dragMoved = 0;
+  let dragFrom = 0; // the position the drag started at
   let lastX = 0;
   let lastT = 0;
   let velocity = 0; // slides per ms
@@ -300,6 +332,7 @@ export function connectCurveRing(root: HTMLElement, options: CurveRingOptions): 
     if (!track || (event.pointerType === "mouse" && event.button !== 0)) return;
     dragging = true;
     dragMoved = 0;
+    dragFrom = Math.round(position);
     pointerId = event.pointerId;
     lastX = event.clientX;
     lastT = event.timeStamp;
@@ -333,7 +366,12 @@ export function connectCurveRing(root: HTMLElement, options: CurveRingOptions): 
     // A pause before letting go is a stop, not a throw.
     if (event.timeStamp - lastT > 80) velocity = 0;
     const throwDistance = momentum ? velocity * 280 : 0;
-    turnTo(Math.round(position + throwDistance), momentum ? velocity : 0);
+    let target = Math.round(position + throwDistance);
+    // A deliberate drag of a fraction of a slide still means "the next one": past 15% of a slide toward
+    // a side, never come back to where it started. Large slides (`focus`) would otherwise need a long drag.
+    const dragged = position - dragFrom;
+    if (target === dragFrom && Math.abs(dragged) > 0.15) target = dragFrom + Math.sign(dragged);
+    turnTo(target, momentum ? velocity : 0);
     syncPlaying();
   };
 
@@ -360,17 +398,23 @@ export function connectCurveRing(root: HTMLElement, options: CurveRingOptions): 
   };
 
   const onKeyDown = (event: KeyboardEvent): void => {
-    if ((event.target as HTMLElement).closest("input, textarea, select, [contenteditable]")) return;
+    const target = event.target as HTMLElement;
+    if (target.closest("input, textarea, select, [contenteditable]")) return;
     const key = event.key;
+    let to: number | null = null;
     if (key === "ArrowRight" || key === "ArrowLeft") {
-      event.preventDefault();
       const forward = (key === "ArrowRight") === (sign === 1);
-      if (forward) next();
-      else prev();
+      to = heading() + (forward ? 1 : -1);
+      if (!infinite) to = clampIndex(to);
     } else if (key === "Home" || key === "End") {
-      event.preventDefault();
-      goTo(key === "Home" ? 0 : count - 1);
+      to = key === "Home" ? 0 : count - 1;
     }
+    if (to === null) return;
+    event.preventDefault();
+    if (key === "Home" || key === "End") goTo(to);
+    else turnTo(to);
+    // On the stepper the focus follows the current segment, as a tab list's does.
+    if (steps.includes(target as HTMLButtonElement)) steps[normal(to)]?.focus();
   };
 
   // Focus landing inside a slide (a link, a button) turns the wheel to it, so it is never round the back.
@@ -442,8 +486,11 @@ export function connectCurveRing(root: HTMLElement, options: CurveRingOptions): 
     if (typeof index === "number") goTo(index);
   };
 
-  const next = (): void => turnTo(Math.round(position) + 1);
-  const prev = (): void => turnTo(Math.round(position) - 1);
+  // Steps count from where a turn is headed, not from where it is: a second key press mid-turn moves one
+  // further instead of rounding back onto the slide the first one left.
+  const heading = (): number => (animation ? animation.to : Math.round(position));
+  const next = (): void => turnTo(heading() + 1);
+  const prev = (): void => turnTo(heading() - 1);
 
   track?.addEventListener("pointerdown", onPointerDown);
   track?.addEventListener("pointermove", onPointerMove);
@@ -459,7 +506,6 @@ export function connectCurveRing(root: HTMLElement, options: CurveRingOptions): 
   root.addEventListener("pointerleave", onLeave);
   root.addEventListener(carouselEvents.goto, onGoto);
   toggle?.addEventListener("click", onToggle);
-  if (track && !track.hasAttribute("tabindex")) track.tabIndex = 0;
 
   const resize = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(measure);
   if (track) resize?.observe(track);
@@ -508,6 +554,8 @@ export function connectCurveRing(root: HTMLElement, options: CurveRingOptions): 
       }
       if (track) track.style.perspective = "";
       root.removeAttribute("data-playing");
+      live.remove();
+      for (const slide of slides) slide.inert = false;
     },
   };
 }

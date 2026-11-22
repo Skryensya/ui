@@ -471,6 +471,10 @@ export type CurveCarouselProps = HTMLAttributes<HTMLElement> & {
   curveStrength?: number;
   /** Bend each picture along the wheel, the wide-lens look. */
   bend?: boolean;
+  /** Taller, portrait (9:16) slides whose content fills them. */
+  tall?: boolean;
+  /** One large slide in focus, its neighbours peeking at the sides, instead of five in view. */
+  focus?: boolean;
   /** Fade the two sides with FadeEdge (needs `@skryensya/core/components/fade-edge.css`). */
   fade?: boolean;
   /** Roll without end (`on`, the default) or stop at both ends (`off`). */
@@ -488,7 +492,7 @@ export type CurveCarouselProps = HTMLAttributes<HTMLElement> & {
 };
 
 export const CurveCarousel = forwardRef<CarouselHandle, CurveCarouselProps>(function CurveCarousel(
-  { autoplay, bend, children, className, curve, curveStrength, defaultPage, fade, infinite, momentum, mounted = true, slideSize, style, ...props },
+  { autoplay, bend, children, className, curve, curveStrength, defaultPage, fade, focus, infinite, momentum, mounted = true, slideSize, style, tall, ...props },
   ref,
 ) {
   const rootRef = useRef<HTMLElement>(null);
@@ -499,10 +503,8 @@ export const CurveCarousel = forwardRef<CarouselHandle, CurveCarouselProps>(func
 
   useEffect(() => {
     const root = rootRef.current;
-    const track = root?.querySelector<HTMLElement>(`.${carouselParts.track}`);
     if (!mounted || !root) return;
     const cleanups: Array<() => void> = [];
-    if (fade && track) cleanups.push(watchFadeEdge(track));
     // The bands are cut before the engine measures, so it lays them on the circle at once.
     if (bend) cleanups.push(bendCarouselSlides(root));
     const ring = connectCurveRing(root, {
@@ -513,6 +515,7 @@ export const CurveCarousel = forwardRef<CarouselHandle, CurveCarouselProps>(func
       defaultPage,
       dir: root.closest("[dir=rtl]") ? "rtl" : "ltr",
       reducedMotion: reducedMotion(),
+      focus,
     });
     setReady(true);
     return () => {
@@ -520,7 +523,7 @@ export const CurveCarousel = forwardRef<CarouselHandle, CurveCarouselProps>(func
       for (const cleanup of cleanups.reverse()) cleanup();
       setReady(false);
     };
-  }, [mounted, curve, infinite, momentum, delay, defaultPage, bend, fade, children]);
+  }, [mounted, curve, infinite, momentum, delay, defaultPage, bend, fade, focus, children]);
 
   return (
     <section
@@ -530,6 +533,8 @@ export const CurveCarousel = forwardRef<CarouselHandle, CurveCarouselProps>(func
       data-curve={curve}
       data-align="center"
       data-bend={bend ? "" : undefined}
+      data-tall={tall ? "" : undefined}
+      data-focus={focus ? "" : undefined}
       data-fade-edge={fade ? "" : undefined}
       data-infinite={infinite}
       data-momentum={momentum}
@@ -543,10 +548,8 @@ export const CurveCarousel = forwardRef<CarouselHandle, CurveCarouselProps>(func
         ...(curveStrength !== undefined ? { "--sk-carousel-curve-strength": curveStrength } : {}),
       } as CSSProperties}
     >
-      <div
-        {...(fade ? { [fadeEdgeAttrs.direction]: "horizontal", [fadeEdgeAttrs.scrollAware]: "" } : {})}
-        className={fade ? `${carouselParts.track} sk-fade-edge` : carouselParts.track}
-      >
+      {/* `data-fade-edge` is the sheet's on a wheel (both sides, always): no scroll for FadeEdge to watch. */}
+      <div className={carouselParts.track}>
         <CarouselSnapContext.Provider value={{ align: "center", step: 1 }}>{children}</CarouselSnapContext.Provider>
       </div>
       {mounted && count > 1 ? (

@@ -159,6 +159,24 @@
   padding-block: var(--space-stack-sm);
 }
 
+/* A CURVECAROUSEL RUNS PAST ITS TRACK on purpose (its wheel is not clipped, so a strong lens keeps its sides whole); the
+   card is what stops it sideways, so the example never spills over the page. `clip`, not `hidden`: no scroll box, and the
+   vertical overflow stays visible. */
+.sk-preview-card__stage:has(.sk-carousel[data-curve]) {
+  overflow-x: clip;
+}
+
+/* ...and gets the card's whole width: the wheel reaches the card's edges, so a neighbour that peeks is cut by the card, not
+   16px short of it. */
+.sk-preview-card:has(.sk-carousel[data-curve]) {
+  padding-inline: 0;
+}
+
+/* The playground's own control row keeps the margin the card no longer gives: only the wheel runs edge to edge. */
+.sk-preview-card:has(.sk-carousel[data-curve]) .sk-property-playground__control {
+  margin-inline: var(--space-inset-md);
+}
+
 /* A SMALL LOADER WHILE A FRAME BOOTS. Switching variants remounts the example's iframe, and until it reports ready it is
    hidden, so the card went blank for the length of a page load. The stage's own `aria-busy` flag is the signal (the frame
    runtime flips it, and `frame-ready` / `frame-error` mark the end), so no state is mirrored into React. */

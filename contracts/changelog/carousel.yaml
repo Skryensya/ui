@@ -3,8 +3,32 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "6fd67326321920e2"
+surface: "5d82091433882c98"
 entries:
+  - date: 2026-11-21
+    kind: bugfix
+    es:
+      title: "CurveCarousel: bend curva de verdad y focus es una pantalla curva"
+      body: "bend no curvaba: will-change: opacity aplanaba la slide y sus bandas giraban sin perspectiva. Ahora la imagen se curva y no se corta entre bandas. focus usa una rueda más cerrada y la cámara más cerca, así la slide del frente es una pantalla curva y las vecinas doblan por los lados."
+    en:
+      title: "CurveCarousel: bend really curves and focus is a curved screen"
+      body: "bend did not curve: will-change: opacity flattened the slide and its bands turned without perspective. Now the picture curves and is not chopped between bands. focus uses a tighter wheel and a closer camera, so the front slide is a curved screen and its neighbours wrap round the sides."
+  - date: 2026-11-21
+    kind: bugfix
+    es:
+      title: "CurveCarousel: teclado y primer render"
+      body: "El stepper es una sola parada de Tab y las flechas recorren las slides con el foco detrás; las slides ocultas tras la rueda quedan fuera del Tab y cada cambio se anuncia. Ya no se ve la tira plana antes de montar: la rueda aparece ya armada. En Vanilla carga un módulo propio, sin Svelte ni Zag."
+    en:
+      title: "CurveCarousel: keyboard and first render"
+      body: "The stepper is a single Tab stop and the arrows walk the slides with the focus behind them; slides hidden behind the wheel leave the Tab order and each change is announced. The flat strip no longer shows before mount: the wheel appears already built. In Vanilla it loads its own module, without Svelte or Zag."
+  - date: 2026-11-21
+    kind: feature
+    es:
+      title: "CurveCarousel: tarjetas altas y una en foco"
+      body: "tall hace cada slide vertical 9:16 y focus apaisada 16:9, grande al frente con la anterior y la siguiente asomando a los lados; su contenido la llena. fade desvanece los dos lados siempre. La rueda ya no recorta lo que sobresale. Arrastrar más de un 15% de una slide ya lleva a la siguiente."
+    en:
+      title: "CurveCarousel: tall cards and one in focus"
+      body: "tall makes each slide a portrait 9:16 and focus a large landscape 16:9 at the front, the one before and the one after peeking at the sides; the content fills it. fade dissolves both sides, always. The wheel no longer clips what stands out. Dragging past 15% of a slide now goes to the next one."
   - date: 2026-11-21
     kind: feature
     es:

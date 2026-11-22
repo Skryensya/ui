@@ -12,6 +12,8 @@ export default { title: "Components/CurveCarousel", tags: ["autodocs"] } satisfi
 
 export const Concave: StoryObj = treeStory(demos.curveCarouselConcaveTree);
 export const Convex: StoryObj = treeStory(demos.curveCarouselConvexTree);
+export const Focus: StoryObj = treeStory(demos.curveCarouselFocusTree);
+export const Tall: StoryObj = treeStory(demos.curveCarouselTallTree);
 export const Autoplay: StoryObj = treeStory(demos.curveCarouselAutoplayTree);
 export const Fade: StoryObj = treeStory(demos.curveCarouselFadeTree);
 export const Bent: StoryObj = treeStory(demos.curveCarouselBentTree);

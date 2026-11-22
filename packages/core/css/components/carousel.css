@@ -414,9 +414,40 @@
     --sk-carousel-slide-size: clamp(6rem, 20cqi, 15rem);
   }
 
+  /* FOCUS: one large slide at the front; the neighbours, the same distance round the wheel, fall half
+   * outside the track and peek at its sides. The engine is unchanged: it snaps onto each slide. */
+  .sk-carousel[data-curve][data-focus] {
+    /* Half the width: a quarter of each neighbour shows inside the track. */
+    --sk-carousel-slide-size: clamp(12rem, 50cqi, 36rem);
+    --sk-carousel-gap: var(--space-inline-md);
+  }
+
+  /* TALL and FOCUS set the slide's shape and its content fills it: a portrait 9:16 (a story's) for
+   * tall, a landscape 16:9 for focus (tall wins if both are asked for). A picture's frame (ImageFrame)
+   * drops its own ratio and covers the slide instead. */
+  .sk-carousel[data-curve][data-focus] .sk-carousel__slide {
+    aspect-ratio: 16 / 9;
+  }
+
+  .sk-carousel[data-curve][data-tall] .sk-carousel__slide {
+    aspect-ratio: 9 / 16;
+  }
+
+  .sk-carousel[data-curve]:is([data-tall], [data-focus]) .sk-carousel__slide {
+    --sk-image-frame-aspect: auto;
+  }
+
+  .sk-carousel[data-curve]:is([data-tall], [data-focus]) .sk-carousel__slide > *,
+  .sk-carousel[data-curve]:is([data-tall], [data-focus]) .sk-carousel__band > *,
+  .sk-carousel[data-curve]:is([data-tall], [data-focus]) :is(.sk-carousel__bend, .sk-carousel__band) {
+    block-size: 100%;
+  }
+
   .sk-carousel[data-curve][data-sk-carousel-ready] .sk-carousel__track {
     display: grid;
-    overflow: hidden;
+    /* Nothing scrolls once the engine has it, so nothing needs clipping: a strong lens's swelling sides
+     * stay whole past the track's edges (they fade out on their own before they get huge). */
+    overflow: visible;
     scroll-snap-type: none;
     padding-inline: 0;
     /* The sides swell inside the ring (concave): room above and below, or the track clips them. */
@@ -431,8 +462,106 @@
     padding-block: calc(var(--sk-carousel-slide-size) * 0.35);
   }
 
+  /* In focus the neighbours PEEK: the track clips them at its edges, and the swelling sides fall
+   * outside it anyway, so there is no room to keep for them. */
+  .sk-carousel[data-curve][data-focus][data-sk-carousel-ready] .sk-carousel__track {
+    /* Sideways only (`clip` lets the other axis stay visible): a turned neighbour stands a hair taller
+     * than the track, and a straight cut across its top read as a fault. */
+    overflow-x: clip;
+    overflow-y: visible;
+    padding-block: calc(var(--sk-carousel-slide-size) * 0.06);
+  }
+
+  /* FADE on a wheel: both sides, always. FadeEdge's scroll-aware fade retires the end the scroll has
+   * reached, and a wheel never scrolls, so its start side never faded. A fifth of the width each side,
+   * on FadeEdge's eased ramp so the sides dissolve rather than hit a band. */
+  .sk-carousel[data-curve][data-fade-edge][data-sk-carousel-ready] .sk-carousel__track {
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      rgb(0 0 0 / 12%) 5%,
+      rgb(0 0 0 / 50%) 10%,
+      rgb(0 0 0 / 88%) 15%,
+      #000 20%,
+      #000 80%,
+      rgb(0 0 0 / 88%) 85%,
+      rgb(0 0 0 / 50%) 90%,
+      rgb(0 0 0 / 12%) 95%,
+      transparent 100%
+    );
+  }
+
+  /* In focus only a quarter of each neighbour shows: a short fade dissolves its edge without erasing it. */
+  .sk-carousel[data-curve][data-focus][data-fade-edge][data-sk-carousel-ready] .sk-carousel__track {
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      rgb(0 0 0 / 30%) 4%,
+      rgb(0 0 0 / 75%) 8%,
+      #000 12%,
+      #000 88%,
+      rgb(0 0 0 / 75%) 92%,
+      rgb(0 0 0 / 30%) 96%,
+      transparent 100%
+    );
+  }
+
   .sk-carousel[data-curve][data-dragging] .sk-carousel__track {
     cursor: grabbing;
+  }
+
+  /* NO FLAT FIRST FRAME. With scripting on, a wheel that is about to mount already takes the wheel's
+   * box (the stacked track, its room above and below, the stepper's row) and stays hidden until the
+   * engine has placed every slide, then fades in: nothing jumps from a flat strip to a ring, and nothing
+   * below it moves. Without scripting it is the flat, centred scroller. If the script never arrives,
+   * it shows anyway after three seconds. */
+  @media (scripting: enabled) {
+    .sk-carousel[data-curve][data-sk-carousel]:not([data-sk-carousel-ready]) .sk-carousel__track {
+      display: grid;
+      overflow: hidden;
+      scroll-snap-type: none;
+      padding-inline: 0;
+      padding-block: calc(var(--sk-carousel-slide-size) * 0.12);
+      visibility: hidden;
+      animation: sk-carousel-curve-fallback 0s 3s forwards;
+    }
+
+    .sk-carousel[data-curve="concave"][data-sk-carousel]:not([data-sk-carousel-ready]) .sk-carousel__track {
+      padding-block: calc(var(--sk-carousel-slide-size) * 0.35);
+    }
+
+    .sk-carousel[data-curve][data-focus][data-sk-carousel]:not([data-sk-carousel-ready]) .sk-carousel__track {
+      padding-block: calc(var(--sk-carousel-slide-size) * 0.06);
+    }
+
+    .sk-carousel[data-curve][data-sk-carousel]:not([data-sk-carousel-ready]) .sk-carousel__slide {
+      grid-area: 1 / 1;
+      justify-self: center;
+    }
+
+    /* The stepper's row, kept before the stepper exists. */
+    .sk-carousel[data-curve][data-sk-carousel]:not([data-sk-carousel-ready]):has(.sk-carousel__slide + .sk-carousel__slide)::after {
+      content: "";
+      grid-row: 2;
+      grid-column: 1 / -1;
+      block-size: 1.5rem;
+    }
+  }
+
+  @keyframes sk-carousel-curve-fallback {
+    to {
+      visibility: visible;
+    }
+  }
+
+  .sk-carousel[data-curve][data-sk-carousel-ready] .sk-carousel__track {
+    animation: sk-carousel-curve-in var(--motion-state-change-duration) var(--motion-state-change-easing) both;
+  }
+
+  @keyframes sk-carousel-curve-in {
+    from {
+      opacity: 0;
+    }
   }
 
   /* Every slide stacked in one cell at the centre; the engine's transform puts it on the wheel. */
@@ -440,25 +569,28 @@
     grid-area: 1 / 1;
     justify-self: center;
     transform-style: preserve-3d;
-    will-change: transform, opacity;
+    /* `transform` only: `will-change: opacity` counts as a grouping property and flattens the slide, so a
+     * bent slide's bands lost their depth (they turned, orthographically, with no perspective). */
+    will-change: transform;
   }
 
   /* BEND: a slide cut into bands (`bendCarouselSlides`) that the engine lays on the circle, so the
-   * picture curves. The content itself stays for assistive tech and its links, hidden from sight; the
-   * bands are `aria-hidden` copies. Each is widened a hair about its own centre (`scale`, composing
-   * with the engine's `transform`) to cover the seam between two turned planes. */
+   * picture curves. The content itself stays for assistive tech and its links, unseen; the bands are
+   * `aria-hidden` copies, each a pixel wider than its slice to cover the seam between two turned planes. */
   .sk-carousel[data-bend] .sk-carousel__slide {
     position: relative;
   }
 
+  /* The content keeps its place (it gives the slide its height, and assistive tech reads it), unseen; the
+   * bands lie over it. */
   .sk-carousel[data-bend][data-sk-carousel-ready] .sk-carousel__slide > :not(.sk-carousel__bend) {
-    position: absolute;
-    inset: 0;
     opacity: 0;
   }
 
   .sk-carousel__bend {
-    display: flex;
+    position: absolute;
+    inset: 0;
+    /* No containment here (a size container would flatten the 3D): the engine sizes the bands in px. */
     transform-style: preserve-3d;
   }
 
@@ -467,9 +599,13 @@
   }
 
   .sk-carousel__band {
-    flex: none;
+    position: absolute;
+    inset-block: 0;
     overflow: hidden;
-    scale: 1.15 1;
+  }
+
+  .sk-carousel__band > * {
+    block-size: 100%;
   }
 
   /* THE STEPPER: CurveCarousel's only indicator, a flat row of one segment per slide (no prev/next:
@@ -547,6 +683,10 @@
       scroll-behavior: auto;
     }
 
+    .sk-carousel[data-curve][data-sk-carousel-ready] .sk-carousel__track {
+      animation: none;
+    }
+
     .sk-carousel__dot {
       transition: none;
     }
@@ -556,6 +696,10 @@
   :where(:root[data-motion="reduced"]) {
     .sk-carousel__track {
       scroll-behavior: auto;
+    }
+
+    .sk-carousel[data-curve][data-sk-carousel-ready] .sk-carousel__track {
+      animation: none;
     }
 
     .sk-carousel__dot {

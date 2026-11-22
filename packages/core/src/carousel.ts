@@ -73,6 +73,10 @@ export const carouselAttrs = {
   infinite: "data-infinite",
   /** `data-momentum="off"` on a CurveCarousel root: a release settles at once instead of gliding. */
   momentum: "data-momentum",
+  /** `data-tall` on a CurveCarousel root: portrait slides (2:3) whose content fills them. */
+  tall: "data-tall",
+  /** `data-focus` on a CurveCarousel root: one large slide, its neighbours peeking at the sides. */
+  focus: "data-focus",
 } as const;
 
 export const carouselParts = {
@@ -250,6 +254,13 @@ export const carouselContract = {
      * before it comes to rest on a slide. On by default; off settles on the nearest slide at once.
      */
     momentum: { type: "enum", values: ["on", "off"], attr: "data-momentum" },
+    /** Taller slides: a portrait 9:16 box that the slide's content fills (a picture is cropped to cover it). */
+    tall: { type: "boolean", default: false, attr: "data-tall", trueValue: "" },
+    /**
+     * One slide in focus instead of five: a large slide at the front with the one before and the one after
+     * peeking at the sides, and every turn snapping onto the next. For a hero with a single message.
+     */
+    focus: { type: "boolean", default: false, attr: "data-focus", trueValue: "" },
     /** The page it opens on, counted from 0. A CurveCarousel without one opens on the middle slide. */
     defaultPage: { type: "number", min: 0, attr: "data-default-page" },
   },
@@ -300,7 +311,7 @@ export const carouselContract = {
     "Carousel.curve": {
       intent: ["hero-carousel", "ring-carousel", "3d-carousel", "perspective-carousel", "coverflow"],
       host: { element: "section" },
-      options: ["curve", "curveStrength", "bend", "fade", "infinite", "momentum", "autoplay", "autoplayDelay", "mounted", "slideSize", "defaultPage"],
+      options: ["curve", "curveStrength", "tall", "focus", "bend", "fade", "infinite", "momentum", "autoplay", "autoplayDelay", "mounted", "slideSize", "defaultPage"],
       requires: ["curve"],
       slots: { children: { accepts: "signature", of: ["CarouselSlide"], required: true } },
       template: {
@@ -364,11 +375,15 @@ export function bendCarouselSlides(root: HTMLElement, bands: number = CAROUSEL_B
     for (let index = 0; index < bands; index++) {
       const band = document.createElement("div");
       band.className = carouselParts.band;
-      band.style.inlineSize = `${100 / bands}%`;
+      // Its slice, a pixel wider each side so two turned neighbours overlap instead of leaving a seam.
+      band.style.insetInlineStart = `calc(${(index * 100) / bands}% - 1px)`;
+      band.style.inlineSize = `calc(${100 / bands}% + 2px)`;
       const copy = content.cloneNode(true) as HTMLElement;
       copy.removeAttribute("id");
       for (const named of Array.from(copy.querySelectorAll("[id]"))) named.removeAttribute("id");
-      // The copy is the slide's full width, shifted so this band shows its own slice.
+      // The copy is the slide's full width, shifted to this band's slice, so every band shows its own part
+      // of one unstretched picture. A share of the band first; the ring engine rewrites both in px once it
+      // has measured the slide (a percentage of a band that is 2px wider than its slice drifts).
       copy.style.inlineSize = `${bands * 100}%`;
       copy.style.marginInlineStart = `${-index * 100}%`;
       band.append(copy);

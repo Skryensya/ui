@@ -824,6 +824,42 @@
           {
             "date": "2026-11-21",
             "en": {
+              "body": "bend did not curve: will-change: opacity flattened the slide and its bands turned without perspective. Now the picture curves and is not chopped between bands. focus uses a tighter wheel and a closer camera, so the front slide is a curved screen and its neighbours wrap round the sides.",
+              "title": "CurveCarousel: bend really curves and focus is a curved screen"
+            },
+            "es": {
+              "body": "bend no curvaba: will-change: opacity aplanaba la slide y sus bandas giraban sin perspectiva. Ahora la imagen se curva y no se corta entre bandas. focus usa una rueda más cerrada y la cámara más cerca, así la slide del frente es una pantalla curva y las vecinas doblan por los lados.",
+              "title": "CurveCarousel: bend curva de verdad y focus es una pantalla curva"
+            },
+            "kind": "bugfix"
+          },
+          {
+            "date": "2026-11-21",
+            "en": {
+              "body": "The stepper is a single Tab stop and the arrows walk the slides with the focus behind them; slides hidden behind the wheel leave the Tab order and each change is announced. The flat strip no longer shows before mount: the wheel appears already built. In Vanilla it loads its own module, without Svelte or Zag.",
+              "title": "CurveCarousel: keyboard and first render"
+            },
+            "es": {
+              "body": "El stepper es una sola parada de Tab y las flechas recorren las slides con el foco detrás; las slides ocultas tras la rueda quedan fuera del Tab y cada cambio se anuncia. Ya no se ve la tira plana antes de montar: la rueda aparece ya armada. En Vanilla carga un módulo propio, sin Svelte ni Zag.",
+              "title": "CurveCarousel: teclado y primer render"
+            },
+            "kind": "bugfix"
+          },
+          {
+            "date": "2026-11-21",
+            "en": {
+              "body": "tall makes each slide a portrait 9:16 and focus a large landscape 16:9 at the front, the one before and the one after peeking at the sides; the content fills it. fade dissolves both sides, always. The wheel no longer clips what stands out. Dragging past 15% of a slide now goes to the next one.",
+              "title": "CurveCarousel: tall cards and one in focus"
+            },
+            "es": {
+              "body": "tall hace cada slide vertical 9:16 y focus apaisada 16:9, grande al frente con la anterior y la siguiente asomando a los lados; su contenido la llena. fade desvanece los dos lados siempre. La rueda ya no recorta lo que sobresale. Arrastrar más de un 15% de una slide ya lleva a la siguiente.",
+              "title": "CurveCarousel: tarjetas altas y una en foco"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-11-21",
+            "en": {
               "body": "Drag it with the mouse or a finger and it keeps turning until it rests on a slide (momentum), without end (infinite); both turn off with \"off\". Five slides at a time on a desktop. Instead of prev/next it has a stepper, which shows the progress under autoplay. New: curveStrength, bend and fade. loop, controls, indicator, snap, mouseDrag and edgePadding leave this signature.",
               "title": "CurveCarousel is a wheel: it rolls without end, with momentum, and a stepper"
             },
@@ -12738,6 +12774,12 @@
           "trueValue": "",
           "type": "boolean"
         },
+        "focus": {
+          "attr": "data-focus",
+          "default": false,
+          "trueValue": "",
+          "type": "boolean"
+        },
         "indicator": {
           "attr": "data-indicator",
           "type": "enum",
@@ -12806,6 +12848,12 @@
             "mandatory",
             "proximity"
           ]
+        },
+        "tall": {
+          "attr": "data-tall",
+          "default": false,
+          "trueValue": "",
+          "type": "boolean"
         }
       },
       "parts": {
@@ -12932,6 +12980,8 @@
           "options": [
             "curve",
             "curveStrength",
+            "tall",
+            "focus",
             "bend",
             "fade",
             "infinite",
@@ -53568,7 +53618,7 @@
     "working": "0.0.4"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "79e4c94345073f78",
+  "sourceHash": "17e65202cca67e83",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",
