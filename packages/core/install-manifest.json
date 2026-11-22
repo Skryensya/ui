@@ -610,6 +610,7 @@
       "names": [
         "Carousel",
         "CurveCarousel",
+        "StripCarousel",
         "CarouselSlide"
       ]
     },
@@ -617,7 +618,7 @@
       "entry": "@skryensya/vanilla/carousel",
       "mount": "mountCarousel",
       "selectors": [
-        "[data-sk-carousel]:not([data-curve])"
+        "[data-sk-carousel]:not([data-curve]):not([data-strips])"
       ],
       "auto": true
     }

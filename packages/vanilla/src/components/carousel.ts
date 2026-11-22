@@ -1,5 +1,6 @@
 import { carouselAttrs } from "@skryensya/core/carousel";
 import { mountCurveCarousel } from "./curve-carousel.js";
+import { mountStripCarousel } from "./strip-carousel.js";
 import Carousel from "./Carousel.svelte";
 import { createSvelteMount } from "../runtime/svelte-hydrate.js";
 
@@ -12,11 +13,12 @@ import { createSvelteMount } from "../runtime/svelte-hydrate.js";
  */
 const mountFlat = createSvelteMount({
   key: "carousel",
-  rootSelector: `[${carouselAttrs.root}]:not([${carouselAttrs.curve}])`,
+  rootSelector: `[${carouselAttrs.root}]:not([${carouselAttrs.curve}]):not([${carouselAttrs.strips}])`,
   Component: Carousel,
 });
 
 export { connectCurveCarousel, mountCurveCarousel } from "./curve-carousel.js";
+export { connectStripCarousel, mountStripCarousel } from "./strip-carousel.js";
 
-/** Both: the flat Carousels and the wheels. The auto-loader loads each on its own (`registry.ts`). */
-export const mountCarousel = (target?: Parameters<typeof mountFlat>[0]): number => mountFlat(target) + mountCurveCarousel(target);
+/** All of them: the flat Carousels, the wheels and the strips. The auto-loader loads each on its own (`registry.ts`). */
+export const mountCarousel = (target?: Parameters<typeof mountFlat>[0]): number => mountFlat(target) + mountCurveCarousel(target) + mountStripCarousel(target);

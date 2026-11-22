@@ -879,6 +879,30 @@
           ]
         },
         {
+          "alternatives": [
+            "Carousel",
+            "Tabs"
+          ],
+          "avoidWhen": [
+            "people should see and compare several items at once; use a flat Carousel or a Grid of cards",
+            "the items have no picture; a strip of plain text says nothing, use Tabs or a list"
+          ],
+          "host": "section",
+          "id": "Carousel.strips",
+          "intent": [
+            "news-carousel",
+            "strip-carousel",
+            "expanding-gallery",
+            "accordion-gallery",
+            "featured-stories"
+          ],
+          "parents": [],
+          "useWhen": [
+            "a section shows a few stories or announcements one at a time, a big picture with its title and a link under it",
+            "the next items should be in sight but not compete: strips that thin out beside the open one"
+          ]
+        },
+        {
           "alternatives": [],
           "avoidWhen": [
             "it is outside a Carousel or CurveCarousel; there is no track to fit into"
@@ -6423,5 +6447,5 @@
     }
   ],
   "schemaVersion": "2.3",
-  "sourceHash": "17e65202cca67e83"
+  "sourceHash": "90e60c7c954c25d5"
 }

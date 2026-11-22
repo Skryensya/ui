@@ -2,7 +2,8 @@ import type { UsageTree } from "@skryensya/core/usage-tree";
 import { createRef } from "react";
 import { render } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { Carousel, CarouselSlide, CurveCarousel, type CarouselHandle } from "./carousel.js";
+import { fireEvent } from "@testing-library/react";
+import { Carousel, CarouselSlide, CurveCarousel, StripCarousel, type CarouselHandle } from "./carousel.js";
 import { loadTree, renderTree } from "../render-tree.js";
 
 describe("Carousel", () => {
@@ -146,5 +147,21 @@ describe("Carousel", () => {
 
     expect(ui.container.querySelector(".sk-carousel__dots")).toBeNull();
     expect(ui.container.querySelector(".sk-carousel__count")?.textContent).toBe("1 / 30");
+  });
+});
+
+describe("StripCarousel", () => {
+  it("opens the first item as the wide one, the rest as strips, and the open caption alone", () => {
+    const items = ["A", "B", "C", "D"].map((name) => ({ media: <img alt={name} src="" />, title: `Título ${name}`, body: "Cuerpo" }));
+    const ui = render(<StripCarousel aria-label="Noticias" heading="Siempre al día" items={items} />);
+    const root = ui.container.querySelector<HTMLElement>(".sk-carousel")!;
+    expect(root.hasAttribute("data-strips")).toBe(true);
+    const slides = [...root.querySelectorAll<HTMLElement>(".sk-carousel__slide")];
+    expect(slides.map((s) => s.dataset.distance)).toEqual(["0", "1", "2", "3"]);
+    const next = ui.getByRole("button", { name: "Siguiente" });
+    fireEvent.click(next);
+    expect(slides.map((s) => s.dataset.distance)).toEqual(["1", "0", "1", "2"]);
+    expect([...root.querySelectorAll<HTMLElement>(".sk-carousel__caption")].map((c) => c.hidden)).toEqual([true, false, true, true]);
+    expect(ui.getByRole("button", { name: "Anterior" })).toHaveProperty("disabled", false);
   });
 });

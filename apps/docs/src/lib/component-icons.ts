@@ -11,6 +11,7 @@ const sharedRole: Readonly<Record<string, StableIconName>> = {
   "nav-list": "menu",
   // A Carousel signature with its own page: it wears the Carousel's mark.
   "curve-carousel": "component-carousel",
+  "strip-carousel": "component-carousel",
 };
 
 /**

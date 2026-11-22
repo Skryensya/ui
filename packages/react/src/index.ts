@@ -97,12 +97,14 @@ export type {
 } from "./components/procedure.js";
 export { Changelog, ChangelogEntry, ChangelogRelease } from "./components/changelog.js";
 export type { ChangelogEntryProps, ChangelogProps, ChangelogReleaseProps } from "./components/changelog.js";
-export { Carousel, CarouselSlide, CurveCarousel } from "./components/carousel.js";
+export { Carousel, CarouselSlide, CurveCarousel, StripCarousel } from "./components/carousel.js";
 export type {
   CarouselHandle,
   CarouselProps,
   CarouselSlideProps,
   CurveCarouselProps,
+  StripCarouselItem,
+  StripCarouselProps,
 } from "./components/carousel.js";
 export { AutoplayMarquee, Marquee } from "./components/marquee.js";
 export type { MarqueeProps } from "./components/marquee.js";

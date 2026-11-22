@@ -824,6 +824,18 @@
           {
             "date": "2026-11-21",
             "en": {
+              "body": "Carousel.strips (StripCarousel in React): one item open and the next ones beside it as strips that thin out, with its title, text and action underneath. Prev/next, the arrow keys or a click on a strip opens it.",
+              "title": "StripCarousel: one open and the rest as strips"
+            },
+            "es": {
+              "body": "Carousel.strips (StripCarousel en React): un elemento abierto y los siguientes al lado como franjas cada vez más finas, con su título, texto y acción debajo. Anterior/siguiente, flechas del teclado o un clic en una franja la abren.",
+              "title": "StripCarousel: una abierta y las demás como franjas"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-11-21",
+            "en": {
               "body": "bend did not curve: will-change: opacity flattened the slide and its bands turned without perspective. Now the picture curves and is not chopped between bands. focus uses a tighter wheel and a closer camera, so the front slide is a curved screen and its neighbours wrap round the sides.",
               "title": "CurveCarousel: bend really curves and focus is a curved screen"
             },
@@ -12516,7 +12528,8 @@
           ],
           "signatures": [
             "Carousel",
-            "Carousel.curve"
+            "Carousel.curve",
+            "Carousel.strips"
           ],
           "when": {}
         }
@@ -12533,6 +12546,12 @@
           "markup": true,
           "portals": false,
           "react": "@skryensya/react/carousel#CurveCarousel"
+        },
+        "Carousel.strips": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/carousel#StripCarousel"
         },
         "CarouselSlide": {
           "enhancer": null,
@@ -12861,10 +12880,17 @@
         "band": "sk-carousel__band",
         "bend": "sk-carousel__bend",
         "button": "sk-carousel__button",
+        "caption": "sk-carousel__caption",
+        "captionAction": "sk-carousel__caption-action",
+        "captionBody": "sk-carousel__caption-body",
+        "captions": "sk-carousel__captions",
+        "captionTitle": "sk-carousel__caption-title",
         "controls": "sk-carousel__controls",
         "count": "sk-carousel__count",
         "dot": "sk-carousel__dot",
         "dots": "sk-carousel__dots",
+        "header": "sk-carousel__header",
+        "heading": "sk-carousel__heading",
         "root": "sk-carousel",
         "slide": "sk-carousel__slide",
         "step": "sk-carousel__step",
@@ -12900,6 +12926,20 @@
           "useWhen": [
             "a page or section opens with a few pictures as its centrepiece, the middle one the star: a hero",
             "the pictures should read as one set seen in perspective, from outside the ring or from inside it"
+          ]
+        },
+        "Carousel.strips": {
+          "alternatives": [
+            "Carousel",
+            "Tabs"
+          ],
+          "avoidWhen": [
+            "people should see and compare several items at once; use a flat Carousel or a Grid of cards",
+            "the items have no picture; a strip of plain text says nothing, use Tabs or a list"
+          ],
+          "useWhen": [
+            "a section shows a few stories or announcements one at a time, a big picture with its title and a link under it",
+            "the next items should be in sight but not compete: strips that thin out beside the open one"
           ]
         },
         "CarouselSlide": {
@@ -13017,6 +13057,118 @@
                 "element": "div",
                 "part": "track",
                 "slot": "children"
+              }
+            ],
+            "element": "section",
+            "host": true,
+            "part": "root"
+          }
+        },
+        "Carousel.strips": {
+          "host": {
+            "element": "section"
+          },
+          "intent": [
+            "news-carousel",
+            "strip-carousel",
+            "expanding-gallery",
+            "accordion-gallery",
+            "featured-stories"
+          ],
+          "options": [
+            "mounted",
+            "defaultPage"
+          ],
+          "react": {
+            "from": "@skryensya/react/carousel",
+            "name": "StripCarousel"
+          },
+          "slots": {
+            "heading": {
+              "accepts": "node"
+            },
+            "items": {
+              "accepts": "items",
+              "item": {
+                "options": {},
+                "slots": {
+                  "action": {
+                    "accepts": "node"
+                  },
+                  "body": {
+                    "accepts": "node"
+                  },
+                  "media": {
+                    "accepts": "node",
+                    "required": true
+                  },
+                  "title": {
+                    "accepts": "node",
+                    "required": true
+                  }
+                }
+              },
+              "required": true
+            }
+          },
+          "template": {
+            "attrs": {
+              "data-strips": ""
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "element": "div",
+                    "part": "heading",
+                    "slot": "heading"
+                  }
+                ],
+                "element": "div",
+                "part": "header",
+                "whenGiven": "heading"
+              },
+              {
+                "children": [
+                  {
+                    "element": "div",
+                    "itemSlot": "media",
+                    "part": "slide",
+                    "repeat": "items"
+                  }
+                ],
+                "element": "div",
+                "part": "track"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "element": "p",
+                        "itemSlot": "title",
+                        "part": "captionTitle"
+                      },
+                      {
+                        "element": "p",
+                        "itemSlot": "body",
+                        "part": "captionBody",
+                        "whenItemSlotGiven": "body"
+                      },
+                      {
+                        "element": "div",
+                        "itemSlot": "action",
+                        "part": "captionAction",
+                        "whenItemSlotGiven": "action"
+                      }
+                    ],
+                    "element": "div",
+                    "part": "caption",
+                    "repeat": "items"
+                  }
+                ],
+                "element": "div",
+                "part": "captions"
               }
             ],
             "element": "section",
@@ -53618,7 +53770,7 @@
     "working": "0.0.4"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "17e65202cca67e83",
+  "sourceHash": "90e60c7c954c25d5",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

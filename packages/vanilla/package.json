@@ -166,6 +166,10 @@
       "types": "./src/components/curve-carousel.ts",
       "default": "./src/components/curve-carousel.ts"
     },
+    "./strip-carousel": {
+      "types": "./src/components/strip-carousel.ts",
+      "default": "./src/components/strip-carousel.ts"
+    },
     "./loader": {
       "types": "./src/components/loader.ts",
       "default": "./src/components/loader.ts"

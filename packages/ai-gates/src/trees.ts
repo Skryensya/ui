@@ -2629,6 +2629,24 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    /* The strips: one entry is a strip AND a caption, far apart in the markup, paired by the template. */
+    name: "carousel/strips-news",
+    enhanced: true,
+    tree: {
+      contract: "carousel",
+      signature: "Carousel.strips",
+      attrs: { "aria-label": "Noticias" },
+      slots: {
+        heading: "Siempre al día",
+        items: [
+          { slots: { media: "Atlas", title: "Atlas llega a Chile", body: "Pagos locales desde el primer día." } },
+          { slots: { media: "Brújula", title: "Brújula, nueva versión" } },
+          { slots: { media: "Cardumen", title: "Cardumen abre su API" } },
+        ],
+      },
+    },
+  },
+  {
     /*
      * The shell, which is all an author writes. The list of chosen files is runtime state the two
      * bindings meet differently (React renders it, the enhancer never renders markup), and the

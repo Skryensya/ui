@@ -10,7 +10,7 @@ import {
 import type { OptionValue } from "@skryensya/core/contract";
 import { fadeEdgeAttrs } from "@skryensya/core/fade-edge";
 import { watchFadeEdge } from "@skryensya/core/fade-edge-dom";
-import { connectCurveRing } from "@skryensya/core/carousel";
+import { connectCarouselStrips, connectCurveRing } from "@skryensya/core/carousel";
 import { carousel } from "@skryensya/core/machines";
 import { prefersReducedMotion as reducedMotion } from "@skryensya/core/reduced-motion";
 import { normalizeProps, useMachine } from "@zag-js/react";
@@ -577,6 +577,111 @@ export const CurveCarousel = forwardRef<CarouselHandle, CurveCarouselProps>(func
           </div>
         </div>
       ) : null}
+    </section>
+  );
+});
+
+/*
+ * STRIP CAROUSEL (`Carousel.strips`): one item open, the others beside it as strips that thin out with
+ * distance, the open item's caption underneath. The engine in core (`connectCarouselStrips`, the same one
+ * the vanilla enhancer runs) owns the behaviour; this renders the markup it drives. `mounted={false}`
+ * leaves it unenhanced: the first item open, no prev/next.
+ */
+export type StripCarouselItem = {
+  /** The picture: open it shows whole; as a strip, a slice of its middle. */
+  media: ReactNode;
+  title: ReactNode;
+  body?: ReactNode;
+  /** A link or button for the open item. */
+  action?: ReactNode;
+};
+
+export type StripCarouselProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
+  items: readonly StripCarouselItem[];
+  /** Names the carousel region for assistive tech. */
+  "aria-label"?: string;
+  /** Shown at the start of the top row, prev/next at its end. */
+  heading?: ReactNode;
+  /** The item it opens on, counted from 0. */
+  defaultPage?: number;
+  /** Set false to leave it unenhanced. */
+  mounted?: boolean;
+};
+
+export const StripCarousel = forwardRef<CarouselHandle, StripCarouselProps>(function StripCarousel(
+  { className, defaultPage, heading, items, mounted = true, ...props },
+  ref,
+) {
+  const rootRef = useRef<HTMLElement>(null);
+  useCarouselHandle(ref, rootRef);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!mounted || !root) return;
+    const strips = connectCarouselStrips(root, { defaultPage, dir: root.closest("[dir=rtl]") ? "rtl" : "ltr" });
+    setReady(true);
+    return () => {
+      strips.destroy();
+      setReady(false);
+    };
+  }, [mounted, defaultPage, items]);
+
+  const controls =
+    mounted && items.length > 1 ? (
+      <div className={carouselParts.controls}>
+        {(["start", "end"] as const).map((side) => (
+          <button
+            key={side}
+            type="button"
+            className={`${carouselParts.button} sk-button sk-interactive`}
+            data-icon-only=""
+            data-side={side}
+            data-size="sm"
+            data-tone="neutral"
+            data-variant="soft"
+            aria-label={side === "start" ? carouselTranslations.prevTrigger : carouselTranslations.nextTrigger}
+          >
+            <Icon name={side === "start" ? "chevron-left" : "chevron-right"} />
+          </button>
+        ))}
+      </div>
+    ) : null;
+
+  return (
+    <section
+      {...props}
+      className={cx(carouselParts.root, className)}
+      data-sk-carousel={mounted ? "" : undefined}
+      data-strips=""
+      data-default-page={defaultPage}
+      data-sk-carousel-ready={ready ? "true" : undefined}
+      ref={rootRef}
+    >
+      {heading ? (
+        <div className={carouselParts.header}>
+          <div className={carouselParts.heading}>{heading}</div>
+          {controls}
+        </div>
+      ) : (
+        controls
+      )}
+      <div className={carouselParts.track}>
+        {items.map((item, index) => (
+          <div key={index} className={carouselParts.slide}>
+            {item.media}
+          </div>
+        ))}
+      </div>
+      <div className={carouselParts.captions}>
+        {items.map((item, index) => (
+          <div key={index} className={carouselParts.caption}>
+            <p className={carouselParts.captionTitle}>{item.title}</p>
+            {item.body ? <p className={carouselParts.captionBody}>{item.body}</p> : null}
+            {item.action ? <div className={carouselParts.captionAction}>{item.action}</div> : null}
+          </div>
+        ))}
+      </div>
     </section>
   );
 });

@@ -72,6 +72,10 @@ const componentDescriptions = {
     es: "Recorre colecciones visuales horizontales mediante pasos definidos.",
     en: "Browses visual collections horizontally in discrete steps.",
   },
+  "/components/strip-carousel": {
+    es: "Muestra historias una a la vez: una abierta y las siguientes como franjas a su lado.",
+    en: "Shows stories one at a time: one open and the next ones as strips beside it.",
+  },
   "/components/curve-carousel": {
     es: "Presenta unas pocas imágenes sobre un anillo, visto desde fuera o desde dentro.",
     en: "Presents a few pictures on a ring, seen from outside or from inside.",

@@ -3,8 +3,16 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "5d82091433882c98"
+surface: "bd6c37ec3b0ac29d"
 entries:
+  - date: 2026-11-21
+    kind: feature
+    es:
+      title: "StripCarousel: una abierta y las demás como franjas"
+      body: "Carousel.strips (StripCarousel en React): un elemento abierto y los siguientes al lado como franjas cada vez más finas, con su título, texto y acción debajo. Anterior/siguiente, flechas del teclado o un clic en una franja la abren."
+    en:
+      title: "StripCarousel: one open and the rest as strips"
+      body: "Carousel.strips (StripCarousel in React): one item open and the next ones beside it as strips that thin out, with its title, text and action underneath. Prev/next, the arrow keys or a click on a strip opens it."
   - date: 2026-11-21
     kind: bugfix
     es:

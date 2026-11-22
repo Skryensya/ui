@@ -81,6 +81,7 @@ import { otpInputMessages } from "./messages/components/otp-input";
 import { tablePagerMessages } from "./messages/components/table-pager";
 import { mediaOverlayMessages } from "./messages/components/media-overlay";
 import { curveCarouselMessages } from "./messages/components/curve-carousel";
+import { stripCarouselMessages } from "./messages/components/strip-carousel";
 import { messageMessages } from "./messages/components/message";
 import { qrCodeMessages } from "./messages/components/qr-code";
 import { feedMessages } from "./messages/components/feed";
@@ -244,6 +245,7 @@ export const ui = {
     ...tablePagerMessages.es,
     ...mediaOverlayMessages.es,
     ...curveCarouselMessages.es,
+    ...stripCarouselMessages.es,
     ...messageMessages.es,
     ...qrCodeMessages.es,
     ...feedMessages.es,
@@ -404,6 +406,7 @@ export const ui = {
     ...tablePagerMessages.en,
     ...mediaOverlayMessages.en,
     ...curveCarouselMessages.en,
+    ...stripCarouselMessages.en,
     ...messageMessages.en,
     ...qrCodeMessages.en,
     ...feedMessages.en,

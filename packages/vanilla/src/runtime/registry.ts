@@ -116,13 +116,17 @@ const registrations: readonly Registration[] = [
     load: async () => (await import("../components/tags-input.js")).mountTagsInput,
   },
   {
-    selector: "[data-sk-carousel]:not([data-curve])",
+    selector: "[data-sk-carousel]:not([data-curve]):not([data-strips])",
     load: async () => (await import("../components/carousel.js")).mountCarousel,
   },
   {
     // The wheel has its own small module: no Svelte, no Zag machine.
     selector: "[data-sk-carousel][data-curve]",
     load: async () => (await import("../components/curve-carousel.js")).mountCurveCarousel,
+  },
+  {
+    selector: "[data-sk-carousel][data-strips]",
+    load: async () => (await import("../components/strip-carousel.js")).mountStripCarousel,
   },
   {
     selector: "[data-sk-video-player]",

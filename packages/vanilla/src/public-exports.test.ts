@@ -15,6 +15,7 @@ import { mountButton } from "@skryensya/vanilla/button";
 import { mountCalendar } from "@skryensya/vanilla/calendar";
 import { mountCarousel } from "@skryensya/vanilla/carousel";
 import { mountCurveCarousel } from "@skryensya/vanilla/curve-carousel";
+import { mountStripCarousel } from "@skryensya/vanilla/strip-carousel";
 import { mountCheckboxGroup } from "@skryensya/vanilla/checkbox-group";
 import { mountCodePreview } from "@skryensya/vanilla/code-preview";
 import { mountColorPicker } from "@skryensya/vanilla/color-picker";
@@ -104,6 +105,7 @@ const mounts = [
   mountQrCode,
   mountCarousel,
   mountCurveCarousel,
+  mountStripCarousel,
   mountCheckboxGroup,
   mountColorPicker,
   mountCombobox,
@@ -163,7 +165,7 @@ const mounts = [
 describe("Vanilla public entry points", () => {
   it("publishes the lazy auto-loader and one mount for every regular enhanced module", () => {
     expect(initComponents).toBeTypeOf("function");
-    expect(mounts).toHaveLength(71);
+    expect(mounts).toHaveLength(72);
     expect(mounts.every((mount) => typeof mount === "function")).toBe(true);
   });
 
@@ -211,6 +213,7 @@ describe("Vanilla public entry points", () => {
         mountQrCode,
         mountCarousel,
         mountCurveCarousel,
+        mountStripCarousel,
         mountCheckboxGroup,
         mountColorPicker,
         mountCombobox,

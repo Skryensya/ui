@@ -77,6 +77,8 @@ export const carouselAttrs = {
   tall: "data-tall",
   /** `data-focus` on a CurveCarousel root: one large slide, its neighbours peeking at the sides. */
   focus: "data-focus",
+  /** `data-strips` on the root: StripCarousel, one item open and the rest as strips beside it. */
+  strips: "data-strips",
 } as const;
 
 export const carouselParts = {
@@ -102,6 +104,15 @@ export const carouselParts = {
   step: "sk-carousel__step",
   /** The fill inside a segment; under autoplay it grows with the time left on the current slide. */
   stepProgress: "sk-carousel__step-progress",
+  /** StripCarousel's top row: its heading at the start, prev/next at the end. */
+  header: "sk-carousel__header",
+  heading: "sk-carousel__heading",
+  /** StripCarousel's caption area under the strips: one caption per item, only the open one shown. */
+  captions: "sk-carousel__captions",
+  caption: "sk-carousel__caption",
+  captionTitle: "sk-carousel__caption-title",
+  captionBody: "sk-carousel__caption-body",
+  captionAction: "sk-carousel__caption-action",
 } as const;
 
 export type CarouselPart = keyof typeof carouselParts;
@@ -324,6 +335,67 @@ export const carouselContract = {
       react: { from: "@skryensya/react/carousel", name: "CurveCarousel" },
     },
 
+    /*
+     * THE STRIPS (StripCarousel): one item open, the others beside it as strips that thin out with
+     * distance, the open item's caption under them. A carousel by behaviour (one item at a time, prev and
+     * next), an accordion by layout, so its items are data: one entry is a strip AND a caption, far apart.
+     */
+    "Carousel.strips": {
+      intent: ["news-carousel", "strip-carousel", "expanding-gallery", "accordion-gallery", "featured-stories"],
+      host: { element: "section" },
+      options: ["mounted", "defaultPage"],
+      slots: {
+        heading: { accepts: "node" },
+        items: {
+          accepts: "items",
+          required: true,
+          item: {
+            options: {},
+            slots: {
+              /** The picture: open, it shows whole; as a strip, a slice of its middle. */
+              media: { accepts: "node", required: true },
+              title: { accepts: "node", required: true },
+              body: { accepts: "node" },
+              /** A link or button for the open item ("Read the announcement"). */
+              action: { accepts: "node" },
+            },
+          },
+        },
+      },
+      template: {
+        element: "section",
+        part: "root",
+        host: true,
+        attrs: { "data-strips": "" },
+        children: [
+          {
+            element: "div",
+            part: "header",
+            whenGiven: "heading",
+            children: [{ element: "div", part: "heading", slot: "heading" }],
+          },
+          { element: "div", part: "track", children: [{ element: "div", part: "slide", repeat: "items", itemSlot: "media" }] },
+          {
+            element: "div",
+            part: "captions",
+            children: [
+              {
+                element: "div",
+                part: "caption",
+                repeat: "items",
+                children: [
+                  { element: "p", part: "captionTitle", itemSlot: "title" },
+                  { element: "p", part: "captionBody", itemSlot: "body", whenItemSlotGiven: "body" },
+                  { element: "div", part: "captionAction", itemSlot: "action", whenItemSlotGiven: "action" },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      react: { from: "@skryensya/react/carousel", name: "StripCarousel" },
+    },
+
     CarouselSlide: {
       intent: ["slide", "carousel-item"],
       host: { element: "div" },
@@ -337,7 +409,7 @@ export const carouselContract = {
 
   a11y: [
     {
-      signatures: ["Carousel", "Carousel.curve"],
+      signatures: ["Carousel", "Carousel.curve", "Carousel.strips"],
       when: {},
       requiresOneOf: ["aria-label", "aria-labelledby"],
       because:
@@ -399,3 +471,5 @@ export function bendCarouselSlides(root: HTMLElement, bands: number = CAROUSEL_B
 
 /* The ring engine of CurveCarousel, also at `@skryensya/core/curve-ring`. */
 export * from "./curve-ring.js";
+/* StripCarousel's engine. */
+export * from "./strip-carousel.js";

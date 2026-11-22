@@ -313,6 +313,12 @@ export const componentItems = [
     ],
   },
   {
+    href: "/components/strip-carousel",
+    label: "StripCarousel",
+    trailing: "Beta",
+    aliases: ["carrusel de franjas", "carrusel de noticias", "galería expandible", "acordeón de imágenes", "strip carousel", "news carousel", "expanding gallery", "accordion gallery"],
+  },
+  {
     href: "/components/curve-carousel",
     label: "CurveCarousel",
     trailing: "Beta",
@@ -1275,6 +1281,7 @@ const allComponentNavigation = [
       "/components/canvas",
       "/components/carousel",
       "/components/curve-carousel",
+      "/components/strip-carousel",
       "/components/compare-slider",
       "/components/diagram",
       "/components/image-frame",

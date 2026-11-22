@@ -23,6 +23,17 @@ Carousel:
     - Carousel
     - Grid
 
+"Carousel.strips":
+  useWhen:
+    - "a section shows a few stories or announcements one at a time, a big picture with its title and a link under it"
+    - "the next items should be in sight but not compete: strips that thin out beside the open one"
+  avoidWhen:
+    - "people should see and compare several items at once; use a flat Carousel or a Grid of cards"
+    - "the items have no picture; a strip of plain text says nothing, use Tabs or a list"
+  alternatives:
+    - Carousel
+    - Tabs
+
 CarouselSlide:
   useWhen:
     - "it is one item of the carousel; anything can go inside, usually a card"

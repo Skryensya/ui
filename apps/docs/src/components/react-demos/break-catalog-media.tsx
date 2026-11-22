@@ -7,7 +7,7 @@ import { CompareSlider } from "@skryensya/react/compare-slider";
 import { ExpressiveAvatar } from "@skryensya/react/expressive-avatar";
 import { FadeEdge } from "@skryensya/react/fade-edge";
 import { Marquee } from "@skryensya/react/marquee";
-import { CarouselSlide, CurveCarousel } from "@skryensya/react/carousel";
+import { CarouselSlide, CurveCarousel, StripCarousel } from "@skryensya/react/carousel";
 import { MorphStack } from "@skryensya/react/morph-stack";
 import { Presence } from "@skryensya/react/presence";
 import { ScrollExpand } from "@skryensya/react/scroll-expand";
@@ -46,6 +46,8 @@ function Specimen({ id, data, index }: { id: string; data: Fixture; index: numbe
     case "diagram": return <Diagram label={title} columns={worst ? 3 : 2} nodes={items.map((text, i) => ({ node: `node-${i}`, children: text }))} edges={items.slice(1).map((_, i) => ({ from: `node-${i}`, to: `node-${i + 1}`, children: worst ? body : "Next" }))} />;
     case "compare-slider": return <CompareSlider label={title} before={picture} after={<img src="/demos/lightbox/fjord.jpg" alt="Fjord" />} position={data.label === "Empty" ? 0 : data.label === "One item" ? 100 : 50} style={{ aspectRatio: "4/3" }} />;
     case "expressive-avatar": return <><ExpressiveAvatar name={title} src={worst ? "/debug/missing-avatar.jpg" : data.label === "Empty" ? undefined : "/demos/lightbox/puppy.jpg"} interactive phrases={{ greetings: [{ text: body || "Hello, Jo." }], general: items.map((text) => ({ text })) }} onSpeak={({ text }) => setStatus(text)} /><output>{status}</output></>;
+    // Each entry a picture and its caption: the worst case is a long title and body under the open one.
+    case "strip-carousel": return <StripCarousel aria-label={title} heading={title} items={items.map((text) => ({ media: picture, title: text, body: body || undefined }))} />;
     case "fade-edge": return <FadeEdge scrollAware tabIndex={0} role="region" aria-label={title} style={{ maxBlockSize: "12rem", overflow: "auto" }}>{rows}</FadeEdge>;
     // One piece per slide (the curve turns the slide's content): the worst case is long text in it.
     case "curve-carousel": return <CurveCarousel aria-label={title} curve={index % 2 ? "concave" : "convex"}>{items.map((text, i) => <CarouselSlide key={i}><Box padding="md" border="subtle">{text}</Box></CarouselSlide>)}</CurveCarousel>;
