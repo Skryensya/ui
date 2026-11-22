@@ -12,6 +12,8 @@
  */
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@skryensya/react/button";
+import { IconSetProvider } from "@skryensya/react/icon";
+import { siteIcons } from "../../icons";
 import { SegmentedControl } from "@skryensya/react/segmented";
 import { NativeSelect } from "@skryensya/react/select-native";
 import type { UsageTree } from "@skryensya/core/usage-tree";
@@ -132,7 +134,10 @@ export function PropertyPlayground({ tree, optionName, trees, measure, toggleLab
     return () => observer.disconnect();
   }, [frame]);
 
+  // Bound here, as the preview frame does for its demos: the kit ships no default set, and this island draws React components
+  // (a carousel's chevrons) in the page itself, outside any frame.
   return (
+    <IconSetProvider set={siteIcons}>
     <div className="sk-property-playground" data-sk-playground-value={value}>
       {values.length === 0 ? null : hydrated && narrow ? (
         <NativeSelect
@@ -207,5 +212,6 @@ export function PropertyPlayground({ tree, optionName, trees, measure, toggleLab
       </div>
       <p className="sk-visually-hidden" aria-live="polite" dangerouslySetInnerHTML={{ __html: explanation ?? "" }} />
     </div>
+    </IconSetProvider>
   );
 }
