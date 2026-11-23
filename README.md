@@ -50,9 +50,9 @@ That is what `pre-push` AND CI run, and it skips the browser gates. `pnpm check:
 alone (about 19 minutes, worth it for anything visual) and `pnpm check:all` runs both.
 
 <!-- x-release-please-start-version -->
-## Consuming 0.0.3
+## Consuming 0.0.4
 
-`0.0.3` is cut as a GitHub Release, not published to npm yet. The release assets are npm-compatible
+`0.0.4` is cut as a GitHub Release, not published to npm yet. The release assets are npm-compatible
 tarballs, so install the Skryensya packages you need from the release URL.
 <!-- x-release-please-end -->
 
@@ -67,7 +67,7 @@ only the icons the components use:
 
 <!-- x-release-please-start-version -->
 ```bash
-SKRYENSYA_VERSION=0.0.3
+SKRYENSYA_VERSION=0.0.4
 npx https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-cli-${SKRYENSYA_VERSION}.tgz add button select --icons lucide
 ```
 <!-- x-release-please-end -->
@@ -81,7 +81,7 @@ For React:
 
 <!-- x-release-please-start-version -->
 ```bash
-SKRYENSYA_VERSION=0.0.3
+SKRYENSYA_VERSION=0.0.4
 pnpm add react react-dom \
   https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-core-${SKRYENSYA_VERSION}.tgz \
   https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-react-${SKRYENSYA_VERSION}.tgz
@@ -105,7 +105,7 @@ bundle:
 
 <!-- x-release-please-start-version -->
 ```bash
-SKRYENSYA_VERSION=0.0.3
+SKRYENSYA_VERSION=0.0.4
 pnpm add -D @iconify-json/lucide
 npx https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-cli-${SKRYENSYA_VERSION}.tgz icons lucide
 ```
@@ -123,7 +123,7 @@ For authored HTML plus progressive enhancement:
 
 <!-- x-release-please-start-version -->
 ```bash
-SKRYENSYA_VERSION=0.0.3
+SKRYENSYA_VERSION=0.0.4
 pnpm add \
   https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-core-${SKRYENSYA_VERSION}.tgz \
   https://github.com/Skryensya/ui/releases/download/v${SKRYENSYA_VERSION}/skryensya-vanilla-${SKRYENSYA_VERSION}.tgz
