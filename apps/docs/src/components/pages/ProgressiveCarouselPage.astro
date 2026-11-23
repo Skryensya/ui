@@ -1,0 +1,68 @@
+---
+import ComponentPageShell from "./ComponentPageShell.astro";
+import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import DoDont from "../DoDont.astro";
+import { progressiveCarouselNewsTree, progressiveCarouselShortTree, progressiveCarouselMiddleTree, progressiveCarouselDoPictureTree, progressiveCarouselDontPictureTree, progressiveCarouselDoCountTree, progressiveCarouselDontCountTree, progressiveCarouselDoCaptionTree, progressiveCarouselDontCaptionTree } from "../../demos/progressive-carousel";
+import { getLocale, tList, useTranslations } from "../../i18n";
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/patterns/state-layer.css";
+import "@skryensya/core/components/carousel.css";
+import "@skryensya/core/patterns/image-frame.css";
+import "@skryensya/core/components/typography.css";
+import "@skryensya/core/patterns/box.css";
+import "@/icon-sets/ph.css";
+
+const t = useTranslations(getLocale(Astro.url));
+const storybookTitle = "Components/ProgressiveCarousel";
+---
+
+<ComponentPageShell
+  hookPlayground={{ tree: progressiveCarouselNewsTree(t) }}
+  title="ProgressiveCarousel"
+  description={t("progressiveCarousel.description")}
+  contractId="carousel"
+  vanillaMount={{ entrypoint: "@skryensya/vanilla/progressive-carousel", mount: "mountProgressiveCarousel", selector: "[data-sk-carousel][data-progressive]" }}
+  badge="Beta"
+  extraSheets={["@skryensya/core/components/button.css", "@skryensya/core/patterns/state-layer.css", "./icons.css", "@skryensya/core/patterns/image-frame.css", "@skryensya/core/patterns/box.css"]}
+  testFiles={["packages/react/src/components/carousel.test.tsx", "packages/vanilla/src/components/carousel.svelte.test.ts"]}
+>
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("progressiveCarousel.lede")} />
+
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={progressiveCarouselNewsTree(t)} title={t("progressiveCarousel.newsTitle")} description={t("progressiveCarousel.newsBody")} storybookTitle={storybookTitle} storybookStory="News" />
+    <UsagePreview tree={progressiveCarouselShortTree(t)} title={t("progressiveCarousel.shortTitle")} description={t("progressiveCarousel.shortBody")} storybookTitle={storybookTitle} storybookStory="Short" />
+    <UsagePreview tree={progressiveCarouselMiddleTree(t)} title={t("progressiveCarousel.middleTitle")} description={t("progressiveCarousel.middleBody")} storybookTitle={storybookTitle} storybookStory="Middle" />
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("progressiveCarousel.guidelinesLede")} />
+    <WhenToUse use={tList(t, "progressiveCarousel.when")} avoid={tList(t, "progressiveCarousel.whenNot")} />
+    <DoDont
+      canvas
+      title={t("progressiveCarousel.dd.picture.title")}
+      do={{ tree: progressiveCarouselDoPictureTree(t), caption: t("progressiveCarousel.dd.picture.do") }}
+      dont={{ tree: progressiveCarouselDontPictureTree(t), caption: t("progressiveCarousel.dd.picture.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("progressiveCarousel.dd.count.title")}
+      do={{ tree: progressiveCarouselDoCountTree(t), caption: t("progressiveCarousel.dd.count.do") }}
+      dont={{ tree: progressiveCarouselDontCountTree(t), caption: t("progressiveCarousel.dd.count.dont") }}
+    />
+    <DoDont
+      canvas
+      title={t("progressiveCarousel.dd.caption.title")}
+      do={{ tree: progressiveCarouselDoCaptionTree(t), caption: t("progressiveCarousel.dd.caption.do") }}
+      dont={{ tree: progressiveCarouselDontCaptionTree(t), caption: t("progressiveCarousel.dd.caption.dont") }}
+    />
+    <ContentRules items={tList(t, "progressiveCarousel.content")} />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes intro={t("progressiveCarousel.a11yIntro")} does={tList(t, "progressiveCarousel.a11yDoes")} yours={tList(t, "progressiveCarousel.a11yYours")} />
+  </Fragment>
+</ComponentPageShell>

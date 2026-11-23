@@ -1,5 +1,6 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { agentDocsDir, buildAgentDocs, writeAgentDocs } from "./agent-docs-files.js";
 import { checkBindingConformance } from "./conformance.js";
 import { checkCompose } from "./compose.js";
 import { checkStylingHooks } from "./hooks.js";
@@ -89,3 +90,8 @@ writeFileSync(join(outDir, "ai-manifest.json"), canonical(manifest));
 
 const families = Object.keys(manifest.contracts).length;
 console.log(`  ai-index.json + ai-manifest.json: ${families} families, sourceHash ${sourceHash}`);
+
+/* The Markdown a model reads without the MCP, rendered from the same pair and shipped in @skryensya/core. */
+const docs = buildAgentDocs({ index, manifest });
+writeAgentDocs(agentDocsDir(root), docs);
+console.log(`  packages/core/docs: ${Object.keys(docs).length} files`);

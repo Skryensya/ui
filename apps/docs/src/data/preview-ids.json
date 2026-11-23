@@ -1511,5 +1511,11 @@
   "/es/componentes/curve-carousel|Una en foco|||Components/CurveCarousel|Focus|": 1510,
   "/es/componentes/curve-carousel|Tarjetas más altas|||Components/CurveCarousel|Tall|": 1511,
   "/components/curve-carousel|One in focus|||Components/CurveCarousel|Focus|": 1512,
-  "/components/curve-carousel|Taller cards|||Components/CurveCarousel|Tall|": 1513
+  "/components/curve-carousel|Taller cards|||Components/CurveCarousel|Tall|": 1513,
+  "/es/componentes/strip-carousel|Noticias|||Components/StripCarousel|News|": 1514,
+  "/es/componentes/strip-carousel|Pocas historias|||Components/StripCarousel|Short|": 1515,
+  "/es/componentes/strip-carousel|Abrir en otra historia|||Components/StripCarousel|Middle|": 1516,
+  "/es/componentes/progressive-carousel|Noticias|||Components/ProgressiveCarousel|News|": 1517,
+  "/es/componentes/progressive-carousel|Pocas historias|||Components/ProgressiveCarousel|Short|": 1518,
+  "/es/componentes/progressive-carousel|Abrir en otra historia|||Components/ProgressiveCarousel|Middle|": 1519
 }

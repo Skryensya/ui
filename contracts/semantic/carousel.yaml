@@ -23,7 +23,7 @@ Carousel:
     - Carousel
     - Grid
 
-"Carousel.strips":
+"Carousel.progressive":
   useWhen:
     - "a section shows a few stories or announcements one at a time, a big picture with its title and a link under it"
     - "the next items should be in sight but not compete: strips that thin out beside the open one"

@@ -62,6 +62,9 @@ interface Props {
    *  surveys several contracts at once or documents a pattern with none of its own: Referencia and
    *  Cambios drop out rather than reading a contract that does not describe the page. */
   contractId?: string;
+  /** The enhancer this page documents, when it is one of several its contract owns (a Carousel signature
+   *  with its own page and its own module). Without it the contract's manifest entry names the mount. */
+  vanillaMount?: { entrypoint: string; mount: string; selector: string };
   /** Which of the contract's React exports THIS page imports. Required when several pages share one
    *  contract (the Tile family): without it the import lists every export, and grows with each one added. */
   importNames?: string[];
@@ -138,6 +141,7 @@ const {
   appearanceTargetSelector,
   untitledCode = false,
   hookPlayground,
+  vanillaMount: ownMount,
 } = Astro.props;
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
@@ -210,7 +214,9 @@ const hasVanillaInstall = Astro.slots.has("installVanilla");
  */
 /* The manifest names the enhancer a contract owns; a route whose page documents a differently named one
    (the checkbox page mounts `tile-checkbox`) still falls back to the route catalogue. */
-const mountFact = install?.vanilla
+const mountFact = ownMount
+  ? { name: title, ...ownMount, auto: true }
+  : install?.vanilla
   ? { name: title, entrypoint: install.vanilla.entry, mount: install.vanilla.mount!, selector: install.vanilla.selectors[0] ?? "", auto: install.vanilla.auto }
   : (() => {
       const route = vanillaMountFor(Astro.url.pathname);

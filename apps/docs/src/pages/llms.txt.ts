@@ -26,6 +26,14 @@ export function buildLlmsTxt(): string {
     "# skryensya/ui",
     "> A framework-agnostic design system where the component contract is the source of truth: every component ships as a React binding and as plain HTML enhanced by a Vanilla mount, both derived from one contract (parts, options, attributes and accessibility rules) so the two never drift.",
     "Each component page covers when to use it and when not to, its anatomy, options, keyboard behaviour and do/don't examples. For composing UI programmatically, the `@skryensya/mcp` server exposes the same contracts: discover candidate components, read a contract, and validate a usage tree before emitting markup or React.",
+    [
+      "## For agents building with it",
+      "",
+      "- Skill: `npx skills add Skryensya/ui --skill skryensya-ui`. It routes between the MCP and the offline path.",
+      "- Docs as Markdown, matching the installed release: `node_modules/@skryensya/core/docs/llms.txt`, then `choose.md` and one page per family.",
+      "- Without the MCP: `skryensya validate <tree.json>` and `skryensya review <tree.json>` answer what validate_ui and review_ui do.",
+      "- Operating a page: `@skryensya/core/agent` gives an agent `snapshot`, `query` and `act` over the page's components, and offers them through WebMCP.",
+    ].join("\n"),
     ...sections.filter(Boolean),
   ].join("\n\n") + "\n";
 }

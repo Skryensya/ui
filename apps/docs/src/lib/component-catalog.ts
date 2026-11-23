@@ -72,7 +72,7 @@ const componentDescriptions = {
     es: "Recorre colecciones visuales horizontales mediante pasos definidos.",
     en: "Browses visual collections horizontally in discrete steps.",
   },
-  "/components/strip-carousel": {
+  "/components/progressive-carousel": {
     es: "Muestra historias una a la vez: una abierta y las siguientes como franjas a su lado.",
     en: "Shows stories one at a time: one open and the next ones as strips beside it.",
   },

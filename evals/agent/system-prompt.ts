@@ -21,6 +21,17 @@ const framing =
   'with a single-choice question among three alternatives" is a product intent to compose as a ' +
   "usage tree, never a literal request to fulfill in prose. ";
 
+/*
+ * Without the MCP the tree has to land somewhere the harness can read: `tree.json` in the working
+ * directory, scored exactly as the last validate_ui call is in an MCP run.
+ */
+const deliver = " Write the final usage tree, as JSON, to ./tree.json in the working directory: it is the only thing read.";
+
+export const handoutSystemPrompts = {
+  skill: framing + "The skryensya-ui skill is installed in this project; follow it. The kit's CLI runs as `npx skryensya`." + deliver,
+  docs: framing + "The kit's docs are installed at node_modules/@skryensya/core/docs: start at llms.txt." + deliver,
+} as const;
+
 export const evalSystemPrompts: Readonly<Record<Workflow, string>> = {
   discovery:
     framing +

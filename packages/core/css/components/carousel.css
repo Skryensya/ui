@@ -678,158 +678,218 @@
     border-radius: var(--radius-control);
   }
 
-  /* ── STRIPS (StripCarousel, `data-strips`) ──────────────────────────────────────────────────────────
-   * One item open, the rest beside it as strips that thin out with distance, the open item's caption
-   * underneath. Nothing scrolls: the engine writes `data-distance` (0 open, 1..4 away) on every slide and
-   * this turns distances into flex weights, so the strips widen and narrow by themselves. Row 1 is the
-   * header (heading, prev/next), row 2 the strips, row 3 the caption. */
-  .sk-carousel[data-strips] {
+  /* ── PROGRESSIVE (ProgressiveCarousel, `data-progressive`) ─────────────────────────────────────────
+   * A circular row whose widths shrink progressively: the active slide first, on the start side, the next
+   * ones as ever narrower strips, the active one's caption underneath. Row 1 is the header (heading,
+   * stepper, prev/next), row 2 the row of slides, row 3 the caption.
+   *
+   * Enhanced, the engine places every slide itself (transform, width, opacity, in px) and this only
+   * animates them, so a step is one continuous move: the active slide leaves past the start edge, the
+   * rest move up and widen, a new one comes in past the end edge. Without JavaScript it is a flex row with
+   * the first slide open. */
+  .sk-carousel[data-progressive] {
+    /* Between the large slides; the narrowest strips stand half as far apart. */
+    --sk-carousel-gap: 8px;
+    /* Engine move times, in ms: a step, and the hover growing a strip. */
+    --sk-carousel-progressive-step: 420;
+    --sk-carousel-progressive-hover: 200;
     container-type: inline-size;
     inline-size: 100%;
-    grid-template-columns: minmax(0, 1fr);
+    /* No content width of its own (a container): in a box sized to its content, give it a width. */
+    /* The bottom row: the active slide's text (as wide as that slide at most), its action, prev/next. */
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    column-gap: var(--space-inline-md);
     row-gap: var(--space-stack-md);
   }
 
   .sk-carousel__header {
     grid-row: 1;
+    grid-column: 1 / -1;
+    min-inline-size: 0;
+  }
+
+  .sk-carousel[data-progressive] > .sk-carousel__controls {
+    grid-row: 3;
+    grid-column: 3;
     display: flex;
-    align-items: end;
     gap: var(--space-inline-sm);
-    min-inline-size: 0;
+    align-self: center;
   }
 
-  .sk-carousel__heading {
-    flex: 1 1 auto;
-    min-inline-size: 0;
-  }
-
-  /* prev/next end the header row: the controls box lends them to the header's flex row. */
-  .sk-carousel[data-strips] .sk-carousel__button {
+  .sk-carousel[data-progressive] .sk-carousel__button {
     grid-row: auto;
     grid-column: auto;
   }
 
-  .sk-carousel[data-strips]:not(:has(.sk-carousel__header)) > .sk-carousel__controls {
-    grid-row: 1;
-    display: flex;
-    justify-content: end;
-    gap: var(--space-inline-sm);
-  }
-
-  .sk-carousel[data-strips] > .sk-carousel__track {
+  .sk-carousel[data-progressive] > .sk-carousel__track {
     grid-row: 2;
+    grid-column: 1 / -1;
     /* `clip`, not a scroll box: nothing scrolls here, and the native carousel buttons stay away. */
     overflow: clip;
     scroll-snap-type: none;
     aspect-ratio: 8 / 3;
   }
 
-  .sk-carousel[data-strips] .sk-carousel__slide {
-    --strip-grow: 0.16;
+  .sk-carousel[data-progressive] .sk-carousel__slide {
+    --strip-grow: 0.25;
     flex: var(--strip-grow) 1 0;
     inline-size: auto;
     max-inline-size: none;
     overflow: hidden;
-    border-radius: var(--radius-card, var(--radius-control));
+    /* The radius follows the width (set by the engine): full on the open slide, tighter on each strip. */
+    border-radius: min(var(--radius-surface), calc(var(--sk-slide-width, 100vw) * 0.2));
     cursor: pointer;
-    transition: flex-grow 450ms var(--motion-emphasis-easing, cubic-bezier(0.2, 0, 0, 1));
   }
 
-  .sk-carousel[data-strips] .sk-carousel__slide[data-active] {
-    cursor: auto;
+  /* Enhanced: the slides stand on one spot and the engine moves them; this times the move. */
+  .sk-carousel[data-progressive][data-sk-carousel-ready] > .sk-carousel__track {
+    display: block;
+    position: relative;
+    /* A horizontal swipe moves the row; a vertical one still scrolls the page. */
+    touch-action: pan-y;
   }
 
-  /* The picture fills the strip and is cropped to cover it: a strip shows a slice of its middle. */
-  .sk-carousel[data-strips] .sk-carousel__slide > * {
+  .sk-carousel[data-progressive][data-sk-carousel-ready] .sk-carousel__slide {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+  }
+
+  /* Every picture covers its slide, centred: in a strip it is a slice of its middle that opens on both
+   * sides as the strip widens, and in the active slide it grows with the width to keep covering it. */
+  .sk-carousel[data-progressive] .sk-carousel__slide > * {
     --sk-image-frame-aspect: auto;
     inline-size: 100%;
+    max-inline-size: none;
     block-size: 100%;
   }
 
-  .sk-carousel[data-strips] .sk-carousel__slide :is(img, video) {
+  .sk-carousel[data-progressive] .sk-carousel__slide :is(img, video) {
     inline-size: 100%;
     block-size: 100%;
     object-fit: cover;
   }
 
-  /* Open, then half, a quarter, an eighth, then hairlines. Before JS the first item is the open one. */
-  .sk-carousel[data-strips] .sk-carousel__slide[data-distance="0"],
-  .sk-carousel[data-strips]:not([data-sk-carousel-ready]) .sk-carousel__slide:nth-child(1) {
+  /* Before JS: the first slide open, then a quarter, an eighth, a sixteenth, then hairlines. */
+  .sk-carousel[data-progressive]:not([data-sk-carousel-ready]) .sk-carousel__slide:nth-child(1) {
     --strip-grow: 16;
   }
 
-  .sk-carousel[data-strips] .sk-carousel__slide[data-distance="1"],
-  .sk-carousel[data-strips]:not([data-sk-carousel-ready]) .sk-carousel__slide:nth-child(2) {
+  .sk-carousel[data-progressive]:not([data-sk-carousel-ready]) .sk-carousel__slide:nth-child(2) {
     --strip-grow: 4;
   }
 
-  .sk-carousel[data-strips] .sk-carousel__slide[data-distance="2"],
-  .sk-carousel[data-strips]:not([data-sk-carousel-ready]) .sk-carousel__slide:nth-child(3) {
+  .sk-carousel[data-progressive]:not([data-sk-carousel-ready]) .sk-carousel__slide:nth-child(3) {
     --strip-grow: 2;
   }
 
-  .sk-carousel[data-strips] .sk-carousel__slide[data-distance="3"],
-  .sk-carousel[data-strips]:not([data-sk-carousel-ready]) .sk-carousel__slide:nth-child(4) {
+  .sk-carousel[data-progressive]:not([data-sk-carousel-ready]) .sk-carousel__slide:nth-child(4) {
     --strip-grow: 1;
   }
 
-  /* Narrow: the open item and two strips; the farther ones step out of the row. */
-  @container (inline-size < 40rem) {
-    .sk-carousel[data-strips] > .sk-carousel__track {
+  /* Narrow (the engine's own breakpoint, 480px): a plain carousel, one slide the full width. */
+  @container (inline-size < 30rem) {
+    .sk-carousel[data-progressive] > .sk-carousel__track {
       aspect-ratio: 4 / 3;
     }
 
-    .sk-carousel[data-strips] .sk-carousel__slide[data-distance="0"],
-    .sk-carousel[data-strips]:not([data-sk-carousel-ready]) .sk-carousel__slide:nth-child(1) {
-      --strip-grow: 8;
+    .sk-carousel[data-progressive]:not([data-sk-carousel-ready]) .sk-carousel__slide:nth-child(1) {
+      --strip-grow: 1;
     }
 
-    .sk-carousel[data-strips] .sk-carousel__slide:is([data-distance="3"], [data-distance="4"]),
-    .sk-carousel[data-strips]:not([data-sk-carousel-ready]) .sk-carousel__slide:nth-child(n + 4) {
+    .sk-carousel[data-progressive]:not([data-sk-carousel-ready]) .sk-carousel__slide:nth-child(n + 2) {
       display: none;
     }
+
+    .sk-carousel[data-progressive] :is(.sk-carousel__caption-title, .sk-carousel__caption-body) {
+      inline-size: auto;
+      max-inline-size: none;
+    }
+
+    .sk-carousel[data-progressive] .sk-carousel__caption-title {
+      justify-self: stretch;
+    }
+
+    /* The text takes the whole width; the action and prev/next go on the row under it. */
+    .sk-carousel[data-progressive] .sk-carousel__caption-body {
+      grid-column: 1 / -1;
+    }
+
+    .sk-carousel[data-progressive] .sk-carousel__caption-action {
+      grid-row: 4;
+      grid-column: 1;
+      justify-self: start;
+    }
+
+    .sk-carousel[data-progressive] > .sk-carousel__controls {
+      grid-row: 4;
+    }
+
+    .sk-carousel[data-progressive]:not(:has(> .sk-carousel__header)) .sk-carousel__caption-action,
+    .sk-carousel[data-progressive]:not(:has(> .sk-carousel__header)) > .sk-carousel__controls {
+      grid-row: 3;
+    }
   }
 
-  .sk-carousel__captions {
-    grid-row: 3;
-    display: grid;
-    min-inline-size: 0;
-  }
-
-  /* Text at the start, the action at the end, the way the open item's picture leads the row above. */
+  /* THE CAPTION lends its parts to the root's grid: the title lies on the active slide, at its foot, and
+   * the text and the action share the bottom row with prev/next. Only the active slide's caption shows. */
+  .sk-carousel__captions,
   .sk-carousel__caption {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    column-gap: var(--space-inline-lg);
-    row-gap: var(--space-stack-xs);
-    align-items: start;
-    animation: sk-carousel-caption-in var(--sk-carousel-motion-duration) var(--sk-carousel-motion-easing);
+    display: contents;
   }
 
   .sk-carousel__caption[hidden],
-  .sk-carousel[data-strips]:not([data-sk-carousel-ready]) .sk-carousel__caption:not(:first-child) {
+  .sk-carousel[data-progressive]:not([data-sk-carousel-ready]) .sk-carousel__caption:not(:first-child) {
     display: none;
   }
 
-  .sk-carousel__caption-title,
-  .sk-carousel__caption-body {
-    grid-column: 1;
-    margin: 0;
-    max-inline-size: 60ch;
-  }
-
   .sk-carousel__caption-title {
-    font-weight: var(--font-weight-emphasis);
-    color: var(--color-text-primary);
+    grid-row: 2;
+    grid-column: 1 / -1;
+    justify-self: start;
+    align-self: end;
+    z-index: 1;
+    box-sizing: border-box;
+    /* As wide as the active slide is now (the engine measures it; before JS, about its share of the row). */
+    inline-size: var(--progressive-active-size, 68%);
+    margin: 0;
+    margin-inline-start: var(--progressive-active-start, 0px);
+    padding: var(--space-inset-xl) var(--space-inset-lg) var(--space-inset-lg);
+    border-end-start-radius: var(--radius-surface);
+    border-end-end-radius: var(--radius-surface);
+    background: linear-gradient(to bottom, transparent, rgb(0 0 0 / 0.62));
+    color: var(--color-text-on-media);
+    font-size: var(--font-size-heading-sm);
+    font-weight: var(--font-weight-heading);
+    pointer-events: none;
+    animation: sk-carousel-caption-in var(--sk-carousel-motion-duration) var(--sk-carousel-motion-easing);
   }
 
   .sk-carousel__caption-body {
+    grid-row: 3;
+    grid-column: 1;
+    align-self: center;
+    margin: 0;
+    max-inline-size: var(--progressive-media-size, 68%);
     color: var(--color-text-secondary);
+    animation: sk-carousel-caption-in var(--sk-carousel-motion-duration) var(--sk-carousel-motion-easing);
   }
 
   .sk-carousel__caption-action {
+    grid-row: 3;
     grid-column: 2;
-    grid-row: 1 / span 2;
+    align-self: center;
+  }
+
+  /* No header: the slides take the first row and the bottom row moves up. */
+  .sk-carousel[data-progressive]:not(:has(> .sk-carousel__header)) > .sk-carousel__track,
+  .sk-carousel[data-progressive]:not(:has(> .sk-carousel__header)) .sk-carousel__caption-title {
+    grid-row: 1;
+  }
+
+  .sk-carousel[data-progressive]:not(:has(> .sk-carousel__header)) > .sk-carousel__controls,
+  .sk-carousel[data-progressive]:not(:has(> .sk-carousel__header)) :is(.sk-carousel__caption-body, .sk-carousel__caption-action) {
+    grid-row: 2;
   }
 
   @keyframes sk-carousel-caption-in {
@@ -851,11 +911,7 @@
       transition: none;
     }
 
-    .sk-carousel[data-strips] .sk-carousel__slide {
-      transition: none;
-    }
-
-    .sk-carousel__caption {
+    :is(.sk-carousel__caption-title, .sk-carousel__caption-body) {
       animation: none;
     }
   }
@@ -874,11 +930,7 @@
       transition: none;
     }
 
-    .sk-carousel[data-strips] .sk-carousel__slide {
-      transition: none;
-    }
-
-    .sk-carousel__caption {
+    :is(.sk-carousel__caption-title, .sk-carousel__caption-body) {
       animation: none;
     }
   }

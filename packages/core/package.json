@@ -10,7 +10,9 @@
     "scripts",
     "src",
     "contrast-pairs.json",
-    "install-manifest.json"
+    "install-manifest.json",
+    "docs",
+    "skills"
   ],
   "exports": {
     "./contract": {
@@ -691,7 +693,11 @@
       "types": "./src/user-select.ts",
       "default": "./src/user-select.ts"
     },
-    "./install-manifest.json": "./install-manifest.json"
+    "./install-manifest.json": "./install-manifest.json",
+    "./agent": {
+      "types": "./src/agent.ts",
+      "default": "./src/agent.ts"
+    }
   },
   "scripts": {
     "build": "node scripts/build-css.ts && tsc -p tsconfig.json && node scripts/generate-install-manifest.ts",

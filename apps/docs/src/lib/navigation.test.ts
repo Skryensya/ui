@@ -39,7 +39,7 @@ const expected: Record<(typeof expectedOrder)[number], readonly string[]> = {
   feedback: ["Callout", "EmptyState", "Loader", "Placeholder", "Progress", "Toast"],
   overlays: ["Dialog", "Dialog Stack", "Drawer", "Popover", "Tooltip", "Tour", "Vaul", "Window"],
   layout: ["AppShell", "Box", "Footer", "Grid", "Hero", "Inline", "Layout Grid", "Resizable", "Scroll Expand", "Scroll Stack", "Separator", "Stack", "Wrapper"],
-  media: ["Canvas", "Carousel", "CurveCarousel", "StripCarousel", "Compare Slider", "Diagram", "ImageFrame", "Lightbox", "Marquee", "MediaOverlay", "Morph Stack", "QRCode", "Video Player", "Audio Player"],
+  media: ["Canvas", "Carousel", "CurveCarousel", "ProgressiveCarousel", "Compare Slider", "Diagram", "ImageFrame", "Lightbox", "Marquee", "MediaOverlay", "Morph Stack", "QRCode", "Video Player", "Audio Player"],
   utilities: ["FadeEdge", "Hotkey", "Presence", "Scrollbar"],
 };
 

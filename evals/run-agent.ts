@@ -2,7 +2,7 @@ import { evalCases } from "./index.js";
 import { detectProvider, isProviderId, providers, type ProviderId } from "./agent/providers.js";
 import { resolve } from "node:path";
 import { newRunId, summarize, writeRunReport } from "./agent/report.js";
-import { configureRun } from "./agent/run-config.js";
+import { configureRun, type Handout } from "./agent/run-config.js";
 import type { CaseScore } from "./agent/scoring.js";
 
 /*
@@ -38,16 +38,18 @@ function parseArgs(argv: string[]): {
   lang: "es" | "en" | "both";
   caseId?: string;
   workflow: "discovery" | "catalog";
+  handout: Handout;
   server?: string;
   concurrency: number;
   verbose: boolean;
 } {
-  const args = { lang: "en" as const, workflow: "discovery" as const, concurrency: 3, verbose: false } as {
+  const args = { lang: "en" as const, workflow: "discovery" as const, handout: "mcp" as const, concurrency: 3, verbose: false } as {
     provider?: string;
     model?: string;
     lang: "es" | "en" | "both";
     caseId?: string;
     workflow: "discovery" | "catalog";
+    handout: Handout;
     server?: string;
     concurrency: number;
     verbose: boolean;
@@ -61,11 +63,15 @@ function parseArgs(argv: string[]): {
     else if (arg === "--concurrency") args.concurrency = Number(argv[++i]);
     else if (arg === "--workflow") args.workflow = argv[++i] as "discovery" | "catalog";
     else if (arg === "--server") args.server = argv[++i];
+    else if (arg === "--handout") args.handout = argv[++i] as Handout;
     else if (arg === "--verbose") args.verbose = true;
     else throw new Error(`Unknown argument: ${arg}`);
   }
   if (args.workflow !== "discovery" && args.workflow !== "catalog") {
     throw new Error(`--workflow must be discovery or catalog, got: ${args.workflow}`);
+  }
+  if (!["mcp", "skill", "docs"].includes(args.handout)) {
+    throw new Error(`--handout must be mcp, skill or docs, got: ${args.handout}`);
   }
   if (!Number.isInteger(args.concurrency) || args.concurrency < 1) {
     throw new Error(`--concurrency must be a positive integer, got: ${args.concurrency}`);
@@ -97,6 +103,7 @@ async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
   const run = configureRun({
     workflow: args.workflow,
+    handout: args.handout,
     ...(args.server ? { serverEntry: resolve(process.cwd(), args.server) } : {}),
   });
 
@@ -126,6 +133,12 @@ async function main(): Promise<void> {
     return;
   }
 
+  if (run.handout !== "mcp" && providerId !== "claude-code") {
+    console.error(`  --handout ${run.handout} needs an agent with files and a shell: use --provider claude-code.`);
+    process.exitCode = 1;
+    return;
+  }
+
   const model = args.model ?? provider.defaultModel;
   const langs: Array<"es" | "en"> = args.lang === "both" ? ["es", "en"] : [args.lang];
   const wanted = args.caseId?.split(",");
@@ -140,7 +153,7 @@ async function main(): Promise<void> {
   const runs = cases.flatMap((evalCase) => langs.map((lang) => ({ evalCase, lang })));
 
   console.log(`  provider: ${provider.label} (${model})`);
-  console.log(`  workflow: ${run.workflow}, server: ${run.serverEntry}`);
+  console.log(`  handout: ${run.handout}${run.handout === "mcp" ? `, workflow: ${run.workflow}, server: ${run.serverEntry}` : ""}`);
   console.log(
     `  running ${cases.length} case(s) x ${langs.length} lang(s) = ${runs.length} run(s), concurrency ${args.concurrency}\n`,
   );
@@ -159,13 +172,15 @@ async function main(): Promise<void> {
     console.log(
       `  ${mark}  ${score.caseId} [${lang}]${note}  ` +
         `(calls ${m.toolCalls}, catalog ${m.catalogPages}, discover ${m.discoverCalls}, ` +
-        `contracts ${m.contractCalls}+${m.contractBatchCalls} batch, repairs ${m.repairLoops})`,
+        `contracts ${m.contractCalls}+${m.contractBatchCalls} batch, repairs ${m.repairLoops}` +
+        (score.usage ? `, $${score.usage.costUsd.toFixed(3)}, ${score.usage.turns} turns, ${Math.round(score.usage.durationMs / 1000)}s` : "") +
+        ")",
     );
     return score;
   });
 
   const runId = newRunId();
-  const runDir = await writeRunReport({ runId, provider: providerId, model, workflow: run.workflow, server: run.serverEntry }, scores);
+  const runDir = await writeRunReport({ runId, provider: providerId, model, workflow: run.workflow, handout: run.handout, server: run.serverEntry }, scores);
 
   const failed = scores.filter((score) => !score.passed);
   const divergent = scores.filter((score) => score.valid && score.matchesReferenceMarkup === false);

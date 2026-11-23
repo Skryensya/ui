@@ -10,7 +10,7 @@ import {
 import type { OptionValue } from "@skryensya/core/contract";
 import { fadeEdgeAttrs } from "@skryensya/core/fade-edge";
 import { watchFadeEdge } from "@skryensya/core/fade-edge-dom";
-import { connectCarouselStrips, connectCurveRing } from "@skryensya/core/carousel";
+import { connectProgressiveTrack, connectCurveRing } from "@skryensya/core/carousel";
 import { carousel } from "@skryensya/core/machines";
 import { prefersReducedMotion as reducedMotion } from "@skryensya/core/reduced-motion";
 import { normalizeProps, useMachine } from "@zag-js/react";
@@ -582,47 +582,52 @@ export const CurveCarousel = forwardRef<CarouselHandle, CurveCarouselProps>(func
 });
 
 /*
- * STRIP CAROUSEL (`Carousel.strips`): one item open, the others beside it as strips that thin out with
- * distance, the open item's caption underneath. The engine in core (`connectCarouselStrips`, the same one
- * the vanilla enhancer runs) owns the behaviour; this renders the markup it drives. `mounted={false}`
- * leaves it unenhanced: the first item open, no prev/next.
+ * PROGRESSIVE CAROUSEL (`Carousel.progressive`): a circular row of slides whose widths shrink
+ * progressively, the active one first, its caption underneath. The engine in core (`connectProgressiveTrack`,
+ * the same one the vanilla enhancer runs) owns the behaviour; this renders the markup it drives, prev/next
+ * at the end of the bottom row. `mounted={false}` leaves it unenhanced:
+ * the first slide open, no controls.
  */
-export type StripCarouselItem = {
-  /** The picture: open it shows whole; as a strip, a slice of its middle. */
+export type ProgressiveCarouselItem = {
+  /** The picture: active it shows whole; as a strip, a slice of its middle. */
   media: ReactNode;
   title: ReactNode;
   body?: ReactNode;
-  /** A link or button for the open item. */
+  /** A link or button for the active slide. */
   action?: ReactNode;
 };
 
-export type StripCarouselProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
-  items: readonly StripCarouselItem[];
+export type ProgressiveCarouselProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
+  items: readonly ProgressiveCarouselItem[];
   /** Names the carousel region for assistive tech. */
   "aria-label"?: string;
   /** Shown at the start of the top row, prev/next at its end. */
   heading?: ReactNode;
-  /** The item it opens on, counted from 0. */
+  /** The slide it opens on, counted from 0. */
   defaultPage?: number;
   /** Set false to leave it unenhanced. */
   mounted?: boolean;
 };
 
-export const StripCarousel = forwardRef<CarouselHandle, StripCarouselProps>(function StripCarousel(
+export const ProgressiveCarousel = forwardRef<CarouselHandle, ProgressiveCarouselProps>(function ProgressiveCarousel(
   { className, defaultPage, heading, items, mounted = true, ...props },
   ref,
 ) {
   const rootRef = useRef<HTMLElement>(null);
   useCarouselHandle(ref, rootRef);
   const [ready, setReady] = useState(false);
+  // The active slide survives new items while it still exists, instead of jumping back to the first.
+  const active = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     const root = rootRef.current;
     if (!mounted || !root) return;
-    const strips = connectCarouselStrips(root, { defaultPage, dir: root.closest("[dir=rtl]") ? "rtl" : "ltr" });
+    const start = active.current !== undefined && active.current < items.length ? active.current : defaultPage;
+    const track = connectProgressiveTrack(root, { defaultPage: start, dir: root.closest("[dir=rtl]") ? "rtl" : "ltr" });
     setReady(true);
     return () => {
-      strips.destroy();
+      active.current = track.index;
+      track.destroy();
       setReady(false);
     };
   }, [mounted, defaultPage, items]);
@@ -637,7 +642,7 @@ export const StripCarousel = forwardRef<CarouselHandle, StripCarouselProps>(func
             className={`${carouselParts.button} sk-button sk-interactive`}
             data-icon-only=""
             data-side={side}
-            data-size="sm"
+            data-size="md"
             data-tone="neutral"
             data-variant="soft"
             aria-label={side === "start" ? carouselTranslations.prevTrigger : carouselTranslations.nextTrigger}
@@ -653,7 +658,7 @@ export const StripCarousel = forwardRef<CarouselHandle, StripCarouselProps>(func
       {...props}
       className={cx(carouselParts.root, className)}
       data-sk-carousel={mounted ? "" : undefined}
-      data-strips=""
+      data-progressive=""
       data-default-page={defaultPage}
       data-sk-carousel-ready={ready ? "true" : undefined}
       ref={rootRef}
@@ -661,11 +666,8 @@ export const StripCarousel = forwardRef<CarouselHandle, StripCarouselProps>(func
       {heading ? (
         <div className={carouselParts.header}>
           <div className={carouselParts.heading}>{heading}</div>
-          {controls}
         </div>
-      ) : (
-        controls
-      )}
+      ) : null}
       <div className={carouselParts.track}>
         {items.map((item, index) => (
           <div key={index} className={carouselParts.slide}>
@@ -682,6 +684,7 @@ export const StripCarousel = forwardRef<CarouselHandle, StripCarouselProps>(func
           </div>
         ))}
       </div>
+      {controls}
     </section>
   );
 });

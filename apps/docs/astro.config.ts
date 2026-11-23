@@ -71,6 +71,8 @@ export default defineConfig({
   site: "https://ui.skryensya.dev",
 
   integrations: [react(), deferModuleScriptsIntegration()],
+  // The dev toolbar ships its own bundle and a script on every page; the docs do not use its audits.
+  devToolbar: { enabled: false },
   // Static output: the site is content, and every dimension (brand, mode, contrast, density)
   // resolves in the browser from custom properties, there is nothing for a server to decide.
   output: "static",

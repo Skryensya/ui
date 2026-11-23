@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { snippets } from "@skryensya/examples";
 import type { UsageTree } from "@skryensya/core/usage-tree";
-import { reviewTree } from "./quality.js";
+import { KIT_ROLES, reviewTree } from "./quality.js";
+import manifest from "../../../artifacts/ai-manifest.json" with { type: "json" };
 import { validateUsageTree } from "./validate.js";
 
 /*
@@ -195,6 +196,37 @@ describe("the counterexamples: valid trees that are still not good", () => {
     expect(review.warnings).toBe(1);
     expect(review.passes).toBe(true);
     expect(reviewTree(page(heading("A", "h2"))).passes).toBe(false);
+  });
+
+  it("a field with no name anywhere", () => {
+    const input: UsageTree = { contract: "input", signature: "Input", options: { name: "email" } };
+    expect(rulesFor(page(heading("A", "h1"), input))).toContain("control-named");
+  });
+
+  it("the same field named by its FormField, or by aria-label", () => {
+    const input: UsageTree = { contract: "input", signature: "Input", options: { name: "email" } };
+    const field: UsageTree = { contract: "form-field", signature: "FormField", slots: { label: "Email" }, children: input };
+    const labelled: UsageTree = { ...input, attrs: { "aria-label": "Email" } };
+    expect(rulesFor(page(heading("A", "h1"), field))).not.toContain("control-named");
+    expect(rulesFor(page(heading("A", "h1"), labelled))).not.toContain("control-named");
+  });
+
+  it("a hand-rolled widget: a role the kit ships a component for", () => {
+    const fake: UsageTree = { contract: "box", signature: "Box", options: { padding: "md" }, attrs: { role: "listbox" }, children: text("x") };
+    const finding = reviewTree(page(heading("A", "h1"), fake)).findings.find((each) => each.rule === "hand-rolled-widget");
+    expect(finding?.fix).toContain("Listbox");
+  });
+
+  it("every owner a kit role names is a real signature", () => {
+    const real = new Set(Object.values(manifest.contracts).flatMap((contract) => Object.keys(contract.signatures)));
+    expect(Object.values(KIT_ROLES).flat().filter((owner) => !real.has(owner))).toEqual([]);
+  });
+
+  it("a destructive action an agent could take alone", () => {
+    const remove = button("Delete project", { options: { tone: "danger" } });
+    expect(rulesFor(page(heading("A", "h1"), remove))).toContain("agent-confirm");
+    const gated = button("Delete project", { options: { tone: "danger" }, attrs: { "data-agent-confirm": "Deletes the project" } });
+    expect(rulesFor(page(heading("A", "h1"), gated))).not.toContain("agent-confirm");
   });
 
   it("is deterministic", () => {

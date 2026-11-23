@@ -888,12 +888,12 @@
             "the items have no picture; a strip of plain text says nothing, use Tabs or a list"
           ],
           "host": "section",
-          "id": "Carousel.strips",
+          "id": "Carousel.progressive",
           "intent": [
+            "progressive-carousel",
             "news-carousel",
-            "strip-carousel",
+            "cascade-carousel",
             "expanding-gallery",
-            "accordion-gallery",
             "featured-stories"
           ],
           "parents": [],
@@ -6447,5 +6447,5 @@
     }
   ],
   "schemaVersion": "2.3",
-  "sourceHash": "90e60c7c954c25d5"
+  "sourceHash": "d7c11ab22a7f1cb2"
 }

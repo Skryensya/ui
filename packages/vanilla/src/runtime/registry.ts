@@ -116,7 +116,7 @@ const registrations: readonly Registration[] = [
     load: async () => (await import("../components/tags-input.js")).mountTagsInput,
   },
   {
-    selector: "[data-sk-carousel]:not([data-curve]):not([data-strips])",
+    selector: "[data-sk-carousel]:not([data-curve]):not([data-progressive])",
     load: async () => (await import("../components/carousel.js")).mountCarousel,
   },
   {
@@ -125,8 +125,8 @@ const registrations: readonly Registration[] = [
     load: async () => (await import("../components/curve-carousel.js")).mountCurveCarousel,
   },
   {
-    selector: "[data-sk-carousel][data-strips]",
-    load: async () => (await import("../components/strip-carousel.js")).mountStripCarousel,
+    selector: "[data-sk-carousel][data-progressive]",
+    load: async () => (await import("../components/progressive-carousel.js")).mountProgressiveCarousel,
   },
   {
     selector: "[data-sk-video-player]",

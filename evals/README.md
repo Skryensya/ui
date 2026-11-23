@@ -113,6 +113,27 @@ pnpm --filter @skryensya/evals agent [--provider anthropic|openai|claude-code|co
                                       [--concurrency <n>] [--verbose]
 ```
 
+### Comparing what the agent is handed (`--handout`)
+
+The same cases, scored the same way, with three different handouts:
+
+- `mcp` (default): the MCP server alone.
+- `skill`: no MCP. The temp project holds what a consumer's would after installing the kit: the docs
+  `@skryensya/core` ships (`node_modules/@skryensya/core/docs`), the `skryensya-ui` skill in
+  `.claude/skills`, and the CLI on `npx skryensya` (needs `pnpm --filter @skryensya/cli build`).
+- `docs`: no MCP, no skill, no CLI: only those docs.
+
+Without the MCP the agent writes its tree to `tree.json`, which stands in for its last `validate_ui`
+call and is judged by the same code (`validateAndEmit`) and the same invariants. Only `claude-code`
+runs `skill` and `docs`. Each run also records its cost, turns, time and input tokens (`usage` in the
+case `.json`, means in `summary.json`), so the handouts compare on correctness AND on what they cost:
+
+```
+pnpm --filter @skryensya/evals agent --provider claude-code --handout docs  --case <ids>
+pnpm --filter @skryensya/evals agent --provider claude-code --handout skill --case <ids>
+pnpm --filter @skryensya/evals agent --provider claude-code --handout mcp   --case <ids>
+```
+
 ### Comparing the discovery workflow with the catalogue-first one
 
 `--workflow` picks the framing the agent is given (`agent/system-prompt.ts`): `discovery` (the

@@ -63,25 +63,6 @@ const release = (title: string, body: string): UsageTree => ({
 export const changelogBreakingDoTree = (t: Translate): UsageTree => release(t("dd3.changelog.doTitle"), t("dd3.changelog.doBody"));
 export const changelogBreakingDontTree = (t: Translate): UsageTree => release(t("dd3.changelog.dontTitle"), t("dd3.changelog.dontBody"));
 
-/* ───────────── Carousel: each card has its own title ───────────── */
-
-const slide = (title: string, body: string): UsageTree => ({
-  contract: "carousel",
-  signature: "CarouselSlide",
-  children: box("padding: 0.75rem;", stack("xs", text(title, { size: "lg", weight: "label" }), text(body, { size: "sm", tone: "secondary" })), { padding: "md", surface: "surface", border: "subtle" }),
-});
-
-const carousel = (t: Translate, titles: readonly string[]): UsageTree => ({
-  contract: "carousel",
-  signature: "Carousel",
-  options: { mounted: true },
-  attrs: { "aria-label": t("demo.carousel.label") },
-  children: titles.map((title, i) => slide(title, t(`dd3.carousel.body${i + 1}` as UIKey))),
-});
-
-export const carouselTitlesDoTree = (t: Translate): UsageTree => carousel(t, [t("dd3.carousel.t1"), t("dd3.carousel.t2"), t("dd3.carousel.t3")]);
-export const carouselTitlesDontTree = (t: Translate): UsageTree => carousel(t, ["Slide 1", "Slide 2", "Slide 3"]);
-
 /* ───────────── Canvas: a drawing, not controls ───────────── */
 
 const canvas = (t: Translate, content: UsageTree): UsageTree => ({

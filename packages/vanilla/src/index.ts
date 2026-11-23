@@ -75,7 +75,7 @@ export { mountBreadcrumb } from "./components/breadcrumb.js";
 export { mountMeter } from "./components/meter.js";
 export { mountCarousel } from "./components/carousel.js";
 export { mountCurveCarousel } from "./components/curve-carousel.js";
-export { mountStripCarousel } from "./components/strip-carousel.js";
+export { mountProgressiveCarousel } from "./components/progressive-carousel.js";
 export { mountCheckboxGroup } from "./components/checkbox-group.js";
 export { connectCommandPalette, mountCommandPalette } from "./components/command-palette.js";
 export { mountCommentThread } from "./components/comment-thread.js";

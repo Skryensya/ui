@@ -77,8 +77,8 @@ export const carouselAttrs = {
   tall: "data-tall",
   /** `data-focus` on a CurveCarousel root: one large slide, its neighbours peeking at the sides. */
   focus: "data-focus",
-  /** `data-strips` on the root: StripCarousel, one item open and the rest as strips beside it. */
-  strips: "data-strips",
+  /** `data-progressive` on the root: ProgressiveCarousel, a circular row whose widths shrink progressively. */
+  progressive: "data-progressive",
 } as const;
 
 export const carouselParts = {
@@ -104,10 +104,10 @@ export const carouselParts = {
   step: "sk-carousel__step",
   /** The fill inside a segment; under autoplay it grows with the time left on the current slide. */
   stepProgress: "sk-carousel__step-progress",
-  /** StripCarousel's top row: its heading at the start, prev/next at the end. */
+  /** ProgressiveCarousel's top row: its heading at the start, the stepper and prev/next at the end. */
   header: "sk-carousel__header",
   heading: "sk-carousel__heading",
-  /** StripCarousel's caption area under the strips: one caption per item, only the open one shown. */
+  /** ProgressiveCarousel's caption area under the row: one caption per slide, only the active one's shown. */
   captions: "sk-carousel__captions",
   caption: "sk-carousel__caption",
   captionTitle: "sk-carousel__caption-title",
@@ -188,6 +188,8 @@ export const carouselContract = {
     "--sk-carousel-native-previous-disabled-icon",
     "--sk-carousel-native-previous-icon",
     "--sk-carousel-curve-strength",
+    "--sk-carousel-progressive-hover",
+    "--sk-carousel-progressive-step",
     "--sk-carousel-slide-size",
   ],
   events: carouselEvents,
@@ -336,12 +338,13 @@ export const carouselContract = {
     },
 
     /*
-     * THE STRIPS (StripCarousel): one item open, the others beside it as strips that thin out with
-     * distance, the open item's caption under them. A carousel by behaviour (one item at a time, prev and
-     * next), an accordion by layout, so its items are data: one entry is a strip AND a caption, far apart.
+     * THE PROGRESSIVE ROW (ProgressiveCarousel): a circular row of slides whose widths shrink progressively,
+     * the active one first and the next ones as ever narrower strips, the active one's caption under them.
+     * A carousel by behaviour (one slide at a time, prev and next, a stepper), its own layout, so its items
+     * are data: one entry is a slide AND a caption, far apart in the markup.
      */
-    "Carousel.strips": {
-      intent: ["news-carousel", "strip-carousel", "expanding-gallery", "accordion-gallery", "featured-stories"],
+    "Carousel.progressive": {
+      intent: ["progressive-carousel", "news-carousel", "cascade-carousel", "expanding-gallery", "featured-stories"],
       host: { element: "section" },
       options: ["mounted", "defaultPage"],
       slots: {
@@ -352,11 +355,11 @@ export const carouselContract = {
           item: {
             options: {},
             slots: {
-              /** The picture: open, it shows whole; as a strip, a slice of its middle. */
+              /** The picture: active, it shows whole; as a strip, a slice of its middle. */
               media: { accepts: "node", required: true },
               title: { accepts: "node", required: true },
               body: { accepts: "node" },
-              /** A link or button for the open item ("Read the announcement"). */
+              /** A link or button for the active slide ("Read the announcement"). */
               action: { accepts: "node" },
             },
           },
@@ -366,7 +369,7 @@ export const carouselContract = {
         element: "section",
         part: "root",
         host: true,
-        attrs: { "data-strips": "" },
+        attrs: { "data-progressive": "" },
         children: [
           {
             element: "div",
@@ -393,7 +396,7 @@ export const carouselContract = {
           },
         ],
       },
-      react: { from: "@skryensya/react/carousel", name: "StripCarousel" },
+      react: { from: "@skryensya/react/carousel", name: "ProgressiveCarousel" },
     },
 
     CarouselSlide: {
@@ -409,7 +412,7 @@ export const carouselContract = {
 
   a11y: [
     {
-      signatures: ["Carousel", "Carousel.curve", "Carousel.strips"],
+      signatures: ["Carousel", "Carousel.curve", "Carousel.progressive"],
       when: {},
       requiresOneOf: ["aria-label", "aria-labelledby"],
       because:
@@ -471,5 +474,5 @@ export function bendCarouselSlides(root: HTMLElement, bands: number = CAROUSEL_B
 
 /* The ring engine of CurveCarousel, also at `@skryensya/core/curve-ring`. */
 export * from "./curve-ring.js";
-/* StripCarousel's engine. */
-export * from "./strip-carousel.js";
+/* ProgressiveCarousel's engine. */
+export * from "./progressive-carousel.js";

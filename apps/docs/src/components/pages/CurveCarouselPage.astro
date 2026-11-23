@@ -27,6 +27,7 @@ const explain = (option: string, values: readonly string[]) =>
   title="CurveCarousel"
   description={t("curveCarousel.description")}
   contractId="carousel"
+  vanillaMount={{ entrypoint: "@skryensya/vanilla/curve-carousel", mount: "mountCurveCarousel", selector: "[data-sk-carousel][data-curve]" }}
   badge="Beta"
   extraSheets={["@skryensya/core/components/button.css", "@skryensya/core/patterns/state-layer.css", "./icons.css", "@skryensya/core/patterns/image-frame.css", "@skryensya/core/components/fade-edge.css"]}
   testFiles={["packages/react/src/components/carousel.test.tsx", "packages/vanilla/src/components/carousel.svelte.test.ts"]}

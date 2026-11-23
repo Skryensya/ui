@@ -19,6 +19,10 @@
     "./types": {
       "types": "./model/types.ts",
       "default": "./model/types.ts"
+    },
+    "./canonical": {
+      "types": "./canonical.ts",
+      "default": "./canonical.ts"
     }
   }
 }

@@ -4859,6 +4859,9 @@
                                 "options": {
                                   "tone": "danger"
                                 },
+                                "attrs": {
+                                  "data-agent-confirm": "Se borran tus proyectos y su historial. Esta acción no se puede deshacer."
+                                },
                                 "children": "Eliminar mi cuenta"
                               }
                             ]
@@ -5341,6 +5344,9 @@
                                 "signature": "Button.action",
                                 "options": {
                                   "tone": "danger"
+                                },
+                                "attrs": {
+                                  "data-agent-confirm": "Your projects and their history are erased. This cannot be undone."
                                 },
                                 "children": "Delete my account"
                               }

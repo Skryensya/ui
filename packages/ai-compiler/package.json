@@ -7,7 +7,8 @@
   "scripts": {
     "build": "tsx src/cli.ts ../..",
     "check": "tsc -p tsconfig.json --noEmit && vitest run && tsx src/cli.ts ../..",
-    "seed": "tsx src/seed-changelogs.ts ../.."
+    "seed": "tsx src/seed-changelogs.ts ../..",
+    "docs": "tsx src/agent-docs-cli.ts ../.."
   },
   "dependencies": {
     "@skryensya/core": "workspace:*",
@@ -64,6 +65,10 @@
     "./artifact": {
       "types": "./src/artifact.ts",
       "default": "./src/artifact.ts"
+    },
+    "./outcomes": {
+      "types": "./src/outcomes.ts",
+      "default": "./src/outcomes.ts"
     }
   }
 }

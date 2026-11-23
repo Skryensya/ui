@@ -1,11 +1,16 @@
 import { spawn } from "node:child_process";
-import { mkdtemp, rm } from "node:fs/promises";
+import { chmod, cp, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import type { UsageTree } from "@skryensya/core/usage-tree";
+import { validateAndEmit } from "@skryensya/ai-compiler/outcomes";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import type { EvalCase } from "../case.js";
 import type { ToolCallRecord } from "./mcp-tools.js";
-import { scoreCase, type CaseScore } from "./scoring.js";
-import { runConfig, systemPrompt } from "./run-config.js";
+import { scoreCase, type CaseScore, type RunUsage } from "./scoring.js";
+import { runConfig, systemPrompt, type Handout } from "./run-config.js";
+
+const repo = fileURLToPath(new URL("../../", import.meta.url));
 
 /*
  * THE OTHER WAY TO DRIVE G6: instead of a hand-rolled agent loop (`harness.ts`), spawn the actual
@@ -58,27 +63,78 @@ export async function runCaseWithClaudeCode(
   lang: "es" | "en",
   options: ClaudeCodeOptions = {},
 ): Promise<CaseScore> {
-  const events = await spawnClaude(evalCase.prompt[lang], options);
-  const calls = extractRecords(events);
+  const handout = runConfig().handout;
+  const { events, tree } = await spawnClaude(evalCase.prompt[lang], options, handout);
+  const calls = extractRecords(events, handout);
+  /* Without the MCP, the tree the agent wrote stands in for its last validate_ui call, judged by the same code. */
+  if (handout !== "mcp") {
+    calls.push(
+      tree === undefined
+        ? { name: "validate_ui", args: {}, error: "no tree.json was written" }
+        : { name: "validate_ui", args: { tree }, result: validateAndEmit(tree) },
+    );
+  }
 
   if (options.verbose) {
     console.log(`  [${evalCase.id}/${lang}] tools called: ${calls.map((c) => c.name).join(" -> ") || "(none)"}`);
   }
 
-  return scoreCase(evalCase, lang, calls);
+  const usage = usageOf(events);
+  return { ...scoreCase(evalCase, lang, calls), ...(usage ? { usage } : {}) };
 }
 
-async function spawnClaude(prompt: string, options: ClaudeCodeOptions): Promise<StreamEvent[]> {
+/** The final `result` event carries what the run cost. */
+function usageOf(events: StreamEvent[]): RunUsage | undefined {
+  const result = [...events].reverse().find((event) => event.type === "result") as
+    | { total_cost_usd?: number; num_turns?: number; duration_ms?: number; usage?: { input_tokens?: number; output_tokens?: number; cache_read_input_tokens?: number; cache_creation_input_tokens?: number } }
+    | undefined;
+  if (!result) return undefined;
+  const usage = result.usage ?? {};
+  return {
+    costUsd: result.total_cost_usd ?? 0,
+    turns: result.num_turns ?? 0,
+    durationMs: result.duration_ms ?? 0,
+    inputTokens: (usage.input_tokens ?? 0) + (usage.cache_read_input_tokens ?? 0) + (usage.cache_creation_input_tokens ?? 0),
+    outputTokens: usage.output_tokens ?? 0,
+  };
+}
+
+/*
+ * The project an agent without the MCP starts in: what a consumer's project would hold after
+ * installing the kit, and nothing of this repo. `docs` gets the docs @skryensya/core ships; `skill`
+ * also gets the skill (where Claude Code loads project skills) and the CLI on `npx skryensya`.
+ */
+export async function prepareWorkspace(cwd: string, handout: Handout): Promise<void> {
+  if (handout === "mcp") return;
+  const core = join(cwd, "node_modules", "@skryensya", "core");
+  await mkdir(core, { recursive: true });
+  await cp(join(repo, "packages/core/docs"), join(core, "docs"), { recursive: true });
+  await writeFile(join(core, "package.json"), JSON.stringify({ name: "@skryensya/core", private: true }));
+  if (handout !== "skill") return;
+  await cp(join(repo, "packages/core/skills/skryensya-ui"), join(cwd, ".claude/skills/skryensya-ui"), { recursive: true });
+  const bin = join(cwd, "node_modules", ".bin");
+  await mkdir(bin, { recursive: true });
+  await writeFile(join(bin, "skryensya"), `#!/bin/sh\nexec node "${join(repo, "packages/cli/dist/cli.js")}" "$@"\n`);
+  await chmod(join(bin, "skryensya"), 0o755);
+  await writeFile(join(cwd, "package.json"), JSON.stringify({ name: "eval-project", private: true }));
+}
+
+const TOOLS: Record<Handout, string> = {
+  mcp: `mcp__${MCP_SERVER_NAME}`,
+  skill: "Read,Glob,Grep,Write,Edit,Skill,Bash(npx skryensya:*),Bash(skryensya:*)",
+  docs: "Read,Glob,Grep,Write,Edit",
+};
+
+async function spawnClaude(prompt: string, options: ClaudeCodeOptions, handout: Handout): Promise<{ events: StreamEvent[]; tree?: UsageTree }> {
   const args = [
     "-p",
     prompt,
     "--append-system-prompt",
     systemPrompt(),
-    "--mcp-config",
-    mcpConfigInline(),
+    ...(handout === "mcp" ? ["--mcp-config", mcpConfigInline()] : []),
     "--strict-mcp-config",
     "--allowedTools",
-    `mcp__${MCP_SERVER_NAME}`,
+    TOOLS[handout],
     "--permission-mode",
     "dontAsk",
     "--output-format",
@@ -90,9 +146,10 @@ async function spawnClaude(prompt: string, options: ClaudeCodeOptions): Promise<
   // Isolated per call: nothing of this repo is reachable from here, so Bash/Read/grep have nothing
   // to find, and the only path to a correct composition is the MCP tools.
   const cwd = await mkdtemp(join(tmpdir(), "skryensya-eval-"));
+  await prepareWorkspace(cwd, handout);
 
   try {
-    return await new Promise<StreamEvent[]>((resolve, reject) => {
+    const events = await new Promise<StreamEvent[]>((resolve, reject) => {
       const child = spawn("claude", args, {
         cwd,
         stdio: ["ignore", "pipe", "pipe"],
@@ -133,6 +190,12 @@ async function spawnClaude(prompt: string, options: ClaudeCodeOptions): Promise<
         resolve(events);
       });
     });
+    if (handout === "mcp") return { events };
+    const tree = await readFile(join(cwd, "tree.json"), "utf8").then(
+      (text) => JSON.parse(text) as UsageTree,
+      () => undefined,
+    );
+    return { events, tree };
   } finally {
     await rm(cwd, { recursive: true, force: true });
   }
@@ -144,7 +207,9 @@ async function spawnClaude(prompt: string, options: ClaudeCodeOptions): Promise<
  * tools, still available even though only `mcp__skryensya-ui` is pre-approved) is not ours to score
  * and is left out.
  */
-function extractRecords(events: StreamEvent[]): ToolCallRecord[] {
+/** MCP runs record the server's tools by their own names; the other handouts record every tool (Read, Bash, Skill). */
+function extractRecords(events: StreamEvent[], handout: Handout): ToolCallRecord[] {
+  const prefix = handout === "mcp" ? MCP_TOOL_PREFIX : "";
   const pending = new Map<string, { name: string; args: unknown }>();
   const records: ToolCallRecord[] = [];
 
@@ -156,10 +221,10 @@ function extractRecords(events: StreamEvent[]): ToolCallRecord[] {
         if (
           block.type === "tool_use" &&
           typeof block.name === "string" &&
-          block.name.startsWith(MCP_TOOL_PREFIX) &&
+          block.name.startsWith(prefix) &&
           typeof block.id === "string"
         ) {
-          pending.set(block.id, { name: block.name.slice(MCP_TOOL_PREFIX.length), args: block.input });
+          pending.set(block.id, { name: block.name.slice(prefix.length), args: block.input });
         }
       }
     } else if (event.type === "user") {
@@ -167,7 +232,7 @@ function extractRecords(events: StreamEvent[]): ToolCallRecord[] {
         if (block.type !== "tool_result" || typeof block.tool_use_id !== "string") continue;
         const call = pending.get(block.tool_use_id);
         if (!call) continue;
-        records.push(toRecord(call, block.content));
+        records.push(prefix ? toRecord(call, block.content) : { name: call.name, args: call.args });
       }
     }
   }

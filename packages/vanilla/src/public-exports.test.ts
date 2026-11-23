@@ -15,7 +15,7 @@ import { mountButton } from "@skryensya/vanilla/button";
 import { mountCalendar } from "@skryensya/vanilla/calendar";
 import { mountCarousel } from "@skryensya/vanilla/carousel";
 import { mountCurveCarousel } from "@skryensya/vanilla/curve-carousel";
-import { mountStripCarousel } from "@skryensya/vanilla/strip-carousel";
+import { mountProgressiveCarousel } from "@skryensya/vanilla/progressive-carousel";
 import { mountCheckboxGroup } from "@skryensya/vanilla/checkbox-group";
 import { mountCodePreview } from "@skryensya/vanilla/code-preview";
 import { mountColorPicker } from "@skryensya/vanilla/color-picker";
@@ -105,7 +105,7 @@ const mounts = [
   mountQrCode,
   mountCarousel,
   mountCurveCarousel,
-  mountStripCarousel,
+  mountProgressiveCarousel,
   mountCheckboxGroup,
   mountColorPicker,
   mountCombobox,
@@ -213,7 +213,7 @@ describe("Vanilla public entry points", () => {
         mountQrCode,
         mountCarousel,
         mountCurveCarousel,
-        mountStripCarousel,
+        mountProgressiveCarousel,
         mountCheckboxGroup,
         mountColorPicker,
         mountCombobox,

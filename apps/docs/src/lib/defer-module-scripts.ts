@@ -33,6 +33,20 @@ export function deferModuleScripts(html: string): string {
   return out.replace("</body>", `${loader}</body>`);
 }
 
+/*
+ * IMAGES BELOW THE FOLD WAIT. A component page repeats the same few pictures in every example
+ * (CurveCarousel: 171 `<img>`, 12 distinct JPGs of 90-165KB, ~1.5MB), and the browser asks for all of
+ * them at load although most examples are off screen. The first two stay eager so nothing near the top
+ * paints late; the rest get `loading="lazy"`. The kit's ImageFrame has no `loading` option, so this
+ * is done on the built HTML, where the docs already post-process.
+ */
+export function lazyImages(html: string): string {
+  let seen = 0;
+  return html.replace(/<img\b(?![^>]*\bloading=)([^>]*)>/g, (tag, rest: string) =>
+    ++seen <= 2 ? tag : `<img loading="lazy" decoding="async"${rest}>`,
+  );
+}
+
 async function htmlFiles(dir: string): Promise<string[]> {
   const entries = await readdir(dir, { withFileTypes: true, recursive: true });
   return entries.filter((e) => e.isFile() && e.name.endsWith(".html")).map((e) => join(e.parentPath, e.name));
@@ -45,7 +59,7 @@ export function deferModuleScriptsIntegration(): AstroIntegration {
       "astro:build:done": async ({ dir }) => {
         for (const file of await htmlFiles(fileURLToPath(dir))) {
           const html = await readFile(file, "utf8");
-          const deferred = deferModuleScripts(html);
+          const deferred = lazyImages(deferModuleScripts(html));
           if (deferred !== html) await writeFile(file, deferred);
         }
       },

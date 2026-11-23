@@ -18,6 +18,8 @@ export interface RunMeta {
   provider: string;
   model: string;
   workflow: string;
+  /** What the agent was handed: the MCP, the skill, or the docs alone (`run-config.ts`). */
+  handout?: string;
   server: string;
 }
 
@@ -41,6 +43,11 @@ export interface RunSummary {
   meanDiscoveryRank: number | null;
   /** How many of those signatures discovery never returned at all. */
   missedByDiscovery: number;
+  /** Over the runs whose agent loop reported its cost (`claude-code`): what a handout costs to use. */
+  meanCostUsd: number | null;
+  meanTurns: number | null;
+  meanDurationSeconds: number | null;
+  meanInputTokens: number | null;
 }
 
 export function summarize(scores: readonly CaseScore[]): RunSummary {
@@ -64,6 +71,19 @@ export function summarize(scores: readonly CaseScore[]): RunSummary {
     meanDiscoverCandidates: mean((score) => score.metrics.discoverCandidates),
     meanDiscoveryRank: ranks.length === 0 ? null : Math.round((ranks.reduce((a, b) => a + b, 0) / ranks.length) * 100) / 100,
     missedByDiscovery: allRanks.filter((rank) => rank === null).length,
+    ...usageMeans(scores),
+  };
+}
+
+function usageMeans(scores: readonly CaseScore[]): Pick<RunSummary, "meanCostUsd" | "meanTurns" | "meanDurationSeconds" | "meanInputTokens"> {
+  const priced = scores.flatMap((score) => (score.usage ? [score.usage] : []));
+  const mean = (pick: (usage: NonNullable<CaseScore["usage"]>) => number, digits = 2) =>
+    priced.length === 0 ? null : Number((priced.reduce((sum, usage) => sum + pick(usage), 0) / priced.length).toFixed(digits));
+  return {
+    meanCostUsd: mean((usage) => usage.costUsd, 4),
+    meanTurns: mean((usage) => usage.turns),
+    meanDurationSeconds: mean((usage) => usage.durationMs / 1000, 1),
+    meanInputTokens: mean((usage) => usage.inputTokens, 0),
   };
 }
 
@@ -102,7 +122,7 @@ function caseMd(meta: RunMeta, score: CaseScore): string {
     `# ${score.caseId} [${score.lang}]`,
     "",
     `**Verdict:** ${verdict}${score.matchesReferenceMarkup === false ? " (differs from reference tree)" : ""}`,
-    `**Provider:** ${meta.provider} (${meta.model}), workflow \`${meta.workflow}\``,
+    `**Provider:** ${meta.provider} (${meta.model}), handout \`${meta.handout ?? "mcp"}\`, workflow \`${meta.workflow}\``,
     `**Selected:** ${score.metrics.selected ?? "(none)"}; tool calls ${score.metrics.toolCalls}, catalogue pages ` +
       `${score.metrics.catalogPages}, discover_ui ${score.metrics.discoverCalls}, repair loops ` +
       `${score.metrics.repairLoops}, examples read ${score.metrics.examplesRead.join(", ") || "none"}`,

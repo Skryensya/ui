@@ -3,8 +3,24 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "bd6c37ec3b0ac29d"
+surface: "f8ffa2d6dbac2222"
 entries:
+  - date: 2026-11-22
+    kind: feature
+    es:
+      title: "ProgressiveCarousel: tiempos del movimiento como hooks"
+      body: "--sk-carousel-progressive-step y --sk-carousel-progressive-hover fijan, en milisegundos, cuánto dura un paso y cuánto el crecimiento al pasar el mouse. La slide nueva aparece mientras las demás se mueven, y con movimiento reducido solo queda un fundido."
+    en:
+      title: "ProgressiveCarousel: move timings as hooks"
+      body: "--sk-carousel-progressive-step and --sk-carousel-progressive-hover set, in milliseconds, how long a step and a hover growth take. The new slide appears while the others move, and under reduced motion only a fade remains."
+  - date: 2026-11-21
+    kind: breaking
+    es:
+      title: "StripCarousel pasa a ser ProgressiveCarousel, circular"
+      body: "Carousel.strips ahora es Carousel.progressive (ProgressiveCarousel en React, data-progressive). Es circular: la activa siempre primero, sale por el inicio y una nueva entra por el final. La activa, tres que se achican y luego las franjas más finas, con la mitad del gap entre ellas; al pasar el mouse cada una crece según su tamaño. El título va sobre la imagen principal; el texto, la acción y anterior/siguiente abajo. En angosto es un carrusel normal con swipe."
+    en:
+      title: "StripCarousel becomes ProgressiveCarousel, circular"
+      body: "Carousel.strips is now Carousel.progressive (ProgressiveCarousel in React, data-progressive). It is circular: the active slide always first, leaving at the start while a new one comes in at the end. The active slide, three that shrink, then the narrowest strips, half the gap apart; hovering grows each in proportion to its size. The title lies on the main picture; text, action and prev/next go underneath. Narrow, it is a plain carousel you swipe."
   - date: 2026-11-21
     kind: feature
     es:

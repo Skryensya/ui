@@ -89,6 +89,63 @@ const isControl = (node: UsageTree): boolean =>
   node.signature === "Tag.link" ||
   node.signature === "ListItemLink";
 
+/**
+ * ARIA roles the kit already ships a component for, and the signatures that own each. A node that
+ * writes one of these through `attrs` and is not one of its owners is a hand-rolled widget: it has the
+ * role but none of the keyboard, focus and state the component brings. `quality.test.ts` checks every
+ * owner named here is a real signature.
+ */
+export const KIT_ROLES: Readonly<Record<string, readonly string[]>> = {
+  listbox: ["Listbox", "Select", "Combobox"],
+  option: ["Listbox", "Select", "Combobox"],
+  combobox: ["Combobox", "Select"],
+  menu: ["Menu"],
+  menuitem: ["Menu", "Menubar"],
+  menubar: ["Menubar"],
+  dialog: ["Dialog", "Popover"],
+  alertdialog: ["Dialog"],
+  tablist: ["Tabs"],
+  tab: ["Tabs"],
+  tabpanel: ["Tabs"],
+  switch: ["Switch"],
+  slider: ["Slider"],
+  checkbox: ["Checkbox"],
+  radiogroup: ["RadioGroup", "Segmented"],
+  radio: ["RadioGroup", "Segmented"],
+  toolbar: ["Toolbar"],
+  tree: ["TreeView"],
+  treeitem: ["TreeView"],
+  treegrid: ["Treegrid"],
+  grid: ["DataGrid"],
+  tooltip: ["Tooltip"],
+  progressbar: ["Progress"],
+  meter: ["Meter"],
+  separator: ["Separator"],
+  feed: ["Feed"],
+};
+
+/**
+ * Form controls that take their name from somewhere the tree can see: a `label` slot, their own text
+ * (a Checkbox's children), `aria-label`/`aria-labelledby`, or the FormField around them. Controls whose
+ * label slot the contract already requires, or that carry an `a11y` rule, are left to `validate_ui`.
+ */
+const NAMED_BY_CONTEXT = new Set([
+  "Input",
+  "NativeInput",
+  "Textarea",
+  "Select",
+  "Select.native",
+  "DatePicker",
+  "ColorPicker",
+  "ColorPicker.compact",
+  "ColorPicker.swatch",
+  "Checkbox",
+  "Radio",
+]);
+
+const hasText = (content: unknown): boolean =>
+  slotItems(content as Parameters<typeof slotItems>[0]).some((item) => (typeof item === "string" ? item.trim() !== "" : isUsageTree(item) && textOf(item) !== ""));
+
 type Rule = (all: readonly Visit[], tree: UsageTree) => Finding[];
 
 const rules: readonly Rule[] = [
@@ -264,6 +321,56 @@ const rules: readonly Rule[] = [
         message: `"${nameOf(node)}" says nothing about where it goes or what it does.`,
         reference: "WCAG 2.4.4 Link Purpose (In Context); 2.4.9",
         fix: "Name the destination or the action: \"Read the installation guide\", not \"Read more\".",
+      })),
+  (all) =>
+    all
+      .filter(({ node }) => NAMED_BY_CONTEXT.has(node.signature))
+      .filter(
+        ({ node, ancestors }) =>
+          !node.attrs?.["aria-label"] &&
+          !node.attrs?.["aria-labelledby"] &&
+          !hasText(slotsOf(node).label) &&
+          !hasText(node.children) &&
+          !ancestors.some((ancestor) => ancestor.signature === "FormField"),
+      )
+      .map(({ path, node }) => ({
+        rule: "control-named",
+        severity: "error" as const,
+        path,
+        message: `The ${node.signature} has no name: no label, no text of its own, and no FormField around it. A screen reader announces an unnamed field, and an agent cannot find it by name.`,
+        reference: "WCAG 1.3.1 Info and Relationships; 3.3.2 Labels or Instructions; 4.1.2 Name, Role, Value",
+        fix: 'Wrap it in a FormField with a label slot, or give it its label slot, or attrs { "aria-label": "<what it is>" } when a visible heading already names it.',
+      })),
+  /* ── the kit's own widgets ──────────────────────────────────────────────────────────────────── */
+  (all) =>
+    all.flatMap(({ node, path }) => {
+      const role = String(node.attrs?.role ?? "");
+      const owners = KIT_ROLES[role];
+      if (!owners || owners.includes(node.signature)) return [];
+      return [
+        {
+          rule: "hand-rolled-widget",
+          severity: "error" as const,
+          path,
+          message: `A ${node.signature} given role="${role}" by hand: the role promises keyboard and state behaviour nothing here provides.`,
+          reference: "WAI-ARIA APG: a role is a promise of its interaction pattern; WCAG 2.1.1 Keyboard; 4.1.2",
+          fix: `Use ${owners.join(" or ")} instead of a role on a ${node.signature}.`,
+        },
+      ];
+    }),
+  /* ── a person in the loop ─────────────────────────────────────────────────────────────────────
+     A label ending in an ellipsis already says a confirmation follows (the kit's convention): the mark
+     belongs on the confirming button inside that dialog, not on the one that opens it. */
+  (all) =>
+    all
+      .filter(({ node }) => node.signature === "Button.action" && node.options?.tone === "danger" && node.attrs?.["data-agent-confirm"] === undefined && !/(…|\.\.\.)$/.test(textOf(node)))
+      .map(({ path }) => ({
+        rule: "agent-confirm",
+        severity: "warn" as const,
+        path,
+        message: "A destructive action an agent could take without asking anyone.",
+        reference: "Kit convention: data-agent-confirm marks what needs a person (@skryensya/core/agent)",
+        fix: 'Add attrs { "data-agent-confirm": "<what it does, for the person asked>" }, like "Deletes the project and all its files". On a confirm dialog, put it on the button that confirms, not on the one that opens it.',
       })),
   /* ── data ───────────────────────────────────────────────────────────────────────────────────── */
   (all) =>

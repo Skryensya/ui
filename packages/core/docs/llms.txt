@@ -1,0 +1,118 @@
+# skryensya/ui
+
+> A design system whose component contract is the source of truth: every component ships as a React binding (`@skryensya/react`) and as plain HTML enhanced by a Vanilla mount (`@skryensya/vanilla`), both rendering the same DOM from one contract.
+
+These docs match the installed release. Read this index, then `choose.md` to pick components, then only the family pages you use. The source in `dist/` and `src/` is not the API: these pages and the TypeScript types are.
+
+- [Choose a component](choose.md): the person needs to → use
+
+## Families
+
+- [accordion](components/accordion.md): there are several long sections and which stay open is worth coordinating
+- [annotation](components/annotation.md): the pieces of something already rendered have to be pointed at and named
+- [app-bar](components/app-bar.md): the top edge of an application (an editor, a tool, a dashboard) needs its menus in one short line of text, the way a desktop OS draws its menu bar
+- [audio-player](components/audio-player.md): a sound has to be played inside the page and its controls should look like the rest of the interface instead of the browser's own bar
+- [avatar](components/avatar.md): there is no photo and the person's initials are needed
+- [back-to-top](components/back-to-top.md): the page is long and someone who scrolled far wants to get back to the top without dragging the scroll by hand
+- [badge](components/badge.md): a count or a short status attached to something else
+- [box](components/box.md): a group needs padding, a surface or a border around it
+- [breadcrumb](components/breadcrumb.md): the page lives inside a hierarchy and the user needs to go back up it
+- [button](components/button.md): it performs an action in place
+- [button-group](components/button-group.md): a few related actions should read as one control
+- [calendar](components/calendar.md): choosing the date is the screen's task, not one more field of a form
+- [callout](components/callout.md): something that happened has to be told
+- [canvas](components/canvas.md): a drawing is larger than the screen showing it (a diagram, an anatomy, a plan) and rescaling it beats reflowing it
+- [carousel](components/carousel.md): there are many similar items and the horizontal space fits only a few
+- [changelog](components/changelog.md): there is a version history of something
+- [checkbox](components/checkbox.md): a yes-or-no decision submitted with the form
+- [clipboard](components/clipboard.md): a code block, a command or a token is going to be pasted elsewhere, and selecting it by hand is slow or imprecise
+- [code-preview](components/code-preview.md): code has to be shown and should read as code
+- [color-picker](components/color-picker.md): the value is an arbitrary color, not one of a few fixed options
+- [combobox](components/combobox.md): the list is long
+- [command-palette](components/command-palette.md): there are many destinations or actions and typing the name gets there before browsing them
+- [comment-thread](components/comment-thread.md): there is a conversation with nested replies and it needs a container that names it
+- [compare-slider](components/compare-slider.md): two versions of the same thing should be judged against each other at the same place
+- [comparison-table](components/comparison-table.md): almost always
+- [content](components/content.md): the page is going to show toasts
+- [date-picker](components/date-picker.md): the date is a field of a form, next to other fields
+- [description-list](components/description-list.md): the details of ONE record are shown as name and value
+- [diagram](components/diagram.md): how several things relate has to be explained
+- [dialog](components/dialog.md): something has to be decided before going on
+- [dialog-stack](components/dialog-stack.md): a short blocking task has ordered steps and needs backward navigation
+- [empty-state](components/empty-state.md): a list or a region has nothing to show, and why has to be said
+- [expressive-avatar](components/expressive-avatar.md): a character, assistant or mascot needs to express a visible state
+- [fade-edge](components/fade-edge.md): a clipped edge needs to show visually that the content continues, or enters and leaves the surface
+- [feed](components/feed.md): a stream of independent units of content that can load in batches.
+- [file-upload](components/file-upload.md): files have to be attached
+- [footer](components/footer.md): it closes the page
+- [form-field](components/form-field.md): a control needs a label, and it almost always does
+- [hero](components/hero.md): it opens a page or a section
+- [icon](components/icon.md): it reinforces an action that already has text
+- [image-frame](components/image-frame.md): it crops an image or a video to a fixed aspect ratio
+- [input](components/input.md): the user types one line of text
+- [kbd](components/kbd.md): a key or a combination the user can press is shown
+- [layout](components/layout.md): things go one below another with a steady rhythm
+- [lightbox](components/lightbox.md): photos are shown as thumbnails and the reader needs to see them large, one at a time, without leaving the page
+- [list](components/list.md): rows of things of the same kind
+- [listbox](components/listbox.md): whoever uses the screen has to see every option while choosing
+- [loader](components/loader.md): there is a wait of unknown length
+- [marquee](components/marquee.md): a short, repeated band gains meaning by moving, but the motion should only start after the person asks for it
+- [media-overlay](components/media-overlay.md): the text overlaps the photo or image instead of sitting below it
+- [megamenu](components/megamenu.md): site/marketing navigation with categories that drop down a multi-column panel of links, edge to edge under the bar
+- [menu](components/menu.md): a set of commands acting on something, behind a trigger
+- [menubar](components/menubar.md): a persistent bar of application commands, some with a dropdown submenu.
+- [message](components/message.md): one turn in a conversation needs row geometry
+- [meter](components/meter.md): a MEASUREMENT within a known range has to be shown, with a current value
+- [morph-stack](components/morph-stack.md): a picture has layers (an interface over its structure over its data) and a gesture should pull them apart so the reader sees how they sit
+- [nav-list](components/nav-list.md): the list of destinations of a sidebar, a navbar or a drawer
+- [navbar](components/navbar.md): the app needs a top bar with a brand and actions
+- [number-field](components/number-field.md): the value is a number that is typed
+- [otp-input](components/otp-input.md): a one-time code sent by SMS, email or an authenticator app is asked for
+- [pagination](components/pagination.md): the results come in pages and it must be possible to jump to a particular one
+- [password-input](components/password-input.md): the field asks for a password, to sign in or to create a new one
+- [placeholder](components/placeholder.md): a line of text that is about to arrive is prefigured, and its typographic role is already known
+- [popover](components/popover.md): a panel with content of its own hanging from a control is needed
+- [presence](components/presence.md): content appears and disappears with a state, and its exit has to be seen instead of cut off at once
+- [procedure](components/procedure.md): they are instructions to follow, and the content of each step is what matters
+- [progress](components/progress.md): how much is left is known
+- [qr-code](components/qr-code.md): the reader has to be taken from a physical surface - a table, a poster, someone else's screen - to a URL without typing it
+- [questionnaire](components/questionnaire.md): several questions are answered one at a time, with visible progress and validation before moving on
+- [quote](components/quote.md): words that are somebody else's are shown as theirs
+- [radio-group](components/radio-group.md): a matrix
+- [rating](components/rating.md): the person chooses a score on a short, ordered scale
+- [resizable](components/resizable.md): two or more regions share one box and the person decides how much room each gets
+- [scroll-expand](components/scroll-expand.md): one box is the point of the section and should open from a small window to fill the whole box as the page scrolls
+- [scroll-hint](components/scroll-hint.md): a scrollable region needs a one-time directional invitation before the person discovers scrolling
+- [scroll-stack](components/scroll-stack.md): two sections tell one story as the page scrolls and the second should read as arriving on top of the first
+- [search-field](components/search-field.md): the query filters something already on the page as it is typed
+- [segmented](components/segmented.md): two or three exclusive options that are best seen all at once
+- [select](components/select.md): a standard choice from a known list, inside a form
+- [separator](components/separator.md): a rule divides two blocks that are about different things
+- [shimmer](components/shimmer.md): temporary status text should feel alive while work is happening, such as generating or reading
+- [sidebar](components/sidebar.md): an application's main navigation lives on the side and stays for the whole session
+- [skip-link](components/skip-link.md): the page starts with chrome repeated on every page
+- [slider](components/slider.md): the value is approximate and seeing it move helps
+- [stat](components/stat.md): a number with its name
+- [state-button](components/state-button.md): the control needs to show one of N named states, each with its own icon, and whoever uses it will write the behaviour that decides which one is active (copying, cycling a mode, anything)
+- [steps](components/steps.md): which stage of a multi-stage process the user is at has to be shown
+- [switch](components/switch.md): the change takes effect immediately
+- [table](components/table.md): almost always
+- [table-pager](components/table-pager.md): a hand-written table needs to page its rows on the client and change how many are shown
+- [tabs](components/tabs.md): several sections share one region and only one is seen at a time
+- [tag](components/tag.md): a label that classifies content
+- [tags-input](components/tags-input.md): several values are typed into one field
+- [tile](components/tile.md): the whole card goes to the same place and the whole of it should be clickable
+- [time-field](components/time-field.md): a time has to be typed and the format matters
+- [timeline](components/timeline.md): events that already happened have to be shown, in the order they happened
+- [toc](components/toc.md): a long document has several sections (h2/h3) and the reader needs to jump between them
+- [toolbar](components/toolbar.md): there are many controls together and the keyboard should not pay one stop for each
+- [tooltip](components/tooltip.md): a control already has an accessible name and needs a short description on hover or focus
+- [tour](components/tour.md): a new or redesigned interface has a few pieces worth pointing out in order (three to five), and its user can ask for the tour whenever they want
+- [tree-view](components/tree-view.md): the data truly nests and the hierarchy is part of what has to be understood
+- [treegrid](components/treegrid.md): almost always
+- [typography](components/typography.md): a paragraph, a sub-line, a footnote
+- [user-select](components/user-select.md): picking people
+- [vaul](components/vaul.md): a modal panel arrives from an edge and can be closed by dragging it
+- [video-player](components/video-player.md): a video has to be played inside the page and its controls should look like the rest of the interface (same buttons, same focus ring, same dark chrome) instead of the browser's own bar
+- [window](components/window.md): a panel has to live alongside the page
+- [wrapper](components/wrapper.md): the page needs a centered measure so the text does not stretch edge to edge

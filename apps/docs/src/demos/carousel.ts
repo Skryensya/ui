@@ -432,3 +432,34 @@ export const carouselDontFewTree = (t: Translate): UsageTree => ({
   attrs: { "aria-label": t("demo.carousel.label") },
   children: features.slice(0, 2).map(([feature, position]) => featureSlide(t, feature, position)),
 });
+
+/* DON'T pair "each card has its own title". Lives here, not in dodont-more, so the carousel page does not load the table/grid demos that module pulls in. */
+type TitleKey = Parameters<Translate>[0];
+const titledSlide = (title: string, body: string): UsageTree => ({
+  contract: "carousel",
+  signature: "CarouselSlide",
+  children: {
+    contract: "box",
+    signature: "Box",
+    options: { padding: "md", surface: "surface", border: "subtle" },
+    attrs: { style: "box-sizing: border-box; padding: 0.75rem;" },
+    children: {
+      contract: "layout",
+      signature: "Stack",
+      options: { gap: "xs" },
+      children: [
+        { contract: "typography", signature: "Text", options: { size: "lg", weight: "label" }, children: title },
+        { contract: "typography", signature: "Text", options: { size: "sm", tone: "secondary" }, children: body },
+      ],
+    },
+  },
+});
+const titled = (t: Translate, titles: readonly string[]): UsageTree => ({
+  contract: "carousel",
+  signature: "Carousel",
+  options: { mounted: true },
+  attrs: { "aria-label": t("demo.carousel.label") },
+  children: titles.map((title, i) => titledSlide(title, t(`dd3.carousel.body${i + 1}` as TitleKey))),
+});
+export const carouselTitlesDoTree = (t: Translate): UsageTree => titled(t, [t("dd3.carousel.t1"), t("dd3.carousel.t2"), t("dd3.carousel.t3")]);
+export const carouselTitlesDontTree = (t: Translate): UsageTree => titled(t, ["Slide 1", "Slide 2", "Slide 3"]);

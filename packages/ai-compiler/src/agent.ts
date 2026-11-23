@@ -2,10 +2,7 @@ import type { UsageTree } from "@skryensya/core/usage-tree";
 import type { CompiledContract, CompiledIndexEntry, CompiledPair } from "./artifact.js";
 import { discover, type DiscoverInput, type DiscoverResult } from "./discover.js";
 import { browseExamples, fetchExample, type ExampleDetail, type ExampleLibrary, type ExamplesFilter, type ExamplesIndex } from "./examples-service.js";
-import { emitMarkup, emitReactSource } from "./emit.js";
-import { sheetsForTree } from "./sheets-for-tree.js";
-import { validateUsageTree, type Problem } from "./validate.js";
-import { reviewTree, type Review } from "./quality.js";
+import { reviewUsageTree, validateAndEmit, type ReviewOutcome, type ValidateOutcome } from "./outcomes.js";
 
 /*
  * THE AGENT-FACING SERVICE: every deterministic operation an agent performs against the kit, as
@@ -22,6 +19,7 @@ import { reviewTree, type Review } from "./quality.js";
  */
 
 export type { ExampleDetail, ExampleLibrary, ExamplesFilter, ExamplesIndex } from "./examples-service.js";
+export type { ReviewOutcome, ValidateOutcome } from "./outcomes.js";
 
 export type Provenance = { readonly schemaVersion: string; readonly sourceHash: string };
 
@@ -41,33 +39,6 @@ export type CatalogPage = {
 };
 
 
-
-/** A design review of a tree that composes: the findings a good page would not have. `review` is null when the tree is invalid, because nothing about its design can be judged until it holds. */
-export type ReviewOutcome = {
-  readonly valid: boolean;
-  readonly problems: readonly Problem[];
-  readonly review: Review | null;
-  readonly hint: string;
-};
-
-export type ValidateOutcome =
-  | {
-      readonly valid: false;
-      readonly problems: readonly Problem[];
-      readonly emitted: null;
-      readonly hint: string;
-    }
-  | {
-      readonly valid: true;
-      readonly problems: readonly Problem[];
-      readonly emitted: {
-        readonly vanilla: string;
-        readonly react: string;
-        readonly reactData: { readonly file: string; readonly source: string } | null;
-      };
-      /** Every stylesheet the composition needs, from `sheetsForTree`: the closure, not a guess. */
-      readonly css: readonly string[];
-    };
 
 /*
  * Families per `get_catalog` page. The full index is ~190KB; Claude Code persists any tool result
@@ -233,26 +204,7 @@ export function createAgentService(pair: CompiledPair, library: ExampleLibrary) 
      * smells. See `quality.ts` for every rule and the guideline behind it.
      */
     review(tree: UsageTree): AgentResult<ReviewOutcome> {
-      const { valid, problems } = validateUsageTree(tree);
-      if (!valid) {
-        return ok({
-          valid: false,
-          problems,
-          review: null,
-          hint: "The tree does not compose, so its design cannot be judged yet. Fix the problems with validate_ui first.",
-        });
-      }
-      const review = reviewTree(tree);
-      return ok({
-        valid: true,
-        problems,
-        review,
-        hint: review.passes
-          ? review.warnings === 0
-            ? "No findings. This tree meets every checkable rule; contrast, focus visibility and reflow still have to be checked where it is rendered."
-            : "No accessibility errors. The warnings are design smells to weigh, not failures."
-          : "Fix the errors: each is an accessibility failure the tree itself causes. Then review again.",
-      });
+      return ok(reviewUsageTree(tree));
     },
 
     /*
@@ -262,28 +214,8 @@ export function createAgentService(pair: CompiledPair, library: ExampleLibrary) 
      * plausible and is wrong, so an invalid tree gets problems and nothing else.
      */
     validate(tree: UsageTree): AgentResult<ValidateOutcome> {
-      const { valid, problems } = validateUsageTree(tree);
-      if (!valid) {
-        return ok({
-          valid: false,
-          problems,
-          emitted: null,
-          hint:
-            "Fix the errors and validate again. Nothing was emitted: code built from an invalid " +
-            "tree looks plausible and is wrong.",
-        });
-      }
-
-      /*
-       * React comes back as up to TWO files: the component, and the module its collections were
-       * moved to. Both have to be WRITTEN; a component importing `./menu-items` from a caller that
-       * never received `menu-items.ts` does not build.
-       */
-      let vanilla: string;
-      let react: ReturnType<typeof emitReactSource>;
       try {
-        vanilla = emitMarkup(tree);
-        react = emitReactSource(tree);
+        return ok(validateAndEmit(tree));
       } catch (error) {
         return fail(
           "The tree validated but could not be emitted.",
@@ -292,17 +224,6 @@ export function createAgentService(pair: CompiledPair, library: ExampleLibrary) 
             "template is incomplete.",
         );
       }
-
-      return ok({
-        valid: true,
-        problems,
-        emitted: {
-          vanilla,
-          react: react.component,
-          reactData: react.data ? { file: react.data.file, source: react.data.source } : null,
-        },
-        css: sheetsForTree(tree).sheets,
-      });
     },
   };
 }

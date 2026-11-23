@@ -2670,6 +2670,9 @@ export const pageSnippets: readonly Snippet[] = [
                           "options": {
                             "tone": "danger"
                           },
+                          "attrs": {
+                            "data-agent-confirm": "Your projects and their history are erased. This cannot be undone."
+                          },
                           "children": "Delete my account"
                         }
                       ]

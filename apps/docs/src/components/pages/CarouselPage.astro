@@ -20,6 +20,8 @@ import {
   carouselQuotesTree,
   carouselProductsTree,
   carouselDontFewTree,
+  carouselTitlesDoTree,
+  carouselTitlesDontTree,
 } from "../../demos/carousel";
 import { annotationDemoCss } from "../../demos/annotation";
 import { getLocale, tList, useTranslations } from "../../i18n";
@@ -59,7 +61,6 @@ carousel.dispatchEvent(new CustomEvent("sk:carouselgoto", { detail: { index: 2 }
 carousel.addEventListener("sk:carouselchange", (event) => {
   console.log(event.detail); // ${t("carousel.apiComment3")}
 });`;
-import { carouselTitlesDoTree, carouselTitlesDontTree } from "../../demos/dodont-more";
 ---
 
 <ComponentPageShell

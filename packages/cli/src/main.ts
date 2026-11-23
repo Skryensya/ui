@@ -1,5 +1,6 @@
 import { parseArgs } from "node:util";
 import { add } from "./commands/add.js";
+import { review, validate } from "./commands/compose.js";
 import { icons } from "./commands/icons.js";
 import { info } from "./commands/info.js";
 import { list } from "./commands/list.js";
@@ -15,6 +16,8 @@ Usage
   skryensya info <name>                          what one component needs and exports
   skryensya add <name> [<name>...]               add its CSS and packages to this project
   skryensya icons <set>                          write the roles from your @iconify-json/<set>
+  skryensya validate <tree.json|-> [--json]      check a usage tree; when valid, print its React and HTML
+  skryensya review <tree.json|-> [--json]        the design review of a valid tree: accessibility errors, smells
 
 Options for add
   --framework <${adapters.map((adapter) => adapter.id).join("|")}>
@@ -69,6 +72,10 @@ export function main(argv: string[], ctx: Context): number {
       }
       return add(rest, { binding: values.binding as Binding | undefined, framework: values.framework, dryRun: values["dry-run"], install: !values["no-install"], icons: values.icons }, local);
     }
+    case "validate":
+      return validate(rest[0], { json: values.json }, local);
+    case "review":
+      return review(rest[0], { json: values.json }, local);
     case "icons":
       return icons(rest[0], { out: values.out, check: values.check, components: values.components }, local);
     default:

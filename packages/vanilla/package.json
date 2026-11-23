@@ -166,9 +166,9 @@
       "types": "./src/components/curve-carousel.ts",
       "default": "./src/components/curve-carousel.ts"
     },
-    "./strip-carousel": {
-      "types": "./src/components/strip-carousel.ts",
-      "default": "./src/components/strip-carousel.ts"
+    "./progressive-carousel": {
+      "types": "./src/components/progressive-carousel.ts",
+      "default": "./src/components/progressive-carousel.ts"
     },
     "./loader": {
       "types": "./src/components/loader.ts",

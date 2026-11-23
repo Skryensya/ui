@@ -16,6 +16,7 @@
     "test": "vitest run"
   },
   "devDependencies": {
+    "@skryensya/ai-compiler": "workspace:*",
     "@skryensya/core": "workspace:*",
     "@types/node": "catalog:",
     "esbuild": "^0.28.1",

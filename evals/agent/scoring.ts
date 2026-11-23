@@ -91,7 +91,17 @@ export interface CaseScore {
    * one example, not the only correct answer.
    */
   matchesReferenceMarkup?: boolean;
+  /** What the run cost, when the agent loop reports it (the `claude-code` provider does). */
+  usage?: RunUsage;
 }
+
+export type RunUsage = {
+  readonly costUsd: number;
+  readonly turns: number;
+  readonly durationMs: number;
+  readonly inputTokens: number;
+  readonly outputTokens: number;
+};
 
 /**
  * Scores one case from its tool-call log. Never calls a model itself: `harness.ts` already ran the

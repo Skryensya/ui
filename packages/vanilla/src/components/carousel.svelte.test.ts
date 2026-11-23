@@ -457,42 +457,56 @@ describe("CurveCarousel (data-curve): the wheel", () => {
   });
 });
 
-describe("StripCarousel Vanilla", () => {
-  const strips = (count: number, heading = true): HTMLElement => {
-    document.body.innerHTML = `<section class="sk-carousel" data-sk-carousel data-strips aria-label="Noticias">
+describe("ProgressiveCarousel Vanilla", () => {
+  const row = (count: number, heading = true): HTMLElement => {
+    document.body.innerHTML = `<section class="sk-carousel" data-sk-carousel data-progressive aria-label="Noticias">
       ${heading ? '<div class="sk-carousel__header"><div class="sk-carousel__heading">Noticias</div></div>' : ""}
       <div class="sk-carousel__track">${Array.from({ length: count }, (_, i) => `<div class="sk-carousel__slide"><a href="#${i}">Foto ${i}</a></div>`).join("")}</div>
       <div class="sk-carousel__captions">${Array.from({ length: count }, (_, i) => `<div class="sk-carousel__caption"><p class="sk-carousel__caption-title">Título ${i}</p></div>`).join("")}</div>
     </section>`;
     return document.querySelector<HTMLElement>(".sk-carousel")!;
   };
+  const distances = (root: HTMLElement) => [...root.querySelectorAll<HTMLElement>(".sk-carousel__slide")].map((s) => s.dataset.distance);
 
-  it("opens the first item, draws prev/next in the header and shows only the open caption", () => {
-    const root = strips(5);
+  it("puts the first slide first, draws prev/next and shows only the active caption", () => {
+    const root = row(5);
     expect(mountCarousel(document)).toBe(1);
-    const slides = [...root.querySelectorAll<HTMLElement>(".sk-carousel__slide")];
-    expect(slides.map((s) => s.dataset.distance)).toEqual(["0", "1", "2", "3", "4"]);
-    expect(root.querySelectorAll(".sk-carousel__header .sk-carousel__button")).toHaveLength(2);
+    expect(distances(root)).toEqual(["0", "1", "2", "3", "4"]);
+    expect(root.querySelectorAll(".sk-carousel__step")).toHaveLength(0);
+    expect(root.querySelectorAll(":scope > .sk-carousel__controls .sk-carousel__button")).toHaveLength(2);
     expect([...root.querySelectorAll<HTMLElement>(".sk-carousel__caption")].map((c) => c.hidden)).toEqual([false, true, true, true, true]);
-    // A strip's link is out of the Tab order; the open one's is not.
+    const slides = [...root.querySelectorAll<HTMLElement>(".sk-carousel__slide")];
+    // A strip's link is out of the Tab order; the active one's is not, and the active slide says so.
     expect((slides[1]!.firstElementChild as HTMLElement).inert).toBe(true);
     expect((slides[0]!.firstElementChild as HTMLElement).inert).toBe(false);
+    expect(slides[0]!.getAttribute("aria-current")).toBe("true");
   });
 
-  it("moves with next, disables the ends, opens a clicked strip and reports the change", () => {
-    const root = strips(3);
+  it("is circular: prev from the first goes to the last, next from the last back to the first", () => {
+    const root = row(4);
     mountCarousel(root);
     const [prev, next] = [...root.querySelectorAll<HTMLButtonElement>(".sk-carousel__button")];
     const changes: number[] = [];
     root.addEventListener("sk:carouselchange", (event) => changes.push((event as CustomEvent).detail.index));
-    expect(prev!.disabled).toBe(true);
+    expect(prev!.disabled).toBe(false);
+    fireEvent.click(prev!);
+    expect(distances(root)).toEqual(["1", "2", "3", "0"]);
     fireEvent.click(next!);
+    expect(changes).toEqual([3, 0]);
+  });
+
+  it("opens a clicked strip, a key, a swipe or a goto", () => {
+    const root = row(6);
+    mountCarousel(root);
+    const changes: number[] = [];
+    root.addEventListener("sk:carouselchange", (event) => changes.push((event as CustomEvent).detail.index));
     fireEvent.click(root.querySelectorAll<HTMLElement>(".sk-carousel__slide")[2]!);
-    expect(next!.disabled).toBe(true);
-    expect(changes).toEqual([1, 2]);
-    expect(root.querySelectorAll<HTMLElement>(".sk-carousel__caption")[2]!.hidden).toBe(false);
-    fireEvent.keyDown(root, { key: "Home" });
+    fireEvent.keyDown(root, { key: "ArrowRight" });
+    const track = root.querySelector<HTMLElement>(".sk-carousel__track")!;
+    fireEvent.pointerDown(track, { clientX: 300, clientY: 10 });
+    fireEvent.pointerUp(track, { clientX: 200, clientY: 14 });
     root.dispatchEvent(new CustomEvent("sk:carouselgoto", { detail: { index: 1 } }));
-    expect(changes).toEqual([1, 2, 0, 1]);
+    expect(changes).toEqual([2, 3, 4, 1]);
+    expect(root.querySelectorAll<HTMLElement>(".sk-carousel__caption")[1]!.hidden).toBe(false);
   });
 });

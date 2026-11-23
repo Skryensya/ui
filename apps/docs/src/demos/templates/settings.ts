@@ -246,6 +246,8 @@ export const settingsTree = (t: Translate): UsageTree => ({
                       contract: "button",
                       signature: "Button.action",
                       options: { tone: "danger" },
+                      // Deleting here asks no one first, so an agent operating the page must hand it to a person.
+                      attrs: { "data-agent-confirm": t("demo.settings.dangerBody") },
                       children: t("demo.settings.delete"),
                     },
                   ],
