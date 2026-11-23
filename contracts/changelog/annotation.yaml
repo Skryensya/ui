@@ -3,7 +3,7 @@
 # `surface` es la forma del contrato la última vez que alguien la revisó. Si el compilador dice
 # que no coincide, algo de lo que un consumidor depende se movió: escribe la entrada y pega el
 # hash nuevo.
-surface: "bc826141c70ee9cc"
+surface: "f09471b842b1d5e0"
 entries:
   - date: 2026-10-01
     kind: feature
@@ -13,3 +13,11 @@ entries:
     en:
       title: First release
       body: "Published for the first time, with its contract, a React binding and a Vanilla mount."
+  - date: 2026-11-22
+    kind: feature
+    es:
+      title: Minimapa del canvas que lo envuelve
+      body: "El canvas que rodea al dibujo suma dos partes, minimap y minimapView, que muestran qué parte se ve mientras hay zoom. No cambia ninguna opción."
+    en:
+      title: Minimap on the canvas around it
+      body: "The canvas around the drawing gains two parts, minimap and minimapView, showing which part is visible while zoomed. No option changes."

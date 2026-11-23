@@ -56,6 +56,10 @@ export const canvasParts = {
   controls: "sk-canvas__controls",
   /** One button in it. Which one is `data-canvas-action`. */
   control: "sk-canvas__control",
+  /** Where the view is, as a small outline of the whole drawing: shown only while zoomed in. Never takes a gesture. */
+  minimap: "sk-canvas__minimap",
+  /** The rectangle in it that is the part of the drawing now on screen. */
+  minimapView: "sk-canvas__minimap-view",
   /** A gesture hint, shown briefly over the viewport when the reader tries the wrong gesture. */
   hint: "sk-canvas__hint",
 } as const;
@@ -84,6 +88,8 @@ export const canvasAttrs = {
   dragging: "data-sk-dragging",
   /** Written while the view is not the fitted one, so a consumer can style "zoomed in". */
   zoomed: "data-sk-zoomed",
+  /** Written while a gesture is moving the view, and a moment after: the only time the content is promoted to its own layer. */
+  gesturing: "data-sk-gesturing",
   /** Written for discrete zoom changes, so the transform eases without slowing drag or pinch. */
   zooming: "data-sk-zooming",
   minZoom: "data-min-zoom",
@@ -110,6 +116,16 @@ export const CANVAS_MAX_ZOOM = 4;
 export const CANVAS_ZOOM_STEP = 1.15;
 /** One arrow key moves the content this far, in screen px. */
 export const CANVAS_PAN_STEP = 40;
+/** Shift + arrow moves the content this many times as far. */
+export const CANVAS_PAN_FAST = 3;
+/** How long, in ms, the content keeps its own layer after the last event of a gesture. */
+export const CANVAS_GESTURE_IDLE = 150;
+/** A released drag keeps gliding while it is faster than this, in px per ms. */
+export const CANVAS_GLIDE_MIN_SPEED = 0.05;
+/** The glide's friction: speed decays as `exp(-k * ms)`, a half-life of about 170 ms. */
+export const CANVAS_GLIDE_FRICTION = 0.004;
+/** How long a double click or tap takes to zoom in, as a factor. Past the maximum it fits instead. */
+export const CANVAS_DOUBLE_ZOOM = 2;
 /** How long a gesture hint stays up, in ms. */
 export const CANVAS_HINT_DURATION = 1600;
 /** A mouse press has to move this far, in px, before it is a drag rather than a click. */
@@ -236,6 +252,23 @@ export function canvasPinchView(
   return { x: round(now.x - cx * scale), y: round(now.y - cy * scale), scale };
 }
 
+/**
+ * One step of a released drag's glide: how far the content moves in `dt` ms and the speed it has left.
+ * The distance is the exact integral of the decaying speed, so the glide covers the same ground at 30 fps as at 120.
+ */
+export function canvasGlideStep(
+  velocity: CanvasPoint,
+  dt: number,
+): { readonly dx: number; readonly dy: number; readonly velocity: CanvasPoint } {
+  const decay = Math.exp(-CANVAS_GLIDE_FRICTION * dt);
+  const travel = (1 - decay) / CANVAS_GLIDE_FRICTION;
+  return {
+    dx: velocity.x * travel,
+    dy: velocity.y * travel,
+    velocity: { x: velocity.x * decay, y: velocity.y * decay },
+  };
+}
+
 /** What a key does to the view, or `null` for a key the canvas leaves alone. */
 export type CanvasKeyAction =
   | { readonly kind: "zoom"; readonly by: number }
@@ -243,7 +276,8 @@ export type CanvasKeyAction =
   | { readonly kind: "actual" }
   | { readonly kind: "pan"; readonly dx: number; readonly dy: number };
 
-export function canvasKeyAction(key: string): CanvasKeyAction | null {
+export function canvasKeyAction(key: string, shift = false): CanvasKeyAction | null {
+  const step = CANVAS_PAN_STEP * (shift ? CANVAS_PAN_FAST : 1);
   switch (key) {
     case "+":
     case "=":
@@ -258,13 +292,13 @@ export function canvasKeyAction(key: string): CanvasKeyAction | null {
     /* An arrow moves the VIEW the way the arrow points, which moves the content the other way: the
        same convention as scrolling a page. */
     case "ArrowLeft":
-      return { kind: "pan", dx: CANVAS_PAN_STEP, dy: 0 };
+      return { kind: "pan", dx: step, dy: 0 };
     case "ArrowRight":
-      return { kind: "pan", dx: -CANVAS_PAN_STEP, dy: 0 };
+      return { kind: "pan", dx: -step, dy: 0 };
     case "ArrowUp":
-      return { kind: "pan", dx: 0, dy: CANVAS_PAN_STEP };
+      return { kind: "pan", dx: 0, dy: step };
     case "ArrowDown":
-      return { kind: "pan", dx: 0, dy: -CANVAS_PAN_STEP };
+      return { kind: "pan", dx: 0, dy: -step };
     default:
       return null;
   }
@@ -309,19 +343,43 @@ export function connectCanvasView(root: HTMLElement, options: CanvasViewOptions 
   const content = viewport?.querySelector<HTMLElement>(`:scope > .${canvasParts.content}`);
   if (!viewport || !content) return () => {};
   const controls = Array.from(root.querySelectorAll<HTMLButtonElement>(`[${canvasAttrs.action}]`));
+  const minimap = root.querySelector<HTMLElement>(`:scope > .${canvasParts.minimap}`);
+  const minimapView = minimap?.querySelector<HTMLElement>(`.${canvasParts.minimapView}`);
   const min = options.minZoom ?? CANVAS_MIN_ZOOM;
   const max = options.maxZoom ?? CANVAS_MAX_ZOOM;
 
+  const win = root.ownerDocument.defaultView;
   let view: CanvasView = { x: 0, y: 0, scale: 1 };
   let fitted = true;
   let zoomTimer = 0;
 
-  /* `offsetWidth`, not the bounding rect: the transform scales the rect and not the layout box, and
-     it is the layout box, the content's own size, that every function above is written against. */
-  const contentSize = (): CanvasSize => ({ width: content.offsetWidth, height: content.offsetHeight });
-  const viewportSize = (): CanvasSize => ({ width: viewport.clientWidth, height: viewport.clientHeight });
+  /* Measured in `layout()` only, which the observers below run on every resize, and read from here
+     on every gesture event: reading `offsetWidth` right after the transform was written forces a
+     layout per event. `offsetWidth`, not the bounding rect: the transform scales the rect and not
+     the layout box, and it is the layout box, the content's own size, that every function above is
+     written against. */
+  let contentBox: CanvasSize = { width: 0, height: 0 };
+  let viewportBox: CanvasSize = { width: 0, height: 0 };
+  const contentSize = (): CanvasSize => contentBox;
+  const viewportSize = (): CanvasSize => viewportBox;
 
+  /* One DOM write per frame, however many events arrive in it: a 1000 Hz mouse or a wheel burst
+     moves `view` many times and paints once. `view` itself is always current, so the decisions the
+     handlers make (did the wheel move anything?) never wait for the frame. */
+  let frame = 0;
+  let gestureTimer = 0;
   const apply = (): void => {
+    root.setAttribute(canvasAttrs.gesturing, "");
+    clearTimeout(gestureTimer);
+    gestureTimer = window.setTimeout(() => root.removeAttribute(canvasAttrs.gesturing), CANVAS_GESTURE_IDLE);
+    frame ||= requestAnimationFrame(flush);
+  };
+  const applyNow = (): void => {
+    cancelAnimationFrame(frame);
+    flush();
+  };
+  const flush = (): void => {
+    frame = 0;
     content.style.transform = canvasTransform(view);
     root.dispatchEvent(new CustomEvent<CanvasView>(canvasEvents.view, { detail: view }));
     /*
@@ -340,12 +398,23 @@ export function connectCanvasView(root: HTMLElement, options: CanvasViewOptions 
         (action === "zoom-in" && view.scale >= max - 1e-6) ||
         (action === "zoom-out" && view.scale <= min + 1e-6);
     }
+    if (minimap && minimapView && !fitted) {
+      /* The window, in the drawing's own coordinates, as a share of the whole drawing. CSS clips what falls outside. */
+      const { width, height } = contentBox;
+      if (width > 0 && height > 0) {
+        minimap.style.aspectRatio = `${width} / ${height}`;
+        minimapView.style.inset = `${((-view.y / view.scale) / height) * 100}% auto auto ${((-view.x / view.scale) / width) * 100}%`;
+        minimapView.style.inlineSize = `${(viewportBox.width / view.scale / width) * 100}%`;
+        minimapView.style.blockSize = `${(viewportBox.height / view.scale / height) * 100}%`;
+      }
+    }
     root.toggleAttribute(canvasAttrs.zoomed, !fitted);
     root.setAttribute(canvasAttrs.placed, "");
   };
 
   const layout = (): void => {
-    const size = contentSize();
+    const size: CanvasSize = { width: content.offsetWidth, height: content.offsetHeight };
+    contentBox = size;
     const width = viewport.clientWidth;
     if (size.width === 0 || width === 0) return;
     const style = getComputedStyle(viewport);
@@ -359,8 +428,9 @@ export function connectCanvasView(root: HTMLElement, options: CanvasViewOptions 
     const scale = clampZoom(canvasFitScale(size, width, Number.isFinite(limit) ? limit : undefined), min, max);
     root.style.setProperty("--sk-canvas-fit-block-size", `${Math.ceil(size.height * scale)}px`);
     const window = { width, height: viewport.clientHeight };
+    viewportBox = window;
     view = fitted ? canvasFitView(size, window, scale) : canvasClampView(view, size, window);
-    apply();
+    applyNow();
   };
 
   const move = (next: CanvasView): void => {
@@ -403,6 +473,7 @@ export function connectCanvasView(root: HTMLElement, options: CanvasViewOptions 
 
   /* ---- wheel: Ctrl/Cmd zooms; plain pans once engaged, and scrolls the page at rest ---- */
   const onWheel = (event: WheelEvent): void => {
+    stopGlide();
     if (event.ctrlKey || event.metaKey) {
       event.preventDefault();
       clearHint();
@@ -434,11 +505,41 @@ export function connectCanvasView(root: HTMLElement, options: CanvasViewOptions 
     if (Math.abs(event.deltaY) > 0 && root.matches(":hover")) hint("wheel");
   };
 
+  /* ---- glide: a released drag keeps going, and anything the reader does next stops it ---- */
+  let glide = 0;
+  const stopGlide = (): void => {
+    cancelAnimationFrame(glide);
+    glide = 0;
+  };
+  const startGlide = (initial: CanvasPoint): void => {
+    let velocity = initial;
+    let last = performance.now();
+    const tick = (now: number): void => {
+      const step = canvasGlideStep(velocity, now - last);
+      last = now;
+      velocity = step.velocity;
+      const before = view;
+      move({ x: view.x + step.dx, y: view.y + step.dy, scale: view.scale });
+      /* An edge ends it: pushing on against a clamp is just a wasted frame. */
+      const stuck = view.x === before.x && view.y === before.y;
+      glide = Math.hypot(velocity.x, velocity.y) < CANVAS_GLIDE_MIN_SPEED || stuck ? 0 : requestAnimationFrame(tick);
+    };
+    glide = requestAnimationFrame(tick);
+  };
+
   /* ---- mouse and pen: drag pans ---- */
-  let drag: { id: number; x: number; y: number; start: CanvasView; moved: boolean } | null = null;
+  let drag: {
+    id: number;
+    x: number;
+    y: number;
+    start: CanvasView;
+    moved: boolean;
+    samples: { t: number; x: number; y: number }[];
+  } | null = null;
   const onPointerDown = (event: PointerEvent): void => {
+    stopGlide();
     if (event.pointerType === "touch" || event.button !== 0) return;
-    drag = { id: event.pointerId, x: event.clientX, y: event.clientY, start: view, moved: false };
+    drag = { id: event.pointerId, x: event.clientX, y: event.clientY, start: view, moved: false, samples: [] };
   };
   const onPointerMove = (event: PointerEvent): void => {
     if (!drag || event.pointerId !== drag.id) return;
@@ -450,11 +551,30 @@ export function connectCanvasView(root: HTMLElement, options: CanvasViewOptions 
       viewport.setPointerCapture?.(event.pointerId);
       root.setAttribute(canvasAttrs.dragging, "");
     }
+    /* The last ~100 ms of the drag, which is what its release speed is measured over. */
+    drag.samples.push({ t: event.timeStamp, x: event.clientX, y: event.clientY });
+    while (drag.samples.length > 2 && event.timeStamp - drag.samples[0]!.t > 100) drag.samples.shift();
     move({ x: drag.start.x + dx, y: drag.start.y + dy, scale: drag.start.scale });
   };
   const onPointerUp = (event: PointerEvent): void => {
     if (!drag || event.pointerId !== drag.id) return;
-    if (drag.moved) viewport.releasePointerCapture?.(event.pointerId);
+    if (drag.moved) {
+      viewport.releasePointerCapture?.(event.pointerId);
+      const first = drag.samples[0];
+      const lastSample = drag.samples.at(-1);
+      /* Only a drag that is still moving when it is let go glides: one that paused first just stops. */
+      if (
+        event.type === "pointerup" &&
+        first &&
+        lastSample &&
+        lastSample !== first &&
+        event.timeStamp - lastSample.t < 50 &&
+        !win?.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+      ) {
+        const span = lastSample.t - first.t;
+        if (span > 0) startGlide({ x: (lastSample.x - first.x) / span, y: (lastSample.y - first.y) / span });
+      }
+    }
     drag = null;
     root.removeAttribute(canvasAttrs.dragging);
   };
@@ -498,19 +618,43 @@ export function connectCanvasView(root: HTMLElement, options: CanvasViewOptions 
     if (event.touches.length < 2) pinch = null;
     if (event.touches.length === 0) oneFinger = null;
   };
-  /* Safari's own pinch-to-zoom of the PAGE, which `touch-action` alone does not stop there. */
-  const onGesture = (event: Event): void => event.preventDefault();
+  /* Safari reports a trackpad pinch as `gesture*` events, not as Ctrl + wheel, and has its own
+     pinch-to-zoom of the PAGE that `touch-action` alone does not stop. So these both stop it and
+     zoom the canvas around the pointer. On iOS the same events fire under two fingers, where the
+     touch handlers above already own the gesture, hence the `pinch` guard. */
+  type GestureEvent = Event & { scale: number; clientX: number; clientY: number };
+  let gesture: CanvasView | null = null;
+  const onGestureStart = (event: Event): void => {
+    event.preventDefault();
+    gesture = pinch ? null : view;
+  };
+  const onGestureChange = (event: Event): void => {
+    event.preventDefault();
+    if (!gesture) return;
+    const { scale, clientX, clientY } = event as GestureEvent;
+    move(canvasZoomAround(gesture, clampZoom(gesture.scale * scale, min, max), local(clientX, clientY)));
+  };
+  const onGestureEnd = (): void => {
+    gesture = null;
+  };
 
   /* ---- keyboard ---- */
   const onKeyDown = (event: KeyboardEvent): void => {
+    stopGlide();
     if (event.ctrlKey || event.metaKey || event.altKey) return;
-    const action = canvasKeyAction(event.key);
+    const action = canvasKeyAction(event.key, event.shiftKey);
     if (!action) return;
     event.preventDefault();
     if (action.kind === "zoom") zoomBy(action.by);
     else if (action.kind === "fit") fit();
     else if (action.kind === "actual") move(canvasZoomAround(view, clampZoom(1, min, max), centre()));
     else move({ x: view.x + action.dx, y: view.y + action.dy, scale: view.scale });
+  };
+
+  /* ---- double click or tap: zoom in where it landed; already at the limit, fit ---- */
+  const onDoubleClick = (event: MouseEvent): void => {
+    if (view.scale >= max - 1e-6) fit();
+    else zoomBy(Math.min(CANVAS_DOUBLE_ZOOM, max / view.scale), local(event.clientX, event.clientY));
   };
 
   /* ---- buttons ---- */
@@ -533,8 +677,11 @@ export function connectCanvasView(root: HTMLElement, options: CanvasViewOptions 
     viewport.addEventListener("touchmove", onTouchMove, { passive: false });
     viewport.addEventListener("touchend", onTouchEnd);
     viewport.addEventListener("touchcancel", onTouchEnd);
-    viewport.addEventListener("gesturestart", onGesture);
+    viewport.addEventListener("gesturestart", onGestureStart);
+    viewport.addEventListener("gesturechange", onGestureChange);
+    viewport.addEventListener("gestureend", onGestureEnd);
     viewport.addEventListener("keydown", onKeyDown);
+    viewport.addEventListener("dblclick", onDoubleClick);
     for (const control of controls) control.addEventListener("click", onControl);
   }
 
@@ -547,13 +694,15 @@ export function connectCanvasView(root: HTMLElement, options: CanvasViewOptions 
    * the drawing at 120px, and the floor then pinned the viewport at one height while the frame grew
    * around it: nothing observed ever resized, and the diagram stayed at a third of its size.
    */
-  const win = root.ownerDocument.defaultView;
   win?.addEventListener("resize", layout);
   layout();
 
   return () => {
     clearTimeout(hintTimer);
     clearTimeout(zoomTimer);
+    clearTimeout(gestureTimer);
+    cancelAnimationFrame(frame);
+    stopGlide();
     observer?.disconnect();
     win?.removeEventListener("resize", layout);
     viewport.removeEventListener("wheel", onWheel);
@@ -565,8 +714,11 @@ export function connectCanvasView(root: HTMLElement, options: CanvasViewOptions 
     viewport.removeEventListener("touchmove", onTouchMove);
     viewport.removeEventListener("touchend", onTouchEnd);
     viewport.removeEventListener("touchcancel", onTouchEnd);
-    viewport.removeEventListener("gesturestart", onGesture);
+    viewport.removeEventListener("gesturestart", onGestureStart);
+    viewport.removeEventListener("gesturechange", onGestureChange);
+    viewport.removeEventListener("gestureend", onGestureEnd);
     viewport.removeEventListener("keydown", onKeyDown);
+    viewport.removeEventListener("dblclick", onDoubleClick);
     for (const control of controls) control.removeEventListener("click", onControl);
   };
 }
@@ -658,6 +810,13 @@ export const canvasTemplateChildren = (inner: ContractTemplate): readonly Contra
         control("zoom-out", "zoomOutLabel", "zoom-out"),
         control("fit", "fitLabel", "fit"),
       ],
+    },
+    {
+      element: "div",
+      part: "minimap",
+      attrs: { "aria-hidden": "true" },
+      whenMissing: "fitOnly",
+      children: [{ element: "span", part: "minimapView" }],
     },
     hintNode("touch", "touchHint", CANVAS_TOUCH_HINT),
     hintNode("wheel", "wheelHint", CANVAS_WHEEL_HINT),

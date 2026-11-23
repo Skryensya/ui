@@ -145,6 +145,8 @@ export const annotationParts = {
   controls: canvasParts.controls,
   control: canvasParts.control,
   hint: canvasParts.hint,
+  minimap: canvasParts.minimap,
+  minimapView: canvasParts.minimapView,
 } as const;
 
 export type AnnotationPart = keyof typeof annotationParts;

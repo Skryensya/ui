@@ -3,10 +3,13 @@ import { describe, expect, it } from "vitest";
 import {
   CANVAS_MAX_ZOOM,
   CANVAS_MIN_ZOOM,
+  CANVAS_PAN_FAST,
   CANVAS_PAN_STEP,
   CANVAS_ZOOM_STEP,
   canvasClampView,
+  CANVAS_GLIDE_FRICTION,
   canvasFitScale,
+  canvasGlideStep,
   canvasFitView,
   canvasKeyAction,
   canvasPinchView,
@@ -167,11 +170,29 @@ describe("canvasKeyAction", () => {
   it("moves the view the way an arrow points, which moves the content the other way", () => {
     expect(canvasKeyAction("ArrowRight")).toEqual({ kind: "pan", dx: -CANVAS_PAN_STEP, dy: 0 });
     expect(canvasKeyAction("ArrowUp")).toEqual({ kind: "pan", dx: 0, dy: CANVAS_PAN_STEP });
+    expect(canvasKeyAction("ArrowLeft", true)).toEqual({ kind: "pan", dx: CANVAS_PAN_STEP * CANVAS_PAN_FAST, dy: 0 });
   });
 
   it("leaves every other key to the page", () => {
     expect(canvasKeyAction("a")).toBeNull();
     expect(canvasKeyAction("Tab")).toBeNull();
+  });
+});
+
+describe("canvasGlideStep", () => {
+  it("covers the same distance however the time is sliced", () => {
+    const v = { x: 1, y: -0.5 };
+    const whole = canvasGlideStep(v, 200);
+    const half = canvasGlideStep(v, 100);
+    const rest = canvasGlideStep(half.velocity, 100);
+    expect(half.dx + rest.dx).toBeCloseTo(whole.dx, 6);
+    expect(half.dy + rest.dy).toBeCloseTo(whole.dy, 6);
+  });
+
+  it("slows down, and stops short of 1 / friction px per unit speed", () => {
+    const step = canvasGlideStep({ x: 2, y: 0 }, 1e6);
+    expect(step.velocity.x).toBeCloseTo(0, 6);
+    expect(step.dx).toBeCloseTo(2 / CANVAS_GLIDE_FRICTION, 3);
   });
 });
 
@@ -188,18 +209,72 @@ describe("the small ones", () => {
 });
 
 describe("the view event", () => {
-  it("tells the root the new view on every change", async () => {
-    const { connectCanvasView, canvasEvents, canvasParts } = await import("./canvas.js");
+  const nextFrame = (): Promise<void> => new Promise((done) => requestAnimationFrame(() => done()));
+  const mount = async () => {
+    const { connectCanvasView, canvasEvents, canvasParts, canvasAttrs } = await import("./canvas.js");
     const root = document.createElement("div");
     root.innerHTML = `<div class="${canvasParts.viewport}"><div class="${canvasParts.content}"></div></div>`;
     document.body.append(root);
     const seen: number[] = [];
     root.addEventListener(canvasEvents.view, (event) => seen.push((event as CustomEvent<{ scale: number }>).detail.scale));
     const disconnect = connectCanvasView(root);
+    const viewport = root.querySelector(`.${canvasParts.viewport}`)!;
+    const key = (k: string) => viewport.dispatchEvent(new KeyboardEvent("keydown", { key: k, bubbles: true }));
+    return { root, seen, key, attr: canvasAttrs.gesturing, done: () => (disconnect(), root.remove()) };
+  };
+
+  it("tells the root the new view after a change", async () => {
+    const { seen, key, done } = await mount();
     const before = seen.length;
-    root.querySelector(`.${canvasParts.viewport}`)!.dispatchEvent(new KeyboardEvent("keydown", { key: "+", bubbles: true }));
+    key("+");
+    await nextFrame();
     expect(seen.length).toBeGreaterThan(before);
     expect(seen.at(-1)).toBeGreaterThan(1);
+    done();
+  });
+
+  it("writes once per frame, with the last view, however many events arrive", async () => {
+    const { seen, key, done } = await mount();
+    const before = seen.length;
+    for (let i = 0; i < 5; i++) key("+");
+    expect(seen.length).toBe(before);
+    await nextFrame();
+    expect(seen.length).toBe(before + 1);
+    expect(seen.at(-1)).toBeCloseTo(CANVAS_ZOOM_STEP ** 5, 1);
+    done();
+  });
+
+  it("marks the root as gesturing while the view moves, and lets go after", async () => {
+    const { root, key, attr, done } = await mount();
+    key("+");
+    expect(root.hasAttribute(attr)).toBe(true);
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    expect(root.hasAttribute(attr)).toBe(false);
+    done();
+  });
+});
+
+describe("double click", () => {
+  it("zooms in around the pointer, then fits once at the maximum", async () => {
+    const { connectCanvasView, canvasEvents, canvasParts } = await import("./canvas.js");
+    const root = document.createElement("div");
+    root.innerHTML = `<div class="${canvasParts.viewport}"><div class="${canvasParts.content}"></div></div>`;
+    document.body.append(root);
+    const seen: number[] = [];
+    root.addEventListener(canvasEvents.view, (event) => seen.push((event as CustomEvent<{ scale: number }>).detail.scale));
+    /* jsdom measures nothing, and a fit with no size is skipped: give both boxes one. */
+    const viewport = root.querySelector<HTMLElement>(`.${canvasParts.viewport}`)!;
+    const content = root.querySelector<HTMLElement>(`.${canvasParts.content}`)!;
+    for (const [el, props] of [[viewport, ["clientWidth", "clientHeight"]], [content, ["offsetWidth", "offsetHeight"]]] as const)
+      for (const prop of props) Object.defineProperty(el, prop, { value: 100 });
+    const disconnect = connectCanvasView(root, { maxZoom: 2 });
+    const frame = () => new Promise<void>((done) => requestAnimationFrame(() => done()));
+    viewport.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
+    await frame();
+    expect(seen.at(-1)).toBe(2);
+    viewport.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
+    await frame();
+    expect(seen.at(-1)).toBe(1);
     disconnect();
     root.remove();
   });

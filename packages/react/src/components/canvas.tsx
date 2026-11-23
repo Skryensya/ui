@@ -124,6 +124,9 @@ export function CanvasParts({
         <Control action="zoom-out" icon="zoom-out" label={zoomOutLabel} />
         <Control action="fit" icon="fit" label={fitLabel} />
       </div>
+      <div aria-hidden="true" className={canvasParts.minimap}>
+        <span className={canvasParts.minimapView} />
+      </div>
       <p aria-hidden="true" className={canvasParts.hint} {...{ [canvasAttrs.hint]: "touch" }}>
         <span>{touchHint ?? CANVAS_TOUCH_HINT}</span>
       </p>

@@ -3,7 +3,7 @@
 # `surface` es la forma del contrato la última vez que alguien la revisó. Si el compilador dice
 # que no coincide, algo de lo que un consumidor depende se movió: escribe la entrada y pega el
 # hash nuevo.
-surface: "a13df78bd414e32b"
+surface: "1219dbf7ae99954d"
 entries:
   - date: 2026-10-01
     kind: feature
@@ -13,3 +13,19 @@ entries:
     en:
       title: First release
       body: "Published for the first time, with its contract, a React binding and a Vanilla mount."
+  - date: 2026-11-22
+    kind: feature
+    es:
+      title: Más fluido, pellizco en Safari y flechas rápidas
+      body: "Pan y zoom escriben una vez por cuadro y el dibujo ya no queda borroso en reposo. El pellizco del trackpad en Safari de escritorio ahora hace zoom. Shift + flecha mueve la vista tres veces más lejos. El evento sk-canvas-view llega una vez por cuadro."
+    en:
+      title: Smoother, Safari pinch and fast arrows
+      body: "Pan and zoom write once per frame and the drawing no longer stays blurry at rest. A trackpad pinch in desktop Safari now zooms. Shift + arrow moves the view three times as far. The sk-canvas-view event arrives once per frame."
+  - date: 2026-11-22
+    kind: feature
+    es:
+      title: Doble clic, inercia y minimapa
+      body: "Doble clic o toque acerca donde cae y, en el máximo, ajusta. Al soltar un arrastre rápido la vista sigue deslizándose y frena sola (no con movimiento reducido). Con zoom aparece un minimapa que marca qué parte se ve; no recibe gestos y se oculta en pantallas estrechas."
+    en:
+      title: Double click, glide and minimap
+      body: "Double click or tap zooms in where it lands and, at the maximum, fits. Releasing a fast drag lets the view glide and ease to a stop (not under reduced motion). While zoomed a minimap marks which part is showing; it takes no gestures and is hidden on narrow screens."

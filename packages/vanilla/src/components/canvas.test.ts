@@ -1,5 +1,5 @@
 import { CANVAS_ZOOM_STEP, canvasAttrs, canvasParts } from "@skryensya/core/canvas";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { connectCanvas } from "./canvas.js";
 
 /*
@@ -19,6 +19,9 @@ const sizes: Record<string, Partial<Record<"offsetWidth" | "offsetHeight" | "cli
 const originals = new Map<string, PropertyDescriptor | undefined>();
 
 beforeEach(() => {
+  /* The controller writes once per frame. This file proves wiring, not timing (core's test does), so a frame is immediate; it
+     returns 0, "no frame pending", because the callback has already run by the time the id comes back. */
+  vi.stubGlobal("requestAnimationFrame", (run: FrameRequestCallback) => (run(0), 0));
   for (const key of ["offsetWidth", "offsetHeight", "clientWidth", "clientHeight"] as const) {
     const proto = key.startsWith("offset") ? HTMLElement.prototype : Element.prototype;
     originals.set(key, Object.getOwnPropertyDescriptor(proto, key));
@@ -35,6 +38,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  vi.unstubAllGlobals();
   for (const [key, descriptor] of originals) {
     const proto = key.startsWith("offset") ? HTMLElement.prototype : Element.prototype;
     if (descriptor) Object.defineProperty(proto, key, descriptor);

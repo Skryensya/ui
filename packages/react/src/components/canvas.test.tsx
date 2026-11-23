@@ -65,7 +65,7 @@ describe("Canvas", () => {
     expect(root.querySelector("output")).toBeNull();
   });
 
-  it("opens fitted and zooms from its buttons, as the enhancer does", () => {
+  it("opens fitted and zooms from its buttons, as the enhancer does", async () => {
     const { container } = render(
       <Canvas>
         <p>drawing</p>
@@ -85,6 +85,8 @@ describe("Canvas", () => {
     expect(level.textContent).toBe("50%");
 
     act(() => root.querySelector<HTMLButtonElement>('[data-canvas-action="zoom-in"]')!.click());
+    /* The view is written once per frame, so wait for it. */
+    await act(() => new Promise<void>((done) => requestAnimationFrame(() => done())));
     /* One step up from the fitted 50%, derived so a retuned step does not leave this asserting the old one. */
     expect(level.textContent).toBe(`${Math.round(0.5 * CANVAS_ZOOM_STEP * 100)}%`);
     expect(root.hasAttribute(canvasAttrs.zoomed)).toBe(true);
