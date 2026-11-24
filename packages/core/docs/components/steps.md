@@ -32,7 +32,7 @@ Alternatives: `Procedure`.
 |---|---|---|
 | `items` (React: `steps`) | a list of items (below) | yes |
 
-Each item in `items`: `status` ("complete" \| "current" \| "upcoming"), `marker` (node, required), `label` (text, required), `description` (text).
+Each item in `items`: `status` ("complete" \| "current" \| "upcoming"), `description` (text), `label` (text, required), `marker` (node, required).
 
 **Example** (canonical tree `steps/three-stages`; its copy is placeholder, replace it)
 

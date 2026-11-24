@@ -1,6 +1,6 @@
 # resizable
 
-Category: layout. Stylesheet: `@skryensya/core/components/resizable.css`. Signatures: `Resizable`, `Resizable.Panel`, `Resizable.Handle`.
+Category: layout. Stylesheet: `@skryensya/core/components/resizable.css`. Signatures: `Resizable`, `Resizable.Handle`, `Resizable.Panel`.
 
 ## Resizable
 
@@ -104,6 +104,31 @@ export function ResizableExample() {
 
 Stylesheets: `@skryensya/core/components/resizable.css`.
 
+## Resizable.Handle
+
+**Use when**
+
+- between two panels, so a person can drag or arrow the boundary; one handle per pair
+
+**Avoid when**
+
+- a static rule is all that is wanted; that is Separator, which divides and does not move
+- it has no label: a focusable separator with no name is announced as just 'separator'
+
+Alternatives: `Separator`.
+
+- React: `import { Resizable } from "@skryensya/react/resizable"`, then `<Resizable.Handle>`.
+- HTML: a `<div>`, no JavaScript needed.
+
+- Goes inside: `Resizable`.
+- Requires the options: `label`.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `label` | string |  |
+
 ## Resizable.Panel
 
 **Use when**
@@ -141,31 +166,6 @@ Alternatives: `Box`.
 | Slot | Accepts | Required |
 |---|---|---|
 | `children` | node |  |
-
-## Resizable.Handle
-
-**Use when**
-
-- between two panels, so a person can drag or arrow the boundary; one handle per pair
-
-**Avoid when**
-
-- a static rule is all that is wanted; that is Separator, which divides and does not move
-- it has no label: a focusable separator with no name is announced as just 'separator'
-
-Alternatives: `Separator`.
-
-- React: `import { Resizable } from "@skryensya/react/resizable"`, then `<Resizable.Handle>`.
-- HTML: a `<div>`, no JavaScript needed.
-
-- Goes inside: `Resizable`.
-- Requires the options: `label`.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `label` | string |  |
 
 ## Styling hooks
 

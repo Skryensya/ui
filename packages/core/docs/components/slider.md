@@ -168,7 +168,7 @@ Stylesheets: `@skryensya/core/components/slider.css`.
 
 | DOM event (Vanilla) | React prop | `detail` |
 |---|---|---|
-| `sk:slidervaluechange` | `onValueChange` | { value: number (Slider), low: number (SliderRange), high: number (SliderRange) } |
+| `sk:slidervaluechange` | `onValueChange` | { high: number (SliderRange), low: number (SliderRange), value: number (Slider) } |
 
 ## Styling hooks
 

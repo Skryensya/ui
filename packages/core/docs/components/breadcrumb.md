@@ -29,10 +29,10 @@ Alternatives: `NavList`, `Steps`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `separator` | node |  |
 | `items` | a list of items (below) | yes |
+| `separator` | node |  |
 
-Each item in `items`: `href` (string), `current` (boolean), `label` (text, required).
+Each item in `items`: `current` (boolean), `href` (string), `label` (text, required).
 
 **Example** (canonical tree `breadcrumb/trail`; its copy is placeholder, replace it)
 

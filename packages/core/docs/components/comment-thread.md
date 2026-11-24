@@ -1,6 +1,172 @@
 # comment-thread
 
-Category: content. Stylesheet: `@skryensya/core/components/comment-thread.css`. Signatures: `CommentThread`, `Comment`, `CommentActions`, `CommentVote`, `CommentTemplate`, `CommentComposer`.
+Category: content. Stylesheet: `@skryensya/core/components/comment-thread.css`. Signatures: `Comment`, `CommentActions`, `CommentComposer`, `CommentTemplate`, `CommentThread`, `CommentVote`.
+
+## Comment
+
+**Use when**
+
+- one unit of conversation: who wrote it, when, and what it said
+- a comment has to be quoted outside its thread; it needs no container
+
+**Avoid when**
+
+- it is content of a flat stream with no replies; that is a FeedArticle
+
+Alternatives: `FeedArticle`.
+
+- React: `import { Comment } from "@skryensya/react/comment-thread"`.
+- HTML: a `<article>` with `data-sk-comment`, enhanced by Vanilla's mount.
+
+- Goes inside: `CommentThread`, `Comment`, `CommentTemplate`.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `commentId` (React: `id`) | string |  |
+| `profileHref` | string |  |
+| `collapsible` | boolean | `false` |
+| `collapseLabel` | string | `"Hide replies"` |
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `actions` | node |  |
+| `author` | node | yes |
+| `avatar` | node |  |
+| `children` | node | yes |
+| `replies` | one of `Comment` |  |
+| `replyComposer` | one of `CommentComposer` |  |
+| `timestamp` | text |  |
+
+## CommentActions
+
+**Use when**
+
+- a comment takes actions: vote, reply, delete
+
+**Avoid when**
+
+- the comment is read-only; then this is simply not composed
+- it is an action bar for a whole view, not for one unit of content; that is a Toolbar
+
+Alternatives: `Toolbar`.
+
+- React: `import { CommentActions } from "@skryensya/react/comment-thread"`.
+- HTML: a `<div>` with `data-sk-comment-actions`, enhanced by Vanilla's mount.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `reply` | boolean | `false` |
+| `replyLabel` | string | `"Reply"` |
+| `deletable` | boolean | `false` |
+| `deleteLabel` | string | `"Delete"` |
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | node |  |
+
+## CommentComposer
+
+**Use when**
+
+- a comment or a reply has to be written, with whatever control the consumer decides
+
+**Avoid when**
+
+- the form does more than publish a body of text; that is a form of its own with FormField
+
+Alternatives: `FormField`.
+
+- React: `import { CommentComposer } from "@skryensya/react/comment-thread"`.
+- HTML: a `<form>` with `data-sk-comment-composer`, enhanced by Vanilla's mount.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `submitLabel` | string | `"Post"` |
+| `cancellable` | boolean | `false` |
+| `cancelLabel` | string | `"Cancel"` |
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | signature | yes |
+
+## CommentTemplate
+
+**Use when**
+
+- the app creates comments at runtime and needs a blueprint to clone
+
+**Avoid when**
+
+- the markup is re-rendered whole; in React it is not needed, it simply renders again
+- what is created is a transient notice and not a comment; that is a ToastTemplate
+
+Alternatives: `ToastTemplate`.
+
+- React: `import { CommentTemplate } from "@skryensya/react/comment-thread"`.
+- HTML: a `<template>`, no JavaScript needed.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | one of `Comment` | yes |
+
+**Example** (canonical tree `comment-thread/template`; its copy is placeholder, replace it)
+
+```tsx
+import { Comment, CommentTemplate } from "@skryensya/react/comment-thread";
+
+export function CommentTemplateExample() {
+  return (
+    <CommentTemplate>
+      <Comment author="Ada" timestamp="hace 3h">
+        Una respuesta que todavía no existe.
+      </Comment>
+    </CommentTemplate>
+  );
+}
+```
+
+```html
+<template>
+  <article
+    class="sk-comment"
+    data-sk-comment
+    data-collapse-label="Hide replies"
+  >
+    <div class="sk-comment__self">
+      <div class="sk-comment__profile">
+        <div class="sk-comment__author" data-sk-comment-author>Ada</div>
+      </div>
+      <div class="sk-comment__header">
+        <div class="sk-comment__timestamp" data-sk-comment-timestamp>
+          hace 3h
+        </div>
+      </div>
+      <div class="sk-comment__gutter"></div>
+      <div class="sk-comment__content">
+        <div class="sk-comment__body" data-sk-comment-body>
+          Una respuesta que todavía no existe.
+        </div>
+      </div>
+    </div>
+  </article>
+</template>
+```
+
+Stylesheets: `@skryensya/core/components/button.css`, `@skryensya/core/components/comment-thread.css`, `@skryensya/core/patterns/visually-hidden.css`.
 
 ## CommentThread
 
@@ -32,8 +198,8 @@ Alternatives: `Feed`, `TreeView`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `composer` | one of `CommentComposer` |  |
 | `children` | one of `Comment` | yes |
+| `composer` | one of `CommentComposer` |  |
 
 **Example** (canonical tree `comment-thread/comment`; its copy is placeholder, replace it)
 
@@ -100,76 +266,6 @@ export function CommentThreadExample() {
 ```
 
 Stylesheets: `@skryensya/core/components/avatar.css`, `@skryensya/core/components/button.css`, `@skryensya/core/components/comment-thread.css`, `@skryensya/core/patterns/visually-hidden.css`.
-
-## Comment
-
-**Use when**
-
-- one unit of conversation: who wrote it, when, and what it said
-- a comment has to be quoted outside its thread; it needs no container
-
-**Avoid when**
-
-- it is content of a flat stream with no replies; that is a FeedArticle
-
-Alternatives: `FeedArticle`.
-
-- React: `import { Comment } from "@skryensya/react/comment-thread"`.
-- HTML: a `<article>` with `data-sk-comment`, enhanced by Vanilla's mount.
-
-- Goes inside: `CommentThread`, `Comment`, `CommentTemplate`.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `commentId` (React: `id`) | string |  |
-| `profileHref` | string |  |
-| `collapsible` | boolean | `false` |
-| `collapseLabel` | string | `"Hide replies"` |
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `avatar` | node |  |
-| `author` | node | yes |
-| `timestamp` | text |  |
-| `children` | node | yes |
-| `actions` | node |  |
-| `replies` | one of `Comment` |  |
-| `replyComposer` | one of `CommentComposer` |  |
-
-## CommentActions
-
-**Use when**
-
-- a comment takes actions: vote, reply, delete
-
-**Avoid when**
-
-- the comment is read-only; then this is simply not composed
-- it is an action bar for a whole view, not for one unit of content; that is a Toolbar
-
-Alternatives: `Toolbar`.
-
-- React: `import { CommentActions } from "@skryensya/react/comment-thread"`.
-- HTML: a `<div>` with `data-sk-comment-actions`, enhanced by Vanilla's mount.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `reply` | boolean | `false` |
-| `replyLabel` | string | `"Reply"` |
-| `deletable` | boolean | `false` |
-| `deleteLabel` | string | `"Delete"` |
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | node |  |
 
 ## CommentVote
 
@@ -263,110 +359,14 @@ export function CommentVoteExample() {
 
 Stylesheets: `@skryensya/core/components/button.css`, `@skryensya/core/components/comment-thread.css`, `@skryensya/core/patterns/visually-hidden.css`.
 
-## CommentTemplate
-
-**Use when**
-
-- the app creates comments at runtime and needs a blueprint to clone
-
-**Avoid when**
-
-- the markup is re-rendered whole; in React it is not needed, it simply renders again
-- what is created is a transient notice and not a comment; that is a ToastTemplate
-
-Alternatives: `ToastTemplate`.
-
-- React: `import { CommentTemplate } from "@skryensya/react/comment-thread"`.
-- HTML: a `<template>`, no JavaScript needed.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | one of `Comment` | yes |
-
-**Example** (canonical tree `comment-thread/template`; its copy is placeholder, replace it)
-
-```tsx
-import { Comment, CommentTemplate } from "@skryensya/react/comment-thread";
-
-export function CommentTemplateExample() {
-  return (
-    <CommentTemplate>
-      <Comment author="Ada" timestamp="hace 3h">
-        Una respuesta que todavía no existe.
-      </Comment>
-    </CommentTemplate>
-  );
-}
-```
-
-```html
-<template>
-  <article
-    class="sk-comment"
-    data-sk-comment
-    data-collapse-label="Hide replies"
-  >
-    <div class="sk-comment__self">
-      <div class="sk-comment__profile">
-        <div class="sk-comment__author" data-sk-comment-author>Ada</div>
-      </div>
-      <div class="sk-comment__header">
-        <div class="sk-comment__timestamp" data-sk-comment-timestamp>
-          hace 3h
-        </div>
-      </div>
-      <div class="sk-comment__gutter"></div>
-      <div class="sk-comment__content">
-        <div class="sk-comment__body" data-sk-comment-body>
-          Una respuesta que todavía no existe.
-        </div>
-      </div>
-    </div>
-  </article>
-</template>
-```
-
-Stylesheets: `@skryensya/core/components/button.css`, `@skryensya/core/components/comment-thread.css`, `@skryensya/core/patterns/visually-hidden.css`.
-
-## CommentComposer
-
-**Use when**
-
-- a comment or a reply has to be written, with whatever control the consumer decides
-
-**Avoid when**
-
-- the form does more than publish a body of text; that is a form of its own with FormField
-
-Alternatives: `FormField`.
-
-- React: `import { CommentComposer } from "@skryensya/react/comment-thread"`.
-- HTML: a `<form>` with `data-sk-comment-composer`, enhanced by Vanilla's mount.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `submitLabel` | string | `"Post"` |
-| `cancellable` | boolean | `false` |
-| `cancelLabel` | string | `"Cancel"` |
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | signature | yes |
-
 ## Events
 
 | DOM event (Vanilla) | React prop | `detail` |
 |---|---|---|
-| `sk:commentvote` | `onVote` | { id: string \| null, direction: "up" \| "down" } |
-| `sk:commentreply` | `onSubmit` | { parentId: string \| null, body: string } |
 | `sk:commentdelete` | `onDelete` | { id: string \| null } |
-| `sk:commentdiscard` | `onCancel` | { parentId: string \| null, body: string } |
+| `sk:commentdiscard` | `onCancel` | { body: string, parentId: string \| null } |
+| `sk:commentreply` | `onSubmit` | { body: string, parentId: string \| null } |
+| `sk:commentvote` | `onVote` | { direction: "up" \| "down", id: string \| null } |
 
 ## Styling hooks
 

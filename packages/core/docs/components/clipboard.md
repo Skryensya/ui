@@ -1,96 +1,6 @@
 # clipboard
 
-Category: actions. Stylesheet: `@skryensya/core/components/clipboard.css`. Signatures: `CopyButton`, `Clipboard`.
-
-## CopyButton
-
-**Use when**
-
-- a code block, a command or a token is going to be pasted elsewhere, and selecting it by hand is slow or imprecise
-- the value is already in view (a code block) or does not need to be seen to be copied
-
-**Avoid when**
-
-- whoever copies has to see or check the value first (a share link, a key): that is Clipboard
-- the action does more than copy (share, export, download): that is a Button with its own name
-
-Alternatives: `Clipboard`, `Button.action`.
-
-- React: `import { CopyButton } from "@skryensya/react/clipboard"`.
-- HTML: a `<button>` with `data-sk-clipboard`, enhanced by Vanilla's mount.
-
-- Requires the options: `label`.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `value` | string |  |
-| `target` | string |  |
-| `label` | string | `"Copy"` |
-| `copiedLabel` | string | `"Copied"` |
-| `errorLabel` | string | `"Copy failed"` |
-| `timeout` | number | `2000` |
-| `size` | "xs" \| "sm" \| "md" | `"sm"` |
-| `variant` | "soft" \| "ghost" | `"soft"` |
-| `appearance` | "plain" \| "tactile" \| "brutalist" \| "frosted" | `"plain"` |
-
-**Example** (canonical tree `clipboard/copy-button`; its copy is placeholder, replace it)
-
-```tsx
-import { CopyButton } from "@skryensya/react/clipboard";
-
-export function CopyButtonExample() {
-  return (
-    <CopyButton
-      value="pnpm add @skryensya/core"
-      label="Copiar comando"
-      copiedLabel="Copiado"
-      errorLabel="No se pudo copiar"
-    />
-  );
-}
-```
-
-```html
-<button
-  class="sk-copy-button sk-button sk-interactive sk-icon-toggle sk-anchor"
-  data-sk-clipboard-trigger
-  data-sk-clipboard
-  value="pnpm add @skryensya/core"
-  aria-label="Copiar comando"
-  data-timeout="2000"
-  data-size="sm"
-  data-variant="soft"
-  data-appearance="plain"
-  type="button"
-  data-icon-only
->
-  <span class="sk-copy-button__icon" data-face="idle" aria-hidden="true">
-    <span data-sk-icon="copy" data-sk-icon-size="md"></span>
-  </span>
-  <span class="sk-copy-button__icon" data-face="copied" aria-hidden="true">
-    <span data-sk-icon="check" data-sk-icon-size="md"></span>
-  </span>
-  <span
-    class="sk-copy-button__label"
-    data-sk-clipboard-status
-    aria-live="polite"
-  ></span>
-  <span
-    class="sk-copy-button__feedback sk-anchored"
-    data-sk-clipboard-feedback
-    data-sk-placement="block-start"
-    aria-hidden="true"
-  >
-    <span data-sk-clipboard-feedback-text="copied">Copiado</span>
-    <span data-sk-clipboard-feedback-text="error">No se pudo copiar</span>
-    <span class="sk-anchored-arrow" data-part="arrow" aria-hidden="true"></span>
-  </span>
-</button>
-```
-
-Stylesheets: `@skryensya/core/components/button.css`, `@skryensya/core/components/clipboard.css`, `@skryensya/core/components/copy-button.css`.
+Category: actions. Stylesheet: `@skryensya/core/components/clipboard.css`. Signatures: `Clipboard`, `CopyButton`.
 
 ## Clipboard
 
@@ -206,6 +116,96 @@ export function ClipboardExample() {
 ```
 
 Stylesheets: `@skryensya/core/components/button.css`, `@skryensya/core/components/button.brutalist.css`, `@skryensya/core/components/clipboard.css`, `@skryensya/core/components/copy-button.css`, `@skryensya/core/components/input.css`, `@skryensya/core/components/input.brutalist.css`.
+
+## CopyButton
+
+**Use when**
+
+- a code block, a command or a token is going to be pasted elsewhere, and selecting it by hand is slow or imprecise
+- the value is already in view (a code block) or does not need to be seen to be copied
+
+**Avoid when**
+
+- whoever copies has to see or check the value first (a share link, a key): that is Clipboard
+- the action does more than copy (share, export, download): that is a Button with its own name
+
+Alternatives: `Clipboard`, `Button.action`.
+
+- React: `import { CopyButton } from "@skryensya/react/clipboard"`.
+- HTML: a `<button>` with `data-sk-clipboard`, enhanced by Vanilla's mount.
+
+- Requires the options: `label`.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `value` | string |  |
+| `target` | string |  |
+| `label` | string | `"Copy"` |
+| `copiedLabel` | string | `"Copied"` |
+| `errorLabel` | string | `"Copy failed"` |
+| `timeout` | number | `2000` |
+| `size` | "xs" \| "sm" \| "md" | `"sm"` |
+| `variant` | "soft" \| "ghost" | `"soft"` |
+| `appearance` | "plain" \| "tactile" \| "brutalist" \| "frosted" | `"plain"` |
+
+**Example** (canonical tree `clipboard/copy-button`; its copy is placeholder, replace it)
+
+```tsx
+import { CopyButton } from "@skryensya/react/clipboard";
+
+export function CopyButtonExample() {
+  return (
+    <CopyButton
+      value="pnpm add @skryensya/core"
+      label="Copiar comando"
+      copiedLabel="Copiado"
+      errorLabel="No se pudo copiar"
+    />
+  );
+}
+```
+
+```html
+<button
+  class="sk-copy-button sk-button sk-interactive sk-icon-toggle sk-anchor"
+  data-sk-clipboard-trigger
+  data-sk-clipboard
+  value="pnpm add @skryensya/core"
+  aria-label="Copiar comando"
+  data-timeout="2000"
+  data-size="sm"
+  data-variant="soft"
+  data-appearance="plain"
+  type="button"
+  data-icon-only
+>
+  <span class="sk-copy-button__icon" data-face="idle" aria-hidden="true">
+    <span data-sk-icon="copy" data-sk-icon-size="md"></span>
+  </span>
+  <span class="sk-copy-button__icon" data-face="copied" aria-hidden="true">
+    <span data-sk-icon="check" data-sk-icon-size="md"></span>
+  </span>
+  <span
+    class="sk-copy-button__label"
+    data-sk-clipboard-status
+    aria-live="polite"
+  ></span>
+  <span
+    class="sk-copy-button__feedback sk-anchored"
+    data-sk-clipboard-feedback
+    data-sk-placement="block-start"
+    aria-hidden="true"
+  >
+    <span data-sk-clipboard-feedback-text="copied">Copiado</span>
+    <span data-sk-clipboard-feedback-text="error">No se pudo copiar</span>
+    <span class="sk-anchored-arrow" data-part="arrow" aria-hidden="true"></span>
+  </span>
+</button>
+```
+
+Stylesheets: `@skryensya/core/components/button.css`, `@skryensya/core/components/clipboard.css`, `@skryensya/core/components/copy-button.css`.
 
 ## Events
 

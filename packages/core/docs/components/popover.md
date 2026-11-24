@@ -42,10 +42,10 @@ Alternatives: `Tooltip`, `Menu`, `Dialog`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `trigger` | node | yes |
 | `children` | node | yes |
-| `title` | text |  |
 | `description` | text |  |
+| `title` | text |  |
+| `trigger` | node | yes |
 
 **Accessible name**
 
@@ -147,8 +147,8 @@ Alternatives: `Popover`, `Tooltip`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `trigger` | node | yes |
 | `children` | node | yes |
+| `trigger` | node | yes |
 
 **Accessible name**
 

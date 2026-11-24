@@ -43,10 +43,10 @@ Alternatives: `Select`, `Popover`, `Menubar`, `Megamenu`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `trigger` | node |  |
 | `items` (React: `items`) | a list of items (below) | yes |
+| `trigger` | node |  |
 
-Each item in `items`, keyed by `value`: `value` (string), `disabled` (boolean), `kind` ("checkbox" \| "radio" \| "separator"), `group` (string), `tone` ("danger"), `href` (string), `label` (text), `children` (items).
+Each item in `items`, keyed by `value`: `disabled` (boolean), `group` (string), `href` (string), `kind` ("checkbox" \| "radio" \| "separator"), `tone` ("danger"), `value` (string), `children` (items), `label` (text).
 
 **Accessible name**
 
@@ -118,8 +118,8 @@ Stylesheets: `@skryensya/core/components/button.css`, `@skryensya/core/component
 
 | DOM event (Vanilla) | React prop | `detail` |
 |---|---|---|
+| `sk:menucheckedchange` | `onCheckedChange` | { checked: boolean, value: string } |
 | `sk:menuopenchange` | `onOpenChange` | { open: boolean } |
-| `sk:menucheckedchange` | `onCheckedChange` | { value: string, checked: boolean } |
 | `sk:menuselect` | `onSelect` | { value: string } |
 
 ## Styling hooks

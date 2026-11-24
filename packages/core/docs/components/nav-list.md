@@ -113,8 +113,8 @@ Stylesheets: `@skryensya/core/patterns/nav-list.css`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `label` | node |  |
 | `children` | one of `NavListLink` | yes |
+| `label` | node |  |
 
 ## NavListLink
 
@@ -147,10 +147,10 @@ Alternatives: `Button.navigation`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `icon` | node |  |
 | `children` | text | yes |
-| `trailing` | node |  |
+| `icon` | node |  |
 | `nested` | one of `NavListGroup` |  |
+| `trailing` | node |  |
 
 ## Events
 

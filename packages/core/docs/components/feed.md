@@ -125,8 +125,8 @@ Alternatives: `Comment`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `label` | node | yes |
 | `children` | node | yes |
+| `label` | node | yes |
 
 ## Styling hooks
 

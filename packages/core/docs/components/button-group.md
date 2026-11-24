@@ -1,6 +1,6 @@
 # button-group
 
-Category: actions. Stylesheet: `@skryensya/core/components/button-group.css`. Signatures: `ButtonGroup`, `ButtonGroupSeparator`, `ButtonGroupText`, `ButtonGroupLabel`.
+Category: actions. Stylesheet: `@skryensya/core/components/button-group.css`. Signatures: `ButtonGroup`, `ButtonGroupLabel`, `ButtonGroupSeparator`, `ButtonGroupText`.
 
 ## ButtonGroup
 
@@ -128,6 +128,30 @@ export const items = [
 
 Stylesheets: `@skryensya/core/components/button-group.css`, `@skryensya/core/components/button.css`, `@skryensya/core/components/loader.css`, `@skryensya/core/components/menu.css`, `@skryensya/core/patterns/anchored.css`.
 
+## ButtonGroupLabel
+
+**Use when**
+
+- the input in the group needs a visible label joined to it; htmlFor is its id
+
+- React: `import { ButtonGroupLabel } from "@skryensya/react/button-group"`.
+- HTML: a `<label>`, no JavaScript needed.
+
+- Goes inside: `ButtonGroup`.
+- Requires the options: `htmlFor`.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `htmlFor` | string |  |
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | text | yes |
+
 ## ButtonGroupSeparator
 
 **Use when**
@@ -155,30 +179,6 @@ Stylesheets: `@skryensya/core/components/button-group.css`, `@skryensya/core/com
 | Slot | Accepts | Required |
 |---|---|---|
 | `children` | node | yes |
-
-## ButtonGroupLabel
-
-**Use when**
-
-- the input in the group needs a visible label joined to it; htmlFor is its id
-
-- React: `import { ButtonGroupLabel } from "@skryensya/react/button-group"`.
-- HTML: a `<label>`, no JavaScript needed.
-
-- Goes inside: `ButtonGroup`.
-- Requires the options: `htmlFor`.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `htmlFor` | string |  |
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | text | yes |
 
 ## Styling hooks
 

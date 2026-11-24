@@ -36,8 +36,8 @@ Alternatives: `Carousel`, `Inline`.
 | Slot | Accepts | Required |
 |---|---|---|
 | `children` | node | yes |
-| `playLabel` | text | yes |
 | `pauseLabel` | text | yes |
+| `playLabel` | text | yes |
 
 **Example** (canonical tree `marquee/requested`; its copy is placeholder, replace it)
 
@@ -137,8 +137,8 @@ Alternatives: `Marquee`, `Carousel`, `Inline`.
 | Slot | Accepts | Required |
 |---|---|---|
 | `children` | node | yes |
-| `playLabel` | text |  |
 | `pauseLabel` | text |  |
+| `playLabel` | text |  |
 
 **Example** (canonical tree `marquee/autoplay`; its copy is placeholder, replace it)
 

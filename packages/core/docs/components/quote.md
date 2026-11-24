@@ -33,10 +33,10 @@ Alternatives: `Callout`, `Text`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `children` | node | yes |
 | `attribution` | text |  |
-| `source` | node |  |
+| `children` | node | yes |
 | `image` | one of `Avatar.image`, `Avatar.initials` |  |
+| `source` | node |  |
 
 **Example** (canonical tree `quote/attributed`; its copy is placeholder, replace it)
 

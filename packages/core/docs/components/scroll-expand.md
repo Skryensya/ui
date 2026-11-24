@@ -33,10 +33,10 @@ Alternatives: `ScrollStack`, `Hero`, `Carousel`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `children` | node | yes |
-| `reveal` | node |  |
-| `lead` | node |  |
 | `after` | node |  |
+| `children` | node | yes |
+| `lead` | node |  |
+| `reveal` | node |  |
 
 **Example** (canonical tree `scroll-expand/default`; its copy is placeholder, replace it)
 

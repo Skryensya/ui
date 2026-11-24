@@ -1,6 +1,6 @@
 # accordion
 
-Category: content. Stylesheet: `@skryensya/core/components/accordion.css`. Signatures: `Accordion`, `Accordion.Item`, `Accordion.Trigger`, `Accordion.Content`, `DetailsGroup`, `Details`, `Details.Summary`, `Details.Content`.
+Category: content. Stylesheet: `@skryensya/core/components/accordion.css`. Signatures: `Accordion`, `Accordion.Content`, `Accordion.Item`, `Accordion.Trigger`, `Details`, `Details.Content`, `Details.Summary`, `DetailsGroup`.
 
 ## Accordion
 
@@ -148,6 +148,27 @@ export function AccordionExample() {
 
 Stylesheets: `@skryensya/core/components/accordion.css`, `@skryensya/core/components/checkbox.css`, `@skryensya/core/components/details.css`, `@skryensya/core/components/switch.css`, `@skryensya/core/components/tile.css`.
 
+## Accordion.Content
+
+**Use when**
+
+- it is the body that folds inside its section
+
+**Avoid when**
+
+- it is outside an Accordion.Item; nothing opens it
+
+- React: `import { Accordion } from "@skryensya/react/accordion"`, then `<Accordion.Content>`.
+- HTML: a `<div>`, no JavaScript needed.
+
+- Goes inside: `Accordion.Item`.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | node | yes |
+
 ## Accordion.Item
 
 **Use when**
@@ -207,20 +228,72 @@ Alternatives: `ExpandableTile`.
 |---|---|---|
 | `children` | node | yes |
 
-## Accordion.Content
+## Details
 
 **Use when**
 
-- it is the body that folds inside its section
+- a section that expands and needs no JavaScript at all
+- it matters that it works before any script loads
 
 **Avoid when**
 
-- it is outside an Accordion.Item; nothing opens it
+- whether it is open has to be known from outside, or the section has to be disabled: that is Accordion.Item
 
-- React: `import { Accordion } from "@skryensya/react/accordion"`, then `<Accordion.Content>`.
+Alternatives: `Accordion.Item`.
+
+- React: `import { Details } from "@skryensya/react/details"`.
+- HTML: a `<details>`, no JavaScript needed.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `name` | string |  |
+| `open` | boolean | `false` |
+| `appearance` | "plain" \| "tactile" \| "brutalist" \| "frosted" | `"plain"` |
+| `size` | "sm" \| "md" | `"md"` |
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | one of `Details.Summary`, `Details.Content` | yes |
+
+## Details.Content
+
+**Use when**
+
+- it is what opening reveals
+
+**Avoid when**
+
+- it is outside a Details; nothing opens it
+
+- React: `import { Details } from "@skryensya/react/details"`, then `<Details.Content>`.
 - HTML: a `<div>`, no JavaScript needed.
 
-- Goes inside: `Accordion.Item`.
+- Goes inside: `Details`.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | node | yes |
+
+## Details.Summary
+
+**Use when**
+
+- it is what the closed state shows and what opens the section
+
+**Avoid when**
+
+- it is outside a Details; there is nothing for it to open
+
+- React: `import { Details } from "@skryensya/react/details"`, then `<Details.Summary>`.
+- HTML: a `<summary>`, no JavaScript needed.
+
+- Goes inside: `Details`.
 
 **Slots**
 
@@ -329,79 +402,6 @@ export function DetailsGroupExample() {
 ```
 
 Stylesheets: `@skryensya/core/components/accordion.css`, `@skryensya/core/components/details.css`, `@skryensya/core/components/tile.css`.
-
-## Details
-
-**Use when**
-
-- a section that expands and needs no JavaScript at all
-- it matters that it works before any script loads
-
-**Avoid when**
-
-- whether it is open has to be known from outside, or the section has to be disabled: that is Accordion.Item
-
-Alternatives: `Accordion.Item`.
-
-- React: `import { Details } from "@skryensya/react/details"`.
-- HTML: a `<details>`, no JavaScript needed.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `name` | string |  |
-| `open` | boolean | `false` |
-| `appearance` | "plain" \| "tactile" \| "brutalist" \| "frosted" | `"plain"` |
-| `size` | "sm" \| "md" | `"md"` |
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | one of `Details.Summary`, `Details.Content` | yes |
-
-## Details.Summary
-
-**Use when**
-
-- it is what the closed state shows and what opens the section
-
-**Avoid when**
-
-- it is outside a Details; there is nothing for it to open
-
-- React: `import { Details } from "@skryensya/react/details"`, then `<Details.Summary>`.
-- HTML: a `<summary>`, no JavaScript needed.
-
-- Goes inside: `Details`.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | node | yes |
-
-## Details.Content
-
-**Use when**
-
-- it is what opening reveals
-
-**Avoid when**
-
-- it is outside a Details; nothing opens it
-
-- React: `import { Details } from "@skryensya/react/details"`, then `<Details.Content>`.
-- HTML: a `<div>`, no JavaScript needed.
-
-- Goes inside: `Details`.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | node | yes |
 
 ## Events
 

@@ -1,6 +1,176 @@
 # comparison-table
 
-Category: data. Stylesheet: `@skryensya/core/components/comparison-table.css`. Signatures: `ComparisonTableScroll`, `ComparisonTable`, `ComparisonColumn`, `ComparisonRow`, `ComparisonCell`.
+Category: data. Stylesheet: `@skryensya/core/components/comparison-table.css`. Signatures: `ComparisonCell`, `ComparisonColumn`, `ComparisonRow`, `ComparisonTable`, `ComparisonTableScroll`.
+
+## ComparisonCell
+
+**Use when**
+
+- how one thing answers one aspect: a short phrase, with code or a link
+
+**Avoid when**
+
+- the answer needs a paragraph or a control; that is a Table, or prose beside the comparison
+
+Alternatives: `Table`.
+
+- React: `import { ComparisonCell } from "@skryensya/react/comparison-table"`.
+- HTML: a `<td>`, no JavaScript needed.
+
+- Goes inside: `ComparisonRow`.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | node | yes |
+
+## ComparisonColumn
+
+**Use when**
+
+- the name of one of the things compared, at the top of its column
+
+**Avoid when**
+
+- a grouped or spanning header; that is a Table's TableHeader
+
+Alternatives: `Table`.
+
+- React: `import { ComparisonColumn } from "@skryensya/react/comparison-table"`.
+- HTML: a `<th>`, no JavaScript needed.
+
+- Goes inside: `ComparisonTable`.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | node | yes |
+
+## ComparisonRow
+
+**Use when**
+
+- one aspect the things are compared on, named once on the left and answered in each column
+
+**Avoid when**
+
+- the row needs a spanning cell; that is a Table
+
+Alternatives: `Table`.
+
+- React: `import { ComparisonRow } from "@skryensya/react/comparison-table"`.
+- HTML: a `<tr>`, no JavaScript needed.
+
+- Goes inside: `ComparisonTable`.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | one of `ComparisonCell` | yes |
+| `label` | text | yes |
+
+## ComparisonTable
+
+**Use when**
+
+- two to four things are set side by side on the same few aspects: two components, three plans, an old and a new behaviour
+- the reader has to decide between them, and the answer is in how the columns differ row by row
+- every cell is short: a phrase, a bit of code, a link
+
+**Avoid when**
+
+- there are more than four things, or the cells are long; that is a catalogue and it is a Table
+- the rows are facts about ONE thing and nothing is compared across them; that is DescriptionList
+- the data is sorted, filtered, paged or summed; that is a Table or a DataGrid
+
+Alternatives: `Table`, `DescriptionList`, `DataGrid`.
+
+- React: `import { ComparisonTable } from "@skryensya/react/comparison-table"`.
+- HTML: a `<table>`, no JavaScript needed.
+
+- Requires the options: `aspectLabel`.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `aspectLabel` | string |  |
+| `density` | "compact" |  |
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `caption` | text |  |
+| `children` | one of `ComparisonRow` | yes |
+| `columns` | one of `ComparisonColumn` | yes |
+
+**Example** (canonical tree `comparison-table/two-columns`; its copy is placeholder, replace it)
+
+```tsx
+import {
+  ComparisonCell,
+  ComparisonColumn,
+  ComparisonRow,
+  ComparisonTable,
+} from "@skryensya/react/comparison-table";
+
+export function ComparisonTableExample() {
+  return (
+    <ComparisonTable
+      aspectLabel="Aspecto"
+      columns={
+        <>
+          <ComparisonColumn>Plan básico</ComparisonColumn>
+          <ComparisonColumn>Plan completo</ComparisonColumn>
+        </>
+      }
+    >
+      <ComparisonRow label="Usuarios">
+        <ComparisonCell>Hasta 3</ComparisonCell>
+        <ComparisonCell>Sin límite</ComparisonCell>
+      </ComparisonRow>
+      <ComparisonRow label="Soporte">
+        <ComparisonCell>Por correo</ComparisonCell>
+        <ComparisonCell>Por correo y chat</ComparisonCell>
+      </ComparisonRow>
+    </ComparisonTable>
+  );
+}
+```
+
+```html
+<table class="sk-comparison-table">
+  <thead>
+    <tr>
+      <th class="sk-comparison-table__corner" scope="col">
+        <span class="sk-comparison-table__corner-label">Aspecto</span>
+      </th>
+      <th class="sk-comparison-table__column" scope="col">Plan básico</th>
+      <th class="sk-comparison-table__column" scope="col">
+        Plan completo
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="sk-comparison-table__row">
+      <th class="sk-comparison-table__row-header" scope="row">Usuarios</th>
+      <td class="sk-comparison-table__cell">Hasta 3</td>
+      <td class="sk-comparison-table__cell">Sin límite</td>
+    </tr>
+    <tr class="sk-comparison-table__row">
+      <th class="sk-comparison-table__row-header" scope="row">Soporte</th>
+      <td class="sk-comparison-table__cell">Por correo</td>
+      <td class="sk-comparison-table__cell">Por correo y chat</td>
+    </tr>
+  </tbody>
+</table>
+```
+
+Stylesheets: `@skryensya/core/components/comparison-table.css`.
 
 ## ComparisonTableScroll
 
@@ -87,176 +257,6 @@ export function ComparisonTableScrollExample() {
 ```
 
 Stylesheets: `@skryensya/core/components/comparison-table.css`.
-
-## ComparisonTable
-
-**Use when**
-
-- two to four things are set side by side on the same few aspects: two components, three plans, an old and a new behaviour
-- the reader has to decide between them, and the answer is in how the columns differ row by row
-- every cell is short: a phrase, a bit of code, a link
-
-**Avoid when**
-
-- there are more than four things, or the cells are long; that is a catalogue and it is a Table
-- the rows are facts about ONE thing and nothing is compared across them; that is DescriptionList
-- the data is sorted, filtered, paged or summed; that is a Table or a DataGrid
-
-Alternatives: `Table`, `DescriptionList`, `DataGrid`.
-
-- React: `import { ComparisonTable } from "@skryensya/react/comparison-table"`.
-- HTML: a `<table>`, no JavaScript needed.
-
-- Requires the options: `aspectLabel`.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `aspectLabel` | string |  |
-| `density` | "compact" |  |
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `caption` | text |  |
-| `columns` | one of `ComparisonColumn` | yes |
-| `children` | one of `ComparisonRow` | yes |
-
-**Example** (canonical tree `comparison-table/two-columns`; its copy is placeholder, replace it)
-
-```tsx
-import {
-  ComparisonCell,
-  ComparisonColumn,
-  ComparisonRow,
-  ComparisonTable,
-} from "@skryensya/react/comparison-table";
-
-export function ComparisonTableExample() {
-  return (
-    <ComparisonTable
-      aspectLabel="Aspecto"
-      columns={
-        <>
-          <ComparisonColumn>Plan básico</ComparisonColumn>
-          <ComparisonColumn>Plan completo</ComparisonColumn>
-        </>
-      }
-    >
-      <ComparisonRow label="Usuarios">
-        <ComparisonCell>Hasta 3</ComparisonCell>
-        <ComparisonCell>Sin límite</ComparisonCell>
-      </ComparisonRow>
-      <ComparisonRow label="Soporte">
-        <ComparisonCell>Por correo</ComparisonCell>
-        <ComparisonCell>Por correo y chat</ComparisonCell>
-      </ComparisonRow>
-    </ComparisonTable>
-  );
-}
-```
-
-```html
-<table class="sk-comparison-table">
-  <thead>
-    <tr>
-      <th class="sk-comparison-table__corner" scope="col">
-        <span class="sk-comparison-table__corner-label">Aspecto</span>
-      </th>
-      <th class="sk-comparison-table__column" scope="col">Plan básico</th>
-      <th class="sk-comparison-table__column" scope="col">
-        Plan completo
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr class="sk-comparison-table__row">
-      <th class="sk-comparison-table__row-header" scope="row">Usuarios</th>
-      <td class="sk-comparison-table__cell">Hasta 3</td>
-      <td class="sk-comparison-table__cell">Sin límite</td>
-    </tr>
-    <tr class="sk-comparison-table__row">
-      <th class="sk-comparison-table__row-header" scope="row">Soporte</th>
-      <td class="sk-comparison-table__cell">Por correo</td>
-      <td class="sk-comparison-table__cell">Por correo y chat</td>
-    </tr>
-  </tbody>
-</table>
-```
-
-Stylesheets: `@skryensya/core/components/comparison-table.css`.
-
-## ComparisonColumn
-
-**Use when**
-
-- the name of one of the things compared, at the top of its column
-
-**Avoid when**
-
-- a grouped or spanning header; that is a Table's TableHeader
-
-Alternatives: `Table`.
-
-- React: `import { ComparisonColumn } from "@skryensya/react/comparison-table"`.
-- HTML: a `<th>`, no JavaScript needed.
-
-- Goes inside: `ComparisonTable`.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | node | yes |
-
-## ComparisonRow
-
-**Use when**
-
-- one aspect the things are compared on, named once on the left and answered in each column
-
-**Avoid when**
-
-- the row needs a spanning cell; that is a Table
-
-Alternatives: `Table`.
-
-- React: `import { ComparisonRow } from "@skryensya/react/comparison-table"`.
-- HTML: a `<tr>`, no JavaScript needed.
-
-- Goes inside: `ComparisonTable`.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `label` | text | yes |
-| `children` | one of `ComparisonCell` | yes |
-
-## ComparisonCell
-
-**Use when**
-
-- how one thing answers one aspect: a short phrase, with code or a link
-
-**Avoid when**
-
-- the answer needs a paragraph or a control; that is a Table, or prose beside the comparison
-
-Alternatives: `Table`.
-
-- React: `import { ComparisonCell } from "@skryensya/react/comparison-table"`.
-- HTML: a `<td>`, no JavaScript needed.
-
-- Goes inside: `ComparisonRow`.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | node | yes |
 
 ## Styling hooks
 

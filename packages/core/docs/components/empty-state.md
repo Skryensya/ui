@@ -29,10 +29,10 @@ Alternatives: `Callout`, `Placeholder`, `Loader`.
 
 | Slot | Accepts | Required |
 |---|---|---|
+| `actions` | one of `Button.action`, `Button.navigation` |  |
+| `description` | node |  |
 | `icon` | one of `Icon` |  |
 | `title` | text | yes |
-| `description` | node |  |
-| `actions` | one of `Button.action`, `Button.navigation` |  |
 
 **Example** (canonical tree `empty-state/no-results`; its copy is placeholder, replace it)
 

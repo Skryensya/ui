@@ -114,10 +114,10 @@ Alternatives: `Steps`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `time` (React: `timeLabel`) | text |  |
+| `children` | node |  |
 | `heading` | text | yes |
 | `icon` | one of `Icon` |  |
-| `children` | node |  |
+| `time` (React: `timeLabel`) | text |  |
 
 ## Styling hooks
 

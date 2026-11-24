@@ -37,7 +37,7 @@ Alternatives: `Lightbox`, `Carousel`, `Tabs`.
 |---|---|---|
 | `items` (React: `items`) | a list of items (below) | yes |
 
-Each item in `items`, keyed by `value`: `value` (string), `view` (node, required), `thumb` (node, required).
+Each item in `items`, keyed by `value`: `value` (string), `thumb` (node, required), `view` (node, required).
 
 **Example** (canonical tree `gallery/photos`; its copy is placeholder, replace it)
 

@@ -39,9 +39,9 @@ Alternatives: `Popover`, `Tooltip`, `Menu`, `Vaul.drawer`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `title` | text | yes |
 | `children` | node | yes |
 | `footer` | node |  |
+| `title` | text | yes |
 
 **Example** (canonical tree `dialog/confirm`; its copy is placeholder, replace it)
 

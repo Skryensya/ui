@@ -1,78 +1,6 @@
 # select
 
-Category: forms. Stylesheet: `@skryensya/core/components/select.css`. Signatures: `Select.native`, `Select`.
-
-## Select.native
-
-**Use when**
-
-- a standard choice from a known list, inside a form
-- the keyboard, the submission and the accessibility should belong to the browser
-
-**Avoid when**
-
-- each option needs markup of its own: an icon, a description, two lines
-- the sk:selectvaluechange event or a controlled collection is needed
-- the person types to filter a long list; that is Combobox
-- there are a few fixed options and they fit in view; that is Segmented or RadioGroup
-
-Alternatives: `Select`, `Combobox`, `Segmented`, `RadioGroup`.
-
-- React: `import { NativeSelect } from "@skryensya/react/select-native"`.
-- HTML: a `<select>`, no JavaScript needed.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `name` | string |  |
-| `value` (React: `defaultValue`) | string |  |
-| `disabled` | boolean | `false` |
-| `required` | boolean | `false` |
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `items` (React: `options`) | a list of items (below) | yes |
-
-Each item in `items`, keyed by `value`: `value` (string), `disabled` (boolean), `label` (text, required).
-
-**Example** (canonical tree `select/native`; its copy is placeholder, replace it)
-
-```tsx
-import { NativeSelect } from "@skryensya/react/select-native";
-import { options } from "./select-options";
-
-export function NativeSelectExample() {
-  return <NativeSelect name="plan" aria-label="Plan" options={options} />;
-}
-```
-
-`select-options.ts`:
-
-```ts
-export const options = [
-  { value: "starter", label: "Starter" },
-  { value: "pro", label: "Pro" },
-];
-```
-
-```html
-<select
-  class="sk-select-native sk-scrollbar"
-  name="plan"
-  aria-label="Plan"
->
-  <button type="button">
-    <selectedcontent></selectedcontent>
-  </button>
-  <option value="starter">Starter</option>
-  <option value="pro">Pro</option>
-</select>
-```
-
-Stylesheets: `@skryensya/core/components/select.css`, `@skryensya/core/patterns/anchored.css`.
+Category: forms. Stylesheet: `@skryensya/core/components/select.css`. Signatures: `Select`, `Select.native`.
 
 ## Select
 
@@ -108,10 +36,10 @@ Alternatives: `Select.native`, `Combobox`, `Segmented`, `RadioGroup`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `label` | text |  |
 | `items` (React: `options`) | a list of items (below) | yes |
+| `label` | text |  |
 
-Each item in `items`, keyed by `value`: `value` (string), `disabled` (boolean), `label` (text, required).
+Each item in `items`, keyed by `value`: `disabled` (boolean), `value` (string), `label` (text, required).
 
 **Example** (canonical tree `select/enhanced`; its copy is placeholder, replace it)
 
@@ -211,6 +139,78 @@ export const options = [
     </div>
   </div>
 </div>
+```
+
+Stylesheets: `@skryensya/core/components/select.css`, `@skryensya/core/patterns/anchored.css`.
+
+## Select.native
+
+**Use when**
+
+- a standard choice from a known list, inside a form
+- the keyboard, the submission and the accessibility should belong to the browser
+
+**Avoid when**
+
+- each option needs markup of its own: an icon, a description, two lines
+- the sk:selectvaluechange event or a controlled collection is needed
+- the person types to filter a long list; that is Combobox
+- there are a few fixed options and they fit in view; that is Segmented or RadioGroup
+
+Alternatives: `Select`, `Combobox`, `Segmented`, `RadioGroup`.
+
+- React: `import { NativeSelect } from "@skryensya/react/select-native"`.
+- HTML: a `<select>`, no JavaScript needed.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `name` | string |  |
+| `value` (React: `defaultValue`) | string |  |
+| `disabled` | boolean | `false` |
+| `required` | boolean | `false` |
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `items` (React: `options`) | a list of items (below) | yes |
+
+Each item in `items`, keyed by `value`: `disabled` (boolean), `value` (string), `label` (text, required).
+
+**Example** (canonical tree `select/native`; its copy is placeholder, replace it)
+
+```tsx
+import { NativeSelect } from "@skryensya/react/select-native";
+import { options } from "./select-options";
+
+export function NativeSelectExample() {
+  return <NativeSelect name="plan" aria-label="Plan" options={options} />;
+}
+```
+
+`select-options.ts`:
+
+```ts
+export const options = [
+  { value: "starter", label: "Starter" },
+  { value: "pro", label: "Pro" },
+];
+```
+
+```html
+<select
+  class="sk-select-native sk-scrollbar"
+  name="plan"
+  aria-label="Plan"
+>
+  <button type="button">
+    <selectedcontent></selectedcontent>
+  </button>
+  <option value="starter">Starter</option>
+  <option value="pro">Pro</option>
+</select>
 ```
 
 Stylesheets: `@skryensya/core/components/select.css`, `@skryensya/core/patterns/anchored.css`.

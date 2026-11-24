@@ -1,56 +1,6 @@
 # separator
 
-Category: layout. Stylesheet: `@skryensya/core/components/separator.css`. Signatures: `Separator`, `LabelledSeparator`.
-
-## Separator
-
-**Use when**
-
-- a rule divides two blocks that are about different things
-- a vertical hairline sits between two things placed side by side (it takes its height from whatever holds it)
-- the line is only paint - a card's internal edge - which is what decorative is for
-
-**Avoid when**
-
-- the rule can be dragged to resize what it divides; that is a Window Splitter, with a keyboard contract of its own (@skryensya/core/splitter)
-- the separation is between rows of a list, a menu or a toolbar; those families draw their own
-- what is wanted is space, not a line; that is the gap of whatever holds the two blocks
-
-Alternatives: `LabelledSeparator`, `Stack`.
-
-- React: `import { Separator } from "@skryensya/react/separator"`.
-- HTML: a `<hr>`, no JavaScript needed.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `orientation` | "horizontal" \| "vertical" | `"horizontal"` |
-| `tone` | "subtle" \| "default" \| "strong" | `"default"` |
-| `spacing` | "none" \| "sm" \| "md" \| "lg" | `"md"` |
-| `decorative` | boolean | `false` |
-
-**Example** (canonical tree `separator/rule`; its copy is placeholder, replace it)
-
-```tsx
-import { Separator } from "@skryensya/react/separator";
-
-export function SeparatorExample() {
-  return <Separator tone="strong" />;
-}
-```
-
-```html
-<hr
-  class="sk-separator"
-  data-orientation="horizontal"
-  aria-orientation="horizontal"
-  data-tone="strong"
-  data-spacing="md"
->
-```
-
-Stylesheets: `@skryensya/core/components/separator.css`.
+Category: layout. Stylesheet: `@skryensya/core/components/separator.css`. Signatures: `LabelledSeparator`, `Separator`.
 
 ## LabelledSeparator
 
@@ -103,6 +53,56 @@ export function LabelledSeparatorExample() {
   <span class="sk-separator__label" id="o">o</span>
   <span class="sk-separator__rule" aria-hidden="true"></span>
 </div>
+```
+
+Stylesheets: `@skryensya/core/components/separator.css`.
+
+## Separator
+
+**Use when**
+
+- a rule divides two blocks that are about different things
+- a vertical hairline sits between two things placed side by side (it takes its height from whatever holds it)
+- the line is only paint - a card's internal edge - which is what decorative is for
+
+**Avoid when**
+
+- the rule can be dragged to resize what it divides; that is a Window Splitter, with a keyboard contract of its own (@skryensya/core/splitter)
+- the separation is between rows of a list, a menu or a toolbar; those families draw their own
+- what is wanted is space, not a line; that is the gap of whatever holds the two blocks
+
+Alternatives: `LabelledSeparator`, `Stack`.
+
+- React: `import { Separator } from "@skryensya/react/separator"`.
+- HTML: a `<hr>`, no JavaScript needed.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `orientation` | "horizontal" \| "vertical" | `"horizontal"` |
+| `tone` | "subtle" \| "default" \| "strong" | `"default"` |
+| `spacing` | "none" \| "sm" \| "md" \| "lg" | `"md"` |
+| `decorative` | boolean | `false` |
+
+**Example** (canonical tree `separator/rule`; its copy is placeholder, replace it)
+
+```tsx
+import { Separator } from "@skryensya/react/separator";
+
+export function SeparatorExample() {
+  return <Separator tone="strong" />;
+}
+```
+
+```html
+<hr
+  class="sk-separator"
+  data-orientation="horizontal"
+  aria-orientation="horizontal"
+  data-tone="strong"
+  data-spacing="md"
+>
 ```
 
 Stylesheets: `@skryensya/core/components/separator.css`.

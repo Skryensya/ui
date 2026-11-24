@@ -45,13 +45,13 @@ Alternatives: `Tooltip`, `FormField`, `List`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `subject` | node | yes |
+| `items` (React: `annotations`) | a list of items (below) | yes |
 | `key` | text |  |
+| `subject` | node | yes |
 | `touchHint` | text |  |
 | `wheelHint` | text |  |
-| `items` (React: `annotations`) | a list of items (below) | yes |
 
-Each item in `items`, keyed by `for`: `for` (string), `side` ("inline-start" \| "inline-end" \| "block-start" \| "block-end"), `match` ("first" \| "all"), `ringPlacement` ("inset" \| "offset"), `ringDistance` (number), `ringRadius` (number), `mark` ("ring" \| "bracket"), `children` (node, required).
+Each item in `items`, keyed by `for`: `for` (string), `mark` ("ring" \| "bracket"), `match` ("first" \| "all"), `ringDistance` (number), `ringPlacement` ("inset" \| "offset"), `ringRadius` (number), `side` ("inline-start" \| "inline-end" \| "block-start" \| "block-end"), `children` (node, required).
 
 **Accessible name**
 

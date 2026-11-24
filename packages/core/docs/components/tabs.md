@@ -40,7 +40,7 @@ Alternatives: `NavList`.
 |---|---|---|
 | `items` | a list of items (below) | yes |
 
-Each item in `items`, keyed by `value`: `value` (string), `disabled` (boolean), `label` (node, required), `children` (node).
+Each item in `items`, keyed by `value`: `disabled` (boolean), `value` (string), `children` (node), `label` (node, required).
 
 **Accessible name**
 

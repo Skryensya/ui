@@ -51,9 +51,9 @@ Alternatives: `Button.navigation`, `Link`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `pre` | node |  |
 | `children` | node | yes |
 | `post` | node |  |
+| `pre` | node |  |
 
 **Accessible name**
 
@@ -122,9 +122,9 @@ Alternatives: `Button.action`, `Link`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `pre` | node |  |
 | `children` | node | yes |
 | `post` | node |  |
+| `pre` | node |  |
 
 **Accessible name**
 

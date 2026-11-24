@@ -41,8 +41,8 @@ Alternatives: `Avatar.image`, `Avatar.initials`, `Placeholder`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `children` | node |  |
 | `caption` | one of `MediaOverlay` |  |
+| `children` | node |  |
 
 **Accessible name**
 

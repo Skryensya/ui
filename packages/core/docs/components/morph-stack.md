@@ -33,10 +33,10 @@ Alternatives: `ScrollStack`, `Carousel`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `deepest` | node |  |
 | `back` | node | yes |
-| `middle` | node | yes |
+| `deepest` | node |  |
 | `front` | node | yes |
+| `middle` | node | yes |
 | `nearest` | node |  |
 
 **Example** (canonical tree `morph-stack/five`; its copy is placeholder, replace it)

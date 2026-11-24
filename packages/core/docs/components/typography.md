@@ -1,143 +1,6 @@
 # typography
 
-Category: content. Stylesheet: `@skryensya/core/components/typography.css`. Signatures: `Text`, `Strong`, `Output`, `Code`, `Heading`, `Link`.
-
-## Text
-
-**Use when**
-
-- a paragraph, a sub-line, a footnote
-- the tone says hierarchy: secondary for what is accessory, danger for an error in prose (with text that says so, not only the color)
-- the small line above a title is textRole eyebrow; the sub-line under the title is textRole subtitle
-
-**Avoid when**
-
-- it titles a section; that is a Heading, even if it looks small
-- it goes inside another line of text, a button or a label as a <p>: there it is textElement span
-
-Alternatives: `Heading`, `Quote`, `Kbd`.
-
-- React: `import { Text } from "@skryensya/react/typography"`.
-- HTML: a `<p>`, no JavaScript needed.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `tone` | "primary" \| "secondary" \| "tertiary" \| "danger" | `"primary"` |
-| `size` | "caption" \| "sm" \| "body" \| "lg" | `"body"` |
-| `weight` | "body" \| "emphasis" \| "label" | `"body"` |
-| `textRole` | "eyebrow" \| "subtitle" |  |
-| `textElement` (React: `as`) | "p" \| "div" \| "span" | `"p"` |
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | node | yes |
-
-**Example** (canonical tree `typography/text`; its copy is placeholder, replace it)
-
-```tsx
-import { Text } from "@skryensya/react/typography";
-
-export function TextExample() {
-  return (
-    <Text tone="secondary" size="sm">
-      Tres réplicas detrás del balanceador.
-    </Text>
-  );
-}
-```
-
-```html
-<p class="sk-text" data-tone="secondary" data-size="sm" data-weight="body">
-  Tres réplicas detrás del balanceador.
-</p>
-```
-
-Stylesheets: `@skryensya/core/components/typography.css`.
-
-## Strong
-
-**Use when**
-
-- a phrase inside text has strong importance, not just a different visual weight
-
-**Avoid when**
-
-- it titles a section; that is a Heading
-- only a different weight for the whole line is wanted, without saying it matters more; that is Text with weight
-
-Alternatives: `Heading`.
-
-- React: `import { Strong } from "@skryensya/react/typography"`.
-- HTML: a `<strong>`, no JavaScript needed.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | node | yes |
-
-**Example** (canonical tree `typography/strong`; its copy is placeholder, replace it)
-
-```tsx
-import { Strong } from "@skryensya/react/typography";
-
-export function StrongExample() {
-  return <Strong>importante</Strong>;
-}
-```
-
-```html
-<strong>importante</strong>
-```
-
-Stylesheets: `@skryensya/core/components/typography.css`.
-
-## Output
-
-**Use when**
-
-- it shows the computed result of an input or an interaction; outputFor names the ids of those inputs
-
-**Avoid when**
-
-- it is static text unrelated to any computation; that is Text
-
-Alternatives: `Text`.
-
-- React: `import { Output } from "@skryensya/react/typography"`.
-- HTML: a `<output>`, no JavaScript needed.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `outputFor` (React: `htmlFor`) | string |  |
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | node | yes |
-
-**Example** (canonical tree `typography/output`; its copy is placeholder, replace it)
-
-```tsx
-import { Output } from "@skryensya/react/typography";
-
-export function OutputExample() {
-  return <Output>42</Output>;
-}
-```
-
-```html
-<output>42</output>
-```
-
-Stylesheets: `@skryensya/core/components/typography.css`.
+Category: content. Stylesheet: `@skryensya/core/components/typography.css`. Signatures: `Code`, `Heading`, `Link`, `Output`, `Strong`, `Text`.
 
 ## Code
 
@@ -253,6 +116,143 @@ export function LinkExample() {
 <a class="sk-link sk-interactive" href="/politica-de-privacidad">
   la política de privacidad
 </a>
+```
+
+Stylesheets: `@skryensya/core/components/typography.css`.
+
+## Output
+
+**Use when**
+
+- it shows the computed result of an input or an interaction; outputFor names the ids of those inputs
+
+**Avoid when**
+
+- it is static text unrelated to any computation; that is Text
+
+Alternatives: `Text`.
+
+- React: `import { Output } from "@skryensya/react/typography"`.
+- HTML: a `<output>`, no JavaScript needed.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `outputFor` (React: `htmlFor`) | string |  |
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | node | yes |
+
+**Example** (canonical tree `typography/output`; its copy is placeholder, replace it)
+
+```tsx
+import { Output } from "@skryensya/react/typography";
+
+export function OutputExample() {
+  return <Output>42</Output>;
+}
+```
+
+```html
+<output>42</output>
+```
+
+Stylesheets: `@skryensya/core/components/typography.css`.
+
+## Strong
+
+**Use when**
+
+- a phrase inside text has strong importance, not just a different visual weight
+
+**Avoid when**
+
+- it titles a section; that is a Heading
+- only a different weight for the whole line is wanted, without saying it matters more; that is Text with weight
+
+Alternatives: `Heading`.
+
+- React: `import { Strong } from "@skryensya/react/typography"`.
+- HTML: a `<strong>`, no JavaScript needed.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | node | yes |
+
+**Example** (canonical tree `typography/strong`; its copy is placeholder, replace it)
+
+```tsx
+import { Strong } from "@skryensya/react/typography";
+
+export function StrongExample() {
+  return <Strong>importante</Strong>;
+}
+```
+
+```html
+<strong>importante</strong>
+```
+
+Stylesheets: `@skryensya/core/components/typography.css`.
+
+## Text
+
+**Use when**
+
+- a paragraph, a sub-line, a footnote
+- the tone says hierarchy: secondary for what is accessory, danger for an error in prose (with text that says so, not only the color)
+- the small line above a title is textRole eyebrow; the sub-line under the title is textRole subtitle
+
+**Avoid when**
+
+- it titles a section; that is a Heading, even if it looks small
+- it goes inside another line of text, a button or a label as a <p>: there it is textElement span
+
+Alternatives: `Heading`, `Quote`, `Kbd`.
+
+- React: `import { Text } from "@skryensya/react/typography"`.
+- HTML: a `<p>`, no JavaScript needed.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `tone` | "primary" \| "secondary" \| "tertiary" \| "danger" | `"primary"` |
+| `size` | "caption" \| "sm" \| "body" \| "lg" | `"body"` |
+| `weight` | "body" \| "emphasis" \| "label" | `"body"` |
+| `textRole` | "eyebrow" \| "subtitle" |  |
+| `textElement` (React: `as`) | "p" \| "div" \| "span" | `"p"` |
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | node | yes |
+
+**Example** (canonical tree `typography/text`; its copy is placeholder, replace it)
+
+```tsx
+import { Text } from "@skryensya/react/typography";
+
+export function TextExample() {
+  return (
+    <Text tone="secondary" size="sm">
+      Tres réplicas detrás del balanceador.
+    </Text>
+  );
+}
+```
+
+```html
+<p class="sk-text" data-tone="secondary" data-size="sm" data-weight="body">
+  Tres réplicas detrás del balanceador.
+</p>
 ```
 
 Stylesheets: `@skryensya/core/components/typography.css`.

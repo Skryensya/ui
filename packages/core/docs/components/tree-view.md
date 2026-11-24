@@ -39,12 +39,12 @@ Alternatives: `NavList`, `List`, `Treegrid`, `Toc`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `branchIndicator` | node |  |
 | `branchIcon` | node |  |
-| `leafIcon` | node |  |
+| `branchIndicator` | node |  |
 | `items` (React: `nodes`) | a list of items (below) | yes |
+| `leafIcon` | node |  |
 
-Each item in `items`, keyed by `id`: `id` (string), `disabled` (boolean), `label` (text, required), `children` (items).
+Each item in `items`, keyed by `id`: `disabled` (boolean), `id` (string), `children` (items), `label` (text, required).
 
 **Example** (canonical tree `tree-view/nested-folders`; its copy is placeholder, replace it)
 
@@ -207,8 +207,8 @@ Stylesheets: `@skryensya/core/components/tree-view.css`, `@skryensya/core/patter
 
 | DOM event (Vanilla) | React prop | `detail` |
 |---|---|---|
-| `sk:treeviewselectionchange` | `onSelectionChange` | { selectedValue: string[] } |
 | `sk:treeviewexpandedchange` | `onExpandedChange` | { expandedValue: string[] } |
+| `sk:treeviewselectionchange` | `onSelectionChange` | { selectedValue: string[] } |
 
 ## Styling hooks
 

@@ -242,7 +242,7 @@ Stylesheets: `@skryensya/core/components/app-bar.css`, `@skryensya/core/componen
 | `children` | node | yes |
 | `items` | a list of items (below) |  |
 
-Each item in `items`, keyed by `value`: `value` (string), `disabled` (boolean), `tone` ("danger"), `href` (string), `label` (text), `children` (items).
+Each item in `items`, keyed by `value`: `disabled` (boolean), `href` (string), `tone` ("danger"), `value` (string), `children` (items), `label` (text).
 
 ## AppBarStatus
 
@@ -267,7 +267,7 @@ Each item in `items`, keyed by `value`: `value` (string), `disabled` (boolean), 
 | `children` | node | yes |
 | `items` | a list of items (below) |  |
 
-Each item in `items`, keyed by `value`: `value` (string), `disabled` (boolean), `tone` ("danger"), `href` (string), `label` (text), `children` (items).
+Each item in `items`, keyed by `value`: `disabled` (boolean), `href` (string), `tone` ("danger"), `value` (string), `children` (items), `label` (text).
 
 ## Styling hooks
 

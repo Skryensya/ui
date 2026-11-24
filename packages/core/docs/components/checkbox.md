@@ -100,10 +100,10 @@ Alternatives: `Checkbox`, `RadioGroup`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `label` | node | yes |
 | `items` | a list of items (below) | yes |
+| `label` | node | yes |
 
-Each item in `items`, keyed by `value`: `value` (string), `defaultChecked` (boolean), `disabled` (boolean), `label` (node, required).
+Each item in `items`, keyed by `value`: `defaultChecked` (boolean), `disabled` (boolean), `value` (string), `label` (node, required).
 
 **Example** (canonical tree `checkbox/group`; its copy is placeholder, replace it)
 

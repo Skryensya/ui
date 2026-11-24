@@ -60,7 +60,7 @@ Alternatives: `VideoPlayer`, `Slider`.
 | `children` | node |  |
 | `tracks` | a list of items (below) |  |
 
-Each item in `tracks`: `src` (string), `cover` (string), `duration` (number), `peaks` (string), `title` (text, required), `artist` (text).
+Each item in `tracks`: `cover` (string), `duration` (number), `peaks` (string), `src` (string), `artist` (text), `title` (text, required).
 
 **Example** (canonical tree `audio-player/default`; its copy is placeholder, replace it)
 

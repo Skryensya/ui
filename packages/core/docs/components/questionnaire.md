@@ -338,14 +338,14 @@ Alternatives: `TileRadioGroup`, `TileCheckbox`, `FormField`.
 
 | Slot | Accepts | Required |
 |---|---|---|
+| `choices` | a list of items (below) |  |
+| `control` | node |  |
+| `description` | text |  |
 | `section` | text |  |
 | `sectionDescription` | text |  |
 | `title` | text | yes |
-| `description` | text |  |
-| `control` | node |  |
-| `choices` | a list of items (below) |  |
 
-Each item in `choices`, keyed by `value`: `value` (string), `disabled` (boolean), `label` (text, required), `description` (text).
+Each item in `choices`, keyed by `value`: `disabled` (boolean), `value` (string), `description` (text), `label` (text, required).
 
 **Accessible name**
 

@@ -106,7 +106,7 @@ Alternatives: `Checkbox`, `Segmented`, `Select`.
 |---|---|---|
 | `items` | a list of items (below) | yes |
 
-Each item in `items`, keyed by `value`: `value` (string), `disabled` (boolean), `label` (node, required).
+Each item in `items`, keyed by `value`: `disabled` (boolean), `value` (string), `label` (node, required).
 
 **Accessible name**
 

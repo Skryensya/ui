@@ -1,6 +1,167 @@
 # treegrid
 
-Category: data. Stylesheet: `@skryensya/core/components/treegrid.css`. Signatures: `TreegridScroll`, `Treegrid`, `TreegridHead`, `TreegridHeadRow`, `TreegridColumnHeader`, `TreegridBody`, `TreegridRow`, `TreegridCell`.
+Category: data. Stylesheet: `@skryensya/core/components/treegrid.css`. Signatures: `Treegrid`, `TreegridBody`, `TreegridCell`, `TreegridColumnHeader`, `TreegridHead`, `TreegridHeadRow`, `TreegridRow`, `TreegridScroll`.
+
+## Treegrid
+
+**Use when**
+
+- the data has hierarchy AND columns at once. A file explorer with size/date, an org chart with role/department
+- each row needs to expand or collapse without losing the rest of its columns
+
+**Avoid when**
+
+- there are columns but no hierarchy; that is a Table
+- there is hierarchy but a single text column; that is a TreeView
+
+Alternatives: `Table`, `TreeView`.
+
+- React: `import { Treegrid } from "@skryensya/react/treegrid"`.
+- HTML: a `<table>` with `data-sk-treegrid`, enhanced by Vanilla's mount.
+
+- Requires the options: `label`.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `label` | string |  |
+| `resizableColumns` | boolean | `false` |
+| `resizeLabel` | string |  |
+| `columnWeights` | string |  |
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | one of `TreegridHead`, `TreegridBody` | yes |
+
+**Accessible name**
+
+- Each column resizer is a real, focusable role="separator" a binding inserts: never authored, so nothing else names it for a screen reader; the column header it sits beside says WHICH column, not that the control resizes it. Give one of: `resizeLabel`.
+
+## TreegridBody
+
+**Use when**
+
+- always: it is where the grid's rows live, and the grid is not complete without it
+
+- React: `import { TreegridBody } from "@skryensya/react/treegrid"`.
+- HTML: a `<tbody>`, no JavaScript needed.
+
+- Goes inside: `Treegrid`.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | one of `TreegridRow` | yes |
+
+## TreegridCell
+
+**Use when**
+
+- a value inside a row of the grid
+
+**Avoid when**
+
+- the content needs its own interactive control (a button, a link); this version of the contract is faithful to the WAI `treegrid-1` example. Text-only cells, see docs/aria-apg-audit.md
+
+- React: `import { TreegridCell } from "@skryensya/react/treegrid"`.
+- HTML: a `<td>`, no JavaScript needed.
+
+- Goes inside: `TreegridRow`.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | text | yes |
+
+## TreegridColumnHeader
+
+**Use when**
+
+- the cell names its column
+
+- React: `import { TreegridColumnHeader } from "@skryensya/react/treegrid"`.
+- HTML: a `<th>`, no JavaScript needed.
+
+- Goes inside: `TreegridHeadRow`.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | node | yes |
+
+## TreegridHead
+
+**Use when**
+
+- the columns have headers, which is almost always
+
+- React: `import { TreegridHead } from "@skryensya/react/treegrid"`.
+- HTML: a `<thead>`, no JavaScript needed.
+
+- Goes inside: `Treegrid`.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | one of `TreegridHeadRow` | yes |
+
+## TreegridHeadRow
+
+**Use when**
+
+- whenever there is a TreegridHead: it is the row holding the TreegridColumnHeaders
+
+- React: `import { TreegridHeadRow } from "@skryensya/react/treegrid"`.
+- HTML: a `<tr>`, no JavaScript needed.
+
+- Goes inside: `TreegridHead`.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | one of `TreegridColumnHeader` | yes |
+
+## TreegridRow
+
+**Use when**
+
+- one record of the grid, in the same order a screen reader walks it: never nested inside another TreegridRow, a <tr> cannot contain another <tr>
+- the row has descendants: pass `expanded` (true or false) and write them right after, in order, with a higher `level`
+- every row carries a `value` unique in the grid: it is what the expand and activate events report
+
+**Avoid when**
+
+- the row is a leaf with no children; there `expanded` is not passed at all. Its absence is what marks it a leaf, not a `false` value
+
+- React: `import { TreegridRow } from "@skryensya/react/treegrid"`.
+- HTML: a `<tr>` with `data-sk-treegrid-row`, enhanced by Vanilla's mount.
+
+- Goes inside: `TreegridBody`.
+- Requires the options: `level`, `setSize`, `posInset`, `value`.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `level` | number |  |
+| `setSize` | number |  |
+| `posInset` | number |  |
+| `expanded` | boolean |  |
+| `value` | string |  |
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | one of `TreegridCell` | yes |
 
 ## TreegridScroll
 
@@ -183,173 +344,12 @@ export function TreegridScrollExample() {
 
 Stylesheets: `@skryensya/core/components/table.css`, `@skryensya/core/components/treegrid.css`.
 
-## Treegrid
-
-**Use when**
-
-- the data has hierarchy AND columns at once. A file explorer with size/date, an org chart with role/department
-- each row needs to expand or collapse without losing the rest of its columns
-
-**Avoid when**
-
-- there are columns but no hierarchy; that is a Table
-- there is hierarchy but a single text column; that is a TreeView
-
-Alternatives: `Table`, `TreeView`.
-
-- React: `import { Treegrid } from "@skryensya/react/treegrid"`.
-- HTML: a `<table>` with `data-sk-treegrid`, enhanced by Vanilla's mount.
-
-- Requires the options: `label`.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `label` | string |  |
-| `resizableColumns` | boolean | `false` |
-| `resizeLabel` | string |  |
-| `columnWeights` | string |  |
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | one of `TreegridHead`, `TreegridBody` | yes |
-
-**Accessible name**
-
-- Each column resizer is a real, focusable role="separator" a binding inserts: never authored, so nothing else names it for a screen reader; the column header it sits beside says WHICH column, not that the control resizes it. Give one of: `resizeLabel`.
-
-## TreegridHead
-
-**Use when**
-
-- the columns have headers, which is almost always
-
-- React: `import { TreegridHead } from "@skryensya/react/treegrid"`.
-- HTML: a `<thead>`, no JavaScript needed.
-
-- Goes inside: `Treegrid`.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | one of `TreegridHeadRow` | yes |
-
-## TreegridHeadRow
-
-**Use when**
-
-- whenever there is a TreegridHead: it is the row holding the TreegridColumnHeaders
-
-- React: `import { TreegridHeadRow } from "@skryensya/react/treegrid"`.
-- HTML: a `<tr>`, no JavaScript needed.
-
-- Goes inside: `TreegridHead`.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | one of `TreegridColumnHeader` | yes |
-
-## TreegridColumnHeader
-
-**Use when**
-
-- the cell names its column
-
-- React: `import { TreegridColumnHeader } from "@skryensya/react/treegrid"`.
-- HTML: a `<th>`, no JavaScript needed.
-
-- Goes inside: `TreegridHeadRow`.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | node | yes |
-
-## TreegridBody
-
-**Use when**
-
-- always: it is where the grid's rows live, and the grid is not complete without it
-
-- React: `import { TreegridBody } from "@skryensya/react/treegrid"`.
-- HTML: a `<tbody>`, no JavaScript needed.
-
-- Goes inside: `Treegrid`.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | one of `TreegridRow` | yes |
-
-## TreegridRow
-
-**Use when**
-
-- one record of the grid, in the same order a screen reader walks it: never nested inside another TreegridRow, a <tr> cannot contain another <tr>
-- the row has descendants: pass `expanded` (true or false) and write them right after, in order, with a higher `level`
-- every row carries a `value` unique in the grid: it is what the expand and activate events report
-
-**Avoid when**
-
-- the row is a leaf with no children; there `expanded` is not passed at all. Its absence is what marks it a leaf, not a `false` value
-
-- React: `import { TreegridRow } from "@skryensya/react/treegrid"`.
-- HTML: a `<tr>` with `data-sk-treegrid-row`, enhanced by Vanilla's mount.
-
-- Goes inside: `TreegridBody`.
-- Requires the options: `level`, `setSize`, `posInset`, `value`.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `level` | number |  |
-| `setSize` | number |  |
-| `posInset` | number |  |
-| `expanded` | boolean |  |
-| `value` | string |  |
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | one of `TreegridCell` | yes |
-
-## TreegridCell
-
-**Use when**
-
-- a value inside a row of the grid
-
-**Avoid when**
-
-- the content needs its own interactive control (a button, a link); this version of the contract is faithful to the WAI `treegrid-1` example. Text-only cells, see docs/aria-apg-audit.md
-
-- React: `import { TreegridCell } from "@skryensya/react/treegrid"`.
-- HTML: a `<td>`, no JavaScript needed.
-
-- Goes inside: `TreegridRow`.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | text | yes |
-
 ## Events
 
 | DOM event (Vanilla) | React prop | `detail` |
 |---|---|---|
-| `sk:treegridexpandedchange` | `onExpandedChange` | { value: string, expanded: boolean } |
 | `sk:treegridactivate` | `onActivate` | { value: string } |
+| `sk:treegridexpandedchange` | `onExpandedChange` | { expanded: boolean, value: string } |
 
 ## Styling hooks
 

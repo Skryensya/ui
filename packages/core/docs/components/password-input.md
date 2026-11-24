@@ -41,8 +41,8 @@ Alternatives: `OtpInput`, `Clipboard`, `Input`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `label` | text | yes |
 | `hint` | text |  |
+| `label` | text | yes |
 
 **Example** (canonical tree `password-input/new`; its copy is placeholder, replace it)
 
