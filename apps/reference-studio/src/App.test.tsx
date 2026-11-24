@@ -1,4 +1,6 @@
 // @vitest-environment jsdom
+/* Node 26 hides jsdom's localStorage behind its own (undefined without --localstorage-file); the shared floor puts it back. */
+import "@skryensya/core/jsdom-floor";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import {
   cleanup,
