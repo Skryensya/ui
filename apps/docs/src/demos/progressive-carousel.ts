@@ -1,5 +1,5 @@
 import { satin, type SatinTint } from "../lib/satin";
-import type { UsageTree } from "@skryensya/core/usage-tree";
+import type { ItemInput, UsageTree } from "@skryensya/core/usage-tree";
 import type { Translate } from "../i18n";
 
 /*
@@ -32,9 +32,7 @@ const story = (t: Translate, tint: SatinTint, key: string) => ({
   },
 });
 
-type Entry = { slots: Record<string, unknown> };
-
-const shell = (t: Translate, items: Entry[], { heading = true, options = {}, specimen = false }: { heading?: boolean; options?: Record<string, unknown>; specimen?: boolean } = {}): UsageTree => ({
+const shell = (t: Translate, items: ItemInput[], { heading = true, options = {}, specimen = false }: { heading?: boolean; options?: Record<string, unknown>; specimen?: boolean } = {}): UsageTree => ({
   contract: "carousel",
   signature: "Carousel.progressive",
   options: { mounted: true, ...options },
