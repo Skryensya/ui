@@ -20,6 +20,8 @@ const ask = (): CommandPaletteRecents => {
 
 describe("recent pages", () => {
   beforeEach(() => {
+    /* The memory fallback is reset below; a real localStorage (jsdom's, on the CI's Node) would carry one case's pages into the next. */
+    globalThis.localStorage?.clear();
     resetStorageForTests();
     document.body.innerHTML = "";
   });
