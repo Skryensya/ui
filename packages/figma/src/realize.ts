@@ -345,6 +345,9 @@ export function textOf(ctx: Context): Text {
     authored = ctx.inherited?.["line-height"] ?? "normal";
     lineHeight = /var\(/.test(authored) ? substituted(authored, ctx) : authored;
   }
+  // A unitless ratio written as `calc(a / b)` (Badge's 4/3 gives a whole 16px on 12px text; a decimal would not) is read as the ratio.
+  const ratio = /^calc\(\s*(\d*\.?\d+)\s*\/\s*(\d*\.?\d+)\s*\)$/.exec(lineHeight);
+  if (ratio && Number(ratio[2]) !== 0) lineHeight = String(Number(ratio[1]) / Number(ratio[2]));
   // `normal` (a Link inherits it) is the font's own leading: Figma's Auto.
   if (lineHeight !== "normal" && !/^\d*\.?\d+$/.test(lineHeight)) throw new Unsupported(`line-height ${authored}: only unitless is read`);
   const decoration = `${prop(ctx, "text-decoration-line") ?? ""} ${prop(ctx, "text-decoration") ?? ""}`;

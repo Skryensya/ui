@@ -49,6 +49,6 @@ export const accordionRealization: Realization = {
     names: { "Accordion.Content.children": "answer" },
   },
   icons,
-  grid: { columns: [], rows: [], descending: [] },
+  grid: { columns: ["variant"], rows: [], descending: [] },
   stage,
 };

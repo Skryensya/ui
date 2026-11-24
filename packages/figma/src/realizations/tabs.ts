@@ -13,7 +13,7 @@ export const tabsRealization: Realization = {
   state: noStates,
   overlays: {},
   ring: "focus ring",
-  exclude: ["activationMode"],
+  exclude: ["activationMode", "listPlacement", "wrap"],
   width: 360,
   given: { value: "overview" },
   marks: {

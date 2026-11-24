@@ -1295,8 +1295,8 @@ async function iconSetOf(realization: Realization, iconContract: ComponentContra
   const preset = iconifyPresets[realization.icons.export];
   if (!preset) throw new Error(`no icon preset ${realization.icons.export}`);
   const json = createRequire(import.meta.url)(`${realization.icons.module}/icons.json`);
-  // Every name the contract declares, component marks included: Figma draws the whole vocabulary.
-  const set = iconSetFromIconify(json, preset, { components: true }) as Record<string, { body: string; viewBox: string; attrs?: Record<string, string> }>;
+  // Every name the contract declares, component marks and brand logos included: Figma draws the whole vocabulary.
+  const set = iconSetFromIconify(json, preset, { components: true, brands: true }) as Record<string, { body: string; viewBox: string; attrs?: Record<string, string> }>;
   if (!option.values.includes(DEFAULT_ICON)) throw new Error(`the icon vocabulary has no ${DEFAULT_ICON}`);
 
   const first = set[option.values[0]];
