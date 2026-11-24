@@ -1,6 +1,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { agentDocsDir, buildAgentDocs, writeAgentDocs } from "./agent-docs-files.js";
+import { asCompiledPair } from "./artifact.js";
 import { checkBindingConformance } from "./conformance.js";
 import { checkCompose } from "./compose.js";
 import { checkStylingHooks } from "./hooks.js";
@@ -91,7 +92,9 @@ writeFileSync(join(outDir, "ai-manifest.json"), canonical(manifest));
 const families = Object.keys(manifest.contracts).length;
 console.log(`  ai-index.json + ai-manifest.json: ${families} families, sourceHash ${sourceHash}`);
 
-/* The Markdown a model reads without the MCP, rendered from the same pair and shipped in @skryensya/core. */
-const docs = buildAgentDocs({ index, manifest });
+/* The Markdown a model reads without the MCP, rendered from the same pair and shipped in @skryensya/core. It is rendered from what
+   was just written (canonical order, as the gate and `agent-docs-cli` read it), not from the objects in memory, whose key order
+   differs: rendering those left the docs dirty after every build and failed the gate on the next run. */
+const docs = buildAgentDocs(asCompiledPair(JSON.parse(canonical(index)), JSON.parse(canonical(manifest))));
 writeAgentDocs(agentDocsDir(root), docs);
 console.log(`  packages/core/docs: ${Object.keys(docs).length} files`);
