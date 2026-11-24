@@ -80,6 +80,14 @@
     overflow: hidden;
   }
 
+  /* Both boxes clip, and a link's ring reaches past it: each takes the ring's reach as padding and gives
+     it back as a negative margin, so the trail sits where it did and the ring fits inside the clip. */
+  .sk-breadcrumb[data-sk-breadcrumb-ready],
+  .sk-breadcrumb[data-sk-breadcrumb-ready] .sk-breadcrumb__list {
+    margin: calc(var(--focus-ring-room) * -1);
+    padding: var(--focus-ring-room);
+  }
+
   /* React measures the true, uncollapsed width off an invisible full-width copy of the trail
    * (`visibility: hidden; position: absolute`), rather than the visible list, which may already be
    * collapsed and so too narrow to answer "would the whole thing fit?": `position: relative` here

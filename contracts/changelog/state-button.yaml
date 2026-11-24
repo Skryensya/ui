@@ -3,8 +3,17 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "04bcf358a26210a6"
+surface: "496f36d7a49c5c4f"
 entries:
+  - date: 2026-11-23
+    kind: feature
+    target: icon
+    es:
+      title: Acepta el ícono favorite
+      body: 'El ícono de un estado puede ser el nuevo rol <code>favorite</code>, por ejemplo para un botón de guardar que se queda marcado.'
+    en:
+      title: Takes the favorite icon
+      body: 'A state''s icon can be the new <code>favorite</code> role, for a save button that stays marked, for instance.'
   - date: 2026-09-26
     kind: feature
     es:
@@ -53,3 +62,19 @@ entries:
     en:
       title: Icon names include the component marks
       body: "The icon roles <code>StateButton</code> accepts grow by the <code>component-*</code> roles, one per kit component. Nothing about its behaviour changes."
+  - date: 2026-11-22
+    kind: feature
+    es:
+      title: Un nombre de icono más
+      body: "<code>StateButton</code> acepta el rol <code>component-magnifier</code>, la marca de Magnifier. No cambia nada de su comportamiento."
+    en:
+      title: One more icon name
+      body: "<code>StateButton</code> accepts the <code>component-magnifier</code> role, the Magnifier's mark. Nothing about its behaviour changes."
+  - date: 2026-11-23
+    kind: feature
+    es:
+      title: Dos nombres de icono más
+      body: "<code>StateButton</code> acepta los roles <code>expand-all</code> y <code>collapse-all</code>. No cambia nada de su comportamiento."
+    en:
+      title: Two more icon names
+      body: "<code>StateButton</code> accepts the <code>expand-all</code> and <code>collapse-all</code> roles. Nothing about its behaviour changes."

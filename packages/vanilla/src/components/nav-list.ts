@@ -1,3 +1,4 @@
+import { navListEvents, type NavListSetAllDetail } from "@skryensya/core/nav-list";
 import { createConnectMount, uniqueId } from "../runtime/svelte-hydrate.js";
 
 const selector = {
@@ -134,6 +135,13 @@ function connect(trigger: HTMLElement): () => void {
     trigger.focus();
   };
 
+  /* "Expand all" / "Collapse all": the page's command on the nav, taken like a click, minus the reveal. */
+  const root = trigger.closest<HTMLElement>(".sk-nav-list");
+  const onSetAll = (event: Event) => {
+    const open = (event as CustomEvent<NavListSetAllDetail>).detail?.open;
+    if (typeof open === "boolean" && open !== isOpen()) setOpen(open);
+  };
+
   if (remembered) {
     const stored = readStore(remembered.key)[remembered.id];
     if (list.querySelector('[aria-current="page"]')) trigger.setAttribute("aria-expanded", "true");
@@ -143,7 +151,9 @@ function connect(trigger: HTMLElement): () => void {
   trigger.addEventListener("click", onClick);
   group.addEventListener("keydown", onKeyDown);
   document.addEventListener(changeEvent, onSibling);
+  root?.addEventListener(navListEvents.setAll, onSetAll);
   return () => {
+    root?.removeEventListener(navListEvents.setAll, onSetAll);
     trigger.removeEventListener("click", onClick);
     group.removeEventListener("keydown", onKeyDown);
     document.removeEventListener(changeEvent, onSibling);

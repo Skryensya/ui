@@ -253,6 +253,12 @@
     border-start-end-radius: var(--sk-tile-radius);
   }
 
+  /* The tile clips to its radius, and the trigger fills it edge to edge: a ring drawn outside showed only
+     its bottom line. Inside it is whole, and follows the trigger's rounded top. */
+  .sk-tile__trigger:focus-visible {
+    outline-offset: calc(var(--focus-ring-width) * -1);
+  }
+
   .sk-tile__trigger:disabled,
   .sk-tile__trigger[data-disabled] {
     cursor: not-allowed;
@@ -286,6 +292,8 @@
   }
 
   .sk-tile__chevron > [data-state] { display: none; }
+  /* Plus and minus: off unless a container shows them instead of the chevrons (seamless accordion). */
+  .sk-tile__chevron > [data-sign] { display: none; }
   .sk-tile__chevron > [data-state="closed"] { display: inline-grid; }
   .sk-tile__trigger[data-state="open"] .sk-tile__chevron > [data-state="closed"] { display: none; }
   .sk-tile__trigger[data-state="open"] .sk-tile__chevron > [data-state="open"] { display: inline-grid; }

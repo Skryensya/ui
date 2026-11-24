@@ -11,7 +11,8 @@
  * write the ~76 icons a project needs, because an `icons.json` is 0.6–9 MB and does not belong in a
  * browser bundle. Calling it at runtime works too, wherever the size does not matter (a server, a test).
  */
-import { isComponentIconName, type IconData, type IconSet, type InterfaceIconName, type StableIconName } from "./icon.js";
+import { brandIconNames, isComponentIconName, type IconData, type IconSet, type InterfaceIconName, type StableIconName } from "./icon.js";
+import { brandFallback, brandMaps } from "./iconify-brands.js";
 
 /** The slice of Iconify's `IconifyJSON` the adapter reads. */
 export type IconifyJSON = {
@@ -74,11 +75,15 @@ function resolveIcon(json: IconifyJSON, name: string): IconData {
 export function iconSetFromIconify(
   json: IconifyJSON,
   preset: Pick<IconifyPreset, "attrs" | "fill" | "variant"> & { map: IconifyRoleMap },
-  /** Also bind the `component-*` marks. Off by default: only an app that lists the kit's components draws them. */
-  { components = false }: { components?: boolean } = {},
+  /**
+   * `components`: also bind the `component-*` marks, for an app that lists the kit's components.
+   * `brands`: also bind the `brand-*` logos, the collection's own where it draws one, Tabler's where not.
+   */
+  { components = false, brands = false }: { components?: boolean; brands?: boolean } = {},
 ): IconSet {
   const set: Record<string, IconData> = {};
-  for (const [role, name] of Object.entries(preset.map)) {
+  const map: Record<string, string> = { ...preset.map, ...(brands ? brandMaps[json.prefix] : {}) };
+  for (const [role, name] of Object.entries(map)) {
     if (!components && isComponentIconName(role)) continue;
     const styled = [preset.variant ?? []].flat().map((suffix) => name + suffix).find((n) => json.icons[n] || json.aliases?.[n]) ?? name;
     const icon = resolveIcon(json, styled);
@@ -87,6 +92,8 @@ export function iconSetFromIconify(
     const attrs = solid ? { ...preset.attrs, fill: "currentColor" } : preset.attrs;
     set[role] = { ...icon, body, ...(attrs ? { attrs } : {}) };
   }
+  /* A logo the collection does not draw: Tabler's, with its own stroke attributes. */
+  if (brands) for (const role of brandIconNames) set[role] ??= brandFallback[role];
   return set as IconSet;
 }
 

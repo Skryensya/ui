@@ -54,6 +54,10 @@ import type { InstallStep } from "../../lib/install-procedure";
 import { vanillaMountFor } from "../../lib/vanilla-mounts";
 import { installFor } from "../../lib/install-manifest";
 import { localizePath } from "../../i18n";
+import { agentDocFor, agentDocPath, componentMarkdownTiles } from "../../lib/agent-docs";
+import "@skryensya/core/components/tile.css";
+import "@skryensya/core/components/typography.css";
+import "@skryensya/core/patterns/icon.css";
 
 interface Props {
   title: string;
@@ -146,6 +150,13 @@ const {
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
 const hasContract = Boolean(contractId);
+/* The family as Markdown, the file @skryensya/core ships: offered to paste into an agent. */
+const markdownPath = contractId && agentDocFor(contractId) ? agentDocPath(contractId) : undefined;
+/* The usage panel as HTML, cut after its lede (the first paragraph, which says what the component is), so the
+   Markdown tiles sit under it. A panel with no lede gets them first. */
+const usageHtml = Astro.slots.has("usage") ? await Astro.slots.render("usage") : "";
+const lede = /<p class="lede"[\s\S]*?<\/p>/.exec(usageHtml);
+const ledeEnd = lede ? lede.index + lede[0].length : 0;
 const hasChanges = contractId ? changelogFor(contractId).length > 0 : false;
 /* Everything a page needs to use this component ON ITS OWN, from `@skryensya/core/install-manifest.json`
    (generated from the contracts, the CSS and the two packages' exports; see `packages/core/scripts`). */
@@ -376,7 +387,7 @@ const relatedComponents = chosen
 
 ---
 
-<Base title={title} description={description} documentLayout="grid" hideVanillaMount={hideVanillaMount}>
+<Base title={title} description={description} documentLayout="grid" hideVanillaMount={hideVanillaMount} markdown={markdownPath}>
   {/*
    * ONE GRID ITEM AROUND HERO AND TABS, and it exists for exactly one reason: `position: sticky`.
    *
@@ -542,7 +553,12 @@ const relatedComponents = chosen
             </div>
           </div>
         )}
-        <slot name="usage" />
+        {/* The family as Markdown, right under the lede that says what the component is. */}
+        <Fragment set:html={usageHtml.slice(0, ledeEnd)} />
+        {markdownPath && (
+          <div class="docs-markdown-views" set:html={emitMarkup(componentMarkdownTiles(contractId!, locale, t), { fillDefaults: false })} />
+        )}
+        <Fragment set:html={usageHtml.slice(ledeEnd)} />
 
         {/*
           * INSTALLATION CLOSES THE USAGE PANEL rather than owning a tab of its own.

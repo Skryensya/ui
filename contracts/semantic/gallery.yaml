@@ -1,0 +1,14 @@
+# The structure lives in packages/core/src/gallery.ts. Here, only why it is chosen.
+
+Gallery:
+  useWhen:
+    - "one thing is shown in several photos and the reader picks which to see large: a product's shots, a project's screens"
+    - "the large photo should stay in its place on the page while the thumbnails change it, with a Magnifier on it for detail"
+  avoidWhen:
+    - "the photos should open large over the page, one after another, with zoom; that is a Lightbox with its triggers"
+    - "there are more photos than fit in a row, or they should be browsed by swiping; that is a Carousel"
+    - "the thumbnails name panels of different content, text or forms; that is Tabs"
+  alternatives:
+    - Lightbox
+    - Carousel
+    - Tabs

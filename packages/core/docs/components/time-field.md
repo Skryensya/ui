@@ -45,8 +45,8 @@ Alternatives: `NumberField`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `hint` | text |  |
 | `label` | text | yes |
+| `hint` | text |  |
 
 **Example** (canonical tree `time-field/appointment`; its copy is placeholder, replace it)
 

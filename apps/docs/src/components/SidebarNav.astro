@@ -8,8 +8,10 @@
  * drawer hosting it.
  */
 
+import { emitMarkup } from "@skryensya/ai-compiler/emit";
 import NavGroupItems from "./NavGroupItems.astro";
 import type { NavigationSection } from "../lib/navigation";
+import { getLocale, useTranslations } from "../i18n";
 
 interface Props {
   nav: readonly NavigationSection[];
@@ -20,6 +22,30 @@ interface Props {
 }
 
 const { nav, path, idPrefix } = Astro.props;
+const t = useTranslations(getLocale(Astro.url));
+
+/*
+ * "Expand all" / "Collapse all" for a section whose groups fold: the kit's icon-only Button beside the section's title. It
+ * carries both icons and shows the one for what a press will do; the script below swaps them and the accessible name.
+ */
+const toggleAll = emitMarkup(
+  {
+    contract: "button",
+    signature: "Button.action",
+    options: { variant: "ghost", size: "xs", iconOnly: true },
+    attrs: {
+      "aria-label": t("nav.expandAll"),
+      "data-docs-nav-toggle-all": "",
+      "data-expand-label": t("nav.expandAll"),
+      "data-collapse-label": t("nav.collapseAll"),
+    },
+    children: [
+      { contract: "icon", signature: "Icon", options: { name: "expand-all", size: "sm" }, attrs: { "data-docs-nav-toggle-icon": "expand" } },
+      { contract: "icon", signature: "Icon", options: { name: "collapse-all", size: "sm" }, attrs: { "data-docs-nav-toggle-icon": "collapse", hidden: "" } },
+    ],
+  },
+  { fillDefaults: false },
+);
 
 /*
  * A GROUP THAT OPENS AND CLOSES is the data's decision (`collapsible` in `lib/navigation.ts`), never the
@@ -42,20 +68,34 @@ const opensFirst = (groups: readonly { items: readonly { href: string }[] }[], i
     <section class="docs-nav-section" aria-label={section.section}>
       {/* `caption` undefined: the section's title and blurb. A caption: that line alone. An EMPTY caption: nothing
           (a rail whose groups speak for themselves, like the Templates page's). */}
-      {section.caption ? (
-        <header class="docs-nav-section__header">
-          <h2 class="docs-nav-section__title" data-flush>{section.caption}</h2>
-        </header>
-      ) : section.caption === undefined ? (
-        <header class="docs-nav-section__header">
-          {section.href ? (
-            <a class="docs-nav-section__title" href={section.href}>{section.section}</a>
-          ) : (
-            <h2 class="docs-nav-section__title" data-flush>{section.section}</h2>
-          )}
-          <p class="docs-nav-section__blurb">{section.blurb}</p>
-        </header>
-      ) : null}
+      {(() => {
+        const folds = section.groups.some((group) => group.collapsible);
+        const control = folds ? <Fragment set:html={toggleAll} /> : null;
+        if (section.caption)
+          return (
+            <header class="docs-nav-section__header">
+              <div class="docs-nav-section__title-row">
+                <h2 class="docs-nav-section__title" data-flush>{section.caption}</h2>
+                {control}
+              </div>
+            </header>
+          );
+        if (section.caption === undefined)
+          return (
+            <header class="docs-nav-section__header">
+              <div class="docs-nav-section__title-row">
+                {section.href ? (
+                  <a class="docs-nav-section__title" href={section.href}>{section.section}</a>
+                ) : (
+                  <h2 class="docs-nav-section__title" data-flush>{section.section}</h2>
+                )}
+                {control}
+              </div>
+              <p class="docs-nav-section__blurb">{section.blurb}</p>
+            </header>
+          );
+        return folds ? <header class="docs-nav-section__header"><div class="docs-nav-section__title-row">{control}</div></header> : null;
+      })()}
       <nav class="sk-nav-list" aria-label={section.section} data-storage-key="docs-nav-groups">
         {section.groups.map((group, groupIndex) => {
           const labelId = `${idPrefix}-${sectionIndex}-${groupIndex}`;
@@ -94,3 +134,37 @@ const opensFirst = (groups: readonly { items: readonly { href: string }[] }[], i
     </section>
   ))
 }
+
+<script>
+  import { setNavListGroups } from "@skryensya/core/nav-list";
+
+  /* Each section's toggle opens every group when any is closed, and closes them all when none is, saying which it will do. */
+  const sync = (button: HTMLElement) => {
+    const nav = button.closest(".docs-nav-section")?.querySelector(".sk-nav-list");
+    const triggers = [...(nav?.querySelectorAll("[data-sk-nav-list-group-trigger]") ?? [])];
+    const allOpen = triggers.length > 0 && triggers.every((trigger) => trigger.getAttribute("aria-expanded") === "true");
+    button.setAttribute("aria-label", (allOpen ? button.dataset.collapseLabel : button.dataset.expandLabel) ?? "");
+    for (const icon of button.querySelectorAll<SVGElement | HTMLElement>("[data-docs-nav-toggle-icon]")) {
+      icon.toggleAttribute("hidden", icon.dataset.docsNavToggleIcon !== (allOpen ? "collapse" : "expand"));
+    }
+    button.dataset.open = String(allOpen);
+  };
+
+  const wire = () => {
+    for (const button of document.querySelectorAll<HTMLElement>("[data-docs-nav-toggle-all]")) {
+      if (button.dataset.wired) continue;
+      button.dataset.wired = "";
+      button.addEventListener("click", () => {
+        const nav = button.closest(".docs-nav-section")?.querySelector(".sk-nav-list");
+        if (!nav) return;
+        setNavListGroups(nav, button.dataset.open !== "true");
+        sync(button);
+      });
+      sync(button);
+      /* A group the reader opens or closes by hand, or the stored state the enhancer restores. */
+      new MutationObserver(() => sync(button)).observe(button.closest(".docs-nav-section")!, { attributes: true, attributeFilter: ["aria-expanded"], subtree: true });
+    }
+  };
+
+  wire();
+</script>

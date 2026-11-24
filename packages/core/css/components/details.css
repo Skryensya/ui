@@ -93,6 +93,14 @@
     list-style: none;
   }
 
+  /* The details clips to its radius, and the summary fills it edge to edge: a ring drawn outside showed
+     only its bottom line. Inside it is whole; the radius keeps it on the rounded top. */
+  .sk-details__summary:focus-visible {
+    border-start-start-radius: calc(var(--radius-surface) - 1px);
+    border-start-end-radius: calc(var(--radius-surface) - 1px);
+    outline-offset: calc(var(--focus-ring-width) * -1);
+  }
+
   .sk-details__summary > * {
     grid-column: 1;
   }

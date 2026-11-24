@@ -94,6 +94,9 @@ export const stableIconNames = [
    * the two faces of one control have to look different in every set. */
   "like",
   "dislike",
+  /* Keeping something to come back to: a wishlist, a saved item, a favourite. A heart in most sets, a star in
+   * some: the role is the keeping, not the drawing. Not `like`, which is approval of what someone else said. */
+  "favorite",
   "external-link",
 
   // acción
@@ -115,6 +118,8 @@ export const stableIconNames = [
   "zoom-out",
   /* Its pair, for a canvas's zoom control. */
   "zoom-in",
+  "expand-all",
+  "collapse-all",
   /* Fits the whole of something into the view it is shown in: a canvas's "show me all of it". A set
    * may draw four outward corners or a frame; not "maximize", which is about the WINDOW. */
   "fit",
@@ -294,6 +299,8 @@ export const stableIconNames = [
   "component-select",
   "component-resizable",
   "component-compare-slider",
+  "component-magnifier",
+  "component-gallery",
   "component-video-player",
   "component-audio-player",
   "component-scroll-expand",
@@ -337,6 +344,44 @@ export const stableIconNames = [
 
 export type StableIconName = (typeof stableIconNames)[number];
 
+/*
+ * BRAND MARKS, the logos a footer, a share row or a sign-in screen links to. Not roles: a logo IS its
+ * drawing, so the name is the brand's. Optional in a set like the component marks, and bound by
+ * `iconSetFromIconify(..., { brands: true })` (`skryensya icons <set> --brands`): the collection's own logo
+ * where it has one, so it shares the set's stroke, and Tabler's otherwise (iconify-brands.ts). A brand here
+ * has to be in Tabler, which the generator checks.
+ */
+export const brandIconNames = [
+  "brand-github",
+  "brand-gitlab",
+  "brand-x",
+  "brand-facebook",
+  "brand-instagram",
+  "brand-linkedin",
+  "brand-youtube",
+  "brand-tiktok",
+  "brand-discord",
+  "brand-whatsapp",
+  "brand-telegram",
+  "brand-reddit",
+  "brand-threads",
+  "brand-bluesky",
+  "brand-mastodon",
+  "brand-figma",
+  "brand-slack",
+  "brand-google",
+  "brand-apple",
+  "brand-twitch",
+  "brand-pinterest",
+  "brand-dribbble",
+  "brand-spotify",
+  "brand-medium",
+] as const;
+
+export type BrandIconName = (typeof brandIconNames)[number];
+
+export const isBrandIconName = (name: string): name is BrandIconName => name.startsWith("brand-");
+
 /**
  * The binding of each role to a geometry; an icon set is a brand.
  *
@@ -349,7 +394,7 @@ export type StableIconName = (typeof stableIconNames)[number];
  * by `iconSetFromIconify` in `@skryensya/core/iconify` and written into the project by `skryensya icons`,
  * so only the roles reach a bundle. A hand-written object literal is a set too.
  */
-export type IconSet = Readonly<Record<InterfaceIconName, IconData>> & Readonly<Partial<Record<ComponentIconName, IconData>>>;
+export type IconSet = Readonly<Record<InterfaceIconName, IconData>> & Readonly<Partial<Record<ComponentIconName | BrandIconName, IconData>>>;
 
 /** The marks of the kit's own components (`component-carousel`…), for an app that lists them. */
 export type ComponentIconName = Extract<StableIconName, `component-${string}`>;
@@ -469,7 +514,8 @@ export const iconContract = {
      * itself, so a name no set is obliged to draw fails validation instead of crashing at mount;
      * which is what `inbox` did the first time this contract was exercised.
      */
-    name: { type: "enum", values: stableIconNames, attr: "data-sk-icon" },
+    /* A role or a brand logo; a logo draws only where the set was bound with its brands. */
+    name: { type: "enum", values: [...stableIconNames, ...brandIconNames], attr: "data-sk-icon" },
     size: { type: "enum", values: ["sm", "md", "lg"], default: "md", attr: "data-sk-icon-size" },
     /**
      * The accessible name. Absent means decorative, which is the right default: a control with a

@@ -19,6 +19,7 @@ const {
   type: typeOption,
   headingLevel: headingLevelOption,
   defaultOpen: defaultOpenOption,
+  variant: variantOption,
 } = accordionContract.options;
 import {
   Children,
@@ -128,6 +129,7 @@ const AccordionRoot = forwardRef<HTMLDivElement, AccordionProps>(function Accord
     children,
     className,
     appearance = "plain",
+    variant = variantOption.default,
     collapsible = collapsibleOption.default,
     defaultValue,
     disabled = disabledOption.default,
@@ -202,6 +204,7 @@ const AccordionRoot = forwardRef<HTMLDivElement, AccordionProps>(function Accord
         data-part={accordionDataParts.root}
         data-scope={accordionScope}
         data-appearance={appearance}
+        data-variant={variant}
         data-sk-accordion=""
         data-type={type}
         ref={setRefs}

@@ -34,7 +34,7 @@ Alternatives: `NavList`.
 |---|---|---|
 | `items` | a list of items (below) | yes |
 
-Each item in `items`, keyed by `href`: `current` (boolean), `href` (string), `level` ("h2" \| "h3"), `children` (text, required), `icon` (node).
+Each item in `items`, keyed by `href`: `href` (string), `level` ("h2" \| "h3"), `current` (boolean), `children` (text, required), `icon` (node).
 
 **Example** (canonical tree `toc/nested`; its copy is placeholder, replace it)
 

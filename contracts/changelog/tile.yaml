@@ -5,6 +5,14 @@
 # hash.
 surface: "dd883df1cb0edf73"
 entries:
+  - date: 2026-11-23
+    kind: bugfix
+    es:
+      title: El anillo de foco del trigger plegable se ve entero
+      body: 'Con el teclado, el anillo de foco del trigger de un ExpandableTile (solo quedaba la línea de abajo) se veía cortado por un contenedor que recorta. Ahora se ve entero. Se dibuja hacia adentro.'
+    en:
+      title: The expandable trigger’s focus ring is drawn whole
+      body: 'With the keyboard, the focus ring of an ExpandableTile trigger (only its bottom line showed) was cut by a clipping container. It is now drawn whole. It is drawn inside.'
   - date: 2026-10-25
     kind: breaking
     target: appearance

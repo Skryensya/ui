@@ -1,0 +1,91 @@
+---
+/*
+ * Every role of the vocabulary drawn by one icon set at a time, with a Select to change the set.
+ *
+ * The page is built in the default set (`siteIcons`) and the chosen one arrives as the same lazy chunk
+ * the Preferences picker loads (`scripts/icon-set.ts`), so 19 sets cost nothing until someone looks at
+ * them. The grid carries `data-icon-set-fixed`, which keeps the site-wide repaint (the reader's own
+ * Preferences choice) from redrawing it, and `data-preview-set`, which is what the duotone tint in
+ * site.css keys on.
+ */
+import { emitMarkup } from "@skryensya/ai-compiler/emit";
+import type { UsageTree } from "@skryensya/core/usage-tree";
+import { isComponentIconName, stableIconNames } from "@skryensya/core/icon";
+import { iconifyPresets } from "@skryensya/core/iconify";
+import { iconMarkup } from "../icons";
+import { defaultIconSet, siteIconSets } from "../lib/icon-set-options";
+
+interface Props {
+  label: string;
+  interfaceTitle: string;
+  componentTitle: string;
+}
+
+const { label, interfaceTitle, componentTitle } = Astro.props;
+const interfaceRoles = stableIconNames.filter((name) => !isComponentIconName(name));
+const componentRoles = stableIconNames.filter(isComponentIconName);
+const licences = Object.fromEntries(siteIconSets.map((set) => [set.id, iconifyPresets[set.id]?.licence ?? ""]));
+
+const select = emitMarkup(
+  {
+    contract: "select",
+    signature: "Select",
+    options: { value: defaultIconSet },
+    attrs: { id: "docs-icon-gallery-set", "data-icon-gallery-select": "" },
+    slots: { label, items: siteIconSets.map((set) => ({ options: { value: set.id }, slots: { label: set.label } })) },
+  } as UsageTree,
+  { fillDefaults: false },
+);
+
+const cell = (role: string) =>
+  `<div class="docs-icon-gallery__cell">${iconMarkup(role as never, { size: "lg" })}<code>${role.replace(/^component-/, "")}</code></div>`;
+---
+
+<div class="docs-icon-gallery" data-icon-gallery data-licences={JSON.stringify(licences)}>
+  <div class="docs-icon-gallery__bar">
+    <Fragment set:html={select} />
+    <p class="docs-icon-gallery__licence" data-icon-gallery-licence aria-live="polite">{licences[defaultIconSet]}</p>
+  </div>
+  <h2>{interfaceTitle} <small>({interfaceRoles.length})</small></h2>
+  <div class="docs-icon-gallery__grid" data-icon-set-fixed data-preview-set={defaultIconSet} data-icon-gallery-grid>
+    <Fragment set:html={interfaceRoles.map(cell).join("")} />
+  </div>
+  <h2>{componentTitle} <small>({componentRoles.length})</small></h2>
+  <div class="docs-icon-gallery__grid" data-icon-set-fixed data-preview-set={defaultIconSet} data-icon-gallery-grid>
+    <Fragment set:html={componentRoles.map(cell).join("")} />
+  </div>
+</div>
+
+<script>
+  import { selectEvents } from "@skryensya/core/select";
+  import { isSiteIconSet, loadIconSet, paint } from "../scripts/icon-set";
+  import type { IconData } from "@skryensya/core/icon";
+
+  const init = () => {
+    const root = document.querySelector<HTMLElement>("[data-icon-gallery]");
+    const picker = root?.querySelector<HTMLElement>("[data-icon-gallery-select]");
+    if (!root || !picker || picker.dataset.bound) return;
+    picker.dataset.bound = "";
+    const licences = JSON.parse(root.dataset.licences ?? "{}") as Record<string, string>;
+    const licence = root.querySelector("[data-icon-gallery-licence]");
+    let token = 0;
+    picker.addEventListener(selectEvents.valueChange, async (event) => {
+      const id = (event as CustomEvent<{ value: string[] }>).detail.value[0];
+      if (!isSiteIconSet(id)) return;
+      const mine = ++token;
+      const { set } = await loadIconSet(id);
+      if (mine !== token) return;
+      for (const grid of root.querySelectorAll<HTMLElement>("[data-icon-gallery-grid]")) {
+        grid.dataset.previewSet = id;
+        for (const svg of grid.querySelectorAll<SVGElement>("svg[data-icon]")) {
+          const icon = (set as Record<string, IconData | undefined>)[svg.getAttribute("data-icon")!];
+          if (icon) paint(svg, icon);
+        }
+      }
+      if (licence) licence.textContent = licences[id] ?? "";
+    });
+  };
+
+  init();
+  document.addEventListener("astro:page-load", init);
+</script>

@@ -139,7 +139,7 @@ import { indexDocument, indexHeroTabPanel } from "../lib/document-index";
 import { vanillaMountSections } from "../lib/vanilla-mount-sections";
 import VanillaMount from "../components/VanillaMount.astro";
 import { vanillaMounts } from "../lib/vanilla-mounts";
-import { githubLogo, iconDataMarkup, iconMarkup, siteIconSet } from "../icons";
+import { iconDataMarkup, iconMarkup, siteIconSet } from "../icons";
 import { getGlobalNavigation, getNavigation, type NavigationGroup, type NavigationItem, type NavigationSection } from "../lib/navigation";
 import type { DrawerSection } from "../components/DrawerNav.astro";
 import { templateGroups } from "../lib/templates-nav";
@@ -205,6 +205,8 @@ interface Props {
   /** Use the docs chrome for a hidden diagnostic page, without the section sidebar. */
   debugPage?: boolean;
   noIndex?: boolean;
+  /** The same page as Markdown for agents (`/components/<contract>.md`), announced in the head. */
+  markdown?: string;
 }
 
 const {
@@ -216,6 +218,7 @@ const {
   hideVanillaMount = false,
   debugPage = false,
   noIndex = false,
+  markdown,
 } = Astro.props;
 const path = Astro.url.pathname.replace(/\/$/, "") || "/";
 
@@ -480,7 +483,8 @@ const searchIcon = iconMarkup("search");
 const closeIcon = iconMarkup("close");
 const menuIcon = iconMarkup("menu");
 const settingsIcon = iconMarkup("settings");
-const githubIcon = iconDataMarkup("github", githubLogo);
+/* The set's own GitHub logo (`--brands`), so it follows the reader's icon set like every other icon here. */
+const githubIcon = iconMarkup("brand-github");
 const previousIcon = iconMarkup("arrow-left");
 const nextIcon = iconMarkup("arrow-right");
 const reportIssueIcon = iconMarkup("external-link", { size: "sm" });
@@ -573,6 +577,7 @@ const [paletteBefore = "", paletteMid = "", paletteAfter = ""] = emitMarkup(
     {alternates.map((alternate) => (
       <link rel="alternate" hreflang={alternate.code} href={alternate.href} />
     ))}
+    {markdown && <link rel="alternate" type="text/markdown" href={markdown} />}
 
     {/*
       Docs has a fixed visual contract: Phosphor icons, medium density and medium rounding. The reader
@@ -1049,6 +1054,7 @@ const [paletteBefore = "", paletteMid = "", paletteAfter = ""] = emitMarkup(
       label={t("search.dialog")}
       placeholder={t("search.placeholder")}
       hotkey="mod+k"
+      recentsLabel={t("search.recent")}
       lazy
     />
     {/*

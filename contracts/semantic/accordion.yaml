@@ -5,6 +5,7 @@ Accordion:
     - "there are several long sections and which stay open is worth coordinating: an FAQ, terms"
     - "type=single: opening one closes the previous, so the page does not grow without end"
     - "type=multiple: several can stay open at once, and they are still one accordion"
+    - "variant=separated: each question stands on its own, like a product FAQ; every section is a card and the open one is raised"
   avoidWhen:
     - "there are a few short sections; showing them all reads faster than folding them"
     - "the content is compared across sections; folding forces remembering instead of looking"

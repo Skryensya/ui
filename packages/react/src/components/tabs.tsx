@@ -1,9 +1,9 @@
-import { tabsContract, tabsParts, type TabsOptions, type TabsSize, type TabsVariant } from "@skryensya/core/tabs";
+import { tabsContract, tabsParts, type TabsListPlacement, type TabsOptions, type TabsSize, type TabsVariant } from "@skryensya/core/tabs";
 import { tabs } from "@skryensya/core/machines";
 import { normalizeProps, useMachine } from "@zag-js/react";
 import { useId, type ReactNode } from "react";
 
-const { size: sizeOption, variant: variantOption } = tabsContract.options;
+const { size: sizeOption, variant: variantOption, listPlacement: listPlacementOption } = tabsContract.options;
 
 export type TabsItem = {
   value: string;
@@ -33,6 +33,10 @@ export type TabsProps = TabsOptions & {
   size?: TabsSize;
   /** Which edge the strip hangs from. CSS-only like `size`: it lands straight on `data-variant`. */
   variant?: TabsVariant;
+  /** Where the strip shows: before the panels or after them. CSS-only: it lands straight on `data-list-placement`. */
+  listPlacement?: TabsListPlacement;
+  /** The strip wraps onto more rows instead of scrolling. CSS-only: it lands on `data-wrap`. */
+  wrap?: boolean;
 };
 
 export function Tabs({
@@ -42,6 +46,8 @@ export function Tabs({
   "aria-labelledby": ariaLabelledBy,
   size = sizeOption.default,
   variant = variantOption.default,
+  listPlacement = listPlacementOption.default,
+  wrap = false,
   ...options
 }: TabsProps) {
   const generatedId = useId();
@@ -57,6 +63,8 @@ export function Tabs({
       data-size={size}
       data-value={api.value}
       data-variant={variant}
+      data-list-placement={listPlacement}
+      data-wrap={wrap ? "" : undefined}
     >
       <div
         {...api.getListProps()}
@@ -92,6 +100,7 @@ export function Tabs({
             {...api.getContentProps({ value: item.value })}
             className={tabsParts.content}
             data-sk-tabs-content=""
+            data-sk-tabs-initial={item.value === options.defaultValue ? "" : undefined}
             key={item.value}
           >
             {item.children}

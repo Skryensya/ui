@@ -18,7 +18,7 @@
    * density the backdrop greyed the whole column. A denser face, a lit wash down from the top edge
    * and open bodies that recede only a little keep it bright while the backdrop still shows.
    */
-  .sk-accordion[data-appearance="frosted"] {
+  .sk-accordion[data-appearance="frosted"]:not([data-variant="seamless"], [data-variant="divided"], [data-variant="separated"]) {
     --sk-accordion-border-color: color-mix(in oklab, currentColor 18%, transparent);
     --sk-accordion-divider-color: color-mix(in oklab, currentColor 12%, transparent);
     --frost-highlight: light-dark(
@@ -30,7 +30,7 @@
 
   /* The material, behind the system switch (semantic/_frost.scss); off, the frame keeps its own
    * opaque surface and sunken bodies. */
-  .sk-accordion[data-appearance="frosted"] {
+  .sk-accordion[data-appearance="frosted"]:not([data-variant="seamless"], [data-variant="divided"], [data-variant="separated"]) {
     --frost-glass: var(--frost-on) color-mix(in oklab, var(--color-bg-surface) var(--frost-alpha-card), transparent);
     --frost-glass-open: var(--frost-on) color-mix(in oklab, var(--color-bg-surface-sunken) var(--frost-alpha-card), transparent);
     --frost-lit: var(--frost-on)

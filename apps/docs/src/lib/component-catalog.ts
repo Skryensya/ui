@@ -320,6 +320,14 @@ const componentDescriptions = {
     es: "Dos capas del mismo tamaño y un divisor que se arrastra para revelar una sobre la otra.",
     en: "Two layers of the same size and a divider you drag to reveal one over the other.",
   },
+  "/components/gallery": {
+    es: "Una foto grande y una fila de miniaturas que la eligen.",
+    en: "One large photo and a row of thumbnails that choose it.",
+  },
+  "/components/magnifier": {
+    es: "Una lupa de vidrio redonda que sigue al puntero sobre una imagen y la muestra más grande.",
+    en: "A round glass lens that follows the pointer over a picture and shows it larger.",
+  },
   "/components/video-player": {
     es: "Un reproductor de video con los controles del sistema sobre un video real, manejable con el teclado.",
     en: "A video player with the system's controls over a real video, runnable from the keyboard.",

@@ -5,6 +5,15 @@
 # hash.
 surface: "17bc1036fc4eb51c"
 entries:
+  - date: 2026-11-23
+    kind: bugfix
+    target: ToastRegion
+    es:
+      title: Un toast ya no se sale de su región
+      body: 'Un toast medía su ancho sin contar padding ni borde, y quedaba más ancho que la región: el botón de cerrar asomaba por fuera y se cortaba, con su anillo de foco. Ahora mide justo el ancho de la región, y la región deja espacio para el anillo.'
+    en:
+      title: A toast no longer spills out of its region
+      body: 'A toast measured its width without its padding and border, so it ran wider than the region: the dismiss button stuck out past it and was cut, focus ring included. It is now exactly the region’s width, and the region leaves room for the ring.'
   - date: 2026-11-20
     kind: bugfix
     target: Toast

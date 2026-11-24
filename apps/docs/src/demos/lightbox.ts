@@ -87,7 +87,7 @@ const photos = (t: Translate): readonly Photo[] => [
   },
 ];
 
-const labels = (t: Translate) => ({
+export const lightboxLabels = (t: Translate) => ({
   label: t("lightbox.demo.label"),
   closeLabel: t("lightbox.closeLabel"),
   previousLabel: t("lightbox.previousLabel"),
@@ -170,7 +170,7 @@ export const lightboxDoGalleryDdTree = (t: Translate): UsageTree => {
   return lightboxSpecimen([
     compactThumbRow(items),
     ddText(t("lightbox.dd.gallery.specimenDo")),
-    { contract: "lightbox", signature: "Lightbox", options: { lightboxId: "demo-lightbox-dd-gallery", ...labels(t) } },
+    { contract: "lightbox", signature: "Lightbox", options: { lightboxId: "demo-lightbox-dd-gallery", ...lightboxLabels(t) } },
   ]);
 };
 
@@ -198,7 +198,7 @@ export const lightboxDoCaptionDdTree = (t: Translate): UsageTree => {
       ddText(photo.description!),
       { contract: "typography", signature: "Text", options: { size: "caption", tone: "tertiary" }, children: photo.credit! },
     ]),
-    { contract: "lightbox", signature: "Lightbox", options: { lightboxId: "demo-lightbox-dd-caption", ...labels(t) } },
+    { contract: "lightbox", signature: "Lightbox", options: { lightboxId: "demo-lightbox-dd-caption", ...lightboxLabels(t) } },
   ]);
 };
 
@@ -208,7 +208,7 @@ export const lightboxDontNoCaptionDdTree = (t: Translate): UsageTree => {
   return lightboxSpecimen([
     compactThumbRow([trigger("demo-lightbox-dd-no-caption", noCaption)]),
     captionDetails(ddText(t("lightbox.dd.caption.specimenDont"), "danger")),
-    { contract: "lightbox", signature: "Lightbox", options: { lightboxId: "demo-lightbox-dd-no-caption", ...labels(t) } },
+    { contract: "lightbox", signature: "Lightbox", options: { lightboxId: "demo-lightbox-dd-no-caption", ...lightboxLabels(t) } },
   ]);
 };
 
@@ -275,7 +275,65 @@ export const lightboxGalleryTree = (t: Translate): UsageTree => ({
     {
       contract: "lightbox",
       signature: "Lightbox",
-      options: { lightboxId: "demo-lightbox-gallery", ...labels(t) },
+      options: { lightboxId: "demo-lightbox-gallery", ...lightboxLabels(t) },
+    },
+  ],
+});
+
+/*
+ * The magnifier toggle (`magnifier: true`): a button in the zoom bar puts the Magnifier's lens over the photo. The lamp's
+ * photos, not the satin placeholders: a lens is only as good as the detail under it.
+ */
+const LAMP = [
+  ["desk", "lightbox.demo.lampDeskAlt", "lightbox.demo.lampDeskTitle", "lightbox.demo.lampDeskDescription"],
+  ["shade", "lightbox.demo.lampShadeAlt", "lightbox.demo.lampShadeTitle", "lightbox.demo.lampShadeDescription"],
+  ["base", "lightbox.demo.lampBaseAlt", "lightbox.demo.lampBaseTitle", "lightbox.demo.lampBaseDescription"],
+] as const;
+
+export const lightboxMagnifierTree = (t: Translate): UsageTree => ({
+  contract: "layout",
+  signature: "Stack",
+  options: { gap: "md" },
+  children: [
+    {
+      contract: "layout",
+      signature: "Inline",
+      options: { gap: "sm" },
+      attrs: { role: "list", "aria-label": t("lightbox.demo.lampLabel") },
+      children: LAMP.map(([name, alt, title, description]) => ({
+        contract: "layout",
+        signature: "Stack",
+        attrs: { role: "listitem" },
+        children: [
+          {
+            contract: "lightbox",
+            signature: "Lightbox.Trigger",
+            options: {
+              opens: "demo-lightbox-magnifier",
+              triggerSrc: `/demos/lamp/lamp-${name}.webp`,
+              triggerWidth: 1122,
+              triggerHeight: 1402,
+              triggerTitle: t(title as Parameters<Translate>[0]),
+              triggerDescription: t(description as Parameters<Translate>[0]),
+            },
+            slots: {
+              children: {
+                contract: "image-frame",
+                signature: "ImageFrame",
+                options: { aspect: "4/5", radius: "control", src: `/demos/lamp/lamp-${name}.webp`, alt: t(alt as Parameters<Translate>[0]) },
+                /* Fills the trigger (200px): a lens is judged on a photo big enough to want a closer look at. */
+                attrs: { style: "inline-size: 100%;" },
+              },
+            },
+          },
+        ],
+      })),
+    },
+    { contract: "typography", signature: "Text", options: { size: "sm", tone: "secondary" }, children: t("lightbox.demo.magnifierHint") },
+    {
+      contract: "lightbox",
+      signature: "Lightbox",
+      options: { lightboxId: "demo-lightbox-magnifier", ...lightboxLabels(t), magnifier: true, magnifierLabel: t("lightbox.magnifierLabel") },
     },
   ],
 });
@@ -292,7 +350,7 @@ export const lightboxSingleTree = (t: Translate): UsageTree => {
       {
         contract: "lightbox",
         signature: "Lightbox",
-        options: { lightboxId: "demo-lightbox-single", ...labels(t) },
+        options: { lightboxId: "demo-lightbox-single", ...lightboxLabels(t) },
       },
     ],
   };
@@ -314,7 +372,7 @@ export const lightboxCaptionTree = (t: Translate): UsageTree => {
       {
         contract: "lightbox",
         signature: "Lightbox",
-        options: { lightboxId: "demo-lightbox-caption", ...labels(t) },
+        options: { lightboxId: "demo-lightbox-caption", ...lightboxLabels(t) },
       },
     ],
   };
@@ -337,7 +395,7 @@ export const lightboxTinyTree = (t: Translate): UsageTree => {
       {
         contract: "lightbox",
         signature: "Lightbox",
-        options: { lightboxId: "demo-lightbox-tiny", ...labels(t) },
+        options: { lightboxId: "demo-lightbox-tiny", ...lightboxLabels(t) },
       },
     ],
   };
@@ -410,7 +468,7 @@ export const lightboxVideoTree = (t: Translate): UsageTree => ({
       options: {
         lightboxId: "demo-lightbox-video",
         loop: true,
-        ...labels(t),
+        ...lightboxLabels(t),
         label: t("lightbox.demo.videoViewerLabel"),
         counterLabel: t("lightbox.videoCounterLabel"),
         errorLabel: t("lightbox.videoErrorLabel"),
@@ -468,15 +526,16 @@ export const lightboxLoopTree = (t: Translate): UsageTree => {
       {
         contract: "lightbox",
         signature: "Lightbox",
-        options: { lightboxId: "demo-lightbox-loop", loop: true, ...labels(t) },
+        options: { lightboxId: "demo-lightbox-loop", loop: true, ...lightboxLabels(t) },
       },
     ],
   };
 };
 
 /* ImageFrame is the thumbnail's own; the lightbox's sheet brings button + loader. */
-export const lightboxDemoCss = `.sk-lightbox__trigger {
-  inline-size: 200px;
+export const lightboxDemoCss = `/* 200px, but never so wide that three of them overflow a narrow canvas (a phone preview, a docs column). */
+.sk-lightbox__trigger {
+  inline-size: min(200px, 28vw);
 }
 
 /* A thumbnail that opens a clip says so: a play mark over its middle, drawn here because the viewer styles the viewer, not the page's thumbnails. */

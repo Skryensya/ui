@@ -8,6 +8,7 @@ import { initDocsTour } from "./docs-tour";
 import { initDocsBinding } from "./docs-binding";
 import { initLanguageMenu } from "./language-menu";
 import { initPrefsSheet } from "./prefs-sheet";
+import { initRecentPages } from "./recent-pages";
 import { initReportIssue } from "./report-issue";
 import { initSearchTrigger } from "./search-trigger";
 import { initThemeToggle, initThemeTogglePersistence, initThemeToggleSync } from "./theme-toggle";
@@ -47,6 +48,7 @@ async function initRouteDocument(): Promise<void> {
   initDocsBinding();
   initLanguageMenu();
   initSearchTrigger();
+  initRecentPages();
   initDocsTour();
   initPrefsSheet();
   initReportIssue();

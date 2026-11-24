@@ -22,6 +22,24 @@
  * WHAT IS NOT HERE: `afterEach(cleanup)`. That is `@testing-library/react`'s, it belongs to one binding,
  * and a floor that imported it would make Core know about React.
  */
+/*
+ * WEB STORAGE, jsdom's. Node 26 ships its own experimental `localStorage` and `sessionStorage` as globals, and without
+ * `--localstorage-file` they read as `undefined` (with an ExperimentalWarning). Vitest's jsdom environment does not
+ * overwrite a global that already exists, so every test touching storage (Sidebar's width, Tour's progress, the
+ * preferences store) failed on `localStorage.clear()` before reaching the kit. jsdom's own storage goes back in place.
+ */
+const jsdomWindow = (globalThis as { jsdom?: { window: Window } }).jsdom?.window;
+for (const name of ["localStorage", "sessionStorage"] as const) {
+  let current: Storage | undefined;
+  try {
+    current = (globalThis as Record<string, unknown>)[name] as Storage | undefined;
+  } catch {
+    current = undefined;
+  }
+  const own = jsdomWindow?.[name];
+  if (!current && own) Object.defineProperty(globalThis, name, { configurable: true, enumerable: true, writable: true, value: own });
+}
+
 const dialogProto = globalThis.HTMLDialogElement?.prototype as
   | (HTMLDialogElement & { showModal?: () => void })
   | undefined;

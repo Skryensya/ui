@@ -1,4 +1,4 @@
-# 005 — Drive the ProgressiveCarousel durations from CSS custom properties
+# 005: Drive the ProgressiveCarousel durations from CSS custom properties
 
 - **Status**: TODO
 - **Commit**: 77db5aaa
@@ -11,7 +11,7 @@
 The engine hardcodes its durations and curve while the rest of the carousel (caption, controls) follows `--sk-carousel-motion-duration` and the `--motion-state-change-*` tokens, so themes and `data-motion` cannot retune it.
 
 ```css
-/* packages/core/css/components/carousel.css:65 — current */
+/* packages/core/css/components/carousel.css:65, current */
 --sk-carousel-motion-duration: var(--motion-state-change-duration);
 ```
 The primitive tokens are `--scale-duration-fast: 120ms` and `--scale-duration-slow: 320ms` (`css/primitives/_motion.scss`): neither equals a 420 ms step, so this plan adds component tokens, not a remap.

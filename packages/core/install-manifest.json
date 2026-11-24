@@ -1332,6 +1332,29 @@
     },
     "vanilla": null
   },
+  "gallery": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/gallery.css",
+      "files": [
+        "@skryensya/core/components/gallery.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/gallery",
+      "names": [
+        "Gallery"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/gallery",
+      "mount": "mountGallery",
+      "selectors": [
+        ".sk-gallery:has([data-sk-lightbox-open])"
+      ],
+      "auto": true
+    }
+  },
   "hero": {
     "category": "layout",
     "css": {
@@ -1504,6 +1527,7 @@
         "@skryensya/core/components/loader.css",
         "@skryensya/core/patterns/a11y-warn.css",
         "@skryensya/core/components/button.css",
+        "@skryensya/core/components/magnifier.css",
         "@skryensya/core/components/lightbox.css"
       ]
     },
@@ -1587,6 +1611,29 @@
       "mount": "mountLoader",
       "selectors": [
         "[data-sk-loader]"
+      ],
+      "auto": true
+    }
+  },
+  "magnifier": {
+    "category": "content",
+    "css": {
+      "entry": "@skryensya/core/components/magnifier.css",
+      "files": [
+        "@skryensya/core/components/magnifier.css"
+      ]
+    },
+    "react": {
+      "entry": "@skryensya/react/magnifier",
+      "names": [
+        "Magnifier"
+      ]
+    },
+    "vanilla": {
+      "entry": "@skryensya/vanilla/magnifier",
+      "mount": "mountMagnifier",
+      "selectors": [
+        "[data-sk-magnifier]"
       ],
       "auto": true
     }

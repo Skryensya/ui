@@ -22,7 +22,7 @@ describe.each(["es", "en"] as const)("foundations reading guide (%s)", (locale) 
       expect(group.items.map((item) => canonicalPath(item.href))).toEqual(authored.groups[index]!.items.map((item) => item.href));
     }
     expect(groups[0]!.items.map((item) => canonicalPath(item.href))).toEqual([
-      "/prerequisites", "/installation", "/first-component", "/automatic-mounting",
+      "/prerequisites", "/installation", "/first-component", "/choose", "/automatic-mounting",
     ]);
   });
 

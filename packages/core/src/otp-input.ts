@@ -212,3 +212,14 @@ export type OtpInputType = NonNullable<(typeof otpInputContract.options.type)["v
 
 /** The group sizes the contract allows, derived like `OtpInputType`: the enum is the only edit. */
 export type OtpInputGroupSize = NonNullable<(typeof otpInputContract.options.groupSize)["values"]>[number];
+
+/**
+ * Keeps the focused segment in view inside a row that scrolls (a long code in a narrow column): the machine
+ * moves focus without scrolling, so a segment past the edge took the caret out of sight with its ring. The
+ * row's `scroll-padding` (otp-input.css) leaves the ring's room. Both bindings call it; returns the cleanup.
+ */
+export function revealFocusedSegment(control: HTMLElement): () => void {
+  const reveal = (event: FocusEvent) => (event.target as HTMLElement).scrollIntoView?.({ block: "nearest", inline: "nearest" });
+  control.addEventListener("focusin", reveal);
+  return () => control.removeEventListener("focusin", reveal);
+}

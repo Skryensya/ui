@@ -3,8 +3,25 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "679f368ed1b20800"
+surface: "afc041d65efbc456"
 entries:
+  - date: 2026-11-23
+    kind: bugfix
+    es:
+      title: El anillo de foco de un enlace se ve entero
+      body: 'Con el teclado, el anillo de foco de un enlace, en barras laterales y cajones se veía cortado por un contenedor que recorta. Ahora se ve entero. Se dibuja hacia adentro.'
+    en:
+      title: A link’s focus ring is drawn whole
+      body: 'With the keyboard, the focus ring of a link, in sidebars and drawers was cut by a clipping container. It is now drawn whole. It is drawn inside.'
+  - date: 2026-11-23
+    kind: feature
+    target: setAll
+    es:
+      title: Abrir o cerrar todos los grupos a la vez
+      body: 'El evento <code>sk:navlistsetall</code> con <code>{ open }</code>, enviado al <code>nav</code> con <code>setNavListGroups(nav, open)</code>, abre o cierra cada grupo plegable. Pasa por el mismo camino que un clic: en Vanilla queda recordado y la otra lista con la misma clave lo sigue. Es lo que manda un botón "Expandir todo".'
+    en:
+      title: Open or close every group at once
+      body: 'The <code>sk:navlistsetall</code> event with <code>{ open }</code>, sent to the <code>nav</code> with <code>setNavListGroups(nav, open)</code>, opens or closes every collapsible group. It takes the same path as a click: in Vanilla it is remembered and the other list with the same key follows. It is what an "Expand all" button sends.'
   - date: 2026-11-20
     kind: bugfix
     es:

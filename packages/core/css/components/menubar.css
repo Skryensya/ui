@@ -36,6 +36,11 @@
     scrollbar-width: none;
   }
 
+  /* The bar scrolls, so it clips: an item's ring drawn outside lost its top and bottom. Inside, whole. */
+  .sk-menubar__item:focus-visible {
+    outline-offset: calc(var(--focus-ring-width) * -1);
+  }
+
   .sk-menubar__item-wrapper {
     display: inline-flex;
   }

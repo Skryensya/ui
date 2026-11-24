@@ -30,10 +30,10 @@ Alternatives: `Toast`, `EmptyState`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `actions` | one of `Button.action`, `Button.navigation`, `Link` |  |
-| `children` | node | yes |
 | `icon` | one of `Icon` |  |
 | `title` | text |  |
+| `children` | node | yes |
+| `actions` | one of `Button.action`, `Button.navigation`, `Link` |  |
 
 **Example** (canonical tree `callout/brutalist`; its copy is placeholder, replace it)
 

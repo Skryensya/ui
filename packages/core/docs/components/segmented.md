@@ -40,7 +40,7 @@ Alternatives: `RadioGroup`, `Select`, `Tabs`.
 |---|---|---|
 | `items` (React: `options`) | a list of items (below) | yes |
 
-Each item in `items`, keyed by `value`: `disabled` (boolean), `value` (string), `label` (node, required).
+Each item in `items`, keyed by `value`: `value` (string), `disabled` (boolean), `label` (node, required).
 
 **Example** (canonical tree `segmented/view-switcher`; its copy is placeholder, replace it)
 

@@ -1,0 +1,32 @@
+# What changed in gallery, in the words its users read. Only appended to, never rewritten.
+#
+# `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
+# does not match, something a consumer depends on has moved: write the entry and paste in the new
+# hash.
+surface: "79149ae80730952a"
+entries:
+  - date: 2026-11-23
+    kind: feature
+    es:
+      title: Fotos que abren un Lightbox
+      body: 'Si cada vista es un <code>Lightbox.Trigger</code>, la foto grande abre el visor en esa foto con toda la galería. Al avanzar dentro del visor, la galería lo sigue, y al cerrarlo el foco vuelve a la foto que se ve. Las miniaturas solo eligen. En HTML lo conecta el mount de Vanilla; sin un trigger en las vistas no hace nada.'
+    en:
+      title: Photos that open a Lightbox
+      body: 'When each view is a <code>Lightbox.Trigger</code>, the large photo opens the viewer on itself with the whole gallery. Stepping through the viewer moves the gallery with it, and closing it returns focus to the photo showing. The thumbnails only choose. In HTML the Vanilla mount wires it; with no trigger in the views it does nothing.'
+  - date: 2026-11-23
+    kind: feature
+    target: placement
+    es:
+      title: Miniaturas arriba o en una columna al lado
+      body: '<code>placement</code> pone las miniaturas debajo de la foto (como antes), arriba, o apiladas en una columna a la izquierda o a la derecha, del alto de la foto y con su propio desplazamiento. El orden de lectura y de Tab no cambia: la foto primero.'
+    en:
+      title: Thumbnails on top or in a column beside the photo
+      body: '<code>placement</code> puts the thumbnails under the photo (as before), over it, or stacked in a column on the left or right, as tall as the photo and scrolling on their own. Reading and tab order do not change: the photo first.'
+  - date: 2026-11-23
+    kind: feature
+    es:
+      title: Primera versión
+      body: 'Una foto grande y una fila de miniaturas que la eligen. Las miniaturas son un grupo de radios nativos (flechas, una elegida, anunciada) y la foto que se ve la decide el CSS, así que funciona sin JavaScript y es el mismo DOM en React y en HTML. Cada vista acepta un ImageFrame o un Magnifier.'
+    en:
+      title: First release
+      body: 'One large photo and a row of thumbnails that choose it. The thumbnails are a native radio group (arrows, one chosen, announced) and CSS decides which photo shows, so it works without JavaScript and is the same DOM in React and HTML. Each view takes an ImageFrame or a Magnifier.'

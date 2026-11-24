@@ -27,22 +27,22 @@ Alternatives: `Avatar.image`, `Avatar.initials`, `Placeholder`.
 
 | Option | Values | Default |
 |---|---|---|
-| `aspect` | "auto" \| "1/1" \| "4/3" \| "3/2" \| "16/9" \| "3/4" \| "2/3" \| "9/16" | `"auto"` |
+| `aspect` | "auto" \| "1/1" \| "4/3" \| "3/2" \| "16/9" \| "4/5" \| "3/4" \| "2/3" \| "9/16" | `"auto"` |
 | `fit` | "cover" \| "contain" \| "fill" \| "none" \| "scale-down" | `"cover"` |
 | `position` | "center" \| "top" \| "bottom" \| "left" \| "right" \| "top-left" \| "top-right" \| "bottom-left" \| "bottom-right" | `"center"` |
 | `radius` | "none" \| "top" \| "control" \| "surface" \| "pill" | `"surface"` |
 | `border` | "none" \| "subtle" \| "default" | `"none"` |
 | `src` | string |  |
 | `alt` | string |  |
-| `frameElement` (React: `as`) | "div" \| "figure" | `"div"` |
+| `frameElement` (React: `as`) | "div" \| "figure" \| "span" | `"div"` |
 | `appearance` | "plain" \| "brutalist" | `"plain"` |
 
 **Slots**
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `caption` | one of `MediaOverlay` |  |
 | `children` | node |  |
+| `caption` | one of `MediaOverlay` |  |
 
 **Accessible name**
 

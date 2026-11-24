@@ -3,8 +3,24 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "ce6e9662b3c8ac94"
+surface: "b2ac47b280d34844"
 entries:
+  - date: 2026-11-22
+    kind: feature
+    es:
+      title: Proporción 4/5
+      body: "<code>aspect</code> acepta <code>4/5</code>, la proporción habitual de una foto de producto. Reservar la proporción evita que la página salte cuando la imagen termina de cargar."
+    en:
+      title: A 4/5 aspect
+      body: "<code>aspect</code> accepts <code>4/5</code>, the usual shape of a product photo. Reserving the shape keeps the page from jumping when the image finishes loading."
+  - date: 2026-11-22
+    kind: feature
+    es:
+      title: Un marco que puede ir dentro de un botón
+      body: "<code>frameElement</code> acepta <code>span</code>: un botón o una etiqueta solo admiten contenido de frase, así que una miniatura que es una pestaña, o la cara de un radio, va en un span. Se ve igual que el marco de siempre."
+    en:
+      title: A frame that can sit inside a button
+      body: "<code>frameElement</code> accepts <code>span</code>: a button or a label only holds phrasing content, so a thumbnail that is a tab, or the face of a radio, is a span. It looks the same as any frame."
   - date: 2026-10-02
     kind: chore
     es:

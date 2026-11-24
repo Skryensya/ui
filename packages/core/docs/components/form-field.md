@@ -34,10 +34,10 @@ Alternatives: `Callout`, `Input`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `children` | signature | yes |
-| `error` | node |  |
-| `hint` | node |  |
 | `label` | node | yes |
+| `hint` | node |  |
+| `error` | node |  |
+| `children` | signature | yes |
 
 **Example** (canonical tree `form-field/with-hint-and-error`; its copy is placeholder, replace it)
 

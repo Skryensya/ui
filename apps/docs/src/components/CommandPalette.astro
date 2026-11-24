@@ -30,11 +30,13 @@ interface Props {
   placeholder: string;
   /** Opt-in, one instance per page: `"mod+k"` binds the shortcut and fills the ⌘K badges. */
   hotkey?: string;
+  /** Said in front of each recent page's context. Only the palette that carries it lists recents (the site's, not the catalogue's). */
+  recentsLabel?: string;
   /** Defer the Vanilla enhancer until the first opener click/hotkey. Docs chrome uses this path. */
   lazy?: boolean;
 }
 
-const { id, entries, indexSrc, label, placeholder, hotkey, lazy = false } = Astro.props;
+const { id, entries, indexSrc, label, placeholder, hotkey, recentsLabel, lazy = false } = Astro.props;
 
 const locale = getLocale(Astro.url);
 const t = useTranslations(locale);
@@ -54,6 +56,7 @@ const listId = `${id}-list`;
   data-sk-command-palette-index={indexId}
   data-sk-command-palette-index-src={indexSrc}
   data-sk-command-palette-hotkey={hotkey}
+  data-recents-label={recentsLabel}
   aria-label={label}
   data-sk-dialog-vaul
   data-edge="block-end"

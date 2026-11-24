@@ -3,8 +3,16 @@
 # `surface` es la forma del contrato la última vez que alguien la revisó. Si el compilador dice
 # que no coincide, algo de lo que un consumidor depende se movió: escribe la entrada y pega el
 # hash nuevo.
-surface: "140ea3f95130c853"
+surface: "c8b39ddd24b33825"
 entries:
+  - date: 2026-11-23
+    kind: feature
+    es:
+      title: Una lupa que se activa en el visor
+      body: "Con <code>magnifier</code>, la barra de zoom suma un botón que pone una lupa de vidrio sobre la foto y sigue al puntero; el mismo botón la quita. Es un toggle con <code>aria-pressed</code>, y con la lupa puesta el mouse ya no arrastra la foto: mantener pulsado agranda la lupa. Los botones de zoom pasan a + y −, para que la lupa sea solo el botón de la lupa."
+    en:
+      title: A magnifier you can turn on in the viewer
+      body: "With <code>magnifier</code>, the zoom bar gets a button that puts a glass lens over the photo, following the pointer; the same button takes it away. It is a toggle with <code>aria-pressed</code>, and with the lens on the mouse no longer drags the photo: holding the button grows the lens. The zoom buttons become + and −, so the magnifying glass is the lens's button alone."
   - date: 2026-10-01
     kind: feature
     es:

@@ -16,6 +16,7 @@ const check = process.argv.includes("--check");
 execFileSync("pnpm", ["--filter", "@skryensya/cli", "build"], { cwd: root, stdio: "ignore" });
 for (const { id } of siteIconSets) {
   // `--components`: the sidebar, the catalogue and each component page draw the `component-*` marks.
-  execFileSync("node", [cli, "icons", id, "--out", `src/icon-sets/${id}`, "--components", ...(check ? ["--check"] : [])], { cwd: root, stdio: ["ignore", "ignore", "inherit"] });
+  // `--brands`: the header's GitHub link draws `brand-github`, in the reader's set.
+  execFileSync("node", [cli, "icons", id, "--out", `src/icon-sets/${id}`, "--components", "--brands", ...(check ? ["--check"] : [])], { cwd: root, stdio: ["ignore", "ignore", "inherit"] });
 }
 console.log(`icon sets: ${siteIconSets.length} ${check ? "up to date" : "written"}`);

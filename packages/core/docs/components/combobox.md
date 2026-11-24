@@ -39,12 +39,12 @@ Alternatives: `Select`, `Select.native`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `error` | text |  |
-| `hint` | text |  |
-| `items` | a list of items (below) | yes |
 | `label` | text | yes |
+| `hint` | text |  |
+| `error` | text |  |
+| `items` | a list of items (below) | yes |
 
-Each item in `items`, keyed by `value`: `disabled` (boolean), `value` (string), `description` (text), `label` (text, required).
+Each item in `items`, keyed by `value`: `value` (string), `disabled` (boolean), `label` (text, required), `description` (text).
 
 **Example** (canonical tree `combobox/filterable`; its copy is placeholder, replace it)
 
@@ -212,8 +212,8 @@ Stylesheets: `@skryensya/core/components/button.css`, `@skryensya/core/component
 
 | DOM event (Vanilla) | React prop | `detail` |
 |---|---|---|
-| `sk:comboboxinputvaluechange` | `onInputValueChange` | { inputValue: string } |
 | `sk:comboboxvaluechange` | `onValueChange` | { value: string[] } |
+| `sk:comboboxinputvaluechange` | `onInputValueChange` | { inputValue: string } |
 
 ## Styling hooks
 

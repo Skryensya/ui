@@ -1,4 +1,4 @@
-# 003 — Give the ProgressiveCarousel hover its own, shorter duration
+# 003: Give the ProgressiveCarousel hover its own, shorter duration
 
 - **Status**: TODO
 - **Commit**: 77db5aaa
@@ -11,7 +11,7 @@
 The hover (tens of times per day) retargets every slide with the same 520 ms move used for a step. Sweeping the mouse over the strips feels sticky.
 
 ```ts
-// packages/core/src/progressive-carousel.ts:104 — current
+// packages/core/src/progressive-carousel.ts:104, current
 const DURATION = 520;
 // run() always does `started = performance.now()` and tick() divides by DURATION
 ```

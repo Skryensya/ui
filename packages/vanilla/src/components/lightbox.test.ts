@@ -638,3 +638,29 @@ describe("Lightbox (Vanilla): video", () => {
     });
   });
 });
+
+/*
+ * THE STORYBOOK BUG: a story re-render throws the markup away without destroying the Lightbox, then renders the same
+ * gallery again. The old controller kept listening on the document for `data-sk-lightbox-open="photos"`, claimed the click
+ * and tried to open its detached dialog, so the new one never opened. The runtime's sweep tears the old one down.
+ */
+describe("re-rendered without being destroyed", () => {
+  it("opens the new Lightbox when the same gallery is rendered again", async () => {
+    const first = document.createElement("div");
+    first.innerHTML = markup();
+    document.body.append(first);
+    mountLightbox(first);
+
+    first.remove();
+    await new Promise((resolve) => setTimeout(resolve, 40));
+
+    const second = document.createElement("div");
+    second.innerHTML = markup();
+    document.body.append(second);
+    mountLightbox(second);
+
+    fireEvent.click(second.querySelector<HTMLElement>('img[alt="Pine forest"]')!.parentElement!);
+    expect(second.querySelector<HTMLDialogElement>("dialog")!.open).toBe(true);
+    expect(getLightbox("photos")!.getState().open).toBe(true);
+  });
+});

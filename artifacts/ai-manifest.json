@@ -2,6 +2,49 @@
   "changelogs": {
     "accordion": [
       {
+        "date": "2026-11-23",
+        "entries": [
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "<code>variant=\"separated\"</code>: every section is a card of its own, with room between them (<code>--sk-accordion-gap</code>), and the open one is raised with a firmer edge (<code>--sk-accordion-open-elevation</code>). For a product FAQ where each question stands alone. Like seamless and divided, it takes no <code>appearance</code>.",
+              "title": "A variant with each section on its own card"
+            },
+            "es": {
+              "body": "<code>variant=\"separated\"</code>: cada sección es una tarjeta propia, con espacio entre ellas (<code>--sk-accordion-gap</code>), y la abierta se eleva con un borde más firme (<code>--sk-accordion-open-elevation</code>). Para un FAQ de producto donde cada pregunta se sostiene sola. Como seamless y divided, no lleva <code>appearance</code>.",
+              "title": "Una variante con cada sección en su tarjeta"
+            },
+            "kind": "feature",
+            "target": "variant"
+          },
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "<code>variant</code> picks the shape: <code>framed</code> (as before), <code>seamless</code> (titles, a plus or minus and space only, no lines or fills) and <code>divided</code> (titles with a chevron and a hairline between sections). Neither shows a title’s description. <code>appearance</code> decorates the frame, so it is for <code>framed</code> only.",
+              "title": "Accordions without a frame"
+            },
+            "es": {
+              "body": "<code>variant</code> elige la forma: <code>framed</code> (el de siempre), <code>seamless</code> (solo títulos, un más o menos y espacio, sin líneas ni fondos) y <code>divided</code> (títulos con chevron y una línea fina entre secciones). Ninguno muestra la descripción del título. <code>appearance</code> decora el marco, así que es solo para <code>framed</code>.",
+              "title": "Acordeones sin marco"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "With the keyboard, the focus ring of a Details summary (only its bottom line showed) was cut by a clipping container. It is now drawn whole. It is drawn inside.",
+              "title": "The Details summary’s focus ring is drawn whole"
+            },
+            "es": {
+              "body": "Con el teclado, el anillo de foco del summary de Details (solo quedaba la línea de abajo) se veía cortado por un contenedor que recorta. Ahora se ve entero. Se dibuja hacia adentro.",
+              "title": "El anillo de foco del summary de Details se ve entero"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.4"
+      },
+      {
         "date": "2026-10-28",
         "entries": [
           {
@@ -84,7 +127,7 @@
     ],
     "annotation": [
       {
-        "date": null,
+        "date": "2026-11-23",
         "entries": [
           {
             "date": "2026-11-22",
@@ -99,7 +142,7 @@
             "kind": "feature"
           }
         ],
-        "version": "0.0.4-dev"
+        "version": "0.0.4"
       },
       {
         "date": "2026-10-01",
@@ -332,6 +375,24 @@
     ],
     "badge": [
       {
+        "date": "2026-11-23",
+        "entries": [
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "It is 20px tall (18 at <code>sm</code>, 16 at <code>xs</code>) instead of 28, so it no longer reads as a Tag or a button. The edge is the text color at 14%, a hairline rather than an outline; in dark mode the fill is that same color, translucent, instead of the saturated blocks it was, and the neutral badge is gray instead of the canvas color. Digits are tabular.",
+              "title": "A shorter Badge, one color per tone"
+            },
+            "es": {
+              "body": "Mide 20px de alto (18 en <code>sm</code>, 16 en <code>xs</code>) en vez de 28: ya no se confunde con un Tag ni con un botón. El borde es el color del texto al 14%, un filo y no un contorno; en oscuro el relleno es ese mismo color translúcido en vez de los bloques saturados de antes, y el neutro es un gris en vez del color del lienzo. Los números tienen ancho fijo.",
+              "title": "Badge más bajo y con un solo color por tono"
+            },
+            "kind": "rework"
+          }
+        ],
+        "version": "0.0.4"
+      },
+      {
         "date": "2026-10-28",
         "entries": [
           {
@@ -442,8 +503,20 @@
     ],
     "breadcrumb": [
       {
-        "date": null,
+        "date": "2026-11-23",
         "entries": [
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "With the keyboard, the focus ring of a link in the collapsible trail was cut by a clipping container. It is now drawn whole.",
+              "title": "A link’s focus ring is drawn whole"
+            },
+            "es": {
+              "body": "Con el teclado, el anillo de foco de un enlace del trail colapsable se veía cortado por un contenedor que recorta. Ahora se ve entero.",
+              "title": "El anillo de foco de un enlace se ve entero"
+            },
+            "kind": "bugfix"
+          },
           {
             "date": "2026-11-20",
             "en": {
@@ -457,7 +530,7 @@
             "kind": "feature"
           }
         ],
-        "version": "0.0.4-dev"
+        "version": "0.0.4"
       },
       {
         "date": "2026-10-28",
@@ -703,7 +776,7 @@
     ],
     "calendar": [
       {
-        "date": null,
+        "date": "2026-11-23",
         "entries": [
           {
             "date": "2026-10-30",
@@ -755,7 +828,7 @@
             "target": "numOfMonths"
           }
         ],
-        "version": "0.0.4-dev"
+        "version": "0.0.4"
       },
       {
         "date": "2026-10-01",
@@ -817,34 +890,22 @@
     ],
     "canvas": [
       {
-        "date": null,
+        "date": "2026-11-23",
         "entries": [
           {
             "date": "2026-11-22",
             "en": {
-              "body": "Pan and zoom write once per frame and the drawing no longer stays blurry at rest. A trackpad pinch in desktop Safari now zooms. Shift + arrow moves the view three times as far. The sk-canvas-view event arrives once per frame.",
-              "title": "Smoother, Safari pinch and fast arrows"
+              "body": "Pan and zoom write once per frame, and sk-canvas-view also arrives once per frame. A trackpad pinch in desktop Safari zooms. Shift + arrow moves the view three times as far. Double click or tap zooms in where it lands and, at the maximum, fits. A fast drag keeps gliding after release (not under reduced motion). While zoomed, a minimap marks which part is showing; it takes no gestures and is hidden on narrow screens.",
+              "title": "Smoother, with double click, glide and minimap"
             },
             "es": {
-              "body": "Pan y zoom escriben una vez por cuadro y el dibujo ya no queda borroso en reposo. El pellizco del trackpad en Safari de escritorio ahora hace zoom. Shift + flecha mueve la vista tres veces más lejos. El evento sk-canvas-view llega una vez por cuadro.",
-              "title": "Más fluido, pellizco en Safari y flechas rápidas"
-            },
-            "kind": "feature"
-          },
-          {
-            "date": "2026-11-22",
-            "en": {
-              "body": "Double click or tap zooms in where it lands and, at the maximum, fits. Releasing a fast drag lets the view glide and ease to a stop (not under reduced motion). While zoomed a minimap marks which part is showing; it takes no gestures and is hidden on narrow screens.",
-              "title": "Double click, glide and minimap"
-            },
-            "es": {
-              "body": "Doble clic o toque acerca donde cae y, en el máximo, ajusta. Al soltar un arrastre rápido la vista sigue deslizándose y frena sola (no con movimiento reducido). Con zoom aparece un minimapa que marca qué parte se ve; no recibe gestos y se oculta en pantallas estrechas.",
-              "title": "Doble clic, inercia y minimapa"
+              "body": "Pan y zoom escriben una vez por cuadro, y sk-canvas-view también llega una vez por cuadro. El pellizco del trackpad en Safari de escritorio hace zoom. Shift + flecha mueve la vista tres veces más lejos. Doble clic o toque acerca donde cae y, en el máximo, ajusta. Un arrastre rápido sigue deslizándose al soltarlo (no con movimiento reducido). Con zoom aparece un minimapa que marca qué parte se ve; no recibe gestos y se oculta en pantallas estrechas.",
+              "title": "Más fluido, con doble clic, inercia y minimapa"
             },
             "kind": "feature"
           }
         ],
-        "version": "0.0.4-dev"
+        "version": "0.0.4"
       },
       {
         "date": "2026-10-01",
@@ -867,7 +928,7 @@
     ],
     "carousel": [
       {
-        "date": null,
+        "date": "2026-11-23",
         "entries": [
           {
             "date": "2026-11-22",
@@ -1002,7 +1063,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.4-dev"
+        "version": "0.0.4"
       },
       {
         "date": "2026-10-28",
@@ -1267,7 +1328,7 @@
     ],
     "color-picker": [
       {
-        "date": null,
+        "date": "2026-11-23",
         "entries": [
           {
             "date": "2026-11-20",
@@ -1282,7 +1343,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.4-dev"
+        "version": "0.0.4"
       },
       {
         "date": "2026-10-28",
@@ -1359,7 +1420,7 @@
     ],
     "combobox": [
       {
-        "date": null,
+        "date": "2026-11-23",
         "entries": [
           {
             "date": "2026-11-20",
@@ -1386,7 +1447,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.4-dev"
+        "version": "0.0.4"
       },
       {
         "date": "2026-10-28",
@@ -1452,6 +1513,24 @@
       }
     ],
     "command-palette": [
+      {
+        "date": "2026-11-23",
+        "entries": [
+          {
+            "date": "2026-11-22",
+            "en": {
+              "body": "When nothing matches, a one-edit typo (two from 7 letters) in a name or alias still finds the destination. With an empty query the host can answer the sk:commandpaletterecents event with recent pages and they are listed first. The palette stores nothing.",
+              "title": "Tolerates typos and lists recents"
+            },
+            "es": {
+              "body": "Si nada coincide, una errata de una edición (dos desde 7 letras) en un nombre o alias aún encuentra el destino. Con la búsqueda vacía, el anfitrión puede contestar al evento sk:commandpaletterecents con las páginas recientes y se listan primero. La paleta no guarda nada.",
+              "title": "Tolera erratas y lista lo reciente"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.4"
+      },
       {
         "date": "2026-10-01",
         "entries": [
@@ -1552,8 +1631,21 @@
     ],
     "content": [
       {
-        "date": null,
+        "date": "2026-11-23",
         "entries": [
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "A toast measured its width without its padding and border, so it ran wider than the region: the dismiss button stuck out past it and was cut, focus ring included. It is now exactly the region’s width, and the region leaves room for the ring.",
+              "title": "A toast no longer spills out of its region"
+            },
+            "es": {
+              "body": "Un toast medía su ancho sin contar padding ni borde, y quedaba más ancho que la región: el botón de cerrar asomaba por fuera y se cortaba, con su anillo de foco. Ahora mide justo el ancho de la región, y la región deja espacio para el anillo.",
+              "title": "Un toast ya no se sale de su región"
+            },
+            "kind": "bugfix",
+            "target": "ToastRegion"
+          },
           {
             "date": "2026-11-20",
             "en": {
@@ -1568,7 +1660,7 @@
             "target": "Toast"
           }
         ],
-        "version": "0.0.4-dev"
+        "version": "0.0.4"
       },
       {
         "date": "2026-10-28",
@@ -1643,7 +1735,7 @@
     ],
     "date-picker": [
       {
-        "date": null,
+        "date": "2026-11-23",
         "entries": [
           {
             "date": "2026-11-20",
@@ -1683,7 +1775,7 @@
             "target": "numOfMonths"
           }
         ],
-        "version": "0.0.4-dev"
+        "version": "0.0.4"
       },
       {
         "date": "2026-10-28",
@@ -2021,7 +2113,7 @@
     ],
     "footer": [
       {
-        "date": null,
+        "date": "2026-11-23",
         "entries": [
           {
             "date": "2026-11-20",
@@ -2036,7 +2128,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.4-dev"
+        "version": "0.0.4"
       },
       {
         "date": "2026-10-12",
@@ -2113,6 +2205,51 @@
         "version": "0.0.1"
       }
     ],
+    "gallery": [
+      {
+        "date": "2026-11-23",
+        "entries": [
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "When each view is a <code>Lightbox.Trigger</code>, the large photo opens the viewer on itself with the whole gallery. Stepping through the viewer moves the gallery with it, and closing it returns focus to the photo showing. The thumbnails only choose. In HTML the Vanilla mount wires it; with no trigger in the views it does nothing.",
+              "title": "Photos that open a Lightbox"
+            },
+            "es": {
+              "body": "Si cada vista es un <code>Lightbox.Trigger</code>, la foto grande abre el visor en esa foto con toda la galería. Al avanzar dentro del visor, la galería lo sigue, y al cerrarlo el foco vuelve a la foto que se ve. Las miniaturas solo eligen. En HTML lo conecta el mount de Vanilla; sin un trigger en las vistas no hace nada.",
+              "title": "Fotos que abren un Lightbox"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "<code>placement</code> puts the thumbnails under the photo (as before), over it, or stacked in a column on the left or right, as tall as the photo and scrolling on their own. Reading and tab order do not change: the photo first.",
+              "title": "Thumbnails on top or in a column beside the photo"
+            },
+            "es": {
+              "body": "<code>placement</code> pone las miniaturas debajo de la foto (como antes), arriba, o apiladas en una columna a la izquierda o a la derecha, del alto de la foto y con su propio desplazamiento. El orden de lectura y de Tab no cambia: la foto primero.",
+              "title": "Miniaturas arriba o en una columna al lado"
+            },
+            "kind": "feature",
+            "target": "placement"
+          },
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "One large photo and a row of thumbnails that choose it. The thumbnails are a native radio group (arrows, one chosen, announced) and CSS decides which photo shows, so it works without JavaScript and is the same DOM in React and HTML. Each view takes an ImageFrame or a Magnifier.",
+              "title": "First release"
+            },
+            "es": {
+              "body": "Una foto grande y una fila de miniaturas que la eligen. Las miniaturas son un grupo de radios nativos (flechas, una elegida, anunciada) y la foto que se ve la decide el CSS, así que funciona sin JavaScript y es el mismo DOM en React y en HTML. Cada vista acepta un ImageFrame o un Magnifier.",
+              "title": "Primera versión"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.4"
+      }
+    ],
     "hero": [
       {
         "date": "2026-10-12",
@@ -2153,8 +2290,73 @@
     ],
     "icon": [
       {
-        "date": null,
+        "date": "2026-11-23",
         "entries": [
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "New role <code>component-gallery</code>: the Gallery's mark, a stack of photos in every collection.",
+              "title": "A mark for Gallery"
+            },
+            "es": {
+              "body": "Nuevo rol <code>component-gallery</code>: la marca de Gallery, varias fotos apiladas en cada colección.",
+              "title": "Una marca para Gallery"
+            },
+            "kind": "feature",
+            "target": "name"
+          },
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "New role <code>favorite</code>: keeping something to come back to (a wishlist, a saved item). A heart in every collection. Not <code>like</code>, which approves of what someone else said.",
+              "title": "A role for keeping"
+            },
+            "es": {
+              "body": "Nuevo rol <code>favorite</code>: guardar algo para volver a verlo (una lista de deseos, un elemento guardado). Un corazón en cada colección. No es <code>like</code>, que es aprobar lo que dijo otro.",
+              "title": "Un rol para guardar"
+            },
+            "kind": "feature",
+            "target": "name"
+          },
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "Names <code>brand-github</code>, <code>brand-x</code>, <code>brand-instagram</code> and 21 more. Optional in a set like the component marks: <code>skryensya icons &lt;set&gt; --brands</code> writes them, with the collection’s own logo where it has one (it shares its stroke) and Tabler’s where it does not.",
+              "title": "Brand logos"
+            },
+            "es": {
+              "body": "Nombres <code>brand-github</code>, <code>brand-x</code>, <code>brand-instagram</code> y 21 más. Opcionales en un set como las marcas de componentes: <code>skryensya icons &lt;set&gt; --brands</code> los escribe, con el logo de la propia colección cuando lo tiene (comparte su trazo) y el de Tabler cuando no.",
+              "title": "Logos de marcas"
+            },
+            "kind": "feature",
+            "target": "name"
+          },
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "New roles <code>expand-all</code> and <code>collapse-all</code>: opening or closing every section of a list at once. A double caret pointing down or up, in every collection. Also, an icon with <code>hidden</code> is now actually hidden.",
+              "title": "Expand all and collapse all"
+            },
+            "es": {
+              "body": "Nuevos roles <code>expand-all</code> y <code>collapse-all</code>: abrir o cerrar todas las secciones de una lista a la vez. Un doble caret hacia abajo o hacia arriba, en cada colección. Además, un icono con <code>hidden</code> ahora sí se oculta.",
+              "title": "Expandir todo y contraer todo"
+            },
+            "kind": "feature",
+            "target": "name"
+          },
+          {
+            "date": "2026-11-22",
+            "en": {
+              "body": "New role <code>component-magnifier</code>: the Magnifier's mark, a magnifying glass with a plus in every collection.",
+              "title": "A mark for Magnifier"
+            },
+            "es": {
+              "body": "Nuevo rol <code>component-magnifier</code>: la marca de la lupa, una lupa con un signo más en cada colección.",
+              "title": "Una marca para Magnifier"
+            },
+            "kind": "feature",
+            "target": "name"
+          },
           {
             "date": "2026-11-20",
             "en": {
@@ -2181,7 +2383,7 @@
             "kind": "breaking"
           }
         ],
-        "version": "0.0.4-dev"
+        "version": "0.0.4"
       },
       {
         "date": "2026-10-28",
@@ -2267,6 +2469,36 @@
       }
     ],
     "image-frame": [
+      {
+        "date": "2026-11-23",
+        "entries": [
+          {
+            "date": "2026-11-22",
+            "en": {
+              "body": "<code>aspect</code> accepts <code>4/5</code>, the usual shape of a product photo. Reserving the shape keeps the page from jumping when the image finishes loading.",
+              "title": "A 4/5 aspect"
+            },
+            "es": {
+              "body": "<code>aspect</code> acepta <code>4/5</code>, la proporción habitual de una foto de producto. Reservar la proporción evita que la página salte cuando la imagen termina de cargar.",
+              "title": "Proporción 4/5"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-11-22",
+            "en": {
+              "body": "<code>frameElement</code> accepts <code>span</code>: a button or a label only holds phrasing content, so a thumbnail that is a tab, or the face of a radio, is a span. It looks the same as any frame.",
+              "title": "A frame that can sit inside a button"
+            },
+            "es": {
+              "body": "<code>frameElement</code> acepta <code>span</code>: un botón o una etiqueta solo admiten contenido de frase, así que una miniatura que es una pestaña, o la cara de un radio, va en un span. Se ve igual que el marco de siempre.",
+              "title": "Un marco que puede ir dentro de un botón"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.4"
+      },
       {
         "date": "2026-10-12",
         "entries": [
@@ -2679,6 +2911,24 @@
     ],
     "lightbox": [
       {
+        "date": "2026-11-23",
+        "entries": [
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "With <code>magnifier</code>, the zoom bar gets a button that puts a glass lens over the photo, following the pointer; the same button takes it away. It is a toggle with <code>aria-pressed</code>, and with the lens on the mouse no longer drags the photo: holding the button grows the lens. The zoom buttons become + and −, so the magnifying glass is the lens's button alone.",
+              "title": "A magnifier you can turn on in the viewer"
+            },
+            "es": {
+              "body": "Con <code>magnifier</code>, la barra de zoom suma un botón que pone una lupa de vidrio sobre la foto y sigue al puntero; el mismo botón la quita. Es un toggle con <code>aria-pressed</code>, y con la lupa puesta el mouse ya no arrastra la foto: mantener pulsado agranda la lupa. Los botones de zoom pasan a + y −, para que la lupa sea solo el botón de la lupa.",
+              "title": "Una lupa que se activa en el visor"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.4"
+      },
+      {
         "date": "2026-10-28",
         "entries": [
           {
@@ -2843,9 +3093,77 @@
         "version": "0.0.1"
       }
     ],
+    "magnifier": [
+      {
+        "date": "2026-11-23",
+        "entries": [
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "<code>filter</code> tints the glass: <code>red</code>, <code>green</code> and <code>blue</code> let one channel of the picture through; <code>cyan</code>, <code>magenta</code> and <code>yellow</code> let two. <code>none</code>, as before, is clear glass.",
+              "title": "A coloured glass lens"
+            },
+            "es": {
+              "body": "<code>filter</code> tiñe el vidrio: <code>red</code>, <code>green</code> y <code>blue</code> dejan pasar un canal de la imagen; <code>cyan</code>, <code>magenta</code> y <code>yellow</code> dejan pasar dos. <code>none</code>, el de siempre, es vidrio claro.",
+              "title": "Una lupa de vidrio de color"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "<code>dispersion=\"strong\"</code> splits colour further toward the glass's edge, and deeper into it, for when the glass is part of the design. <code>subtle</code> stays as before. Drawn by the WebGPU glass only.",
+              "title": "More rainbow at the lens edge"
+            },
+            "es": {
+              "body": "<code>dispersion=\"strong\"</code> separa más los colores hacia el borde del vidrio, y más adentro, para cuando el vidrio es parte del diseño. <code>subtle</code> sigue siendo el de siempre. Solo lo dibuja el vidrio WebGPU.",
+              "title": "Más arcoíris en el borde de la lupa"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "Inside a link (a Lightbox trigger, a card), holding the button to grow the lens, or a finger to look through it, ended in a click that opened or followed the link. That click is now swallowed; a quick click is still a click.",
+              "title": "Holding a press no longer counts as a click"
+            },
+            "es": {
+              "body": "Dentro de un enlace (un trigger de Lightbox, una tarjeta), mantener el botón para agrandar la lupa, o el dedo para mirar con ella, terminaba en un clic que abría o seguía el enlace. Ese clic ahora se descarta; un clic rápido sigue siendo un clic.",
+              "title": "Mantener presionado ya no cuenta como clic"
+            },
+            "kind": "bugfix"
+          },
+          {
+            "date": "2026-11-22",
+            "en": {
+              "body": "The lens follows the pointer on a spring, grows in and shrinks out, zooms deeper while pressed and stretches when moved fast; with reduced motion it does none of that. Past the picture it shows <code>--sk-magnifier-bg</code>, and it paints above the whole page on the new <code>--z-pointer</code> layer.",
+              "title": "A lens with weight, a designed background and above everything"
+            },
+            "es": {
+              "body": "La lupa sigue al puntero con un resorte, crece al entrar y se encoge al salir, amplía más al mantener pulsado y se estira al moverla rápido; con «reducir movimiento» no hace nada de eso. Más allá de la imagen muestra <code>--sk-magnifier-bg</code>, y se pinta sobre toda la página con la capa nueva <code>--z-pointer</code>.",
+              "title": "Una lupa con peso, un fondo de diseño y sobre todo lo demás"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-11-22",
+            "en": {
+              "body": "Added to the library, with its contract, a React binding and a Vanilla mount: a glass lens that follows the pointer over an image, video or canvas.",
+              "title": "New component"
+            },
+            "es": {
+              "body": "Se suma a la librería, con su contrato, un binding de React y un montaje en Vanilla: una lupa de vidrio que sigue al puntero sobre una imagen, un video o un canvas.",
+              "title": "Componente nuevo"
+            },
+            "kind": "feature"
+          }
+        ],
+        "version": "0.0.4"
+      }
+    ],
     "marquee": [
       {
-        "date": null,
+        "date": "2026-11-23",
         "entries": [
           {
             "date": "2026-11-20",
@@ -2872,7 +3190,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.4-dev"
+        "version": "0.0.4"
       },
       {
         "date": "2026-10-01",
@@ -2958,7 +3276,7 @@
     ],
     "megamenu": [
       {
-        "date": null,
+        "date": "2026-11-23",
         "entries": [
           {
             "date": "2026-11-20",
@@ -2985,7 +3303,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.4-dev"
+        "version": "0.0.4"
       },
       {
         "date": "2026-10-28",
@@ -3038,7 +3356,7 @@
     ],
     "menu": [
       {
-        "date": null,
+        "date": "2026-11-23",
         "entries": [
           {
             "date": "2026-11-20",
@@ -3077,7 +3395,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.4-dev"
+        "version": "0.0.4"
       },
       {
         "date": "2026-10-28",
@@ -3130,8 +3448,20 @@
     ],
     "menubar": [
       {
-        "date": null,
+        "date": "2026-11-23",
         "entries": [
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "With the keyboard, the focus ring of an item (the scrolling bar) was cut by a clipping container. It is now drawn whole. It is drawn inside.",
+              "title": "An item’s focus ring is drawn whole"
+            },
+            "es": {
+              "body": "Con el teclado, el anillo de foco de un ítem (la barra que hace scroll) se veía cortado por un contenedor que recorta. Ahora se ve entero. Se dibuja hacia adentro.",
+              "title": "El anillo de foco de un ítem se ve entero"
+            },
+            "kind": "bugfix"
+          },
           {
             "date": "2026-11-20",
             "en": {
@@ -3145,7 +3475,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.4-dev"
+        "version": "0.0.4"
       },
       {
         "date": "2026-10-28",
@@ -3288,8 +3618,33 @@
     ],
     "nav-list": [
       {
-        "date": null,
+        "date": "2026-11-23",
         "entries": [
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "With the keyboard, the focus ring of a link, in sidebars and drawers was cut by a clipping container. It is now drawn whole. It is drawn inside.",
+              "title": "A link’s focus ring is drawn whole"
+            },
+            "es": {
+              "body": "Con el teclado, el anillo de foco de un enlace, en barras laterales y cajones se veía cortado por un contenedor que recorta. Ahora se ve entero. Se dibuja hacia adentro.",
+              "title": "El anillo de foco de un enlace se ve entero"
+            },
+            "kind": "bugfix"
+          },
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "The <code>sk:navlistsetall</code> event with <code>{ open }</code>, sent to the <code>nav</code> with <code>setNavListGroups(nav, open)</code>, opens or closes every collapsible group. It takes the same path as a click: in Vanilla it is remembered and the other list with the same key follows. It is what an \"Expand all\" button sends.",
+              "title": "Open or close every group at once"
+            },
+            "es": {
+              "body": "El evento <code>sk:navlistsetall</code> con <code>{ open }</code>, enviado al <code>nav</code> con <code>setNavListGroups(nav, open)</code>, abre o cierra cada grupo plegable. Pasa por el mismo camino que un clic: en Vanilla queda recordado y la otra lista con la misma clave lo sigue. Es lo que manda un botón \"Expandir todo\".",
+              "title": "Abrir o cerrar todos los grupos a la vez"
+            },
+            "kind": "feature",
+            "target": "setAll"
+          },
           {
             "date": "2026-11-20",
             "en": {
@@ -3303,7 +3658,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.4-dev"
+        "version": "0.0.4"
       },
       {
         "date": "2026-10-28",
@@ -3477,6 +3832,24 @@
       }
     ],
     "otp-input": [
+      {
+        "date": "2026-11-23",
+        "entries": [
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "With the keyboard, the focus ring of each segment was cut by a clipping container. It is now drawn whole. And in a row that scrolls, the focused segment comes into view.",
+              "title": "Each segment’s focus ring is drawn whole"
+            },
+            "es": {
+              "body": "Con el teclado, el anillo de foco de cada casilla se veía cortado por un contenedor que recorta. Ahora se ve entero. Y en una fila que hace scroll, la casilla enfocada entra en vista.",
+              "title": "El anillo de foco de cada casilla se ve entero"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.4"
+      },
       {
         "date": "2026-10-12",
         "entries": [
@@ -4177,7 +4550,7 @@
     ],
     "search-field": [
       {
-        "date": null,
+        "date": "2026-11-23",
         "entries": [
           {
             "date": "2026-10-30",
@@ -4192,7 +4565,7 @@
             "kind": "feature"
           }
         ],
-        "version": "0.0.4-dev"
+        "version": "0.0.4"
       },
       {
         "date": "2026-10-28",
@@ -4302,7 +4675,7 @@
     ],
     "select": [
       {
-        "date": null,
+        "date": "2026-11-23",
         "entries": [
           {
             "date": "2026-11-20",
@@ -4341,7 +4714,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.4-dev"
+        "version": "0.0.4"
       },
       {
         "date": "2026-10-28",
@@ -4750,8 +5123,45 @@
     ],
     "state-button": [
       {
-        "date": null,
+        "date": "2026-11-23",
         "entries": [
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "A state's icon can be the new <code>favorite</code> role, for a save button that stays marked, for instance.",
+              "title": "Takes the favorite icon"
+            },
+            "es": {
+              "body": "El ícono de un estado puede ser el nuevo rol <code>favorite</code>, por ejemplo para un botón de guardar que se queda marcado.",
+              "title": "Acepta el ícono favorite"
+            },
+            "kind": "feature",
+            "target": "icon"
+          },
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "<code>StateButton</code> accepts the <code>expand-all</code> and <code>collapse-all</code> roles. Nothing about its behaviour changes.",
+              "title": "Two more icon names"
+            },
+            "es": {
+              "body": "<code>StateButton</code> acepta los roles <code>expand-all</code> y <code>collapse-all</code>. No cambia nada de su comportamiento.",
+              "title": "Dos nombres de icono más"
+            },
+            "kind": "feature"
+          },
+          {
+            "date": "2026-11-22",
+            "en": {
+              "body": "<code>StateButton</code> accepts the <code>component-magnifier</code> role, the Magnifier's mark. Nothing about its behaviour changes.",
+              "title": "One more icon name"
+            },
+            "es": {
+              "body": "<code>StateButton</code> acepta el rol <code>component-magnifier</code>, la marca de Magnifier. No cambia nada de su comportamiento.",
+              "title": "Un nombre de icono más"
+            },
+            "kind": "feature"
+          },
           {
             "date": "2026-11-20",
             "en": {
@@ -4765,7 +5175,7 @@
             "kind": "feature"
           }
         ],
-        "version": "0.0.4-dev"
+        "version": "0.0.4"
       },
       {
         "date": "2026-10-12",
@@ -4979,8 +5389,44 @@
     ],
     "tabs": [
       {
-        "date": null,
+        "date": "2026-11-23",
         "entries": [
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "With the keyboard, the focus ring of a tab (the scrolling strip) was cut by a clipping container. It is now drawn whole. It is drawn inside.",
+              "title": "A tab’s focus ring is drawn whole"
+            },
+            "es": {
+              "body": "Con el teclado, el anillo de foco de una pestaña (la tira que hace scroll) se veía cortado por un contenedor que recorta. Ahora se ve entero. Se dibuja hacia adentro.",
+              "title": "El anillo de foco de una pestaña se ve entero"
+            },
+            "kind": "bugfix"
+          },
+          {
+            "date": "2026-11-22",
+            "en": {
+              "body": "Before the script mounted, the markup showed every panel, and the page jumped when they hid. Now only the panel that starts selected shows; without JavaScript every panel still shows.",
+              "title": "Tabs no longer make the page jump on load"
+            },
+            "es": {
+              "body": "Antes de que el script monte, el marcado mostraba todos los paneles y la página saltaba cuando se ocultaban. Ahora solo se ve el panel que empieza elegido; sin JavaScript se siguen viendo todos.",
+              "title": "Las pestañas ya no hacen saltar la página al cargar"
+            },
+            "kind": "bugfix"
+          },
+          {
+            "date": "2026-11-22",
+            "en": {
+              "body": "<code>listPlacement: after</code> shows the tab strip below the panels, and <code>wrap</code> breaks it onto rows instead of scrolling. Together they make a gallery with thumbnails under the photo. The DOM order does not change, so the keyboard and screen readers behave the same.",
+              "title": "The strip can sit below and wrap"
+            },
+            "es": {
+              "body": "<code>listPlacement: after</code> muestra la tira de pestañas debajo de los paneles, y <code>wrap</code> la reparte en filas en vez de desplazarla. Juntas sirven para una galería con miniaturas debajo de la foto. El orden del DOM no cambia, así que el teclado y los lectores de pantalla siguen igual.",
+              "title": "La tira puede ir debajo y repartirse en filas"
+            },
+            "kind": "feature"
+          },
           {
             "date": "2026-11-20",
             "en": {
@@ -5006,7 +5452,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.4-dev"
+        "version": "0.0.4"
       },
       {
         "date": "2026-10-28",
@@ -5176,6 +5622,24 @@
     ],
     "tile": [
       {
+        "date": "2026-11-23",
+        "entries": [
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "With the keyboard, the focus ring of an ExpandableTile trigger (only its bottom line showed) was cut by a clipping container. It is now drawn whole. It is drawn inside.",
+              "title": "The expandable trigger’s focus ring is drawn whole"
+            },
+            "es": {
+              "body": "Con el teclado, el anillo de foco del trigger de un ExpandableTile (solo quedaba la línea de abajo) se veía cortado por un contenedor que recorta. Ahora se ve entero. Se dibuja hacia adentro.",
+              "title": "El anillo de foco del trigger plegable se ve entero"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.4"
+      },
+      {
         "date": "2026-10-28",
         "entries": [
           {
@@ -5233,7 +5697,7 @@
     ],
     "time-field": [
       {
-        "date": null,
+        "date": "2026-11-23",
         "entries": [
           {
             "date": "2026-11-20",
@@ -5248,7 +5712,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.4-dev"
+        "version": "0.0.4"
       },
       {
         "date": "2026-10-28",
@@ -5412,7 +5876,7 @@
     ],
     "tooltip": [
       {
-        "date": null,
+        "date": "2026-11-23",
         "entries": [
           {
             "date": "2026-11-20",
@@ -5439,7 +5903,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.4-dev"
+        "version": "0.0.4"
       },
       {
         "date": "2026-10-28",
@@ -5557,6 +6021,24 @@
     ],
     "treegrid": [
       {
+        "date": "2026-11-23",
+        "entries": [
+          {
+            "date": "2026-11-23",
+            "en": {
+              "body": "With the keyboard, the focus ring of a row (nearly invisible against the table edge) was cut by a clipping container. It is now drawn whole. It is drawn inside.",
+              "title": "A row’s focus ring is visible"
+            },
+            "es": {
+              "body": "Con el teclado, el anillo de foco de una fila (casi invisible contra el borde de la tabla) se veía cortado por un contenedor que recorta. Ahora se ve entero. Se dibuja hacia adentro.",
+              "title": "El anillo de foco de una fila se ve"
+            },
+            "kind": "bugfix"
+          }
+        ],
+        "version": "0.0.4"
+      },
+      {
         "date": "2026-10-01",
         "entries": [
           {
@@ -5597,7 +6079,7 @@
     ],
     "user-select": [
       {
-        "date": null,
+        "date": "2026-11-23",
         "entries": [
           {
             "date": "2026-11-20",
@@ -5612,7 +6094,7 @@
             "kind": "bugfix"
           }
         ],
-        "version": "0.0.4-dev"
+        "version": "0.0.4"
       },
       {
         "date": "2026-10-28",
@@ -5892,6 +6374,12 @@
           "part": "root",
           "sheet": "@skryensya/core/components/accordion.brutalist.css"
         },
+        "--sk-accordion-content-end-padding": {
+          "default": "var(--space-inset-md)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/accordion.css"
+        },
         "--sk-accordion-depth": {
           "default": "4px",
           "output": false,
@@ -5904,14 +6392,32 @@
           "part": "root",
           "sheet": "@skryensya/core/components/accordion.css"
         },
+        "--sk-accordion-gap": {
+          "default": "var(--space-stack-sm)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/accordion.css"
+        },
         "--sk-accordion-open-bg": {
           "default": "var(--color-bg-surface-sunken)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/accordion.css"
         },
+        "--sk-accordion-open-elevation": {
+          "default": "var(--elevation-raised)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/accordion.css"
+        },
         "--sk-accordion-radius": {
           "default": "var(--radius-surface)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/accordion.css"
+        },
+        "--sk-accordion-row-padding": {
+          "default": "var(--space-inset-sm)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/accordion.css"
@@ -6152,10 +6658,14 @@
         "--sk-accordion-brutalist-offset-block",
         "--sk-accordion-brutalist-offset-inline",
         "--sk-accordion-brutalist-shadow",
+        "--sk-accordion-content-end-padding",
         "--sk-accordion-depth",
         "--sk-accordion-divider-color",
+        "--sk-accordion-gap",
         "--sk-accordion-open-bg",
+        "--sk-accordion-open-elevation",
         "--sk-accordion-radius",
+        "--sk-accordion-row-padding",
         "--sk-color-border-selected",
         "--sk-color-border-strong",
         "--sk-color-border-subtle",
@@ -6294,6 +6804,17 @@
         "value": {
           "attr": "data-value",
           "type": "string"
+        },
+        "variant": {
+          "attr": "data-variant",
+          "default": "framed",
+          "type": "enum",
+          "values": [
+            "framed",
+            "seamless",
+            "divided",
+            "separated"
+          ]
         }
       },
       "parts": {
@@ -6325,7 +6846,8 @@
           "useWhen": [
             "there are several long sections and which stay open is worth coordinating: an FAQ, terms",
             "type=single: opening one closes the previous, so the page does not grow without end",
-            "type=multiple: several can stay open at once, and they are still one accordion"
+            "type=multiple: several can stay open at once, and they are still one accordion",
+            "variant=separated: each question stands on its own, like a product FAQ; every section is a card and the open one is raised"
           ]
         },
         "Accordion.Content": {
@@ -6405,6 +6927,15 @@
           "excludes": {
             "type=multiple": [
               "collapsible"
+            ],
+            "variant=divided": [
+              "appearance"
+            ],
+            "variant=seamless": [
+              "appearance"
+            ],
+            "variant=separated": [
+              "appearance"
             ]
           },
           "forward": [
@@ -6426,7 +6957,8 @@
             "collapsible",
             "disabled",
             "defaultValue",
-            "appearance"
+            "appearance",
+            "variant"
           ],
           "react": {
             "from": "@skryensya/react/accordion",
@@ -9967,13 +10499,13 @@
       "css": "@skryensya/core/components/badge.css",
       "hookDetails": {
         "--sk-badge-bg": {
-          "default": "light-dark(var(--color-bg-canvas), var(--color-bg-surface-sunken))",
+          "default": "light-dark(color-mix(in oklab, var(--sk-badge-fg) 8%, transparent), color-mix(in oklab, var(--sk-badge-fg) 12%, transparent))",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/badge.css"
         },
         "--sk-badge-border": {
-          "default": "color-mix(in oklab, currentColor 22%, transparent)",
+          "default": "color-mix(in oklab, var(--sk-badge-fg) 14%, transparent)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/badge.css"
@@ -10003,7 +10535,7 @@
           "sheet": "@skryensya/core/components/badge.css"
         },
         "--sk-badge-fg": {
-          "default": "light-dark(var(--color-text-tertiary), var(--color-text-secondary))",
+          "default": "var(--color-text-secondary)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/badge.css"
@@ -10021,7 +10553,7 @@
           "sheet": "@skryensya/core/components/badge.css"
         },
         "--sk-badge-line-height": {
-          "default": "var(--font-line-height-caption)",
+          "default": "calc(4 / 3)",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/badge.css"
@@ -10033,7 +10565,7 @@
           "sheet": "@skryensya/core/components/badge.css"
         },
         "--sk-badge-padding-y": {
-          "default": "var(--space-inset-xs)",
+          "default": "1px",
           "output": false,
           "part": "root",
           "sheet": "@skryensya/core/components/badge.css"
@@ -17037,10 +17569,19 @@
           "reactDetail": "(command: string, entry: CommandPaletteCommand)",
           "reactProp": "onCommand",
           "source": "root"
+        },
+        "recents": {
+          "detail": {
+            "hrefs": "string[]",
+            "label": "string | undefined"
+          },
+          "reactProp": false,
+          "source": "root"
         }
       },
       "events": {
-        "command": "sk:commandpalettecommand"
+        "command": "sk:commandpalettecommand",
+        "recents": "sk:commandpaletterecents"
       },
       "hookDetails": {
         "--sk-command-palette-border-color": {
@@ -24397,6 +24938,264 @@
         }
       }
     },
+    "gallery": {
+      "bindings": {
+        "Gallery": {
+          "enhancer": null,
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/gallery#Gallery"
+        }
+      },
+      "category": "content",
+      "css": "@skryensya/core/components/gallery.css",
+      "hookDetails": {
+        "--sk-gallery-gap": {
+          "default": "var(--space-stack-sm)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/gallery.css"
+        },
+        "--sk-gallery-rail-size": {
+          "default": "4.5rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/gallery.css"
+        },
+        "--sk-gallery-thumb-border": {
+          "default": "var(--color-border-subtle)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/gallery.css"
+        },
+        "--sk-gallery-thumb-gap": {
+          "default": "var(--space-inline-sm)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/gallery.css"
+        },
+        "--sk-gallery-thumb-idle-opacity": {
+          "default": "0.72",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/gallery.css"
+        },
+        "--sk-gallery-thumb-min": {
+          "default": "3.5rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/gallery.css"
+        },
+        "--sk-gallery-thumb-radius": {
+          "default": "var(--radius-control)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/gallery.css"
+        },
+        "--sk-gallery-thumb-selected-border": {
+          "default": "var(--color-border-strong)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/gallery.css"
+        },
+        "--sk-gallery-thumb-selected-width": {
+          "default": "2px",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/gallery.css"
+        }
+      },
+      "hooks": [
+        "--sk-gallery-gap",
+        "--sk-gallery-thumb-gap",
+        "--sk-gallery-thumb-min",
+        "--sk-gallery-thumb-radius",
+        "--sk-gallery-thumb-idle-opacity",
+        "--sk-gallery-thumb-border",
+        "--sk-gallery-thumb-selected-border",
+        "--sk-gallery-thumb-selected-width",
+        "--sk-gallery-rail-size"
+      ],
+      "id": "gallery",
+      "options": {
+        "label": {
+          "attr": "aria-label",
+          "type": "string"
+        },
+        "name": {
+          "attr": "name",
+          "type": "string"
+        },
+        "placement": {
+          "attr": "data-placement",
+          "default": "bottom",
+          "type": "enum",
+          "values": [
+            "bottom",
+            "top",
+            "start",
+            "end"
+          ]
+        },
+        "value": {
+          "attr": "data-default-value",
+          "keyOf": {
+            "slot": "items"
+          },
+          "prop": "defaultValue",
+          "type": "string"
+        }
+      },
+      "parts": {
+        "root": "sk-gallery",
+        "thumb": "sk-gallery__thumb",
+        "thumbFace": "sk-gallery__thumb-face",
+        "thumbInput": "sk-gallery__thumb-input",
+        "thumbs": "sk-gallery__thumbs",
+        "view": "sk-gallery__view",
+        "views": "sk-gallery__views"
+      },
+      "semantics": {
+        "Gallery": {
+          "alternatives": [
+            "Lightbox",
+            "Carousel",
+            "Tabs"
+          ],
+          "avoidWhen": [
+            "the photos should open large over the page, one after another, with zoom; that is a Lightbox with its triggers",
+            "there are more photos than fit in a row, or they should be browsed by swiping; that is a Carousel",
+            "the thumbnails name panels of different content, text or forms; that is Tabs"
+          ],
+          "useWhen": [
+            "one thing is shown in several photos and the reader picks which to see large: a product's shots, a project's screens",
+            "the large photo should stay in its place on the page while the thumbnails change it, with a Magnifier on it for detail"
+          ]
+        }
+      },
+      "signatures": {
+        "Gallery": {
+          "forward": [
+            "id",
+            "aria-*"
+          ],
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "product-gallery",
+            "image-gallery-with-thumbnails",
+            "photo-picker",
+            "main-image-and-thumbnails"
+          ],
+          "options": [
+            "value",
+            "name",
+            "label",
+            "placement"
+          ],
+          "react": {
+            "from": "@skryensya/react/gallery",
+            "name": "Gallery"
+          },
+          "requires": [
+            "name",
+            "label"
+          ],
+          "slots": {
+            "items": {
+              "accepts": "items",
+              "item": {
+                "key": "value",
+                "options": {
+                  "value": {
+                    "attr": "value",
+                    "type": "string"
+                  }
+                },
+                "slots": {
+                  "thumb": {
+                    "accepts": "node",
+                    "required": true
+                  },
+                  "view": {
+                    "accepts": "node",
+                    "required": true
+                  }
+                }
+              },
+              "maxItems": 12,
+              "minItems": 2,
+              "prop": "items",
+              "required": true
+            }
+          },
+          "template": {
+            "children": [
+              {
+                "children": [
+                  {
+                    "element": "div",
+                    "itemSlot": "view",
+                    "part": "view",
+                    "repeat": "items"
+                  }
+                ],
+                "element": "div",
+                "part": "views"
+              },
+              {
+                "attrs": {
+                  "role": "radiogroup"
+                },
+                "children": [
+                  {
+                    "also": [
+                      "sk-interactive"
+                    ],
+                    "children": [
+                      {
+                        "attrs": {
+                          "type": "radio"
+                        },
+                        "element": "input",
+                        "itemOptions": [
+                          "value"
+                        ],
+                        "options": [
+                          "name"
+                        ],
+                        "part": "thumbInput",
+                        "selectedBy": {
+                          "attr": "checked",
+                          "option": "value"
+                        }
+                      },
+                      {
+                        "element": "span",
+                        "itemSlot": "thumb",
+                        "part": "thumbFace"
+                      }
+                    ],
+                    "element": "label",
+                    "part": "thumb",
+                    "repeat": "items"
+                  }
+                ],
+                "element": "div",
+                "options": [
+                  "label"
+                ],
+                "part": "thumbs"
+              }
+            ],
+            "element": "div",
+            "host": true,
+            "part": "root"
+          }
+        }
+      }
+    },
     "hero": {
       "bindings": {
         "Hero": {
@@ -24647,6 +25446,7 @@
             "vote-down",
             "like",
             "dislike",
+            "favorite",
             "external-link",
             "add",
             "remove",
@@ -24661,6 +25461,8 @@
             "refresh",
             "zoom-out",
             "zoom-in",
+            "expand-all",
+            "collapse-all",
             "fit",
             "minimize",
             "maximize",
@@ -24782,6 +25584,8 @@
             "component-select",
             "component-resizable",
             "component-compare-slider",
+            "component-magnifier",
+            "component-gallery",
             "component-video-player",
             "component-audio-player",
             "component-scroll-expand",
@@ -24820,7 +25624,31 @@
             "component-wrapper",
             "component-hotkey",
             "component-scrollbar",
-            "component-vaul"
+            "component-vaul",
+            "brand-github",
+            "brand-gitlab",
+            "brand-x",
+            "brand-facebook",
+            "brand-instagram",
+            "brand-linkedin",
+            "brand-youtube",
+            "brand-tiktok",
+            "brand-discord",
+            "brand-whatsapp",
+            "brand-telegram",
+            "brand-reddit",
+            "brand-threads",
+            "brand-bluesky",
+            "brand-mastodon",
+            "brand-figma",
+            "brand-slack",
+            "brand-google",
+            "brand-apple",
+            "brand-twitch",
+            "brand-pinterest",
+            "brand-dribbble",
+            "brand-spotify",
+            "brand-medium"
           ]
         },
         "size": {
@@ -24986,6 +25814,7 @@
             "4/3",
             "3/2",
             "16/9",
+            "4/5",
             "3/4",
             "2/3",
             "9/16"
@@ -25020,7 +25849,8 @@
           "type": "enum",
           "values": [
             "div",
-            "figure"
+            "figure",
+            "span"
           ]
         },
         "position": {
@@ -26751,6 +27581,17 @@
           "trueValue": "",
           "type": "boolean"
         },
+        "magnifier": {
+          "attr": "data-magnifier",
+          "default": false,
+          "trueValue": "",
+          "type": "boolean"
+        },
+        "magnifierLabel": {
+          "attr": "aria-label",
+          "default": "Magnifier",
+          "type": "string"
+        },
         "maxZoom": {
           "attr": "data-max-zoom",
           "default": 4,
@@ -26962,6 +27803,8 @@
             "zoomInLabel",
             "zoomOutLabel",
             "resetZoomLabel",
+            "magnifierLabel",
+            "magnifier",
             "errorLabel",
             "counterLabel",
             "loop",
@@ -27168,7 +28011,7 @@
                     "children": [
                       {
                         "attrs": {
-                          "data-sk-icon": "zoom-in",
+                          "data-sk-icon": "add",
                           "data-sk-icon-size": "md"
                         },
                         "element": "span"
@@ -27195,7 +28038,7 @@
                     "children": [
                       {
                         "attrs": {
-                          "data-sk-icon": "zoom-out",
+                          "data-sk-icon": "remove",
                           "data-sk-icon-size": "md"
                         },
                         "element": "span"
@@ -27233,6 +28076,35 @@
                       "resetZoomLabel"
                     ],
                     "part": "control"
+                  },
+                  {
+                    "also": [
+                      "sk-button",
+                      "sk-interactive"
+                    ],
+                    "attrs": {
+                      "aria-pressed": "false",
+                      "data-icon-only": "",
+                      "data-lightbox-action": "magnifier",
+                      "data-size": "sm",
+                      "data-variant": "ghost",
+                      "type": "button"
+                    },
+                    "children": [
+                      {
+                        "attrs": {
+                          "data-sk-icon": "search",
+                          "data-sk-icon-size": "md"
+                        },
+                        "element": "span"
+                      }
+                    ],
+                    "element": "button",
+                    "options": [
+                      "magnifierLabel"
+                    ],
+                    "part": "control",
+                    "whenGiven": "magnifier"
                   }
                 ],
                 "element": "div",
@@ -28573,6 +29445,149 @@
       "systemOwned": [
         "tick"
       ]
+    },
+    "magnifier": {
+      "bindings": {
+        "Magnifier": {
+          "enhancer": "data-sk-magnifier",
+          "markup": true,
+          "portals": false,
+          "react": "@skryensya/react/magnifier#Magnifier"
+        }
+      },
+      "category": "content",
+      "css": "@skryensya/core/components/magnifier.css",
+      "hookDetails": {
+        "--sk-magnifier-bg": {
+          "default": "transparent",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/magnifier.css"
+        },
+        "--sk-magnifier-lens-shadow": {
+          "default": "0 0 0 1px color-mix(in oklab, var(--color-border-strong) 55%, transparent),\n      0 2px 6px var(--shadow-sm),\n      0 12px 28px -10px var(--shadow-lg)",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/magnifier.css"
+        },
+        "--sk-magnifier-size": {
+          "default": "10rem",
+          "output": false,
+          "part": "root",
+          "sheet": "@skryensya/core/components/magnifier.css"
+        }
+      },
+      "hooks": [
+        "--sk-magnifier-bg",
+        "--sk-magnifier-lens-shadow",
+        "--sk-magnifier-size"
+      ],
+      "id": "magnifier",
+      "options": {
+        "dispersion": {
+          "attr": "data-dispersion",
+          "default": "subtle",
+          "type": "enum",
+          "values": [
+            "subtle",
+            "strong"
+          ]
+        },
+        "filter": {
+          "attr": "data-filter",
+          "default": "none",
+          "type": "enum",
+          "values": [
+            "none",
+            "red",
+            "green",
+            "blue",
+            "cyan",
+            "magenta",
+            "yellow"
+          ]
+        },
+        "zoom": {
+          "attr": "data-zoom",
+          "default": 2,
+          "max": 8,
+          "min": 1,
+          "type": "number"
+        }
+      },
+      "parts": {
+        "lens": "sk-magnifier__lens",
+        "root": "sk-magnifier"
+      },
+      "semantics": {
+        "Magnifier": {
+          "alternatives": [
+            "Lightbox",
+            "ImageFrame"
+          ],
+          "avoidWhen": [
+            "the content is text or markup rather than an image, video or canvas; the lens reads pixels, so it cannot see markup; let the browser zoom or give the text more room",
+            "the reader needs the whole picture large, or on touch first; open it in a Lightbox instead of moving a small lens over it",
+            "the picture is a playing video; it moves on its own and carries the detail away from under the lens, and the lens covers the player's controls; pause and show the frame as an image to look at it up close"
+          ],
+          "useWhen": [
+            "a picture has detail too small to read at its size on the page, and the reader should look closer without leaving it: a product photo, a map, a diagram, a frame of video",
+            "looking closer should follow where the reader points, rather than open the picture somewhere else"
+          ]
+        }
+      },
+      "signatures": {
+        "Magnifier": {
+          "forward": [
+            "id",
+            "aria-*"
+          ],
+          "host": {
+            "element": "div"
+          },
+          "intent": [
+            "magnifier",
+            "image-zoom",
+            "loupe",
+            "lens",
+            "product-zoom",
+            "liquid-glass"
+          ],
+          "mount": "data-sk-magnifier",
+          "options": [
+            "zoom",
+            "dispersion",
+            "filter"
+          ],
+          "react": {
+            "from": "@skryensya/react/magnifier",
+            "name": "Magnifier"
+          },
+          "slots": {
+            "children": {
+              "accepts": "node",
+              "required": true
+            }
+          },
+          "template": {
+            "children": [
+              {
+                "slot": "children"
+              },
+              {
+                "attrs": {
+                  "aria-hidden": "true"
+                },
+                "element": "canvas",
+                "part": "lens"
+              }
+            ],
+            "element": "div",
+            "host": true,
+            "part": "root"
+          }
+        }
+      }
     },
     "marquee": {
       "bindings": {
@@ -31576,6 +32591,18 @@
       },
       "category": "navigation",
       "css": "@skryensya/core/patterns/nav-list.css",
+      "eventDetails": {
+        "setAll": {
+          "detail": {
+            "open": "boolean"
+          },
+          "direction": "in",
+          "source": "root"
+        }
+      },
+      "events": {
+        "setAll": "sk:navlistsetall"
+      },
       "hookDetails": {
         "--sk-nav-list-category-chevron-fg": {
           "default": "var(--color-text-tertiary)",
@@ -39963,7 +40990,7 @@
           "sheet": "@skryensya/core/components/select.css"
         },
         "--sk-select-content-padding": {
-          "default": "var(--space-inset-xs)",
+          "default": "var(--space-inset-sm)",
           "output": false,
           "part": "native",
           "sheet": "@skryensya/core/components/select.css"
@@ -40029,7 +41056,7 @@
           "sheet": "@skryensya/core/components/select.css"
         },
         "--sk-select-item-padding": {
-          "default": "var(--space-inset-xs) var(--space-inset-sm)",
+          "default": "var(--space-inset-sm) var(--space-inset-sm)",
           "output": false,
           "part": "native",
           "sheet": "@skryensya/core/components/select.css"
@@ -42595,6 +43622,7 @@
                       "vote-down",
                       "like",
                       "dislike",
+                      "favorite",
                       "external-link",
                       "add",
                       "remove",
@@ -42609,6 +43637,8 @@
                       "refresh",
                       "zoom-out",
                       "zoom-in",
+                      "expand-all",
+                      "collapse-all",
                       "fit",
                       "minimize",
                       "maximize",
@@ -42730,6 +43760,8 @@
                       "component-select",
                       "component-resizable",
                       "component-compare-slider",
+                      "component-magnifier",
+                      "component-gallery",
                       "component-video-player",
                       "component-audio-player",
                       "component-scroll-expand",
@@ -45002,6 +46034,15 @@
             "manual"
           ]
         },
+        "listPlacement": {
+          "attr": "data-list-placement",
+          "default": "before",
+          "type": "enum",
+          "values": [
+            "before",
+            "after"
+          ]
+        },
         "orientation": {
           "attr": "data-orientation",
           "default": "horizontal",
@@ -45037,6 +46078,12 @@
             "underline",
             "hanging"
           ]
+        },
+        "wrap": {
+          "attr": "data-wrap",
+          "default": false,
+          "trueValue": "",
+          "type": "boolean"
         }
       },
       "parts": {
@@ -45083,7 +46130,9 @@
             "activationMode",
             "value",
             "size",
-            "variant"
+            "variant",
+            "listPlacement",
+            "wrap"
           ],
           "react": {
             "from": "@skryensya/react/tabs",
@@ -45162,6 +46211,10 @@
                 "itemSlot": "children",
                 "part": "content",
                 "repeat": "items",
+                "selectedBy": {
+                  "attr": "data-sk-tabs-initial",
+                  "option": "value"
+                },
                 "whenItemSlotGiven": "children"
               }
             ],
@@ -46978,6 +48031,36 @@
                   }
                 ],
                 "element": "span"
+              },
+              {
+                "attrs": {
+                  "data-sign": "closed"
+                },
+                "children": [
+                  {
+                    "attrs": {
+                      "data-sk-icon": "add",
+                      "data-sk-icon-size": "md"
+                    },
+                    "element": "span"
+                  }
+                ],
+                "element": "span"
+              },
+              {
+                "attrs": {
+                  "data-sign": "open"
+                },
+                "children": [
+                  {
+                    "attrs": {
+                      "data-sk-icon": "remove",
+                      "data-sk-icon-size": "md"
+                    },
+                    "element": "span"
+                  }
+                ],
+                "element": "span"
               }
             ],
             "element": "span",
@@ -47363,7 +48446,7 @@
           "sheet": "@skryensya/core/components/time-field.css"
         },
         "--sk-select-content-padding": {
-          "default": "var(--space-inset-xs)",
+          "default": "var(--space-inset-sm)",
           "output": false,
           "part": null,
           "sheet": "@skryensya/core/components/select.css"
@@ -47429,7 +48512,7 @@
           "sheet": "@skryensya/core/components/select.css"
         },
         "--sk-select-item-padding": {
-          "default": "var(--space-inset-xs) var(--space-inset-sm)",
+          "default": "var(--space-inset-sm) var(--space-inset-sm)",
           "output": false,
           "part": null,
           "sheet": "@skryensya/core/components/select.css"
@@ -53873,6 +54956,10 @@
   "releases": {
     "releases": [
       {
+        "date": "2026-11-23",
+        "version": "0.0.4"
+      },
+      {
         "date": "2026-10-28",
         "version": "0.0.3"
       },
@@ -53885,10 +54972,10 @@
         "version": "0.0.1"
       }
     ],
-    "working": "0.0.4"
+    "working": "0.0.5"
   },
   "schemaVersion": "2.3",
-  "sourceHash": "d7c11ab22a7f1cb2",
+  "sourceHash": "52610fb5adcd0dfd",
   "vocabulary": {
     "a11y": "When `when` holds, one of `requiresOneOf` must be given: an option, a raw attribute, a filled slot, or a child signature by name.",
     "atLeastOneOf": "At least one member of each group counts: a filled slot, a boolean option set to true, or an option other than its default.",

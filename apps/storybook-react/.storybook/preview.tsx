@@ -1,7 +1,8 @@
 import type { Decorator, Preview } from "@storybook/react-vite";
 import { DocsContainer } from "@storybook/addon-docs/blocks";
 import { themes } from "storybook/theming";
-import { applyPage, docsParameters, globalTypes, initialGlobals, parameters } from "@skryensya/storybook-kit/shared";
+import { applyPage, docsParameters, fitStoryContainer, globalTypes, initialGlobals, parameters, storyContainer, type StoryContainer } from "@skryensya/storybook-kit/shared";
+import { useEffect, useRef, type ReactNode } from "react";
 
 /*
  * Only what every story shares: the font, the tokens and the tier-3 dimension switches. Each generated stories file imports its own component sheets, the
@@ -16,11 +17,24 @@ import { IconSetProvider } from "@skryensya/react/icon";
 import { icons } from "../src/icons";
 import "../src/icons.css";
 
-const withPage: Decorator = (Story, { globals }) => {
+/* The width the story's content gets (see `storyContainer` in the kit). */
+function Container({ size, children }: { size: StoryContainer; children: ReactNode }) {
+  const box = useRef<HTMLDivElement>(null);
+  useEffect(() => (size === "xl" && box.current ? fitStoryContainer(box.current) : undefined), [size]);
+  return (
+    <div ref={box} data-sk-story-container={size}>
+      {children}
+    </div>
+  );
+}
+
+const withPage: Decorator = (Story, { globals, parameters }) => {
   applyPage(globals);
   return (
     <IconSetProvider set={icons}>
-      <Story />
+      <Container size={storyContainer(globals, parameters)}>
+        <Story />
+      </Container>
     </IconSetProvider>
   );
 };

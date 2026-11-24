@@ -50,6 +50,12 @@
     scrollbar-width: none;
   }
 
+  /* The strip scrolls, so it clips: a trigger's ring drawn outside lost its top and its far side. Inside
+     it is whole, and the strip's own rule along its foot stays where it is. */
+  .sk-tabs__list > .sk-tabs__trigger:focus-visible {
+    outline-offset: calc(var(--focus-ring-width) * -1);
+  }
+
   .sk-tabs__trigger {
     /* The selection is an underline, so mute the state layer's persistent SELECTED fill, otherwise the
      * active tab reads as a filled box. Hover, focus and press still tint (they sit above selected). */
@@ -146,6 +152,35 @@
     --sk-tabs-trigger-height: var(--size-control-sm);
     --sk-tabs-trigger-padding-x: var(--space-inset-sm);
     --sk-tabs-trigger-font-size: var(--font-size-body-sm);
+  }
+
+  /*
+   * BEFORE THE SCRIPT MOUNTS (the machine writes `data-scope` on the root), only the panel that starts selected shows: the
+   * one marked `data-sk-tabs-initial`, or the first when none is. Otherwise every panel lays out, and the page jumps when
+   * the machine hides all but one: a layout shift on every load with tabs above the fold. Only where scripts run, so a page
+   * without JavaScript still shows every panel.
+   */
+  @media (scripting: enabled) {
+    .sk-tabs:not([data-scope]):has(> .sk-tabs__content[data-sk-tabs-initial]) > .sk-tabs__content:not([data-sk-tabs-initial]),
+    .sk-tabs:not([data-scope]):not(:has(> .sk-tabs__content[data-sk-tabs-initial])) > .sk-tabs__content ~ .sk-tabs__content {
+      display: none;
+    }
+  }
+
+  /* `listPlacement: after`: the strip shows after the panels, under them (or at the end of vertical tabs). Only the paint
+   * order moves; the list stays first in the DOM, so focus and reading order are unchanged. */
+  .sk-tabs[data-list-placement="after"] > .sk-tabs__list {
+    order: 1;
+  }
+
+  /* `wrap`: every tab in view, on as many rows as it takes; the strip never scrolls. */
+  .sk-tabs[data-wrap] > .sk-tabs__list {
+    flex-wrap: wrap;
+    overflow: visible;
+  }
+
+  .sk-tabs[data-orientation="vertical"][data-list-placement="after"] {
+    grid-template-columns: minmax(0, 1fr) max-content;
   }
 
   /* Vertical tabs keep the same parts and indicator recipe. Only the axes change: the list becomes

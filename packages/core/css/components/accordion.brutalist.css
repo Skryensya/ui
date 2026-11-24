@@ -9,7 +9,7 @@
  */
 
 @layer components {
-  .sk-accordion[data-appearance="brutalist"] {
+  .sk-accordion[data-appearance="brutalist"]:not([data-variant="seamless"], [data-variant="divided"], [data-variant="separated"]) {
     --brutalist-black: oklch(from var(--shadow-lg) l c h / 1);
     --sk-accordion-brutalist-edge: var(--brutalist-black);
     --sk-accordion-brutalist-shadow: var(--brutalist-black);
@@ -22,12 +22,12 @@
       round(nearest, calc(var(--sk-accordion-brutalist-offset-block) * var(--brutalist-reach)), 1px)
       0 var(--sk-accordion-brutalist-shadow);
   }
-  .sk-accordion[data-appearance="brutalist"]:dir(rtl) {
+  .sk-accordion[data-appearance="brutalist"]:not([data-variant="seamless"], [data-variant="divided"], [data-variant="separated"]):dir(rtl) {
     --brutalist-direction: -1;
   }
 
   /* A disabled accordion keeps the construction recognisable but shrunk and muted, as Tile does. */
-  .sk-accordion[data-appearance="brutalist"][data-disabled] {
+  .sk-accordion[data-appearance="brutalist"]:not([data-variant="seamless"], [data-variant="divided"], [data-variant="separated"])[data-disabled] {
     --brutalist-reach: 0.4;
     --sk-accordion-brutalist-edge: var(--color-border-default);
     --sk-accordion-brutalist-shadow: var(--color-border-subtle);

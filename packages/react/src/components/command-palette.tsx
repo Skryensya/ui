@@ -1,4 +1,4 @@
-import { commandPaletteAttrs, commandPaletteEvents, commandPaletteParts, commandPaletteOptionContext, filterCommandPaletteEntries, type CommandPaletteCommand, type CommandPaletteCommandEventDetail, type CommandPaletteEntry, commandPaletteContract } from "@skryensya/core/command-palette";
+import { askCommandPaletteRecents, commandPaletteAttrs, commandPaletteEvents, commandPaletteParts, commandPaletteOptionContext, filterCommandPaletteEntries, type CommandPaletteCommand, type CommandPaletteCommandEventDetail, type CommandPaletteEntry, commandPaletteContract } from "@skryensya/core/command-palette";
 import { vaulDataParts, vaulScope } from "@skryensya/core/vaul";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Icon } from "./icon.js";
@@ -111,7 +111,7 @@ export function CommandPalette({
   const optionId = (i: number) => `${id}-option-${i}`;
 
   const runQuery = (value: string) => {
-    const next = filterCommandPaletteEntries(items, value);
+    const next = filterCommandPaletteEntries(items, value, value.trim() === "" && dialog.current ? askCommandPaletteRecents(dialog.current) : undefined);
     setQuery(value);
     setResults(next);
     setActive(next.length ? 0 : -1);

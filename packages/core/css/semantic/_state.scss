@@ -29,4 +29,7 @@
     --focus-ring-color: var(--color-border-focus);
     --focus-ring-width: var(--size-focus-ring);
     --focus-ring-offset: var(--size-focus-offset);
+    /* How far the ring reaches past its element: the room a scroller or a clipped box has to leave
+     * around a focusable child, or the ring is cut (see otp-input.css's control). */
+    --focus-ring-room: calc(var(--focus-ring-width) + var(--focus-ring-offset));
 }

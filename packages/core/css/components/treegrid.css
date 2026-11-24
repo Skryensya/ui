@@ -307,9 +307,11 @@
     cursor: default;
   }
 
+  /* Inset: a row spans its scrolling table edge to edge, so a ring outside it was clipped to nothing. */
   .sk-treegrid tbody tr:focus-visible {
     outline: var(--focus-ring-width) solid var(--focus-ring-color);
-    outline-offset: var(--focus-ring-offset);
+    /* One pixel further in than the ring's width: the row's own edge sits on the scroller's border. */
+    outline-offset: calc(var(--focus-ring-width) * -1 - 1px);
   }
 
   @media (forced-colors: active) {

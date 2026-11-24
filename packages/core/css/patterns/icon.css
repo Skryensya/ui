@@ -78,6 +78,12 @@
    * match the mounted result and stops applying the moment the swap happens, with nothing to
    * unwind.
    */
+  /* `hidden` hides an icon, mounted or still a placeholder: the `display` above and below would otherwise beat the user
+     agent's `[hidden] { display: none }`, and a control that swaps two icons (expand / collapse) showed both. */
+  :is(.sk-icon, [data-sk-icon])[hidden] {
+    display: none;
+  }
+
   [data-sk-icon] {
     display: inline-block;
     flex: none;

@@ -1,4 +1,5 @@
 import {
+  askCommandPaletteRecents,
   commandPaletteAttrs,
   commandPaletteEvents,
   commandPaletteOptionContext,
@@ -151,7 +152,7 @@ export function connectCommandPalette(root: HTMLElement): Cleanup {
   };
 
   const render = (query: string) => {
-    results = filterCommandPaletteEntries(index, query);
+    results = filterCommandPaletteEntries(index, query, query.trim() === "" ? askCommandPaletteRecents(root) : undefined);
     list.innerHTML = results
       .map((entry, i) => {
         const context = commandPaletteOptionContext(entry);

@@ -1,4 +1,4 @@
-# 006 — Make an interrupted ProgressiveCarousel step continue, not restart
+# 006: Make an interrupted ProgressiveCarousel step continue, not restart
 
 - **Status**: TODO
 - **Commit**: 77db5aaa
@@ -11,7 +11,7 @@
 Every `run` restarts the clock and eases from zero velocity-wise: clicking next twice quickly makes each slide start fast again from where it is, a visible jolt.
 
 ```ts
-// packages/core/src/progressive-carousel.ts:~205 — current
+// packages/core/src/progressive-carousel.ts:~205, current
 started = performance.now();
 if (!frame) frame = requestAnimationFrame(tick);
 ```

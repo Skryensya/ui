@@ -23,6 +23,7 @@ export type AccordionOptions = {
   collapsible?: boolean;
   disabled?: boolean;
   appearance?: AccordionAppearance;
+  variant?: AccordionVariant;
   onValueChange?: (details: AccordionValueChangeDetails) => void;
 };
 
@@ -128,10 +129,14 @@ export const accordionContract = {
     "--sk-accordion-brutalist-offset-block",
     "--sk-accordion-brutalist-offset-inline",
     "--sk-accordion-brutalist-shadow",
+    "--sk-accordion-content-end-padding",
     "--sk-accordion-depth",
     "--sk-accordion-divider-color",
+    "--sk-accordion-gap",
     "--sk-accordion-open-bg",
+    "--sk-accordion-open-elevation",
     "--sk-accordion-radius",
+    "--sk-accordion-row-padding",
     "--sk-color-border-selected",
     "--sk-color-border-strong",
     "--sk-color-border-subtle",
@@ -207,6 +212,15 @@ export const accordionContract = {
       },
     },
     /**
+     * The accordion's SHAPE. `framed` (default) joins the sections into one bordered surface. `seamless` draws nothing: each
+     * section is its title and a plus or minus, and spacing does the rest, for an FAQ inside running text or a page that
+     * already has its own surface. `divided` keeps the chevron and draws a hairline between sections, the classic FAQ list.
+     * Neither shows a trigger's description, and neither has a frame to decorate, so `appearance` is for `framed` only.
+     * `separated` makes each section a card of its own, with room between them and the open one raised: a product FAQ
+     * where every question stands alone. Its frames are the sections', not the accordion's, so `appearance` stays out too.
+     */
+    variant: { type: "enum", values: ["framed", "seamless", "divided", "separated"], default: "framed", attr: "data-variant" },
+    /**
      * `Details`/`DetailsGroup` only: the platform half's own density. `md` is the generous,
      * card-like default; `sm` tightens padding and the summary's minimum height for a disclosure
      * sitting inside an already-dense panel (a drawer, a sidebar), where `md`'s weight competes
@@ -268,12 +282,12 @@ export const accordionContract = {
     Accordion: {
       intent: ["accordion", "faq", "collapsible-sections", "coordinated-expandables"],
       host: { element: "div" },
-      options: ["type", "collapsible", "disabled", "defaultValue", "appearance"],
+      options: ["type", "collapsible", "disabled", "defaultValue", "appearance", "variant"],
       /*
        * With `multiple`, every open section can close on its own; `collapsible` only gates `single`.
        * Both bindings already ignore the combo (`canCollapse = type === "multiple" || collapsible`).
        */
-      excludes: { "type=multiple": ["collapsible"] },
+      excludes: { "type=multiple": ["collapsible"], "variant=seamless": ["appearance"], "variant=divided": ["appearance"], "variant=separated": ["appearance"] },
       /** Host id / a11y names on the accordion root. */
       forward: ["id", "aria-*"],
       slots: {
@@ -496,4 +510,5 @@ export const accordionContract = {
 /** Derived, never restated: adding a value to the contract's `type` enum is the only edit. */
 export type AccordionType = OptionValue<typeof accordionContract.options.type>;
 export type AccordionAppearance = OptionValue<typeof accordionContract.options.appearance>;
+export type AccordionVariant = OptionValue<typeof accordionContract.options.variant>;
 export type AccordionSize = OptionValue<typeof accordionContract.options.size>;

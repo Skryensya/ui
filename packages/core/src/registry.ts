@@ -9,6 +9,7 @@ import { calloutContract } from "./callout.js";
 import { procedureContract } from "./procedure.js";
 import { changelogContract } from "./changelog.js";
 import { compareSliderContract } from "./compare-slider.js";
+import { magnifierContract } from "./magnifier.js";
 import { videoPlayerContract } from "./video-player.js";
 import { audioPlayerContract } from "./audio-player.js";
 import { comparisonTableContract } from "./comparison-table.js";
@@ -33,6 +34,7 @@ import { scrollHintContract } from "./scroll-hint.js";
 import { presenceContract } from "./presence.js";
 import { passwordInputContract } from "./password-input.js";
 import { searchFieldContract } from "./search-field.js";
+import { galleryContract } from "./gallery.js";
 import { qrCodeContract } from "./qr-code.js";
 import { marqueeContract } from "./marquee.js";
 import { treeViewContract } from "./tree-view.js";
@@ -155,6 +157,7 @@ export const contracts = fromContracts(
   presenceContract,
   passwordInputContract,
   searchFieldContract,
+  galleryContract,
   qrCodeContract,
   kbdContract,
   shimmerContract,
@@ -184,6 +187,7 @@ export const contracts = fromContracts(
   procedureContract,
   changelogContract,
   compareSliderContract,
+  magnifierContract,
   videoPlayerContract,
   audioPlayerContract,
   comparisonTableContract,

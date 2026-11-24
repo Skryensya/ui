@@ -1,0 +1,47 @@
+# What changed in magnifier, in the words its users read. Only appended to, never rewritten.
+#
+# `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
+# does not match, something a consumer depends on has moved: write the entry and paste in the new
+# hash.
+surface: "d92e73a50acc0e20"
+entries:
+  - date: 2026-11-23
+    kind: feature
+    es:
+      title: Una lupa de vidrio de color
+      body: "<code>filter</code> tiñe el vidrio: <code>red</code>, <code>green</code> y <code>blue</code> dejan pasar un canal de la imagen; <code>cyan</code>, <code>magenta</code> y <code>yellow</code> dejan pasar dos. <code>none</code>, el de siempre, es vidrio claro."
+    en:
+      title: A coloured glass lens
+      body: "<code>filter</code> tints the glass: <code>red</code>, <code>green</code> and <code>blue</code> let one channel of the picture through; <code>cyan</code>, <code>magenta</code> and <code>yellow</code> let two. <code>none</code>, as before, is clear glass."
+  - date: 2026-11-23
+    kind: feature
+    es:
+      title: Más arcoíris en el borde de la lupa
+      body: "<code>dispersion=\"strong\"</code> separa más los colores hacia el borde del vidrio, y más adentro, para cuando el vidrio es parte del diseño. <code>subtle</code> sigue siendo el de siempre. Solo lo dibuja el vidrio WebGPU."
+    en:
+      title: More rainbow at the lens edge
+      body: "<code>dispersion=\"strong\"</code> splits colour further toward the glass's edge, and deeper into it, for when the glass is part of the design. <code>subtle</code> stays as before. Drawn by the WebGPU glass only."
+  - date: 2026-11-23
+    kind: bugfix
+    es:
+      title: Mantener presionado ya no cuenta como clic
+      body: 'Dentro de un enlace (un trigger de Lightbox, una tarjeta), mantener el botón para agrandar la lupa, o el dedo para mirar con ella, terminaba en un clic que abría o seguía el enlace. Ese clic ahora se descarta; un clic rápido sigue siendo un clic.'
+    en:
+      title: Holding a press no longer counts as a click
+      body: 'Inside a link (a Lightbox trigger, a card), holding the button to grow the lens, or a finger to look through it, ended in a click that opened or followed the link. That click is now swallowed; a quick click is still a click.'
+  - date: 2026-11-22
+    kind: feature
+    es:
+      title: Una lupa con peso, un fondo de diseño y sobre todo lo demás
+      body: "La lupa sigue al puntero con un resorte, crece al entrar y se encoge al salir, amplía más al mantener pulsado y se estira al moverla rápido; con «reducir movimiento» no hace nada de eso. Más allá de la imagen muestra <code>--sk-magnifier-bg</code>, y se pinta sobre toda la página con la capa nueva <code>--z-pointer</code>."
+    en:
+      title: A lens with weight, a designed background and above everything
+      body: "The lens follows the pointer on a spring, grows in and shrinks out, zooms deeper while pressed and stretches when moved fast; with reduced motion it does none of that. Past the picture it shows <code>--sk-magnifier-bg</code>, and it paints above the whole page on the new <code>--z-pointer</code> layer."
+  - date: 2026-11-22
+    kind: feature
+    es:
+      title: Componente nuevo
+      body: "Se suma a la librería, con su contrato, un binding de React y un montaje en Vanilla: una lupa de vidrio que sigue al puntero sobre una imagen, un video o un canvas."
+    en:
+      title: New component
+      body: "Added to the library, with its contract, a React binding and a Vanilla mount: a glass lens that follows the pointer over an image, video or canvas."

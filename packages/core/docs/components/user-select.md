@@ -42,7 +42,7 @@ Alternatives: `Select`, `Combobox`, `TagsInput`.
 |---|---|---|
 | `items` (React: `users`) | a list of items (below) | yes |
 
-Each item in `items`, keyed by `id`: `disabled` (boolean), `id` (string), `email` (text), `initials` (text, required), `name` (text, required).
+Each item in `items`, keyed by `id`: `id` (string), `disabled` (boolean), `name` (text, required), `initials` (text, required), `email` (text).
 
 **Example** (canonical tree `user-select/assignees`; its copy is placeholder, replace it)
 

@@ -1,6 +1,6 @@
 # dialog-stack
 
-Category: overlays. Stylesheet: `@skryensya/core/components/dialog-stack.css`. Signatures: `DialogStack`, `DialogStackBody`, `DialogStackClose`, `DialogStackContent`, `DialogStackDescription`, `DialogStackFooter`, `DialogStackHeader`, `DialogStackNext`, `DialogStackOverlay`, `DialogStackPrevious`, `DialogStackTitle`, `DialogStackTrigger`.
+Category: overlays. Stylesheet: `@skryensya/core/components/dialog-stack.css`. Signatures: `DialogStack`, `DialogStackTrigger`, `DialogStackOverlay`, `DialogStackBody`, `DialogStackContent`, `DialogStackHeader`, `DialogStackTitle`, `DialogStackDescription`, `DialogStackFooter`, `DialogStackNext`, `DialogStackPrevious`, `DialogStackClose`.
 
 ## DialogStack
 
@@ -192,6 +192,42 @@ export function DialogStackExample() {
 
 Stylesheets: `@skryensya/core/components/button.css`, `@skryensya/core/components/dialog-stack.css`.
 
+## DialogStackTrigger
+
+**Use when**
+
+- a button opens the stack from the page
+
+**Avoid when**
+
+- the action advances inside the stack: use DialogStackNext
+
+Alternatives: `DialogStackNext`.
+
+- React: `import { DialogStackTrigger } from "@skryensya/react/dialog-stack"`.
+- HTML: a `<button>`, no JavaScript needed.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | node | yes |
+
+## DialogStackOverlay
+
+**Use when**
+
+- the compound composition needs an explicit backdrop marker; the native ::backdrop paints it
+
+**Avoid when**
+
+- the background is part of a non-modal panel: use Window
+
+Alternatives: `Window`.
+
+- React: `import { DialogStackOverlay } from "@skryensya/react/dialog-stack"`.
+- HTML: a `<span>`, no JavaScript needed.
+
 ## DialogStackBody
 
 **Use when**
@@ -216,27 +252,6 @@ Alternatives: `Dialog`.
 |---|---|---|
 | `children` | one of `DialogStackContent` | yes |
 
-## DialogStackClose
-
-**Use when**
-
-- a visible action cancels or completes the flow and closes the dialog
-
-**Avoid when**
-
-- the action only changes steps: use DialogStackNext or DialogStackPrevious
-
-Alternatives: `DialogStackNext`, `DialogStackPrevious`.
-
-- React: `import { DialogStackClose } from "@skryensya/react/dialog-stack"`.
-- HTML: a `<button>`, no JavaScript needed.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | node | yes |
-
 ## DialogStackContent
 
 **Use when**
@@ -260,6 +275,48 @@ Alternatives: `Dialog`.
 | Slot | Accepts | Required |
 |---|---|---|
 | `children` | node | yes |
+
+## DialogStackHeader
+
+**Use when**
+
+- a step groups its title and optional description
+
+**Avoid when**
+
+- the content is a set of actions: use DialogStackFooter
+
+Alternatives: `DialogStackFooter`.
+
+- React: `import { DialogStackHeader } from "@skryensya/react/dialog-stack"`.
+- HTML: a `<header>`, no JavaScript needed.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | node | yes |
+
+## DialogStackTitle
+
+**Use when**
+
+- a heading names the active step and its dialog
+
+**Avoid when**
+
+- the text explains rather than names the step: use DialogStackDescription
+
+Alternatives: `DialogStackDescription`.
+
+- React: `import { DialogStackTitle } from "@skryensya/react/dialog-stack"`.
+- HTML: a `<h2>`, no JavaScript needed.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | text | yes |
 
 ## DialogStackDescription
 
@@ -303,27 +360,6 @@ Alternatives: `DialogStackHeader`.
 |---|---|---|
 | `children` | node | yes |
 
-## DialogStackHeader
-
-**Use when**
-
-- a step groups its title and optional description
-
-**Avoid when**
-
-- the content is a set of actions: use DialogStackFooter
-
-Alternatives: `DialogStackFooter`.
-
-- React: `import { DialogStackHeader } from "@skryensya/react/dialog-stack"`.
-- HTML: a `<header>`, no JavaScript needed.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | node | yes |
-
 ## DialogStackNext
 
 **Use when**
@@ -344,21 +380,6 @@ Alternatives: `DialogStackClose`.
 | Slot | Accepts | Required |
 |---|---|---|
 | `children` | node | yes |
-
-## DialogStackOverlay
-
-**Use when**
-
-- the compound composition needs an explicit backdrop marker; the native ::backdrop paints it
-
-**Avoid when**
-
-- the background is part of a non-modal panel: use Window
-
-Alternatives: `Window`.
-
-- React: `import { DialogStackOverlay } from "@skryensya/react/dialog-stack"`.
-- HTML: a `<span>`, no JavaScript needed.
 
 ## DialogStackPrevious
 
@@ -381,40 +402,19 @@ Alternatives: `DialogStackClose`.
 |---|---|---|
 | `children` | node | yes |
 
-## DialogStackTitle
+## DialogStackClose
 
 **Use when**
 
-- a heading names the active step and its dialog
+- a visible action cancels or completes the flow and closes the dialog
 
 **Avoid when**
 
-- the text explains rather than names the step: use DialogStackDescription
+- the action only changes steps: use DialogStackNext or DialogStackPrevious
 
-Alternatives: `DialogStackDescription`.
+Alternatives: `DialogStackNext`, `DialogStackPrevious`.
 
-- React: `import { DialogStackTitle } from "@skryensya/react/dialog-stack"`.
-- HTML: a `<h2>`, no JavaScript needed.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | text | yes |
-
-## DialogStackTrigger
-
-**Use when**
-
-- a button opens the stack from the page
-
-**Avoid when**
-
-- the action advances inside the stack: use DialogStackNext
-
-Alternatives: `DialogStackNext`.
-
-- React: `import { DialogStackTrigger } from "@skryensya/react/dialog-stack"`.
+- React: `import { DialogStackClose } from "@skryensya/react/dialog-stack"`.
 - HTML: a `<button>`, no JavaScript needed.
 
 **Slots**

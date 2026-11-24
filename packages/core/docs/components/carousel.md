@@ -194,7 +194,7 @@ Alternatives: `Carousel`, `Tabs`.
 | `heading` | node |  |
 | `items` | a list of items (below) | yes |
 
-Each item in `items`: `action` (node), `body` (node), `media` (node, required), `title` (node, required).
+Each item in `items`: `media` (node, required), `title` (node, required), `body` (node), `action` (node).
 
 **Accessible name**
 
@@ -290,7 +290,7 @@ Stylesheets: `@skryensya/core/components/carousel.css`.
 
 | DOM event (Vanilla) | React prop | `detail` |
 |---|---|---|
-| `sk:carouselchange` | (none: listen on the element) | { count: number, index: number } |
+| `sk:carouselchange` | (none: listen on the element) | { index: number, count: number } |
 | `sk:carouselgoto` (dispatch it to the root to drive the component) |  | { index: number } |
 
 ## Styling hooks

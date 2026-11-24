@@ -1,0 +1,15 @@
+---
+import FoundationPage from "../../components/FoundationPage.astro";
+import IconGallery from "../../components/IconGallery.astro";
+import { siteIconSets } from "../../lib/icon-set-options";
+---
+
+<FoundationPage title="Icon sets" description="Every role of the vocabulary, drawn by each icon set the kit maps.">
+  <p class="lede">
+    The same {siteIconSets.length} sets you can pick from Preferences, side by side with every role they draw. Choose one and the whole page redraws: the names never change, only the geometry. Missing yours? <a href="/icons/add">Add any other set</a>.
+  </p>
+  <IconGallery label="Icon set" interfaceTitle="Interface roles" componentTitle="Component marks" />
+  <p>
+    Each set is read from its Iconify collection at build time and only the roles reach the bundle; the licence line under the picker is the one to carry into your own project. How roles, sets and the CSS fit together is in <a href="/icons">Iconography</a>.
+  </p>
+</FoundationPage>

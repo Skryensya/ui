@@ -41,6 +41,7 @@ const {
   zoomInLabel: zoomInOption,
   zoomOutLabel: zoomOutOption,
   resetZoomLabel: resetZoomOption,
+  magnifierLabel: magnifierOption,
   errorLabel: errorOption,
   counterLabel: counterOption,
 } = lightboxContract.options;
@@ -91,6 +92,8 @@ export type LightboxProps = Omit<DialogHTMLAttributes<HTMLDialogElement>, "open"
     zoomInLabel?: string;
     zoomOutLabel?: string;
     resetZoomLabel?: string;
+    /** The magnifier toggle's name, when `magnifier` is on. */
+    magnifierLabel?: string;
     /** Shown on the stage when an image fails to load. */
     errorLabel?: string;
     /** What the live region says on navigation: "Image {index} of {count}". */
@@ -123,6 +126,7 @@ export function Lightbox({
   zoomInLabel = zoomInOption.default,
   zoomOutLabel = zoomOutOption.default,
   resetZoomLabel = resetZoomOption.default,
+  magnifierLabel = magnifierOption.default,
   errorLabel = errorOption.default,
   counterLabel = counterOption.default,
   loop,
@@ -131,6 +135,7 @@ export function Lightbox({
   showCounter,
   showCaption,
   closeOnBackdropClick,
+  magnifier,
   onOpenChange,
   onIndexChange,
   onImageLoad,
@@ -148,7 +153,7 @@ export function Lightbox({
      closure over the first render's `onIndexChange` would call a stale parent forever. */
   const latest = useRef({ onOpenChange, onIndexChange, onImageLoad, onImageError, fallbackFocus });
   latest.current = { onOpenChange, onIndexChange, onImageLoad, onImageError, fallbackFocus };
-  const settings = { loop, zoom, maxZoom, showCounter, showCaption, closeOnBackdropClick, counterLabel };
+  const settings = { loop, zoom, maxZoom, showCounter, showCaption, closeOnBackdropClick, counterLabel, magnifier };
   const settingsRef = useRef(settings);
   settingsRef.current = settings;
 
@@ -229,9 +234,10 @@ export function Lightbox({
       <LightboxControl action="previous" icon="chevron-left" label={previousLabel} look="nav" />
       <LightboxControl action="next" icon="chevron-right" label={nextLabel} look="nav" />
       <div className={lightboxParts.zoom}>
-        <LightboxControl action="zoom-in" icon="zoom-in" label={zoomInLabel} look="zoom" />
-        <LightboxControl action="zoom-out" icon="zoom-out" label={zoomOutLabel} look="zoom" />
+        <LightboxControl action="zoom-in" icon="add" label={zoomInLabel} look="zoom" />
+        <LightboxControl action="zoom-out" icon="remove" label={zoomOutLabel} look="zoom" />
         <LightboxControl action="reset-zoom" icon="fit" label={resetZoomLabel} look="zoom" />
+        {magnifier ? <LightboxControl action="magnifier" icon="search" label={magnifierLabel} look="zoom" pressed={false} /> : null}
       </div>
       <p aria-atomic="true" aria-live="polite" className={`${lightboxParts.live} sk-visually-hidden`} />
     </dialog>
@@ -243,16 +249,20 @@ function LightboxControl({
   icon,
   label,
   look,
+  pressed,
 }: {
   action: LightboxAction;
   icon: StableIconName;
   label: string;
   look: keyof typeof controlLook;
+  /** A toggle's initial state; the controller flips `aria-pressed` from there, as it does on authored markup. */
+  pressed?: boolean;
 }) {
   const nav = look === "nav";
   return (
     <button
       aria-label={label}
+      aria-pressed={pressed}
       className={
         nav
           ? `${lightboxParts.nav} ${lightboxParts.control} sk-button sk-interactive`

@@ -1024,6 +1024,13 @@ main {
    Nothing here: a bare Popover laid out with Stack, Inline and Separator, the rows' words are Text,
    and the swatches are the palette popover's own. Every piece brings its own look. */
 
+/* The Popover sizes to `max-content`, so the icon-set Select's longest label used to set the panel's
+   width. A fixed width keeps it the same whatever the sets say; the Popover's own cap still applies. */
+.docs-prefs-panel {
+  inline-size: 18rem;
+  max-inline-size: 100%;
+}
+
 /* ── the reader-preference sheet (#docs-prefs-sheet) ─────────────────────────
    The SAME composition as the Command Palette on a phone: a `.sk-dialog` opting into Dialog Vaul
    (`data-sk-dialog-vaul`), so the corner radius, elevation, backdrop, drag handle and slide are
@@ -1301,6 +1308,21 @@ main {
 .docs-nav-section__header {
   padding-inline: var(--space-inline-sm);
   margin-block-end: var(--space-stack-sm);
+}
+
+/* The title and, where the groups fold, the Expand all button at the row's end. */
+.docs-nav-section__title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-inline-sm);
+  min-block-size: var(--size-control-xs, 1.5rem);
+}
+
+/* The expand/collapse-all button sits so its ICON, not its box, lines up with the group chevrons below: the row ends where
+   the chevrons end, and the button's own padding (its box minus its icon, halved) would push the icon inward by that much. */
+.docs-nav-section__title-row > [data-docs-nav-toggle-all] {
+  margin-inline-end: calc((var(--size-icon-sm) - var(--size-control-xs)) / 2);
 }
 
 /*
@@ -2237,6 +2259,11 @@ main :where(p, ul, ol, blockquote, h1, h2, h3, h4):not([class]),
 main .lede {
   max-inline-size: 90ch;
   margin-inline: 0;
+}
+
+/* A component's two Markdown views, under its lede: room to read as their own row, apart from the demos. */
+.docs-markdown-views {
+  margin-block: var(--space-stack-lg) var(--space-stack-xl);
 }
 
 /* ── component hero (pilot: /componentes/accordion) ──────────────────────────
@@ -4287,4 +4314,109 @@ html[data-sk-component-preview-pref="vanilla"] [data-sk-install-binding="react"]
    box, so nothing shifts when they appear. `ph` is `defaultIconSet`. */
 html:not([data-icon-set="ph"]):not([data-sk-icons-ready]) svg[data-icon]:not([data-icon-set-fixed] *) {
   visibility: hidden;
+}
+
+/* DUOTONE TINT: the second layer of the duotone sets takes the action accent mixed into the text color,
+   not the bare text color. Every color below is `@property`-registered as a `<color>`, so each
+   `color-mix()` resolves ONCE on `:root` and inherits as a finished value; as plain custom properties
+   they would be re-evaluated on each of the page's ~450 icons.
+
+   ACCESSIBILITY (WCAG 1.4.11, 3:1 for the parts of a graphic that identify it): a pale tint cannot reach
+   3:1 on the page, so wherever a duotone's second layer is the silhouette (Solar's bold duotone) the tint
+   fills it softly AND outlines it in the solid tint, and the outline is what carries the shape (4.1:1 in
+   light, 8.7:1 in dark on the default palette). In Phosphor the first layer is the text color and
+   already carries the shape, so its second layer is pure decoration. High contrast drops the accent for
+   the text color and strengthens both. */
+@property --docs-duotone-tint {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: currentColor;
+}
+
+@property --docs-duotone-soft {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+
+:root {
+  --docs-duotone-tint: color-mix(in oklch, var(--color-action-accent) 92%, var(--color-text-primary));
+  --docs-duotone-soft: color-mix(in oklch, var(--docs-duotone-tint) 55%, transparent);
+}
+
+:root[data-contrast="high"] {
+  --docs-duotone-tint: var(--color-text-primary);
+  --docs-duotone-soft: color-mix(in oklch, var(--color-text-primary) 55%, transparent);
+}
+
+/* A disabled control keeps its own muted color: the accent on its icon would make it look live. */
+:is([disabled], [aria-disabled="true"], [data-disabled]) {
+  --docs-duotone-tint: currentColor;
+  --docs-duotone-soft: color-mix(in oklch, currentColor 30%, transparent);
+}
+
+/* The page's set, and the preview glyphs that show each set before it is chosen (`data-preview-set`). */
+:is(html[data-icon-set="ph-duotone"] svg[data-icon], [data-preview-set="ph-duotone"] svg) [opacity=".2"] {
+  fill: var(--docs-duotone-soft);
+  opacity: 1;
+}
+
+:is(html[data-icon-set="solar-duotone"] svg[data-icon], [data-preview-set="solar-duotone"] svg) [opacity=".5"] {
+  fill: var(--docs-duotone-soft);
+  stroke: var(--docs-duotone-tint);
+  stroke-width: 1;
+  stroke-linejoin: round;
+  opacity: 1;
+}
+
+:is(html[data-icon-set="solar-line-duotone"] svg[data-icon], [data-preview-set="solar-line-duotone"] svg) [opacity=".5"] {
+  stroke: var(--docs-duotone-tint);
+  opacity: 1;
+}
+
+/* The four sample glyphs the icon-set Select shows under each set's name. */
+.docs-icon-preview {
+  display: flex;
+  gap: var(--space-inline-xs);
+  margin-block-start: var(--space-stack-xs, 2px);
+  color: var(--color-text-secondary);
+}
+
+/* The icon gallery (`IconGallery.astro`): every role drawn by the set chosen above it. */
+.docs-icon-gallery__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: var(--space-inline-md);
+  margin-block-end: var(--space-stack-md);
+}
+
+.docs-icon-gallery__licence {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-caption);
+}
+
+.docs-icon-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+  gap: var(--space-stack-md) var(--space-inline-sm);
+}
+
+.docs-icon-gallery__cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-stack-xs);
+  text-align: center;
+}
+
+.docs-icon-gallery__cell code {
+  max-inline-size: 100%;
+  overflow-wrap: anywhere;
+  font-size: var(--font-size-caption);
+}
+
+.docs-icon-gallery__cell .sk-icon {
+  --sk-icon-size: 2rem;
 }

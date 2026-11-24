@@ -150,6 +150,99 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   {
+    /* No machine: the thumbnails are native radios and CSS shows the view beside the checked one. The second starts checked. */
+    name: "gallery/photos",
+    enhanced: false,
+    tree: {
+      contract: "gallery",
+      signature: "Gallery",
+      options: { name: "canonical-gallery", label: "Fotos de la plaza", value: "tarde" },
+      slots: {
+        items: [
+          ["manana", "La plaza por la mañana"],
+          ["tarde", "La plaza al atardecer"],
+          ["noche", "La plaza de noche"],
+        ].map(([value, alt]) => ({
+          options: { value },
+          slots: {
+            view: { contract: "image-frame", signature: "ImageFrame", options: { aspect: "16/9", src: SAMPLE_MEDIA, alt } },
+            thumb: {
+              contract: "image-frame",
+              signature: "ImageFrame",
+              options: { frameElement: "span", aspect: "1/1", radius: "control", src: SAMPLE_MEDIA, alt: `Miniatura: ${alt}` },
+            },
+          },
+        })),
+      },
+    },
+  },
+  {
+    /* The thumbnails in a column beside the photo: the placement that changes the grid, not only the order. */
+    name: "gallery/column",
+    enhanced: false,
+    tree: {
+      contract: "gallery",
+      signature: "Gallery",
+      options: { name: "canonical-gallery-column", label: "Fotos del puerto", placement: "start" },
+      slots: {
+        items: ["El puerto", "El faro"].map((alt, index) => ({
+          options: { value: String(index) },
+          slots: {
+            view: { contract: "image-frame", signature: "ImageFrame", options: { aspect: "16/9", src: SAMPLE_MEDIA, alt } },
+            thumb: { contract: "image-frame", signature: "ImageFrame", options: { frameElement: "span", aspect: "1/1", src: SAMPLE_MEDIA, alt: `Miniatura: ${alt}` } },
+          },
+        })),
+      },
+    },
+  },
+  {
+    /* The large photos open one Lightbox: the case the Vanilla mount exists for (stepping the viewer moves the choice). */
+    name: "gallery/lightbox",
+    enhanced: true,
+    tree: {
+      contract: "layout",
+      signature: "Stack",
+      options: { gap: "md" },
+      children: [
+        {
+          contract: "gallery",
+          signature: "Gallery",
+          options: { name: "canonical-gallery-lightbox", label: "Fotos de la plaza" },
+          slots: {
+            items: ["La plaza", "La fuente"].map((alt, index) => ({
+              options: { value: String(index) },
+              slots: {
+                view: {
+                  contract: "lightbox",
+                  signature: "Lightbox.Trigger",
+                  options: { opens: "canonical-gallery-viewer", triggerSrc: SAMPLE_MEDIA },
+                  slots: { children: { contract: "image-frame", signature: "ImageFrame", options: { aspect: "16/9", src: SAMPLE_MEDIA, alt } } },
+                },
+                thumb: { contract: "image-frame", signature: "ImageFrame", options: { frameElement: "span", aspect: "1/1", src: SAMPLE_MEDIA, alt: `Miniatura: ${alt}` } },
+              },
+            })),
+          },
+        },
+        { contract: "lightbox", signature: "Lightbox", options: { lightboxId: "canonical-gallery-viewer", label: "Fotos de la plaza" } },
+      ],
+    },
+  },
+  {
+    /* MAGNIFIER over an ImageFrame: a tree cannot carry a bare `<img>` (see image-frame/authored-media), and the lens finds the picture at any depth. What the lens draws is a browser concern; the anatomy is what the bindings are held to here. */
+    name: "magnifier/image-frame",
+    enhanced: false,
+    tree: {
+      contract: "magnifier",
+      signature: "Magnifier",
+      options: { zoom: 3 },
+      children: {
+        contract: "image-frame",
+        signature: "ImageFrame",
+        options: { aspect: "16/9", src: SAMPLE_MEDIA, alt: "La plaza al atardecer" },
+      },
+    },
+  },
+  {
     /*
      * The machine-backed case. Both bindings run the SAME Zag machine, so the symmetry gate here is
      * checking something the static families could not: that a machine writing state onto authored
@@ -2114,6 +2207,28 @@ const signatureTrees: readonly Canonical[] = [
     },
   },
   /* The browser's own accordion: siblings sharing a name keep one open, with no script. */
+  {
+    /* Every section a card: the variant that moves the frame from the accordion onto each section. */
+    name: "accordion/separated",
+    enhanced: true,
+    tree: {
+      contract: "accordion",
+      signature: "Accordion",
+      options: { type: "single", defaultValue: "envio", variant: "separated" },
+      children: [
+        ["envio", "¿Cuánto tarda el envío?", "Entre dos y cinco días hábiles."],
+        ["cambios", "¿Puedo cambiar el pedido?", "Mientras no haya salido del almacén."],
+      ].map(([value, title, body]) => ({
+        contract: "accordion",
+        signature: "Accordion.Item",
+        options: { value },
+        children: [
+          { contract: "accordion", signature: "Accordion.Trigger", children: { contract: "tile", signature: "TileContent", slots: { title } } },
+          { contract: "accordion", signature: "Accordion.Content", children: body },
+        ],
+      })),
+    },
+  },
   {
     name: "accordion/details-exclusive-group",
     enhanced: false,

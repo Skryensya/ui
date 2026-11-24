@@ -1,0 +1,106 @@
+---
+/*
+ * A component family's Markdown laid out for a reader, inside the component page's own shell (hero,
+ * tabs, rail). The agents' view is not a page: it is the bare file at `/components/<id>.md`, opened
+ * in a blank tab. Both read the one file @skryensya/core ships (see `lib/agent-docs`), so neither can
+ * drift from what an installed agent sees.
+ */
+import "@skryensya/core/components/button.css";
+import "@skryensya/core/components/table.css";
+import "@skryensya/core/components/tile.css";
+import "@skryensya/core/components/typography.css";
+import "@skryensya/core/patterns/icon.css";
+import { emitMarkup } from "@skryensya/ai-compiler/emit";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import CodeBlock, { type CodeLanguage } from "../CodeBlock.astro";
+import { getLocale, localizePath, useTranslations } from "../../i18n";
+import { agentDocFor, componentMarkdownTiles } from "../../lib/agent-docs";
+import { boldLabel, inlineHtml, parseMarkdown, type MarkdownBlock } from "../../lib/markdown-blocks";
+import { componentItems } from "../../lib/navigation";
+
+const id = String(Astro.params.id);
+const locale = getLocale(Astro.url);
+const t = useTranslations(locale);
+const source = agentDocFor(id) ?? "";
+const page = componentItems.find((item) => item.href === `/components/${id}`);
+const name = page?.label ?? id;
+
+const copy =
+  locale === "es"
+    ? "El mismo archivo que lee un agente, armado para leerlo: cada forma del componente con cuándo usarla y cuándo no, dónde va, sus opciones, sus slots, cómo se nombra y un ejemplo. Viene de los contratos, que están en inglés."
+    : "The same file an agent reads, laid out for reading: each form of the component with when to use it and when not to, where it goes, its options, its slots, how it is named and an example.";
+
+/* Back to the component, then the two views as tiles, the current one marked: the page's first row, not its masthead. */
+const back = page
+  ? emitMarkup(
+      { contract: "button", signature: "Button.navigation", options: { href: localizePath(page.href, locale), variant: "ghost", size: "sm" }, children: t("component.markdownBack", { name }) },
+      { fillDefaults: false },
+    )
+  : "";
+const actions = back + emitMarkup(componentMarkdownTiles(id, locale, t, "people"), { fillDefaults: false });
+
+/* Each table's scroll region is named by the signature and the label over it ("Button.action: Options"). */
+type Drawn = MarkdownBlock | { kind: "label"; text: string };
+let signature = name;
+let region = name;
+const blocks: (Drawn & { region?: string })[] = parseMarkdown(source)
+  .filter((block) => !(block.kind === "heading" && block.level === 1))
+  .map((block) => {
+    const label = block.kind === "paragraph" ? boldLabel(block.text) : undefined;
+    if (block.kind === "heading") signature = region = block.text;
+    if (label) {
+      region = `${signature}: ${label}`;
+      return { kind: "label" as const, text: label };
+    }
+    return block.kind === "table" ? { ...block, region } : block;
+  });
+const languages = new Set<string>(["bash", "css", "html", "json", "md", "ts", "tsx", "yaml"]);
+---
+
+<ComponentPageShell title={`${name}: ${t("component.markdownPeople")}`} description={copy}>
+  <Fragment slot="usage">
+  <Fragment set:html={actions} />
+  <p class="lede" set:html={copy} />
+  {
+    (
+      <div class="docs-markdown" lang="en">
+        {blocks.map((block) => {
+          switch (block.kind) {
+            case "heading":
+              return block.level === 2 ? <h2 id={block.id} set:html={inlineHtml(block.text)} /> : <h3 set:html={inlineHtml(block.text)} />;
+            case "label":
+              return <h3 set:html={inlineHtml(block.text)} />;
+            case "paragraph":
+              return <p set:html={inlineHtml(block.text)} />;
+            case "quote":
+              return <blockquote><p set:html={inlineHtml(block.text)} /></blockquote>;
+            case "list":
+              return <ul>{block.items.map((item) => <li set:html={inlineHtml(item)} />)}</ul>;
+            case "code":
+              return <CodeBlock code={block.code} lang={languages.has(block.lang) ? (block.lang as CodeLanguage) : undefined} />;
+            case "table":
+              return (
+                <div class="sk-table-scroll" tabindex="0" role="region" aria-label={block.region}>
+                  <table class="sk-table">
+                    <thead class="sk-table__head">
+                      <tr class="sk-table__row">{block.head.map((cell) => <th class="sk-table__header" scope="col" set:html={inlineHtml(cell)} />)}</tr>
+                    </thead>
+                    <tbody class="sk-table__body">
+                      {block.rows.map((row) => (
+                        <tr class="sk-table__row">
+                          {row.map((cell, index) =>
+                            index === 0 ? <th class="sk-table__header" scope="row" set:html={inlineHtml(cell)} /> : <td class="sk-table__cell" set:html={inlineHtml(cell)} />,
+                          )}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              );
+          }
+        })}
+      </div>
+    )
+  }
+  </Fragment>
+</ComponentPageShell>

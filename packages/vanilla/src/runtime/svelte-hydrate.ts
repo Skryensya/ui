@@ -42,13 +42,79 @@ const CONNECT_CONTEXT = Symbol("sk-connect");
 // different value (the site's playground re-points a Select).
 const mountedApps = new WeakMap<HTMLElement, () => void>();
 
-/** Unmounts the imperative enhancer mounted on `root` (runs its cleanup) and releases the ready marker. */
+/*
+ * EVERY MOUNTED ROOT, ITERABLE, so a subtree can be torn down and a root that left the page can be found. The WeakMap above
+ * cannot be walked, and that is how a story re-rendered in Storybook (or a view swapped in an app) left its components
+ * mounted on markup nobody could see: a Lightbox still listening on the document for its triggers, so the NEW Lightbox
+ * with the same id never got the click.
+ */
+const liveRoots = new Set<HTMLElement>();
+const observed = new WeakSet<Document>();
+let sweepPending = false;
+
+/*
+ * Destroy every mounted root that is no longer in its document. Run a frame after a removal, so a root that was only moved
+ * (taken out and put back in the same task, or the next frame) is left alone; and, synchronously, at the start of every mount
+ * call. That second one matters: a machine's teardown finds its elements by id in the whole document, so an old instance
+ * destroyed AFTER a re-render mounted its twin (same markup, same ids) would reach into the new one. Sweeping first means a
+ * re-render always tears the old instance down before the new one exists.
+ */
+const sweep = (): void => {
+  sweepPending = false;
+  for (const root of [...liveRoots]) if (!root.isConnected) destroyMount(root);
+};
+const scheduleSweep = (): void => {
+  if (sweepPending) return;
+  sweepPending = true;
+  if (typeof requestAnimationFrame === "function") requestAnimationFrame(sweep);
+  else setTimeout(sweep, 16);
+};
+
+/* One observer per document, started by the first mount in it: it only notices removals and schedules a sweep. */
+const watch = (doc: Document): void => {
+  if (observed.has(doc) || typeof MutationObserver === "undefined") return;
+  observed.add(doc);
+  new MutationObserver((records) => {
+    if (records.some((record) => record.removedNodes.length > 0)) scheduleSweep();
+  }).observe(doc, { childList: true, subtree: true });
+};
+
+const track = (root: HTMLElement, destroy: () => void): void => {
+  mountedApps.set(root, destroy);
+  liveRoots.add(root);
+  watch(root.ownerDocument);
+};
+
+/** Unmounts the enhancer mounted on `root` (runs its cleanup) and releases the ready marker. */
 export function destroyMount(root: HTMLElement): void {
   const destroy = mountedApps.get(root);
-  if (destroy) {
-    destroy();
-    mountedApps.delete(root);
+  mountedApps.delete(root);
+  liveRoots.delete(root);
+  destroy?.();
+}
+
+/**
+ * Unmounts every component mounted inside `target` (and on it): their listeners, observers and controllers are released,
+ * and the markup can be mounted again. Call it before throwing markup away: a story re-render, a view swap. Components
+ * whose markup leaves the page are also torn down on their own a frame later; this is the immediate, explicit form.
+ * Returns how many were destroyed.
+ */
+export function destroyComponents(target: Document | Element = document): number {
+  let count = 0;
+  for (const root of [...liveRoots]) {
+    if (target === root || target.contains(root)) {
+      destroyMount(root);
+      count += 1;
+    }
   }
+  return count;
+}
+
+/** How many components are mounted inside `target` (and on it). For tests and devtools. */
+export function countMountedComponents(target: Document | Element = document): number {
+  let count = 0;
+  for (const root of liveRoots) if (target === root || target.contains(root)) count += 1;
+  return count;
 }
 /** Alias with the old runtime's public name. */
 export const destroyEnhancer = destroyMount;
@@ -104,17 +170,19 @@ export function createSvelteEnhancer(options: SvelteEnhancerOptions): Enhancer {
       void unmount(app);
       target.removeAttribute(readyAttr);
       mountedApps.delete(target);
+      liveRoots.delete(target);
     };
     // The same registry `destroyMount()` reads for the imperative path (`createConnectMount`), so a
     // machine-backed enhancer can be unmounted the same way without the caller knowing which of the two
     // implementations mounted it.
-    mountedApps.set(target, destroy);
+    track(target, destroy);
 
     return { root: target, destroy };
   };
 
   const mountAll = (target: Document | Element = document): EnhancerController[] => {
     if (typeof document === "undefined") return [];
+    sweep();
     const roots: HTMLElement[] = [];
     if (target instanceof HTMLElement && target.matches(pendingSelector)) roots.push(target);
     roots.push(...Array.from(target.querySelectorAll<HTMLElement>(pendingSelector)));
@@ -172,7 +240,7 @@ export function createConnectMount(options: { key: string; rootSelector: string;
     target.removeAttribute(mountingAttr);
     target.setAttribute(readyAttr, "true");
     // Unmounting runs onDestroy → the connect's cleanup, and releases the marker so it can be re-mounted.
-    mountedApps.set(target, () => {
+    track(target, () => {
       void unmount(app);
       target.removeAttribute(readyAttr);
     });
@@ -181,6 +249,7 @@ export function createConnectMount(options: { key: string; rootSelector: string;
 
   return (target = document) => {
     if (typeof document === "undefined") return 0;
+    sweep();
     const roots: HTMLElement[] = [];
     if (target instanceof HTMLElement && target.matches(pendingSelector)) roots.push(target);
     roots.push(...Array.from(target.querySelectorAll<HTMLElement>(pendingSelector)));

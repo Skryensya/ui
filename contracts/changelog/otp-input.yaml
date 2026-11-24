@@ -5,6 +5,14 @@
 # hash nuevo.
 surface: "fc28e34c721cf53a"
 entries:
+  - date: 2026-11-23
+    kind: bugfix
+    es:
+      title: El anillo de foco de cada casilla se ve entero
+      body: 'Con el teclado, el anillo de foco de cada casilla se veía cortado por un contenedor que recorta. Ahora se ve entero. Y en una fila que hace scroll, la casilla enfocada entra en vista.'
+    en:
+      title: Each segment’s focus ring is drawn whole
+      body: 'With the keyboard, the focus ring of each segment was cut by a clipping container. It is now drawn whole. And in a row that scrolls, the focused segment comes into view.'
   - date: 2026-10-02
     kind: feature
     target: groupSize

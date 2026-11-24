@@ -166,9 +166,11 @@ Each row is a signature's first reason to use it, from its contract. Pick the ro
 | how several things relate has to be explained | `Diagram` | [diagram](components/diagram.md) |
 | a character, assistant or mascot needs to express a visible state | `ExpressiveAvatar` | [expressive-avatar](components/expressive-avatar.md) |
 | a stream of independent units of content that can load in batches. | `Feed` | [feed](components/feed.md) |
+| one thing is shown in several photos and the reader picks which to see large | `Gallery` | [gallery](components/gallery.md) |
 | it reinforces an action that already has text | `Icon` | [icon](components/icon.md) |
 | it crops an image or a video to a fixed aspect ratio | `ImageFrame` | [image-frame](components/image-frame.md) |
 | a key or a combination the user can press is shown | `Kbd` | [kbd](components/kbd.md) |
+| a picture has detail too small to read at its size on the page, and the reader should look closer without leaving it | `Magnifier` | [magnifier](components/magnifier.md) |
 | a short, repeated band gains meaning by moving, but the motion should only start after the person asks for it | `Marquee` | [marquee](components/marquee.md) |
 | the band is secondary ambience and can start on its own without hiding or replacing needed information | `Marquee.autoplay` | [marquee](components/marquee.md) |
 | one turn in a conversation needs row geometry | `Message` | [message](components/message.md) |

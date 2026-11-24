@@ -5,6 +5,14 @@
 # hash.
 surface: "7b37569208e272a0"
 entries:
+  - date: 2026-11-23
+    kind: rework
+    es:
+      title: Badge más bajo y con un solo color por tono
+      body: 'Mide 20px de alto (18 en <code>sm</code>, 16 en <code>xs</code>) en vez de 28: ya no se confunde con un Tag ni con un botón. El borde es el color del texto al 14%, un filo y no un contorno; en oscuro el relleno es ese mismo color translúcido en vez de los bloques saturados de antes, y el neutro es un gris en vez del color del lienzo. Los números tienen ancho fijo.'
+    en:
+      title: A shorter Badge, one color per tone
+      body: 'It is 20px tall (18 at <code>sm</code>, 16 at <code>xs</code>) instead of 28, so it no longer reads as a Tag or a button. The edge is the text color at 14%, a hairline rather than an outline; in dark mode the fill is that same color, translucent, instead of the saturated blocks it was, and the neutral badge is gray instead of the canvas color. Digits are tabular.'
   - date: 2026-10-25
     kind: breaking
     target: appearance

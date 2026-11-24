@@ -2,12 +2,13 @@ import type { Decorator, Meta as HtmlMeta, StoryObj as HtmlStoryObj } from "@sto
 import { emitMarkup } from "@skryensya/ai-compiler/emit";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import { icons as lucideIcons } from "./icons";
-import { mountComponentsWithIcons } from "@skryensya/vanilla/auto";
+import { destroyComponents, mountComponentsWithIcons } from "@skryensya/vanilla/auto";
 import type { Translate } from "@docs/i18n";
 import { isLocale, translator } from "@skryensya/storybook-kit/translate";
 import { wireCommandPaletteDemo } from "@skryensya/storybook-kit/command-palette-playground";
 import { wireTagInteractions } from "@skryensya/storybook-kit/tag-interactions";
 import { rootControls, withRootOptions } from "@skryensya/storybook-kit/controls";
+import { containerForTree } from "@skryensya/storybook-kit/shared";
 
 /*
  * THIS STORYBOOK'S BINDING: what every generated story imports (`treeStory`, `argsStory`, `withCss`,
@@ -44,8 +45,18 @@ async function boot(host: HTMLElement): Promise<void> {
  * Enhancers measure (an annotation's leaders, a canvas's fit), so they run once the markup is in the
  * document, not while Storybook still holds it detached.
  */
+/*
+ * ONE STORY AT A TIME. Storybook re-renders on every story switch and every change of a global (the container, the locale)
+ * and throws the old markup away without telling anyone. What was mounted on it is torn down here first: left mounted, a
+ * Lightbox kept listening on the document for its triggers, and the next render's Lightbox with the same id never opened.
+ * (The runtime also sweeps roots that leave the page, a frame later; this is the immediate form.)
+ */
+let previousHost: HTMLElement | null = null;
+
 export function render(tree: UsageTree): HTMLElement {
+  if (previousHost) destroyComponents(previousHost);
   const host = document.createElement("div");
+  previousHost = host;
   host.innerHTML = emitMarkup(tree);
   wireTagInteractions(host);
   const whenConnected = () => (host.isConnected ? void boot(host) : requestAnimationFrame(whenConnected));
@@ -79,6 +90,7 @@ export function treeStory(factory: TreeFactory, story: StoryObj = {}): StoryObj 
     argTypes: { ...argTypes, ...story.argTypes },
     render: (args, { globals }) => render(withRootOptions(treeFor(factory, globals.locale), args)),
     parameters: {
+      container: containerForTree(treeFor(factory, "en")),
       ...story.parameters,
       docs: {
         ...story.parameters?.docs,

@@ -1,6 +1,6 @@
 # navbar
 
-Category: navigation. Stylesheet: `@skryensya/core/components/navbar.css`. Signatures: `Navbar`, `NavbarActions`, `NavbarBrand`.
+Category: navigation. Stylesheet: `@skryensya/core/components/navbar.css`. Signatures: `Navbar`, `NavbarBrand`, `NavbarActions`.
 
 ## Navbar
 
@@ -72,27 +72,6 @@ export function NavbarExample() {
 
 Stylesheets: `@skryensya/core/components/button.css`, `@skryensya/core/components/loader.css`, `@skryensya/core/components/navbar.css`.
 
-## NavbarActions
-
-**Use when**
-
-- the actions at the end: account, notifications, theme
-
-**Avoid when**
-
-- they are the site's navigation destinations; that is NavList
-
-- React: `import { NavbarActions } from "@skryensya/react/navbar"`.
-- HTML: a `<div>`, no JavaScript needed.
-
-- Goes inside: `Navbar`.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | node | yes |
-
 ## NavbarBrand
 
 **Use when**
@@ -104,6 +83,27 @@ Stylesheets: `@skryensya/core/components/button.css`, `@skryensya/core/component
 - it is a destination of the navigation list; that goes in NavList
 
 - React: `import { NavbarBrand } from "@skryensya/react/navbar"`.
+- HTML: a `<div>`, no JavaScript needed.
+
+- Goes inside: `Navbar`.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | node | yes |
+
+## NavbarActions
+
+**Use when**
+
+- the actions at the end: account, notifications, theme
+
+**Avoid when**
+
+- they are the site's navigation destinations; that is NavList
+
+- React: `import { NavbarActions } from "@skryensya/react/navbar"`.
 - HTML: a `<div>`, no JavaScript needed.
 
 - Goes inside: `Navbar`.

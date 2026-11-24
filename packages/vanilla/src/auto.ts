@@ -26,3 +26,6 @@ export async function mountComponentsWithIcons(root: Document | Element, set: Ic
   await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
   mountIcons(root, set);
 }
+
+/* Tear down what was mounted, before throwing the markup away (a story re-render, a view swap). */
+export { countMountedComponents, destroyComponents } from "./runtime/svelte-hydrate.js";

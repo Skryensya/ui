@@ -1,6 +1,6 @@
 # message
 
-Category: content. Stylesheet: `@skryensya/core/components/message.css`. Signatures: `Message`, `MessageActions`, `MessageAvatar`, `MessageContent`, `MessageFooter`, `MessageGroup`, `MessageHeader`.
+Category: content. Stylesheet: `@skryensya/core/components/message.css`. Signatures: `Message`, `MessageGroup`, `MessageAvatar`, `MessageContent`, `MessageHeader`, `MessageFooter`, `MessageActions`.
 
 ## Message
 
@@ -25,92 +25,6 @@ Alternatives: `Feed`, `List`, `Avatar.image`.
 | Option | Values | Default |
 |---|---|---|
 | `align` | "start" \| "end" | `"start"` |
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | node | yes |
-
-## MessageActions
-
-**Use when**
-
-- message-level controls such as copy, react or delete should travel with the message row
-- the available actions depend on author or permissions, such as delete only on my messages
-
-**Avoid when**
-
-- the command acts on the whole conversation or selected messages; use Toolbar
-- the action is primary content of the message rather than metadata around it
-
-Alternatives: `Toolbar`.
-
-- React: `import { MessageActions } from "@skryensya/react/message"`.
-- HTML: a `<div>`, no JavaScript needed.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | node | yes |
-
-## MessageAvatar
-
-**Use when**
-
-- the row needs a speaker avatar, or an empty avatar slot to preserve grouped alignment
-
-**Avoid when**
-
-- the image is content inside the message rather than the speaker identity
-
-Alternatives: `Avatar.image`, `Avatar.initials`.
-
-- React: `import { MessageAvatar } from "@skryensya/react/message"`.
-- HTML: a `<div>`, no JavaScript needed.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | node |  |
-
-## MessageContent
-
-**Use when**
-
-- header, message surface and footer need one aligned stack inside the conversation row
-
-**Avoid when**
-
-- there is no conversation row; the surface can stand on its own
-
-Alternatives: `Box`.
-
-- React: `import { MessageContent } from "@skryensya/react/message"`.
-- HTML: a `<div>`, no JavaScript needed.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | node | yes |
-
-## MessageFooter
-
-**Use when**
-
-- delivery state, time or edited state belongs below the message surface
-
-**Avoid when**
-
-- the content is an interactive control; use MessageActions for controls
-
-Alternatives: `MessageActions`.
-
-- React: `import { MessageFooter } from "@skryensya/react/message"`.
-- HTML: a `<div>`, no JavaScript needed.
 
 **Slots**
 
@@ -189,6 +103,48 @@ export function MessageGroupExample() {
 
 Stylesheets: `@skryensya/core/components/message.css`.
 
+## MessageAvatar
+
+**Use when**
+
+- the row needs a speaker avatar, or an empty avatar slot to preserve grouped alignment
+
+**Avoid when**
+
+- the image is content inside the message rather than the speaker identity
+
+Alternatives: `Avatar.image`, `Avatar.initials`.
+
+- React: `import { MessageAvatar } from "@skryensya/react/message"`.
+- HTML: a `<div>`, no JavaScript needed.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | node |  |
+
+## MessageContent
+
+**Use when**
+
+- header, message surface and footer need one aligned stack inside the conversation row
+
+**Avoid when**
+
+- there is no conversation row; the surface can stand on its own
+
+Alternatives: `Box`.
+
+- React: `import { MessageContent } from "@skryensya/react/message"`.
+- HTML: a `<div>`, no JavaScript needed.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | node | yes |
+
 ## MessageHeader
 
 **Use when**
@@ -202,6 +158,50 @@ Stylesheets: `@skryensya/core/components/message.css`.
 Alternatives: `Text`.
 
 - React: `import { MessageHeader } from "@skryensya/react/message"`.
+- HTML: a `<div>`, no JavaScript needed.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | node | yes |
+
+## MessageFooter
+
+**Use when**
+
+- delivery state, time or edited state belongs below the message surface
+
+**Avoid when**
+
+- the content is an interactive control; use MessageActions for controls
+
+Alternatives: `MessageActions`.
+
+- React: `import { MessageFooter } from "@skryensya/react/message"`.
+- HTML: a `<div>`, no JavaScript needed.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | node | yes |
+
+## MessageActions
+
+**Use when**
+
+- message-level controls such as copy, react or delete should travel with the message row
+- the available actions depend on author or permissions, such as delete only on my messages
+
+**Avoid when**
+
+- the command acts on the whole conversation or selected messages; use Toolbar
+- the action is primary content of the message rather than metadata around it
+
+Alternatives: `Toolbar`.
+
+- React: `import { MessageActions } from "@skryensya/react/message"`.
 - HTML: a `<div>`, no JavaScript needed.
 
 **Slots**

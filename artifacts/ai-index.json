@@ -30,7 +30,8 @@
           "useWhen": [
             "there are several long sections and which stay open is worth coordinating: an FAQ, terms",
             "type=single: opening one closes the previous, so the page does not grow without end",
-            "type=multiple: several can stay open at once, and they are still one accordion"
+            "type=multiple: several can stay open at once, and they are still one accordion",
+            "variant=separated: each question stands on its own, like a product FAQ; every section is a card and the open one is raised"
           ]
         },
         {
@@ -2321,6 +2322,38 @@
       ]
     },
     {
+      "category": "content",
+      "css": "@skryensya/core/components/gallery.css",
+      "id": "gallery",
+      "signatures": [
+        {
+          "alternatives": [
+            "Lightbox",
+            "Carousel",
+            "Tabs"
+          ],
+          "avoidWhen": [
+            "the photos should open large over the page, one after another, with zoom; that is a Lightbox with its triggers",
+            "there are more photos than fit in a row, or they should be browsed by swiping; that is a Carousel",
+            "the thumbnails name panels of different content, text or forms; that is Tabs"
+          ],
+          "host": "div",
+          "id": "Gallery",
+          "intent": [
+            "product-gallery",
+            "image-gallery-with-thumbnails",
+            "photo-picker",
+            "main-image-and-thumbnails"
+          ],
+          "parents": [],
+          "useWhen": [
+            "one thing is shown in several photos and the reader picks which to see large: a product's shots, a project's screens",
+            "the large photo should stay in its place on the page while the thumbnails change it, with a Magnifier on it for detail"
+          ]
+        }
+      ]
+    },
+    {
       "category": "layout",
       "css": "@skryensya/core/patterns/hero.css",
       "id": "hero",
@@ -2967,6 +3000,39 @@
           "useWhen": [
             "the wait is already visible (there are skeletons, or a bar) and it still needs announcing",
             "the loading state has to exist for a screen reader without drawing anything"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "content",
+      "css": "@skryensya/core/components/magnifier.css",
+      "id": "magnifier",
+      "signatures": [
+        {
+          "alternatives": [
+            "Lightbox",
+            "ImageFrame"
+          ],
+          "avoidWhen": [
+            "the content is text or markup rather than an image, video or canvas; the lens reads pixels, so it cannot see markup; let the browser zoom or give the text more room",
+            "the reader needs the whole picture large, or on touch first; open it in a Lightbox instead of moving a small lens over it",
+            "the picture is a playing video; it moves on its own and carries the detail away from under the lens, and the lens covers the player's controls; pause and show the frame as an image to look at it up close"
+          ],
+          "host": "div",
+          "id": "Magnifier",
+          "intent": [
+            "magnifier",
+            "image-zoom",
+            "loupe",
+            "lens",
+            "product-zoom",
+            "liquid-glass"
+          ],
+          "parents": [],
+          "useWhen": [
+            "a picture has detail too small to read at its size on the page, and the reader should look closer without leaving it: a product photo, a map, a diagram, a frame of video",
+            "looking closer should follow where the reader points, rather than open the picture somewhere else"
           ]
         }
       ]
@@ -6447,5 +6513,5 @@
     }
   ],
   "schemaVersion": "2.3",
-  "sourceHash": "d7c11ab22a7f1cb2"
+  "sourceHash": "52610fb5adcd0dfd"
 }

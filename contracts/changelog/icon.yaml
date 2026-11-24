@@ -3,8 +3,53 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "d1b6caf01839593a"
+surface: "37cc733011b5ce87"
 entries:
+  - date: 2026-11-23
+    kind: feature
+    target: name
+    es:
+      title: Una marca para Gallery
+      body: 'Nuevo rol <code>component-gallery</code>: la marca de Gallery, varias fotos apiladas en cada colección.'
+    en:
+      title: A mark for Gallery
+      body: 'New role <code>component-gallery</code>: the Gallery''s mark, a stack of photos in every collection.'
+  - date: 2026-11-23
+    kind: feature
+    target: name
+    es:
+      title: Un rol para guardar
+      body: 'Nuevo rol <code>favorite</code>: guardar algo para volver a verlo (una lista de deseos, un elemento guardado). Un corazón en cada colección. No es <code>like</code>, que es aprobar lo que dijo otro.'
+    en:
+      title: A role for keeping
+      body: 'New role <code>favorite</code>: keeping something to come back to (a wishlist, a saved item). A heart in every collection. Not <code>like</code>, which approves of what someone else said.'
+  - date: 2026-11-23
+    kind: feature
+    target: name
+    es:
+      title: Logos de marcas
+      body: 'Nombres <code>brand-github</code>, <code>brand-x</code>, <code>brand-instagram</code> y 21 más. Opcionales en un set como las marcas de componentes: <code>skryensya icons &lt;set&gt; --brands</code> los escribe, con el logo de la propia colección cuando lo tiene (comparte su trazo) y el de Tabler cuando no.'
+    en:
+      title: Brand logos
+      body: 'Names <code>brand-github</code>, <code>brand-x</code>, <code>brand-instagram</code> and 21 more. Optional in a set like the component marks: <code>skryensya icons &lt;set&gt; --brands</code> writes them, with the collection’s own logo where it has one (it shares its stroke) and Tabler’s where it does not.'
+  - date: 2026-11-23
+    kind: feature
+    target: name
+    es:
+      title: Expandir todo y contraer todo
+      body: "Nuevos roles <code>expand-all</code> y <code>collapse-all</code>: abrir o cerrar todas las secciones de una lista a la vez. Un doble caret hacia abajo o hacia arriba, en cada colección. Además, un icono con <code>hidden</code> ahora sí se oculta."
+    en:
+      title: Expand all and collapse all
+      body: "New roles <code>expand-all</code> and <code>collapse-all</code>: opening or closing every section of a list at once. A double caret pointing down or up, in every collection. Also, an icon with <code>hidden</code> is now actually hidden."
+  - date: 2026-11-22
+    kind: feature
+    target: name
+    es:
+      title: Una marca para Magnifier
+      body: "Nuevo rol <code>component-magnifier</code>: la marca de la lupa, una lupa con un signo más en cada colección."
+    en:
+      title: A mark for Magnifier
+      body: "New role <code>component-magnifier</code>: the Magnifier's mark, a magnifying glass with a plus in every collection."
   - date: 2026-11-20
     kind: feature
     target: name

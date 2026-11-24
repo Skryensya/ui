@@ -1,0 +1,47 @@
+---
+import "@skryensya/core/components/table.css";
+import FoundationPage from "./FoundationPage.astro";
+import { getLocale } from "../i18n";
+import { chooseGroups } from "../lib/choose";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const locale = getLocale(Astro.url);
+const groups = chooseGroups(locale);
+const heads = locale === "es" ? { use: "Usa", need: "Cuando la persona necesita" } : { use: "Use", need: "When the person needs" };
+---
+
+<FoundationPage title={title} description={description}>
+  <slot />
+  {
+    groups.map((group) => (
+      <>
+        <h2>{group.category}</h2>
+        <div class="sk-table-scroll" tabindex="0" role="region" aria-label={group.category}>
+          <table class="sk-table">
+            <thead class="sk-table__head">
+              <tr class="sk-table__row">
+                <th class="sk-table__header" scope="col">{heads.use}</th>
+                <th class="sk-table__header" scope="col">{heads.need}</th>
+              </tr>
+            </thead>
+            <tbody class="sk-table__body">
+              {group.rows.map((row) => (
+                <tr class="sk-table__row">
+                  <th class="sk-table__header" scope="row">
+                    {row.href ? <a href={row.href}><code>{row.signature}</code></a> : <code>{row.signature}</code>}
+                  </th>
+                  <td class="sk-table__cell" lang="en">{row.need}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </>
+    ))
+  }
+</FoundationPage>

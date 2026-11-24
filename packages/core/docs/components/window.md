@@ -51,9 +51,9 @@ Alternatives: `Dialog`, `Popover`, `Vaul`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `children` | node | yes |
-| `title` | text | yes |
 | `trigger` | node | yes |
+| `title` | text | yes |
+| `children` | node | yes |
 
 **Accessible name**
 

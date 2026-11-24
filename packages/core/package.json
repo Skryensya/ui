@@ -63,6 +63,14 @@
       "types": "./src/password-input.ts",
       "default": "./src/password-input.ts"
     },
+    "./gallery-lightbox": {
+      "types": "./src/gallery-lightbox.ts",
+      "default": "./src/gallery-lightbox.ts"
+    },
+    "./gallery": {
+      "types": "./src/gallery.ts",
+      "default": "./src/gallery.ts"
+    },
     "./search-field": {
       "types": "./src/search-field.ts",
       "default": "./src/search-field.ts"
@@ -114,6 +122,14 @@
     "./compare-slider-view": {
       "types": "./src/compare-slider-view.ts",
       "default": "./src/compare-slider-view.ts"
+    },
+    "./magnifier": {
+      "types": "./src/magnifier.ts",
+      "default": "./src/magnifier.ts"
+    },
+    "./magnifier-view": {
+      "types": "./src/magnifier-view.ts",
+      "default": "./src/magnifier-view.ts"
     },
     "./comparison-table": {
       "types": "./src/comparison-table.ts",
@@ -717,6 +733,7 @@
     "@iconify-json/mingcute": "catalog:",
     "@iconify-json/ph": "catalog:",
     "@iconify-json/ri": "catalog:",
+    "@iconify-json/solar": "catalog:",
     "@iconify-json/tabler": "catalog:",
     "@types/node": "catalog:",
     "lightningcss": "^1.33.0",

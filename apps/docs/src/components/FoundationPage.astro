@@ -26,14 +26,18 @@ interface Props {
   heading?: string;
   /** CSS selector the page's appearance switch applies to. Set it together with the `appearance` slot. */
   appearanceTarget?: string;
+  /** The line over the title; Foundations by default. */
+  eyebrow?: string;
+  /** A Markdown version of the page, announced in the head as `rel="alternate"`. */
+  markdown?: string;
 }
 
-const { title, description, heading = title, appearanceTarget } = Astro.props;
+const { title, description, heading = title, appearanceTarget, eyebrow, markdown } = Astro.props;
 const hasAppearanceControl = Astro.slots.has("appearance") && appearanceTarget !== undefined;
 const t = useTranslations(getLocale(Astro.url));
 ---
 
-<Base title={title} description={description} documentLayout="grid">
+<Base title={title} description={description} documentLayout="grid" markdown={markdown}>
   <div
     class="docs-component-shell"
     data-toc-transparent
@@ -44,7 +48,7 @@ const t = useTranslations(getLocale(Astro.url));
       <div class="docs-component-hero__spacer sk-fx-collapse-header__spacer"></div>
       <div aria-hidden="true" class="docs-component-hero__backing"></div>
       <header class="docs-component-hero sk-fx-collapse-header">
-        <p class="docs-component-hero__eyebrow">{t("section.foundations")}</p>
+        <p class="docs-component-hero__eyebrow">{eyebrow ?? t("section.foundations")}</p>
         <div class="docs-component-hero__title-row">
           <h1>{heading}</h1>
         </div>

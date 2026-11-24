@@ -3,7 +3,7 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "a3867ea9af369a27"
+surface: "4c0e3741738b168a"
 entries:
   - date: 2026-10-01
     kind: feature
@@ -13,3 +13,11 @@ entries:
     en:
       title: First release
       body: "Published for the first time, with its contract, a React binding and a Vanilla mount."
+  - date: 2026-11-22
+    kind: feature
+    es:
+      title: Tolera erratas y lista lo reciente
+      body: "Si nada coincide, una errata de una edición (dos desde 7 letras) en un nombre o alias aún encuentra el destino. Con la búsqueda vacía, el anfitrión puede contestar al evento sk:commandpaletterecents con las páginas recientes y se listan primero. La paleta no guarda nada."
+    en:
+      title: Tolerates typos and lists recents
+      body: "When nothing matches, a one-edit typo (two from 7 letters) in a name or alias still finds the destination. With an empty query the host can answer the sk:commandpaletterecents event with recent pages and they are listed first. The palette stores nothing."

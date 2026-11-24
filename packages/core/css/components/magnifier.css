@@ -1,0 +1,64 @@
+/*
+ * TIER 3, MAGNIFIER
+ *
+ * A picture and a round glass lens over it. The root holds a bare `img`, `video` or `canvas`, or one wrapper around it (an
+ * ImageFrame), and the lens maps onto that picture's own box. The lens sits at the root's top-left corner and the binding
+ * moves it with `translate` (compositor, no layout); it is only visible while `data-active` is on the root. The binding reads
+ * the picture's `object-fit` (`cover`, `contain` or a stretch), so a cropped frame still magnifies the spot under the pointer.
+ */
+@layer components {
+  /* The hooks, on the magnifier and on any element a component puts a lens in (`data-sk-magnifier-host`, a Lightbox's stage):
+     the lens reads them from its parent, whichever it is. Layout stays on `.sk-magnifier` alone, below. */
+  :is(.sk-magnifier, [data-sk-magnifier-host]) {
+    --sk-magnifier-size: 10rem;
+    /* What fills the glass past the picture. Unset (`transparent`), the binding uses the colour the picture actually sits on,
+       read from the page, so the lens shows an edge on its own surface. A colour here (a token) overrides it. The fill is
+       drawn by the lens itself, in the same frame as the picture, so it never trails or misaligns. */
+    --sk-magnifier-bg: transparent;
+    /* The lens's edge, without a drawn white line: a hairline in the border colour, so the circle reads even where the glass
+       is clear past the picture, and a soft shadow under it, so it lifts off the photo. `--shadow-*` are shadow COLOURS. */
+    --sk-magnifier-lens-shadow:
+      0 0 0 1px color-mix(in oklab, var(--color-border-strong) 55%, transparent),
+      0 2px 6px var(--shadow-sm),
+      0 12px 28px -10px var(--shadow-lg);
+  }
+
+  .sk-magnifier {
+    position: relative;
+    display: block;
+    -webkit-touch-callout: none;
+    user-select: none;
+  }
+
+  .sk-magnifier > :is(img, video, canvas),
+  .sk-magnifier > picture > img {
+    display: block;
+    max-inline-size: 100%;
+    block-size: auto;
+    -webkit-user-drag: none;
+  }
+
+  .sk-magnifier__lens {
+    position: absolute;
+    inset-block-start: 0;
+    /* Physical on purpose: the pointer's coordinates are physical, so the lens is placed from the left in either direction. */
+    left: 0;
+    inline-size: var(--sk-magnifier-size);
+    block-size: var(--sk-magnifier-size);
+    border-radius: 50%;
+    box-shadow: var(--sk-magnifier-lens-shadow);
+    pointer-events: none;
+    visibility: hidden;
+    /* Over every other layer of the page (sticky chrome, popovers, toasts): it is where the reader is pointing. The root
+       makes no stacking context of its own, so this competes with the page's layers. A native dialog's top layer still
+       sits above it, as it does above every z-index. */
+    z-index: var(--z-pointer);
+  }
+
+  /* While it shows, the binding moves and scales it every frame (`translate`, `scale`): both stay on the compositor. */
+  /* The magnifier root, or any host a component puts a lens in (a Lightbox's stage). */
+  [data-active] > .sk-magnifier__lens {
+    visibility: visible;
+    will-change: translate, scale;
+  }
+}

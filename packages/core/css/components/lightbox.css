@@ -1,6 +1,8 @@
 /* The controls are icon-only `sk-button`s and the wait is a Loader; they bring their own sheets. */
 @import url("./button.css");
 @import url("./loader.css");
+/* The magnifier toggle's lens (`magnifier: true`): the Magnifier's own, placed in the stage. */
+@import url("./magnifier.css");
 
 /*
  * TIER 3, LIGHTBOX
@@ -382,6 +384,11 @@
     min-block-size: 0;
     margin: 0;
     padding-inline: var(--sk-lightbox-nav-room);
+  }
+
+  /* The magnifier toggle's lens, a little larger than on a page: the photo here is too. */
+  .sk-lightbox__stage[data-sk-magnifier-host] {
+    --sk-magnifier-size: 13rem;
   }
 
   .sk-lightbox__stage {

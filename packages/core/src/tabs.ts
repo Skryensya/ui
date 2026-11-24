@@ -115,13 +115,29 @@ export const tabsContract = {
       default: "underline",
       attr: "data-variant",
     },
+    /**
+     * Where the strip SHOWS: `before` the panels (above, or at the start of vertical tabs), or `after` them. A gallery whose
+     * thumbnails sit under the photo is `after`, and pairs with `hanging`, whose line and selected bar are on the top edge.
+     * CSS-only: the list stays first in the DOM, so the tab order and what a screen reader hears do not change.
+     */
+    listPlacement: {
+      type: "enum",
+      values: ["before", "after"],
+      default: "before",
+      attr: "data-list-placement",
+    },
+    /**
+     * The strip wraps onto more rows instead of scrolling sideways. For a set that has to be seen whole, like a gallery's
+     * thumbnails: nothing hides behind a scroll. Off by default, where a long row of text tabs scrolls on its own.
+     */
+    wrap: { type: "boolean", default: false, attr: "data-wrap", trueValue: "" },
   },
 
   signatures: {
     Tabs: {
       intent: ["tabs", "switch-between-panels", "sections-in-one-region"],
       host: { element: "div" },
-      options: ["orientation", "activationMode", "value", "size", "variant"],
+      options: ["orientation", "activationMode", "value", "size", "variant", "listPlacement", "wrap"],
       /** Host id / a11y names on the tabs root. */
       forward: ["id", "aria-*"],
       slots: {
@@ -179,6 +195,9 @@ export const tabsContract = {
             attrs: { "data-sk-tabs-content": "" },
             repeat: "items",
             itemOptions: ["value"],
+            /* The panel that starts selected, marked in the markup itself: until the script mounts, the sheet shows only it.
+               Without the mark every panel shows and the page jumps when three of them hide (a layout shift on load). */
+            selectedBy: { option: "value", attr: "data-sk-tabs-initial" },
             itemSlot: "children",
             whenItemSlotGiven: "children",
           },
@@ -202,6 +221,7 @@ export const tabsContract = {
 export type TabsOrientation = OptionValue<typeof tabsContract.options.orientation>;
 export type TabsSize = OptionValue<typeof tabsContract.options.size>;
 export type TabsVariant = OptionValue<typeof tabsContract.options.variant>;
+export type TabsListPlacement = OptionValue<typeof tabsContract.options.listPlacement>;
 
 /*
  * The machine's own inputs. Deliberately NOT derived from the contract: these are runtime wiring

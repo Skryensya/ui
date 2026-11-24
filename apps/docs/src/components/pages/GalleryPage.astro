@@ -1,0 +1,99 @@
+---
+import "@skryensya/core/components/gallery.css";
+import "@skryensya/core/components/lightbox.css";
+import "@skryensya/core/components/magnifier.css";
+import "@skryensya/core/patterns/image-frame.css";
+import "@skryensya/core/patterns/state-layer.css";
+import ComponentPageShell from "./ComponentPageShell.astro";
+import UsagePreview from "../UsagePreview.astro";
+import WhenToUse from "../WhenToUse.astro";
+import ContentRules from "../ContentRules.astro";
+import A11yNotes from "../A11yNotes.astro";
+import DoDont from "../DoDont.astro";
+import {
+  galleryDoCropTree,
+  galleryDoLensTree,
+  galleryDoOrderTree,
+  galleryDontCropTree,
+  galleryDontLensTree,
+  galleryDontOrderTree,
+  galleryEndTree,
+  galleryLightboxTree,
+  galleryManyStartTree,
+  galleryManyTree,
+  galleryPlainTree,
+  galleryProductTree,
+  galleryStartTree,
+  galleryTopTree,
+} from "../../demos/gallery";
+import { getLocale, tList, useTranslations } from "../../i18n";
+
+const t = useTranslations(getLocale(Astro.url));
+---
+
+<ComponentPageShell
+  title="Gallery"
+  description={t("gallery.description")}
+  contractId="gallery"
+  testFiles={["packages/react/src/components/gallery.test.tsx"]}
+>
+  <Fragment slot="usage">
+    <p class="lede" set:html={t("gallery.lede")} />
+
+    <h3>{t("component.examplesTitle")}</h3>
+    <UsagePreview tree={galleryProductTree(t)} title={t("gallery.productTitle")} description={t("gallery.productBody")} storybookTitle="Components/Gallery" storybookStory="Product" />
+    <UsagePreview tree={galleryPlainTree(t)} title={t("gallery.plainTitle")} description={t("gallery.plainBody")} storybookTitle="Components/Gallery" storybookStory="Plain" />
+    <UsagePreview tree={galleryLightboxTree(t)} title={t("gallery.lightboxTitle")} description={t("gallery.lightboxBody")} storybookTitle="Components/Gallery" storybookStory="Lightbox" />
+
+    <h3>{t("gallery.placementTitle")}</h3>
+    <p set:html={t("gallery.placementBody")} />
+    <UsagePreview tree={galleryTopTree(t)} title={t("gallery.topTitle")} description={t("gallery.topBody")} storybookTitle="Components/Gallery" storybookStory="Top" />
+    <UsagePreview tree={galleryStartTree(t)} title={t("gallery.startTitle")} description={t("gallery.startBody")} storybookTitle="Components/Gallery" storybookStory="Start" />
+    <UsagePreview tree={galleryEndTree(t)} title={t("gallery.endTitle")} description={t("gallery.endBody")} storybookTitle="Components/Gallery" storybookStory="End" />
+
+    <h3>{t("gallery.manyTitle")}</h3>
+    <UsagePreview tree={galleryManyTree(t)} title={t("gallery.manyTitle")} description={t("gallery.manyBody")} storybookTitle="Components/Gallery" storybookStory="Many" />
+    <UsagePreview tree={galleryManyStartTree(t)} title={t("gallery.manyStartTitle")} description={t("gallery.manyStartBody")} storybookTitle="Components/Gallery" storybookStory="ManyStart" />
+
+    <h3>{t("component.contractNotesTitle")}</h3>
+    <ul>
+      {tList(t, "gallery.contract").map((item) => <li set:html={item} />)}
+    </ul>
+  </Fragment>
+
+  <Fragment slot="guidelines">
+    <p class="lede" set:html={t("gallery.guidelinesLede")} />
+    <WhenToUse use={tList(t, "gallery.when")} avoid={tList(t, "gallery.whenNot")} />
+    <ContentRules items={tList(t, "gallery.content")} />
+    <DoDont
+      interactive
+      title={t("gallery.dd.lens.title")}
+      do={{ tree: galleryDoLensTree(t), caption: t("gallery.dd.lens.do") }}
+      dont={{ tree: galleryDontLensTree(t), caption: t("gallery.dd.lens.dont") }}
+    />
+    <DoDont
+      interactive
+      title={t("gallery.dd.crop.title")}
+      do={{ tree: galleryDoCropTree(t), caption: t("gallery.dd.crop.do") }}
+      dont={{ tree: galleryDontCropTree(t), caption: t("gallery.dd.crop.dont") }}
+    />
+    <DoDont
+      interactive
+      title={t("gallery.dd.order.title")}
+      do={{ tree: galleryDoOrderTree(t), caption: t("gallery.dd.order.do") }}
+      dont={{ tree: galleryDontOrderTree(t), caption: t("gallery.dd.order.dont") }}
+    />
+  </Fragment>
+
+  <Fragment slot="a11y">
+    <A11yNotes
+      intro={t("gallery.a11yIntro")}
+      does={tList(t, "gallery.a11yDoes")}
+      yours={tList(t, "gallery.a11yYours")}
+      keys={[
+        { keys: ["←", "→"], action: t("gallery.key.arrows") },
+        { keys: ["Tab"], action: t("gallery.key.tab") },
+      ]}
+    />
+  </Fragment>
+</ComponentPageShell>

@@ -17,4 +17,6 @@
   --z-popover: var(--scale-z-200); /* an anchored popup: the select listbox, a menu, a tooltip */
   --z-overlay: var(--scale-z-300); /* a scrim behind a NON-native overlay (a native dialog uses ::backdrop) */
   --z-toast: var(--scale-z-400); /* transient, self-dismissing notifications, above everything on the page */
+  --z-pointer: var(--scale-z-500); /* bound to the pointer while it moves: a magnifier's lens, a drag preview. Above
+    toasts too: it is wherever the reader is pointing, and anything over it would hide what they are looking at */
 }

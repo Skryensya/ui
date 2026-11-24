@@ -1,6 +1,6 @@
 # placeholder
 
-Category: feedback. Stylesheet: `@skryensya/core/components/placeholder.css`. Signatures: `Placeholder`, `Placeholder.block`, `Placeholder.circle`, `Placeholder.paragraph`.
+Category: feedback. Stylesheet: `@skryensya/core/components/placeholder.css`. Signatures: `Placeholder`, `Placeholder.paragraph`, `Placeholder.block`, `Placeholder.circle`.
 
 ## Placeholder
 
@@ -53,6 +53,66 @@ export function PlaceholderExample() {
   data-shape="text"
   style="--sk-placeholder-inline-size: 72%;"
 ></span>
+```
+
+Stylesheets: `@skryensya/core/components/placeholder.css`.
+
+## Placeholder.paragraph
+
+**Use when**
+
+- what is missing is prose: a body, a description, a comment
+- the ragged edge that makes the block read as text and not as a table is wanted
+
+**Avoid when**
+
+- it is a single line; there it is Placeholder and keeps the full measure
+- the lines have widths that mean different things (a name, a date); those are separate Placeholders with their own width
+
+Alternatives: `Placeholder`, `Loader`.
+
+- React: `import { PlaceholderParagraph } from "@skryensya/react/placeholder"`.
+- HTML: a `<span>`, no JavaScript needed.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `text` | "caption" \| "sm" \| "body" \| "lg" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| "display-sm" \| "display-md" \| "display-lg" | `"body"` |
+| `lines` | number | `3` |
+| `lastLine` | string | `"62%"` |
+| `shimmer` | boolean | `true` |
+
+**Example** (canonical tree `placeholder/paragraph`; its copy is placeholder, replace it)
+
+```tsx
+import { PlaceholderParagraph } from "@skryensya/react/placeholder";
+import { type CSSProperties } from "react";
+
+export function PlaceholderParagraphExample() {
+  return (
+    <PlaceholderParagraph
+      text="body"
+      lines={3}
+      lastLine="62%"
+      style={{ "--sk-placeholder-last-line": "62%" } as CSSProperties}
+    />
+  );
+}
+```
+
+```html
+<span
+  class="sk-placeholder"
+  data-text="body"
+  aria-hidden="true"
+  data-shape="paragraph"
+  style="--sk-placeholder-last-line: 62%;"
+>
+  <span class="sk-placeholder__line"></span>
+  <span class="sk-placeholder__line"></span>
+  <span class="sk-placeholder__line"></span>
+</span>
 ```
 
 Stylesheets: `@skryensya/core/components/placeholder.css`.
@@ -155,66 +215,6 @@ export function PlaceholderCircleExample() {
   aria-hidden="true"
   data-shape="circle"
 ></span>
-```
-
-Stylesheets: `@skryensya/core/components/placeholder.css`.
-
-## Placeholder.paragraph
-
-**Use when**
-
-- what is missing is prose: a body, a description, a comment
-- the ragged edge that makes the block read as text and not as a table is wanted
-
-**Avoid when**
-
-- it is a single line; there it is Placeholder and keeps the full measure
-- the lines have widths that mean different things (a name, a date); those are separate Placeholders with their own width
-
-Alternatives: `Placeholder`, `Loader`.
-
-- React: `import { PlaceholderParagraph } from "@skryensya/react/placeholder"`.
-- HTML: a `<span>`, no JavaScript needed.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `text` | "caption" \| "sm" \| "body" \| "lg" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| "display-sm" \| "display-md" \| "display-lg" | `"body"` |
-| `lines` | number | `3` |
-| `lastLine` | string | `"62%"` |
-| `shimmer` | boolean | `true` |
-
-**Example** (canonical tree `placeholder/paragraph`; its copy is placeholder, replace it)
-
-```tsx
-import { PlaceholderParagraph } from "@skryensya/react/placeholder";
-import { type CSSProperties } from "react";
-
-export function PlaceholderParagraphExample() {
-  return (
-    <PlaceholderParagraph
-      text="body"
-      lines={3}
-      lastLine="62%"
-      style={{ "--sk-placeholder-last-line": "62%" } as CSSProperties}
-    />
-  );
-}
-```
-
-```html
-<span
-  class="sk-placeholder"
-  data-text="body"
-  aria-hidden="true"
-  data-shape="paragraph"
-  style="--sk-placeholder-last-line: 62%;"
->
-  <span class="sk-placeholder__line"></span>
-  <span class="sk-placeholder__line"></span>
-  <span class="sk-placeholder__line"></span>
-</span>
 ```
 
 Stylesheets: `@skryensya/core/components/placeholder.css`.

@@ -38,10 +38,10 @@ Alternatives: `Segmented`, `Select`, `Combobox`, `RadioGroup`, `Menu`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `items` | a list of items (below) | yes |
 | `label` | text | yes |
+| `items` | a list of items (below) | yes |
 
-Each item in `items`, keyed by `value`: `defaultSelected` (boolean), `disabled` (boolean), `value` (string), `description` (text), `label` (text, required).
+Each item in `items`, keyed by `value`: `value` (string), `disabled` (boolean), `defaultSelected` (boolean), `label` (text, required), `description` (text).
 
 **Example** (canonical tree `listbox/multiple`; its copy is placeholder, replace it)
 

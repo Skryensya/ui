@@ -4564,133 +4564,340 @@ export const pageSnippets: readonly Snippet[] = [
                   },
                   "children": [
                     {
-                      "contract": "image-frame",
-                      "signature": "ImageFrame",
+                      "contract": "gallery",
+                      "signature": "Gallery",
                       "options": {
-                        "aspect": "1/1",
-                        "src": "/demos/satin/satin-pearl-1x1.jpg",
-                        "alt": "Lumen 65 keyboard seen from above"
+                        "name": "product-photos",
+                        "label": "Photos of the Olivo lamp",
+                        "value": "desk"
                       },
                       "slots": {
-                        "caption": {
-                          "contract": "media-overlay",
-                          "signature": "MediaOverlay",
-                          "children": [
-                            {
-                              "contract": "media-overlay",
-                              "signature": "MediaOverlayShade"
+                        "items": [
+                          {
+                            "options": {
+                              "value": "desk"
                             },
-                            {
-                              "contract": "button",
-                              "signature": "Button.action",
-                              "options": {
-                                "variant": "soft",
-                                "size": "sm"
-                              },
-                              "children": [
-                                {
-                                  "contract": "icon",
-                                  "signature": "Icon",
-                                  "options": {
-                                    "name": "maximize",
-                                    "size": "sm"
-                                  }
+                            "slots": {
+                              "view": {
+                                "contract": "lightbox",
+                                "signature": "Lightbox.Trigger",
+                                "options": {
+                                  "opens": "product-photos-viewer",
+                                  "triggerSrc": "/demos/lamp/lamp-desk.webp",
+                                  "triggerWidth": 1122,
+                                  "triggerHeight": 1402
                                 },
-                                "View all 6 photos"
-                              ]
+                                "slots": {
+                                  "children": {
+                                    "contract": "magnifier",
+                                    "signature": "Magnifier",
+                                    "options": {
+                                      "zoom": 2.5
+                                    },
+                                    "children": {
+                                      "contract": "image-frame",
+                                      "signature": "ImageFrame",
+                                      "options": {
+                                        "aspect": "4/5",
+                                        "src": "/demos/lamp/lamp-desk.webp",
+                                        "alt": "The olive green Olivo lamp on an oak desk beside a mug and a notebook, in afternoon light"
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "thumb": {
+                                "contract": "image-frame",
+                                "signature": "ImageFrame",
+                                "options": {
+                                  "frameElement": "span",
+                                  "aspect": "1/1",
+                                  "radius": "control",
+                                  "src": "/demos/lamp/lamp-desk-thumb.webp",
+                                  "alt": "On the desk"
+                                }
+                              }
                             }
-                          ]
-                        }
+                          },
+                          {
+                            "options": {
+                              "value": "shade"
+                            },
+                            "slots": {
+                              "view": {
+                                "contract": "lightbox",
+                                "signature": "Lightbox.Trigger",
+                                "options": {
+                                  "opens": "product-photos-viewer",
+                                  "triggerSrc": "/demos/lamp/lamp-shade.webp",
+                                  "triggerWidth": 1122,
+                                  "triggerHeight": 1402
+                                },
+                                "slots": {
+                                  "children": {
+                                    "contract": "magnifier",
+                                    "signature": "Magnifier",
+                                    "options": {
+                                      "zoom": 2.5
+                                    },
+                                    "children": {
+                                      "contract": "image-frame",
+                                      "signature": "ImageFrame",
+                                      "options": {
+                                        "aspect": "4/5",
+                                        "src": "/demos/lamp/lamp-shade.webp",
+                                        "alt": "The lamp's shade up close: matte olive green metal with the bulb lit"
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "thumb": {
+                                "contract": "image-frame",
+                                "signature": "ImageFrame",
+                                "options": {
+                                  "frameElement": "span",
+                                  "aspect": "1/1",
+                                  "radius": "control",
+                                  "src": "/demos/lamp/lamp-shade-thumb.webp",
+                                  "alt": "The shade"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "options": {
+                              "value": "base"
+                            },
+                            "slots": {
+                              "view": {
+                                "contract": "lightbox",
+                                "signature": "Lightbox.Trigger",
+                                "options": {
+                                  "opens": "product-photos-viewer",
+                                  "triggerSrc": "/demos/lamp/lamp-base.webp",
+                                  "triggerWidth": 1122,
+                                  "triggerHeight": 1402
+                                },
+                                "slots": {
+                                  "children": {
+                                    "contract": "magnifier",
+                                    "signature": "Magnifier",
+                                    "options": {
+                                      "zoom": 2.5
+                                    },
+                                    "children": {
+                                      "contract": "image-frame",
+                                      "signature": "ImageFrame",
+                                      "options": {
+                                        "aspect": "4/5",
+                                        "src": "/demos/lamp/lamp-base.webp",
+                                        "alt": "The lamp's round base and arm joint on the wood of the desk"
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "thumb": {
+                                "contract": "image-frame",
+                                "signature": "ImageFrame",
+                                "options": {
+                                  "frameElement": "span",
+                                  "aspect": "1/1",
+                                  "radius": "control",
+                                  "src": "/demos/lamp/lamp-base-thumb.webp",
+                                  "alt": "The base"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "options": {
+                              "value": "room"
+                            },
+                            "slots": {
+                              "view": {
+                                "contract": "lightbox",
+                                "signature": "Lightbox.Trigger",
+                                "options": {
+                                  "opens": "product-photos-viewer",
+                                  "triggerSrc": "/demos/lamp/lamp-room.webp",
+                                  "triggerWidth": 1122,
+                                  "triggerHeight": 1402
+                                },
+                                "slots": {
+                                  "children": {
+                                    "contract": "magnifier",
+                                    "signature": "Magnifier",
+                                    "options": {
+                                      "zoom": 2.5
+                                    },
+                                    "children": {
+                                      "contract": "image-frame",
+                                      "signature": "ImageFrame",
+                                      "options": {
+                                        "aspect": "4/5",
+                                        "src": "/demos/lamp/lamp-room.webp",
+                                        "alt": "A work corner with the lamp on an oak desk, a wooden chair and plants"
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "thumb": {
+                                "contract": "image-frame",
+                                "signature": "ImageFrame",
+                                "options": {
+                                  "frameElement": "span",
+                                  "aspect": "1/1",
+                                  "radius": "control",
+                                  "src": "/demos/lamp/lamp-room-thumb.webp",
+                                  "alt": "In the room"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "contract": "lightbox",
+                      "signature": "Lightbox",
+                      "options": {
+                        "lightboxId": "product-photos-viewer",
+                        "label": "Photos of the Olivo lamp",
+                        "closeLabel": "Close viewer",
+                        "previousLabel": "Previous image",
+                        "nextLabel": "Next image",
+                        "zoomInLabel": "Zoom in",
+                        "zoomOutLabel": "Zoom out",
+                        "resetZoomLabel": "Reset zoom",
+                        "errorLabel": "This image could not be loaded.",
+                        "counterLabel": "Image {index} of {count}"
                       }
                     },
                     {
                       "contract": "layout",
                       "signature": "Stack",
                       "options": {
-                        "gap": "md",
-                        "align": "start"
+                        "gap": "lg"
                       },
                       "children": [
                         {
-                          "contract": "badge",
-                          "signature": "Badge",
-                          "options": {
-                            "tone": "success"
-                          },
-                          "children": "In stock"
-                        },
-                        {
-                          "contract": "typography",
-                          "signature": "Heading",
-                          "options": {
-                            "headingSize": "h2",
-                            "flush": true,
-                            "headingElement": "h1"
-                          },
-                          "children": "Lumen 65 keyboard"
-                        },
-                        {
-                          "contract": "rating",
-                          "signature": "RatingDisplay",
-                          "options": {
-                            "value": 4.6,
-                            "label": "4.6 out of 5"
-                          },
-                          "slots": {
-                            "valueText": "4.6",
-                            "count": "212 reviews"
-                          }
-                        },
-                        {
-                          "contract": "typography",
-                          "signature": "Text",
-                          "options": {
-                            "size": "lg",
-                            "weight": "emphasis"
-                          },
-                          "children": "$89"
-                        },
-                        {
-                          "contract": "typography",
-                          "signature": "Text",
-                          "options": {
-                            "tone": "secondary"
-                          },
-                          "children": "A compact aluminium keyboard with linear switches, wired or wireless."
-                        },
-                        {
-                          "contract": "number-field",
-                          "signature": "NumberField",
-                          "options": {
-                            "name": "quantity",
-                            "defaultValue": "1",
-                            "min": 1,
-                            "max": 5,
-                            "step": 1,
-                            "incrementLabel": "Add one",
-                            "decrementLabel": "Remove one"
-                          },
-                          "slots": {
-                            "label": "Quantity"
-                          }
-                        },
-                        {
                           "contract": "layout",
-                          "signature": "Inline",
+                          "signature": "Stack",
                           "options": {
-                            "gap": "sm",
-                            "wrap": true
+                            "gap": "xs",
+                            "align": "start"
                           },
                           "children": [
                             {
-                              "contract": "button",
-                              "signature": "Button.action",
+                              "contract": "badge",
+                              "signature": "Badge",
                               "options": {
-                                "appearance": "tactile",
-                                "tone": "accent",
-                                "size": "lg"
+                                "tone": "success"
                               },
-                              "children": "Add to cart"
+                              "children": "In stock"
+                            },
+                            {
+                              "contract": "typography",
+                              "signature": "Heading",
+                              "options": {
+                                "headingSize": "h2",
+                                "flush": true,
+                                "headingElement": "h1"
+                              },
+                              "children": "Olivo desk lamp"
+                            },
+                            {
+                              "contract": "rating",
+                              "signature": "RatingDisplay",
+                              "options": {
+                                "value": 4.8,
+                                "label": "4.8 out of 5"
+                              },
+                              "slots": {
+                                "valueText": "4.8",
+                                "count": "164 reviews"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "contract": "layout",
+                          "signature": "Stack",
+                          "options": {
+                            "gap": "sm"
+                          },
+                          "children": [
+                            {
+                              "contract": "typography",
+                              "signature": "Text",
+                              "options": {
+                                "size": "lg",
+                                "weight": "emphasis"
+                              },
+                              "children": "$129"
+                            },
+                            {
+                              "contract": "typography",
+                              "signature": "Text",
+                              "options": {
+                                "tone": "secondary"
+                              },
+                              "children": "An articulated steel lamp, powder-coated in olive green. The arm and shade turn to put the light right where you read or work."
+                            }
+                          ]
+                        },
+                        {
+                          "contract": "layout",
+                          "signature": "Stack",
+                          "options": {
+                            "gap": "sm"
+                          },
+                          "children": [
+                            {
+                              "contract": "layout",
+                              "signature": "Inline",
+                              "options": {
+                                "gap": "sm",
+                                "inlineAlign": "end",
+                                "wrap": false
+                              },
+                              "children": [
+                                {
+                                  "contract": "number-field",
+                                  "signature": "NumberField",
+                                  "options": {
+                                    "name": "quantity",
+                                    "defaultValue": "1",
+                                    "min": 1,
+                                    "max": 5,
+                                    "step": 1,
+                                    "incrementLabel": "Add one",
+                                    "decrementLabel": "Remove one"
+                                  },
+                                  "attrs": {
+                                    "style": "inline-size: 8.5rem; flex: none;"
+                                  },
+                                  "slots": {
+                                    "label": "Quantity"
+                                  }
+                                },
+                                {
+                                  "contract": "button",
+                                  "signature": "Button.action",
+                                  "options": {
+                                    "appearance": "tactile",
+                                    "tone": "accent",
+                                    "size": "lg"
+                                  },
+                                  "attrs": {
+                                    "style": "flex: 1;"
+                                  },
+                                  "children": "Add to cart"
+                                }
+                              ]
                             },
                             {
                               "contract": "button",
@@ -4699,17 +4906,74 @@ export const pageSnippets: readonly Snippet[] = [
                                 "variant": "soft",
                                 "size": "lg"
                               },
-                              "children": [
-                                {
+                              "attrs": {
+                                "style": "inline-size: 100%;"
+                              },
+                              "slots": {
+                                "pre": {
                                   "contract": "icon",
                                   "signature": "Icon",
                                   "options": {
-                                    "name": "like",
+                                    "name": "favorite"
+                                  }
+                                }
+                              },
+                              "children": "Save"
+                            }
+                          ]
+                        },
+                        {
+                          "contract": "list",
+                          "signature": "List",
+                          "options": {
+                            "density": "compact",
+                            "dividers": false
+                          },
+                          "children": [
+                            {
+                              "contract": "list",
+                              "signature": "ListItem",
+                              "slots": {
+                                "leading": {
+                                  "contract": "icon",
+                                  "signature": "Icon",
+                                  "options": {
+                                    "name": "check",
                                     "size": "sm"
                                   }
                                 },
-                                "Save"
-                              ]
+                                "title": "Free shipping over $50"
+                              }
+                            },
+                            {
+                              "contract": "list",
+                              "signature": "ListItem",
+                              "slots": {
+                                "leading": {
+                                  "contract": "icon",
+                                  "signature": "Icon",
+                                  "options": {
+                                    "name": "check",
+                                    "size": "sm"
+                                  }
+                                },
+                                "title": "30-day returns"
+                              }
+                            },
+                            {
+                              "contract": "list",
+                              "signature": "ListItem",
+                              "slots": {
+                                "leading": {
+                                  "contract": "icon",
+                                  "signature": "Icon",
+                                  "options": {
+                                    "name": "check",
+                                    "size": "sm"
+                                  }
+                                },
+                                "title": "2-year warranty"
+                              }
                             }
                           ]
                         }
@@ -4738,7 +5002,7 @@ export const pageSnippets: readonly Snippet[] = [
                           "children": {
                             "contract": "typography",
                             "signature": "Text",
-                            "children": "A machined aluminium case, double-shot PBT keycaps and a battery that lasts three weeks of daily use."
+                            "children": "Matte powder-coated steel, screw joints you tighten by hand and a weighted base that will not tip. The warm light of the included bulb is easy on the eyes through long evenings."
                           }
                         }
                       },
@@ -4760,32 +5024,32 @@ export const pageSnippets: readonly Snippet[] = [
                                 "contract": "description-list",
                                 "signature": "DescriptionItem",
                                 "slots": {
-                                  "term": "Layout",
-                                  "children": "65 %"
+                                  "term": "Height",
+                                  "children": "52 cm"
                                 }
                               },
                               {
                                 "contract": "description-list",
                                 "signature": "DescriptionItem",
                                 "slots": {
-                                  "term": "Switches",
-                                  "children": "Linear, factory-lubed"
+                                  "term": "Material",
+                                  "children": "Matte powder-coated steel"
                                 }
                               },
                               {
                                 "contract": "description-list",
                                 "signature": "DescriptionItem",
                                 "slots": {
-                                  "term": "Weight",
-                                  "children": "780 g"
+                                  "term": "Bulb",
+                                  "children": "8 W E27 LED, warm white, included"
                                 }
                               },
                               {
                                 "contract": "description-list",
                                 "signature": "DescriptionItem",
                                 "slots": {
-                                  "term": "Connection",
-                                  "children": "USB-C · Bluetooth 5.1"
+                                  "term": "Cable",
+                                  "children": "Fabric, 1.8 m, with a switch"
                                 }
                               }
                             ]

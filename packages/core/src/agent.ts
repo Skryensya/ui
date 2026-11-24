@@ -463,29 +463,59 @@ export const agentTools = [
   },
 ] as const;
 
-type ModelContext = {
-  registerTool?: (tool: { name: string; description: string; inputSchema: object; execute: (input: never) => Promise<unknown> }) => { unregister?: () => void } | void;
-  unregisterTool?: (name: string) => void;
+/** The page's side of WebMCP, as the W3C draft (19 November 2026) declares it on `document`. */
+type ModelContextTool = {
+  name: string;
+  title?: string;
+  description: string;
+  inputSchema?: object;
+  execute: (input: object, options: { signal: AbortSignal }) => Promise<unknown>;
+  annotations?: { readOnlyHint?: boolean; consequentialHint?: boolean };
 };
 
+type ModelContext = {
+  registerTool(tool: ModelContextTool, options?: { signal?: AbortSignal }): Promise<void>;
+};
+
+const TOOL_TITLES = { snapshot: "Read the page's controls", query: "Find controls on the page", act: "Change controls on the page" } as const;
+
 /**
- * Offers the three tools to the browser's own agent through WebMCP (`navigator.modelContext`, or the
- * older `document.modelContext`). Does nothing where neither exists. `allow` is required: you did not
- * write that agent. Returns a function that takes the tools back.
+ * Offers the three tools to the browser's own agent through WebMCP (`document.modelContext`), as
+ * `skryensya_snapshot`, `skryensya_query` and `skryensya_act`. `allow` is required: you did not write
+ * that agent. Resolves to a function that takes the tools back (WebMCP unregisters by aborting the
+ * registration's signal). Where the browser has no WebMCP it resolves to a no-op; where it refuses a
+ * tool (a name already taken, the `tools` permission off) it rejects, and nothing stays registered.
  */
-export function registerTools(agent: Agent, { allow }: { readonly allow: Allow }): () => void {
-  const host = globalThis as { navigator?: { modelContext?: ModelContext }; document?: { modelContext?: ModelContext } };
-  const context = host.navigator?.modelContext ?? host.document?.modelContext;
-  if (!context?.registerTool) return () => {};
-  const handles = agentTools.map((tool) =>
-    context.registerTool!({
-      name: `skryensya_${tool.name}`,
-      description: tool.description,
-      inputSchema: tool.inputSchema,
-      execute: async (input: never) => (tool.name === "snapshot" ? agent.snapshot() : tool.name === "query" ? agent.query(input) : agent.act(input, { allow })),
-    }),
-  );
-  return () => {
-    handles.forEach((handle, at) => (handle && handle.unregister ? handle.unregister() : context.unregisterTool?.(`skryensya_${agentTools[at]!.name}`)));
-  };
+export async function registerTools(agent: Agent, { allow }: { readonly allow: Allow }): Promise<() => void> {
+  const context = (globalThis as { document?: { modelContext?: ModelContext } }).document?.modelContext;
+  if (typeof context?.registerTool !== "function") return () => {};
+  const registration = new AbortController();
+  const unregister = () => registration.abort();
+  try {
+    await Promise.all(
+      agentTools.map((tool) =>
+        context.registerTool(
+          {
+            name: `skryensya_${tool.name}`,
+            title: TOOL_TITLES[tool.name],
+            description: tool.description,
+            inputSchema: tool.inputSchema,
+            // The result is serialized to JSON by the browser: every entry and ActResult already is plain data.
+            execute: async (input) =>
+              tool.name === "snapshot"
+                ? agent.snapshot()
+                : tool.name === "query"
+                  ? agent.query(input as Parameters<Agent["query"]>[0])
+                  : agent.act(input as Parameters<Agent["act"]>[0], { allow }),
+            annotations: tool.name === "act" ? { consequentialHint: true } : { readOnlyHint: true },
+          },
+          { signal: registration.signal },
+        ),
+      ),
+    );
+  } catch (error) {
+    unregister();
+    throw error;
+  }
+  return unregister;
 }

@@ -1,6 +1,6 @@
 # color-picker
 
-Category: forms. Stylesheet: `@skryensya/core/components/color-picker.css`. Signatures: `ColorPicker`, `ColorPicker.compact`, `ColorPicker.native`, `ColorPicker.swatch`.
+Category: forms. Stylesheet: `@skryensya/core/components/color-picker.css`. Signatures: `ColorPicker`, `ColorPicker.compact`, `ColorPicker.swatch`, `ColorPicker.native`.
 
 ## ColorPicker
 
@@ -159,72 +159,6 @@ export function CompactColorPickerExample() {
 
 Stylesheets: `@skryensya/core/components/button.css`, `@skryensya/core/components/color-picker.css`, `@skryensya/core/patterns/anchored.css`.
 
-## ColorPicker.native
-
-**Use when**
-
-- an ordinary color inside a form, with no presets or channels of its own
-- the operating system's picker and the submission should belong to the browser
-
-**Avoid when**
-
-- presets, transparency or seeing the area and hue while adjusting are needed: that is ColorPicker
-
-Alternatives: `ColorPicker`, `ColorPicker.compact`.
-
-- React: `import { NativeColorPicker } from "@skryensya/react/color-picker"`.
-- HTML: a `<div>` with `data-sk-color-picker-native`, enhanced by Vanilla's mount.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `name` | string |  |
-| `value` (React: `defaultValue`) | string |  |
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `label` | text | yes |
-
-**Example** (canonical tree `color-picker/native`; its copy is placeholder, replace it)
-
-```tsx
-import { NativeColorPicker } from "@skryensya/react/color-picker";
-
-export function NativeColorPickerExample() {
-  return <NativeColorPicker name="bg" defaultValue="#ffffff" label="Fondo" />;
-}
-```
-
-```html
-<div class="sk-color-picker" data-sk-color-picker-native>
-  <label class="sk-color-picker__label" id="fondo">Fondo</label>
-  <div class="sk-color-picker__control">
-    <input
-      class="sk-color-picker__trigger"
-      name="bg"
-      value="#ffffff"
-      type="color"
-      aria-labelledby="fondo"
-    >
-    <input
-      class="sk-color-picker__native-value"
-      value="#ffffff"
-      type="text"
-      autocomplete="off"
-      spellcheck="false"
-      maxlength="7"
-      inputmode="text"
-      aria-labelledby="fondo"
-    >
-  </div>
-</div>
-```
-
-Stylesheets: `@skryensya/core/components/color-picker.css`, `@skryensya/core/patterns/anchored.css`.
-
 ## ColorPicker.swatch
 
 **Use when**
@@ -302,6 +236,72 @@ export function SwatchColorPickerExample() {
 ```
 
 Stylesheets: `@skryensya/core/components/button.css`, `@skryensya/core/components/color-picker.css`, `@skryensya/core/patterns/anchored.css`.
+
+## ColorPicker.native
+
+**Use when**
+
+- an ordinary color inside a form, with no presets or channels of its own
+- the operating system's picker and the submission should belong to the browser
+
+**Avoid when**
+
+- presets, transparency or seeing the area and hue while adjusting are needed: that is ColorPicker
+
+Alternatives: `ColorPicker`, `ColorPicker.compact`.
+
+- React: `import { NativeColorPicker } from "@skryensya/react/color-picker"`.
+- HTML: a `<div>` with `data-sk-color-picker-native`, enhanced by Vanilla's mount.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `name` | string |  |
+| `value` (React: `defaultValue`) | string |  |
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `label` | text | yes |
+
+**Example** (canonical tree `color-picker/native`; its copy is placeholder, replace it)
+
+```tsx
+import { NativeColorPicker } from "@skryensya/react/color-picker";
+
+export function NativeColorPickerExample() {
+  return <NativeColorPicker name="bg" defaultValue="#ffffff" label="Fondo" />;
+}
+```
+
+```html
+<div class="sk-color-picker" data-sk-color-picker-native>
+  <label class="sk-color-picker__label" id="fondo">Fondo</label>
+  <div class="sk-color-picker__control">
+    <input
+      class="sk-color-picker__trigger"
+      name="bg"
+      value="#ffffff"
+      type="color"
+      aria-labelledby="fondo"
+    >
+    <input
+      class="sk-color-picker__native-value"
+      value="#ffffff"
+      type="text"
+      autocomplete="off"
+      spellcheck="false"
+      maxlength="7"
+      inputmode="text"
+      aria-labelledby="fondo"
+    >
+  </div>
+</div>
+```
+
+Stylesheets: `@skryensya/core/components/color-picker.css`, `@skryensya/core/patterns/anchored.css`.
 
 ## Events
 

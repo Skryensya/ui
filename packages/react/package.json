@@ -26,6 +26,10 @@
       "types": "./src/components/password-input.tsx",
       "default": "./src/components/password-input.tsx"
     },
+    "./gallery": {
+      "types": "./src/components/gallery.tsx",
+      "default": "./src/components/gallery.tsx"
+    },
     "./search-field": {
       "types": "./src/components/search-field.tsx",
       "default": "./src/components/search-field.tsx"
@@ -61,6 +65,10 @@
     "./compare-slider": {
       "types": "./src/components/compare-slider.tsx",
       "default": "./src/components/compare-slider.tsx"
+    },
+    "./magnifier": {
+      "types": "./src/components/magnifier.tsx",
+      "default": "./src/components/magnifier.tsx"
     },
     "./comparison-table": {
       "types": "./src/components/comparison-table.tsx",

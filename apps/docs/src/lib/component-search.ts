@@ -1,4 +1,4 @@
-import { normalizeCommandPaletteQuery } from "@skryensya/core/command-palette";
+import { commandPaletteEditDistance as editDistance, normalizeCommandPaletteQuery } from "@skryensya/core/command-palette";
 
 const normalize = (value: string): string => normalizeCommandPaletteQuery(value).replace(/[^\p{L}\p{N}]+/gu, " ").trim();
 
@@ -25,30 +25,6 @@ export function prepareComponentSearch(names: readonly string[], context = ""): 
     }
   }
   return { names: [...terms].filter(([, penalty]) => penalty === 0).map(([text]) => text), terms: [...terms].map(([text, penalty]) => ({ text, penalty })), context: normalize(context) };
-}
-
-/** Bounded edit distance, including adjacent transpositions such as "botno" → "boton". */
-function editDistance(source: string, target: string, limit: number): number {
-  if (Math.abs(source.length - target.length) > limit) return limit + 1;
-  let previous = Array.from({ length: target.length + 1 }, (_, index) => index);
-  let beforePrevious = previous;
-  for (let row = 1; row <= source.length; row++) {
-    const current = [row];
-    for (let column = 1; column <= target.length; column++) {
-      current[column] = Math.min(
-        current[column - 1]! + 1,
-        previous[column]! + 1,
-        previous[column - 1]! + Number(source[row - 1] !== target[column - 1]),
-      );
-      if (row > 1 && column > 1 && source[row - 1] === target[column - 2] && source[row - 2] === target[column - 1]) {
-        current[column] = Math.min(current[column]!, beforePrevious[column - 2]! + 1);
-      }
-    }
-    if (Math.min(...current) > limit) return limit + 1;
-    beforePrevious = previous;
-    previous = current;
-  }
-  return previous[target.length]!;
 }
 
 function scoreTerm(query: string, term: string): number | null {

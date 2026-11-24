@@ -44,7 +44,7 @@ Alternatives: `Tooltip`, `Popover`, `Steps`, `Dialog`.
 |---|---|---|
 | `items` (React: `steps`) | a list of items (below) | yes |
 
-Each item in `items`: `placement` ("block-start" \| "block-end" \| "inline-start" \| "inline-end"), `target` (string), `description` (text, required), `title` (text, required).
+Each item in `items`: `target` (string), `placement` ("block-start" \| "block-end" \| "inline-start" \| "inline-end"), `title` (text, required), `description` (text, required).
 
 ## Tour.Trigger
 

@@ -1,6 +1,6 @@
 import { createRequire } from "node:module";
 import { describe, expect, it } from "vitest";
-import { isComponentIconName, stableIconNames } from "./icon.js";
+import { brandIconNames, isBrandIconName, isComponentIconName, stableIconNames } from "./icon.js";
 import { iconSetCss, iconSetFromIconify, iconSetModule, iconifyPresets, type IconifyJSON } from "./iconify.js";
 
 const require = createRequire(import.meta.url);
@@ -15,6 +15,12 @@ describe.each(Object.entries(iconifyPresets))("%s preset", (_, preset) => {
     expect(Object.keys(full).sort()).toEqual(Object.keys(preset.map).sort());
   });
 
+  it("draws every brand logo when asked, and none otherwise", () => {
+    const branded = iconSetFromIconify(json, preset, { brands: true }) as Record<string, { body: string }>;
+    for (const brand of brandIconNames) expect(branded[brand]?.body, brand).toBeTruthy();
+    expect(Object.keys(set).some(isBrandIconName)).toBe(false);
+  });
+
   it("leaves the component marks out unless asked", () => {
     expect(Object.keys(set).some(isComponentIconName)).toBe(false);
     expect(Object.keys(full).filter(isComponentIconName).length).toBeGreaterThan(100);
@@ -22,7 +28,8 @@ describe.each(Object.entries(iconifyPresets))("%s preset", (_, preset) => {
 
   it("writes a module and a stylesheet holding only the mapped roles", () => {
     const source = iconSetModule(set, "/* test */");
-    expect(source.length).toBeLessThan(80_000);
+    // Solar's bold duotone draws two layers per icon: ~84 KB, still one lazy chunk.
+    expect(source.length).toBeLessThan(100_000);
     expect(iconSetCss(set)).toContain("--sk-carousel-native-next-icon");
   });
 });

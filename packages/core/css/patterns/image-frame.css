@@ -69,6 +69,11 @@
     --sk-image-frame-aspect: 16 / 9;
   }
 
+  /* The common product-photo shape, a little wider than 3/4. */
+  .sk-image-frame[data-aspect="4/5"] {
+    --sk-image-frame-aspect: 4 / 5;
+  }
+
   .sk-image-frame[data-aspect="3/4"] {
     --sk-image-frame-aspect: 3 / 4;
   }

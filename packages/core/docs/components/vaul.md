@@ -1,6 +1,6 @@
 # vaul
 
-Category: overlays. Stylesheet: `@skryensya/core/patterns/vaul.css`. Signatures: `Vaul`, `Vaul.Close`, `Vaul.drawer`, `Vaul.Trigger`.
+Category: overlays. Stylesheet: `@skryensya/core/patterns/vaul.css`. Signatures: `Vaul`, `Vaul.drawer`, `Vaul.Trigger`, `Vaul.Close`.
 
 ## Vaul
 
@@ -72,39 +72,6 @@ export function VaulExample() {
 ```
 
 Stylesheets: `@skryensya/core/patterns/vaul.css`.
-
-## Vaul.Close
-
-**Use when**
-
-- the panel needs a button of its own to close (a Done, an X): it goes inside the Vaul
-
-**Avoid when**
-
-- the button confirms an action besides closing; there a Button that performs the action and closes from its own handler fits better
-
-- React: `import { Vaul } from "@skryensya/react/vaul"`, then `<Vaul.Close>`.
-- HTML: a `<button>`, no JavaScript needed.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `buttonVariant` (React: `variant`) | string |  |
-| `buttonTone` (React: `tone`) | string |  |
-| `buttonSize` (React: `size`) | string |  |
-| `buttonIconOnly` (React: `iconOnly`) | boolean | `false` |
-| `buttonLabel` (React: `aria-label`) | string |  |
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | node | yes |
-
-**Accessible name**
-
-- An icon-only trigger or close button has no visible text, so nothing else names it. Give one of: `buttonLabel`.
 
 ## Vaul.drawer
 
@@ -199,6 +166,39 @@ Alternatives: `Popover`, `Menu`.
 | Option | Values | Default |
 |---|---|---|
 | `opens` | string |  |
+| `buttonVariant` (React: `variant`) | string |  |
+| `buttonTone` (React: `tone`) | string |  |
+| `buttonSize` (React: `size`) | string |  |
+| `buttonIconOnly` (React: `iconOnly`) | boolean | `false` |
+| `buttonLabel` (React: `aria-label`) | string |  |
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | node | yes |
+
+**Accessible name**
+
+- An icon-only trigger or close button has no visible text, so nothing else names it. Give one of: `buttonLabel`.
+
+## Vaul.Close
+
+**Use when**
+
+- the panel needs a button of its own to close (a Done, an X): it goes inside the Vaul
+
+**Avoid when**
+
+- the button confirms an action besides closing; there a Button that performs the action and closes from its own handler fits better
+
+- React: `import { Vaul } from "@skryensya/react/vaul"`, then `<Vaul.Close>`.
+- HTML: a `<button>`, no JavaScript needed.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
 | `buttonVariant` (React: `variant`) | string |  |
 | `buttonTone` (React: `tone`) | string |  |
 | `buttonSize` (React: `size`) | string |  |

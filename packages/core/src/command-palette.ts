@@ -34,6 +34,9 @@ export type CommandPaletteCommand = CommandPaletteEntryBase & { command: string;
 
 export type CommandPaletteEntry = CommandPaletteLink | CommandPaletteCommand;
 
+/** How many recents are listed ahead of the rest. */
+export const COMMAND_PALETTE_RECENTS_MAX = 5;
+
 /** What a query starts with to ask for commands instead of destinations. */
 export const COMMAND_PALETTE_COMMAND_PREFIX = "/";
 
@@ -71,7 +74,27 @@ export const commandPaletteAttrs = {
 export const commandPaletteEvents = {
   /** On the root, bubbling, when a command entry is activated. Detail: `{ command, entry }`. */
   command: "sk:commandpalettecommand",
+  /**
+   * On the root, bubbling, whenever the palette is about to list an EMPTY query. The host answers by pushing the addresses of the
+   * pages the reader came from into `detail.hrefs` (newest first), synchronously, and they are listed first. The palette stores
+   * nothing itself: what counts as recent, and where it is kept, is the app's (a docs site's visited pages, an app's open files).
+   */
+  recents: "sk:commandpaletterecents",
 } as const;
+
+export type CommandPaletteRecents = {
+  /** Newest first. An address the index does not hold is skipped. */
+  readonly hrefs: string[];
+  /** Said in front of each recent row's context ("Recent · Components"), so a list that opens unasked says why. */
+  label?: string;
+};
+
+/** Ask the host for its recents. Both bindings call this, so the question is worded once. */
+export function askCommandPaletteRecents(target: EventTarget): CommandPaletteRecents {
+  const detail: CommandPaletteRecents = { hrefs: [] };
+  target.dispatchEvent(new CustomEvent<CommandPaletteRecents>(commandPaletteEvents.recents, { bubbles: true, detail }));
+  return detail;
+}
 
 export type CommandPaletteCommandEventDetail = {
   command: string;
@@ -106,18 +129,76 @@ export function scoreCommandPaletteEntry(
   return null;
 }
 
+/** Edits (insert, delete, replace, swap two neighbours) between two strings, giving up past `limit`: "botno" is one from "boton". */
+export function commandPaletteEditDistance(source: string, target: string, limit: number): number {
+  if (Math.abs(source.length - target.length) > limit) return limit + 1;
+  let previous = Array.from({ length: target.length + 1 }, (_, index) => index);
+  let beforePrevious = previous;
+  for (let row = 1; row <= source.length; row++) {
+    const current = [row];
+    for (let column = 1; column <= target.length; column++) {
+      current[column] = Math.min(
+        current[column - 1]! + 1,
+        previous[column]! + 1,
+        previous[column - 1]! + Number(source[row - 1] !== target[column - 1]),
+      );
+      if (row > 1 && column > 1 && source[row - 1] === target[column - 2] && source[row - 2] === target[column - 1]) {
+        current[column] = Math.min(current[column]!, beforePrevious[column - 2]! + 1);
+      }
+    }
+    if (Math.min(...current) > limit) return limit + 1;
+    beforePrevious = previous;
+    previous = current;
+  }
+  return previous[target.length]!;
+}
+
+/**
+ * The typo pass, used only when nothing matched exactly: a query of 3+ letters within one edit (two from 7 letters) of a whole
+ * name or of any one word in it. Prose is never fuzzy, the same rule the docs' catalogue follows, so a misspelling can find a
+ * destination but cannot drag in everything whose description is vaguely similar.
+ */
+function fuzzyRank(entry: CommandPaletteEntry, query: string): number | null {
+  if (query.length < 3) return null;
+  const limit = query.length >= 7 ? 2 : 1;
+  let best = limit + 1;
+  for (const name of [entry.command ?? "", entry.label, ...(entry.aliases ?? [])].filter(Boolean).map(normalizeCommandPaletteQuery)) {
+    for (const term of [name, ...name.split(/[^\p{L}\p{N}]+/u)]) {
+      if (term.length >= 3) best = Math.min(best, commandPaletteEditDistance(query, term, limit));
+    }
+  }
+  return best <= limit ? best : null;
+}
+
 export function filterCommandPaletteEntries(
   index: readonly CommandPaletteEntry[],
   query: string,
+  recents?: CommandPaletteRecents,
 ): CommandPaletteEntry[] {
   const asksForCommands = query.trimStart().startsWith(COMMAND_PALETTE_COMMAND_PREFIX);
   const pool = index.filter((entry) => isCommandPaletteCommand(entry) === asksForCommands);
   const q = normalizeCommandPaletteQuery(
     asksForCommands ? query.trimStart().slice(COMMAND_PALETTE_COMMAND_PREFIX.length) : query,
   );
-  if (q === "") return pool;
-  return pool
+  if (q === "") {
+    /* Nothing asked yet: the pages the reader came from first, then everything, so an empty palette is a shortcut and not a wall. */
+    const recent = asksForCommands
+      ? []
+      : (recents?.hrefs ?? []).flatMap((href) => pool.filter((entry) => entry.href === href)).slice(0, COMMAND_PALETTE_RECENTS_MAX);
+    if (recent.length === 0) return pool;
+    const shown = recent.map((entry) =>
+      recents?.label ? { ...entry, context: `${recents.label} · ${commandPaletteOptionContext(entry)}` } : entry,
+    );
+    return [...shown, ...pool.filter((entry) => !recent.includes(entry))];
+  }
+  const exact = pool
     .map((entry) => ({ entry, rank: scoreCommandPaletteEntry(entry, q) }))
+    .filter((row): row is { entry: CommandPaletteEntry; rank: number } => row.rank !== null)
+    .sort((a, b) => a.rank - b.rank)
+    .map((row) => row.entry);
+  if (exact.length > 0) return exact;
+  return pool
+    .map((entry) => ({ entry, rank: fuzzyRank(entry, q) }))
     .filter((row): row is { entry: CommandPaletteEntry; rank: number } => row.rank !== null)
     .sort((a, b) => a.rank - b.rank)
     .map((row) => row.entry);
@@ -173,6 +254,12 @@ export const commandPaletteContract = {
       detail: { command: "string", entry: "CommandPaletteCommand" },
       reactProp: "onCommand",
       reactDetail: "(command: string, entry: CommandPaletteCommand)",
+      source: "root",
+    },
+    /* A question to the host, answered by writing into `detail` before dispatch returns; both bindings ask it, so React has no prop. */
+    recents: {
+      detail: { hrefs: "string[]", label: "string | undefined" },
+      reactProp: false,
       source: "root",
     },
   },

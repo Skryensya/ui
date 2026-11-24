@@ -351,6 +351,17 @@ export const componentItems = [
     aliases: ["compare slider", "compare-slider", "compare", "comparar", "antes y después", "antes y despues", "before after", "before and after", "image comparison", "comparador de imágenes", "reveal slider", "slider de comparación", "divisor", "swipe compare"],
   },
   {
+    href: "/components/gallery",
+    label: "Gallery",
+    aliases: ["gallery", "galería", "galeria", "fotos", "photos", "product gallery", "galería de producto", "thumbnails", "miniaturas", "image picker", "carrusel de fotos"],
+  },
+  {
+    href: "/components/magnifier",
+    label: "Magnifier",
+    trailing: "Beta",
+    aliases: ["magnifier", "lupa", "lens", "lente", "loupe", "zoom", "image zoom", "zoom de imagen", "product zoom", "liquid glass", "vidrio", "glass"],
+  },
+  {
     href: "/components/video-player",
     label: "Video Player",
     trailing: "Beta",
@@ -1284,8 +1295,10 @@ const allComponentNavigation = [
       "/components/progressive-carousel",
       "/components/compare-slider",
       "/components/diagram",
+      "/components/gallery",
       "/components/image-frame",
       "/components/lightbox",
+      "/components/magnifier",
       "/components/marquee",
       "/components/media-overlay",
       "/components/morph-stack",
@@ -1461,6 +1474,11 @@ export const documentationNavigation = [
             aliases: ["first component", "primer componente"],
           },
           {
+            href: "/choose",
+            label: "¿Qué componente uso?",
+            aliases: ["which component", "choose a component", "elegir componente", "cuál uso", "decision table"],
+          },
+          {
             href: "/automatic-mounting",
             label: "Montaje automático",
             aliases: ["auto mount", "initComponents", "auto-mounting", "automatic mounting", "vanilla mount"],
@@ -1576,6 +1594,16 @@ export const documentationNavigation = [
             href: "/icons",
             label: "Iconografía",
             aliases: ["iconos", "icon set", "roles de icono", "vocabulario de iconos", "adr-15"],
+          },
+          {
+            href: "/icons/sets",
+            label: "Sets de iconos",
+            aliases: ["galería de iconos", "icon gallery", "todos los iconos", "all icons", "phosphor", "lucide", "solar", "duotone"],
+          },
+          {
+            href: "/icons/add",
+            label: "Agregar un set de iconos",
+            aliases: ["add icon set", "custom icon set", "iconify", "set propio", "own icons", "svg propios"],
           },
         ],
       },

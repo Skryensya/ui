@@ -58,3 +58,13 @@ it("adds the component marks only with --components", () => {
   main(["icons", "lucide", "--components"], capture(dir).ctx);
   expect(readFileSync(join(dir, "src/icons.ts"), "utf8")).toContain('"component-carousel"');
 });
+
+it("adds the brand logos only with --brands, one for every brand", () => {
+  const dir = withLucide();
+  main(["icons", "lucide"], capture(dir).ctx);
+  expect(readFileSync(join(dir, "src/icons.ts"), "utf8")).not.toContain('"brand-github"');
+  main(["icons", "lucide", "--brands"], capture(dir).ctx);
+  const written = readFileSync(join(dir, "src/icons.ts"), "utf8");
+  expect(written).toContain('"brand-github"');
+  expect(written).toContain('"brand-tiktok"');
+});

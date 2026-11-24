@@ -4,6 +4,8 @@ import { VideoPlayer } from "@skryensya/react/video-player";
 import { Canvas } from "@skryensya/react/canvas";
 import { Diagram } from "@skryensya/react/diagram";
 import { CompareSlider } from "@skryensya/react/compare-slider";
+import { Magnifier } from "@skryensya/react/magnifier";
+import { Gallery } from "@skryensya/react/gallery";
 import { ExpressiveAvatar } from "@skryensya/react/expressive-avatar";
 import { FadeEdge } from "@skryensya/react/fade-edge";
 import { Marquee } from "@skryensya/react/marquee";
@@ -30,6 +32,7 @@ import "@skryensya/core/components/presence.css";
 import "@skryensya/core/components/scroll-expand.css";
 import "@skryensya/core/components/scroll-stack.css";
 import "@skryensya/core/components/back-to-top.css";
+import "@skryensya/core/components/gallery.css";
 
 function Specimen({ id, data, index }: { id: string; data: Fixture; index: number }) {
   const [present, setPresent] = useState(data.items.length > 0);
@@ -45,6 +48,13 @@ function Specimen({ id, data, index }: { id: string; data: Fixture; index: numbe
     case "canvas": return <Canvas label={title} style={{ blockSize: "20rem" }}><Box style={{ inlineSize: worst ? "1800px" : "360px" }} padding="md" border="default">{rows}</Box></Canvas>;
     case "diagram": return <Diagram label={title} columns={worst ? 3 : 2} nodes={items.map((text, i) => ({ node: `node-${i}`, children: text }))} edges={items.slice(1).map((_, i) => ({ from: `node-${i}`, to: `node-${i + 1}`, children: worst ? body : "Next" }))} />;
     case "compare-slider": return <CompareSlider label={title} before={picture} after={<img src="/demos/lightbox/fjord.jpg" alt="Fjord" />} position={data.label === "Empty" ? 0 : data.label === "One item" ? 100 : 50} style={{ aspectRatio: "4/3" }} />;
+    // One picture under the lens: the worst case is a missing image, which the lens must survive by drawing nothing.
+    case "magnifier": return <Magnifier zoom={worst ? 8 : 2}>{worst ? <img src="/debug/missing-image.jpg" alt={title} /> : picture}</Magnifier>;
+    // One photo per entry: the worst case is many thumbnails (they shrink, then the row scrolls) and missing images.
+    case "gallery": return <Gallery name={prefix} label={title} items={items.map((text, i) => {
+      const src = worst && i % 2 ? "/debug/missing-image.jpg" : i % 2 ? "/demos/lightbox/fjord.jpg" : "/demos/lightbox/coast.jpg";
+      return { value: String(i), view: <img src={src} alt={text} />, thumb: <img src={src} alt={text} /> };
+    })} />;
     case "expressive-avatar": return <><ExpressiveAvatar name={title} src={worst ? "/debug/missing-avatar.jpg" : data.label === "Empty" ? undefined : "/demos/lightbox/puppy.jpg"} interactive phrases={{ greetings: [{ text: body || "Hello, Jo." }], general: items.map((text) => ({ text })) }} onSpeak={({ text }) => setStatus(text)} /><output>{status}</output></>;
     // Each entry a picture and its caption: the worst case is a long title and body under the open one.
     case "progressive-carousel": return <ProgressiveCarousel aria-label={title} heading={title} items={items.map((text) => ({ media: picture, title: text, body: body || undefined }))} />;

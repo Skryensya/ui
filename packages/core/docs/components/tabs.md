@@ -31,6 +31,8 @@ Alternatives: `NavList`.
 | `value` (React: `defaultValue`) | string |  |
 | `size` | "sm" \| "md" | `"md"` |
 | `variant` | "underline" \| "hanging" | `"underline"` |
+| `listPlacement` | "before" \| "after" | `"before"` |
+| `wrap` | boolean | `false` |
 
 **Slots**
 
@@ -38,7 +40,7 @@ Alternatives: `NavList`.
 |---|---|---|
 | `items` | a list of items (below) | yes |
 
-Each item in `items`, keyed by `value`: `disabled` (boolean), `value` (string), `children` (node), `label` (node, required).
+Each item in `items`, keyed by `value`: `value` (string), `disabled` (boolean), `label` (node, required), `children` (node).
 
 **Accessible name**
 
@@ -81,6 +83,7 @@ export const items = [
   data-value="summary"
   data-size="md"
   data-variant="underline"
+  data-list-placement="before"
 >
   <div class="sk-tabs__list" data-sk-tabs-list aria-label="Proyecto">
     <button
@@ -100,7 +103,12 @@ export const items = [
       Actividad
     </button>
   </div>
-  <div class="sk-tabs__content" data-value="summary" data-sk-tabs-content>
+  <div
+    class="sk-tabs__content"
+    data-sk-tabs-initial
+    data-value="summary"
+    data-sk-tabs-content
+  >
     Atlas está listo para el lanzamiento de julio.
   </div>
   <div class="sk-tabs__content" data-value="activity" data-sk-tabs-content>

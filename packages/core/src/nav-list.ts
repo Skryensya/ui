@@ -23,6 +23,22 @@ export const navListParts = {
 } as const;
 
 export type NavListPart = keyof typeof navListParts;
+
+/*
+ * EVENTS. `setAll` is a command, not a report: the page dispatches it on the `nav` and every collapsible group
+ * inside opens or closes, through the same path a click takes (Vanilla remembers it and keeps a sibling list in
+ * step), with no reveal scroll, since there is no one group to bring into view. What an "Expand all" button sends.
+ */
+export const navListEvents = {
+  setAll: "sk:navlistsetall",
+} as const;
+
+export type NavListSetAllDetail = { readonly open: boolean };
+
+/** Opens or closes every collapsible group in a NavList. Both bindings listen; the root is the `nav`. */
+export function setNavListGroups(root: Element, open: boolean): void {
+  root.dispatchEvent(new CustomEvent<NavListSetAllDetail>(navListEvents.setAll, { detail: { open } }));
+}
 export type NavListPartClass = (typeof navListParts)[NavListPart];
 
 /*
@@ -40,6 +56,10 @@ export const navListContract = {
   category: "navigation",
   css: "@skryensya/core/patterns/nav-list.css",
   parts: navListParts,
+  events: navListEvents,
+  eventDetails: {
+    setAll: { detail: { open: "boolean" }, direction: "in", source: "root" },
+  },
   hooks: [
     "--sk-nav-list-category-chevron-fg",
     "--sk-nav-list-category-current-fg",

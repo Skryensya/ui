@@ -133,7 +133,7 @@ Stylesheets: `@skryensya/core/components/button.css`, `@skryensya/core/component
 | `children` | text | yes |
 | `items` | a list of items (below) |  |
 
-Each item in `items`, keyed by `value`: `disabled` (boolean), `group` (string), `href` (string), `kind` ("checkbox" \| "radio" \| "separator"), `tone` ("danger"), `value` (string), `children` (items), `label` (text).
+Each item in `items`, keyed by `value`: `value` (string), `disabled` (boolean), `kind` ("checkbox" \| "radio" \| "separator"), `group` (string), `tone` ("danger"), `href` (string), `label` (text), `children` (items).
 
 ## Styling hooks
 

@@ -117,6 +117,7 @@ Stylesheets: `@skryensya/core/components/button.css`, `@skryensya/core/component
 | DOM event (Vanilla) | React prop | `detail` |
 |---|---|---|
 | `sk:commandpalettecommand` | `onCommand` | { command: string, entry: CommandPaletteCommand } |
+| `sk:commandpaletterecents` | (none: listen on the element) | { hrefs: string[], label: string \| undefined } |
 
 ## Styling hooks
 

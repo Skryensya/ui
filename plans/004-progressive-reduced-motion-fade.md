@@ -1,4 +1,4 @@
-# 004 — Keep a short fade under reduced motion in the ProgressiveCarousel
+# 004: Keep a short fade under reduced motion in the ProgressiveCarousel
 
 - **Status**: TODO
 - **Commit**: 77db5aaa
@@ -11,7 +11,7 @@
 With reduced motion every slide jumps to its target, opacity included, so a step is a hard cut. Reduced motion should drop movement, not all feedback.
 
 ```ts
-// packages/core/src/progressive-carousel.ts:199 — current
+// packages/core/src/progressive-carousel.ts:199, current
 if (prefersReducedMotion() || typeof requestAnimationFrame === "undefined") {
   cancelAnimationFrame(frame);
   frame = 0;

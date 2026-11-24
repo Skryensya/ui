@@ -43,8 +43,8 @@ Alternatives: `Slider`, `Segmented`, `RadioGroup`, `Input`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `hint` | text |  |
 | `label` | text | yes |
+| `hint` | text |  |
 
 **Example** (canonical tree `number-field/quantity`; its copy is placeholder, replace it)
 

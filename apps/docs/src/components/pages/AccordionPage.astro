@@ -155,6 +155,17 @@ const detailsLink = `<a href="#details-nativo">${t("accordion.detailsNativoLabel
       storybookTitle={storybookTitle}
       storybookStory="Exclusive" />
 
+    <UsagePreview
+      tree={{ ...accordionExclusiveTree(t), options: { ...accordionExclusiveTree(t).options, variant: "framed" } }}
+      optionName="variant"
+      title={t("accordion.prop.variant.title")}
+      description={t("accordion.prop.variant.body")}
+      explain={explain("variant", ["framed", "seamless", "divided", "separated"])}
+      labels={{ framed: t("accordion.prop.variant.framedLabel"), seamless: t("accordion.prop.variant.seamlessLabel"), divided: t("accordion.prop.variant.dividedLabel"), separated: t("accordion.prop.variant.separatedLabel") }}
+      stageMinBlockSize="18rem"
+      storybookTitle={storybookTitle}
+      storybookStory="Exclusive" />
+
     <h3>{t("component.examplesTitle")}</h3>
     <p set:html={t("accordion.showcaseBody")} />
 

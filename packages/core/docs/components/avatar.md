@@ -1,6 +1,62 @@
 # avatar
 
-Category: content. Stylesheet: `@skryensya/core/components/avatar.css`. Signatures: `Avatar.image`, `Avatar.initials`, `AvatarGroup`.
+Category: content. Stylesheet: `@skryensya/core/components/avatar.css`. Signatures: `Avatar.initials`, `Avatar.image`, `AvatarGroup`.
+
+## Avatar.initials
+
+**Use when**
+
+- there is no photo and the person's initials are needed
+- the avatar identifies someone and needs an accessible name
+
+**Avoid when**
+
+- it is any cropped image; that is an ImageFrame
+
+Alternatives: `ImageFrame`.
+
+- React: `import { Avatar } from "@skryensya/react/avatar"`.
+- HTML: a `<span>`, no JavaScript needed.
+
+- Requires the options: `name`.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `size` | "sm" \| "md" \| "lg" \| "xl" | `"md"` |
+| `appearance` | "plain" \| "brutalist" | `"plain"` |
+| `name` | string |  |
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | text | yes |
+
+**Example** (canonical tree `avatar/initials`; its copy is placeholder, replace it)
+
+```tsx
+import { Avatar } from "@skryensya/react/avatar";
+
+export function AvatarExample() {
+  return <Avatar name="John Doe">JD</Avatar>;
+}
+```
+
+```html
+<span
+  class="sk-avatar"
+  data-size="md"
+  data-appearance="plain"
+  aria-label="John Doe"
+  role="img"
+>
+  <span class="sk-avatar__fallback" aria-hidden="true">JD</span>
+</span>
+```
+
+Stylesheets: `@skryensya/core/components/avatar.css`.
 
 ## Avatar.image
 
@@ -72,62 +128,6 @@ export function AvatarExample() {
 ```
 
 Stylesheets: `@skryensya/core/components/avatar.css`, `@skryensya/core/patterns/image-frame.css`.
-
-## Avatar.initials
-
-**Use when**
-
-- there is no photo and the person's initials are needed
-- the avatar identifies someone and needs an accessible name
-
-**Avoid when**
-
-- it is any cropped image; that is an ImageFrame
-
-Alternatives: `ImageFrame`.
-
-- React: `import { Avatar } from "@skryensya/react/avatar"`.
-- HTML: a `<span>`, no JavaScript needed.
-
-- Requires the options: `name`.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `size` | "sm" \| "md" \| "lg" \| "xl" | `"md"` |
-| `appearance` | "plain" \| "brutalist" | `"plain"` |
-| `name` | string |  |
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | text | yes |
-
-**Example** (canonical tree `avatar/initials`; its copy is placeholder, replace it)
-
-```tsx
-import { Avatar } from "@skryensya/react/avatar";
-
-export function AvatarExample() {
-  return <Avatar name="John Doe">JD</Avatar>;
-}
-```
-
-```html
-<span
-  class="sk-avatar"
-  data-size="md"
-  data-appearance="plain"
-  aria-label="John Doe"
-  role="img"
->
-  <span class="sk-avatar__fallback" aria-hidden="true">JD</span>
-</span>
-```
-
-Stylesheets: `@skryensya/core/components/avatar.css`.
 
 ## AvatarGroup
 

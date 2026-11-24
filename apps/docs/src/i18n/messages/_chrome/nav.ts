@@ -23,6 +23,8 @@ export const navMessages = {
     "nav.snippets": "Snippets",
     "nav.comingSoon": "Próximamente",
     "nav.resizeRail": "Cambiar el ancho de la navegación",
+    "nav.expandAll": "Expandir todo",
+    "nav.collapseAll": "Contraer todo",
     /* The document's first two links, invisible until they receive focus. They name the DESTINATION
        and not the action, because they are the first thing heard on arrival and "skip" does not say
        where to. The content goes first: it is what almost everyone came to read. */
@@ -56,6 +58,8 @@ export const navMessages = {
     "nav.snippets": "Snippets",
     "nav.comingSoon": "Coming soon",
     "nav.resizeRail": "Resize the navigation",
+    "nav.expandAll": "Expand all",
+    "nav.collapseAll": "Collapse all",
     "nav.skipToContent": "Go to content",
     /* The site's own BackToTop label (chrome, not the component's own doc-page copy). Names the
        destination, the same convention as the two above. */

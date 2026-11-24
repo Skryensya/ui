@@ -23,6 +23,9 @@ export const siteIconSets = [
   { id: "mingcute", label: "MingCute" },
   { id: "hugeicons", label: "Hugeicons" },
   { id: "mdi", label: "Material Design Icons" },
+  { id: "solar-linear", label: "Solar" },
+  { id: "solar-duotone", label: "Solar Duotone" },
+  { id: "solar-line-duotone", label: "Solar Line Duotone" },
 ] as const;
 
 export type SiteIconSetId = (typeof siteIconSets)[number]["id"];

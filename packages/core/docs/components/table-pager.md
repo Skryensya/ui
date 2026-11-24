@@ -1,6 +1,6 @@
 # table-pager
 
-Category: data. Stylesheet: `@skryensya/core/patterns/table-pager.css`. Signatures: `TablePager`, `TablePagerBar`, `TablePagerEnd`, `TablePagerNav`, `TablePagerSize`, `TablePagerStatus`.
+Category: data. Stylesheet: `@skryensya/core/patterns/table-pager.css`. Signatures: `TablePager`, `TablePagerBar`, `TablePagerSize`, `TablePagerEnd`, `TablePagerStatus`, `TablePagerNav`.
 
 ## TablePager
 
@@ -703,6 +703,27 @@ Stylesheets: `@skryensya/core/components/pagination.css`, `@skryensya/core/compo
 |---|---|---|
 | `children` | one of `TablePagerSize`, `TablePagerEnd` | yes |
 
+## TablePagerSize
+
+**Use when**
+
+- it holds the selector that changes how many rows the TablePager shows
+
+**Avoid when**
+
+- there is no page-size choice
+
+- React: `import { TablePagerSize } from "@skryensya/react/pagination"`.
+- HTML: a `<div>`, no JavaScript needed.
+
+- Goes inside: `TablePagerBar`.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | node | yes |
+
 ## TablePagerEnd
 
 **Use when**
@@ -723,6 +744,27 @@ Stylesheets: `@skryensya/core/components/pagination.css`, `@skryensya/core/compo
 | Slot | Accepts | Required |
 |---|---|---|
 | `children` | one of `TablePagerStatus`, `TablePagerNav` | yes |
+
+## TablePagerStatus
+
+**Use when**
+
+- it shows the range of visible rows and the total
+
+**Avoid when**
+
+- the text does not describe a TablePager
+
+- React: `import { TablePagerStatus } from "@skryensya/react/pagination"`.
+- HTML: a `<div>`, no JavaScript needed.
+
+- Goes inside: `TablePagerEnd`.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | text | yes |
 
 ## TablePagerNav
 
@@ -747,53 +789,11 @@ Alternatives: `Pagination`.
 |---|---|---|
 | `navLabel` (React: `label`) | string | `"Pagination"` |
 
-## TablePagerSize
-
-**Use when**
-
-- it holds the selector that changes how many rows the TablePager shows
-
-**Avoid when**
-
-- there is no page-size choice
-
-- React: `import { TablePagerSize } from "@skryensya/react/pagination"`.
-- HTML: a `<div>`, no JavaScript needed.
-
-- Goes inside: `TablePagerBar`.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | node | yes |
-
-## TablePagerStatus
-
-**Use when**
-
-- it shows the range of visible rows and the total
-
-**Avoid when**
-
-- the text does not describe a TablePager
-
-- React: `import { TablePagerStatus } from "@skryensya/react/pagination"`.
-- HTML: a `<div>`, no JavaScript needed.
-
-- Goes inside: `TablePagerEnd`.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | text | yes |
-
 ## Events
 
 | DOM event (Vanilla) | React prop | `detail` |
 |---|---|---|
-| `sk:tablepagerchange` | (none: listen on the element) | { end: number, page: number, pageCount: number, pageSize: number, start: number, total: number } |
+| `sk:tablepagerchange` | (none: listen on the element) | { page: number, pageSize: number, pageCount: number, total: number, start: number, end: number } |
 
 ## Styling hooks
 

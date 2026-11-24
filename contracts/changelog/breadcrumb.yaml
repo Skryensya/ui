@@ -5,6 +5,14 @@
 # hash.
 surface: "14d410376afbef06"
 entries:
+  - date: 2026-11-23
+    kind: bugfix
+    es:
+      title: El anillo de foco de un enlace se ve entero
+      body: 'Con el teclado, el anillo de foco de un enlace del trail colapsable se veía cortado por un contenedor que recorta. Ahora se ve entero.'
+    en:
+      title: A link’s focus ring is drawn whole
+      body: 'With the keyboard, the focus ring of a link in the collapsible trail was cut by a clipping container. It is now drawn whole.'
   - date: 2026-11-20
     kind: feature
     es:

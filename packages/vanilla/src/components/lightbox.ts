@@ -38,6 +38,7 @@ export function readLightboxConfig(root: HTMLElement): LightboxConfig {
     showCaption: root.getAttribute(lightboxAttrs.caption) !== "false",
     closeOnBackdropClick: root.getAttribute(lightboxAttrs.closeOnBackdrop) !== "false",
     counterLabel: root.getAttribute(lightboxAttrs.counterLabel) ?? undefined,
+    magnifier: root.hasAttribute(lightboxAttrs.magnifier) && root.getAttribute(lightboxAttrs.magnifier) !== "false",
   };
 }
 

@@ -16,16 +16,8 @@ entries:
   - date: 2026-11-22
     kind: feature
     es:
-      title: Más fluido, pellizco en Safari y flechas rápidas
-      body: "Pan y zoom escriben una vez por cuadro y el dibujo ya no queda borroso en reposo. El pellizco del trackpad en Safari de escritorio ahora hace zoom. Shift + flecha mueve la vista tres veces más lejos. El evento sk-canvas-view llega una vez por cuadro."
+      title: Más fluido, con doble clic, inercia y minimapa
+      body: "Pan y zoom escriben una vez por cuadro, y sk-canvas-view también llega una vez por cuadro. El pellizco del trackpad en Safari de escritorio hace zoom. Shift + flecha mueve la vista tres veces más lejos. Doble clic o toque acerca donde cae y, en el máximo, ajusta. Un arrastre rápido sigue deslizándose al soltarlo (no con movimiento reducido). Con zoom aparece un minimapa que marca qué parte se ve; no recibe gestos y se oculta en pantallas estrechas."
     en:
-      title: Smoother, Safari pinch and fast arrows
-      body: "Pan and zoom write once per frame and the drawing no longer stays blurry at rest. A trackpad pinch in desktop Safari now zooms. Shift + arrow moves the view three times as far. The sk-canvas-view event arrives once per frame."
-  - date: 2026-11-22
-    kind: feature
-    es:
-      title: Doble clic, inercia y minimapa
-      body: "Doble clic o toque acerca donde cae y, en el máximo, ajusta. Al soltar un arrastre rápido la vista sigue deslizándose y frena sola (no con movimiento reducido). Con zoom aparece un minimapa que marca qué parte se ve; no recibe gestos y se oculta en pantallas estrechas."
-    en:
-      title: Double click, glide and minimap
-      body: "Double click or tap zooms in where it lands and, at the maximum, fits. Releasing a fast drag lets the view glide and ease to a stop (not under reduced motion). While zoomed a minimap marks which part is showing; it takes no gestures and is hidden on narrow screens."
+      title: Smoother, with double click, glide and minimap
+      body: "Pan and zoom write once per frame, and sk-canvas-view also arrives once per frame. A trackpad pinch in desktop Safari zooms. Shift + arrow moves the view three times as far. Double click or tap zooms in where it lands and, at the maximum, fits. A fast drag keeps gliding after release (not under reduced motion). While zoomed, a minimap marks which part is showing; it takes no gestures and is hidden on narrow screens."

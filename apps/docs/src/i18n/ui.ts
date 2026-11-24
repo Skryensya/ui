@@ -77,6 +77,7 @@ import { listboxMessages } from "./messages/components/listbox";
 import { presenceMessages } from "./messages/components/presence";
 import { passwordInputMessages } from "./messages/components/password-input";
 import { searchFieldMessages } from "./messages/components/search-field";
+import { galleryMessages } from "./messages/components/gallery";
 import { otpInputMessages } from "./messages/components/otp-input";
 import { tablePagerMessages } from "./messages/components/table-pager";
 import { mediaOverlayMessages } from "./messages/components/media-overlay";
@@ -117,6 +118,7 @@ import { procedureMessages } from "./messages/components/procedure";
 import { timelineMessages } from "./messages/components/timeline";
 import { progressMessages } from "./messages/components/progress";
 import { compareSliderMessages } from "./messages/components/compare-slider";
+import { magnifierMessages } from "./messages/components/magnifier";
 import { videoPlayerMessages } from "./messages/components/video-player";
 import { audioPlayerMessages } from "./messages/components/audio-player";
 import { comparisonTableMessages } from "./messages/components/comparison-table";
@@ -241,6 +243,7 @@ export const ui = {
     ...presenceMessages.es,
     ...passwordInputMessages.es,
     ...searchFieldMessages.es,
+    ...galleryMessages.es,
     ...otpInputMessages.es,
     ...tablePagerMessages.es,
     ...mediaOverlayMessages.es,
@@ -281,6 +284,7 @@ export const ui = {
     ...timelineMessages.es,
     ...progressMessages.es,
     ...compareSliderMessages.es,
+    ...magnifierMessages.es,
     ...videoPlayerMessages.es,
     ...audioPlayerMessages.es,
     ...comparisonTableMessages.es,
@@ -402,6 +406,7 @@ export const ui = {
     ...presenceMessages.en,
     ...passwordInputMessages.en,
     ...searchFieldMessages.en,
+    ...galleryMessages.en,
     ...otpInputMessages.en,
     ...tablePagerMessages.en,
     ...mediaOverlayMessages.en,
@@ -442,6 +447,7 @@ export const ui = {
     ...timelineMessages.en,
     ...progressMessages.en,
     ...compareSliderMessages.en,
+    ...magnifierMessages.en,
     ...videoPlayerMessages.en,
     ...audioPlayerMessages.en,
     ...comparisonTableMessages.en,
@@ -521,6 +527,7 @@ export const navLabel: Record<Locale, Partial<Record<string, string>>> = {
     "/prerequisites": "Prerequisites",
     "/dependencies": "Dependencies",
     "/first-component": "Your first component",
+    "/choose": "Which component?",
     "/automatic-mounting": "Automatic mounting",
     "/architecture": "Architecture",
     "/reference": "Tokens",
@@ -532,6 +539,8 @@ export const navLabel: Record<Locale, Partial<Record<string, string>>> = {
     "/density": "Component density",
     "/transparency": "Transparency",
     "/icons": "Iconography",
+    "/icons/sets": "Icon sets",
+    "/icons/add": "Add an icon set",
     "/typography": "Typography",
     "/storage": "Storage",
     "/anchoring": "Anchoring",

@@ -33,6 +33,7 @@ import { mountInput } from "@skryensya/vanilla/input";
 import { mountLoader } from "@skryensya/vanilla/loader";
 import { mountMarquee } from "@skryensya/vanilla/marquee";
 import { mountCompareSlider } from "@skryensya/vanilla/compare-slider";
+import { mountMagnifier } from "@skryensya/vanilla/magnifier";
 import { mountVideoPlayer } from "@skryensya/vanilla/video-player";
 import { mountAudioPlayer } from "@skryensya/vanilla/audio-player";
 import { mountResizable } from "@skryensya/vanilla/resizable";
@@ -52,6 +53,7 @@ import { mountFadeEdge } from "@skryensya/vanilla/fade-edge";
 import { mountScrollHint } from "@skryensya/vanilla/scroll-hint";
 import { mountPasswordInput } from "@skryensya/vanilla/password-input";
 import { mountSearchField } from "@skryensya/vanilla/search-field";
+import { mountGallery } from "@skryensya/vanilla/gallery";
 import { mountSidebar } from "@skryensya/vanilla/sidebar";
 import { mountSlider } from "@skryensya/vanilla/slider";
 import { mountSliderRange } from "@skryensya/vanilla/slider-range";
@@ -132,8 +134,10 @@ const mounts = [
   mountOtpInput,
   mountPasswordInput,
   mountSearchField,
+  mountGallery,
   mountRating,
   mountCompareSlider,
+  mountMagnifier,
   mountVideoPlayer,
   mountAudioPlayer,
   mountResizable,
@@ -165,7 +169,7 @@ const mounts = [
 describe("Vanilla public entry points", () => {
   it("publishes the lazy auto-loader and one mount for every regular enhanced module", () => {
     expect(initComponents).toBeTypeOf("function");
-    expect(mounts).toHaveLength(72);
+    expect(mounts).toHaveLength(74);
     expect(mounts.every((mount) => typeof mount === "function")).toBe(true);
   });
 
@@ -240,8 +244,10 @@ describe("Vanilla public entry points", () => {
         mountOtpInput,
         mountPasswordInput,
         mountSearchField,
+        mountGallery,
         mountRating,
         mountCompareSlider,
+        mountMagnifier,
         mountVideoPlayer,
         mountAudioPlayer,
         mountResizable,

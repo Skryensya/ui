@@ -1,6 +1,6 @@
 # accordion
 
-Category: content. Stylesheet: `@skryensya/core/components/accordion.css`. Signatures: `Accordion`, `Accordion.Content`, `Accordion.Item`, `Accordion.Trigger`, `Details`, `Details.Content`, `Details.Summary`, `DetailsGroup`.
+Category: content. Stylesheet: `@skryensya/core/components/accordion.css`. Signatures: `Accordion`, `Accordion.Item`, `Accordion.Trigger`, `Accordion.Content`, `DetailsGroup`, `Details`, `Details.Summary`, `Details.Content`.
 
 ## Accordion
 
@@ -9,6 +9,7 @@ Category: content. Stylesheet: `@skryensya/core/components/accordion.css`. Signa
 - there are several long sections and which stay open is worth coordinating: an FAQ, terms
 - type=single: opening one closes the previous, so the page does not grow without end
 - type=multiple: several can stay open at once, and they are still one accordion
+- variant=separated: each question stands on its own, like a product FAQ; every section is a card and the open one is raised
 
 **Avoid when**
 
@@ -32,6 +33,7 @@ Alternatives: `Tabs`, `ExpandableTile`, `DetailsGroup`.
 | `disabled` | boolean | `false` |
 | `defaultValue` | string |  |
 | `appearance` | "plain" \| "tactile" \| "brutalist" \| "frosted" | `"plain"` |
+| `variant` | "framed" \| "seamless" \| "divided" \| "separated" | `"framed"` |
 
 **Slots**
 
@@ -39,28 +41,28 @@ Alternatives: `Tabs`, `ExpandableTile`, `DetailsGroup`.
 |---|---|---|
 | `children` | one of `Accordion.Item` | yes |
 
-**Example** (canonical tree `accordion/two-sections`; its copy is placeholder, replace it)
+**Example** (canonical tree `accordion/separated`; its copy is placeholder, replace it)
 
 ```tsx
 import { Accordion } from "@skryensya/react/accordion";
-import { TileChevron, TileContent } from "@skryensya/react/tile";
+import { TileContent } from "@skryensya/react/tile";
 
 export function AccordionExample() {
   return (
-    <Accordion>
+    <Accordion type="single" variant="separated" defaultValue="envio">
       <Accordion.Item value="envio">
         <Accordion.Trigger>
-          <TileContent
-            title="¿Cuánto tarda el envío?"
-            description="Despachos y plazos"
-          />
-          <TileChevron />
+          <TileContent title="¿Cuánto tarda el envío?" />
         </Accordion.Trigger>
-        <Accordion.Content>Entre tres y cinco días hábiles.</Accordion.Content>
+        <Accordion.Content>Entre dos y cinco días hábiles.</Accordion.Content>
       </Accordion.Item>
-      <Accordion.Item value="devoluciones">
-        <Accordion.Trigger>¿Puedo devolver una compra?</Accordion.Trigger>
-        <Accordion.Content>Sí, dentro de los treinta días.</Accordion.Content>
+      <Accordion.Item value="cambios">
+        <Accordion.Trigger>
+          <TileContent title="¿Puedo cambiar el pedido?" />
+        </Accordion.Trigger>
+        <Accordion.Content>
+          Mientras no haya salido del almacén.
+        </Accordion.Content>
       </Accordion.Item>
     </Accordion>
   );
@@ -73,7 +75,9 @@ export function AccordionExample() {
   data-sk-accordion
   data-type="single"
   data-appearance="plain"
+  data-variant="separated"
   data-collapsible
+  data-default-value="envio"
   data-scope="accordion"
   data-part="root"
 >
@@ -97,19 +101,6 @@ export function AccordionExample() {
       >
         <span class="sk-tile__content" data-part="content">
           <span class="sk-tile__title">¿Cuánto tarda el envío?</span>
-          <span class="sk-tile__description">Despachos y plazos</span>
-        </span>
-        <span
-          class="sk-tile__chevron"
-          data-part="chevron"
-          aria-hidden="true"
-        >
-          <span data-state="closed">
-            <span data-sk-icon="chevron-down" data-sk-icon-size="md"></span>
-          </span>
-          <span data-state="open">
-            <span data-sk-icon="chevron-up" data-sk-icon-size="md"></span>
-          </span>
         </span>
       </button>
     </div>
@@ -118,12 +109,12 @@ export function AccordionExample() {
       data-scope="tile"
       data-part="content"
     >
-      Entre tres y cinco días hábiles.
+      Entre dos y cinco días hábiles.
     </div>
   </section>
   <section
     class="sk-tile sk-tile--expandable"
-    data-value="devoluciones"
+    data-value="cambios"
     data-scope="tile"
     data-part="item"
   >
@@ -139,7 +130,9 @@ export function AccordionExample() {
         data-scope="tile"
         data-part="trigger"
       >
-        ¿Puedo devolver una compra?
+        <span class="sk-tile__content" data-part="content">
+          <span class="sk-tile__title">¿Puedo cambiar el pedido?</span>
+        </span>
       </button>
     </div>
     <div
@@ -147,34 +140,13 @@ export function AccordionExample() {
       data-scope="tile"
       data-part="content"
     >
-      Sí, dentro de los treinta días.
+      Mientras no haya salido del almacén.
     </div>
   </section>
 </div>
 ```
 
 Stylesheets: `@skryensya/core/components/accordion.css`, `@skryensya/core/components/checkbox.css`, `@skryensya/core/components/details.css`, `@skryensya/core/components/switch.css`, `@skryensya/core/components/tile.css`.
-
-## Accordion.Content
-
-**Use when**
-
-- it is the body that folds inside its section
-
-**Avoid when**
-
-- it is outside an Accordion.Item; nothing opens it
-
-- React: `import { Accordion } from "@skryensya/react/accordion"`, then `<Accordion.Content>`.
-- HTML: a `<div>`, no JavaScript needed.
-
-- Goes inside: `Accordion.Item`.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | node | yes |
 
 ## Accordion.Item
 
@@ -235,72 +207,20 @@ Alternatives: `ExpandableTile`.
 |---|---|---|
 | `children` | node | yes |
 
-## Details
+## Accordion.Content
 
 **Use when**
 
-- a section that expands and needs no JavaScript at all
-- it matters that it works before any script loads
+- it is the body that folds inside its section
 
 **Avoid when**
 
-- whether it is open has to be known from outside, or the section has to be disabled: that is Accordion.Item
+- it is outside an Accordion.Item; nothing opens it
 
-Alternatives: `Accordion.Item`.
-
-- React: `import { Details } from "@skryensya/react/details"`.
-- HTML: a `<details>`, no JavaScript needed.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `name` | string |  |
-| `open` | boolean | `false` |
-| `appearance` | "plain" \| "tactile" \| "brutalist" \| "frosted" | `"plain"` |
-| `size` | "sm" \| "md" | `"md"` |
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | one of `Details.Summary`, `Details.Content` | yes |
-
-## Details.Content
-
-**Use when**
-
-- it is what opening reveals
-
-**Avoid when**
-
-- it is outside a Details; nothing opens it
-
-- React: `import { Details } from "@skryensya/react/details"`, then `<Details.Content>`.
+- React: `import { Accordion } from "@skryensya/react/accordion"`, then `<Accordion.Content>`.
 - HTML: a `<div>`, no JavaScript needed.
 
-- Goes inside: `Details`.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | node | yes |
-
-## Details.Summary
-
-**Use when**
-
-- it is what the closed state shows and what opens the section
-
-**Avoid when**
-
-- it is outside a Details; there is nothing for it to open
-
-- React: `import { Details } from "@skryensya/react/details"`, then `<Details.Summary>`.
-- HTML: a `<summary>`, no JavaScript needed.
-
-- Goes inside: `Details`.
+- Goes inside: `Accordion.Item`.
 
 **Slots**
 
@@ -410,6 +330,79 @@ export function DetailsGroupExample() {
 
 Stylesheets: `@skryensya/core/components/accordion.css`, `@skryensya/core/components/details.css`, `@skryensya/core/components/tile.css`.
 
+## Details
+
+**Use when**
+
+- a section that expands and needs no JavaScript at all
+- it matters that it works before any script loads
+
+**Avoid when**
+
+- whether it is open has to be known from outside, or the section has to be disabled: that is Accordion.Item
+
+Alternatives: `Accordion.Item`.
+
+- React: `import { Details } from "@skryensya/react/details"`.
+- HTML: a `<details>`, no JavaScript needed.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `name` | string |  |
+| `open` | boolean | `false` |
+| `appearance` | "plain" \| "tactile" \| "brutalist" \| "frosted" | `"plain"` |
+| `size` | "sm" \| "md" | `"md"` |
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | one of `Details.Summary`, `Details.Content` | yes |
+
+## Details.Summary
+
+**Use when**
+
+- it is what the closed state shows and what opens the section
+
+**Avoid when**
+
+- it is outside a Details; there is nothing for it to open
+
+- React: `import { Details } from "@skryensya/react/details"`, then `<Details.Summary>`.
+- HTML: a `<summary>`, no JavaScript needed.
+
+- Goes inside: `Details`.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | node | yes |
+
+## Details.Content
+
+**Use when**
+
+- it is what opening reveals
+
+**Avoid when**
+
+- it is outside a Details; nothing opens it
+
+- React: `import { Details } from "@skryensya/react/details"`, then `<Details.Content>`.
+- HTML: a `<div>`, no JavaScript needed.
+
+- Goes inside: `Details`.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | node | yes |
+
 ## Events
 
 | DOM event (Vanilla) | React prop | `detail` |
@@ -418,4 +411,4 @@ Stylesheets: `@skryensya/core/components/accordion.css`, `@skryensya/core/compon
 
 ## Styling hooks
 
-Override on the root, never by restyling its classes: `--sk-accordion-bg`, `--sk-accordion-border-color`, `--sk-accordion-brutalist-edge`, `--sk-accordion-brutalist-offset-block`, `--sk-accordion-brutalist-offset-inline`, `--sk-accordion-brutalist-shadow`, `--sk-accordion-depth`, `--sk-accordion-divider-color`, `--sk-accordion-open-bg`, `--sk-accordion-radius`, `--sk-color-border-selected`, `--sk-color-border-strong`, `--sk-color-border-subtle`, `--sk-color-focus`, `--sk-color-selection-selected`, `--sk-color-text-disabled`, `--sk-color-text-primary`, `--sk-color-text-secondary`, `--sk-font-body-sm`, `--sk-font-heading-sm`, `--sk-space-2`, `--sk-space-3`, `--sk-space-4`, `--sk-tile-border-color`, `--sk-tile-brutalist-edge`, `--sk-tile-brutalist-offset-block`, `--sk-tile-brutalist-offset-inline`, `--sk-tile-brutalist-shadow`, `--sk-tile-depth`, `--sk-tile-padding`, `--sk-tile-radius`, `--sk-tile-shadow`, `--sk-tile-title-weight`, `--sk-details-bg`, `--sk-details-border-color`, `--sk-details-brutalist-edge`, `--sk-details-brutalist-offset-block`, `--sk-details-brutalist-offset-inline`, `--sk-details-brutalist-shadow`, `--sk-details-content-bg`, `--sk-details-content-fg`, `--sk-details-depth`, `--sk-details-fg`, `--sk-details-gap`, `--sk-details-heading-gap`, `--sk-details-indicator-fg`, `--sk-details-padding`, `--sk-details-summary-min-block-size`.
+Override on the root, never by restyling its classes: `--sk-accordion-bg`, `--sk-accordion-border-color`, `--sk-accordion-brutalist-edge`, `--sk-accordion-brutalist-offset-block`, `--sk-accordion-brutalist-offset-inline`, `--sk-accordion-brutalist-shadow`, `--sk-accordion-content-end-padding`, `--sk-accordion-depth`, `--sk-accordion-divider-color`, `--sk-accordion-gap`, `--sk-accordion-open-bg`, `--sk-accordion-open-elevation`, `--sk-accordion-radius`, `--sk-accordion-row-padding`, `--sk-color-border-selected`, `--sk-color-border-strong`, `--sk-color-border-subtle`, `--sk-color-focus`, `--sk-color-selection-selected`, `--sk-color-text-disabled`, `--sk-color-text-primary`, `--sk-color-text-secondary`, `--sk-font-body-sm`, `--sk-font-heading-sm`, `--sk-space-2`, `--sk-space-3`, `--sk-space-4`, `--sk-tile-border-color`, `--sk-tile-brutalist-edge`, `--sk-tile-brutalist-offset-block`, `--sk-tile-brutalist-offset-inline`, `--sk-tile-brutalist-shadow`, `--sk-tile-depth`, `--sk-tile-padding`, `--sk-tile-radius`, `--sk-tile-shadow`, `--sk-tile-title-weight`, `--sk-details-bg`, `--sk-details-border-color`, `--sk-details-brutalist-edge`, `--sk-details-brutalist-offset-block`, `--sk-details-brutalist-offset-inline`, `--sk-details-brutalist-shadow`, `--sk-details-content-bg`, `--sk-details-content-fg`, `--sk-details-depth`, `--sk-details-fg`, `--sk-details-gap`, `--sk-details-heading-gap`, `--sk-details-indicator-fg`, `--sk-details-padding`, `--sk-details-summary-min-block-size`.

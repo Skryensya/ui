@@ -7,6 +7,7 @@ import { isLocale, translator } from "@skryensya/storybook-kit/translate";
 import { wireCommandPaletteDemo } from "@skryensya/storybook-kit/command-palette-playground";
 import { wireTagInteractions } from "@skryensya/storybook-kit/tag-interactions";
 import { rootControls, withRootOptions } from "@skryensya/storybook-kit/controls";
+import { containerForTree } from "@skryensya/storybook-kit/shared";
 
 /*
  * THIS STORYBOOK'S BINDING: what every generated story imports (`treeStory`, `argsStory`, `withCss`,
@@ -24,8 +25,14 @@ export type TreeFactory = (t: Translate) => UsageTree;
 const treeFor = (factory: TreeFactory, locale: unknown): UsageTree =>
   factory(translator(isLocale(locale) ? locale : "en"));
 
+/*
+ * `type: "code"` is what keeps Storybook's own JSX printer from running: the snippet is ours (`emitReact`), so the printer's
+ * output was thrown away anyway, and on a story whose props carry React elements (Tabs items with a thumbnail and a panel)
+ * it recursed until it hit `RangeError: Invalid string length` and the story failed to render at all.
+ */
 const source = (code: (context: { args: never; globals: Record<string, unknown> }) => string) => ({
   language: "tsx",
+  type: "code" as const,
   transform: (_code: string, context: { args: never; globals: Record<string, unknown> }) => code(context),
 });
 
@@ -65,6 +72,7 @@ export function treeStory(factory: TreeFactory, story: StoryObj = {}): StoryObj 
     ],
     render: (args, { loaded }) => <>{renderTree(withRootOptions(loaded.tree as UsageTree, args))}</>,
     parameters: {
+      container: containerForTree(treeFor(factory, "en")),
       ...story.parameters,
       docs: {
         ...story.parameters?.docs,

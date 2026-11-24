@@ -125,10 +125,10 @@ Alternatives: `CodePreview`.
 | Slot | Accepts | Required |
 |---|---|---|
 | `condensed` | node | yes |
-| `condensedLabel` | text | yes |
 | `full` | node | yes |
-| `fullLabel` | text | yes |
 | `label` | text |  |
+| `condensedLabel` | text | yes |
+| `fullLabel` | text | yes |
 
 **Example** (canonical tree `code-preview/density`; its copy is placeholder, replace it)
 

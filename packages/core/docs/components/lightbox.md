@@ -35,6 +35,8 @@ Alternatives: `ImageFrame`, `Canvas`, `Dialog`, `Carousel`.
 | `zoomInLabel` | string | `"Zoom in"` |
 | `zoomOutLabel` | string | `"Zoom out"` |
 | `resetZoomLabel` | string | `"Reset zoom"` |
+| `magnifierLabel` | string | `"Magnifier"` |
+| `magnifier` | boolean | `false` |
 | `errorLabel` | string | `"This image could not be loaded."` |
 | `counterLabel` | string | `"Image {index} of {count}"` |
 | `loop` | boolean | `false` |

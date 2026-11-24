@@ -24,6 +24,11 @@ describe("bilingual component search index", () => {
     });
   }
 
+  it("finds a component by what it is for, when its description never says it", () => {
+    expect(find("zoom")[0]).toBe("/components/canvas");
+    expect(find("pan zoom")).toContain("/components/canvas");
+  });
+
   it.each([
     ["boton", "/components/button"],
     ["buton", "/components/button"],

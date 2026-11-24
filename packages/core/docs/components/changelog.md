@@ -1,6 +1,6 @@
 # changelog
 
-Category: content. Stylesheet: `@skryensya/core/components/changelog.css`. Signatures: `Changelog`, `ChangelogEntry`, `ChangelogRelease`.
+Category: content. Stylesheet: `@skryensya/core/components/changelog.css`. Signatures: `Changelog`, `ChangelogRelease`, `ChangelogEntry`.
 
 ## Changelog
 
@@ -211,6 +211,37 @@ export function ChangelogExample() {
 
 Stylesheets: `@skryensya/core/components/badge.css`, `@skryensya/core/components/changelog.css`.
 
+## ChangelogRelease
+
+**Use when**
+
+- a version and everything that shipped in it
+- there is unpublished work: write the version with a -dev suffix and leave the date out
+
+**Avoid when**
+
+- outside a Changelog: the rail and the order are drawn by the list, not by a loose release
+- you want to mark 'unpublished' with a separate option; the missing date already says it, and two fields saying the same thing can contradict each other
+
+- React: `import { ChangelogRelease } from "@skryensya/react/changelog"`.
+- HTML: a `<li>`, no JavaScript needed.
+
+- Goes inside: `Changelog`.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `date` | string |  |
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `version` | text | yes |
+| `date` (React: `dateLabel`) | text |  |
+| `children` | one of `ChangelogEntry` | yes |
+
 ## ChangelogEntry
 
 **Use when**
@@ -239,41 +270,10 @@ Stylesheets: `@skryensya/core/components/badge.css`, `@skryensya/core/components
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `children` | node | yes |
 | `kind` (React: `kindLabel`) | text | yes |
-| `target` | text |  |
 | `title` | text | yes |
-
-## ChangelogRelease
-
-**Use when**
-
-- a version and everything that shipped in it
-- there is unpublished work: write the version with a -dev suffix and leave the date out
-
-**Avoid when**
-
-- outside a Changelog: the rail and the order are drawn by the list, not by a loose release
-- you want to mark 'unpublished' with a separate option; the missing date already says it, and two fields saying the same thing can contradict each other
-
-- React: `import { ChangelogRelease } from "@skryensya/react/changelog"`.
-- HTML: a `<li>`, no JavaScript needed.
-
-- Goes inside: `Changelog`.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `date` | string |  |
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | one of `ChangelogEntry` | yes |
-| `date` (React: `dateLabel`) | text |  |
-| `version` | text | yes |
+| `target` | text |  |
+| `children` | node | yes |
 
 ## Styling hooks
 

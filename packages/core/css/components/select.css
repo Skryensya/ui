@@ -30,12 +30,12 @@
     --sk-select-content-bg: var(--color-bg-surface-raised);
     --sk-select-content-border-color: var(--color-border-subtle);
     --sk-select-content-max-block-size: 18rem;
-    --sk-select-content-padding: var(--space-inset-xs);
+    --sk-select-content-padding: var(--space-inset-sm);
     --sk-select-content-shadow: var(--elevation-raised);
     --sk-select-content-wash: var(--elevation-wash-raised);
     --sk-select-item-fg: var(--color-text-primary);
     --sk-select-item-disabled-fg: var(--color-text-disabled);
-    --sk-select-item-padding: var(--space-inset-xs) var(--space-inset-sm);
+    --sk-select-item-padding: var(--space-inset-sm) var(--space-inset-sm);
     --sk-select-item-radius: var(--radius-control);
 
     min-inline-size: min(12rem, 100%);
@@ -406,13 +406,13 @@
     --sk-select-radius: var(--radius-control);
     --sk-select-content-bg: var(--color-bg-surface-raised);
     --sk-select-content-border-color: var(--color-border-subtle);
-    --sk-select-content-padding: var(--space-inset-xs);
+    --sk-select-content-padding: var(--space-inset-sm);
     --sk-select-content-max-block-size: 18rem;
     --sk-select-content-shadow: var(--elevation-raised);
     --sk-select-content-wash: var(--elevation-wash-raised);
     --sk-select-item-fg: var(--color-text-primary);
     --sk-select-item-disabled-fg: var(--color-text-disabled);
-    --sk-select-item-padding: var(--space-inset-xs) var(--space-inset-sm);
+    --sk-select-item-padding: var(--space-inset-sm) var(--space-inset-sm);
     --sk-select-item-radius: var(--radius-control);
 
     /* ── The placement belongs to the Anchoring pattern (ADR-11) ───────────────

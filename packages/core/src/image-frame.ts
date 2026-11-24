@@ -57,7 +57,7 @@ export const imageFrameContract = {
     /** The frame box. `auto` keeps the media's intrinsic measure. */
     aspect: {
       type: "enum",
-      values: ["auto", "1/1", "4/3", "3/2", "16/9", "3/4", "2/3", "9/16"],
+      values: ["auto", "1/1", "4/3", "3/2", "16/9", "4/5", "3/4", "2/3", "9/16"],
       default: "auto",
       attr: "data-aspect",
     },
@@ -107,9 +107,11 @@ export const imageFrameContract = {
     alt: { type: "string", attr: "alt" },
     /**
      * The frame's element; React's `as`. `figure` when a caption names the media, so the pair is one
-     * unit to assistive tech rather than an image and a stray line of text.
+     * unit to assistive tech rather than an image and a stray line of text. `span` when the frame sits
+     * inside a control: a button or a label may only hold phrasing content, so a thumbnail that IS a
+     * tab, or the face of a radio, is a span (the sheet makes it a block either way).
      */
-    frameElement: { type: "enum", values: ["div", "figure"], default: "div", element: true, prop: "as" },
+    frameElement: { type: "enum", values: ["div", "figure", "span"], default: "div", element: true, prop: "as" },
   },
 
   signatures: {

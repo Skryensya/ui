@@ -32,6 +32,17 @@
     max-block-size: calc(100vh - 2 * var(--space-inset-lg));
     overflow-y: auto;
     scrollbar-width: none;
+    /* The region scrolls, so it clips: a dismiss button on a toast's edge lost its ring there. The ring's
+       reach as padding, given back as a negative margin, so the stack sits where it did. */
+    margin: calc(var(--focus-ring-room) * -1);
+    padding: var(--focus-ring-room);
+  }
+
+  /* A toast is exactly the region's width: it was a content-box 100%, so its padding and border landed
+     outside the column (402px in a 384px region) and pushed the dismiss button out past the clip. */
+  .sk-toast-region > * {
+    box-sizing: border-box;
+    min-inline-size: 0;
   }
 
   /* EVERY toast gets the raised shadow so a banner callout reads as overlay chrome floating over the

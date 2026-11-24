@@ -1,6 +1,6 @@
 # list
 
-Category: data. Stylesheet: `@skryensya/core/components/list.css`. Signatures: `List`, `ListItem`, `ListItemButton`, `ListItemLink`, `ListItemPlain`, `OrderedList`.
+Category: data. Stylesheet: `@skryensya/core/components/list.css`. Signatures: `List`, `OrderedList`, `ListItemPlain`, `ListItem`, `ListItemLink`, `ListItemButton`.
 
 ## List
 
@@ -68,122 +68,6 @@ export function ListExample() {
 
 Stylesheets: `@skryensya/core/components/list.css`.
 
-## ListItem
-
-**Use when**
-
-- a row that is not interactive
-
-- React: `import { ListItem } from "@skryensya/react/list"`.
-- HTML: a `<li>`, no JavaScript needed.
-
-- Goes inside: `List`, `OrderedList`.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `disabled` | boolean | `false` |
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `description` | text |  |
-| `leading` | one of `Icon`, `Avatar.initials` |  |
-| `title` | text | yes |
-| `trailing` | node |  |
-
-## ListItemButton
-
-**Use when**
-
-- the whole row triggers an action (send, sign out, open a dialog), and the row is the focus and click target
-
-**Avoid when**
-
-- the row navigates to another URL; that is ListItemLink
-- only a control inside the row is the button; there the button goes inside, not wrapping
-
-Alternatives: `ListItemLink`.
-
-- React: `import { ListItemButton } from "@skryensya/react/list"`.
-- HTML: a `<button>`, no JavaScript needed.
-
-- Goes inside: `List`, `OrderedList`.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `disabled` | boolean | `false` |
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `description` | text |  |
-| `leading` | one of `Icon`, `Avatar.initials` |  |
-| `title` | text | yes |
-| `trailing` | node |  |
-
-## ListItemLink
-
-**Use when**
-
-- the whole row navigates, and the row is the focus and click target
-
-**Avoid when**
-
-- only part of the row is a link; there the link goes inside, not wrapping
-- the row triggers an action without changing URL; that is ListItemButton
-
-Alternatives: `ListItemButton`.
-
-- React: `import { ListItemLink } from "@skryensya/react/list"`.
-- HTML: a `<a>`, no JavaScript needed.
-
-- Goes inside: `List`, `OrderedList`.
-- Requires the options: `href`.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `href` | string |  |
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `description` | text |  |
-| `leading` | one of `Icon`, `Avatar.initials` |  |
-| `title` | text | yes |
-| `trailing` | node |  |
-
-## ListItemPlain
-
-**Use when**
-
-- an interface row only needs direct content, with no title, description or trailing anatomy
-
-- React: `import { ListItemPlain } from "@skryensya/react/list"`.
-- HTML: a `<li>`, no JavaScript needed.
-
-- Goes inside: `List`, `OrderedList`.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `disabled` | boolean | `false` |
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | node | yes |
-
 ## OrderedList
 
 **Use when**
@@ -236,6 +120,122 @@ export function OrderedListExample() {
 ```
 
 Stylesheets: `@skryensya/core/components/list.css`.
+
+## ListItemPlain
+
+**Use when**
+
+- an interface row only needs direct content, with no title, description or trailing anatomy
+
+- React: `import { ListItemPlain } from "@skryensya/react/list"`.
+- HTML: a `<li>`, no JavaScript needed.
+
+- Goes inside: `List`, `OrderedList`.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `disabled` | boolean | `false` |
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | node | yes |
+
+## ListItem
+
+**Use when**
+
+- a row that is not interactive
+
+- React: `import { ListItem } from "@skryensya/react/list"`.
+- HTML: a `<li>`, no JavaScript needed.
+
+- Goes inside: `List`, `OrderedList`.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `disabled` | boolean | `false` |
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `leading` | one of `Icon`, `Avatar.initials` |  |
+| `title` | text | yes |
+| `description` | text |  |
+| `trailing` | node |  |
+
+## ListItemLink
+
+**Use when**
+
+- the whole row navigates, and the row is the focus and click target
+
+**Avoid when**
+
+- only part of the row is a link; there the link goes inside, not wrapping
+- the row triggers an action without changing URL; that is ListItemButton
+
+Alternatives: `ListItemButton`.
+
+- React: `import { ListItemLink } from "@skryensya/react/list"`.
+- HTML: a `<a>`, no JavaScript needed.
+
+- Goes inside: `List`, `OrderedList`.
+- Requires the options: `href`.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `href` | string |  |
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `leading` | one of `Icon`, `Avatar.initials` |  |
+| `title` | text | yes |
+| `description` | text |  |
+| `trailing` | node |  |
+
+## ListItemButton
+
+**Use when**
+
+- the whole row triggers an action (send, sign out, open a dialog), and the row is the focus and click target
+
+**Avoid when**
+
+- the row navigates to another URL; that is ListItemLink
+- only a control inside the row is the button; there the button goes inside, not wrapping
+
+Alternatives: `ListItemLink`.
+
+- React: `import { ListItemButton } from "@skryensya/react/list"`.
+- HTML: a `<button>`, no JavaScript needed.
+
+- Goes inside: `List`, `OrderedList`.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `disabled` | boolean | `false` |
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `leading` | one of `Icon`, `Avatar.initials` |  |
+| `title` | text | yes |
+| `description` | text |  |
+| `trailing` | node |  |
 
 ## Styling hooks
 

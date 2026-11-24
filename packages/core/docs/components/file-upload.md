@@ -40,13 +40,13 @@ Alternatives: `Input`, `FormField`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `clearLabel` | text |  |
-| `dropzoneIcon` | one of `Icon` |  |
-| `dropzoneLabel` | text | yes |
-| `hintLabel` | text |  |
 | `label` | text | yes |
+| `dropzoneLabel` | text | yes |
+| `dropzoneIcon` | one of `Icon` |  |
+| `hintLabel` | text |  |
 | `overlayLabel` | text |  |
 | `triggerLabel` | text | yes |
+| `clearLabel` | text |  |
 
 **Example** (canonical tree `file-upload/attach-documents`; its copy is placeholder, replace it)
 

@@ -1,0 +1,13 @@
+# The structure lives in packages/core/src/magnifier.ts. Here, only why it is chosen.
+
+Magnifier:
+  useWhen:
+    - "a picture has detail too small to read at its size on the page, and the reader should look closer without leaving it: a product photo, a map, a diagram, a frame of video"
+    - "looking closer should follow where the reader points, rather than open the picture somewhere else"
+  avoidWhen:
+    - "the content is text or markup rather than an image, video or canvas; the lens reads pixels, so it cannot see markup; let the browser zoom or give the text more room"
+    - "the reader needs the whole picture large, or on touch first; open it in a Lightbox instead of moving a small lens over it"
+    - "the picture is a playing video; it moves on its own and carries the detail away from under the lens, and the lens covers the player's controls; pause and show the frame as an image to look at it up close"
+  alternatives:
+    - Lightbox
+    - ImageFrame

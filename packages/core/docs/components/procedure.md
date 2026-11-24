@@ -81,8 +81,8 @@ Alternatives: `Steps`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `children` | node |  |
 | `title` | text | yes |
+| `children` | node |  |
 
 ## Styling hooks
 

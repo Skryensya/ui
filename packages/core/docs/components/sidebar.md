@@ -1,6 +1,6 @@
 # sidebar
 
-Category: navigation. Stylesheet: `@skryensya/core/components/sidebar.css`. Signatures: `Sidebar`, `SidebarContent`, `SidebarFooter`, `SidebarHeader`, `SidebarResizeHandle`, `SidebarSeparator`, `SidebarTrigger`.
+Category: navigation. Stylesheet: `@skryensya/core/components/sidebar.css`. Signatures: `Sidebar`, `SidebarHeader`, `SidebarContent`, `SidebarFooter`, `SidebarSeparator`, `SidebarTrigger`, `SidebarResizeHandle`.
 
 ## Sidebar
 
@@ -110,6 +110,27 @@ export function SidebarExample() {
 
 Stylesheets: `@skryensya/core/components/sidebar.css`, `@skryensya/core/patterns/icon.css`, `@skryensya/core/patterns/splitter.css`.
 
+## SidebarHeader
+
+**Use when**
+
+- the brand, the workspace name or the trigger goes at the top
+
+**Avoid when**
+
+- it is part of the list of destinations; that goes in SidebarContent
+
+- React: `import { SidebarHeader } from "@skryensya/react/sidebar"`.
+- HTML: a `<div>`, no JavaScript needed.
+
+- Goes inside: `Sidebar`.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | node | yes |
+
 ## SidebarContent
 
 **Use when**
@@ -151,54 +172,6 @@ Stylesheets: `@skryensya/core/components/sidebar.css`, `@skryensya/core/patterns
 | Slot | Accepts | Required |
 |---|---|---|
 | `children` | node | yes |
-
-## SidebarHeader
-
-**Use when**
-
-- the brand, the workspace name or the trigger goes at the top
-
-**Avoid when**
-
-- it is part of the list of destinations; that goes in SidebarContent
-
-- React: `import { SidebarHeader } from "@skryensya/react/sidebar"`.
-- HTML: a `<div>`, no JavaScript needed.
-
-- Goes inside: `Sidebar`.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | node | yes |
-
-## SidebarResizeHandle
-
-**Use when**
-
-- the right width is decided by each person's content: long paths, a deep tree, file names
-- an intermediate width is needed, not only narrow or wide
-- the list has sublevels or destinations with no icon of their own: no icon rail is possible, so the only way to gain width is narrowing without hiding anything
-
-**Avoid when**
-
-- the list of destinations is fixed and known; there the width is a design decision, not the reader's
-- the aim is getting it out of the way; that is what SidebarTrigger is for, which narrows it to a rail
-
-Alternatives: `SidebarTrigger`.
-
-- React: `import { SidebarResizeHandle } from "@skryensya/react/sidebar"`.
-- HTML: a `<div>` with `data-sk-sidebar-resize`, enhanced by Vanilla's mount.
-
-- Goes inside: `Sidebar`.
-- Requires the options: `label`.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `label` | string |  |
 
 ## SidebarSeparator
 
@@ -248,6 +221,33 @@ Alternatives: `SidebarResizeHandle`.
 | Slot | Accepts | Required |
 |---|---|---|
 | `icon` | one of `Icon` |  |
+
+## SidebarResizeHandle
+
+**Use when**
+
+- the right width is decided by each person's content: long paths, a deep tree, file names
+- an intermediate width is needed, not only narrow or wide
+- the list has sublevels or destinations with no icon of their own: no icon rail is possible, so the only way to gain width is narrowing without hiding anything
+
+**Avoid when**
+
+- the list of destinations is fixed and known; there the width is a design decision, not the reader's
+- the aim is getting it out of the way; that is what SidebarTrigger is for, which narrows it to a rail
+
+Alternatives: `SidebarTrigger`.
+
+- React: `import { SidebarResizeHandle } from "@skryensya/react/sidebar"`.
+- HTML: a `<div>` with `data-sk-sidebar-resize`, enhanced by Vanilla's mount.
+
+- Goes inside: `Sidebar`.
+- Requires the options: `label`.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `label` | string |  |
 
 ## Events
 

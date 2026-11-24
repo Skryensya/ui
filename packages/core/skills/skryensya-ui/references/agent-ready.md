@@ -27,7 +27,7 @@ const agent = createAgent({
 - `agent.snapshot()` lists each control: `ref`, `component`, `kind`, `label`, state, `actions`, and `items` for choices. `agent.act({ steps })` runs steps in order and stops at the first that fails, saying why. `agent.query({ text, within, kind })` finds controls past the snapshot's first 100.
 - Actions: `press`, `open`, `close`, `choose` (a menu item's text), `select` (a tab), `setValue` (text, a number, or an option's label or value), `clear`, `setChecked`, `toggle`.
 - **Your own model**: `agentTools` has the three tools' names, descriptions and JSON Schemas. Route each call to the method of the same name and return its result.
-- **The browser's agent (WebMCP)**: `const unregister = registerTools(agent, { allow })`. It does nothing where the browser has no `modelContext`. `allow` is required here: you did not write that agent.
+- **The browser's agent (WebMCP)**: `const unregister = await registerTools(agent, { allow })` offers the three tools on `document.modelContext`. Opt in deliberately: it hands the page's actions to whatever agent the browser runs. It resolves to a no-op where the browser has no WebMCP and rejects when the browser refuses a tool (a name already taken, the permission off). `allow` is required here: you did not write that agent.
 - Without `allow`, a step on a `data-agent-confirm` control fails with "Needs a person".
 
 ## Prove it with a test

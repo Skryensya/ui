@@ -1,0 +1,106 @@
+---
+import FoundationPage from "../../components/FoundationPage.astro";
+import CodeBlock from "../../components/CodeBlock.astro";
+
+const iconify = `// scripts/icons.ts, run with: node scripts/icons.ts
+import { writeFileSync } from "node:fs";
+import { iconSetCss, iconSetFromIconify, iconSetModule } from "@skryensya/core/iconify";
+import json from "@iconify-json/solar/icons.json" with { type: "json" };
+
+// Role on the left (ours), Iconify name on the right (theirs). One line per interface role.
+const map = {
+  "chevron-down": "alt-arrow-down",
+  "chevron-up": "alt-arrow-up",
+  search: "magnifier",
+  delete: "trash-bin-minimalistic",
+  // …
+};
+
+const set = iconSetFromIconify(json, {
+  map,
+  attrs: { fill: "currentColor" },
+  variant: "-linear", // tried before each bare name: "magnifier-linear"
+});
+
+writeFileSync("src/icons.ts", iconSetModule(set, "/* generated */"));
+writeFileSync("src/icons.css", iconSetCss(set)); // native select and carousel icons`;
+
+const own = `import type { IconSet } from "@skryensya/core/icon";
+
+export const icons = {
+  "chevron-down": {
+    viewBox: "0 0 24 24",
+    body: '<path d="m6 9 6 6 6-6"/>',
+    attrs: { fill: "none", stroke: "currentColor", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round" },
+  },
+  // …every interface role
+} satisfies IconSet;`;
+
+const roles = `import { stableIconNames, isComponentIconName } from "@skryensya/core/icon";
+
+// What a set owes: every one of these. The component-* marks are optional.
+stableIconNames.filter((name) => !isComponentIconName(name));`;
+
+const stroke = `// outline sets: the intention lives on the <svg>, never in the CSS
+attrs: { fill: "none", stroke: "currentColor", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round" }
+
+// filled sets
+attrs: { fill: "currentColor" }`;
+
+const contribute = `# in this repo, to offer the set in Preferences and on /icons/sets
+# 1. a preset in packages/core/src/iconify-presets.ts and its iconify-components.ts map
+# 2. its id in apps/docs/src/lib/icon-set-options.ts
+pnpm --filter docs icons`;
+---
+
+<FoundationPage title="Add an icon set" description="Bind any icon library, or your own SVGs, to the stable roles.">
+  <p class="lede">
+    The kit maps a dozen libraries for you, but a set is only a table: <strong>role → drawing</strong>. Any Iconify collection, or SVG files of your own, can fill it. Components keep asking for <code>search</code> and <code>chevron-down</code>; your set says what those look like. The ones already mapped are on <a href="/icons/sets">Icon sets</a>.
+  </p>
+
+  <h2>1. Know what a set owes</h2>
+  <p>
+    A set is <strong>complete</strong> over the interface roles: a hole would leave a component without its icon at runtime, so the type and the build both refuse it. The <code>component-*</code> marks are optional.
+  </p>
+  <CodeBlock code={roles} label="ts" note="The roles to cover" />
+
+  <h2>2a. From an Iconify collection</h2>
+  <p>
+    Install the collection as a dev dependency (<code>pnpm add -D @iconify-json/solar</code>, any of the <a href="https://icon-sets.iconify.design">200+ on Iconify</a>), then write each role's name once. The result is a module with only the drawings you named, so the thousands the library holds never reach your bundle.
+  </p>
+  <CodeBlock code={iconify} label="ts" note="Bind a collection" />
+  <p>
+    <code>iconSetFromIconify</code> throws on the first role the collection cannot draw, with the name it looked for, so a renamed icon upstream fails your build and not your page. Libraries ship several styles under one prefix (<code>-linear</code>, <code>-bold-duotone</code>, <code>-outline</code>): <code>variant</code> picks one, and a second call with another <code>variant</code> gives you the next style from the same names.
+  </p>
+
+  <h2>2b. From your own SVGs</h2>
+  <p>
+    A set is also a plain object. Take what is inside each <code>&lt;svg&gt;</code> as <code>body</code> and its <code>viewBox</code>; nothing else is required. The same <code>iconSetCss(icons)</code> from above still gives you the native select and carousel icons, as long as the set draws <code>chevron-up</code>, <code>chevron-down</code>, <code>chevron-left</code>, <code>chevron-right</code> and <code>check</code>.
+  </p>
+  <CodeBlock code={own} label="ts" note="A hand-written set" />
+
+  <h2>3. Say how it is painted</h2>
+  <p>
+    Outline and filled drawings need different attributes on the root <code>&lt;svg&gt;</code>, and the kit's CSS deliberately never sets <code>fill</code> or <code>stroke</code>, so the set carries it. Paint with <code>currentColor</code> and the icon follows the text color in every palette, both modes and forced colors.
+  </p>
+  <CodeBlock code={stroke} label="ts" note="Presentation attributes" />
+  <p>
+    Duotone drawings keep their second layer as the library wrote it (usually a half-opaque path). The kit draws the body as-is; tinting that layer is a style the app opts into, as this site does for its duotone sets.
+  </p>
+
+  <h2>4. Bind it</h2>
+  <p>
+    From here it is the same as any other set: import <code>icons</code> and <code>icons.css</code> once and hand the set to <code>IconSetProvider</code> (React) or <code>mountIcons</code> (vanilla). Not one <code>&lt;Icon name="…"&gt;</code> moves. The details are in <a href="/icons">Iconography</a>.
+  </p>
+
+  <h2>Check the licence</h2>
+  <p>
+    Icon libraries carry their own terms (MIT, ISC, Apache-2.0, and some CC BY, which requires credit). The geometry is copied into your project, so the licence travels with it: keep the header <code>iconSetModule</code> writes and add the attribution the licence asks for.
+  </p>
+
+  <h2>Contributing a set to this repo</h2>
+  <p>
+    A set that other people would want is a preset in core, not a script in one app. That makes <code>skryensya icons &lt;name&gt;</code> work for everyone and lists it here.
+  </p>
+  <CodeBlock code={contribute} label="shell" note="Offer it in the docs" />
+</FoundationPage>

@@ -29,7 +29,7 @@ export async function loadIconSet(id: SiteIconSetId): Promise<{ set: IconSet; cs
 /* Every presentation attribute any mapped set writes on its <svg>; cleared before the new set's go on. */
 const PRESENTATION = ["fill", "stroke", "stroke-width", "stroke-linecap", "stroke-linejoin"];
 
-function paint(svg: SVGElement, icon: IconData): void {
+export function paint(svg: SVGElement, icon: IconData): void {
   for (const name of PRESENTATION) svg.removeAttribute(name);
   for (const [name, value] of Object.entries(icon.attrs ?? {})) svg.setAttribute(name, value);
   svg.setAttribute("viewBox", icon.viewBox);

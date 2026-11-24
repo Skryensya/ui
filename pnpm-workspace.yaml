@@ -25,6 +25,7 @@ catalog:
   "@iconify-json/mingcute": "^1.2.0"
   "@iconify-json/ri": "^1.2.0"
   "@iconify-json/tabler": "^1.2.0"
+  "@iconify-json/solar": "^1.2.0"
 
 # ─────────────────────────────────────────────────────────────────────────────────────────────────
 # QUARANTINE FOR NEW VERSIONS. 30 days, in minutes.

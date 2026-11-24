@@ -289,8 +289,8 @@ function problemsOf(id: string): string[] {
     if (entries < 1) bad("changelog", "has no entries");
     if (es !== entries || en !== entries) bad("changelog", `${entries} entries but ${es} Spanish and ${en} English halves`);
   }
-  const trees = read("packages/ai-gates/src/trees.ts");
-  if (!trees.includes(`contract: "${id}"`) && !trees.includes(`name: "${id}/`)) bad("gates", "no canonical usage tree in packages/ai-gates/src/trees.ts");
+  const trees = read("contracts/examples/canonical.ts");
+  if (!trees.includes(`contract: "${id}"`) && !trees.includes(`name: "${id}/`)) bad("gates", "no canonical usage tree in contracts/examples/canonical.ts");
   if (!exists(`packages/ai-gates/src/${id}.spec.ts`)) bad("gates", `no browser spec (packages/ai-gates/src/${id}.spec.ts)`);
 
   /* ---- the docs: both locales, and the tables list what the contract has ---- */

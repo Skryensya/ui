@@ -7,8 +7,33 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "82e954bd0eee8692"
+surface: "5333a1488047af15"
 entries:
+  - date: 2026-11-23
+    kind: feature
+    target: variant
+    es:
+      title: Una variante con cada sección en su tarjeta
+      body: '<code>variant="separated"</code>: cada sección es una tarjeta propia, con espacio entre ellas (<code>--sk-accordion-gap</code>), y la abierta se eleva con un borde más firme (<code>--sk-accordion-open-elevation</code>). Para un FAQ de producto donde cada pregunta se sostiene sola. Como seamless y divided, no lleva <code>appearance</code>.'
+    en:
+      title: A variant with each section on its own card
+      body: '<code>variant="separated"</code>: every section is a card of its own, with room between them (<code>--sk-accordion-gap</code>), and the open one is raised with a firmer edge (<code>--sk-accordion-open-elevation</code>). For a product FAQ where each question stands alone. Like seamless and divided, it takes no <code>appearance</code>.'
+  - date: 2026-11-23
+    kind: feature
+    es:
+      title: Acordeones sin marco
+      body: "<code>variant</code> elige la forma: <code>framed</code> (el de siempre), <code>seamless</code> (solo títulos, un más o menos y espacio, sin líneas ni fondos) y <code>divided</code> (títulos con chevron y una línea fina entre secciones). Ninguno muestra la descripción del título. <code>appearance</code> decora el marco, así que es solo para <code>framed</code>."
+    en:
+      title: Accordions without a frame
+      body: "<code>variant</code> picks the shape: <code>framed</code> (as before), <code>seamless</code> (titles, a plus or minus and space only, no lines or fills) and <code>divided</code> (titles with a chevron and a hairline between sections). Neither shows a title’s description. <code>appearance</code> decorates the frame, so it is for <code>framed</code> only."
+  - date: 2026-11-23
+    kind: bugfix
+    es:
+      title: El anillo de foco del summary de Details se ve entero
+      body: 'Con el teclado, el anillo de foco del summary de Details (solo quedaba la línea de abajo) se veía cortado por un contenedor que recorta. Ahora se ve entero. Se dibuja hacia adentro.'
+    en:
+      title: The Details summary’s focus ring is drawn whole
+      body: 'With the keyboard, the focus ring of a Details summary (only its bottom line showed) was cut by a clipping container. It is now drawn whole. It is drawn inside.'
   - date: 2026-10-25
     kind: breaking
     target: appearance

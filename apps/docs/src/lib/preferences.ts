@@ -70,3 +70,18 @@ export const languagePreference = definePreference<Locale>({
 
 /** The same choice, as the cookie nginx reads (`$cookie_sk_lang` in `nginx.docs.conf`). */
 export const LANGUAGE_COOKIE = "sk_lang";
+
+/**
+ * The last pages read, newest first, as paths: what the ⌘K palette lists before anything is typed (`scripts/recent-pages.ts`).
+ * One more than the palette shows, because the page the reader is ON is stored and never listed. A stored list is untrusted
+ * input like any other slot: anything that is not a short list of short strings is the empty list.
+ */
+export const RECENT_PAGES_MAX = 6;
+export const recentPagesPreference = definePreference<string[]>({
+  slot: "recent-pages",
+  fallback: [],
+  parse: (raw) =>
+    Array.isArray(raw) && raw.every((path) => typeof path === "string" && path.length <= 200)
+      ? raw.slice(0, RECENT_PAGES_MAX)
+      : undefined,
+});

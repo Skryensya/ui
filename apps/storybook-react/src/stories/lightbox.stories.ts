@@ -18,6 +18,7 @@ export default { title: "Components/Lightbox", tags: ["autodocs"] } satisfies Me
 
 export const Gallery: StoryObj = treeStory(demos.lightboxGalleryTree, { decorators: [withCss(lightboxDemoCss)] });
 export const Single: StoryObj = treeStory(demos.lightboxSingleTree, { decorators: [withCss(lightboxDemoCss)] });
+export const Magnifier: StoryObj = treeStory(demos.lightboxMagnifierTree, { decorators: [withCss(lightboxDemoCss)] });
 export const Caption: StoryObj = treeStory(demos.lightboxCaptionTree, { decorators: [withCss(lightboxDemoCss)] });
 export const Tiny: StoryObj = treeStory(demos.lightboxTinyTree, { decorators: [withCss(lightboxDemoCss)] });
 export const Loop: StoryObj = treeStory(demos.lightboxLoopTree, { decorators: [withCss(lightboxDemoCss)] });

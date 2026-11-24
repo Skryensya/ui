@@ -1,6 +1,6 @@
 # megamenu
 
-Category: navigation. Stylesheet: `@skryensya/core/components/megamenu.css`. Signatures: `Megamenu`, `MegamenuLink`, `MegamenuTrigger`.
+Category: navigation. Stylesheet: `@skryensya/core/components/megamenu.css`. Signatures: `Megamenu`, `MegamenuTrigger`, `MegamenuLink`.
 
 ## Megamenu
 
@@ -157,6 +157,30 @@ export function MegamenuExample() {
 
 Stylesheets: `@skryensya/core/components/megamenu.css`, `@skryensya/core/patterns/anchored.css`, `@skryensya/core/patterns/nav-list.css`.
 
+## MegamenuTrigger
+
+**Use when**
+
+- one category of the bar. Its panel (`columns`) is 2-4 NavListGroups, not commands or a single link
+
+- React: `import { MegamenuTrigger } from "@skryensya/react/megamenu"`.
+- HTML: a `<li>`, no JavaScript needed.
+
+- Goes inside: `Megamenu`.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `containsCurrent` | boolean | `false` |
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `children` | text | yes |
+| `columns` | one of `NavListGroup`, `ImageFrame` | yes |
+
 ## MegamenuLink
 
 **Use when**
@@ -188,35 +212,11 @@ Alternatives: `MegamenuTrigger`.
 |---|---|---|
 | `children` | text | yes |
 
-## MegamenuTrigger
-
-**Use when**
-
-- one category of the bar. Its panel (`columns`) is 2-4 NavListGroups, not commands or a single link
-
-- React: `import { MegamenuTrigger } from "@skryensya/react/megamenu"`.
-- HTML: a `<li>`, no JavaScript needed.
-
-- Goes inside: `Megamenu`.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `containsCurrent` | boolean | `false` |
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | text | yes |
-| `columns` | one of `NavListGroup`, `ImageFrame` | yes |
-
 ## Events
 
 | DOM event (Vanilla) | React prop | `detail` |
 |---|---|---|
-| `sk:megamenuopenchange` | `onOpenChange` | { index: number \| null, open: boolean } |
+| `sk:megamenuopenchange` | `onOpenChange` | { open: boolean, index: number \| null } |
 
 ## Styling hooks
 

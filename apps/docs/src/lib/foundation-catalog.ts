@@ -17,6 +17,10 @@ const foundationDescriptions = {
     es: "Instala los paquetes, carga los estilos y elige el binding para tu proyecto.",
     en: "Installs the packages, loads the styles, and chooses a binding for your project.",
   },
+  "/choose": {
+    es: "Elige el componente por lo que necesita la persona, con la razón que da su contrato.",
+    en: "Picks a component by what the person needs, with the reason its contract gives.",
+  },
   "/first-component": {
     es: "Construye tu primer componente con el mismo contrato en React o HTML.",
     en: "Builds your first component from the same contract in React or HTML.",
@@ -72,6 +76,14 @@ const foundationDescriptions = {
   "/icons": {
     es: "Nombra roles de icono estables mientras un set elige la geometría de marca de cada rol.",
     en: "Names stable icon roles while a set chooses the brand geometry for each role.",
+  },
+  "/icons/sets": {
+    es: "Muestra cada rol del vocabulario dibujado por cada set de iconos que el kit mapea.",
+    en: "Shows every vocabulary role drawn by each icon set the kit maps.",
+  },
+  "/icons/add": {
+    es: "Conecta cualquier colección de Iconify, o SVG propios, a los roles estables.",
+    en: "Binds any Iconify collection, or your own SVGs, to the stable roles.",
   },
   "/styling-hooks": {
     es: "Expone las perillas públicas con las que redefinir la pintura de un componente ya publicado.",

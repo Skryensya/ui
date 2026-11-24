@@ -10,7 +10,7 @@
  * and a longer set scrolls out of sight), while the platform picker shows the chosen value, lists every option and
  * is the control a thumb already knows.
  */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Button } from "@skryensya/react/button";
 import { IconSetProvider } from "@skryensya/react/icon";
 import { siteIcons } from "../../icons";
@@ -93,6 +93,29 @@ export function PropertyPlayground({ tree, optionName, trees, measure, toggleLab
     query.addEventListener("change", update);
     return () => query.removeEventListener("change", update);
   }, []);
+  /*
+   * A ROW THAT FITS. A long set of values (seven glass colours) overflowed the large segments and scrolled inside the card,
+   * hiding the last ones. So the row steps down a size at a time until it fits, and becomes the picker past the smallest; a
+   * card that grows starts again from the large size.
+   */
+  const FITS = ["lg", "md", "sm", "select"] as const;
+  const [fit, setFit] = useState(0);
+  const rootRef = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const control = rootRef.current?.querySelector<HTMLElement>(".sk-segmented.sk-property-playground__control");
+    if (control && control.scrollWidth > control.clientWidth + 1 && fit < FITS.length - 1) setFit(fit + 1);
+  });
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    let width = root.clientWidth;
+    const observer = new ResizeObserver(() => {
+      if (root.clientWidth > width + 1) setFit(0);
+      width = root.clientWidth;
+    });
+    observer.observe(root);
+    return () => observer.disconnect();
+  }, []);
 
   const treeFor = (choice: string): UsageTree => {
     const chosenTree: UsageTree =
@@ -138,8 +161,8 @@ export function PropertyPlayground({ tree, optionName, trees, measure, toggleLab
   // (a carousel's chevrons) in the page itself, outside any frame.
   return (
     <IconSetProvider set={siteIcons}>
-    <div className="sk-property-playground" data-sk-playground-value={value}>
-      {values.length === 0 ? null : hydrated && narrow ? (
+    <div ref={rootRef} className="sk-property-playground" data-sk-playground-value={value}>
+      {values.length === 0 ? null : hydrated && (narrow || FITS[fit] === "select") ? (
         <NativeSelect
           className="sk-property-playground__control"
           aria-label={controlLabel}
@@ -150,7 +173,7 @@ export function PropertyPlayground({ tree, optionName, trees, measure, toggleLab
       ) : hydrated ? (
         <SegmentedControl
           className="sk-property-playground__control"
-          size="lg"
+          size={FITS[fit] as "lg" | "md" | "sm"}
           label={controlLabel}
           value={value}
           onValueChange={setValue}

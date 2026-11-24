@@ -1,6 +1,6 @@
-import { navListContract, navListParts } from "@skryensya/core/nav-list";
+import { navListContract, navListEvents, navListParts, type NavListSetAllDetail } from "@skryensya/core/nav-list";
 import type { SignatureOptionsOf } from "@skryensya/core/contract";
-import { forwardRef, useId, useState, type AnchorHTMLAttributes, type HTMLAttributes, type ReactNode } from "react";
+import { forwardRef, useEffect, useId, useRef, useState, type AnchorHTMLAttributes, type HTMLAttributes, type ReactNode } from "react";
 
 /* Derived, never restated: the default lives in the contract. */
 const { collapsible: collapsibleOption, heading: headingOption } = navListContract.options;
@@ -83,10 +83,24 @@ export function NavListGroup({
   /* Absence = open, matching the contract's missing-default and the vanilla enhancer. */
   const [open, setOpen] = useState(defaultOpen !== false);
   const expanded = collapsible ? open : true;
+  const group = useRef<HTMLDivElement>(null);
+
+  /* "Expand all" / "Collapse all": the page's command on the NavList root (`setNavListGroups`). */
+  useEffect(() => {
+    const root = collapsible ? group.current?.closest(`.${navListParts.root}`) : null;
+    if (!root) return;
+    const onSetAll = (event: Event) => {
+      const next = (event as CustomEvent<NavListSetAllDetail>).detail?.open;
+      if (typeof next === "boolean") setOpen(next);
+    };
+    root.addEventListener(navListEvents.setAll, onSetAll);
+    return () => root.removeEventListener(navListEvents.setAll, onSetAll);
+  }, [collapsible]);
 
   return (
     <div
       {...props}
+      ref={group}
       className={cx(navListParts.group, className)}
       {...{ [collapsibleOption.attr]: collapsible ? "" : undefined }}
       {...{ [navListContract.options.defaultOpen.attr]: collapsible && defaultOpen === true ? "" : undefined }}

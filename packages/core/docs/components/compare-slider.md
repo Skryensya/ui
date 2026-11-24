@@ -35,8 +35,8 @@ Alternatives: `Resizable`, `Tabs`, `Segmented`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `after` | node | yes |
 | `before` | node | yes |
+| `after` | node | yes |
 
 **Example** (canonical tree `compare-slider/default`; its copy is placeholder, replace it)
 

@@ -255,6 +255,12 @@
       background-color var(--motion-feedback-duration) var(--motion-feedback-easing);
   }
 
+  /* A link fills its row edge to edge, and the rows live in scrollers and drawers that clip: a ring
+     drawn outside lost its sides. Inside it is whole, on the link's own radius. */
+  .sk-nav-list__link:focus-visible {
+    outline-offset: calc(var(--focus-ring-width) * -1);
+  }
+
   /* And a link may BE a button. Menubar's `nav` trigger (`menubar.ts`), a real control rather
    * than something that navigates. Only `<a>` ever carried this class before, so nothing reset
    * native button chrome: border and appearance, the same gap `menu.css` already closed once for

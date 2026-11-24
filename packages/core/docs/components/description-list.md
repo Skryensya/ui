@@ -1,30 +1,6 @@
 # description-list
 
-Category: data. Stylesheet: `@skryensya/core/components/description-list.css`. Signatures: `DescriptionItem`, `DescriptionList`.
-
-## DescriptionItem
-
-**Use when**
-
-- one name and its value; the name is text, the value takes markup (a Tag, a link, a date)
-
-**Avoid when**
-
-- the name needs markup of its own; a name that is a heading means this should be a section
-
-Alternatives: `Table`.
-
-- React: `import { DescriptionItem } from "@skryensya/react/description-list"`.
-- HTML: a `<div>`, no JavaScript needed.
-
-- Goes inside: `DescriptionList`.
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `children` | node | yes |
-| `term` | text | yes |
+Category: data. Stylesheet: `@skryensya/core/components/description-list.css`. Signatures: `DescriptionList`, `DescriptionItem`.
 
 ## DescriptionList
 
@@ -91,6 +67,30 @@ export function DescriptionListExample() {
 ```
 
 Stylesheets: `@skryensya/core/components/description-list.css`.
+
+## DescriptionItem
+
+**Use when**
+
+- one name and its value; the name is text, the value takes markup (a Tag, a link, a date)
+
+**Avoid when**
+
+- the name needs markup of its own; a name that is a heading means this should be a section
+
+Alternatives: `Table`.
+
+- React: `import { DescriptionItem } from "@skryensya/react/description-list"`.
+- HTML: a `<div>`, no JavaScript needed.
+
+- Goes inside: `DescriptionList`.
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `term` | text | yes |
+| `children` | node | yes |
 
 ## Styling hooks
 

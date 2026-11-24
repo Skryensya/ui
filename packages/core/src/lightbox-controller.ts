@@ -46,6 +46,11 @@ import {
   type LightboxView,
 } from "./lightbox.js";
 import { videoPlayerParts } from "./video-player.js";
+import { magnifierParts } from "./magnifier.js";
+import { createMagnifierView, type MagnifierView } from "./magnifier-view.js";
+
+/** How many times larger the magnifier's lens shows the photo. The photo is already large here, so less than a page's 2.5. */
+const LIGHTBOX_MAGNIFIER_ZOOM = 2;
 
 /*
  * LIGHTBOX, the controller: the one place a lightbox's behaviour is wired. DOM-touching and
@@ -87,6 +92,8 @@ export type LightboxSettings = {
   readonly showCaption?: boolean;
   /** A click on the dark around the image closes. Default true. */
   readonly closeOnBackdropClick?: boolean;
+  /** The zoom bar's magnifier toggle puts a lens over the photo. Default false; needs the toggle in the markup. */
+  readonly magnifier?: boolean;
 };
 
 export type LightboxStatus = "idle" | "loading" | "loaded" | "error";
@@ -1248,6 +1255,9 @@ export function connectLightbox(dialog: HTMLDialogElement, initial: LightboxConf
     if (pointers.has(event.pointerId)) endGesture(event, true);
     if (event.pointerType === "mouse" && event.button !== 0) return;
     if ((event.target as Element | null)?.closest?.("button, a")) return;
+    /* With the magnifier on, a mouse or pen is the lens's: no pan or swipe under it (a held press grows the lens instead).
+       Touch keeps its gestures, since there the lens is a held finger and a swipe still means the next photo. */
+    if (magnifier && event.pointerType !== "touch") return;
     /* A press on a video is a press on its player: its scrubber, its volume. No pan, swipe or pinch to take it over. */
     if (isVideo()) return;
     pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
@@ -1529,7 +1539,38 @@ export function connectLightbox(dialog: HTMLDialogElement, initial: LightboxConf
         return zoomTo(view.scale / LIGHTBOX_ZOOM_STEP);
       case "reset-zoom":
         return setView(LIGHTBOX_FIT_VIEW);
+      case "magnifier":
+        return toggleMagnifier();
     }
+  };
+
+  /*
+   * THE MAGNIFIER, a toggle. On, a Magnifier lens lives in the stage and reads the current photo (only the photo: the stage
+   * also holds the placeholder and, during a swap, the ghost). It maps the photo through its drawn box, so the Lightbox's
+   * own zoom keeps working under it (buttons, wheel, pinch); a mouse press is the lens's, growing it, not a pan or a swipe. Off, or when the
+   * Lightbox closes, the lens is gone. The toggle says which with `aria-pressed`.
+   */
+  let magnifier: { view: MagnifierView; lens: HTMLCanvasElement } | null = null;
+  const magnifierButton = (): HTMLButtonElement | null => control("magnifier");
+  const setMagnifier = (on: boolean): void => {
+    if (on === Boolean(magnifier)) return;
+    if (on) {
+      const lens = doc.createElement("canvas");
+      lens.className = magnifierParts.lens;
+      lens.setAttribute("aria-hidden", "true");
+      stage.append(lens);
+      stage.setAttribute("data-sk-magnifier-host", "");
+      magnifier = { lens, view: createMagnifierView(stage, lens, { zoom: LIGHTBOX_MAGNIFIER_ZOOM, media: `.${lightboxParts.image}`, trackMedia: true }) };
+    } else if (magnifier) {
+      magnifier.view.destroy();
+      magnifier.lens.remove();
+      stage.removeAttribute("data-sk-magnifier-host");
+      magnifier = null;
+    }
+    magnifierButton()?.setAttribute("aria-pressed", String(on));
+  };
+  const toggleMagnifier = (): void => {
+    if (setting("magnifier") === true) setMagnifier(!magnifier);
   };
 
   /* ---- keyboard ---- */
@@ -1877,6 +1918,7 @@ export function connectLightbox(dialog: HTMLDialogElement, initial: LightboxConf
     destroy() {
       close();
       detachSession();
+      setMagnifier(false);
       releaseTrap();
       dialog.removeEventListener("click", onClick);
       dialog.removeEventListener("cancel", onCancel);

@@ -157,3 +157,43 @@ describe("commandPaletteOptionContext", () => {
     expect(commandPaletteOptionContext(entry())).toBe("");
   });
 });
+
+describe("filterCommandPaletteEntries, typos", () => {
+  const index = [entry({ href: "/button", label: "Button" }), entry({ href: "/calendar", label: "Calendar", aliases: ["date picker"] })];
+
+  it("finds a destination through a misspelling when nothing matches exactly", () => {
+    expect(filterCommandPaletteEntries(index, "buton").map((e) => e.href)).toEqual(["/button"]);
+    expect(filterCommandPaletteEntries(index, "calnedar").map((e) => e.href)).toEqual(["/calendar"]);
+    expect(filterCommandPaletteEntries(index, "pickr").map((e) => e.href)).toEqual(["/calendar"]);
+  });
+
+  it("does not fuzz a short query, a far one or an exact hit", () => {
+    expect(filterCommandPaletteEntries(index, "bt")).toEqual([]);
+    expect(filterCommandPaletteEntries(index, "zzzzz")).toEqual([]);
+    expect(filterCommandPaletteEntries(index, "cal").map((e) => e.href)).toEqual(["/calendar"]);
+  });
+});
+
+describe("filterCommandPaletteEntries, recents", () => {
+  const index = [
+    entry({ href: "/a", label: "Alpha", section: "Docs" }),
+    entry({ href: "/b", label: "Beta", section: "Docs" }),
+    entry({ href: "/c", label: "Gamma", section: "Docs" }),
+  ];
+
+  it("lists the recents first, newest first, then the rest, once each", () => {
+    const rows = filterCommandPaletteEntries(index, "", { hrefs: ["/c", "/a", "/gone"] });
+    expect(rows.map((e) => e.href)).toEqual(["/c", "/a", "/b"]);
+  });
+
+  it("says why they are first, and changes nothing without a label", () => {
+    expect(filterCommandPaletteEntries(index, "", { hrefs: ["/b"], label: "Recent" })[0]!.context).toBe("Recent · Docs");
+    expect(filterCommandPaletteEntries(index, "", { hrefs: ["/b"] })[0]!.context).toBeUndefined();
+  });
+
+  it("is the whole index when there are none, and ignored once a query is typed or commands are asked for", () => {
+    expect(filterCommandPaletteEntries(index, "", { hrefs: [] }).map((e) => e.href)).toEqual(["/a", "/b", "/c"]);
+    expect(filterCommandPaletteEntries(index, "gam", { hrefs: ["/a"] }).map((e) => e.href)).toEqual(["/c"]);
+    expect(filterCommandPaletteEntries([...index, command()], "/", { hrefs: ["/a"] }).map((e) => e.command)).toEqual(["tour"]);
+  });
+});

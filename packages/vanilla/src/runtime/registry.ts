@@ -50,6 +50,11 @@ const registrations: readonly Registration[] = [
     load: async () => (await import("../components/password-input.js")).mountPasswordInput,
   },
   {
+    /* Only for a Lightbox on the large photos: choosing needs no script. */
+    selector: ".sk-gallery:has([data-sk-lightbox-open])",
+    load: async () => (await import("../components/gallery.js")).mountGallery,
+  },
+  {
     selector: "[data-sk-search-field]",
     load: async () => (await import("../components/search-field.js")).mountSearchField,
   },
@@ -139,6 +144,10 @@ const registrations: readonly Registration[] = [
   {
     selector: "[data-sk-compare-slider]",
     load: async () => (await import("../components/compare-slider.js")).mountCompareSlider,
+  },
+  {
+    selector: "[data-sk-magnifier]",
+    load: async () => (await import("../components/magnifier.js")).mountMagnifier,
   },
   {
     selector: "[data-sk-resizable]",

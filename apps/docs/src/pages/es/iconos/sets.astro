@@ -1,0 +1,15 @@
+---
+import FoundationPage from "../../../components/FoundationPage.astro";
+import IconGallery from "../../../components/IconGallery.astro";
+import { siteIconSets } from "../../../lib/icon-set-options";
+---
+
+<FoundationPage title="Sets de iconos" description="Todos los roles del vocabulario, dibujados por cada set de iconos que el kit mapea.">
+  <p class="lede">
+    Los mismos {siteIconSets.length} sets que puedes elegir en Preferencias, con todos los roles que dibujan. Elige uno y toda la página se redibuja: los nombres no cambian, solo la geometría. ¿Falta el tuyo? <a href="/es/iconos/agregar">Agrega cualquier otro set</a>.
+  </p>
+  <IconGallery label="Set de iconos" interfaceTitle="Roles de interfaz" componentTitle="Marcas de componente" />
+  <p>
+    Cada set se lee de su colección de Iconify al compilar y solo los roles llegan al bundle; la línea de licencia bajo el selector es la que debes llevar a tu propio proyecto. Cómo encajan roles, sets y CSS está en <a href="/es/iconos">Iconografía</a>.
+  </p>
+</FoundationPage>

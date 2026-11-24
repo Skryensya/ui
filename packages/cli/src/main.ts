@@ -33,6 +33,7 @@ Options for icons
   --out <path>               default src/icons (writes .ts and .css)
   --check                    fail if those files are stale
   --components               also write the marks of the kit's components (a catalogue, a sidebar)
+  --brands                   also write brand logos: brand-github, brand-x, brand-instagram…
   sets: lucide, ph (and ph-thin|light|bold|fill|duotone), material-symbols (and -rounded|-sharp|-filled),
         tabler, heroicons, ri, mingcute, hugeicons, fluent, carbon, iconoir, bi, mdi
 
@@ -77,7 +78,7 @@ export function main(argv: string[], ctx: Context): number {
     case "review":
       return review(rest[0], { json: values.json }, local);
     case "icons":
-      return icons(rest[0], { out: values.out, check: values.check, components: values.components }, local);
+      return icons(rest[0], { out: values.out, check: values.check, components: values.components, brands: values.brands }, local);
     default:
       ctx.error(`Unknown command "${command}". Run: skryensya help`);
       return 1;
@@ -98,6 +99,7 @@ function parse(argv: string[]) {
       icons: { type: "string" },
       check: { type: "boolean" },
       components: { type: "boolean" },
+      brands: { type: "boolean" },
       "dry-run": { type: "boolean" },
       "no-install": { type: "boolean" },
       help: { type: "boolean", short: "h" },

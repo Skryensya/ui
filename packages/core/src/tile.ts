@@ -331,6 +331,17 @@ export const tileContract = {
               { element: "span", attrs: { "data-sk-icon": "chevron-up", "data-sk-icon-size": "md" } },
             ],
           },
+          /* Plus and minus, hidden unless a container asks for them (a seamless accordion does). */
+          {
+            element: "span",
+            attrs: { "data-sign": "closed" },
+            children: [{ element: "span", attrs: { "data-sk-icon": "add", "data-sk-icon-size": "md" } }],
+          },
+          {
+            element: "span",
+            attrs: { "data-sign": "open" },
+            children: [{ element: "span", attrs: { "data-sk-icon": "remove", "data-sk-icon-size": "md" } }],
+          },
         ],
       },
       react: { from: "@skryensya/react/tile", name: "TileChevron" },

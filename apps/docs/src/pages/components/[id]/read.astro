@@ -1,0 +1,8 @@
+---
+import ComponentMarkdownPage from "../../../components/pages/ComponentMarkdownPage.astro";
+import { agentDocIds } from "../../../lib/agent-docs";
+
+export const getStaticPaths = () => agentDocIds().map((id) => ({ params: { id } }));
+---
+
+<ComponentMarkdownPage />

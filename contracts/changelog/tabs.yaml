@@ -3,8 +3,32 @@
 # `surface` is the shape of the contract the last time somebody reviewed it. If the compiler says it
 # does not match, something a consumer depends on has moved: write the entry and paste in the new
 # hash.
-surface: "3bda5d82153e580f"
+surface: "4b585755a0f96792"
 entries:
+  - date: 2026-11-23
+    kind: bugfix
+    es:
+      title: El anillo de foco de una pestaña se ve entero
+      body: 'Con el teclado, el anillo de foco de una pestaña (la tira que hace scroll) se veía cortado por un contenedor que recorta. Ahora se ve entero. Se dibuja hacia adentro.'
+    en:
+      title: A tab’s focus ring is drawn whole
+      body: 'With the keyboard, the focus ring of a tab (the scrolling strip) was cut by a clipping container. It is now drawn whole. It is drawn inside.'
+  - date: 2026-11-22
+    kind: bugfix
+    es:
+      title: Las pestañas ya no hacen saltar la página al cargar
+      body: "Antes de que el script monte, el marcado mostraba todos los paneles y la página saltaba cuando se ocultaban. Ahora solo se ve el panel que empieza elegido; sin JavaScript se siguen viendo todos."
+    en:
+      title: Tabs no longer make the page jump on load
+      body: "Before the script mounted, the markup showed every panel, and the page jumped when they hid. Now only the panel that starts selected shows; without JavaScript every panel still shows."
+  - date: 2026-11-22
+    kind: feature
+    es:
+      title: La tira puede ir debajo y repartirse en filas
+      body: "<code>listPlacement: after</code> muestra la tira de pestañas debajo de los paneles, y <code>wrap</code> la reparte en filas en vez de desplazarla. Juntas sirven para una galería con miniaturas debajo de la foto. El orden del DOM no cambia, así que el teclado y los lectores de pantalla siguen igual."
+    en:
+      title: The strip can sit below and wrap
+      body: "<code>listPlacement: after</code> shows the tab strip below the panels, and <code>wrap</code> breaks it onto rows instead of scrolling. Together they make a gallery with thumbnails under the photo. The DOM order does not change, so the keyboard and screen readers behave the same."
   - date: 2026-11-20
     kind: feature
     es:

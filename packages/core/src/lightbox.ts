@@ -150,6 +150,8 @@ export const lightboxAttrs = {
   counter: "data-counter",
   caption: "data-caption",
   closeOnBackdrop: "data-close-on-backdrop",
+  /** On the root: the zoom bar has a magnifier toggle. */
+  magnifier: "data-magnifier",
   counterLabel: "data-counter-label",
   /** Written by the controller on the root: `loading`, `loaded` or `error`. */
   status: "data-sk-status",
@@ -173,11 +175,12 @@ export const lightboxAttrs = {
   closing: "data-sk-closing",
 } as const;
 
-export type LightboxAction = "close" | "previous" | "next" | "zoom-in" | "zoom-out" | "reset-zoom";
+export type LightboxAction = "close" | "previous" | "next" | "zoom-in" | "zoom-out" | "reset-zoom" | "magnifier";
 export const lightboxActions = [
   "zoom-out",
   "zoom-in",
   "reset-zoom",
+  "magnifier",
   "close",
   "previous",
   "next",
@@ -644,6 +647,13 @@ export const lightboxContract = {
     zoomInLabel: { type: "string", default: "Zoom in", attr: "aria-label" },
     zoomOutLabel: { type: "string", default: "Zoom out", attr: "aria-label" },
     resetZoomLabel: { type: "string", default: "Reset zoom", attr: "aria-label" },
+    /** The magnifier toggle's name. It is a toggle (`aria-pressed`), so the name says what, not "turn on". */
+    magnifierLabel: { type: "string", default: "Magnifier", attr: "aria-label" },
+    /**
+     * A toggle in the zoom bar that puts a magnifying glass over the photo (the `Magnifier`'s lens), following the pointer.
+     * Off by default. The Lightbox's own zoom and pan keep working with it on; the lens reads the photo as it is drawn.
+     */
+    magnifier: { type: "boolean", default: false, attr: lightboxAttrs.magnifier, trueValue: "" },
     /** What the stage says when an image cannot be loaded. */
     errorLabel: {
       type: "string",
@@ -746,6 +756,8 @@ export const lightboxContract = {
         "zoomInLabel",
         "zoomOutLabel",
         "resetZoomLabel",
+        "magnifierLabel",
+        "magnifier",
         "errorLabel",
         "counterLabel",
         "loop",
@@ -829,9 +841,12 @@ export const lightboxContract = {
             part: "zoom",
             children: [
               /* Top to bottom, the way Canvas's vertical zoom bar reads: in, out, then fit. */
-              control("zoom-in", "zoomInLabel", "zoom-in", "zoom"),
-              control("zoom-out", "zoomOutLabel", "zoom-out", "zoom"),
+              /* Plus and minus, not magnifying glasses: a magnifying glass is the magnifier toggle's, below. */
+              control("zoom-in", "zoomInLabel", "add", "zoom"),
+              control("zoom-out", "zoomOutLabel", "remove", "zoom"),
               control("reset-zoom", "resetZoomLabel", "fit", "zoom"),
+              /* Only when the option is on: a toggle, so it starts unpressed and the controller flips `aria-pressed`. */
+              { ...control("magnifier", "magnifierLabel", "search", "zoom"), whenGiven: "magnifier", attrs: { ...control("magnifier", "magnifierLabel", "search", "zoom").attrs, "aria-pressed": "false" } },
             ],
           },
           {

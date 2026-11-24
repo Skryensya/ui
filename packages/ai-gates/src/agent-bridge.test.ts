@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import "@skryensya/vanilla/test-setup";
 import { emitMarkup } from "@skryensya/ai-compiler/emit";
-import { actingAgent, createAgent } from "@skryensya/core/agent";
+import { actingAgent, createAgent, registerTools } from "@skryensya/core/agent";
 import type { UsageTree } from "@skryensya/core/usage-tree";
 import { initComponents } from "@skryensya/vanilla";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -135,5 +135,73 @@ describe("the agent bridge over emitted, mounted markup", () => {
     const entry = createAgent().snapshot().find((each) => each.label === "Project name")!;
     expect(entry.secret).toBe(true);
     expect("value" in entry).toBe(false);
+  });
+});
+
+/*
+ * WebMCP as the W3C draft declares it (19 November 2026): `document.modelContext.registerTool(tool,
+ * { signal })` returns a promise, rejects a name already registered with InvalidStateError, and a tool
+ * leaves when its signal aborts. The browser serializes what `execute` resolves to as JSON.
+ */
+type FakeTool = { name: string; title?: string; description: string; inputSchema?: object; annotations?: object; execute: (input: object, options: { signal: AbortSignal }) => Promise<unknown> };
+
+function fakeModelContext() {
+  const tools = new Map<string, FakeTool>();
+  const context = {
+    tools,
+    registerTool: async (tool: FakeTool, options: { signal?: AbortSignal } = {}) => {
+      if (!/^[A-Za-z0-9_.-]{1,128}$/.test(tool.name)) throw new TypeError(`bad name ${tool.name}`);
+      if (!tool.description) throw new DOMException("empty description", "InvalidStateError");
+      if (tools.has(tool.name)) throw new DOMException(`${tool.name} is registered`, "InvalidStateError");
+      tools.set(tool.name, tool);
+      options.signal?.addEventListener("abort", () => tools.delete(tool.name));
+    },
+    call: async (name: string, input: object = {}) => JSON.parse(JSON.stringify(await tools.get(name)!.execute(input, { signal: new AbortController().signal }))),
+  };
+  Object.defineProperty(document, "modelContext", { value: context, configurable: true });
+  return context;
+}
+
+describe("the bridge offered through WebMCP", () => {
+  afterEach(() => {
+    delete (document as { modelContext?: unknown }).modelContext;
+  });
+
+  it("does nothing where the browser has no WebMCP", async () => {
+    const unregister = await registerTools(createAgent(), { allow: () => true });
+    expect(typeof unregister).toBe("function");
+  });
+
+  it("registers three tools the browser accepts, read-only ones marked, and takes them back", async () => {
+    const context = fakeModelContext();
+    const unregister = await registerTools(createAgent(), { allow: () => true });
+    expect([...context.tools.keys()].sort()).toEqual(["skryensya_act", "skryensya_query", "skryensya_snapshot"]);
+    expect(context.tools.get("skryensya_snapshot")?.annotations).toEqual({ readOnlyHint: true });
+    expect(context.tools.get("skryensya_act")?.annotations).toEqual({ consequentialHint: true });
+    for (const tool of context.tools.values()) expect(typeof tool.inputSchema).toBe("object");
+    unregister();
+    expect(context.tools.size).toBe(0);
+  });
+
+  it("answers in JSON, and asks the person before a confirm step", async () => {
+    const context = fakeModelContext();
+    const asked: string[] = [];
+    await registerTools(createAgent(), { allow: (step) => (asked.push(step.confirm ?? ""), false) });
+    const snapshot = (await context.call("skryensya_snapshot")) as { label: string }[];
+    expect(snapshot.map((entry) => entry.label)).toContain("Project name");
+    const named = await context.call("skryensya_act", { steps: [{ ref: "Project name", action: "setValue", args: ["Atlas"] }] });
+    expect(named.ok).toBe(true);
+    expect(document.querySelector<HTMLInputElement>("input[name=name]")!.value).toBe("Atlas");
+    const removal = await context.call("skryensya_act", { steps: [{ ref: "Delete project", action: "press" }] });
+    expect(removal.ok).toBe(false);
+    expect(asked).toEqual(["Deletes the project and all its files"]);
+    expect(deleted).toBe(0);
+  });
+
+  it("rejects, and leaves nothing behind, when the browser refuses a tool", async () => {
+    const context = fakeModelContext();
+    await context.registerTool({ name: "skryensya_query", description: "someone else's", execute: async () => null });
+    await expect(registerTools(createAgent(), { allow: () => true })).rejects.toThrow(/is registered/);
+    expect([...context.tools.keys()]).toEqual(["skryensya_query"]);
   });
 });

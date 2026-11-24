@@ -33,9 +33,9 @@ Alternatives: `Table`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `change` | node |  |
 | `label` | text | yes |
 | `value` | text | yes |
+| `change` | node |  |
 
 **Example** (canonical tree `stat/animated`; its copy is placeholder, replace it)
 

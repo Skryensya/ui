@@ -113,8 +113,8 @@ Stylesheets: `@skryensya/core/patterns/nav-list.css`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `children` | one of `NavListLink` | yes |
 | `label` | node |  |
+| `children` | one of `NavListLink` | yes |
 
 ## NavListLink
 
@@ -147,10 +147,16 @@ Alternatives: `Button.navigation`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `children` | text | yes |
 | `icon` | node |  |
-| `nested` | one of `NavListGroup` |  |
+| `children` | text | yes |
 | `trailing` | node |  |
+| `nested` | one of `NavListGroup` |  |
+
+## Events
+
+| DOM event (Vanilla) | React prop | `detail` |
+|---|---|---|
+| `sk:navlistsetall` (dispatch it to the root to drive the component) |  | { open: boolean } |
 
 ## Styling hooks
 

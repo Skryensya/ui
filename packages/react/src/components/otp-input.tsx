@@ -4,10 +4,11 @@ import {
   otpInputEvents,
   otpInputParts,
   type OtpInputGroupSize,
+  revealFocusedSegment,
   type OtpInputType,
 } from "@skryensya/core/otp-input";
 import { normalizeProps, useMachine } from "@zag-js/react";
-import { useId, useRef, type ReactNode } from "react";
+import { useEffect, useId, useRef, type ReactNode } from "react";
 import { Icon } from "./icon.js";
 
 /* Derived, never restated: the defaults live in the contract. */
@@ -80,6 +81,9 @@ export function OtpInput({
   const generatedId = useId();
   const resolvedId = id ?? generatedId;
   const rootRef = useRef<HTMLDivElement>(null);
+  const controlRef = useRef<HTMLDivElement>(null);
+  /* A segment reached past the edge of a scrolling row comes into view, ring and all. */
+  useEffect(() => (controlRef.current ? revealFocusedSegment(controlRef.current) : undefined), []);
   const hintId = hint ? `${resolvedId}-hint` : undefined;
 
   /*
@@ -145,7 +149,7 @@ export function OtpInput({
       <label {...api.getLabelProps()} className={otpInputParts.label}>
         {label}
       </label>
-      <div {...api.getControlProps()} className={otpInputParts.control}>
+      <div {...api.getControlProps()} className={otpInputParts.control} ref={controlRef}>
         {/* `count`, not `api.items`: pin-input's own `connect()` exposes no items array, unlike
             rating-group's. The segment count is what THIS binding was given, same source the
             contract's own emitter reads for authored markup. */}

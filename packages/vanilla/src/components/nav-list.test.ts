@@ -1,6 +1,7 @@
 import { fireEvent } from "@testing-library/dom";
 import { afterEach, describe, expect, it } from "vitest";
 import { destroyMount } from "../runtime/svelte-hydrate.js";
+import { setNavListGroups } from "@skryensya/core/nav-list";
 import { mountNavListGroup } from "./nav-list.js";
 
 function markup({ defaultOpen = true }: { defaultOpen?: boolean } = {}) {
@@ -176,5 +177,19 @@ describe("NavListGroup remembering", () => {
     mountAll();
     fireEvent.click(triggers()[0]!);
     expect(sessionStorage.getItem("sk-nav-list:test-nav")).toBeNull();
+  });
+
+  it("opens and closes every group on the page's setAll command", () => {
+    document.body.innerHTML = `<nav class="sk-nav-list">${["A", "B"].map((name, index) => `<div class="sk-nav-list__group">
+      <button type="button" data-sk-nav-list-group-trigger aria-expanded="${index === 0}">${name}</button>
+      <ul data-sk-nav-list-group-list ${index === 0 ? "" : "hidden"}><li>x</li></ul></div>`).join("")}</nav>`;
+    mountNavListGroup(document);
+    const nav = document.querySelector("nav")!;
+    const triggers = [...document.querySelectorAll("[data-sk-nav-list-group-trigger]")];
+    setNavListGroups(nav, true);
+    expect(triggers.map((each) => each.getAttribute("aria-expanded"))).toEqual(["true", "true"]);
+    expect([...document.querySelectorAll<HTMLElement>("[data-sk-nav-list-group-list]")].every((each) => !each.hidden)).toBe(true);
+    setNavListGroups(nav, false);
+    expect(triggers.map((each) => each.getAttribute("aria-expanded"))).toEqual(["false", "false"]);
   });
 });

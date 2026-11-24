@@ -43,8 +43,8 @@ Alternatives: `Input`, `NumberField`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `hint` | text |  |
 | `label` | text | yes |
+| `hint` | text |  |
 
 **Example** (canonical tree `otp-input/segments`; its copy is placeholder, replace it)
 
@@ -153,9 +153,9 @@ Stylesheets: `@skryensya/core/components/otp-input.css`.
 
 | DOM event (Vanilla) | React prop | `detail` |
 |---|---|---|
-| `sk:otpinputinvalid` | `onValueInvalid` | { char: string, index: number } |
 | `sk:otpinputvaluechange` | `onValueChange` | { value: string } |
 | `sk:otpinputvaluecomplete` | `onValueComplete` | { value: string } |
+| `sk:otpinputinvalid` | `onValueInvalid` | { char: string, index: number } |
 
 ## Styling hooks
 

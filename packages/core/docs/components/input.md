@@ -128,7 +128,7 @@ Alternatives: `Input`.
 
 | DOM event (Vanilla) | React prop | `detail` |
 |---|---|---|
-| `sk:inputvalidate` | `onValidate` | { normalized: string \| undefined, ok: boolean, reason: InputFormatReason \| undefined } |
+| `sk:inputvalidate` | `onValidate` | { ok: boolean, reason: InputFormatReason \| undefined, normalized: string \| undefined } |
 
 ## Styling hooks
 

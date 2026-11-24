@@ -1,49 +1,6 @@
 # content
 
-Category: feedback. Stylesheet: `@skryensya/core/components/toast.css`. Signatures: `Toast`, `ToastRegion`, `ToastTemplate`.
-
-## Toast
-
-**Use when**
-
-- confirming something that already happened and needs no answer: saved, sent, copied
-- offering to undo an action for a few seconds
-- saying that something running in the background has finished
-
-**Avoid when**
-
-- the message is part of the content and has to stay; that is a Callout
-- it must be read before going on; that is a Dialog
-- it is an error of one field; that goes in the FormField, next to the control
-
-Alternatives: `Callout`, `Dialog`, `FormField`.
-
-- React: `import { Toast } from "@skryensya/react/content"`.
-- HTML: a `<div>` with `data-sk-toast`, enhanced by Vanilla's mount.
-
-- Goes inside: `ToastRegion`, `ToastTemplate`.
-
-**Options**
-
-| Option | Values | Default |
-|---|---|---|
-| `tone` | "neutral" \| "info" \| "success" \| "warning" \| "danger" | `"neutral"` |
-| `dismissible` | boolean | `false` |
-| `dismissLabel` | string | `"Dismiss notification"` |
-| `timeout` | number |  |
-
-**Slots**
-
-| Slot | Accepts | Required |
-|---|---|---|
-| `actions` | one of `Button.action`, `Button.navigation` |  |
-| `children` | node | yes |
-| `icon` | one of `Icon` |  |
-| `title` | text |  |
-
-**Accessible name**
-
-- The dismiss control is icon-only; every dismissible toast needs an accessible name for the notification it clears. Give one of: `dismissLabel`.
+Category: feedback. Stylesheet: `@skryensya/core/components/toast.css`. Signatures: `ToastRegion`, `ToastTemplate`, `Toast`.
 
 ## ToastRegion
 
@@ -203,6 +160,49 @@ export function ToastTemplateExample() {
 ```
 
 Stylesheets: `@skryensya/core/components/button.css`, `@skryensya/core/components/callout.css`, `@skryensya/core/components/toast.css`.
+
+## Toast
+
+**Use when**
+
+- confirming something that already happened and needs no answer: saved, sent, copied
+- offering to undo an action for a few seconds
+- saying that something running in the background has finished
+
+**Avoid when**
+
+- the message is part of the content and has to stay; that is a Callout
+- it must be read before going on; that is a Dialog
+- it is an error of one field; that goes in the FormField, next to the control
+
+Alternatives: `Callout`, `Dialog`, `FormField`.
+
+- React: `import { Toast } from "@skryensya/react/content"`.
+- HTML: a `<div>` with `data-sk-toast`, enhanced by Vanilla's mount.
+
+- Goes inside: `ToastRegion`, `ToastTemplate`.
+
+**Options**
+
+| Option | Values | Default |
+|---|---|---|
+| `tone` | "neutral" \| "info" \| "success" \| "warning" \| "danger" | `"neutral"` |
+| `dismissible` | boolean | `false` |
+| `dismissLabel` | string | `"Dismiss notification"` |
+| `timeout` | number |  |
+
+**Slots**
+
+| Slot | Accepts | Required |
+|---|---|---|
+| `icon` | one of `Icon` |  |
+| `title` | text |  |
+| `children` | node | yes |
+| `actions` | one of `Button.action`, `Button.navigation` |  |
+
+**Accessible name**
+
+- The dismiss control is icon-only; every dismissible toast needs an accessible name for the notification it clears. Give one of: `dismissLabel`.
 
 ## Events
 

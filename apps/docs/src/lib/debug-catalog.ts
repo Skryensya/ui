@@ -2,7 +2,7 @@
 const groups = {
   layout: ["app-shell", "card", "changelog", "expandable-tile", "footer", "grid", "hero", "icon", "inline", "layout-grid", "media-overlay", "placeholder", "stack", "tile-button", "tile-checkbox", "tile-link", "tile-radio-group", "tile-switch", "wrapper"],
   navigation: ["annotation", "app-bar", "dialog-stack", "drawer", "megamenu", "navbar", "sidebar", "skip-link", "toc", "tour", "window", "vaul"],
-  media: ["audio-player", "back-to-top", "canvas", "compare-slider", "curve-carousel", "diagram", "expressive-avatar", "fade-edge", "marquee", "morph-stack", "presence", "scroll-expand", "scroll-stack", "progressive-carousel", "video-player"],
+  media: ["audio-player", "back-to-top", "canvas", "compare-slider", "curve-carousel", "diagram", "expressive-avatar", "fade-edge", "gallery", "magnifier", "marquee", "morph-stack", "presence", "scroll-expand", "scroll-stack", "progressive-carousel", "video-player"],
   forms: ["color-picker", "qr-code", "questionnaire", "resizable", "search-field", "table-pager", "treegrid"],
   utilities: ["hotkey", "scrollbar", "toast"],
 } as const;

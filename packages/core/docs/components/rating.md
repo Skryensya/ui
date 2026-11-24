@@ -153,8 +153,8 @@ Alternatives: `Rating`, `Meter`, `Stat`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `count` | node |  |
 | `valueText` | node |  |
+| `count` | node |  |
 
 **Example** (canonical tree `rating/display`; its copy is placeholder, replace it)
 

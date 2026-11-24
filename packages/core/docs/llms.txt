@@ -46,6 +46,7 @@ These docs match the installed release. Read this index, then `choose.md` to pic
 - [file-upload](components/file-upload.md): files have to be attached
 - [footer](components/footer.md): it closes the page
 - [form-field](components/form-field.md): a control needs a label, and it almost always does
+- [gallery](components/gallery.md): one thing is shown in several photos and the reader picks which to see large
 - [hero](components/hero.md): it opens a page or a section
 - [icon](components/icon.md): it reinforces an action that already has text
 - [image-frame](components/image-frame.md): it crops an image or a video to a fixed aspect ratio
@@ -56,6 +57,7 @@ These docs match the installed release. Read this index, then `choose.md` to pic
 - [list](components/list.md): rows of things of the same kind
 - [listbox](components/listbox.md): whoever uses the screen has to see every option while choosing
 - [loader](components/loader.md): there is a wait of unknown length
+- [magnifier](components/magnifier.md): a picture has detail too small to read at its size on the page, and the reader should look closer without leaving it
 - [marquee](components/marquee.md): a short, repeated band gains meaning by moving, but the motion should only start after the person asks for it
 - [media-overlay](components/media-overlay.md): the text overlaps the photo or image instead of sitting below it
 - [megamenu](components/megamenu.md): site/marketing navigation with categories that drop down a multi-column panel of links, edge to edge under the bar

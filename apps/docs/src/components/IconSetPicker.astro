@@ -6,6 +6,8 @@
  */
 import { emitMarkup } from "@skryensya/ai-compiler/emit";
 import type { UsageTree } from "@skryensya/core/usage-tree";
+import type { IconSet } from "@skryensya/core/icon";
+import { iconMarkup } from "../icons";
 import { defaultIconSet, siteIconSets } from "../lib/icon-set-options";
 
 interface Props {
@@ -15,6 +17,14 @@ interface Props {
 }
 
 const { label, description, tile = false } = Astro.props;
+/* Six glyphs of each set under its name, drawn at build from the set's own geometry: choosing a style
+   blind is guessing. `data-icon-set-fixed` keeps the repaint from redrawing them in the CURRENT set, and
+   `data-preview-set` lets the duotone tint (site.css) find its own set's second layer. */
+const sets = import.meta.glob<{ icons: IconSet }>("../icon-sets/*.ts", { eager: true });
+const PREVIEW_ROLES = ["home", "search", "settings", "user", "calendar", "folder"] as const;
+const preview = (setId: string) =>
+  `<span class="docs-icon-preview" data-icon-set-fixed data-preview-set="${setId}">${PREVIEW_ROLES.map((role) => iconMarkup(role, { size: "md", set: sets[`../icon-sets/${setId}.ts`]!.icons })).join("")}</span>`;
+
 const id = tile ? "docs-icon-set-sheet" : "docs-icon-set-panel";
 
 const select = emitMarkup(
@@ -23,10 +33,10 @@ const select = emitMarkup(
     signature: "Select",
     options: { value: defaultIconSet },
     attrs: { id, "data-docs-icon-set-select": "" },
-    slots: { label, items: siteIconSets.map((set) => ({ options: { value: set.id }, slots: { label: set.label } })) },
+    slots: { label, items: siteIconSets.map((set) => ({ options: { value: set.id }, slots: { label: `${set.label}@@${set.id}@@` } })) },
   } as UsageTree,
   { fillDefaults: false },
-);
+).replace(/@@([\w-]+)@@/g, (_, setId: string) => preview(setId));
 const hint = description
   ? emitMarkup({ contract: "typography", signature: "Text", options: { size: "caption", tone: "secondary", textElement: "span" }, children: description } as UsageTree, { fillDefaults: false })
   : "";

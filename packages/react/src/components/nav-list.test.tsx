@@ -1,4 +1,5 @@
-import { fireEvent, render } from "@testing-library/react";
+import { act, fireEvent, render } from "@testing-library/react";
+import { setNavListGroups } from "@skryensya/core/nav-list";
 import { describe, expect, it } from "vitest";
 import { NavList, NavListGroup, NavListLink } from "./nav-list.js";
 
@@ -163,5 +164,23 @@ describe("NavList", () => {
       </NavList>,
     );
     expect(ui.getByRole("link").getAttribute("title")).toBe("Projects / Acme / Q3 launch");
+  });
+
+  it("opens and closes every collapsible group on the page's setAll command", () => {
+    const ui = render(
+      <NavList aria-label="Categories">
+        <NavListGroup collapsible label="Forms" defaultOpen={false}>
+          <NavListLink href="/input">Input</NavListLink>
+        </NavListGroup>
+        <NavListGroup collapsible label="Layout">
+          <NavListLink href="/stack">Stack</NavListLink>
+        </NavListGroup>
+      </NavList>,
+    );
+    const expanded = () => ui.getAllByRole("button").map((button) => button.getAttribute("aria-expanded"));
+    act(() => setNavListGroups(ui.getByRole("navigation"), true));
+    expect(expanded()).toEqual(["true", "true"]);
+    act(() => setNavListGroups(ui.getByRole("navigation"), false));
+    expect(expanded()).toEqual(["false", "false"]);
   });
 });

@@ -6,7 +6,7 @@
  * platform does not give, and an icon has no behavior. A vanilla consumer writes the `<svg>` by hand;
  * the markup contract is documented and never shipped (decision 8).
  */
-import { renderIconBox, type IconData, type IconSet, type IconSize, type StableIconName, iconContract } from "@skryensya/core/icon";
+import { renderIconBox, type IconData, type IconSet, type IconSize, type StableIconName, type BrandIconName, iconContract } from "@skryensya/core/icon";
 import { createContext, useContext, type ReactNode, type SVGAttributes } from "react";
 import { a11yWarnRef, dev, devTicket } from "../dev-warning.js";
 
@@ -73,7 +73,7 @@ type IconBaseProps = Omit<
  * that wants names for its icons writes its own three-line wrapper over `data`.
  */
 export type IconProps = IconBaseProps &
-  ({ name: StableIconName; data?: never } | { data: IconData; name?: never });
+  ({ name: StableIconName | BrandIconName; data?: never } | { data: IconData; name?: never });
 
 let warnedNoSet = false;
 function warnNoSet() {

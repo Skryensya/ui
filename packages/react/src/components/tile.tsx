@@ -126,6 +126,12 @@ export const TileChevron = forwardRef<HTMLSpanElement, TileChevronProps>(functio
       <span data-state="open">
         <Icon name="chevron-up" />
       </span>
+      <span data-sign="closed">
+        <Icon name="add" />
+      </span>
+      <span data-sign="open">
+        <Icon name="remove" />
+      </span>
     </span>
   );
 });

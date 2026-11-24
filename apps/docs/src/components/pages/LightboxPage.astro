@@ -32,6 +32,7 @@ import {
   lightboxGalleryTree,
   lightboxLoopTree,
   lightboxSingleTree,
+  lightboxMagnifierTree,
   lightboxTinyTree,
   lightboxVideoTree,
 } from "../../demos/lightbox";
@@ -123,6 +124,17 @@ const cardDemoImages = [
       stageMinBlockSize="24rem"
       storybookTitle="Components/Lightbox"
       storybookStory="Single"
+    />
+
+    <h3>{t("lightbox.magnifierTitle")}</h3>
+    <p set:html={t("lightbox.magnifierBody")} />
+    <UsagePreview
+      tree={lightboxMagnifierTree(t)}
+      css={lightboxDemoCss}
+      label={t("lightbox.magnifierTitle")}
+      stageMinBlockSize="14rem"
+      storybookTitle="Components/Lightbox"
+      storybookStory="Magnifier"
     />
 
     <h3>{t("lightbox.captionTitle")}</h3>

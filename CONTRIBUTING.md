@@ -153,7 +153,7 @@ system exists to prevent.
 5. **Both bindings**, each with its own tests: `packages/vanilla` (an enhancer over authored markup)
    and `packages/react`.
 6. **Publish it**: the `exports` map of each package it ships from, and the compiler's registry.
-7. **A canonical usage tree** in `packages/ai-gates/src/trees.ts`. A tree no gate runs is not
+7. **A canonical usage tree** in `contracts/examples/canonical.ts` (the gates and the agent docs read it). A tree no gate runs is not
    evidence of anything, which is why this list and the catalogue grow together.
 8. **Docs**: a page in `apps/docs`, in both locales, plus its nav registration.
 9. **Regenerate the artifacts**: `pnpm --filter @skryensya/ai-compiler build`.

@@ -1,0 +1,194 @@
+/*
+ * TIER 3, GALLERY
+ *
+ * One large view over a row of thumbnails. The thumbnails are a native radio group, and which view shows is decided
+ * here, by position: the view in the same place as the checked radio. No script owns the choice (gallery.ts says why).
+ *
+ * THE THUMBNAILS share the row equally, so four fill it and twelve still fit (they shrink to `--sk-gallery-thumb-min`,
+ * then the row scrolls). The chosen one is whole and edged; the rest rest a step quieter and come up on hover. The
+ * edge is the cue that does not depend on color: it is thicker, not only another hue.
+ */
+@layer components {
+  .sk-gallery {
+    --sk-gallery-gap: var(--space-stack-sm);
+    --sk-gallery-thumb-gap: var(--space-inline-sm);
+    --sk-gallery-thumb-min: 3.5rem;
+    --sk-gallery-thumb-radius: var(--radius-control);
+    --sk-gallery-thumb-idle-opacity: 0.72;
+    --sk-gallery-thumb-border: var(--color-border-subtle);
+    --sk-gallery-thumb-selected-border: var(--color-border-strong);
+    --sk-gallery-thumb-selected-width: 2px;
+    /* A column of thumbnails beside the photo (`start`, `end`): its width. */
+    --sk-gallery-rail-size: 4.5rem;
+
+    display: grid;
+    gap: var(--sk-gallery-gap);
+    min-inline-size: 0;
+  }
+
+  .sk-gallery__views {
+    display: grid;
+    min-inline-size: 0;
+  }
+
+  .sk-gallery__view {
+    display: none;
+    min-inline-size: 0;
+  }
+
+  /* The view beside the checked radio, by position. Written out to GALLERY_MAX (gallery.ts); with none checked, the first. */
+  .sk-gallery:has(> .sk-gallery__thumbs > :nth-child(1) > :checked) > .sk-gallery__views > :nth-child(1),
+  .sk-gallery:has(> .sk-gallery__thumbs > :nth-child(2) > :checked) > .sk-gallery__views > :nth-child(2),
+  .sk-gallery:has(> .sk-gallery__thumbs > :nth-child(3) > :checked) > .sk-gallery__views > :nth-child(3),
+  .sk-gallery:has(> .sk-gallery__thumbs > :nth-child(4) > :checked) > .sk-gallery__views > :nth-child(4),
+  .sk-gallery:has(> .sk-gallery__thumbs > :nth-child(5) > :checked) > .sk-gallery__views > :nth-child(5),
+  .sk-gallery:has(> .sk-gallery__thumbs > :nth-child(6) > :checked) > .sk-gallery__views > :nth-child(6),
+  .sk-gallery:has(> .sk-gallery__thumbs > :nth-child(7) > :checked) > .sk-gallery__views > :nth-child(7),
+  .sk-gallery:has(> .sk-gallery__thumbs > :nth-child(8) > :checked) > .sk-gallery__views > :nth-child(8),
+  .sk-gallery:has(> .sk-gallery__thumbs > :nth-child(9) > :checked) > .sk-gallery__views > :nth-child(9),
+  .sk-gallery:has(> .sk-gallery__thumbs > :nth-child(10) > :checked) > .sk-gallery__views > :nth-child(10),
+  .sk-gallery:has(> .sk-gallery__thumbs > :nth-child(11) > :checked) > .sk-gallery__views > :nth-child(11),
+  .sk-gallery:has(> .sk-gallery__thumbs > :nth-child(12) > :checked) > .sk-gallery__views > :nth-child(12),
+  .sk-gallery:not(:has(> .sk-gallery__thumbs :checked)) > .sk-gallery__views > :first-child {
+    display: block;
+  }
+
+  .sk-gallery__thumbs {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(var(--sk-gallery-thumb-min), 1fr);
+    gap: var(--sk-gallery-thumb-gap);
+    min-inline-size: 0;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+    /* A scroller clips: the focus ring's reach as padding, given back as a negative margin (otp-input.css does the same). */
+    margin: calc(var(--focus-ring-room) * -1);
+    padding: var(--focus-ring-room);
+    scroll-padding-inline: var(--focus-ring-room);
+  }
+
+  .sk-gallery__thumb {
+    position: relative;
+    display: block;
+    min-inline-size: 0;
+    border-radius: var(--sk-gallery-thumb-radius);
+    cursor: pointer;
+    opacity: var(--sk-gallery-thumb-idle-opacity);
+    transition: opacity var(--motion-feedback-duration) var(--motion-feedback-easing);
+  }
+
+  /* With none checked, the first is the one shown (the view rule above), so it reads as chosen too. */
+  .sk-gallery__thumb:hover,
+  .sk-gallery__thumb:has(> :checked),
+  .sk-gallery__thumbs:not(:has(:checked)) > .sk-gallery__thumb:first-child {
+    opacity: 1;
+  }
+
+  /* The edge, drawn over the picture so a photo's own light corners never hide it: a hairline at rest, thicker chosen. */
+  .sk-gallery__thumb::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px var(--sk-gallery-thumb-border);
+    pointer-events: none;
+  }
+
+  .sk-gallery__thumb:has(> :checked)::after,
+  .sk-gallery__thumbs:not(:has(:checked)) > .sk-gallery__thumb:first-child::after {
+    box-shadow: inset 0 0 0 var(--sk-gallery-thumb-selected-width) var(--sk-gallery-thumb-selected-border);
+  }
+
+  /*
+   * PLACEMENT. Only the painting moves, never the DOM: the photo is read first and the thumbnails after it, wherever they
+   * sit. `top` lifts the row over the photo; `start` and `end` stand the thumbnails in a column beside it.
+   */
+  .sk-gallery[data-placement="top"] > .sk-gallery__thumbs {
+    order: -1;
+  }
+
+  .sk-gallery:is([data-placement="start"], [data-placement="end"]) {
+    grid-template-columns: var(--sk-gallery-rail-size) minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .sk-gallery[data-placement="end"] {
+    grid-template-columns: minmax(0, 1fr) var(--sk-gallery-rail-size);
+  }
+
+  .sk-gallery[data-placement="start"] > .sk-gallery__thumbs {
+    order: -1;
+  }
+
+  /*
+   * The column is exactly as tall as the photo and scrolls past it: `block-size: 0` keeps the thumbnails out of the
+   * row's height (the photo alone decides it) and `min-block-size: 100%` stretches the column back to that height.
+   */
+  .sk-gallery:is([data-placement="start"], [data-placement="end"]) > .sk-gallery__thumbs {
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    grid-auto-rows: max-content;
+    align-content: start;
+    block-size: 0;
+    min-block-size: calc(100% + var(--focus-ring-room) * 2);
+    overflow-x: visible;
+    overflow-y: auto;
+    overscroll-behavior-block: contain;
+    scroll-padding-block: var(--focus-ring-room);
+  }
+
+  /* The radio itself: there for the keyboard and the announcement, never painted. The label is what is pressed. */
+  .sk-gallery__thumb-input {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .sk-gallery__thumb-face {
+    display: block;
+    border-radius: inherit;
+    overflow: clip;
+  }
+
+  .sk-gallery__thumb-face > * {
+    inline-size: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sk-gallery__thumb {
+      transition: none;
+    }
+  }
+
+  /* data-motion mirror (generated by scripts/mirror-motion.ts, edit the @media block above) */
+  :where(:root[data-motion="reduced"]) {
+    .sk-gallery__thumb {
+      transition: none;
+    }
+  }
+  /* end data-motion mirror */
+
+  :where(:root[data-motion="reduced"]) {
+    .sk-gallery__thumb {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .sk-gallery__thumb {
+      opacity: 1;
+    }
+
+    .sk-gallery__thumb:has(> :checked)::after {
+      box-shadow: inset 0 0 0 var(--sk-gallery-thumb-selected-width) Highlight;
+    }
+  }
+}

@@ -45,15 +45,15 @@ Alternatives: `Annotated`, `Procedure`, `Steps`, `TreeView`.
 
 | Slot | Accepts | Required |
 |---|---|---|
-| `edges` | a list of items (below) | yes |
 | `nodes` | a list of items (below) | yes |
 | `zones` | a list of items (below) |  |
+| `edges` | a list of items (below) | yes |
 
-Each item in `edges`: `arrow` ("end" \| "both" \| "none"), `from` (string), `fromRow` (string), `to` (string), `toRow` (string), `children` (text).
+Each item in `nodes`, keyed by `node`: `node` (string), `shape` ("process" \| "decision" \| "terminal" \| "and" \| "or" \| "xor" \| "nand" \| "nor" \| "xnor" \| "not"), `span` (number), `zone` (string), `children` (node, required), `logo` (node), `designator` (node), `rows` (items).
 
-Each item in `nodes`, keyed by `node`: `node` (string), `shape` ("process" \| "decision" \| "terminal" \| "and" \| "or" \| "xor" \| "nand" \| "nor" \| "xnor" \| "not"), `span` (number), `zone` (string), `children` (node, required), `designator` (node), `logo` (node), `rows` (items).
+Each item in `zones`, keyed by `zone`: `zone` (string), `within` (string), `children` (text, required).
 
-Each item in `zones`, keyed by `zone`: `within` (string), `zone` (string), `children` (text, required).
+Each item in `edges`: `from` (string), `to` (string), `fromRow` (string), `toRow` (string), `arrow` ("end" \| "both" \| "none"), `children` (text).
 
 **Accessible name**
 

@@ -159,6 +159,13 @@
   padding-block: var(--space-stack-sm);
 }
 
+/* A MAGNIFIER'S LENS GOES PAST ITS PICTURE (it rises over the edge before it shrinks away), so the picture keeps room above
+   and below: without it, a lens at the top edge sat on the card's control row. */
+.sk-preview-card__stage:has(> [data-sk-magnifier]),
+.sk-usage-preview--controlled .sk-preview-card .sk-property-playground .sk-preview-card__stage:has(> [data-sk-magnifier]) {
+  padding-block: var(--space-stack-xl);
+}
+
 /* A CURVECAROUSEL RUNS PAST ITS TRACK on purpose (its wheel is not clipped, so a strong lens keeps its sides whole); the
    card is what stops it sideways, so the example never spills over the page. `clip`, not `hidden`: no scroll box, and the
    vertical overflow stays visible. */

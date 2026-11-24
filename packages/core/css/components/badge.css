@@ -6,21 +6,29 @@
  *
  * Two shapes share the hooks: the LABEL (a pill with text) and the DOT (`data-dot`), a bare solid
  * indicator with no text, meant to ride the top-right corner of another element through a positioned
- * holder the consumer owns. The edge is tinted from the badge's own text color (`currentColor`), so
- * every tone gets a hairline of its own hue and the neutral badge, whose fill is the page canvas, 
- * stops being an invisible rectangle.
+ * holder the consumer owns.
+ *
+ * THE FILL. In light mode each tone keeps its pastel `*-subtle` fill; in dark mode the fill is mixed from
+ * the text color (12%), translucent, because the opaque dark `*-subtle` fills read as muddy saturated
+ * blocks there (and a light-mode mix from a dark text color reads gray). The hairline is the text color
+ * at 14% in both, a quiet edge rather than an outline. The neutral badge is the same recipe from the
+ * secondary text: a gray chip, not the canvas-colored hole it used to be.
+ *
+ * SMALLER THAN A CONTROL. 20px tall (18 sm, 16 xs): a status label sits beside text and controls, and at
+ * the old 28px it read as a Tag or a button, which a badge is not.
  */
 @layer components {
   .sk-badge {
-    --sk-badge-bg: light-dark(var(--color-bg-canvas), var(--color-bg-surface-sunken));
-    --sk-badge-fg: light-dark(var(--color-text-tertiary), var(--color-text-secondary));
-    --sk-badge-border: color-mix(in oklab, currentColor 22%, transparent);
+    --sk-badge-fg: var(--color-text-secondary);
+    --sk-badge-bg: light-dark(color-mix(in oklab, var(--sk-badge-fg) 8%, transparent), color-mix(in oklab, var(--sk-badge-fg) 12%, transparent));
+    --sk-badge-border: color-mix(in oklab, var(--sk-badge-fg) 14%, transparent);
     --sk-badge-radius: var(--radius-pill);
     --sk-badge-padding-x: var(--space-inset-sm);
-    --sk-badge-padding-y: var(--space-inset-xs);
+    --sk-badge-padding-y: 1px;
     --sk-badge-font-size: var(--font-size-caption);
     --sk-badge-font-weight: var(--font-weight-label);
-    --sk-badge-line-height: var(--font-line-height-caption);
+    /* 16px on the 12px caption: with 1px of padding and the 1px hairline, a 20px pill. */
+    --sk-badge-line-height: calc(4 / 3);
 
     /* Dot: a solid indicator, no text. Its fill is a saturated border token because a few-pixel dot
      * has to read at a glance where a soft label fill would wash out. The ring lets it sit over busy
@@ -40,6 +48,8 @@
     font-size: var(--sk-badge-font-size);
     font-weight: var(--sk-badge-font-weight);
     line-height: var(--sk-badge-line-height);
+    /* Counts keep their width as they change. */
+    font-variant-numeric: tabular-nums;
     white-space: nowrap;
     /*
      * Found on the break harness (`/debug/badge-break`): unlike Button's own root rule, this had
@@ -68,8 +78,7 @@
      * to --space-inset-sm, which would land sm's own padding on the default badge's padding and erase
      * the size difference. */
     --sk-badge-padding-x: calc(var(--space-inset-xs) * 1.5);
-    --sk-badge-padding-y: calc(var(--space-inset-xs) * 0.5);
-    --sk-badge-line-height: 1.35;
+    --sk-badge-padding-y: 0;
   }
 
   /*
@@ -80,30 +89,30 @@
   .sk-badge[data-size="xs"] {
     --sk-badge-padding-x: var(--space-inset-xs);
     --sk-badge-padding-y: 0;
-    --sk-badge-line-height: 1.25;
+    --sk-badge-line-height: calc(7 / 6);
   }
 
   .sk-badge[data-tone="accent"] {
-    --sk-badge-bg: var(--color-bg-accent-subtle);
     --sk-badge-fg: var(--color-text-accent);
+    --sk-badge-bg: light-dark(var(--color-bg-accent-subtle), color-mix(in oklab, var(--sk-badge-fg) 12%, transparent));
     --sk-badge-dot-color: var(--color-border-accent);
   }
 
   .sk-badge[data-tone="success"] {
-    --sk-badge-bg: var(--color-bg-success-subtle);
     --sk-badge-fg: var(--color-text-success);
+    --sk-badge-bg: light-dark(var(--color-bg-success-subtle), color-mix(in oklab, var(--sk-badge-fg) 12%, transparent));
     --sk-badge-dot-color: var(--color-border-success);
   }
 
   .sk-badge[data-tone="warning"] {
-    --sk-badge-bg: var(--color-bg-warning-subtle);
     --sk-badge-fg: var(--color-text-warning);
+    --sk-badge-bg: light-dark(var(--color-bg-warning-subtle), color-mix(in oklab, var(--sk-badge-fg) 12%, transparent));
     --sk-badge-dot-color: var(--color-border-warning);
   }
 
   .sk-badge[data-tone="danger"] {
-    --sk-badge-bg: var(--color-bg-danger-subtle);
     --sk-badge-fg: var(--color-text-danger);
+    --sk-badge-bg: light-dark(var(--color-bg-danger-subtle), color-mix(in oklab, var(--sk-badge-fg) 12%, transparent));
     --sk-badge-dot-color: var(--color-border-danger);
   }
 

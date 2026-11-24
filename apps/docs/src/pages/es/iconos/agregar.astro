@@ -1,0 +1,106 @@
+---
+import FoundationPage from "../../../components/FoundationPage.astro";
+import CodeBlock from "../../../components/CodeBlock.astro";
+
+const iconify = `// scripts/icons.ts, se ejecuta con: node scripts/icons.ts
+import { writeFileSync } from "node:fs";
+import { iconSetCss, iconSetFromIconify, iconSetModule } from "@skryensya/core/iconify";
+import json from "@iconify-json/solar/icons.json" with { type: "json" };
+
+// A la izquierda el rol (nuestro), a la derecha el nombre en Iconify (de ellos). Una línea por rol de interfaz.
+const map = {
+  "chevron-down": "alt-arrow-down",
+  "chevron-up": "alt-arrow-up",
+  search: "magnifier",
+  delete: "trash-bin-minimalistic",
+  // …
+};
+
+const set = iconSetFromIconify(json, {
+  map,
+  attrs: { fill: "currentColor" },
+  variant: "-linear", // se prueba antes de cada nombre: "magnifier-linear"
+});
+
+writeFileSync("src/icons.ts", iconSetModule(set, "/* generado */"));
+writeFileSync("src/icons.css", iconSetCss(set)); // iconos del select y del carrusel nativos`;
+
+const own = `import type { IconSet } from "@skryensya/core/icon";
+
+export const icons = {
+  "chevron-down": {
+    viewBox: "0 0 24 24",
+    body: '<path d="m6 9 6 6 6-6"/>',
+    attrs: { fill: "none", stroke: "currentColor", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round" },
+  },
+  // …todos los roles de interfaz
+} satisfies IconSet;`;
+
+const roles = `import { stableIconNames, isComponentIconName } from "@skryensya/core/icon";
+
+// Lo que un set debe: todos estos. Las marcas component-* son opcionales.
+stableIconNames.filter((name) => !isComponentIconName(name));`;
+
+const stroke = `// sets de contorno: la intención vive en el <svg>, nunca en el CSS
+attrs: { fill: "none", stroke: "currentColor", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round" }
+
+// sets rellenos
+attrs: { fill: "currentColor" }`;
+
+const contribute = `# en este repo, para ofrecer el set en Preferencias y en /es/iconos/sets
+# 1. un preset en packages/core/src/iconify-presets.ts y su mapa en iconify-components.ts
+# 2. su id en apps/docs/src/lib/icon-set-options.ts
+pnpm --filter docs icons`;
+---
+
+<FoundationPage title="Agregar un set de iconos" description="Conecta cualquier librería de iconos, o tus propios SVG, a los roles estables.">
+  <p class="lede">
+    El kit mapea una docena de librerías, pero un set es solo una tabla: <strong>rol → dibujo</strong>. Cualquier colección de Iconify, o SVG propios, pueden llenarla. Los componentes siguen pidiendo <code>search</code> y <code>chevron-down</code>; tu set dice cómo se ven. Los ya mapeados están en <a href="/es/iconos/sets">Sets de iconos</a>.
+  </p>
+
+  <h2>1. Qué debe cubrir un set</h2>
+  <p>
+    Un set es <strong>completo</strong> sobre los roles de interfaz: un hueco dejaría a un componente sin su icono en ejecución, así que el tipo y el build lo rechazan. Las marcas <code>component-*</code> son opcionales.
+  </p>
+  <CodeBlock code={roles} label="ts" note="Los roles a cubrir" />
+
+  <h2>2a. Desde una colección de Iconify</h2>
+  <p>
+    Instala la colección como dependencia de desarrollo (<code>pnpm add -D @iconify-json/solar</code>, cualquiera de las <a href="https://icon-sets.iconify.design">más de 200 de Iconify</a>) y escribe el nombre de cada rol una vez. El resultado es un módulo con solo los dibujos que nombraste, así que los miles que tiene la librería nunca llegan a tu bundle.
+  </p>
+  <CodeBlock code={iconify} label="ts" note="Conectar una colección" />
+  <p>
+    <code>iconSetFromIconify</code> falla en el primer rol que la colección no sabe dibujar, con el nombre que buscó, así que un icono renombrado upstream rompe tu build y no tu página. Las librerías traen varios estilos bajo un mismo prefijo (<code>-linear</code>, <code>-bold-duotone</code>, <code>-outline</code>): <code>variant</code> elige uno, y otra llamada con otro <code>variant</code> te da el siguiente estilo con los mismos nombres.
+  </p>
+
+  <h2>2b. Desde tus propios SVG</h2>
+  <p>
+    Un set también es un objeto simple. Toma lo que hay dentro de cada <code>&lt;svg&gt;</code> como <code>body</code> y su <code>viewBox</code>; no hace falta nada más. El mismo <code>iconSetCss(icons)</code> de arriba sigue dándote los iconos del select y del carrusel nativos, siempre que el set dibuje <code>chevron-up</code>, <code>chevron-down</code>, <code>chevron-left</code>, <code>chevron-right</code> y <code>check</code>.
+  </p>
+  <CodeBlock code={own} label="ts" note="Un set escrito a mano" />
+
+  <h2>3. Cómo se pinta</h2>
+  <p>
+    Los dibujos de contorno y los rellenos necesitan atributos distintos en el <code>&lt;svg&gt;</code> raíz, y el CSS del kit nunca fija <code>fill</code> ni <code>stroke</code> a propósito, así que los lleva el set. Pinta con <code>currentColor</code> y el icono sigue el color del texto en cada paleta, en ambos modos y en colores forzados.
+  </p>
+  <CodeBlock code={stroke} label="ts" note="Atributos de presentación" />
+  <p>
+    Los duotone conservan su segunda capa tal como la escribió la librería (normalmente un trazo a media opacidad). El kit dibuja el cuerpo tal cual; teñir esa capa es un estilo que la app decide, como hace este sitio con sus sets duotone.
+  </p>
+
+  <h2>4. Conectarlo</h2>
+  <p>
+    Desde aquí es igual que cualquier otro set: importa <code>icons</code> e <code>icons.css</code> una vez y pasa el set a <code>IconSetProvider</code> (React) o <code>mountIcons</code> (vanilla). Ningún <code>&lt;Icon name="…"&gt;</code> se mueve. Los detalles están en <a href="/es/iconos">Iconografía</a>.
+  </p>
+
+  <h2>Revisa la licencia</h2>
+  <p>
+    Cada librería de iconos trae sus términos (MIT, ISC, Apache-2.0 y algunas CC BY, que exige crédito). La geometría se copia a tu proyecto, así que la licencia viaja con ella: conserva el encabezado que escribe <code>iconSetModule</code> y añade la atribución que pida la licencia.
+  </p>
+
+  <h2>Aportar un set a este repo</h2>
+  <p>
+    Un set que otras personas querrían es un preset en core, no un script en una app. Así <code>skryensya icons &lt;nombre&gt;</code> funciona para todos y aparece listado aquí.
+  </p>
+  <CodeBlock code={contribute} label="shell" note="Ofrecerlo en la docs" />
+</FoundationPage>

@@ -118,6 +118,8 @@ export { AudioPlayer, AudioPlayerMinimal } from "./components/audio-player.js";
 export type { AudioPlayerMinimalProps, AudioPlayerProps, AudioPlayerTrack } from "./components/audio-player.js";
 export { CompareSlider } from "./components/compare-slider.js";
 export type { CompareSliderProps } from "./components/compare-slider.js";
+export { Magnifier } from "./components/magnifier.js";
+export type { MagnifierProps } from "./components/magnifier.js";
 export { Resizable, ResizableHandle, ResizablePanel } from "./components/resizable.js";
 export type { ResizableApi, ResizableHandleProps, ResizablePanelProps, ResizableProps } from "./components/resizable.js";
 export { ScrollExpand } from "./components/scroll-expand.js";
@@ -209,6 +211,8 @@ export { PasswordInput } from "./components/password-input.js";
 export type { PasswordInputProps } from "./components/password-input.js";
 export { SearchField } from "./components/search-field.js";
 export type { SearchFieldProps } from "./components/search-field.js";
+export { Gallery } from "./components/gallery.js";
+export type { GalleryItem, GalleryProps } from "./components/gallery.js";
 export type { PresenceProps } from "./components/presence.js";
 export { NavList, NavListGroup, NavListLink } from "./components/nav-list.js";
 export type {

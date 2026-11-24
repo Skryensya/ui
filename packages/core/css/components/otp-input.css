@@ -45,6 +45,17 @@
     overflow-x: auto;
     overscroll-behavior-inline: contain;
     scrollbar-width: none;
+    /*
+     * A scroller clips everything past its padding box, the segments' focus ring included: it was cut
+     * top and bottom on every segment and at the far ends. The ring's own reach as padding, given back
+     * as a negative margin, so the row draws exactly where it did and the ring fits inside the clip;
+     * `scroll-padding` keeps a segment reached by Tab off the scrolled edge. `max-inline-size` grows by
+     * the same amount, or the margins would push the row past its container.
+     */
+    max-inline-size: calc(100% + var(--focus-ring-room) * 2);
+    margin: calc(var(--focus-ring-room) * -1);
+    padding: var(--focus-ring-room);
+    scroll-padding-inline: var(--focus-ring-room);
   }
 
   /* A cell is one box: the input fills it, and the mask symbol (below) sits over it. */

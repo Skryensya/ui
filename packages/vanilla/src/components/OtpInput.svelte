@@ -1,6 +1,6 @@
 <script lang="ts">
   import { pinInput } from "@skryensya/core/machines";
-  import { otpInputAttrs, otpInputContract } from "@skryensya/core/otp-input";
+  import { otpInputAttrs, otpInputContract, revealFocusedSegment } from "@skryensya/core/otp-input";
   import { normalizeProps, useMachine } from "@zag-js/svelte";
   import { bindParts, type PartBinding } from "../runtime/bind-part.svelte";
   import { getRoot, uniqueId } from "../runtime/svelte-hydrate";
@@ -97,4 +97,7 @@
   ];
 
   bindParts(bindings);
+
+  /* A segment reached past the edge of a scrolling row comes into view, ring and all. */
+  $effect(() => (parts ? revealFocusedSegment(parts.control) : undefined));
 </script>

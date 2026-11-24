@@ -35,6 +35,22 @@ export const globalTypes = {
       dynamicTitle: true,
     },
   },
+  container: {
+    description: "The box a story sits in: the docs preview stage by default, or one of its screen widths",
+    toolbar: {
+      title: "Container",
+      icon: "component" as const,
+      items: [
+        { value: "", title: "Story default" },
+        { value: "site", title: "Site preview" },
+        { value: "mobile", title: "Mobile, 390px" },
+        { value: "tablet", title: "Tablet, 768px" },
+        { value: "xl", title: "XL, 1440px" },
+        { value: "full", title: "Full, no container" },
+      ],
+      dynamicTitle: true,
+    },
+  },
   mode: {
     description: "color-scheme on the root",
     toolbar: {
@@ -50,7 +66,7 @@ export const globalTypes = {
   },
 };
 
-export const initialGlobals = { locale: "en", mode: "auto", accent: "" };
+export const initialGlobals = { locale: "en", mode: "auto", accent: "", container: "" };
 
 export const parameters = {
   /* Padded, not centered: a centered story is shrink-wrapped, and everything that sizes to its
@@ -66,6 +82,61 @@ export const parameters = {
 import { applyColorMode, readAppearance, type Appearance, type ColorMode } from "@skryensya/core/theme-toggle";
 
 const modes: Record<string, ColorMode> = { auto: "system", light: "light", dark: "dark" };
+
+/*
+ * THE STORY CONTAINER: the width a story's content gets, nothing drawn. By default the width a component has
+ * inside the site's example card (`.sk-preview-card__stage`: the 76ch reading column less the card's
+ * inset-md padding and 1px border, 647px at 1440 measured in the browser), or one of the site's screen widths.
+ * The toolbar's Container wins; on "Story default" a story's own `parameters.container` does.
+ */
+export type StoryContainer = "site" | "mobile" | "tablet" | "xl" | "full";
+const containers = new Set<string>(["site", "mobile", "tablet", "xl", "full"]);
+
+/** The container a tree asks for when its story names none: an app shell is a whole page. */
+export const containerForTree = (tree: { contract: string }): StoryContainer | undefined =>
+  tree.contract === "app-shell" ? "full" : undefined;
+
+export function storyContainer(globals: Record<string, unknown>, parameters: Record<string, unknown>): StoryContainer {
+  const chosen = String(globals.container ?? "");
+  const own = String(parameters.container ?? "");
+  return (containers.has(chosen) ? chosen : containers.has(own) ? own : "site") as StoryContainer;
+}
+
+const containerStyles = `
+[data-sk-story-container] {
+  --sk-story-content-inline-size: calc(76ch - var(--space-inset-md) * 2 - 2px);
+  box-sizing: border-box;
+  inline-size: min(var(--sk-story-content-inline-size), 100%);
+  margin-inline: auto;
+}
+[data-sk-story-container="mobile"] { --sk-story-content-inline-size: 390px; }
+[data-sk-story-container="tablet"] { --sk-story-content-inline-size: 768px; }
+/* The width has to be real for the layouts' own queries to fire, so it is not clamped: it zooms out to fit, as the site's XL does. */
+[data-sk-story-container="xl"] { inline-size: 1440px; zoom: var(--sk-story-xl-zoom, 1); }
+[data-sk-story-container="full"], [data-sk-story-stage] { display: contents; }
+`;
+
+/* One observer for every XL story on the page (a docs page draws several); a box not in the page yet measures 0 and waits for its first resize. */
+let xlObserver: ResizeObserver | undefined;
+
+/** Keeps an XL container zoomed to fit the room around it, the site's `min(1, room / 1440)`. Returns the cleanup. */
+export function fitStoryContainer(container: HTMLElement): () => void {
+  xlObserver ??= new ResizeObserver((entries) => {
+    for (const { target } of entries) {
+      const width = (target as HTMLElement).clientWidth;
+      const box = target.querySelector<HTMLElement>(":scope > [data-sk-story-container]");
+      if (width && box) box.style.setProperty("--sk-story-xl-zoom", String(Math.min(1, width / 1440)));
+    }
+  });
+  const room = container.parentElement;
+  if (!room) {
+    /* Vanilla returns the box before it is placed: measure once it is. */
+    queueMicrotask(() => container.parentElement && xlObserver!.observe(container.parentElement));
+    return () => container.parentElement && xlObserver?.unobserve(container.parentElement);
+  }
+  xlObserver.observe(room);
+  return () => xlObserver?.unobserve(room);
+}
 
 /** The appearance the page paints now: the toolbar's Mode, or the OS when it is on System. */
 export function currentAppearance(): Appearance {
@@ -166,7 +237,7 @@ export function applyPage(globals: Record<string, unknown>): void {
   if (!document.getElementById("sk-docs-surfaces")) {
     const style = document.createElement("style");
     style.id = "sk-docs-surfaces";
-    style.textContent = docsSurfaces;
+    style.textContent = docsSurfaces + containerStyles;
     document.head.append(style);
   }
   document.body.style.background = "var(--color-bg-canvas)";
